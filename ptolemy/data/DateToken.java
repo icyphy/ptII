@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class DateToken extends AbstractConvertibleToken implements
-        PartiallyOrderedToken {
+PartiallyOrderedToken {
 
     /** Construct a date token. The current time is used for the date,
      *  the default precision is milliseconds and the default time zone
@@ -679,7 +679,7 @@ public class DateToken extends AbstractConvertibleToken implements
 
         return BooleanToken.getInstance(left.compareTo(right) == 0
                 && _getMicroAndNanoSeconds() == rightArgumentDateToken
-                        ._getMicroAndNanoSeconds());
+                ._getMicroAndNanoSeconds());
     }
 
     /** Test for ordering of the values of this Token and the argument
@@ -702,7 +702,7 @@ public class DateToken extends AbstractConvertibleToken implements
         return BooleanToken
                 .getInstance(left.compareTo(right) < 0
                         || (left.compareTo(right) == 0 && _getMicroAndNanoSeconds() < rightArgument
-                                ._getMicroAndNanoSeconds()));
+                        ._getMicroAndNanoSeconds()));
     }
 
     /** Modulo is not supported for Dates.

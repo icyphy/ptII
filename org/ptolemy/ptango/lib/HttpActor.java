@@ -123,7 +123,7 @@ import ptolemy.kernel.util.Workspace;
  *  @see org.ptolemy.ptango.lib.WebServer
  */
 public class HttpActor extends TypedAtomicActor implements HttpService,
-        ExceptionSubscriber {
+ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -693,7 +693,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     + "\")\n"
                     + ".done(function(data) { \n "
                     +
-                    // Wrap result page with <div> </div> since an HTML page is not 
+                    // Wrap result page with <div> </div> since an HTML page is not
                     // valid xml due to unclosed <!DOCTYPE HTML> tag
                     // jQuery has problems parsing otherwise
                     // http://www.sitepoint.com/secrets-selecting-elements-returned-jquery-ajax-response-strings/
@@ -883,7 +883,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         private void _handleRequest(HttpServletRequest request,
                 HttpServletResponse response, int type)
-                        throws ServletException, IOException {
+                throws ServletException, IOException {
             // The following codeblock is synchronized on the enclosing
             // actor. This lock _is_ released while waiting for the response,
             // allowing the fire method to execute its own synchronized blocks.

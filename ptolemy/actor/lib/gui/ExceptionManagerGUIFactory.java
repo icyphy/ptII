@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
  This is an attribute that creates an editor for configuring and
  running the exception manager.  This is designed to be contained by
  an instance of ExceptionManager or a subclass of ExceptionManager.
- It customizes the user interface for "configuring" the exception manager. 
+ It customizes the user interface for "configuring" the exception manager.
  This UI will be invoked when you double click on the exception manager.
 
  @author Edward A. Lee, Elizabeth Latronico
@@ -62,7 +62,7 @@ public class ExceptionManagerGUIFactory extends EditorFactory {
     public ExceptionManagerGUIFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -73,11 +73,12 @@ public class ExceptionManagerGUIFactory extends EditorFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
         // TODO: What goes here?
-        
+
     }
-    
+
 }

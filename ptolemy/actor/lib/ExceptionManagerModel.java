@@ -25,6 +25,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -34,7 +35,7 @@ import ptolemy.kernel.util.Workspace;
 //// ExceptionManagerModel
 
 /**
- * A composite entity that is the model contained by an ExceptionManager.  
+ * A composite entity that is the model contained by an ExceptionManager.
  * Based on {@link OntologySolverModel}
  *
  * @author Elizabeth Latronico
@@ -59,7 +60,7 @@ public class ExceptionManagerModel extends CompositeEntity {
         _exceptionManagerContainer = null;
         _exceptionCatcher = null;
     }
-    
+
     /** Construct an ExceptionManager in the specified workspace.
      *  If the workspace argument is null, then use the default workspace.
      *  Add the entity to the workspace directory.
@@ -71,18 +72,18 @@ public class ExceptionManagerModel extends CompositeEntity {
         _exceptionManagerContainer = null;
     }
 
-    /** Create a new ExceptionManagerModel with the specified workspace and the 
+    /** Create a new ExceptionManagerModel with the specified workspace and the
      *  specified ExceptionManager.
      *  @param exceptionManager The ExceptionManager that contains the model.
      *  @param workspace The workspace that will list the entity.
      */
-    public ExceptionManagerModel(ExceptionManager exceptionManager, 
-            Workspace workspace) throws IllegalActionException, 
+    public ExceptionManagerModel(ExceptionManager exceptionManager,
+            Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
         super(workspace);
         _exceptionManagerContainer = exceptionManager;
-        _exceptionCatcher = 
-                new CatchExceptionAttribute(this, "exceptionCatcher");
+        _exceptionCatcher = new CatchExceptionAttribute(this,
+                "exceptionCatcher");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ public class ExceptionManagerModel extends CompositeEntity {
     public ExceptionManager getExceptionManagerContainer() {
         return _exceptionManagerContainer;
     }
-    
+
     /** Return the exception handling policy. */
     public String getPolicy() {
         if (_exceptionCatcher != null) {
@@ -105,22 +106,22 @@ public class ExceptionManagerModel extends CompositeEntity {
     }
 
     /** Set the exception manager that contains this model.
-     *  @param exceptionManager The exception manager that should contain this 
+     *  @param exceptionManager The exception manager that should contain this
      *  model.
      */
     public void setExceptionManagerContainer(ExceptionManager exceptionManager) {
         _exceptionManagerContainer = exceptionManager;
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The attribute that catches exceptions.  Implemented in this class 
+    /** The attribute that catches exceptions.  Implemented in this class
      * instead of ExceptionManager since CatchExceptionAttribute's constructor
      * requires a CompositeEntity (which ExceptionManager is not).
      */
     private CatchExceptionAttribute _exceptionCatcher;
-    
+
     /** The ExceptionManager that contains this model */
     private ExceptionManager _exceptionManagerContainer;
 }

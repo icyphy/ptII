@@ -224,12 +224,12 @@ import certi.rti.impl.CertiRtiAmbassador;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaManager extends AbstractInitializableAttribute implements
-        TimeRegulator {
+TimeRegulator {
 
-    /** Construct a HlaManager with a name and a container. The container 
-     *  argument must not be null, or a NullPointerException will be thrown.  
-     *  This actor will use the workspace of the container for synchronization 
-     *  and version counts. If the name argument is null, then the name is set 
+    /** Construct a HlaManager with a name and a container. The container
+     *  argument must not be null, or a NullPointerException will be thrown.
+     *  This actor will use the workspace of the container for synchronization
+     *  and version counts. If the name argument is null, then the name is set
      *  to the empty string. Increment the version of the workspace.
      *  @param container Container of this attribute.
      *  @param name Name of this attribute.
@@ -344,14 +344,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                     ////
 
-    /** Name of the Ptolemy Federate. This parameter must contain an 
+    /** Name of the Ptolemy Federate. This parameter must contain an
      *  StringToken. */
     public Parameter federateName;
 
     /** Name of the federation. This parameter must contain an StringToken. */
     public Parameter federationName;
 
-    /** Path and name of the Federate Object Model (FOM) file. This parameter 
+    /** Path and name of the Federate Object Model (FOM) file. This parameter
      *  must contain an StringToken. */
     public FileParameter fedFile;
 
@@ -373,28 +373,28 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  'false' if not. This parameter must contain an BooleanToken. */
     public Parameter isTimeRegulator;
 
-    /** Value of the start time of the Federate. This parameter must contain 
+    /** Value of the start time of the Federate. This parameter must contain
      *  an DoubleToken. */
     public Parameter hlaStartTime;
 
-    /** Value of the time step of the Federate. This parameter must contain 
+    /** Value of the time step of the Federate. This parameter must contain
      *  an DoubleToken. */
     public Parameter hlaTimeStep;
 
-    /** Value of the lookahead of the HLA ptII federate. This parameter 
+    /** Value of the lookahead of the HLA ptII federate. This parameter
      *  must contain an DoubleToken. */
     public Parameter hlaLookAHead;
 
-    /** Boolean value, 'true' if the Federate is synchronised with other 
-     *  Federates using a HLA synchronization point, 'false' if not. This 
+    /** Boolean value, 'true' if the Federate is synchronised with other
+     *  Federates using a HLA synchronization point, 'false' if not. This
      *  parameter must contain an BooleanToken. */
     public Parameter requireSynchronization;
 
-    /** Name of the synchronization point (if required). This parameter must 
+    /** Name of the synchronization point (if required). This parameter must
      *  contain an StringToken. */
     public Parameter synchronizationPointName;
 
-    /** Boolean value, 'true' if the Federate is the creator of the 
+    /** Boolean value, 'true' if the Federate is the creator of the
      *  synchronization point 'false' if not. This parameter must contain
      *  an BooleanToken. */
     public Parameter isCreator;
@@ -403,7 +403,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     ////                         public methods                    ////
 
     /** Checks constraints on the changed attribute (when it is required) and
-     *  associates his value to its corresponding local variables. 
+     *  associates his value to its corresponding local variables.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the attribute is empty or negative.
      */
@@ -532,16 +532,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     /** Initializes the {@link HlaManager} attribute. This method: calls the
      *  _populateHlaAttributeTables() to initialize HLA attributes to publish
-     *  or subscribe to; instantiates and initializes the {@link RTIambassador} 
-     *  and {@link FederateAmbassador} which handle the communication 
-     *  Federate <-> RTIA <-> RTIG. RTIA and RTIG are both external communicant 
-     *  processes (see JCERTI); create the HLA/CERTI Federation (if not exists); 
-     *  allows the Federate to join the Federation; set the Federate time 
-     *  management policies (regulator and/or contrained); creates a 
-     *  synchronisation point (if required); and synchronizes the Federate with 
+     *  or subscribe to; instantiates and initializes the {@link RTIambassador}
+     *  and {@link FederateAmbassador} which handle the communication
+     *  Federate <-> RTIA <-> RTIG. RTIA and RTIG are both external communicant
+     *  processes (see JCERTI); create the HLA/CERTI Federation (if not exists);
+     *  allows the Federate to join the Federation; set the Federate time
+     *  management policies (regulator and/or contrained); creates a
+     *  synchronisation point (if required); and synchronizes the Federate with
      *  a synchronization point (if declared).
      *  @exception IllegalActionException If the container of the class is not
-     *  an Actor or If a CERTI exception is raised and has to be displayed to 
+     *  an Actor or If a CERTI exception is raised and has to be displayed to
      *  the user.
      */
     @Override
@@ -628,9 +628,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         }
 
-        // Wait the response of the RTI towards Federate time policies that has 
+        // Wait the response of the RTI towards Federate time policies that has
         // been declared. The only way to get a response is to invoke the tick()
-        // method to receive callbacks from the RTI. We use here the tick2() 
+        // method to receive callbacks from the RTI. We use here the tick2()
         // method which is blocking and saves more CPU than the tick() method.
         if (_isTimeRegulator && _isTimeConstrained) {
             while (!(_federateAmbassador.timeConstrained)) {
@@ -667,7 +667,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
 
         if (_requireSynchronization) {
-            // If the current Federate is the creator then create the 
+            // If the current Federate is the creator then create the
             // synchronization point.
             if (_isCreator) {
                 try {
@@ -742,11 +742,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
     }
 
-    /** Launch the HLA/CERTI RTIG process as subprocess. The RTIG has to be 
+    /** Launch the HLA/CERTI RTIG process as subprocess. The RTIG has to be
      *  launched before the initialization of a Federate.
      *  NOTE: if another HlaManager (e.g. Federate) has already launched a RTIG,
      *  the subprocess creates here is no longer required, then we destroy it.
-     *  @exception IllegalActionException If the initialization of the 
+     *  @exception IllegalActionException If the initialization of the
      *  CertiRtig or the execution of the RTIG as subprocess has failed.
      */
     @Override
@@ -777,16 +777,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     /** Propose a time to advance to. This method is the one implementing the
      *  TimeRegulator interface and using the HLA/CERTI Time Management services
-     *  (if required). Following HLA and CERTI recommendations, if the Time 
+     *  (if required). Following HLA and CERTI recommendations, if the Time
      *  Management is required then we have the following behavior:
-     *  Case 1: If lookahead = 0 
-     *   -a) if time-stepped Federate, then the timeAdvanceRequestAvailable() 
-     *       (TARA) service is used; 
-     *   -b) if event-based Federate, then the nextEventRequestAvailable() 
+     *  Case 1: If lookahead = 0
+     *   -a) if time-stepped Federate, then the timeAdvanceRequestAvailable()
+     *       (TARA) service is used;
+     *   -b) if event-based Federate, then the nextEventRequestAvailable()
      *       (NERA) service is used
      *  Case 2: If lookahead > 0
-     *   -c) if time-stepped Federate, then timeAdvanceRequest() (TAR) is used; 
-     *   -d) if event-based Federate, then the nextEventRequest() (NER) is used; 
+     *   -c) if time-stepped Federate, then timeAdvanceRequest() (TAR) is used;
+     *   -d) if event-based Federate, then the nextEventRequest() (NER) is used;
      *  Otherwise the proposedTime is returned.
      *  NOTE: For the Ptolemy II - HLA/CERTI cooperation the default (and correct)
      *  behavior is the case 1 and CERTI has to be compiled with the option
@@ -811,7 +811,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             return proposedTime;
         }
 
-        // If the proposedTime has already been asked to the HLA/CERTI Federation 
+        // If the proposedTime has already been asked to the HLA/CERTI Federation
         // then return it.
 
         // GL: FIXME: Comment this until the clarification with NERA and TARA
@@ -837,7 +837,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
          }
          */
 
-        // If the HLA Time Management is required, ask to the HLA/CERTI 
+        // If the HLA Time Management is required, ask to the HLA/CERTI
         // Federation (the RTI) the authorization to advance its time.
         if (_isTimeRegulator && _isTimeConstrained) {
             synchronized (this) {
@@ -1012,15 +1012,15 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     }
                 }
 
-                // At this step we are sure that the HLA logical time of the 
+                // At this step we are sure that the HLA logical time of the
                 // Federate has been updated (by the reception of the TAG callback
-                // (timeAdvanceGrant()) and its value is the proposedTime or 
+                // (timeAdvanceGrant()) and its value is the proposedTime or
                 // less, so we have a breakpoint time.
                 try {
                     breakpoint = new Time(
                             _director,
                             ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA)
-                                    .getTime());
+                            .getTime());
                 } catch (IllegalActionException e) {
                     throw new IllegalActionException(this, e,
                             "The breakpoint time is not a valid Ptolemy time");
@@ -1035,8 +1035,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         return breakpoint;
     }
 
-    /** Update the HLA attribute <i>attributeName</i> with the containment of 
-     *  the token <i>in</i>. The updated attribute is sent to the HLA/CERTI 
+    /** Update the HLA attribute <i>attributeName</i> with the containment of
+     *  the token <i>in</i>. The updated attribute is sent to the HLA/CERTI
      *  Federation.
      *  @param hp The HLA publisher actor (HLA attribute) to update.
      *  @param in The updated value of the HLA attribute to update.
@@ -1070,7 +1070,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // Create a representation of the current director time for CERTI.
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
-        // To avoid CERTI exception when calling UAV service, in the case of NER or TAR 
+        // To avoid CERTI exception when calling UAV service, in the case of NER or TAR
         // with lookahead > 0, we add the lookahead value to the event's timestamp.
         CertiLogicalTime ct = new CertiLogicalTime(currentTime.getDoubleValue()
                 + _hlaLookAHead);
@@ -1197,15 +1197,15 @@ public class HlaManager extends AbstractInitializableAttribute implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Table of HLA attributes (and their HLA information) that are published 
-     *  by the current {@link HlaManager} to the HLA/CERTI Federation. This 
-     *  table is indexed by the {@link HlaPublisher} actors present in the model. 
+    /** Table of HLA attributes (and their HLA information) that are published
+     *  by the current {@link HlaManager} to the HLA/CERTI Federation. This
+     *  table is indexed by the {@link HlaPublisher} actors present in the model.
      */
     protected HashMap<String, Object[]> _hlaAttributesToPublish;
 
-    /** Table of HLA attributes (and their HLA information) that the current 
-     *  {@link HlaManager} is subscribed to. This table is indexed by the 
-     *  {@link HlaSubscriber} actors present in the model. 
+    /** Table of HLA attributes (and their HLA information) that the current
+     *  {@link HlaManager} is subscribed to. This table is indexed by the
+     *  {@link HlaSubscriber} actors present in the model.
      */
     protected HashMap<String, Object[]> _hlaAttributesSubscribedTo;
 
@@ -1214,7 +1214,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      */
     protected HashMap<String, LinkedList<TimedEvent>> _fromFederationEvents;
 
-    /** Table of object class handles associate to object ids received by 
+    /** Table of object class handles associate to object ids received by
      *  discoverObjectInstance and reflectAttributesValues services (e.g. from
      *  the RTI).
      */
@@ -1223,7 +1223,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** This generic method should call the {@link EncodingHelpers} API provided 
+    /** This generic method should call the {@link EncodingHelpers} API provided
      *  by CERTI to handle type decoding operations for HLA value attribute that
      *  has been reflected.
      *  @param hs The targeted HLA subcriber actor.
@@ -1310,10 +1310,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
     }
 
-    /** This generic method call the {@link EncodingHelpers} API or the 
-     *  {@link MessageBuffer} API provided by CERTI to handle data encoding 
-     *  operation for updated value of HLA attribute that will be published 
-     *  to the federation. 
+    /** This generic method call the {@link EncodingHelpers} API or the
+     *  {@link MessageBuffer} API provided by CERTI to handle data encoding
+     *  operation for updated value of HLA attribute that will be published
+     *  to the federation.
      *  @param hp The HLA publisher actor which sends the HLA attribute value.
      *  @param tok The token to encode, i.e. the HLA attribute value to encode.
      *  @return The encoded value as an array of byte.
@@ -1372,7 +1372,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             } else {
                 throw new IllegalActionException(this,
                         "The current type of the token " + t
-                                + " is not handled by " + this.getDisplayName());
+                        + " is not handled by " + this.getDisplayName());
             }
 
             try {
@@ -1427,7 +1427,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         } else {
             throw new IllegalActionException(this,
                     "The current type of the token " + t
-                            + " is not handled by " + this.getDisplayName());
+                    + " is not handled by " + this.getDisplayName());
         }
 
         // GL: FIXME: HLA PTIDES event support.
@@ -1456,8 +1456,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
     }
 
-    /** The method {@link #_populatedHlaValueTables()} populates the tables 
-     *  containing information of HLA attributes required to publish and to 
+    /** The method {@link #_populatedHlaValueTables()} populates the tables
+     *  containing information of HLA attributes required to publish and to
      *  subscribe value attributes in a HLA Federation.
      *  @throws IllegalActionException If a HLA attribute is declared twice.
      */
@@ -1482,11 +1482,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _hlaAttributesToPublish.put(
                     hp.getName(),
                     new Object[] {
-                            tiop,
-                            tiop.getType(),
-                            ((StringToken) ((Parameter) hp
-                                    .getAttribute("classObjectHandle"))
-                                    .getToken()).stringValue() });
+                        tiop,
+                        tiop.getType(),
+                        ((StringToken) ((Parameter) hp
+                                .getAttribute("classObjectHandle"))
+                                .getToken()).stringValue() });
         }
 
         _hlaSubscribers = ca.entityList(HlaSubscriber.class);
@@ -1502,31 +1502,31 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _hlaAttributesSubscribedTo.put(
                     hs.getName(),
                     new Object[] {
-                            tiop,
-                            tiop.getType(),
-                            ((StringToken) ((Parameter) hs
-                                    .getAttribute("classObjectHandle"))
-                                    .getToken()).stringValue() });
+                        tiop,
+                        tiop.getType(),
+                        ((StringToken) ((Parameter) hs
+                                .getAttribute("classObjectHandle"))
+                                .getToken()).stringValue() });
 
             // The events list to store updated values of HLA attribute,
-            // (received by callbacks) from the RTI, is indexed by the HLA 
+            // (received by callbacks) from the RTI, is indexed by the HLA
             // Subscriber actors present in the model.
             _fromFederationEvents.put(hs.getName(),
                     new LinkedList<TimedEvent>());
         }
     }
 
-    /** This method is called when a time advancement phase is performed. Every 
-     *  updated HLA attributes received by callbacks (from the RTI) during the 
-     *  time advancement phase is saved as {@link TimedEvent} and stored in a 
+    /** This method is called when a time advancement phase is performed. Every
+     *  updated HLA attributes received by callbacks (from the RTI) during the
+     *  time advancement phase is saved as {@link TimedEvent} and stored in a
      *  queue. Then, every {@link TimedEvent}s are moved from this queue to the
      *  output port of their corresponding {@link HLASubscriber} actors
      *  @throws IllegalActionException If the parent class throws it.
      */
     private void _putReflectedAttributesOnHlaSubscribers()
             throws IllegalActionException {
-        // Reflected HLA attributes, e.g. updated values of HLA attributes 
-        // received by callbacks (from the RTI) from the whole HLA/CERTI 
+        // Reflected HLA attributes, e.g. updated values of HLA attributes
+        // received by callbacks (from the RTI) from the whole HLA/CERTI
         // Federation, are store in the _subscribedValues queue (see
         // reflectAttributeValues() in PtolemyFederateAmbassadorInner class).
 
@@ -1538,8 +1538,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
             while (it.hasNext()) {
                 Map.Entry<String, LinkedList<TimedEvent>> elt = it.next();
 
-                // GL: FIXME: Check if multiple events here with same timestamp 
-                // make sense and can occur, if true we need to update the 
+                // GL: FIXME: Check if multiple events here with same timestamp
+                // make sense and can occur, if true we need to update the
                 // following code to handle this case.
                 if (elt.getValue().size() > 0) {
                     event = elt.getValue().getFirst();
@@ -1648,7 +1648,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
          */
         public Boolean timeAdvanceGrant;
 
-        /** Indicates the current HLA logical time of the Federate. This value 
+        /** Indicates the current HLA logical time of the Federate. This value
          *  is set by callback by the RTI.
          */
         public LogicalTime logicalTimeHLA;
@@ -1662,12 +1662,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
          */
         public Boolean synchronizationSuccess;
 
-        /** Indicates if the request of synchronization by the Federate 
+        /** Indicates if the request of synchronization by the Federate
          *  has failed. This value is set by callback by the RTI.
          */
         public Boolean synchronizationFailed;
 
-        /** Indicates if the Federate is currently synchronize to others. This 
+        /** Indicates if the Federate is currently synchronize to others. This
          * value is set by callback by the RTI.
          */
         public Boolean inPause;
@@ -1681,7 +1681,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         ////                         public methods                    ////
 
         /** Initialize the {@link PtolemyFederateAmbassadorInner} which handles
-         *  the communication from RTI -> to RTIA -> to FEDERATE. The 
+         *  the communication from RTI -> to RTIA -> to FEDERATE. The
          *  <i>rtia</i> manages the interaction with the external communicant
          *  process RTIA. This method called the Declaration Management
          *  services provide by HLA/CERTI to publish/subscribe to HLA attributes
@@ -1698,9 +1698,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  All those exceptions are from the HLA/CERTI implementation.
          */
         public void initialize(RTIambassador rtia) throws NameNotFound,
-                ObjectClassNotDefined, FederateNotExecutionMember,
-                RTIinternalError, AttributeNotDefined, SaveInProgress,
-                RestoreInProgress, ConcurrentAccessAttempted {
+        ObjectClassNotDefined, FederateNotExecutionMember,
+        RTIinternalError, AttributeNotDefined, SaveInProgress,
+        RestoreInProgress, ConcurrentAccessAttempted {
             this.timeAdvanceGrant = false;
             this.timeConstrained = false;
             this.timeRegulator = false;
@@ -1733,7 +1733,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // Update HLA attribute information (for publication)
                 // from HLA services. In this case, the tObj[] object as
                 // the following structure:
-                // tObj[0] => input port which receives the token to transform 
+                // tObj[0] => input port which receives the token to transform
                 //            as an updated value of a HLA attribute,
                 // tObj[1] => type of the port (e.g. of the attribute),
                 // tObj[2] => object class name of the attribute,
@@ -1775,7 +1775,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 }
             }
 
-            // 3. Declare to the Federation the HLA attributes to publish. If 
+            // 3. Declare to the Federation the HLA attributes to publish. If
             // these attributes belongs to the same object class then only
             // one registerObjectInstance call is performed.
             // Then, update the HlaPublishers table with the new information.
@@ -1808,7 +1808,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                 int myObjectInstId = -1;
 
-                // ROI is called ** only once time ** for one federate. This 
+                // ROI is called ** only once time ** for one federate. This
                 // means that only one instance of object class are allowed.
                 try {
                     myObjectInstId = rtia.registerObjectInstance(classHandle,
@@ -1824,7 +1824,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                     _hlaAttributesToPublish.put(s,
                             new Object[] { tObj[0], tObj[1], tObj[2], tObj[3],
-                                    tObj[4], myObjectInstId });
+                            tObj[4], myObjectInstId });
                 }
             }
 
@@ -1935,9 +1935,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void reflectAttributeValues(int theObject,
                 ReflectedAttributes theAttributes, byte[] userSuppliedTag,
                 LogicalTime theTime, EventRetractionHandle retractionHandle)
-                throws ObjectNotKnown, AttributeNotKnown,
-                FederateOwnsAttributes, InvalidFederationTime,
-                FederateInternalError {
+                        throws ObjectNotKnown, AttributeNotKnown,
+                        FederateOwnsAttributes, InvalidFederationTime,
+                        FederateInternalError {
             try {
                 for (int i = 0; i < theAttributes.size(); i++) {
                     Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
@@ -1950,7 +1950,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         Time ts = null;
                         TimedEvent te = null;
 
-                        // Get the object class handle corresponding to 
+                        // Get the object class handle corresponding to
                         // received "theObject" id.
                         int classHandle = _objectIdToClassHandle.get(theObject);
 
@@ -1964,7 +1964,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         .getContainer();
 
                                 // GL: FIXME: PTIDES
-                                // This first case handle events from a PtidesPlatform 
+                                // This first case handle events from a PtidesPlatform
                                 // to PtidesPlatform, only network port are supported.
                                 if (tObj[1] instanceof RecordType) {
                                     HlaPtidesEvent hpe = new HlaPtidesEvent(
@@ -1974,18 +1974,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     //ts = new Time(_director, he.getSourceTime());
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
-                                                    .getTime());
+                                            .getTime());
                                     te = new TimedEvent(ts, new Object[] {
                                             (RecordType) tObj[1],
                                             _decodeHlaValue(hs,
                                                     (RecordType) tObj[1],
                                                     hpe.getValue()),
-                                            // GL: FIXME: PTIDES: should be:
-                                            // he.getLogicalTime(),
-                                            ts.getDoubleValue(),
-                                            hpe.getMicroStep(),
-                                            // GL: FIXME: PTIDES: should be:
-                                            hpe.getSourceTime() });
+                                                    // GL: FIXME: PTIDES: should be:
+                                                    // he.getLogicalTime(),
+                                                    ts.getDoubleValue(),
+                                                    hpe.getMicroStep(),
+                                                    // GL: FIXME: PTIDES: should be:
+                                                    hpe.getSourceTime() });
                                     //ts.getDoubleValue()});
 
                                     //  System.out.println("RAV " + "has to decode asHlaPtidesEvent");
@@ -1996,7 +1996,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 } else {
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
-                                                    .getTime());
+                                            .getTime());
                                     te = new TimedEvent(
                                             ts,
                                             new Object[] {
@@ -2005,7 +2005,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                             hs,
                                                             (BaseType) tObj[1],
                                                             theAttributes
-                                                                    .getValue(i)) });
+                                                            .getValue(i)) });
                                 }
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
@@ -2013,14 +2013,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                             _fromFederationEvents.get(
                                     ((TypedIOPort) tObj[0]).getContainer()
-                                            .getName()).add(te);
+                                    .getName()).add(te);
                             if (_debugging) {
                                 _debug(HlaManager.this.getDisplayName()
                                         + " INNER"
                                         + " reflectAttributeValues() (RAV) - "
                                         + "HLA attribute: "
                                         + ((TypedIOPort) tObj[0])
-                                                .getContainer().getName()
+                                        .getContainer().getName()
                                         + "(value=" + te.contents
                                         + ", timestamp=" + te.timeStamp
                                         + ") has been received");
@@ -2053,7 +2053,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // HLA Time Management services (callbacks).
 
-        /** Callback delivered by the RTI (CERTI) to validate that the Federate 
+        /** Callback delivered by the RTI (CERTI) to validate that the Federate
          *  is declared as time-regulator in the HLA Federation.
          */
         @Override
@@ -2068,7 +2068,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         }
 
-        /** Callback delivered by the RTI (CERTI) to validate that the Federate 
+        /** Callback delivered by the RTI (CERTI) to validate that the Federate
          *  is declared as time-constrained in the HLA Federation.
          */
         @Override
@@ -2086,7 +2086,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         /** Callback (TAG) delivered by the RTI (CERTI) to notify that the
          *  Federate is authorized to advance its time to <i>theTime</i>.
          *  This time is the same or smaller than the time specified
-         *  when calling the nextEventRequest() or the timeAdvanceRequest() 
+         *  when calling the nextEventRequest() or the timeAdvanceRequest()
          *  services.
          */
         @Override
@@ -2140,7 +2140,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         @Override
         public void announceSynchronizationPoint(
                 String synchronizationPointLabel, byte[] userSuppliedTag)
-                throws FederateInternalError {
+                        throws FederateInternalError {
             inPause = true;
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"

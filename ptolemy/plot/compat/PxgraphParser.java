@@ -422,7 +422,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parseArgs(String[] args) throws CmdLineArgException,
-    FileNotFoundException, IOException {
+            FileNotFoundException, IOException {
         return parseArgs(args, null);
     }
 
@@ -439,7 +439,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parseArgs(String[] args, URL base) throws CmdLineArgException,
-    FileNotFoundException, IOException {
+            FileNotFoundException, IOException {
         int i = 0;
         int j;
         int argumentsRead = 0;
@@ -806,7 +806,7 @@ public class PxgraphParser {
                             argvector.addElement("-" + stoken.sval);
                         } else {
                             argvector
-                            .addElement("-" + partialarg + stoken.sval);
+                                    .addElement("-" + partialarg + stoken.sval);
                         }
                     } else {
                         if (partialarg == null) {

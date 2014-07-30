@@ -377,6 +377,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  @exception PtalonScopeException If a symbol with this name has
      *  already been added somewhere in the current scope.
      */
+    @Override
     public void addSymbol(String name, String type) throws PtalonScopeException {
         super.addSymbol(name, type);
         if (type.equals("actorparameter")) {
@@ -481,10 +482,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         return false;
                     }
                 }
-// Coverity says that _currentIfTree cannot be null because _inNewWhileIterator dereferences it.
-//             } else if (_currentIfTree == null) {
-//                 // If we are not in a loop or in an if statement, then we should
-//                 // only check isReady().  -- tfeng
+                // Coverity says that _currentIfTree cannot be null because _inNewWhileIterator dereferences it.
+                //             } else if (_currentIfTree == null) {
+                //                 // If we are not in a loop or in an if statement, then we should
+                //                 // only check isReady().  -- tfeng
             } else {
                 return false;
             }
@@ -554,6 +555,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  already, or if there is some problem accessing its associated
      *  file.
      */
+    @Override
     public void setActorSymbol(String symbol) throws PtalonScopeException {
         super.setActorSymbol(symbol);
         _instanceNumbers.put(symbol, -1);
@@ -573,6 +575,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
     /** Prepare the compiler to start at the outermost scope of the Ptalon
      *  program during run time.
      */
+    @Override
     public void startAtTop() {
         super.startAtTop();
         _currentActorTree = null;
@@ -747,6 +750,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  @param name The name of the child.
          *  @return The child ActorTree.
          */
+        @Override
         public ActorTree addChild(String name) {
             ActorTree tree = new ActorTree(this, name);
             _children.add(tree);
@@ -936,7 +940,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                 if (variable instanceof String) {
                                     if (!scopeVariables.contains(variable)) {
                                         excludedVariables
-                                                .add((String) variable);
+                                        .add((String) variable);
                                     }
                                 }
                             }
@@ -1161,8 +1165,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 }
                 if (connectType.equals("transparent")
                         && !_transparentRelations
-                                .containsKey(_transparentLeftHandSides
-                                        .get(transparency))) {
+                        .containsKey(_transparentLeftHandSides
+                                .get(transparency))) {
                     return false;
                 }
             }

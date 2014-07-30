@@ -217,7 +217,7 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-                    throws Exception {
+            throws Exception {
         this();
 
         _initializeApplication();
@@ -287,7 +287,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     PtolemyPreferences preferences = PtolemyPreferences
                             .getPtolemyPreferencesWithinConfiguration(_configuration);
                     preferences.backgroundColor
-                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
 
                 }
                 if (_run20x) {
@@ -1012,7 +1012,7 @@ public class ConfigurationApplication implements ExecutionListener {
                                 // usage for that configuration
                                 try {
                                     MoMLParser
-                                    .setErrorHandler(new IgnoreErrorHandler());
+                                            .setErrorHandler(new IgnoreErrorHandler());
                                     configuration = readConfiguration(specificationURL);
                                 } finally {
                                     MoMLParser.setErrorHandler(errorHandler);
@@ -1167,9 +1167,9 @@ public class ConfigurationApplication implements ExecutionListener {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out
-            .println("Version "
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + ", Build $Id$");
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             StringUtilities.exit(0);
@@ -1508,8 +1508,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             .getFullName()
                             .equals(".configuration.directory.configuration.graphTableau")
                             && !tableau
-                            .getFullName()
-                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                                    .getFullName()
+                                    .equals(".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white
 
@@ -1518,11 +1518,11 @@ public class ConfigurationApplication implements ExecutionListener {
                             PtolemyPreferences preferences = PtolemyPreferences
                                     .getPtolemyPreferencesWithinConfiguration(_configuration);
                             preferences.backgroundColor
-                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
                             frame.repaint();
                         } catch (Exception ex) {
                             System.out
-                            .println("Failed to set the background to white.");
+                                    .println("Failed to set the background to white.");
                             ex.printStackTrace();
                         }
                         ((TableauFrame) frame).printPDF();
@@ -1574,15 +1574,15 @@ public class ConfigurationApplication implements ExecutionListener {
             { "-run", "Run the models" },
             { "-run20x", "Run the models 20 times, then exit" },
             { "-runThenExit",
-            "Run the models, then exit after the models finish." },
+                    "Run the models, then exit after the models finish." },
             { "-statistics", "Open the model, print statistics and exit." },
             { "-test", "Exit after two seconds." },
             { "-version", "Print version information." } };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-        { "-class", "<classname>" },
-        { "-<parameter name>", "<parameter value>" }, };
+            { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";

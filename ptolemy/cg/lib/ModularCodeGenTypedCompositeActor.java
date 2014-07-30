@@ -73,7 +73,7 @@ A TypedCompositeActor with Lazy evaluation for Modular code generation.
  @Pt.AcceptedRating Red (rodiers)
  */
 public class ModularCodeGenTypedCompositeActor extends
-        ModularCodeGenLazyTypedCompositeActor {
+ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no container
      *  and an empty string as its name. Add the library to the
@@ -85,7 +85,7 @@ public class ModularCodeGenTypedCompositeActor extends
      *   actor with this name.
      */
     public ModularCodeGenTypedCompositeActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -148,7 +148,7 @@ public class ModularCodeGenTypedCompositeActor extends
                 List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
-                    .setToken(new BooleanToken(true));
+                            .setToken(new BooleanToken(true));
                 }
             }
             //        } else if (attribute == recompileThisLevel) {
@@ -236,7 +236,7 @@ public class ModularCodeGenTypedCompositeActor extends
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             System.out
-            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -415,15 +415,15 @@ public class ModularCodeGenTypedCompositeActor extends
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
                                     DFUtilities
-                                    .setRateVariable(
-                                            (IOPort) actorPort,
-                                            port.input() ? "tokenConsumptionRate"
-                                                    : "tokenProductionRate",
+                                            .setRateVariable(
+                                                    (IOPort) actorPort,
+                                                    port.input() ? "tokenConsumptionRate"
+                                                            : "tokenProductionRate",
                                                     port.rate());
                                     ((TypedIOPort) actorPort)
-                                    .setTypeEquals(JavaCodeGenerator
-                                            .codeGenTypeToPtType(port
-                                                    .type()));
+                                            .setTypeEquals(JavaCodeGenerator
+                                                    .codeGenTypeToPtType(port
+                                                            .type()));
                                     break;
                                 }
                             }
@@ -438,13 +438,13 @@ public class ModularCodeGenTypedCompositeActor extends
                                 newPort.setOutput(port.output());
                                 DFUtilities.setRateVariable(newPort, port
                                         .input() ? "tokenConsumptionRate"
-                                                : "tokenProductionRate", port.rate());
+                                        : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                    .linkToPublishedPort(
-                                            port.getPubSubChannelName(),
-                                            newPort);
+                                            .linkToPublishedPort(
+                                                    port.getPubSubChannelName(),
+                                                    newPort);
                                 }
                             }
                         }
@@ -571,7 +571,7 @@ public class ModularCodeGenTypedCompositeActor extends
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularCodeGenerator(this,
                     "ModularCodeGenerator");
@@ -587,7 +587,7 @@ public class ModularCodeGenTypedCompositeActor extends
      *   parameter with this name.
      */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
         // However, a parent class, TypedCompositeActor sets the classname
@@ -701,7 +701,7 @@ public class ModularCodeGenTypedCompositeActor extends
     private boolean _modelChanged() throws IllegalActionException {
         if (((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                .booleanValue()) {
+                        .booleanValue()) {
             return true;
         }
 

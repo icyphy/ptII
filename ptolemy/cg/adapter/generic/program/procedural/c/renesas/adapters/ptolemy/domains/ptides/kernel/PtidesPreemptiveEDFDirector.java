@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating red (derler)
  */
 public class PtidesPreemptiveEDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
@@ -371,11 +371,11 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                            + " cannot be used.");
+                                    + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "_Handler");
+                                + "_Handler");
             }
 
             if (actor instanceof SensorHandler) {
@@ -386,7 +386,7 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                            + " cannot be used.");
+                                    + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor));
@@ -455,7 +455,7 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         args.add(interruptPragmas.toString());
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream()
-                .getCodeBlock("globalVars", args));
+                        .getCodeBlock("globalVars", args));
 
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 

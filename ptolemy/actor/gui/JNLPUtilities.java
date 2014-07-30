@@ -226,7 +226,7 @@ public class JNLPUtilities {
             String jarURLTop = jarURLParentFileName.substring(
                     9,
                     jarURLParentFileName.length()
-                    - parentEntryFileName.length());
+                            - parentEntryFileName.length());
 
             File temporaryFile = new File(jarURLTop, entryFileName);
 

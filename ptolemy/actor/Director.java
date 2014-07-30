@@ -150,7 +150,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public Director(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
         _addIcon();
         _initializeParameters();
@@ -1258,7 +1258,7 @@ public class Director extends Attribute implements Executable {
             Manager manager = ((Actor) container).getManager();
             if (manager == null
                     || manager.getPreinitializeVersion() != workspace()
-                    .getVersion()) {
+                            .getVersion()) {
                 // This increments the workspace version.
                 _createReceivers();
             }
@@ -1382,7 +1382,7 @@ public class Director extends Attribute implements Executable {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -2071,7 +2071,7 @@ public class Director extends Attribute implements Executable {
      *  @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         localClock = new LocalClock(this, "localClock");
 
         startTime = new Parameter(this, "startTime");

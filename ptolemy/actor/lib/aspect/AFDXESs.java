@@ -256,8 +256,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
                             Token[] values = new Token[] {
                                     new DoubleToken(
                                             e.timeStamp.getDoubleValue()),
-                                            new ObjectToken(output[2]),
-                                            (Token) output[1] };
+                                    new ObjectToken(output[2]),
+                                    (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else {
@@ -475,7 +475,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
             _afdxVLinksQueue.get(vl.getName()).add(
                     new TimedEvent(currentTime.add(_delay), new Object[] {
-                        receiver, token, vl, currentTime }));
+                            receiver, token, vl, currentTime }));
         }
 
         _tokenCount++;
@@ -765,7 +765,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
                         "schedulerMultiplexorName");
                 schedulerMultiplexorName.setTypeEquals(BaseType.STRING);
                 schedulerMultiplexorName
-                .setExpression("\"Scheduler multiplexor name\"");
+                        .setExpression("\"Scheduler multiplexor name\"");
 
                 //portIn = new Parameter(this, "portIn", new IntToken(0));
                 //portOut = new Parameter(this, "portOut", new IntToken(1));

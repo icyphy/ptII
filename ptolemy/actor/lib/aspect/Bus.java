@@ -302,7 +302,7 @@ public class Bus extends AtomicCommunicationAspect {
         }
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
-                .compareTo(_nextTimeFree) >= 0)) {
+                        .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
         }
         _receiversAndTokensToSendTo.clear();
@@ -494,7 +494,7 @@ public class Bus extends AtomicCommunicationAspect {
          */
         public BusAttributes(NamedObj target,
                 AtomicCommunicationAspect decorator)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }

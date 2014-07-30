@@ -231,7 +231,7 @@ public class VariableDelaySwitch extends BasicSwitch {
         _inputTokens.get(inputPortID).add(
                 new TimedEvent(lastTimeStamp.add(_inputBufferDelay
                         + _priorityDelay + _packetSizeDelay), new Object[] {
-                    receiver, token }));
+                        receiver, token }));
         _tokenCount++;
         sendCommunicationEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);

@@ -139,7 +139,7 @@ invalid.
  */
 @SuppressWarnings("unused")
 public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
-PtParserConstants {/*@bgen(jjtree)*/
+        PtParserConstants {/*@bgen(jjtree)*/
     protected JJTPtParserState jjtree = new JJTPtParserState();
     boolean debug = false;
 
@@ -326,8 +326,8 @@ PtParserConstants {/*@bgen(jjtree)*/
                     x += "\u005c\u005c";
                     break;
                 case '\u005c'':
-                x += "\u005c'";
-                break;
+                    x += "\u005c'";
+                    break;
                 case '"':
                     x += "\u005c"";
                     break;
@@ -2524,48 +2524,48 @@ PtParserConstants {/*@bgen(jjtree)*/
                     ++jjtn000._nColumns;
                     funcIf();
                 }
-            label_18: while (true) {
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                case SEPARATOR:
-                    ;
-                    break;
-                default:
-                    jj_la1[37] = jj_gen;
-                    break label_18;
-                }
-                jj_consume_token(SEPARATOR);
-                ++nRows;
-                i = 0;
-                funcIf();
-                ++i;
-                label_19: while (true) {
+                label_18: while (true) {
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                    case COMMA:
+                    case SEPARATOR:
                         ;
                         break;
                     default:
-                        jj_la1[38] = jj_gen;
-                        break label_19;
+                        jj_la1[37] = jj_gen;
+                        break label_18;
                     }
-                    jj_consume_token(COMMA);
+                    jj_consume_token(SEPARATOR);
+                    ++nRows;
+                    i = 0;
                     funcIf();
                     ++i;
-                }
-                /* Assert that the following rows have the same number of terms as the
-                     first row. */
-                if (i != jjtn000._nColumns) {
-                    {
-                        if (true) {
-                            throw new ParseException(
-                                    "PtParser: error parsing matrix "
-                                            + "construction, the row "
-                                            + nRows
-                                            + " does not have the same number of "
-                                            + "terms as the first row.");
+                    label_19: while (true) {
+                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                        case COMMA:
+                            ;
+                            break;
+                        default:
+                            jj_la1[38] = jj_gen;
+                            break label_19;
+                        }
+                        jj_consume_token(COMMA);
+                        funcIf();
+                        ++i;
+                    }
+                    /* Assert that the following rows have the same number of terms as the
+                         first row. */
+                    if (i != jjtn000._nColumns) {
+                        {
+                            if (true) {
+                                throw new ParseException(
+                                        "PtParser: error parsing matrix "
+                                                + "construction, the row "
+                                                + nRows
+                                                + " does not have the same number of "
+                                                + "terms as the first row.");
+                            }
                         }
                     }
                 }
-            }
                 jj_consume_token(CLOSEBRACKET);
                 jjtree.closeNodeScope(jjtn000, true);
                 jjtc000 = false;

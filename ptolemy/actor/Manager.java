@@ -653,7 +653,7 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void initialize() throws KernelException,
-    IllegalActionException {
+            IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -762,8 +762,8 @@ public class Manager extends NamedObj implements Runnable {
             if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                 setStatusMessage(timeAndMemory(startTime));
                 System.out
-                .println("Manager.iterate(): preinitialize() finished: "
-                        + getStatusMessage());
+                        .println("Manager.iterate(): preinitialize() finished: "
+                                + getStatusMessage());
             }
 
             if (!_typesResolved) {
@@ -880,9 +880,9 @@ public class Manager extends NamedObj implements Runnable {
                         // Set the new state to show that execution is paused
                         // on a breakpoint.
                         PAUSED_ON_BREAKPOINT
-                        .setDescription("pausing on breakpoint: "
-                                + breakpointMessage
-                                + ".  Click Resume to continue.");
+                                .setDescription("pausing on breakpoint: "
+                                        + breakpointMessage
+                                        + ".  Click Resume to continue.");
                         _setState(PAUSED_ON_BREAKPOINT);
 
                         _resumeNotifyWaiting = true;
@@ -1753,8 +1753,8 @@ public class Manager extends NamedObj implements Runnable {
 
                 if (_executionListeners == null) {
                     System.err
-                    .println("No executionListeners? Error message was: "
-                            + errorMessage);
+                            .println("No executionListeners? Error message was: "
+                                    + errorMessage);
                     _throwable.printStackTrace();
                 } else {
 

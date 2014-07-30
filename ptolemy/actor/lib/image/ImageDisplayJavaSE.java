@@ -71,7 +71,7 @@ classes.</p>
  */
 
 public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
-ImageDisplayInterface {
+        ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -185,7 +185,7 @@ ImageDisplayInterface {
      */
     @Override
     public void initWindowAndSizeProperties() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute) _display.getAttribute(
                 "_windowProperties", WindowPropertiesAttribute.class);
         if (_windowProperties == null) {
@@ -517,7 +517,7 @@ ImageDisplayInterface {
 
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends
-    AbstractPlaceableJavaSE.WindowClosingAdapter {
+            AbstractPlaceableJavaSE.WindowClosingAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
             _display.cleanUp();

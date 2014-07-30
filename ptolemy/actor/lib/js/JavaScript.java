@@ -644,19 +644,19 @@ public class JavaScript extends TypedAtomicActor {
                     { String.class }, // error
                     { NativeJavaObject.class, Double.class }, // get
                     { String.class, String.class, NativeObject.class,
-                            String.class, Integer.class }, // httpRequest
-                    {}, // localHostAddress
-                    { String.class }, // openBrowser
-                    { String.class }, // print
-                    { String.class, String.class }, // readProtectedURL
-                    { String.class }, // readURL
-                    { String.class, String.class, String.class, String.class,
+                        String.class, Integer.class }, // httpRequest
+                        {}, // localHostAddress
+                        { String.class }, // openBrowser
+                        { String.class }, // print
+                        { String.class, String.class }, // readProtectedURL
+                        { String.class }, // readURL
+                        { String.class, String.class, String.class, String.class,
                             String.class }, // requestAccess
-                    { String.class, String.class, String.class, Boolean.class }, // requestAuth
-                    { Object.class, NativeJavaObject.class, Double.class }, // send
-                    { Function.class, Integer.class }, // setTimeout
-                    { String.class, NativeObject.class, NativeJavaObject.class }, // socketX
-                    { NativeJavaObject.class }, // valueOf
+                            { String.class, String.class, String.class, Boolean.class }, // requestAuth
+                            { Object.class, NativeJavaObject.class, Double.class }, // send
+                            { Function.class, Integer.class }, // setTimeout
+                            { String.class, NativeObject.class, NativeJavaObject.class }, // socketX
+                            { NativeJavaObject.class }, // valueOf
 
             };
             int count = 0;
@@ -735,16 +735,16 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
-            "abstract", "as", "boolean", "break", "byte", "case", "catch",
-            "char", "class", "continue", "const", "debugger", "default",
-            "delete", "do", "double", "else", "enum", "export", "extends",
-            "false", "final", "finally", "float", "for", "function", "goto",
-            "if", "implements", "import", "in", "instanceof", "int",
-            "interface", "is", "long", "namespace", "native", "new", "null",
-            "package", "private", "protected", "public", "return", "short",
-            "static", "super", "switch", "synchronized", "this", "throw",
-            "throws", "transient", "true", "try", "typeof", "use", "var",
-            "void", "volatile", "while", "with" };
+        "abstract", "as", "boolean", "break", "byte", "case", "catch",
+        "char", "class", "continue", "const", "debugger", "default",
+        "delete", "do", "double", "else", "enum", "export", "extends",
+        "false", "final", "finally", "float", "for", "function", "goto",
+        "if", "implements", "import", "in", "instanceof", "int",
+        "interface", "is", "long", "namespace", "native", "new", "null",
+        "package", "private", "protected", "public", "return", "short",
+        "static", "super", "switch", "synchronized", "this", "throw",
+        "throws", "transient", "true", "try", "typeof", "use", "var",
+        "void", "volatile", "while", "with" };
 
     /** Keywords as a Set. */
     protected static final Set<String> _KEYWORDS = new HashSet<String>(
@@ -852,8 +852,8 @@ public class JavaScript extends TypedAtomicActor {
     public class PtolemyJavaScript extends ScriptableObject {
 
         /** Alert the user with a message.
-        *  @param message The message   
-        */
+         *  @param message The message
+         */
         public void alert(String message) {
             MessageHandler.message(message);
         }
@@ -870,9 +870,9 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /** Throw an IllegalActionException with the specified message.
-        *  @param message The specified message.
-        *  @exception IllegalActionException Always thrown.
-        */
+         *  @param message The specified message.
+         *  @exception IllegalActionException Always thrown.
+         */
         public void error(String message) throws IllegalActionException {
             throw new IllegalActionException(JavaScript.this, message);
         }
@@ -880,7 +880,7 @@ public class JavaScript extends TypedAtomicActor {
         /** Get buffered inputs for a given input port.
          *  @param portWrapper A JavaScript wrapper for a Port.
          *  @param channel A channel number, or NaN to use the default (0).
-        *  @return The buffered inputs.
+         *  @return The buffered inputs.
          */
         public Object get(NativeJavaObject portWrapper, Double channel) {
             // In JavaScript, all numbers are doubles. So we have to convert
@@ -915,7 +915,7 @@ public class JavaScript extends TypedAtomicActor {
                 if (!port.isInput()) {
                     throw new InternalErrorException(JavaScript.this, null,
                             "Cannot get from " + port.getName()
-                                    + ", which is not an input port.");
+                            + ", which is not an input port.");
                 }
                 try {
                     if (port.getWidth() < 1) {
@@ -972,7 +972,7 @@ public class JavaScript extends TypedAtomicActor {
          */
         public String httpRequest(String url, String method,
                 NativeObject properties, String body, Integer timeout)
-                throws IOException {
+                        throws IOException {
             // FIXME: Should have a version that takes a callback function for the response,
             // and where the response gives access to the return stream.  See Node.js http object.
             StringBuffer response = new StringBuffer();
@@ -1052,7 +1052,7 @@ public class JavaScript extends TypedAtomicActor {
          *  @exception SecurityException If this actor is in restricted mode.
          */
         public String localHostAddress() throws UnknownHostException,
-                SecurityException {
+        SecurityException {
             if (_restricted) {
                 throw new SecurityException(
                         "Actor is restricted. Cannot invoke localHostAddress().");
@@ -1116,7 +1116,7 @@ public class JavaScript extends TypedAtomicActor {
                 @Override
                 public void on(String event, IOAcknowledge ack, Object... args) {
                     System.out
-                            .println("Server triggered event '" + event + "'");
+                    .println("Server triggered event '" + event + "'");
                     IOPort port = (IOPort) getPort(event);
                     if (port == null) {
                         return;
@@ -1171,7 +1171,7 @@ public class JavaScript extends TypedAtomicActor {
                                 }
                                 // Request a firing at the current time.
                                 getDirector()
-                                        .fireAtCurrentTime(JavaScript.this);
+                                .fireAtCurrentTime(JavaScript.this);
                             }
                         }
                     } catch (IllegalActionException e) {
@@ -1183,15 +1183,15 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /** Print a message to standard out.
-        *  @param message The message to be printed   
-        */
+         *  @param message The message to be printed
+         */
         public void print(String message) {
             System.out.println(message);
         }
 
         /** Read the specified URL and return its contents.
          *  @param url The URL to read.
-        *  @return The content of the URL.
+         *  @return The content of the URL.
          *  @exception IOException If the specified URL can't be read.
          */
         public String readURL(String url) throws IOException {
@@ -1256,7 +1256,7 @@ public class JavaScript extends TypedAtomicActor {
                 if (!port.isOutput()) {
                     throw new InternalErrorException(JavaScript.this, null,
                             "Cannot send via " + port.getName()
-                                    + ", which is not an output port.");
+                            + ", which is not an output port.");
                 }
                 if (data instanceof NativeJavaObject) {
                     data = ((NativeJavaObject) data).unwrap();
@@ -1310,7 +1310,7 @@ public class JavaScript extends TypedAtomicActor {
                 } catch (KernelException e) {
                     throw new InternalErrorException(JavaScript.this, e,
                             "Failed to send output via port " + port.getName()
-                                    + ".");
+                            + ".");
                 }
             } else {
                 throw new InternalErrorException(JavaScript.this, null,
@@ -1382,7 +1382,7 @@ public class JavaScript extends TypedAtomicActor {
 
         /** Get parameter values.
          *  @param paramWrapper A JavaScript wrapper for a Variable.
-        *  @return A wrapped token that contains the parameter.
+         *  @return A wrapped token that contains the parameter.
          */
         public Object valueOf(NativeJavaObject paramWrapper) {
             Object unwrappedParam = paramWrapper.unwrap();
@@ -1406,21 +1406,21 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /**
-         * Request an OAuth 2.0 authorization token. This method requires interaction with an Authorization server 
+         * Request an OAuth 2.0 authorization token. This method requires interaction with an Authorization server
          * which is usually implemented as a web service.
-         * @param providerName References an internally stored end point URL for popular OAuth providers like Google, 
-         *         Twitter, Facebook, etc. 
-         * @param clientId This identifies the application that accesses a resource. Usually, client ids are issued 
+         * @param providerName References an internally stored end point URL for popular OAuth providers like Google,
+         *         Twitter, Facebook, etc.
+         * @param clientId This identifies the application that accesses a resource. Usually, client ids are issued
          *         after registering an application via a developer console at a resource provider.
          * @param redirectUrl After completion of the authorization request this URL is used to redirect the browser.
-         * @param openBrowser Indicates, if the method should invoke the system's default browser to enable the user 
+         * @param openBrowser Indicates, if the method should invoke the system's default browser to enable the user
          *         to login to the server in order to grant access, or if the script handles this on its own.
-         * @return returns The authorization code, if the authentication at the Authorization Server was successful. 
-         * @exception IllegalActionException 
+         * @return returns The authorization code, if the authentication at the Authorization Server was successful.
+         * @exception IllegalActionException
          */
         public String requestAuth(String providerName, String clientId,
                 String redirectUrl, Boolean openBrowser)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             OAuthProviderType oauthProvider;
             if ("google".equals(providerName.toLowerCase())) {
                 oauthProvider = OAuthProviderType.GOOGLE;
@@ -1462,7 +1462,7 @@ public class JavaScript extends TypedAtomicActor {
          */
         public String requestAccess(String providerName, String clientId,
                 String clientSecret, String redirectUrl, String authCode)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             OAuthProviderType oauthProvider;
             if ("google".equals(providerName.toLowerCase())) {
                 oauthProvider = OAuthProviderType.GOOGLE;
@@ -1500,7 +1500,7 @@ public class JavaScript extends TypedAtomicActor {
          * @param url The protected URL on a Resource server. Usually this is some kind of RESTful API.
          * @param accessToken The code used to prove access authorization to the Resource server.
          * @return The OAuth Client resource response.
-         * @exception IllegalActionException 
+         * @exception IllegalActionException
          */
         public String readProtectedURL(String url, String accessToken)
                 throws IllegalActionException {
@@ -1554,21 +1554,21 @@ public class JavaScript extends TypedAtomicActor {
             //             Runtime rt = Runtime.getRuntime();
 
             //             try {
-            //                 if (os.indexOf( "win" ) >= 0) {                        
-            //                     // this doesn't support showing urls in the form of "page.html#nameLink" 
-            //                     rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);         
-            //                 } else if (os.indexOf( "mac" ) >= 0) {         
-            //                     rt.exec( "open " + url);         
-            //                 } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {         
+            //                 if (os.indexOf( "win" ) >= 0) {
+            //                     // this doesn't support showing urls in the form of "page.html#nameLink"
+            //                     rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
+            //                 } else if (os.indexOf( "mac" ) >= 0) {
+            //                     rt.exec( "open " + url);
+            //                 } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {
             //                     // Do a best guess on unix until we get a platform independent way
             //                     // Build a list of browsers to try, in this order.
-            //                     String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape","opera","links","lynx"};         
+            //                     String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape","opera","links","lynx"};
             //                     // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
             //                     StringBuffer cmd = new StringBuffer();
             //                     for (int i=0; i<browsers.length; i++)  {
             //                         cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
             //                     }
-            //                     rt.exec(new String[] { "sh", "-c", cmd.toString() });         
+            //                     rt.exec(new String[] { "sh", "-c", cmd.toString() });
             //                 } else {
             //                     throw new IllegalActionException("No browser found.");
             //                 }

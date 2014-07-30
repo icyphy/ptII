@@ -56,10 +56,10 @@ import antlr.collections.impl.BitSet;
   @since Ptolemy II 7.0
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
-*/
+ */
 
 public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
-        TokenStream {
+TokenStream {
     public PtalonLexer(InputStream in) {
         this(new ByteBuffer(in));
     }
@@ -106,6 +106,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         literals.put(new ANTLRHashString("else", this), new Integer(23));
     }
 
+    @Override
     public Token nextToken() throws TokenStreamException {
         tryAgain: for (;;) {
             int _ttype = Token.INVALID_TYPE;
@@ -299,7 +300,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mCOMMA(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -314,7 +315,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mDOT(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -425,7 +426,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mSEMI(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -456,7 +457,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mCOLON(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -487,7 +488,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mPLUS(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -502,7 +503,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mESC(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -553,7 +554,7 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public final void mID(boolean _createToken) throws RecognitionException,
-            CharStreamException, TokenStreamException {
+    CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();

@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (beth)
  */
 public class CatchExceptionAttribute extends AbstractInitializableAttribute
-implements ExceptionHandler, ExecutionListener {
+        implements ExceptionHandler, ExecutionListener {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -275,16 +275,16 @@ implements ExceptionHandler, ExecutionListener {
             Date date = new Date(System.currentTimeMillis());
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-            // Handle the exception according to the specified policy 
+            // Handle the exception according to the specified policy
             // TODO:  Apply different policies depending on the type of exception.
             // How would the policy be specified then?
 
             String policyValue = policy.stringValue();
 
-            // Set initialized to false here, unless policy is to restart, in 
+            // Set initialized to false here, unless policy is to restart, in
             // which case set it after the current value is checked
             if (!policyValue.equals(RESTART)) {
-                // Set _initialized here instead of in wrapup(), since 
+                // Set _initialized here instead of in wrapup(), since
                 // wrapup() is called prior to handleException()
                 _initialized = false;
             }
@@ -298,7 +298,7 @@ implements ExceptionHandler, ExecutionListener {
             } else if (policyValue.equals(THROW)) {
                 _writeMessage("Exception thrown at " + dateFormat.format(date));
 
-                // Return false if an exception is thrown, since this attribute 
+                // Return false if an exception is thrown, since this attribute
                 // did not resolve the exception.
                 return false;
 
@@ -309,14 +309,14 @@ implements ExceptionHandler, ExecutionListener {
                 // false (thereby leaving exception unhandled)
                 if (!_initialized) {
 
-                    // Return false if an exception is thrown, since this attribute 
+                    // Return false if an exception is thrown, since this attribute
                     // did not resolve the exception.
                     _writeMessage("Cannot restart: Error before or during "
                             + "intialize()");
                     return false;
                 }
 
-                // Set _initialized here, instead of in wrapup(), since 
+                // Set _initialized here, instead of in wrapup(), since
                 // wrapup() is called prior to handleException()
                 _initialized = false;
 
@@ -339,7 +339,7 @@ implements ExceptionHandler, ExecutionListener {
                     manager.finish();
 
                     // Wait until the manager notifies listeners of successful
-                    // completion before restarting.  Manager will call 
+                    // completion before restarting.  Manager will call
                     // _executionFinished().  Set a flag here indicating to restart
                     _restartDesired = true;
 
@@ -356,7 +356,7 @@ implements ExceptionHandler, ExecutionListener {
                 exceptionMessage.validate();
                 statusMessage.validate();
 
-                // wrapup() is automatically called prior to handleException(), 
+                // wrapup() is automatically called prior to handleException(),
                 // so don't need to call it again
             } else {
                 _writeMessage("Illegal policy encountered at: "

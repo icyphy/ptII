@@ -101,14 +101,14 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
             _figure.translate(1, 0);
             break;
 
-            /*
-             * case KeyEvent.VK_A: _figureActions.aPressed();
-         break;
-             * case KeyEvent.VK_B: _figureActions.bPressed();
-         break;
-             * case KeyEvent.VK_C: _figureActions.cPressed();
-         break;
-             */
+        /*
+         * case KeyEvent.VK_A: _figureActions.aPressed();
+        break;
+         * case KeyEvent.VK_B: _figureActions.bPressed();
+        break;
+         * case KeyEvent.VK_C: _figureActions.cPressed();
+        break;
+         */
         }
     }
 

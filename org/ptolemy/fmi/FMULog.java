@@ -134,13 +134,13 @@ public class FMULog {
                     case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesnot handle it.
                         out.append(String.format(
                                 "%" + flags.toString()
-                                + (msg[i] == 'u' ? 'd' : msg[i]),
+                                        + (msg[i] == 'u' ? 'd' : msg[i]),
                                 foundLong ? Native
                                         .ffi_closure_va_uint64(ffi_cif)
                                         : Native.ffi_closure_va_uint32(ffi_cif)));
                         break;
 
-                        // DOU are deprecated.  Does FMI support them?
+                    // DOU are deprecated.  Does FMI support them?
                     case 'e':
                     case 'E':
                     case 'f':

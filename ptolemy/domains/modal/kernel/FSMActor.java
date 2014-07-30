@@ -265,7 +265,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMDirector
  */
 public class FSMActor extends CompositeEntity implements TypedActor,
-ExplicitChangeContext {
+        ExplicitChangeContext {
     /** Construct an FSMActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
@@ -488,7 +488,7 @@ ExplicitChangeContext {
 
         try {
             newObject.probability
-            .setToken(newObject.new ProbabilityFunctionToken());
+                    .setToken(newObject.new ProbabilityFunctionToken());
             newObject.timeout.setToken(newObject.new TimeoutFunctionToken());
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
@@ -644,7 +644,7 @@ ExplicitChangeContext {
             for (State state : stateList) {
                 try {
                     state.saveRefinementsInConfigurer
-                    .setToken(BooleanToken.FALSE);
+                            .setToken(BooleanToken.FALSE);
                 } catch (IllegalActionException e) {
                     // Ignore.
                 }
@@ -767,7 +767,7 @@ ExplicitChangeContext {
                         for (int i = 0; i < stateRefinements.length; ++i) {
                             if (_stopRequested
                                     || _disabledRefinements
-                                    .contains(stateRefinements[i])) {
+                                            .contains(stateRefinements[i])) {
                                 continue;
                             }
                             _setTimeForRefinement(stateRefinements[i]);
@@ -785,7 +785,7 @@ ExplicitChangeContext {
                                     stateRefinements[i].fire();
                                     if (_modelErrorHandled == null) {
                                         _stateRefinementsToPostfire
-                                        .add(stateRefinements[i]);
+                                                .add(stateRefinements[i]);
                                     }
                                 }
                             }
@@ -2427,7 +2427,7 @@ ExplicitChangeContext {
      */
     protected boolean _isSafeToClear(IOPort port, int channel, State state,
             boolean immediateOnly, HashSet<State> visitedStates)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Calling _isSafeToClear() on port: " + port.getFullName());
         }
@@ -2857,9 +2857,9 @@ ExplicitChangeContext {
                                 if (refinementPorts[i] != null
                                         && channel < refinementPorts[i]
                                                 .getWidthInside()
-                                                && (!refinementPorts[i]
-                                                        .isKnownInside(channel) || refinementPorts[i]
-                                                                .hasTokenInside(channel))) {
+                                        && (!refinementPorts[i]
+                                                .isKnownInside(channel) || refinementPorts[i]
+                                                .hasTokenInside(channel))) {
                                     // A refinement has either unknown or non-absent
                                     // output. Give up on this channel. It cannot be
                                     // asserted absent.
@@ -3097,7 +3097,7 @@ ExplicitChangeContext {
     private Transition _chooseTransition(State currentState,
             List transitionList, boolean preemptive, boolean immediateOnly,
             boolean inInitialize, boolean inPreinitialize)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
         List<Transition> enabledTransitions = enabledTransitions(
@@ -3272,7 +3272,7 @@ ExplicitChangeContext {
                 for (int i = 0; i < transitionRefinements.length; ++i) {
                     if (_stopRequested
                             || _disabledRefinements
-                            .contains(transitionRefinements[i])) {
+                                    .contains(transitionRefinements[i])) {
                         break;
                     }
                     if (_debugging) {
@@ -3288,7 +3288,7 @@ ExplicitChangeContext {
                     if (transitionRefinements[i].prefire()) {
                         transitionRefinements[i].fire();
                         _transitionRefinementsToPostfire
-                        .add(transitionRefinements[i]);
+                                .add(transitionRefinements[i]);
                     }
                 }
             }
@@ -3349,7 +3349,7 @@ ExplicitChangeContext {
                     .getDirector().getEnvironmentTime();
             time = ExecutionAspectHelper.schedule(aspect, actor,
                     environmentTime, getDirector()
-                            .getDeadline(actor, timestamp));
+                    .getDeadline(actor, timestamp));
             //            if (_nextScheduleTime == null) {
             //                _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             //            }
@@ -4002,7 +4002,7 @@ ExplicitChangeContext {
             for (int i = 0; i < inPort.getWidth(); i++) {
                 _identifierToPort.put(portName + "_" + i, inPort);
                 _identifierToPort
-                .put(portName + "_" + i + "_isPresent", inPort);
+                        .put(portName + "_" + i + "_isPresent", inPort);
                 _identifierToPort.put(portName + "_" + i + "Array", inPort);
             }
         }

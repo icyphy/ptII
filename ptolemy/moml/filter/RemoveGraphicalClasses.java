@@ -171,8 +171,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses
-        .put("ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
-                "ptolemy.kernel.util.Attribute");
+                .put("ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
+                        "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
@@ -250,7 +250,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.DefaultTitle",
                 null);
         _graphicalClasses
-        .put("ptolemy.vergil.basic.export.web.HTMLImage", null);
+                .put("ptolemy.vergil.basic.export.web.HTMLImage", null);
         // HTMLText extends WebContent which imports ValueIcon
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.HTMLText", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.IconLink", null);
@@ -274,7 +274,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.ptera.OctagonEventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.TestIcon", null);
         _graphicalClasses
-        .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
+                .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
 
         _graphicalClasses.put("ptolemy.vergil.gt.IterativeParameterIcon", null);
         _graphicalClasses.put("ptolemy.vergil.gt.StateMatcherIcon", null);
@@ -282,7 +282,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 null);
 
         _graphicalClasses
-        .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
+                .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
 
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);

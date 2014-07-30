@@ -144,7 +144,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
             for (NamedObj namedObj : namedObjSet) {
                 if (namedObj instanceof State) {
                     ((State) namedObj).saveRefinementsInConfigurer
-                    .setToken(BooleanToken.TRUE);
+                            .setToken(BooleanToken.TRUE);
                 }
             }
             super.copy();
@@ -156,7 +156,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                 if (namedObj instanceof State) {
                     try {
                         ((State) namedObj).saveRefinementsInConfigurer
-                        .setToken(BooleanToken.FALSE);
+                                .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -311,7 +311,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                         State state = (State) object;
                         modifiedStates.add(state);
                         state.saveRefinementsInConfigurer
-                        .setToken(BooleanToken.TRUE);
+                                .setToken(BooleanToken.TRUE);
                     }
                 }
                 super._exportDesignPattern(writer, model, name);
@@ -322,7 +322,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                 for (State state : modifiedStates) {
                     try {
                         state.saveRefinementsInConfigurer
-                        .setToken(BooleanToken.FALSE);
+                                .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -463,7 +463,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                             if (model != null && _listeningTo != model) {
                                 if (_listeningTo != null) {
                                     _listeningTo
-                                    .removeDebugListener(_controller);
+                                            .removeDebugListener(_controller);
                                 }
 
                                 _listeningTo = model;

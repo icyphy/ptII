@@ -188,7 +188,7 @@ import diva.gui.toolbox.JContextMenu;
  */
 @SuppressWarnings("serial")
 public class TransformationEditor extends GTFrame implements ActionListener,
-MenuItemListener, TableModelListener, ValueListener {
+        MenuItemListener, TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                          constructors                     ////
@@ -272,7 +272,7 @@ MenuItemListener, TableModelListener, ValueListener {
             _splitPane.setRightComponent(_getRightComponent());
             JTabbedPane tabbedPane = getFrameController().getTabbedPane();
             tabbedPane
-            .add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
+                    .add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
             tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
 
             // Restore association with the graph panner.
@@ -938,30 +938,30 @@ MenuItemListener, TableModelListener, ValueListener {
             super(controller);
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
             _configureMenuFactory.substitute(oldConfigureAction,
                     _configureAction);
             _configureMenuFactory
-            .addMenuItemListener(TransformationEditor.this);
+                    .addMenuItemListener(TransformationEditor.this);
         }
     }
 
     protected class TransformationActorGraphController extends
-    ActorEditorGraphController {
+            ActorEditorGraphController {
 
         protected TransformationActorGraphController() {
             _newRelationAction = new NewRelationAction(new String[][] {
                     { "/ptolemy/vergil/actor/img/relation.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/relation_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/relation_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
         }
 
         @Override
@@ -995,11 +995,11 @@ MenuItemListener, TableModelListener, ValueListener {
             _configureMenuFactory.substitute(oldConfigureAction,
                     _configureAction);
             _configureMenuFactory
-            .addMenuItemListener(TransformationEditor.this);
+                    .addMenuItemListener(TransformationEditor.this);
         }
 
         private class NewRelationAction extends
-        ActorEditorGraphController.NewRelationAction {
+                ActorEditorGraphController.NewRelationAction {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1017,13 +1017,13 @@ MenuItemListener, TableModelListener, ValueListener {
     }
 
     protected class TransformationExternalPortController extends
-    ExternalIOPortController {
+            ExternalIOPortController {
 
         TransformationExternalPortController(GraphController controller) {
             super(controller);
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1100,7 +1100,7 @@ MenuItemListener, TableModelListener, ValueListener {
             super(controller);
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1115,7 +1115,7 @@ MenuItemListener, TableModelListener, ValueListener {
             super(controller);
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1164,7 +1164,7 @@ MenuItemListener, TableModelListener, ValueListener {
             super(controller);
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1181,7 +1181,7 @@ MenuItemListener, TableModelListener, ValueListener {
             setNodeRenderer(new Renderer(controller.getGraphModel()));
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1213,13 +1213,13 @@ MenuItemListener, TableModelListener, ValueListener {
     }
 
     protected class TransformationTransitionController extends
-    TransitionController {
+            TransitionController {
 
         public TransformationTransitionController(GraphController controller) {
             super(controller);
 
             _menuFactory
-            .addMenuItemFactory(new MatchingAttributeActionsFactory());
+                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1415,7 +1415,7 @@ MenuItemListener, TableModelListener, ValueListener {
                             for (Object entity : entities) {
                                 if (entity instanceof EntityLibrary
                                         || ((NamedObj) entity).getName()
-                                        .compareTo(name) > 0) {
+                                                .compareTo(name) > 0) {
                                     break;
                                 }
                                 i++;
@@ -1424,7 +1424,7 @@ MenuItemListener, TableModelListener, ValueListener {
                         } else {
                             throw new InternalErrorException(tableau, null,
                                     "Could not instantiate class \"" + clazz
-                                            + "\"");
+                                    + "\"");
                         }
 
                         String iconFile = optionalActorClass.replace('.', '/')
@@ -1454,9 +1454,9 @@ MenuItemListener, TableModelListener, ValueListener {
                             entity.setContainer(library);
                         } catch (Exception ex) {
                             System.err
-                                    .println("TransformationEditor: Ignoring clone of "
-                                            + (entity != null ? entity
-                                                    .getFullName() : "null")
+                            .println("TransformationEditor: Ignoring clone of "
+                                    + (entity != null ? entity
+                                            .getFullName() : "null")
                                             + " beause we don't known "
                                             + "how to import it. Exception was: "
                                             + ex);
@@ -1627,7 +1627,7 @@ MenuItemListener, TableModelListener, ValueListener {
                         : _HIGHLIGHT_THICKNESS;
                 BasicRectangle bf = new BasicRectangle(bounds.getX() - padding,
                         bounds.getY() - padding, bounds.getWidth() + padding
-                        * 2.0, bounds.getHeight() + padding * 2.0,
+                                * 2.0, bounds.getHeight() + padding * 2.0,
                         thickness);
                 bf.setStrokePaint(color);
 
@@ -1701,7 +1701,7 @@ MenuItemListener, TableModelListener, ValueListener {
                 }
                 String name = _getNameWithinContainer(object,
                         getFrameController().getTransformationRule()
-                        .getPattern());
+                                .getPattern());
                 patternObject.setPersistent(true);
                 patternObject.setExpression(name);
             } else if (patternObject != null) {
@@ -1768,7 +1768,7 @@ MenuItemListener, TableModelListener, ValueListener {
                 public void run() {
                     if (_table.isEditing()
                             && (_table.getEditingRow() != row || _table
-                            .getEditingColumn() != column)) {
+                                    .getEditingColumn() != column)) {
                         _cellEditor.cancelCellEditing();
                     }
                     _table.editCellAt(row, column);
@@ -1829,18 +1829,18 @@ MenuItemListener, TableModelListener, ValueListener {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/batchmatch.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/batchmatch_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/batchmatch_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/gt/img/batchmatch_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/batchmatch_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/gt/img/batchmatch_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/batchmatch_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match Ptolemy models in a directory (Ctrl+2)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_2, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1912,11 +1912,11 @@ MenuItemListener, TableModelListener, ValueListener {
 
             if (directoryFile != null && !directoryFile.exists()) {
                 MessageHandler
-                .error("Directory \""
-                        + directoryFile.getPath()
-                        + "\" does not exist, "
-                        + "the value of the DefaultDirectoryAttribute parameter was \""
-                        + attribute.directory.getExpression() + "\"");
+                        .error("Directory \""
+                                + directoryFile.getPath()
+                                + "\" does not exist, "
+                                + "the value of the DefaultDirectoryAttribute parameter was \""
+                                + attribute.directory.getExpression() + "\"");
                 return null;
             }
 
@@ -2001,7 +2001,7 @@ MenuItemListener, TableModelListener, ValueListener {
             }
 
             private int _findNextMatch(int index) throws MalformedURLException,
-            Exception {
+                    Exception {
                 for (int i = index + 1; i < _files.length; i++) {
                     List<MatchResult> currentResult = _allResults[i];
                     if (currentResult == null) {
@@ -2187,7 +2187,7 @@ MenuItemListener, TableModelListener, ValueListener {
 
         protected MatchResultViewer _showViewer(CompositeEntity model,
                 List<MatchResult> results, String sourceFileName)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             MatchResultViewer._setTableauFactory(this, model);
             Configuration configuration = getFrameController()
                     .getConfiguration();
@@ -2424,19 +2424,19 @@ MenuItemListener, TableModelListener, ValueListener {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/match.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/match_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/match_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/gt/img/match_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/match_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/gt/img/match_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/match_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match a Ptolemy model in an external file "
                     + "(Ctrl+1)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_1, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
         }
 
         @Override

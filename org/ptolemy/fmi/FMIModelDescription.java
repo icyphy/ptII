@@ -278,8 +278,8 @@ public class FMIModelDescription {
                     // We sometimes compile this with gcj, which is Java 1.5
                     IOException exception = new IOException(
                             "Failed to build \"" + sharedLibraryFile
-                            + "\".\nThe build was:\n" + builder.buffer
-                            + "\n" + message);
+                                    + "\".\nThe build was:\n" + builder.buffer
+                                    + "\n" + message);
                     exception.initCause(throwable2);
                     throw exception;
 

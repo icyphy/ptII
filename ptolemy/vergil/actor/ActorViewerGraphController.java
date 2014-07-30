@@ -677,7 +677,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             && portHide instanceof Variable
                             && ((Variable) portHide).getToken().equals(
                                     BooleanToken.TRUE) && port
-                                    .linkedRelationList().isEmpty())) {
+                            .linkedRelationList().isEmpty())) {
                         count++;
                     }
                 } catch (IllegalActionException ex) {
@@ -708,7 +708,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             && portHide instanceof Variable
                             && ((Variable) portHide).getToken().equals(
                                     BooleanToken.TRUE)
-                                    && port.linkedRelationList().isEmpty()) {
+                            && port.linkedRelationList().isEmpty()) {
                         continue;
                     }
                 } catch (IllegalActionException ex) {

@@ -183,7 +183,7 @@ import com.sun.jna.ptr.PointerByReference;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUImport extends TypedAtomicActor implements Advanceable,
-ContinuousStepSizeController, ContinuousStatefulComponent {
+        ContinuousStepSizeController, ContinuousStatefulComponent {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -540,7 +540,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     if ((_fmiVersion >= 2.0)
                             && _fmiModelDescription.modelExchange
                             && _fmiModelDescription.continuousStates
-                                    .contains(input.port.getName())) {
+                            .contains(input.port.getName())) {
                         _index = _fmiModelDescription.continuousStates
                                 .indexOf(input.port.getName());
                         _newStates[_index] = ((DoubleToken) token)
@@ -1044,7 +1044,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
-            ) {
+                    ) {
                 // Parameters
                 // Parameter parameter = new Parameter(this, scalar.name);
                 // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
@@ -1057,10 +1057,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 case input:
                     portCount++;
                     parameterMoML
-                    .append("  <property name=\""
-                            + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
-                            + scalar.type + "\"/>\n");
+                            .append("  <property name=\""
+                                    + StringUtilities.sanitizeName(scalar.name)
+                                    + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
+                                    + scalar.type + "\"/>\n");
                     break;
                 case local: // FMI-2.0rc1
                 case internal:
@@ -1070,10 +1070,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 case none:
                     // FIXME: Need to sanitize the value.
                     parameterMoML
-                    .append("  <property name=\""
-                            + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                            + scalar.type + "\" " + "/>\n"
+                            .append("  <property name=\""
+                                    + StringUtilities.sanitizeName(scalar.name)
+                                    + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
+                                    + scalar.type + "\" " + "/>\n"
                             //+ (scalar.causality == Causality.internal ? hide : "")
                             //+ "</property>\n"
                             );
@@ -1162,7 +1162,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                         + (portCount > maximumNumberOfPortsToDisplay
                                 || scalar.causality == Causality.internal
                                 || hideLocal // FMI-2.0rc1
-                        ? hide : "") + "  </port>\n");
+                                ? hide : "") + "  </port>\n");
             }
         }
 
@@ -1175,11 +1175,11 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
             // Provide a parameter that indicates that this is a model exchange FMU.
             parameterMoML
-            .append("  <property name=\"modelExchange\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
+                    .append("  <property name=\"modelExchange\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
 
             // Provide a parameter for a forward Euler maximum step size.
             parameterMoML
-            .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
+                    .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
 
             /* If we want to use model exchange FMUs with the Continuous director, then
              * we need to provide the derivatives as output ports and the continuousStates as
@@ -1573,8 +1573,8 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 }
                 _fmiComponent = (Pointer) _fmiInstantiateModelFunction.invoke(
                         Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid, _callbacks,
-                            loggingOn });
+                                _fmiModelDescription.guid, _callbacks,
+                                loggingOn });
             } else {
                 if (_debugging) {
                     _debugToStdOut("FMUCoSimulation: about to call "
@@ -1582,10 +1582,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 }
                 _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction.invoke(
                         Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid,
-                            _fmiModelDescription.fmuResourceLocation,
-                            mimeType, timeout, toBeVisible, interactive,
-                            _callbacks, loggingOn });
+                                _fmiModelDescription.guid,
+                                _fmiModelDescription.fmuResourceLocation,
+                                mimeType, timeout, toBeVisible, interactive,
+                                _callbacks, loggingOn });
             }
         } else {
             // FMI-1.5 and greater...
@@ -1636,9 +1636,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     // Do not instantiate if true and previously instantiated.
                     _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
                             .invoke(Pointer.class, new Object[] {
-                                    getFullName(), _fmiModelDescription.guid,
-                                    _fmiModelDescription.fmuResourceLocation,
-                                    _callbacks, toBeVisible, loggingOn });
+                                getFullName(), _fmiModelDescription.guid,
+                                _fmiModelDescription.fmuResourceLocation,
+                                _callbacks, toBeVisible, loggingOn });
                 }
             } else if (_fmiVersion >= 2.0) {
                 // FMI-2.0 Model Exchange and Cosimulation.
@@ -1650,9 +1650,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
                 _fmiComponent = (Pointer) _fmiInstantiateFunction.invoke(
                         Pointer.class, new Object[] { getFullName(), fmiType,
-                                _fmiModelDescription.guid,
-                                _fmiModelDescription.fmuResourceLocation,
-                                _callbacks, toBeVisible, loggingOn });
+                            _fmiModelDescription.guid,
+                            _fmiModelDescription.fmuResourceLocation,
+                            _callbacks, toBeVisible, loggingOn });
             }
         }
 
@@ -1720,7 +1720,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                                             + "but it is being asked to roll back from time "
                                             + _lastFireTime + " to time "
                                             + _lastCommitTime, "Proceed",
-                                            "Proceed and do not warn me again",
+                                    "Proceed and do not warn me again",
                                     "Cancel");
                     if (!response) {
                         // User has asked to not be warned again.
@@ -1807,7 +1807,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
         int fmiFlag = ((Integer) _fmiGetEventIndicatorsFunction.invoke(
                 Integer.class, new Object[] { _fmiComponent, _eventIndicators,
-                    new NativeSizeT(number) })).intValue();
+                        new NativeSizeT(number) })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this,
@@ -1863,7 +1863,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             ByteBuffer callEventUpdate = ByteBuffer.allocate(1);
             int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
-                            callEventUpdate })).intValue();
+                        callEventUpdate })).intValue();
 
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 throw new IllegalActionException(this,
@@ -2147,12 +2147,12 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         if (_fmiVersion < 2.0) {
             if (_fmiModelDescription.modelExchange) {
                 _fmiFreeModelInstanceFunction
-                .invokeInt(new Object[] { _fmiComponent });
+                        .invokeInt(new Object[] { _fmiComponent });
             } else {
                 // fmiFreeSlaveInstance is a void function.
                 // No returned status.
                 _fmiFreeSlaveInstanceFunction
-                .invokeInt(new Object[] { _fmiComponent });
+                        .invokeInt(new Object[] { _fmiComponent });
             }
         } else {
             _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
@@ -2174,7 +2174,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         if (numberOfStates > 0) {
             int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(
                     Integer.class, new Object[] { _fmiComponent, _derivatives,
-                        new NativeSizeT(numberOfStates) })).intValue();
+                            new NativeSizeT(numberOfStates) })).intValue();
 
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 throw new IllegalActionException(this,
@@ -2200,8 +2200,8 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 FMIEventInfo eventInfo = new FMIEventInfo.ByValue();
                 int fmiFlag = ((Integer) _fmiInitializeFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent,
-                                _toleranceControlled, _relativeTolerance,
-                                eventInfo.getPointer() })).intValue();
+                            _toleranceControlled, _relativeTolerance,
+                            eventInfo.getPointer() })).intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
@@ -2233,9 +2233,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 int fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
-                            _relativeTolerance, startTime.getDoubleValue(),
-                            (byte) 1, stopTime.getDoubleValue() }))
-                            .intValue();
+                                _relativeTolerance, startTime.getDoubleValue(),
+                                (byte) 1, stopTime.getDoubleValue() }))
+                        .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
@@ -2265,7 +2265,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 if (_fmiModelDescription.numberOfEventIndicators > 0) {
                     new Exception(
                             "Warning: FIXME: Need to get the eventInfo etc.")
-                            .printStackTrace();
+                    .printStackTrace();
                 }
             }
         } else {
@@ -2281,14 +2281,14 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent,
-                            startTime.getDoubleValue(), (byte) 1,
-                            stopTime.getDoubleValue() })).intValue();
+                                startTime.getDoubleValue(), (byte) 1,
+                                stopTime.getDoubleValue() })).intValue();
             } else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent,
-                                _relativeTolerance, startTime.getDoubleValue(),
-                                (byte) 1, stopTime.getDoubleValue() }))
-                        .intValue();
+                            _relativeTolerance, startTime.getDoubleValue(),
+                            (byte) 1, stopTime.getDoubleValue() }))
+                            .intValue();
                 // If the FMU can provide a maximum step size, query for the initial maximum
                 // step size and call fireAt() and ensure that the FMU is invoked
                 // at the specified time.
@@ -2302,9 +2302,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
-                            _relativeTolerance, startTime.getDoubleValue(),
-                            (byte) 1, stopTime.getDoubleValue() }))
-                            .intValue();
+                                _relativeTolerance, startTime.getDoubleValue(),
+                                (byte) 1, stopTime.getDoubleValue() }))
+                        .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
@@ -2369,13 +2369,13 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         }
         int fmiFlag = ((Integer) _fmiSetContinuousStates.invoke(Integer.class,
                 new Object[] { _fmiComponent, values,
-            new NativeSizeT(values.length) })).intValue();
+                        new NativeSizeT(values.length) })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             Time currentTime = getDirector().getModelTime();
             throw new IllegalActionException(this,
                     "Failed to set continuous states at time " + currentTime
-                    + ": " + _fmiStatusDescription(fmiFlag));
+                            + ": " + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
             // FindBugs: Invocation of toString on an array
@@ -2468,7 +2468,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         if (_fmiFreeFMUstateFunction != null && _recordedState != null) {
             int freeStateSucceeded = ((Integer) _fmiFreeFMUstateFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
-                        _recordedState })).intValue();
+                            _recordedState })).intValue();
             if (freeStateSucceeded != FMILibrary.FMIStatus.fmiOK) {
                 throw new IllegalActionException(this,
                         "Failed to free memory recording FMU state: "
@@ -2522,7 +2522,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
             int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction.invoke(
                     Integer.class, new Object[] { _fmiComponent, _states,
-                        new NativeSizeT(numberOfStates) })).intValue();
+                            new NativeSizeT(numberOfStates) })).intValue();
 
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 Time currentTime = getDirector().getModelTime();
@@ -2545,7 +2545,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 }
                 int getStateSucceeded = ((Integer) _fmiGetFMUstateFunction
                         .invoke(Integer.class, new Object[] { _fmiComponent,
-                            _recordedState })).intValue();
+                                _recordedState })).intValue();
                 if (getStateSucceeded != FMILibrary.FMIStatus.fmiOK) {
                     Time currentTime = getDirector().getModelTime();
                     throw new IllegalActionException(this,
@@ -2598,7 +2598,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 DoubleBuffer maxStepSize = DoubleBuffer.allocate(1);
                 int providesMaxStepSize = ((Integer) maxStepSizeFunction
                         .invoke(Integer.class, new Object[] { _fmiComponent,
-                            maxStepSize })).intValue();
+                                maxStepSize })).intValue();
                 if (providesMaxStepSize == FMILibrary.FMIStatus.fmiOK) {
                     // FMU provides an initial maximum step size.
                     double stepSize = maxStepSize.get(0);
@@ -2659,10 +2659,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             parameter.setToken(new IntToken(scalar.getInt(_fmiComponent)));
         } else if (scalar.type instanceof FMIRealType) {
             parameter
-            .setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
+                    .setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
         } else if (scalar.type instanceof FMIStringType) {
             parameter
-            .setToken(new StringToken(scalar.getString(_fmiComponent)));
+                    .setToken(new StringToken(scalar.getString(_fmiComponent)));
         } else {
             throw new IllegalActionException("Type " + scalar.type
                     + " not supported.");
@@ -3026,7 +3026,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 if (port == null) {
                     throw new IllegalActionException(this,
                             "FMU has an input named " + scalarVariable.name
-                            + ", but the actor has no such input port");
+                                    + ", but the actor has no such input port");
                 }
                 Input input = new Input();
                 input.scalarVariable = scalarVariable;
@@ -3231,7 +3231,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      *  has the same name as a pre-existing parameter.
      */
     private void _updateParameters() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
 
         if (_debugging) {
             _debugToStdOut("FMUImport.updateParameters() START");
@@ -3294,7 +3294,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip, read in or process \"" + fmuFileName
-                    + "\".");
+                            + "\".");
         }
         if (_debugging) {
             _debugToStdOut("FMUImport.updateParameters() END");

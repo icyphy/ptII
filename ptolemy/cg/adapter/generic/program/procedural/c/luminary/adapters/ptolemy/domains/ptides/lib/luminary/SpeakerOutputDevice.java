@@ -52,7 +52,7 @@ public class SpeakerOutputDevice extends OutputDevice {
      */
     public SpeakerOutputDevice(
             ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
 

@@ -49,7 +49,7 @@ public class TimeTriggeredEncoderHandler extends GPInputHandler {
      */
     public TimeTriggeredEncoderHandler(
             ptolemy.domains.ptides.lib.luminary.TimeTriggeredEncoderHandler actor)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
 }

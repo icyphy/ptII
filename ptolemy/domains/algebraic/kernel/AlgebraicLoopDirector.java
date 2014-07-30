@@ -256,7 +256,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 IOPort port = receiver.getContainer();
                 throw new IllegalActionException(
                         "Break variable is required to be a double. Got " + t
-                                + " on port " + port.getName(getContainer()));
+                        + " on port " + port.getName(getContainer()));
             }
         }
         // Now, _x_n contains all values for the receivers
@@ -339,7 +339,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 IOPort port = receiver.getContainer();
                 throw new IllegalActionException(
                         "Break variable is required to be a double. Got " + t
-                                + " on port " + port.getName(getContainer()));
+                        + " on port " + port.getName(getContainer()));
             }
         }
     }
@@ -380,12 +380,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     for (Receiver[] receivers2 : receivers) {
                         for (Receiver receiver : receivers2) {
                             _breakVariables
-                                    .add((AlgebraicLoopReceiver) receiver);
+                            .add((AlgebraicLoopReceiver) receiver);
                             // Set both the initial value and the updated value of the receiver.
                             ((AlgebraicLoopReceiver) receiver)
-                                    ._setInitialValue(initialValue);
+                            ._setInitialValue(initialValue);
                             ((AlgebraicLoopReceiver) receiver)
-                                    .put(initialValue);
+                            .put(initialValue);
                         }
                     }
                     if (_debugging) {
@@ -610,10 +610,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     abstract class AlgebraicLoopSolver {
 
         /** Construct an algebraic loop solver.
-          *  @param variableNames Names of each break variable.
-          *  @param tolerance Tolerance for each variable.
-          *  @param maxIterations Maximum number of iterations.
-          */
+         *  @param variableNames Names of each break variable.
+         *  @param tolerance Tolerance for each variable.
+         *  @param maxIterations Maximum number of iterations.
+         */
         public AlgebraicLoopSolver(String[] variableNames, double[] tolerance,
                 int maxIterations) throws IllegalActionException {
             _variableNames = variableNames;
@@ -749,7 +749,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 if (!_converged && _iterationCount > _maxIterations) {
                     throw new IllegalActionException(
                             "Failed to converge after " + _maxIterations
-                                    + " iterations.");
+                            + " iterations.");
                 }
             } while (!_converged && !_stopRequested);
 
@@ -924,7 +924,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         }
 
         ///////////////////////////////////////////////////////////////////
-        ////             protected variables                           ////        
+        ////             protected variables                           ////
 
         /** Step size for finite difference approximation */
         protected double[] _deltaX;
@@ -1523,7 +1523,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          */
         public SuccessiveSubstitution(String[] variableNames,
                 double[] tolerance, int maxIterations)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super(variableNames, tolerance, maxIterations);
         }
 
@@ -1573,7 +1573,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 if (!_converged && _iterationCount > _maxIterations) {
                     throw new IllegalActionException(
                             "Failed to converge after " + _maxIterations
-                                    + " iterations.");
+                            + " iterations.");
                 }
             } while (!_converged && !_stopRequested);
 

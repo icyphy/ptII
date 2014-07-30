@@ -248,7 +248,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             //            if (iterations > 5) {
             //                if ((likelihood - _likelihood) < _likelihoodThreshold || likelihood!=likelihood) {
             //                    break;
-            //                }  
+            //                }
             //            }
 
             _likelihood = likelihood;

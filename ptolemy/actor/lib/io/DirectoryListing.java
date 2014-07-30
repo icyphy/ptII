@@ -351,7 +351,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @param sourceURL The source URL.
      */
     private void _readURL(URL sourceURL) throws IOException,
-    IllegalActionException {
+            IllegalActionException {
         // Handle urls here.
         if (_debugging) {
             _debug("Reading URL: " + sourceURL);
@@ -469,8 +469,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                                 // FIXME: Is there any way to tell whether
                                                 // the result is a directory or file?
                                                 resultsList
-                                                .add(new StringToken(
-                                                        base + target));
+                                                        .add(new StringToken(
+                                                                base + target));
                                             } else {
                                                 if (_debugging) {
                                                     _debug("target \""

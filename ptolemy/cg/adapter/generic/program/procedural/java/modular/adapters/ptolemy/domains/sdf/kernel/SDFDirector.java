@@ -84,8 +84,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 
 public class SDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -167,7 +167,7 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                                     + type
                                     + "["
                                     + DFUtilities
-                                    .getTokenConsumptionRate(inputPort)
+                                            .getTokenConsumptionRate(inputPort)
                                     + "];" + _eol);
                         } else {
                             code.append(type + " " + actorName + "_"
@@ -203,7 +203,7 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                                         code.append(codegeneratorAdaptor
                                                 .getReference(
                                                         portNameWithChannelNumber
-                                                        + "," + k, true));
+                                                                + "," + k, true));
                                         code.append(";" + _eol);
                                     }
                                 } else {
@@ -211,9 +211,9 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                                             + "_" + i);
                                     code.append(" = "
                                             + codegeneratorAdaptor
-                                            .getReference(
-                                                    portNameWithChannelNumber,
-                                                    true) + ";" + _eol);
+                                                    .getReference(
+                                                            portNameWithChannelNumber,
+                                                            true) + ";" + _eol);
                                 }
 
                             }
@@ -270,13 +270,13 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                                     code.append(codegeneratorAdaptor
                                             .getReference(outputPort.getName()
                                                     + "#" + i + "," + k, true)
-                                                    + " = "
-                                                    + actorName
-                                                    + "."
-                                                    + codegeneratorAdaptor.getReference(
-                                                            "@" + outputPort.getName()
+                                            + " = "
+                                            + actorName
+                                            + "."
+                                            + codegeneratorAdaptor.getReference(
+                                                    "@" + outputPort.getName()
                                                             + "#" + i + "," + k,
-                                                            false) + ";" + _eol);
+                                                    false) + ";" + _eol);
                                 }
                             }
                         }
@@ -612,7 +612,7 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
@@ -707,7 +707,7 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                                     .max(DFUtilities
                                             .getTokenProductionRate(sourceChannel.port),
                                             DFUtilities
-                                            .getTokenConsumptionRate(sourceChannel.port));
+                                                    .getTokenConsumptionRate(sourceChannel.port));
                             if (rate > 1
                                     && channelAndOffset[1].trim().length() > 0) {
                                 result.append("[" + channelAndOffset[1].trim()

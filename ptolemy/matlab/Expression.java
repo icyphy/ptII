@@ -401,7 +401,7 @@ public class Expression extends TypedAtomicActor {
                 // for speed-up purposes to avoid recalculation on every
                 // function call)
                 matlabEngine
-                        .evalString(engine, "clear variables;clear globals");
+                .evalString(engine, "clear variables;clear globals");
 
                 if (_addPathCommand != null) {
                     matlabEngine.evalString(engine, _addPathCommand);
@@ -419,7 +419,7 @@ public class Expression extends TypedAtomicActor {
                 }
                 try {
                     matlabEngine
-                            .put(engine, "iteration", _iteration.getToken());
+                    .put(engine, "iteration", _iteration.getToken());
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to set the \"iteration\" variable in the Matlab "

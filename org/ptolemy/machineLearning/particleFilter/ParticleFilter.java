@@ -176,7 +176,7 @@ public class ParticleFilter extends TypedCompositeActor {
      *   an entity with the specified name.
      */
     public ParticleFilter(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -440,22 +440,22 @@ public class ParticleFilter extends TypedCompositeActor {
                 //e.setPersistent(false);
                 String updateEqnName = _stateVariables[i] + "_update";
                 e.expression
-                .setExpression(((Parameter) getAttribute(updateEqnName))
-                        .getExpression());
+                        .setExpression(((Parameter) getAttribute(updateEqnName))
+                                .getExpression());
                 if (_stateVariables[i] == null) {
                     System.err.println("One state variable is null at index "
                             + i);
                 } else {
                     _updateEquations.put(_stateVariables[i], e);
                     _updateTrees.put(_stateVariables[i], new PtParser()
-                    .generateParseTree(_updateEquations
-                            .get(_stateVariables[i]).expression
-                            .getExpression()));
+                            .generateParseTree(_updateEquations
+                                    .get(_stateVariables[i]).expression
+                                    .getExpression()));
                 }
             }
             // put an update tree for the process noise
             _updateTrees.put("processNoise", new PtParser()
-            .generateParseTree(processNoise.getExpression()));
+                    .generateParseTree(processNoise.getExpression()));
             // update tree for the prior distribution
             _updateTrees.put("priorDistribution",
                     new PtParser().generateParseTree(prior.getExpression()));
@@ -484,15 +484,15 @@ public class ParticleFilter extends TypedCompositeActor {
                     Expression _measurementEquation = new Expression(this,
                             inputName + "_equation");
                     _measurementEquation.expression
-                    .setExpression(((Parameter) getAttribute(eqnName))
-                            .getExpression());
+                            .setExpression(((Parameter) getAttribute(eqnName))
+                                    .getExpression());
                     _measurementEquations.add(_measurementEquation);
 
                     _measurementCovariance = new Expression(this, inputName
                             + "_covariance");
                     _measurementCovariance.expression
-                    .setExpression(((Parameter) getAttribute("measurementCovariance"))
-                            .getExpression());
+                            .setExpression(((Parameter) getAttribute("measurementCovariance"))
+                                    .getExpression());
 
                     SetVariable zm = new SetVariable(this, "set" + inputName);
                     // add new parameter to the actor
@@ -684,7 +684,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
@@ -708,7 +708,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
         processNoise = new Parameter(this, "processNoise");
         processNoise
-        .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
+                .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
 
         particleOutput = new TypedIOPort(this, "particleOutput", false, true);
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
@@ -766,7 +766,7 @@ public class ParticleFilter extends TypedCompositeActor {
     }
 
     private void _initializeParticles() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // let prior distribution be N(0,1) for now.
         for (int i = 0; i < particles.length; i++) {
             particles[i] = new Particle(_stateSpaceSize);
@@ -776,7 +776,7 @@ public class ParticleFilter extends TypedCompositeActor {
     }
 
     private void _normalizeWeights() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // let prior distribution be N(0,1) for now.
         double sum = 0;
         for (int i = 0; i < particles.length; i++) {
@@ -790,7 +790,7 @@ public class ParticleFilter extends TypedCompositeActor {
     /** Propagate particles according to the state update equations
      */
     private void _propagate() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         for (int i = 0; i < Nparticles; i++) {
             particles[i].setNextParticle();
         }
@@ -1065,7 +1065,7 @@ public class ParticleFilter extends TypedCompositeActor {
                             throw new IllegalActionException(
                                     "Expression yields a null result: "
                                             + measurementEquation.expression
-                                            .getExpression());
+                                                    .getExpression());
                         }
                         ind++;
                     }
@@ -1101,8 +1101,8 @@ public class ParticleFilter extends TypedCompositeActor {
                         _weight *= 1
                                 / (Math.pow(2 * Math.PI, 0.5) * DoubleMatrixMath
                                         .determinant(_Sigma))
-                                        * Math.exp(-Math.pow(z_t - _meanEstimate, 2)
-                                                / (2 * Math.pow(_Sigma[0][0], 2)));
+                                * Math.exp(-Math.pow(z_t - _meanEstimate, 2)
+                                        / (2 * Math.pow(_Sigma[0][0], 2)));
                     }
 
                 } else {
@@ -1194,7 +1194,7 @@ public class ParticleFilter extends TypedCompositeActor {
         }
 
         public void setNextParticle() throws NameDuplicationException,
-        IllegalActionException {
+                IllegalActionException {
             Token _result;
             //FIXME: the noise sample does not have to be an arrayToken
             Token processNoiseSample;
@@ -1268,7 +1268,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     throw new IllegalActionException(
                             "Expression yields a null result: "
                                     + _updateEquations.get(_stateVariables[i]).expression
-                                    .getExpression());
+                                            .getExpression());
                 }
                 // set particle weight
 

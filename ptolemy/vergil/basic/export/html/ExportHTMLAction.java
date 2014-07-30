@@ -141,7 +141,7 @@ import diva.graph.GraphController;
  */
 @SuppressWarnings("serial")
 public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
-WebExporter {
+        WebExporter {
 
     /** Create a new action to export HTML.
      *  @param basicGraphFrame The Vergil window to export.
@@ -245,11 +245,11 @@ WebExporter {
                 if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
                     try {
                         MessageHandler
-                        .warning("Warning: Cannot find required JavaScript, CSS, and image files"
-                                + " for lightbox effect implemented by the fancybox"
-                                + " package. Perhaps your Ptolemy II"
-                                + " installation does not include them."
-                                + " Will use the files on ptolemy.org.");
+                                .warning("Warning: Cannot find required JavaScript, CSS, and image files"
+                                        + " for lightbox effect implemented by the fancybox"
+                                        + " package. Perhaps your Ptolemy II"
+                                        + " installation does not include them."
+                                        + " Will use the files on ptolemy.org.");
                     } catch (CancelException e) {
                         // Cancel the action.
                         return false;
@@ -279,9 +279,9 @@ WebExporter {
                         } catch (IOException e) {
                             try {
                                 MessageHandler
-                                .warning("Warning: failed to copy required files."
-                                        + " Use the files on ptolemy.org? "
-                                        + e.getMessage());
+                                        .warning("Warning: failed to copy required files."
+                                                + " Use the files on ptolemy.org? "
+                                                + e.getMessage());
                             } catch (CancelException e1) {
                                 // Cancel the action.
                                 return false;
@@ -494,7 +494,7 @@ WebExporter {
     public static void openRunAndWriteHTML(final BasicGraphFrame graphFrame,
             final ExportParameters parameters, final File indexFile,
             final Writer writer, final boolean waitForCompletion)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (graphFrame == null) {
             throw new IllegalActionException(
                     "Cannot export without a graphFrame.");
@@ -571,7 +571,7 @@ WebExporter {
                                     } catch (Throwable throwable) {
                                         MessageHandler.error(
                                                 "Failed to open \"" + indexFile
-                                                + "\".", throwable);
+                                                        + "\".", throwable);
                                         throw new RuntimeException(throwable);
                                     }
                                 }
@@ -812,9 +812,9 @@ WebExporter {
                 // problem is that we don't know where $PTII is located on
                 // the website.
                 printWriter
-                .println("<link href=\""
-                        + ssiRoot
-                        + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+                        .println("<link href=\""
+                                + ssiRoot
+                                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
             }
 
             // Title needed for the HTML validator.
@@ -848,10 +848,10 @@ WebExporter {
                 // Reference the server-side includes.
                 // toppremenu.htm includes </head>...<body>
                 printWriter
-                .println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+                        .println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
                 printWriter.println("<!--#include virtual=\"toc.htm\" -->");
                 printWriter
-                .println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
+                        .println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
             } else {
                 // The Ptolemy website headers include the closing </head> and <body tag>
                 printWriter.println("</head>");
@@ -883,8 +883,8 @@ WebExporter {
 
             if (linkToJNLP
                     && (model.getContainer() == null || /* Ptera */model
-                    .getContainer().getContainer() == null
-                    && model.getName().equals("_Controller"))) {
+                            .getContainer().getContainer() == null
+                            && model.getName().equals("_Controller"))) {
                 String linkToHelp = "<a href=\""
                         + ssiRoot
                         + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
@@ -892,43 +892,43 @@ WebExporter {
                         + "/image/question.png\" alt=\"What is Web Start\"></a> (<i>Java Plug-in Required</i>)";
 
                 printWriter
-                        .println("<div id=\"inlineImg\">" // Defined in UCB.css
-                        + "<p>Below is a browsable image of the model.</p> "
-                        + "<ul>\n"
-                        + "<li>For an executable version,"
-                        + "<!-- We use the deployJava.js script so that Java "
-                        + "will be installed if necessary -->\n"
-                        + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
-                        + "<script>\n"
-                        + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
-                        + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
-                        + "  var url = parentDir + \""
-                        + _sanitizedModelName
-                        + ".jnlp\";\n"
-                        + "  deployJava.createWebStartLaunchButton(url);\n"
-                        + "  document.write(\" the WebStart version. "
-                        + linkToHelp.replace("\"", "\\\"")
-                        + "\");\n"
-                        + "</script>\n"
-                        + "<noscript>\n"
-                        + "<a href=\"../"
-                        + _sanitizedModelName
-                        + ".jnlp\">WebStart version</a>. \n"
-                        + linkToHelp + "</noscript>\n" + "</li>\n");
+                .println("<div id=\"inlineImg\">" // Defined in UCB.css
+                                + "<p>Below is a browsable image of the model.</p> "
+                                + "<ul>\n"
+                                + "<li>For an executable version,"
+                                + "<!-- We use the deployJava.js script so that Java "
+                                + "will be installed if necessary -->\n"
+                                + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
+                                + "<script>\n"
+                                + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
+                                + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
+                                + "  var url = parentDir + \""
+                                + _sanitizedModelName
+                                + ".jnlp\";\n"
+                                + "  deployJava.createWebStartLaunchButton(url);\n"
+                                + "  document.write(\" the WebStart version. "
+                                + linkToHelp.replace("\"", "\\\"")
+                                + "\");\n"
+                                + "</script>\n"
+                                + "<noscript>\n"
+                                + "<a href=\"../"
+                                + _sanitizedModelName
+                                + ".jnlp\">WebStart version</a>. \n"
+                                + linkToHelp + "</noscript>\n" + "</li>\n");
                 printWriter
-                .println("<li>To view or save the MoML file for this model, "
-                        + "<a href=\"../"
-                        + _sanitizedModelName
-                        + ".xml\">click here</a>.</li>");
+                        .println("<li>To view or save the MoML file for this model, "
+                                + "<a href=\"../"
+                                + _sanitizedModelName
+                                + ".xml\">click here</a>.</li>");
                 if (usePtWebsite) {
                     if (_isInDomains(model)) {
                         printWriter
-                                .println("<li>For a domain overview, "
-                                        + "<a href=\"../../../doc/\">click here</a>.</li>");
+                        .println("<li>For a domain overview, "
+                                + "<a href=\"../../../doc/\">click here</a>.</li>");
                     } else {
                         printWriter
-                                .println("<li>For a chapter overview, "
-                                        + "<a href=\"../index.html\">click here</a>.</li>");
+                        .println("<li>For a chapter overview, "
+                                + "<a href=\"../index.html\">click here</a>.</li>");
                     }
                 }
                 printWriter.println("</ul>\n" + "</div> <!-- inlineImg -->\n");
@@ -950,7 +950,7 @@ WebExporter {
                 printWriter.println("<!-- /body -->");
                 printWriter.println("<!-- /html -->");
                 printWriter
-                .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+                        .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
                 // Start the top of the toc.htm file.
                 _addContent("toc.htm", false, "<div id=\"menu\">");
@@ -988,14 +988,14 @@ WebExporter {
                             // Generate links to the domain docs.
                             String domains[] = { "Continuous", "DDF", "DE",
                                     "Modal", "PN", "Rendezvous", "SDF", "SR",
-                                    "Wireless" };
+                            "Wireless" };
                             StringBuffer buffer = new StringBuffer();
                             for (int i = 0; i < domains.length; i++) {
                                 buffer.append("<li><a href=\"" + ptURL
                                         + "ptolemy/domains/"
                                         + domains[i].toLowerCase()
                                         + "/doc/index.htm\">" + domains[i]
-                                        + "</a></li>");
+                                                + "</a></li>");
                             }
                             upHTML = buffer.toString();
                         }
@@ -1034,7 +1034,7 @@ WebExporter {
                         // (cd $PTII/doc/papers/y12/designContracts; $PTII/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel -run -whiteBackground -openComposites htm DCMotorTol.xml)
 
                         System.out
-                        .println("Warning, key of tocContents was empty?");
+                                .println("Warning, key of tocContents was empty?");
                         continue;
                     }
                     // NOTE: A RESTful version of this would create a resource
@@ -1097,22 +1097,22 @@ WebExporter {
     // FIXME: I don't like the hardwired version numbers here.
     // Findbugs wants this package protected and final.
     final static String[] FILENAMES = {
-            "jquery-1.7.2.min.js",
-        "jquery.fancybox-1.3.4.pack.js",
-            "jquery.fancybox-1.3.4.css",
-        "pt-1.0.0.js",
-            "tooltipster.css",
-            "jquery.tooltipster.min.js",
-        // The ones above this line must be in exactly the order given
-        // They are referenced below by index.
-        "blank.gif", "fancybox.png", "fancybox-y.png", "fancybox-x.png",
-            "fancy_title_right.png", "fancy_title_over.png",
-        "fancy_title_main.png", "fancy_title_left.png",
-        "fancy_shadow_w.png", "fancy_shadow_sw.png", "fancy_shadow_se.png",
-        "fancy_shadow_s.png", "fancy_shadow_nw.png", "fancy_shadow_ne.png",
-        "fancy_shadow_n.png", "fancy_shadow_e.png", "fancy_nav_right.png",
-        "fancy_nav_left.png", "fancy_loading.png", "fancy_close.png",
-    "javascript-license.htm" };
+        "jquery-1.7.2.min.js",
+            "jquery.fancybox-1.3.4.pack.js",
+        "jquery.fancybox-1.3.4.css",
+            "pt-1.0.0.js",
+        "tooltipster.css",
+        "jquery.tooltipster.min.js",
+            // The ones above this line must be in exactly the order given
+            // They are referenced below by index.
+            "blank.gif", "fancybox.png", "fancybox-y.png", "fancybox-x.png",
+        "fancy_title_right.png", "fancy_title_over.png",
+            "fancy_title_main.png", "fancy_title_left.png",
+            "fancy_shadow_w.png", "fancy_shadow_sw.png", "fancy_shadow_se.png",
+            "fancy_shadow_s.png", "fancy_shadow_nw.png", "fancy_shadow_ne.png",
+            "fancy_shadow_n.png", "fancy_shadow_e.png", "fancy_nav_right.png",
+            "fancy_nav_left.png", "fancy_loading.png", "fancy_close.png",
+            "javascript-license.htm" };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1257,8 +1257,8 @@ WebExporter {
                                             .stringValue()
                                             .toLowerCase(Locale.getDefault())
                                             .equals("all"))
-                                            && script.instancesOf.stringValue().equals(
-                                                    instancesOf)) {
+                                    && script.instancesOf.stringValue().equals(
+                                            instancesOf)) {
                                 // Skip this default from the configuration.
                                 foundOverride = true;
                                 break;

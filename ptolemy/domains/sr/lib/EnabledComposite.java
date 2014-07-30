@@ -91,28 +91,28 @@ public class EnabledComposite extends TypedCompositeActor {
      *  This constructor is provided so that this can be a top-level.
      *  Making it a top level only makes sense if it is a class definition,
      *  however.
-    *  @param workspace The workspace.
-    *  @exception IllegalActionException If constructing the ports and
-    *   inside director throws it.
-    *  @exception NameDuplicationException If constructing the ports and
-    *   inside director throws it.
-    */
+     *  @param workspace The workspace.
+     *  @exception IllegalActionException If constructing the ports and
+     *   inside director throws it.
+     *  @exception NameDuplicationException If constructing the ports and
+     *   inside director throws it.
+     */
     public EnabledComposite(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
 
         _init();
     }
 
     /** Construct an actor in the specified container with the specified
-    *  name.
-    *  @param container The container.
-    *  @param name The name of this actor within the container.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the name coincides with
-    *   an actor already in the container.
-    */
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public EnabledComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -179,7 +179,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  @exception NameDuplicationException If creating these things throws it.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
 
@@ -204,7 +204,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  input port.
      */
     private class CausalityInterfaceForEnabledComposite extends
-    CausalityInterfaceForComposites {
+            CausalityInterfaceForComposites {
         public CausalityInterfaceForEnabledComposite(Actor actor)
                 throws IllegalArgumentException {
             super(actor, BooleanDependency.OTIMES_IDENTITY);

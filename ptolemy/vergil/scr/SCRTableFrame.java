@@ -77,7 +77,7 @@ The frame for configuring an SCR Model
 @SuppressWarnings("serial")
 public class SCRTableFrame extends PtolemyFrame {
 
-    /** Construct a frame associated with an SCR Model. 
+    /** Construct a frame associated with an SCR Model.
      * @param model The model to put in this frame, or null if none.
      */
     public SCRTableFrame(NamedObj model) {
@@ -91,7 +91,7 @@ public class SCRTableFrame extends PtolemyFrame {
         _init();
     }
 
-    /** Construct a frame associated with an SCR Model. 
+    /** Construct a frame associated with an SCR Model.
      * @param model The model to put in this frame, or null if none.
      * @param tableau The tableau responsible for this frame, or null if none.
      */
@@ -516,9 +516,9 @@ public class SCRTableFrame extends PtolemyFrame {
     @since Ptolemy II 10.0
     @Pt.ProposedRating Red (pd)
     @Pt.AcceptedRating Red (pd)
-    */
+     */
     private static class SCRTableCellRenderer extends DefaultTableCellRenderer
-            implements TableCellRenderer {
+    implements TableCellRenderer {
 
         @Override
         public Component getTableCellRendererComponent(JTable table,

@@ -211,7 +211,7 @@ public class HttpResponse {
 
         try {
             return new RecordToken(_labels, values.toArray(new Token[values
-                    .size()]));
+                                                                     .size()]));
         } catch (IllegalActionException e) {
             return new RecordToken();
         }
@@ -231,7 +231,7 @@ public class HttpResponse {
 
         try {
             return new RecordToken(_labels, values.toArray(new Token[values
-                    .size()])).getType();
+                                                                     .size()])).getType();
         } catch (IllegalActionException e) {
             return new RecordToken().getType();
         }
@@ -316,7 +316,7 @@ public class HttpResponse {
 
     /** Labels for returning the status as a RecordToken */
     static final String[] _labels = { "responseCode", "responseMessage",
-            "successful", "furtherActionExpected" };
+        "successful", "furtherActionExpected" };
 
     /** The locally used line break character sequence. */
     private String _lineBreak = System.getProperty("line.separator");

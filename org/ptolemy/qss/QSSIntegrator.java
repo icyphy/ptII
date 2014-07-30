@@ -219,7 +219,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 // Update the current state.
                 x += previousSlope
                         * (currentTime.subtract(previousStateUpdateTime))
-                                .getDoubleValue();
+                        .getDoubleValue();
                 // Update the time of the next output, which is the time it will take to
                 // get from the current state to previous output value plus or minus the quantum
                 // at the updated slope.
@@ -314,7 +314,7 @@ public class QSSIntegrator extends TypedAtomicActor {
         }
     }
 
-    /** Return the argument quantized to a multiple of quantum given by 
+    /** Return the argument quantized to a multiple of quantum given by
      *  the {@link #quantum} parameter.
      *  @param x The value to quantize.
      *  @return A quantized value.

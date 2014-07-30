@@ -167,7 +167,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
                 } catch (NameDuplicationException e) {
                     System.err
-                    .println("NameDuplicationException at FactorOracleGenerator");
+                            .println("NameDuplicationException at FactorOracleGenerator");
                 }
             } else if (incomingNote >= 5000) {
                 // long notes and a duration of 5s trigger FO generation
@@ -180,7 +180,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
                     }
                 } catch (NameDuplicationException e) {
                     System.err
-                    .println("NameDuplicationException at FactorOracleGenerator");
+                            .println("NameDuplicationException at FactorOracleGenerator");
                 }
 
             } else {

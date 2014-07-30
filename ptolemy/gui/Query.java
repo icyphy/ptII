@@ -159,7 +159,7 @@ public class Query extends JPanel {
 
         _messageScrollPane = new JScrollPane(_messageArea);
         _messageScrollPane
-        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+                .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -739,7 +739,7 @@ public class Query extends JPanel {
      */
     public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum, String minLabelText, String maxLabelText)
-                    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
 
         if (minimum > maximum) {
@@ -938,7 +938,7 @@ public class Query extends JPanel {
      */
     @Deprecated
     public boolean booleanValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         return getBooleanValue(name);
     }
 
@@ -961,7 +961,7 @@ public class Query extends JPanel {
      */
     @Deprecated
     public double doubleValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         return getDoubleValue(name);
     }
 
@@ -978,7 +978,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public boolean getBooleanValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1011,7 +1011,7 @@ public class Query extends JPanel {
      *  @since Ptolemy II 3.1
      */
     public char[] getCharArrayValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1044,7 +1044,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double getDoubleValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1085,7 +1085,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int getIntValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1165,7 +1165,7 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     public Object getObjectValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1242,7 +1242,7 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     public String getStringValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         // NOTE: getObjectValue() may return null if the entry
         // is a combo box and no object is selected. In that case,
         // return an empty string.
@@ -1303,7 +1303,7 @@ public class Query extends JPanel {
      */
     @Deprecated
     public int intValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         return getIntValue(name);
     }
 
@@ -1346,7 +1346,7 @@ public class Query extends JPanel {
      *   to the appropriate type.
      */
     public void set(String name, String value) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1769,7 +1769,7 @@ public class Query extends JPanel {
      */
     @Deprecated
     public String stringValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+            IllegalArgumentException {
         return getStringValue(name);
     }
 
@@ -2114,7 +2114,7 @@ public class Query extends JPanel {
      *
      */
     public/*static*/class QueryFileChooser extends Box implements
-    ActionListener {
+            ActionListener {
         // This class cannot be static because the FileDialog needs to be owned
         // by the parent Query.
 
@@ -2404,13 +2404,13 @@ public class Query extends JPanel {
 
                 if (_allowFiles && _allowDirectories) {
                     fileChooser
-                    .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                            .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 } else if (_allowFiles && !_allowDirectories) {
                     // This is the default.
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 } else if (!_allowFiles && _allowDirectories) {
                     fileChooser
-                    .setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                            .setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 } else {
                     // Usually, we would use InternalErrorException
                     // here, but if we do, then this package would

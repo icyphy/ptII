@@ -239,11 +239,11 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 if (inputReceived[i]) {
                     x[i] += previousSlope[i]
                             * (currentTime.subtract(previousStateUpdateTime))
-                            .getDoubleValue();
+                                    .getDoubleValue();
                     System.out
-                            .println("This is the index in received "
-                                    + String.valueOf(i) + ": "
-                                    + String.valueOf((x[i])));
+                    .println("This is the index in received "
+                            + String.valueOf(i) + ": "
+                            + String.valueOf((x[i])));
                     // Update the time of the next output, which is the time it will take to
                     // get from the current state to previous output value plus or minus the quantum
                     // at the updated slope.

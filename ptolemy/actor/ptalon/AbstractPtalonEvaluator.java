@@ -137,7 +137,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -201,7 +201,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
@@ -261,7 +261,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -321,7 +321,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -382,7 +382,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
 
             _currentIfTree.mapName(name, uniqueName);
@@ -447,7 +447,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
             if (_resetParameters || !parameter.hasValue()) {
@@ -508,7 +508,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -558,7 +558,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -609,7 +609,7 @@ public abstract class AbstractPtalonEvaluator {
         if (_inNewWhileIteration()) {
             if (_currentIfTree.isForStatement) {
                 _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                .setEnteredIteration(name, _currentIfTree.entered);
             } else {
                 IfTree tree = _currentIfTree;
                 while (!tree.isForStatement) {
@@ -1241,6 +1241,7 @@ public abstract class AbstractPtalonEvaluator {
          *  @param name The name of the child.
          *  @return The child IfTree.
          */
+        @Override
         public IfTree addChild(String name) {
             IfTree child = new IfTree(this, name);
             _children.add(child);
@@ -1654,6 +1655,7 @@ public abstract class AbstractPtalonEvaluator {
 
         /** Enumerate the info from this scope.
          */
+        @Override
         public String toString() {
             StringBuffer buffer = new StringBuffer("Scope: " + getName()
                     + ":\n\n");
@@ -1787,6 +1789,7 @@ public abstract class AbstractPtalonEvaluator {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public Token get(String name) throws IllegalActionException {
             try {
                 if (_variables.containsKey(name)) {
@@ -1812,6 +1815,7 @@ public abstract class AbstractPtalonEvaluator {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             try {
                 if (_variables.containsKey(name)) {
@@ -1839,6 +1843,7 @@ public abstract class AbstractPtalonEvaluator {
          * @exception IllegalActionException If a value in the scope
          * exists with the given name, but cannot be evaluated.
          */
+        @Override
         public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             try {
@@ -1868,6 +1873,7 @@ public abstract class AbstractPtalonEvaluator {
          *  @exception IllegalActionException If constructing the list
          *  causes it.
          */
+        @Override
         public Set identifierSet() throws IllegalActionException {
             try {
                 Set<String> out = _getParameters();

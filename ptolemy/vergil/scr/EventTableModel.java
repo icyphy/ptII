@@ -132,7 +132,7 @@ public class EventTableModel extends AbstractTableModel {
     }
 
     public void saveModel() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {
             StringBuffer insideModeExpression = new StringBuffer();
             StringBuffer enterModeExpression = new StringBuffer();

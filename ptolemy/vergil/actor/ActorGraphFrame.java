@@ -615,16 +615,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                         && _listeningTo != director) {
                                     if (_listeningTo != null) {
                                         _listeningTo
-                                        .removeDebugListener(_controller);
+                                                .removeDebugListener(_controller);
                                     }
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 } else {
                                     MessageHandler
-                                    .error("Cannot find the director. "
-                                            + "Possibly this is because this "
-                                            + "is a class, not an instance.");
+                                            .error("Cannot find the director. "
+                                                    + "Possibly this is because this "
+                                                    + "is a class, not an instance.");
                                 }
 
                             } catch (NumberFormatException ex) {
@@ -635,7 +635,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         }
                     } else {
                         MessageHandler
-                        .error("Model is not an actor. Cannot animate.");
+                                .error("Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
@@ -1069,12 +1069,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                             if (source instanceof StringAttribute) {
                                 try {
                                     ((StringAttribute) source)
-                                            .setExpression(urlSpec);
+                                    .setExpression(urlSpec);
                                     // Have to mark persistent or the urlSpec will be assumed to be part
                                     // of the class definition and hence will not be exported to MoML.
                                     /// FIXME: NOTHING WORKS HERE!!!! Tried setPersistent(true) and setDerviedLevel(1).
                                     ((StringAttribute) source)
-                                            .setDerivedLevel(Integer.MAX_VALUE);
+                                    .setDerivedLevel(Integer.MAX_VALUE);
                                 } catch (IllegalActionException e) {
                                     // Should not happen.
                                     throw new InternalErrorException(object, e,

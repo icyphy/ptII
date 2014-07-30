@@ -123,7 +123,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
     }
 
     public void saveModel() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Set<State> states = new HashSet<State>();
 
         for (int i = 0; i < _tableContent.size(); i = i + 3) {

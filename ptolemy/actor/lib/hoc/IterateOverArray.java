@@ -217,7 +217,7 @@ public class IterateOverArray extends MirrorComposite {
      *   an actor already in the container.
      */
     public IterateOverArray(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -525,7 +525,7 @@ public class IterateOverArray extends MirrorComposite {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
 
         // Create the IterateDirector in the proper workspace.
@@ -636,7 +636,7 @@ public class IterateOverArray extends MirrorComposite {
      *  connections being made.
      */
     public static class IterateComposite extends
-    MirrorComposite.MirrorCompositeContents {
+            MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -885,7 +885,7 @@ public class IterateOverArray extends MirrorComposite {
 
                     if (list.size() != 0) {
                         Token[] tokens = (Token[]) list.toArray(new Token[list
-                                                                          .size()]);
+                                .size()]);
 
                         if (_debugging) {
                             _debug(getName(),

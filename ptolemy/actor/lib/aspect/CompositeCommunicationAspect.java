@@ -82,7 +82,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class CompositeCommunicationAspect extends TypedCompositeActor implements
-CommunicationAspect, Decorator {
+        CommunicationAspect, Decorator {
 
     /** Construct a CompositeCommunicationAspectAttributes in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -381,8 +381,8 @@ CommunicationAspect, Decorator {
         if (port == null) {
             throw new IllegalActionException(this,
                     "CommunicationRequestPort with name " + name
-                    + " specified by " + receiver.getContainer()
-                    + " missing");
+                            + " specified by " + receiver.getContainer()
+                            + " missing");
         }
         if (_tokens == null) {
             _tokens = new HashMap<CommunicationRequestPort, Token>();
@@ -422,7 +422,7 @@ CommunicationAspect, Decorator {
      * @exception NameDuplicationException If color attribute cannot be initialized.
      */
     private void _initialize() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         ColorAttribute color = new ColorAttribute(this,
                 decoratorHighlightColorName);
         color.setExpression("{1.0,0.6,0.0,1.0}");
@@ -464,7 +464,7 @@ CommunicationAspect, Decorator {
      *  @author Patricia Derler
      */
     public static class CompositeCommunicationAspectAttributes extends
-    CommunicationAspectAttributes {
+            CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -474,7 +474,7 @@ CommunicationAspect, Decorator {
          */
         public CompositeCommunicationAspectAttributes(NamedObj target,
                 CompositeCommunicationAspect decorator)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }

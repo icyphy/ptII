@@ -126,6 +126,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  @exception IllegalActionException If the change is not
      *  acceptable to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -199,7 +200,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     if (ready) {
                         PtalonPopulator populator = new PtalonPopulator();
                         populator
-                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                        .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
@@ -223,6 +224,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *   none.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         try {
@@ -248,6 +250,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  the no source has been used to configure this object, or null
      *  if no external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -255,6 +258,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /** Override the default behavior to always return null.
      *  @return null.
      */
+    @Override
     public String getConfigureText() {
         return null;
     }
@@ -337,6 +341,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
+    @Override
     public String uniqueName(String prefix) {
         if (prefix == null) {
             prefix = "null";
@@ -389,6 +394,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  @exception NameDuplicationException If the superclass throws it.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     protected void _addAttribute(Attribute attribute)
             throws NameDuplicationException, IllegalActionException {
         super._addAttribute(attribute);
@@ -427,6 +433,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         for (Object att : attributeList()) {

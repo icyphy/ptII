@@ -120,13 +120,13 @@ public class ParticleFilterRange extends ParticleFilter {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         StringToken[] stateNames = new StringToken[2];
         stateNames[0] = new StringToken("x");
         stateNames[1] = new StringToken("y");
         stateVariableNames
-                .setToken(new ArrayToken(BaseType.STRING, stateNames));
+        .setToken(new ArrayToken(BaseType.STRING, stateNames));
         stateVariableNames.setVisibility(Settable.EXPERT);
 
         observerPosition = new PortParameter(this, "observerPosition");

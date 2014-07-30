@@ -120,7 +120,7 @@ public class FactorOracle extends FSMActor {
     ////                         public methods                    ////
 
     private void _buildFactorOracle() throws NameDuplicationException,
-    IllegalActionException {
+            IllegalActionException {
 
         // create factor oracle transitions including the suffix links.
         //TODO: attach symbols to the transitions that produce
@@ -156,7 +156,7 @@ public class FactorOracle extends FSMActor {
         ((State) _stateList.get(0)).isInitialState.setPersistent(true);
         ((State) _stateList.get(_sequenceLength)).isFinalState.setToken("true");
         ((State) _stateList.get(_sequenceLength)).isFinalState
-        .setPersistent(true);
+                .setPersistent(true);
 
         for (int i = 0; i < _adjacencyList.size(); i++) {
 
@@ -216,7 +216,7 @@ public class FactorOracle extends FSMActor {
                 (t.exitAngle).setExpression(exitAngle);
                 (t.outputActions).setExpression(outputExpression);
                 (t.guardExpression)
-                .setExpression(transitionProbabilityExpression);
+                        .setExpression(transitionProbabilityExpression);
                 ((State) _stateList.get(i)).outgoingPort.link(t);
                 ((State) _stateList.get(j)).incomingPort.link(t);
             }

@@ -95,7 +95,7 @@ hierarchy layers by a PtidesDirector. </li>
 @Pt.AcceptedRating Red (derler)
  */
 public class AtomicExecutionAspect extends TypedAtomicActor implements
-ActorExecutionAspect {
+        ActorExecutionAspect {
 
     /** Create a new resource schedule in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -394,7 +394,7 @@ ActorExecutionAspect {
             for (NamedObj actor : _actors) {
                 notifyExecutionListeners(actor,
                         ((CompositeActor) getContainer()).getDirector()
-                                .getEnvironmentTime().getDoubleValue(), null);
+                        .getEnvironmentTime().getDoubleValue(), null);
             }
         }
     }

@@ -161,7 +161,7 @@ public class MostRecent extends Transformer {
         if (attribute == initialValue) {
             if (initialValue.getToken() != null) {
                 int width = 1;
-                // Calling input.getWidth() when the model is not being 
+                // Calling input.getWidth() when the model is not being
                 // executed can cause Exceptions because the width cannot
                 // be resolved. This method is called also, for instance, when a
                 // class containing a MostRecent actor is saved. In this case,

@@ -263,7 +263,7 @@ public class Dictionary extends TypedAtomicActor {
             newObject.readKeyArray.setTypeAtLeast(ArrayType
                     .arrayOf(newObject.readKey));
             newObject.keys
-                    .setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
+            .setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
             newObject.result.setTypeSameAs(newObject.value);
             newObject.resultArray.setTypeAtLeast(ArrayType
                     .arrayOf(newObject.value));

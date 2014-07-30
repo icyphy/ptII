@@ -100,7 +100,7 @@ import ptolemy.util.MessageHandler;
  */
 @SuppressWarnings("serial")
 public class HTMLViewer extends TableauFrame implements Printable,
-HyperlinkListener {
+        HyperlinkListener {
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
@@ -160,7 +160,7 @@ HyperlinkListener {
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
-                            + "'.", throwable);
+                                    + "'.", throwable);
                 }
             }
 
@@ -198,7 +198,7 @@ HyperlinkListener {
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
-                            + "'.", throwable);
+                                    + "'.", throwable);
                 }
             }
             // NOTE: It would be nice to use target="_browser" or some
@@ -343,10 +343,10 @@ HyperlinkListener {
                                         } catch (Throwable throwable2) {
                                             IOException exception = new IOException(
                                                     "Failed to find " + newURL
-                                                    + ", also tried\n "
-                                                    + eventURL
-                                                    + " and\n"
-                                                    + eventURL2);
+                                                            + ", also tried\n "
+                                                            + eventURL
+                                                            + " and\n"
+                                                            + eventURL2);
                                             exception.initCause(ex);
                                             throw exception;
                                         }

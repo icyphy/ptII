@@ -158,7 +158,7 @@ will simply result in the expression failing to evaluate.
  */
 
 public class ModularCompiledSDFTypedCompositeActor extends
-ModularCodeGenLazyTypedCompositeActor {
+        ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -230,7 +230,7 @@ ModularCodeGenLazyTypedCompositeActor {
                 List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCompiledSDFTypedCompositeActor) entity).recompileHierarchy
-                    .setToken(new BooleanToken(true));
+                            .setToken(new BooleanToken(true));
                 }
             }
         } else if (attribute != recompileThisLevel) {
@@ -304,9 +304,9 @@ ModularCodeGenLazyTypedCompositeActor {
                             NamedObj container = getContainer();
                             if (container instanceof CompositeActor) {
                                 ((CompositeActor) container)
-                                .registerPublisherPort(
-                                        port.getPubSubChannelName(),
-                                        newPort);
+                                        .registerPublisherPort(
+                                                port.getPubSubChannelName(),
+                                                newPort);
                             }
                         }
                     }
@@ -354,7 +354,7 @@ ModularCodeGenLazyTypedCompositeActor {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             System.out
-            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -636,15 +636,15 @@ ModularCodeGenLazyTypedCompositeActor {
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
                                     DFUtilities
-                                    .setRateVariable(
-                                            (IOPort) actorPort,
-                                            port.input() ? "tokenConsumptionRate"
-                                                    : "tokenProductionRate",
+                                            .setRateVariable(
+                                                    (IOPort) actorPort,
+                                                    port.input() ? "tokenConsumptionRate"
+                                                            : "tokenProductionRate",
                                                     port.rate());
                                     ((TypedIOPort) actorPort)
-                                    .setTypeEquals(JavaCodeGenerator
-                                            .codeGenTypeToPtType(port
-                                                    .type()));
+                                            .setTypeEquals(JavaCodeGenerator
+                                                    .codeGenTypeToPtType(port
+                                                            .type()));
                                     ((IOPort) actorPort).setDefaultWidth(port
                                             .width());
                                     break;
@@ -661,13 +661,13 @@ ModularCodeGenLazyTypedCompositeActor {
                                 newPort.setOutput(port.output());
                                 DFUtilities.setRateVariable(newPort, port
                                         .input() ? "tokenConsumptionRate"
-                                                : "tokenProductionRate", port.rate());
+                                        : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                    .linkToPublishedPort(
-                                            port.getPubSubChannelName(),
-                                            newPort);
+                                            .linkToPublishedPort(
+                                                    port.getPubSubChannelName(),
+                                                    newPort);
                                 }
                             }
                         }
@@ -943,7 +943,7 @@ ModularCodeGenLazyTypedCompositeActor {
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularSDFCodeGenerator(this,
                     "ModularSDFCodeGenerator");
@@ -1038,7 +1038,7 @@ ModularCodeGenLazyTypedCompositeActor {
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                .booleanValue();
+                        .booleanValue();
     }
 
     /** Return the name of a Publisher or Subscriber channel name.

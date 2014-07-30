@@ -176,7 +176,7 @@ public class DocViewer extends HTMLViewer {
                 Effigy effigy = getEffigy();
                 DocEffigy newEffigy = new DocEffigy(
                         (CompositeEntity) effigy.getContainer(), effigy
-                        .getContainer().uniqueName("parentClass"));
+                                .getContainer().uniqueName("parentClass"));
                 newEffigy.setDocAttribute(attribute);
                 DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                 tableau.show();

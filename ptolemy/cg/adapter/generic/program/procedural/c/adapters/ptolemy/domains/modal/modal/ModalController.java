@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (wlc)
  */
 public class ModalController
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -322,7 +322,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
 
     /** Retrieve the non-preemptive transitions. */
     private static class NonPreemptiveTransitions implements
-    TransitionRetriever {
+            TransitionRetriever {
         /** Retrieve the non-preemptive transitions.
          *  @param state The state
          *  @return An iterator that refers to the non-preemptive transitions.

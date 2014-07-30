@@ -133,7 +133,7 @@ public class PtidesPlatform extends MirrorComposite {
      *   an actor already in the container.
      */
     public PtidesPlatform(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -206,7 +206,7 @@ public class PtidesPlatform extends MirrorComposite {
 
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // TODO Auto-generated method stub
         super._addPort(port);
     }
@@ -381,7 +381,7 @@ public class PtidesPlatform extends MirrorComposite {
                         result.add(ineq);
                     } else if (destinationPort instanceof PtidesPort
                             && ((PtidesPort) destinationPort)
-                            .isNetworkReceiverPort()) {
+                                    .isNetworkReceiverPort()) {
 
                         sourcePort.setTypeEquals(new PtidesNetworkType());
                         RecordType sourcePortType = (RecordType) sourcePort
@@ -402,7 +402,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof PtidesPort
                             && ((PtidesPort) sourcePort)
-                            .isNetworkTransmitterPort()) {
+                                    .isNetworkTransmitterPort()) {
 
                         destinationPort.setTypeEquals(new PtidesNetworkType());
                         RecordType outputType = (RecordType) destinationPort
@@ -424,7 +424,7 @@ public class PtidesPlatform extends MirrorComposite {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
 
         // Create the PtidesPlatformDirector in the proper workspace.
@@ -468,11 +468,11 @@ public class PtidesPlatform extends MirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-            BaseType.UNKNOWN };
+                BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
-            "microstep", "payload" };
+                "microstep", "payload" };
 
         /** Label of the timestamp that is transmitted within the RecordToken.
          */
@@ -498,7 +498,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  connections being made.
      */
     public static class PtidesPlatformContents extends
-    MirrorComposite.MirrorCompositeContents {
+            MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -752,7 +752,7 @@ public class PtidesPlatform extends MirrorComposite {
                                                         record.get(PtidesNetworkType.payload),
                                                         farReceivers[channelIndex][i],
                                                         sourceTimestamp),
-                                                        PtidesDirector
+                                                PtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -774,7 +774,7 @@ public class PtidesPlatform extends MirrorComposite {
                                                         t,
                                                         farReceivers[channelIndex][i],
                                                         director.getModelTime()),
-                                                        PtidesDirector
+                                                PtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -782,7 +782,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 }
                             } else {
                                 ((MirrorPort) port).getAssociatedPort()
-                                .sendInside(channelIndex, t);
+                                        .sendInside(channelIndex, t);
                             }
 
                             result = true;
@@ -946,7 +946,7 @@ public class PtidesPlatform extends MirrorComposite {
             if (!(getContainer() instanceof PtidesPlatform)
                     || !isOutput()
                     || !((PtidesPort) this.insidePortList().get(0))
-                    .isNetworkTransmitterPort()) {
+                            .isNetworkTransmitterPort()) {
                 return super.convert(token);
             }
             if (getType().equals(BaseType.GENERAL)) {

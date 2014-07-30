@@ -206,8 +206,8 @@ import diva.util.java2d.ShapeUtilities;
  */
 @SuppressWarnings("serial")
 public abstract class BasicGraphFrame extends PtolemyFrame implements
-Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
-MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
+        Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
+        MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
@@ -584,10 +584,10 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                             // Create external links.
                             if (duplicateRelation) {
                                 extRelations
-                                .append("<relation name=\""
-                                        + relation.getName()
-                                        + "\" class=\""
-                                        + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        .append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -651,10 +651,10 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                             // Create external links.
                             if (duplicateRelation) {
                                 intRelations
-                                .append("<relation name=\""
-                                        + relation.getName()
-                                        + "\" class=\""
-                                        + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        .append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -724,7 +724,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
             moml.append("\t<property name=\"_location\" class=\""
                     + "ptolemy.kernel.util.Location\" value=\"" + location[0]
-                            + ", " + location[1] + "\">\n");
+                    + ", " + location[1] + "\">\n");
             moml.append("\t</property>\n");
             moml.append(newPorts);
 
@@ -802,7 +802,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     container);
         } catch (Exception ex) {
             MessageHandler
-            .error("Delete failed, changeRequest was:" + moml, ex);
+                    .error("Delete failed, changeRequest was:" + moml, ex);
         }
 
         graphModel.dispatchGraphEvent(new GraphEvent(this,
@@ -896,8 +896,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     alternateGetMoml = new StringAttribute(model,
                             "_alternateGetMomlAction");
                     alternateGetMoml
-                    .setExpression(DesignPatternGetMoMLAction.class
-                            .getName());
+                            .setExpression(DesignPatternGetMoMLAction.class
+                                    .getName());
                 }
 
                 if (model.getAttribute("_designPatternIcon") == null) {
@@ -1180,7 +1180,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     if (attribute == null
                             || !(attribute instanceof StringAttribute)
                             || !((StringAttribute) attribute).getExpression()
-                            .equals(className)) {
+                                    .equals(className)) {
                         report(new IllegalActionException("The model \"" + file
                                 + "\" is not a design pattern."));
                     } else {
@@ -1263,7 +1263,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 NamedObj targetContainer = target.getContainer();
                 while (targetContainer != null
                         && (locationAttribute = (Location) targetContainer
-                        .getAttribute("_location", Location.class)) == null) {
+                                .getAttribute("_location", Location.class)) == null) {
                     // FindBugs: Load of known null value.  locationAttribute is always null here.
                     // The break is unnecessary as if locationAttribute is non-null, then
                     // the body of the while loop is not executed.
@@ -1505,7 +1505,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // We catch exceptions here because this method used to
             // not throw Exceptions, and we don't want to break compatibility.
             MessageHandler
-            .error("Failed to save \"" + entity.getName() + "\".");
+                    .error("Failed to save \"" + entity.getName() + "\".");
         }
     }
 
@@ -1559,7 +1559,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  creating a parameter.
      */
     public void updateWindowAttributes() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // First, record size and position.
 
         // See "composite window size & position not always saved"
@@ -2203,14 +2203,14 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                         // case is that we will have no Import FMU in the menu.
                         // That is better than preventing the user from opening a model.
                         System.err
-                        .println("Warning: Tried to create the an import menu item, but failed: "
-                                + throwable);
+                                .println("Warning: Tried to create the an import menu item, but failed: "
+                                        + throwable);
                     }
                 }
             } catch (Throwable throwable) {
                 System.err
-                .println("Problem reading the _importActionClassNames parameter from "
-                        + "the confinguration: " + throwable);
+                        .println("Problem reading the _importActionClassNames parameter from "
+                                + "the confinguration: " + throwable);
             }
 
             // PDF Action.
@@ -2240,8 +2240,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 // case is that we will have no Export to Web in the menu.
                 // That is better than preventing the user from opening a model.
                 System.err
-                .println("Warning: Tried to create the Export to Web menu item, but failed: "
-                        + throwable);
+                        .println("Warning: Tried to create the Export to Web menu item, but failed: "
+                                + throwable);
             }
         }
 
@@ -2398,7 +2398,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
                 String[] attributeNames = { "_alternateGetMomlAction",
                         "_designPatternIcon", "_transformationBefore",
-                "_transformationAfter" };
+                        "_transformationAfter" };
                 for (String attributeName : attributeNames) {
                     Attribute attribute = model.getAttribute(attributeName);
                     if (attribute != null) {
@@ -2726,9 +2726,9 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
             _libraryContextMenuCreator = new PTreeMenuCreator();
             _libraryContextMenuCreator
-            .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+                    .addMenuItemFactory(new OpenLibraryMenuItemFactory());
             _libraryContextMenuCreator
-            .addMenuItemFactory(new DocumentationMenuItemFactory());
+                    .addMenuItemFactory(new DocumentationMenuItemFactory());
             _library.addMouseListener(_libraryContextMenuCreator);
 
             _libraryScrollPane = new JScrollPane(_library);
@@ -2781,7 +2781,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 // I'm not sure if that is relevant for the hierarchy tree browser.
                 _treeView = new PTree(_treeViewModel, false);
                 _treeView
-                .addTreeSelectionListener(new HierarchyTreeSelectionListener());
+                        .addTreeSelectionListener(new HierarchyTreeSelectionListener());
                 _treeView.setBackground(BACKGROUND_COLOR);
                 _treeView.setCellRenderer(new HierarchyTreeCellRenderer());
 
@@ -2864,7 +2864,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
         if (getModel() == getModel().toplevel()
                 || getModel().getClass().getName()
-                .equals("ptolemy.domains.modal.modal.ModalController")) {
+                        .equals("ptolemy.domains.modal.modal.ModalController")) {
             // If we are at the top level, disable.  If we are in a
             // ModalModel, disable.  See "Up button does not work in
             // modal models"
@@ -3122,8 +3122,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // Ignore problems here.  Errors simply result in a
             // default size and location.
             System.out
-            .println("While writing, failed to save size, position or zoom factor: "
-                    + ex);
+                    .println("While writing, failed to save size, position or zoom factor: "
+                            + ex);
         }
 
         if (_isDesignPattern()) {
@@ -3504,7 +3504,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     "Copy the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
@@ -3526,7 +3526,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Cut the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_X, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_T));
         }
 
@@ -3609,7 +3609,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
             if (preferences == null) {
                 MessageHandler
-                .message("No preferences given in the configuration.");
+                        .message("No preferences given in the configuration.");
             } else {
                 // Open a modal dialog to edit the parameters.
                 new EditParametersDialog(BasicGraphFrame.this, preferences,
@@ -3633,9 +3633,9 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     GraphModel graphModel = frame._getGraphController()
                             .getGraphModel();
                     graphModel
-                    .dispatchGraphEvent(new GraphEvent(this,
-                            GraphEvent.STRUCTURE_CHANGED, graphModel
-                            .getRoot()));
+                            .dispatchGraphEvent(new GraphEvent(this,
+                                    GraphEvent.STRUCTURE_CHANGED, graphModel
+                                            .getRoot()));
 
                     if (frame._graphPanner != null) {
                         frame._graphPanner.repaint();
@@ -3738,8 +3738,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
                 ptFileChooser
-                .addChoosableFileFilter(new ExtensionFilenameFilter(
-                        extensions));
+                        .addChoosableFileFilter(new ExtensionFilenameFilter(
+                                extensions));
                 ptFileChooser.setCurrentDirectory(_directory);
 
                 int returnVal = ptFileChooser.showDialog(
@@ -3841,7 +3841,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Find occurrences of specified text.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4090,7 +4090,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
     /** The user selected a node in the Hierarchy tree browser */
     private class HierarchyTreeSelectionListener implements
-    TreeSelectionListener {
+            TreeSelectionListener {
         /** The value of the selection in the model hierarchy tree
          *  browser changed.
          *  @param event The event.
@@ -4126,7 +4126,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Send to back of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_B, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_B));
         }
 
@@ -4171,7 +4171,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Bring to front of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4216,7 +4216,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Paste the contents of the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
@@ -4249,13 +4249,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/up.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/up_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/up_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/up_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/up_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/up_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/up_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);
 
@@ -4323,13 +4323,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/print.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/print_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/print_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/print_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/print_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/print_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/print_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
         }
 
         /** Print the current layout.
@@ -4394,13 +4394,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/save.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/save_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/save_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/save_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/save_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/save_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/save_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -4463,13 +4463,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomin.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomin_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomin_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomin_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomin_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+=)");
 
@@ -4478,7 +4478,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // work, so we have to do it this way.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -4509,20 +4509,20 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomreset.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             // Control-m is usually carriage return.  In this case, we use
             // it to mean "return the zoom to the original state".
             putValue("tooltip", description + " (Ctrl+M)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_M, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
@@ -4553,18 +4553,18 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomfit.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4595,18 +4595,18 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomout.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomout_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomout_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomout_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_U));
         }
 
@@ -4643,7 +4643,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 attribute = model.getAttribute("_layoutConfiguration");
                 if (attribute == null) {
                     MessageHandler
-                    .error("Could not create the layout configuration attribute.");
+                            .error("Could not create the layout configuration attribute.");
                     return;
                 }
             }

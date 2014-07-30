@@ -599,7 +599,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @author Patricia Derler
      */
     public static class BasicSwitchAttributes extends
-    CommunicationAspectAttributes {
+            CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.

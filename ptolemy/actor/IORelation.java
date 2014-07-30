@@ -723,8 +723,8 @@ public class IORelation extends ComponentRelation {
             } else {
                 throw new IllegalActionException(this, relation,
                         "Relations have different widths: " + _getUserWidth()
-                        + " != "
-                        + ((IORelation) relation)._getUserWidth());
+                                + " != "
+                                + ((IORelation) relation)._getUserWidth());
             }
         }
 
