@@ -339,6 +339,13 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
         return newObject;
     }
     
+    /** Not used here.  Required for ExceptionSubscriber interface. */
+    // FIXME:  Would it make more sense to send the retry page here, only 
+    // if restart is successful?  Write a test case.
+    public void exceptionHandled(boolean succesful, String message) {
+        
+    }
+    
     /** Generate an HTTP response for the client if an exception occurs.  No
      *  response will be received on the input port in the event of an 
      *  exception.
@@ -347,7 +354,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *   see CatchExceptionAttribute
      */
     
-    public synchronized void exceptionOccurred(String policy) {
+    public synchronized boolean exceptionOccurred(String policy) {
         
         // If there is a pending request,
         // For "restart" policy, generate an error page with retry 
@@ -361,6 +368,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 _respondWithServerErrorMessage();
             }
         }
+        
+        return true;
     }
 
     /** Return the relative path that this HttpService is mapped to,
