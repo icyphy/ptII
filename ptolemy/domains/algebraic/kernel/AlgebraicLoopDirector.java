@@ -279,7 +279,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      *   throws it, or if evaluating the function yields a value that
      *   is not a double.
      */
-    protected void _evaluateLoopFunction(double[] x, double[] g)
+    protected void _evaluateLoopFunction(final double[] x, double[] g)
             throws IllegalActionException{
         // Set the argument to the receivers
         int iRec=0;
@@ -1180,7 +1180,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  throws it, or if evaluating the function yields a value that
          *  is not a double.
          */
-        double[] _map(double[] x)
+        double[] _map(final double[] x)
                 throws IllegalActionException{
             double[] y = new double[_nVars];
             double[] g = new double[_nVars];
