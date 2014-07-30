@@ -373,7 +373,7 @@ public class PtDoclet {
      *  @param isIncluded True if the destination class is included in the
      *  set of classes we are documenting.  If isIncluded is true,
      *  we create a link to the .xml file.  If isIncluded is false, we
-     *  create a linke to the javadoc .html file.
+     *  create a link to the javadoc .html file.
      *  @return a relative path from the base class to the destination class.
      */
     private static String _relativizePath(String baseDirectory,
