@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset=utf-8>
-    <!-- doc/books/systems/continuous/index.html.in $Id: index.html.in 68524 2014-02-28 05:56:47Z cxh $ 
+    <!-- doc/books/systems/continuous/index.html.in $Id$ 
 	 This gets copied to the website.
 
 If you want to change http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/attackModeling/index.html, then the source code at $PTII/doc/papers/y14/attackModeling/index.html.in.  That file gets copied to /home/www/ptweb/ptolemyII/ptII10.0/jnlp-constructive/doc/papers/y14/attackModeling on moog.

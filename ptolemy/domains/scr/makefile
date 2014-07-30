@@ -1,6 +1,6 @@
 # Makefile for PtolemyII Software Cost Reduction Domain
 #
-# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id$
 # @Author: Patricia Derler
 #
 # @Copyright (c) 2014 The Regents of the University of California.

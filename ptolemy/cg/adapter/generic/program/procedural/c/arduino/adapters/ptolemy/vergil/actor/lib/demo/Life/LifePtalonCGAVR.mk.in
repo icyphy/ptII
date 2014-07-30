@@ -1,5 +1,5 @@
 # Template makefile from $PTII/ptolemy/codegen/c/makefile.in
-# $Id: LifePtalonCGAVR.mk.in 56182 2009-11-18 00:31:47Z cxh $
+# $Id$
 # The CodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
 # where the source code is created.

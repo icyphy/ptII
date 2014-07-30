@@ -54,7 +54,7 @@ import ptolemy.kernel.util.StringAttribute;
  and connections previously set should be preserved.
  
  @author Edward A. Lee
- @version $Id: EntityLibrary.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (bilung)

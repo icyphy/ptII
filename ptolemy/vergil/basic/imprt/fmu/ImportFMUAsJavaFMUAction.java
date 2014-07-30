@@ -88,7 +88,7 @@ import diva.graph.GraphController;
    to manage because the ports could change.</p>
 
    @author  Christopher Brooks.  Based on ExportPDFAction by Edward A. Lee
-   @version $Id: ImportFMUAction.java 67792 2013-10-26 19:36:54Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)

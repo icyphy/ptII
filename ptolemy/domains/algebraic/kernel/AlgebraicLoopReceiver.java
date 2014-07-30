@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  <p>
 
  @author Edward A. Lee
- @version $Id: AlgebraicLoopReceiver.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)

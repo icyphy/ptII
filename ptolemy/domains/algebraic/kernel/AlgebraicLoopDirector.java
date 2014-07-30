@@ -143,7 +143,7 @@ import ptolemy.math.DoubleMatrixMath;
  </ul>
 
  @author Edward A. Lee and Michael Wetter
- @version $Id: AlgebraicLoopDirector.java 65763 2013-03-07 01:54:37Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (pwhitake)

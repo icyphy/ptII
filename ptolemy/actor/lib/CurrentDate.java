@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the current date.
 
  @author Patricia Derler
- @version $Id: CurrentTime.java 65763 2013-03-07 01:54:37Z cxh $
+ @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)

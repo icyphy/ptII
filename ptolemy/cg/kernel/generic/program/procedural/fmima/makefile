@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen for Functional Mockup Interface (FMI) Master Algorithm (MA) files
 #
-# @Version: $Id: makefile 55939 2009-10-22 16:12:24Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2009 The Regents of the University of California

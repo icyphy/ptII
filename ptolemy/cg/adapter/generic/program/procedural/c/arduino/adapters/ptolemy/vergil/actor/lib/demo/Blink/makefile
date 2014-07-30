@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Blink
 #
-# @Version: $Id: makefile 59244 2010-09-24 18:35:29Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2014 The Regents of the University of California

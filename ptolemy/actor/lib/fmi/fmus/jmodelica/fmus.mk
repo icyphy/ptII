@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id: fmus.mk 67777 2013-10-26 01:51:06Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.

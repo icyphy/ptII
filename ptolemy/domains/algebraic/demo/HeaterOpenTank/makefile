@@ -1,6 +1,6 @@
 # Makefile for the HeaterOpenTank Ptolemy II demo
 #
-# @Version: $Id: makefile 67922 2013-11-25 17:02:25Z hudson@moog.eecs.berkeley.edu $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2014 The Regents of the University of California.

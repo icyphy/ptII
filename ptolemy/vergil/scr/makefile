@@ -2,7 +2,7 @@
 #
 # @Authors: Patricia Derler
 #
-# @Version: $Id: makefile 53660 2009-05-12 17:25:34Z tfeng $
+# @Version: $Id$
 #
 # @Copyright (c) 2008-2009 The Regents of the University of California.
 # All rights reserved.

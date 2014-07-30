@@ -1,6 +1,6 @@
 # Java port of COBYLA2 nonlinear constrained optimization method
 #
-# @Version: $Id: makefile 33535 2004-05-06 23:51:31Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2014 The Regents of the University of California.

@@ -1,4 +1,4 @@
-# $Id: makefile 67777 2013-10-26 01:51:06Z cxh $
+# $Id$
 # The name of the FMU to be built.
 FMU_NAME = tankOpen 
 

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /** A adapter class that allows generating code for ports.
  *  @author Gang Zhou, Contributor: Bert Rodiers, Christopher Brooks
- *  @version $Id: StaticSchedulingDirector.java 67792 2013-10-26 19:36:54Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (zgang)
  * @Pt.AcceptedRating Red (eal)

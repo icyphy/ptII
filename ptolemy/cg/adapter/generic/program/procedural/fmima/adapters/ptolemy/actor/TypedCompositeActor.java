@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  Code generator adapter for typed composite actor.
 
  @author Man-Kit Leung, Bert Rodiers
- @version $Id: TypedCompositeActor.java 67784 2013-10-26 16:53:27Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (zgang)

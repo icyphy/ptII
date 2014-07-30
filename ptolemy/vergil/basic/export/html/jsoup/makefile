@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 68432 2014-02-19 17:28:55Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.

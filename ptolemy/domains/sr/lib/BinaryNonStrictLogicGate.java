@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  At most one token is consumed on each input channel.
 
  @author Edward A. Lee
- @version $Id: NonStrictLogicGate.java 67784 2013-10-26 16:53:27Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.fmi.FMUImport.
 
  @author Christopher Brooks
- @version $Id: FMUImport.java 67784 2013-10-26 16:53:27Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

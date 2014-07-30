@@ -1,6 +1,6 @@
 # Makefile org sources from outside of Ptolemy
 #
-# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
+# @Version: $Id$
 # @Author: Ilge Akkaya
 #
 # @Copyright (c) 2014 The Regents of the University of California.

@@ -50,7 +50,7 @@ $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fm
     $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
  * </pre>
  *  @author Christopher Brooks
- *  @version $Id: FMIMACodeGenerator.java 67784 2013-10-26 16:53:27Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)

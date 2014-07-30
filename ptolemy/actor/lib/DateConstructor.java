@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
   Construct date token by parsing all date elements (year, day, month, ...).
 
  @author Patricia Derler
- @version $Id: AbsoluteValue.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 10.
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)

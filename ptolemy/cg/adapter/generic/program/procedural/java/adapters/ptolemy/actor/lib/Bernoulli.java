@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * An adapter class for ptolemy.actor.lib.Bernoulli.
  *
  * @author Christopher Brooks, based on Uniform.java by Man-Kit Leung
- * @version $Id: Bernoulli.java 68198 2014-01-27 17:42:01Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Green (cxh)

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** A test actor to test the cancelFireAt() method of the director.
  *
  *  @author Edward A. Lee
- *  @version $Id: SuperdenseTimeTest.java 67792 2013-10-26 19:36:54Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)

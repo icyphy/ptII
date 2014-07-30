@@ -72,7 +72,7 @@ the Hidden Semi-Markov Model family.
 
 
  @author Ilge Akkaya
- @version $Id: ParameterEstimator.java 68631 2014-03-16 10:14:10Z ilgea $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating

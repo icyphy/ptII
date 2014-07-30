@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen Life demo
 #
-# @Version: $Id: makefile 59244 2010-09-24 18:35:29Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2006-2009 The Regents of the University of California

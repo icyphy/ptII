@@ -9,7 +9,7 @@ rm -rf $top $body
 
 # The top of the file
 cat > $top <<EOF
-<!-- $Id: domains.htm 54773 2009-06-28 01:15:24Z cxh $ -->
+<!-- $Id$ -->
 <!-- 
 
   If this file is $PTII/doc/domains.htm, do not edit it.

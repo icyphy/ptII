@@ -40,7 +40,7 @@ import java.util.logging.SimpleFormatter;
  A debug listener that sends messages using Java's Logger API.
 
  @author  Edward A. Lee
- @version $Id: StreamListener.java 65763 2013-03-07 01:54:37Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)

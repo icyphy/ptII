@@ -1,6 +1,6 @@
 /*
 
- * @Version: $Id: IntTest.c 55561 2009-08-25 19:29:08Z rodiers $
+ * @Version: $Id$
  * @Author: Christopher Brooks
  *
  * @Copyright (c) 2013 The Regents of the University of California

@@ -64,7 +64,7 @@ import org.junit.runner.RunWith;
  * </p>
  *
  * @author Christopher Brooks
- * @version $Id: AutoCGCNoInlineTests.java 67784 2013-10-26 16:53:27Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

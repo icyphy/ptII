@@ -276,7 +276,7 @@ import ptolemy.util.MessageHandler;
    </p>
 
    @author Edward A. Lee
-   @version $Id: Ramp.java 67679 2013-10-13 03:48:10Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)

@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id: makefile 54419 2009-06-16 15:09:03Z bldmastr $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2014 The Regents of the University of California

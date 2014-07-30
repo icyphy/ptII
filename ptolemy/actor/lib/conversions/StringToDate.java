@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>This actor converts a string to a date.</p>
 
  @author Patricia Derler
- @version $Id: StringToDouble.java 69370 2014-06-16 13:56:29Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)

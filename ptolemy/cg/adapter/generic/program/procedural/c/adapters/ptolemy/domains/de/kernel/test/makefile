@@ -1,14 +1,14 @@
 # Makefile for Ptolemy Codegen C test
 # Based on standard Ptolemy makefiles
 #
-# @Version: $Id: makefile 61820 2011-08-16 01:09:58Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # Makefile for the Java classes used to test the Ptolemy kernel
 #
 # @Authors: Christopher Hylands
 #
-# @Version: $Id: makefile 61820 2011-08-16 01:09:58Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.

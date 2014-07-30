@@ -64,7 +64,7 @@ import ptolemy.moml.HandlesInternalLinks;
  class definition, these are not mirrored. 
 
  @author Edward A. Lee
- @version $Id: ReflectComposite.java 67792 2013-10-26 19:36:54Z cxh $
+ @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)

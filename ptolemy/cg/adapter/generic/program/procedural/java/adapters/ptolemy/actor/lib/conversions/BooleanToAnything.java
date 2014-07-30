@@ -34,7 +34,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  A adapter class for ptolemy.actor.lib.conversions.BooleanToAnything.
 
  @author Christopher Brooks
- @version $Id: BooleanToAnything.java 67784 2013-10-26 16:53:27Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)

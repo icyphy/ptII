@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  * 
  *  @see HttpRequest
  *  @author  Edward A. Lee and Marten Lohstroh
- *  @version $Id: HttpPut.java 67693 2013-10-17 15:59:01Z hudson@moog.eecs.berkeley.edu $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Red (eal)

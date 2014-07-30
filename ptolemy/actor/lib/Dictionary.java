@@ -68,7 +68,7 @@ import ptolemy.util.MessageHandler;
    them one at a time or in groups.
  
    @author Shuhei Emoto, Edward A. Lee, Kentaro Mizouchi
-   @version $Id: TypedAtomicActor.java 65768 2013-03-07 03:33:00Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh)

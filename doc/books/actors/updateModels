@@ -1,5 +1,5 @@
 #! /bin/sh
-# $Id: updateModels 67777 2013-10-26 01:51:06Z cxh $
+# $Id$
 # Update models from the paper
 
 book=$HOME/src/ealpapers/ptolemy

@@ -44,7 +44,7 @@ An SCR model is a modal model with a different way of configuring transitions,
 set and output actions. To view an SCR model as an FSM actor, set the parameter
 <i>openAsSCRActor</i> to false. 
 @author Patricia Derler
-@version $Id: ConstraintMonitor.java 67792 2013-10-26 19:36:54Z cxh $
+@version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (pd)
 @Pt.AcceptedRating Red (pd)

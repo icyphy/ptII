@@ -55,9 +55,9 @@ import org.w3c.dom.Element;
  * </p>
  *
  * @author Christopher Brooks
-@version $Id: FMICoSimulationCapabilities.java 68209 2014-01-28 03:16:28Z cxh $
+@version $Id$
 @since Ptolemy II 10.0
- * @version $Id: FMICoSimulationCapabilities.java 68209 2014-01-28 03:16:28Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

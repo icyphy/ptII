@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: domains.tcl 62183 2011-10-01 01:10:08Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.

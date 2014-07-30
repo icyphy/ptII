@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 An editor for a transition. This editor is used by FSMTransitionParameters.
 
  @author Patricia Derler
- @version $Id: InsideEntityEditorPaneFactory.java 65763 2013-03-07 01:54:37Z cxh $
+ @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Red (derler)
  @Pt.AcceptedRating Red (derler)

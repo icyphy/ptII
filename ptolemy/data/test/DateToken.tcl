@@ -2,7 +2,7 @@
 #
 # @Author: Edward A. Lee, Neil Smyth, Yuhong Xiong
 #
-# @Version: $Id: DateToken.tcl 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 1997-2008 The Regents of the University of California.
 # All rights reserved.

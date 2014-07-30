@@ -39,7 +39,7 @@ import ptolemy.kernel.Entity;
    the _getRefinementClasses() method in ModalRefinement and ModalController.
 
    @author Thomas Huining Feng
-   @version $Id: ModalController.java 66458 2013-05-31 00:23:14Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)

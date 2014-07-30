@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  rather than this composite actor.  This is triggered by look inside.
 
  @author Patricia Derler
- @version $Id: ModalTableauFactory.java 65763 2013-03-07 01:54:37Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)

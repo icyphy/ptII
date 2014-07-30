@@ -98,7 +98,7 @@ import ptolemy.math.SignalProcessing;
  *  <p>
  *  This actor is tested in continuous and DE.
  *  @author Patricia Derler, Edward A. Lee
- *  @version $Id: Bus.java 67792 2013-10-26 19:36:54Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)

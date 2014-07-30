@@ -36,7 +36,7 @@ import java.util.List;
  * The public particle class, currently used by the Optimizer.
  *
  *  @author  Ilge Akkaya
- *  @version $Id: BasicGraphFrame.java 69412 2014-06-19 19:36:11Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)

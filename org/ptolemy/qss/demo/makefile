@@ -1,6 +1,6 @@
 # Makefile Quantized State Machine (QSS) demos
 #
-# @Version: $Id: makefile 67781 2013-10-26 16:04:48Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2014 The Regents of the University of California.

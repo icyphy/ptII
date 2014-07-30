@@ -35,7 +35,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * A helper class for ptolemy.actor.lib.conversions.BooleanToAnything.
  *
  * @author Man-Kit Leung
- * @version $Id: BooleanToAnything.java 67784 2013-10-26 16:53:27Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

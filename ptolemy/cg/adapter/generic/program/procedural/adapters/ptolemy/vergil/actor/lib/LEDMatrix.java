@@ -33,7 +33,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  A code generation adapter class for vergil.actor.lib.LEDMatrix.
 
  @author Christopher Brooks
- @version $Id: Comparator.java 67784 2013-10-26 16:53:27Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

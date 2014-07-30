@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
    The conditions table for configuring an SCR Model.
    @author Patricia Derler
-   @version $Id: ConstraintMonitor.java 67792 2013-10-26 19:36:54Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (pd)
    @Pt.AcceptedRating Red (pd)

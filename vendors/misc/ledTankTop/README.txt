@@ -1,4 +1,4 @@
-$Id: README.txt 44499 2006-11-27 19:35:36Z cxh $
+$Id$
 LED Tank Top Code from
 http://craftzine.com/01/led
 http://www.cs.colorado.edu/~buechley/diy/diy_tank.html

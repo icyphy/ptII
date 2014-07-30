@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II Algebraic Loop domain
 #
-# @Version: $Id: makefile 61458 2011-07-11 19:54:07Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks 
 #
 # @Copyright (c) 2014 The Regents of the University of California.

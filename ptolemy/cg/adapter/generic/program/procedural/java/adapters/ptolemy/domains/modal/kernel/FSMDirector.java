@@ -42,7 +42,7 @@ Code generator adapter associated with the FSMDirector class. This class
 is also associated with a code generator.
 
 @author William Lucas
-@version $Id: FSMDirector.java 67792 2013-10-26 19:36:54Z cxh $
+@version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)

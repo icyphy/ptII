@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
   Modify date by adding or subtracting a value to one of the date fields.
 
  @author Patricia Derler
- @version $Id: AbsoluteValue.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 10.
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)

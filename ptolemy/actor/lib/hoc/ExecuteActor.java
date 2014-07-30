@@ -96,7 +96,7 @@ import ptolemy.kernel.util.StringAttribute;
  has been called with a true argument.
 
  @author Edward A. Lee
- @version $Id: RunCompositeActor.java 67792 2013-10-26 19:36:54Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @see ModelReference
  @see ptolemy.actor.lib.SetVariable

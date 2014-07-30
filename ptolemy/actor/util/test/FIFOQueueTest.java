@@ -51,7 +51,7 @@ import ptolemy.actor.util.FIFOQueue;
   object of the correct type."</p>
 
  @author Christopher
- @version $Id: DoubleCQComparator.java 65768 2013-03-07 03:33:00Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (liuj)

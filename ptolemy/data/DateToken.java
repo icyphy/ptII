@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  Note: Java 8 provides a much improved implementation of dates and times.
  *  This implementation should be upgraded when  
  * @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
- * @version $Id: DateToken.java 24000 2010-04-28 00:12:36Z berkley $
+ * @version $Id$
  * @since Ptolemy II 10.
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

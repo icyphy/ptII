@@ -79,7 +79,7 @@ sequence given the parameter estimates converges to a value within <i>likelihood
 the parameter estimation stops iterating and delivers the parameter estimates.
 
  @author Ilge Akkaya
- @version $Id: HMMGaussianEstimator.java 67792 2013-10-26 19:36:54Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating

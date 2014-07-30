@@ -1,6 +1,6 @@
 # Makefile org.terraswarm sources
 #
-# @Version: $Id: makefile 68393 2014-02-11 01:54:59Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2012-2013 The Regents of the University of California.
