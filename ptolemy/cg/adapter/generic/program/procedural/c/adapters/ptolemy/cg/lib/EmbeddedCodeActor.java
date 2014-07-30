@@ -87,7 +87,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
          *  in the adapters.  In this class, reset the gode stream and
          *  set the code blocks to the value of the embeddedCode parameter.
          *
-         *  @exception IllegalActionException If an error occurrs while
+         *  @exception IllegalActionException If an error occurs while
          *   initializing an adapter.
          */
         @Override

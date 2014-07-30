@@ -79,7 +79,7 @@ public class ConfigXmlHandler extends XmlHandler {
      *  document.
      *
      *  @param elementName The name of the XML element.
-     *  @exception Exception If the overrided method in the superclass throws an
+     *  @exception Exception If the overriding method in the superclass throws an
      *   Exception.
      */
     public void endElement(String elementName) throws Exception {

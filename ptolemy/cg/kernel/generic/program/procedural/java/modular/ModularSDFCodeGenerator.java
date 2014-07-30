@@ -240,7 +240,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         Map clusteredOutputs = new HashMap();
         Map outputInputDependence = new HashMap();
 
-        _clusteringOuputFirings(actorFirings, outputFiringFunctions,
+        _clusteringOutputFirings(actorFirings, outputFiringFunctions,
                 inputFiringFunctions, clusteredOutputs, outputInputDependence);
 
         Set<IOPort> inInputConnectedPorts = new HashSet();
@@ -1058,7 +1058,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @param outputInputDependence
      */
 
-    private void _clusteringOuputFirings(Set actorFirings,
+    private void _clusteringOutputFirings(Set actorFirings,
             List<SimulationFiringFunction> outputFiringFunctions,
             List<SimulationFiringFunction> inputFiringFunctions,
             Map clusteredOutputs, Map outputInputDependence) {

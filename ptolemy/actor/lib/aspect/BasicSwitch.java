@@ -252,7 +252,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException If the receiver is an
-     *  ouptut port.
+     *  output port.
      */
     @Override
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver)

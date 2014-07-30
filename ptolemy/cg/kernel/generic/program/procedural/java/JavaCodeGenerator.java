@@ -831,7 +831,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * of constants (MAX_NUM_TYPE, MAX_NUM_FUNC), the type map, the function
      * map, function definitions read from the files, and function table.
      * @return The type resolution code.
-     * @exception IllegalActionException If an error occurrs when generating
+     * @exception IllegalActionException If an error occurs when generating
      *  the type resolution code, or if the adapter class for the model
      *  director cannot be found, or if an error occurs when the adapter
      *  actor generates the type resolution code.

@@ -116,7 +116,7 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
     }
 
     /** Return true if the status is present.
-     *  @return True if the recevier has a token.
+     *  @return True if the receiver has a token.
      */
     @Override
     public boolean hasToken() {

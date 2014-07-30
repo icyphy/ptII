@@ -592,7 +592,7 @@ PartiallyOrderedToken {
     /** The flag indicating that the the precision is seconds. */
     public static final int PRECISION_SECOND = 1;
 
-    /** The flag indicating that the the precision is millisecondss. */
+    /** The flag indicating that the the precision is milliseconds. */
     public static final int PRECISION_MILLISECOND = 2;
 
     /** The flag indicating that the the precision is microseconds. */

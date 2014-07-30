@@ -39,7 +39,7 @@ import ptolemy.kernel.util.InvalidStateException;
 //// Receiver
 
 /**
- * The base class adapter for Recevier.
+ * The base class adapter for Receiver.
  *
  * @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
  * @version $Id$

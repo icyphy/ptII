@@ -1217,7 +1217,7 @@ public abstract class ScalarToken extends Token implements
      *  "(l_1 * l_2 * ... * l_m) / (s_1 * s_2 * ... * s_n)".
      *  For example: "(meter * kilogram) / (second * second)".
      *  If m or n is 1, then the parenthesis above or below "/" is
-     *  omited. For example: "meter / second".
+     *  omitted. For example: "meter / second".
      *  If there is no term above "/", the format becomes
      *  "1 / (s_1 * s_2 * ... * s_n)". For example: "1 / meter".
      *  If this token does not have a unit, return an empty string.

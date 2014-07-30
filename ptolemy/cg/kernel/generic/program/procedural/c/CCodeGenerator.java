@@ -2817,7 +2817,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  data struct types and static methods or variables shared by multiple
      *  instances of the same actor type.
      *  @return The shared code of the containing composite actor.
-     *  @exception IllegalActionException If an error occurrs when generating
+     *  @exception IllegalActionException If an error occurs when generating
      *   the globally shared code, or if the adapter class for the model
      *   director cannot be found, or if an error occurs when the adapter
      *   actor generates the shared code.

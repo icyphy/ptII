@@ -113,7 +113,7 @@ import ptolemy.math.SignalProcessing;
 
  <li> For each measurement input, create an input port with name <i>measurementName</i>_m,
  where <i>measurementName</i> is an arbitrary measurement name. Add a parameter to the actor
- named <i>naemeasurementName</i>, which is an expression describing the measurement's
+ named <i>measurementName</i>, which is an expression describing the measurement's
  correspondence to the state space. Namely, the measurement equation should be a function
  of <i>stateVariableNames</i>, <i>U</i> and <i>t</i>.
 

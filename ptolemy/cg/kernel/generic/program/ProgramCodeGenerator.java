@@ -78,7 +78,7 @@ import ptolemy.util.StringUtilities;
 /** Generate a programming language version of a model.
  *
  *  <p>This base class contains parameters and methods common to
- *   all programming langauges.</p>
+ *   all programming languages.</p>
  *
  *  @author Bert Rodiers
  *  @version $Id$

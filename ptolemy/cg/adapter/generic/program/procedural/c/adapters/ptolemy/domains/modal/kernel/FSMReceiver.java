@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// FSMReceiver
 
 /**
- Code generator helper for FSMRecever.
+ Code generator helper for FSMReceiver.
 
  @author Gang Zhou, with modifications by Shanna-Shaye Forbes
  @version $Id$

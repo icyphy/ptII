@@ -142,7 +142,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     /** Fire the actor.
      *  @exception IllegalActionException If thrown by the parent or by the
-     *  fire() meethod of the domain-dependent interpreter.
+     *  fire() method of the domain-dependent interpreter.
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -219,7 +219,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     /** Prefire the actor.
      *  @return true If the actor can be fired.
      *  @exception IllegalActionException If thrown by the parent or by the
-     *  prefire() meethod of the domain-dependent interpreter.
+     *  prefire() method of the domain-dependent interpreter.
      */
     @Override
     public boolean prefire() throws IllegalActionException {

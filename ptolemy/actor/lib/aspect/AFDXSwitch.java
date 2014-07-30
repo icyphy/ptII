@@ -144,7 +144,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException If the receiver is an
-     *  ouptut port.
+     *  output port.
      */
     public IntermediateReceiver getReceiver(Receiver receiver)
             throws IllegalActionException {

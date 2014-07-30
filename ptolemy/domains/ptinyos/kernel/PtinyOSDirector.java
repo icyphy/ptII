@@ -1375,7 +1375,7 @@ public class PtinyOSDirector extends Director {
 
     /** Confirm overwrite of file if the confirmOverwrite parameter is
      *  set to true.  Return true if ok to write file, throw
-     *  IllegalActionException if the user cancels the ovewrite.
+     *  IllegalActionException if the user cancels the overwrite.
      *  @param file File to be written.
      *  @return True if ok to write file.
      *  @exception IllegalActionException If code generation should be halted.

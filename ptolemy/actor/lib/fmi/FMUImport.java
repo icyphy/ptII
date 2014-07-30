@@ -3227,7 +3227,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  <i>fmuFile<i> parameter cannot be unzipped or if there
      *  is a problem deleting any pre=existing parameters or
      *  creating new parameters.
-     *  @exception NameDuplicationException If a paramater to be created
+     *  @exception NameDuplicationException If a parameter to be created
      *  has the same name as a pre-existing parameter.
      */
     private void _updateParameters() throws IllegalActionException,

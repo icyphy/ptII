@@ -66,7 +66,7 @@ public class GlassPaneWidget extends NamedObjectWidget {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
-    /** Create new instance of the glasspane for the given positionabe element.
+    /** Create new instance of the glasspane for the given positionable element.
      *  @param scene The scene containing the widget.
      *  @param element The element to visualize.
      */

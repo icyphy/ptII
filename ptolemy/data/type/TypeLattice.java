@@ -64,11 +64,11 @@ import ptolemy.graph.DirectedAcyclicGraph;
 
  Thus,
  <menu>
- <li>16-bit shorts are not lossly convertable into
+ <li>16-bit shorts are not losslessly convertable into
  16-bit chars (unsigned integers).
- <li>32-bit ints are not lossly convertable into
+ <li>32-bit ints are not losslessly convertable into
  32-bit floats.
- <li>64-bit longs are not lossly convertable into
+ <li>64-bit longs are not losslessly convertable into
  64-bit doubles.
  </menu>
 

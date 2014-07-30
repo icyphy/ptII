@@ -109,7 +109,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     /** Add a property to the property hashtable.
      *  @param name The name of the property.
-     *  @param value A string representing the propety.
+     *  @param value A string representing the property.
      *  @exception NameDuplicationException If thrown while creating the property
      *  @exception Exception If thrown while configuring the attribute
      *  @see #getProperty(String)

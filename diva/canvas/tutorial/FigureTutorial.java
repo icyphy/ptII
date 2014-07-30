@@ -359,7 +359,7 @@ public class FigureTutorial {
         }
 
         /** Transform the object. There are various ways of doing this,
-         * some more complicated and some even morer complicated...
+         * some more complicated and some even more complicated...
          * In this example, we use a utility function in the
          * class diva.canvas.CanvasUtils to transform the bounding
          * box. Both before and after we do the transformation,

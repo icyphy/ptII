@@ -644,7 +644,7 @@ public class OptimalScheduleFinder {
     }
 
     /**
-     * A list of ports, based on LinkeList.
+     * A list of ports, based on LinkedList.
      */
     @SuppressWarnings("serial")
     protected static class _ListOfPorts extends LinkedList {

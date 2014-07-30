@@ -114,7 +114,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
      *  @param timeVariable The variable to be set in the generated code
      *  @return A string sets the timeVariable to the timestamp of the
      *  last input channel.
-     *  @exception IllegalActionException If there is a problme
+     *  @exception IllegalActionException If there is a problem
      *  getting the width of the input.
      */
     @Override

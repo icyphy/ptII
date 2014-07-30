@@ -52,7 +52,7 @@ an optimized schedule according to a defined criterion.
 
 <h1>Class comments</h1>
 An OptimizingSDFDirector is the class that controls execution of actors under the
-SDF domain, while using an opimal schedule.  For this it uses the OptimizingSDFScheduler
+SDF domain, while using an optimal schedule.  For this it uses the OptimizingSDFScheduler
 class.
 <p>
 See {@link ptolemy.domains.sdf.kernel.SDFDirector},

@@ -74,7 +74,7 @@ import ptolemy.moml.MoMLParser;
  The result of executing the model is obtained by reading its
  <i>evaluatedValue</i> parameter (which it must have defined).
 
- <p> Instead of outputing all the satisfied elements in the input
+ <p> Instead of outputting all the satisfied elements in the input
  array, the parameter <i>maxOutputLength</i> can be used to specify
  how many elements this actor should only output. If the specified
  length is larger than the number of satisfied elements, it will

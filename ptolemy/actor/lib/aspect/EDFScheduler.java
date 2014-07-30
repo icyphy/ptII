@@ -107,7 +107,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *  @param executionTime The execution time of the actor.
      *  @return Relative time when this Scheduler has to be executed
      *    again.
-     *  @exception IllegalActionException Thrown if actor paramaters such
+     *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
     @Override

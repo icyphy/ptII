@@ -83,7 +83,7 @@ public class Transformer {
      *  are looked up and refactored in the same way.
      *
      *  @param args The array of file names or names of directories.
-     *  @exception Exception If any exception occues.
+     *  @exception Exception If any exception occures.
      */
     public static void main(String[] args) throws Exception {
         try {

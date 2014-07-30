@@ -146,7 +146,7 @@ public class TotallyOrderedSet {
 
     /** Return the index of the given object. Return -1 if the object
      *  is not in the set.
-     *  @param obj The objec to get index for.
+     *  @param obj The object to get index for.
      *  @return The index.
      */
     public int indexOf(Object obj) {

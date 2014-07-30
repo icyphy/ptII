@@ -145,13 +145,13 @@ public class TerrainProperty extends TypedAtomicActor implements
 
     /** The width of material that will attenuate a signal power by
      *  50% (3dB).  This has the same units as the xyPoints parameter,
-     *  which specifies the geometry of the obstable.
+     *  which specifies the geometry of the obstacle.
      *  The default value is 0.0, which means infinite attenuation
      *  (no signal gets through).
      */
     public Parameter attenuationDepth;
 
-    /** The x/y coordinates of the obstable. This is an array
+    /** The x/y coordinates of the obstacle. This is an array
      *  of integers specifying a geometry. The icon will have
      *  the same geometry.
      *  The default value is an array of integer pairs:
