@@ -61,6 +61,7 @@ JSRCS = \
 	BarGraph.java \
 	Display.java \
 	DisplayInterface.java \
+	ExceptionManagerGUIFactory.java \
 	HistogramPlotter.java \
 	InteractiveShell.java \
 	MatrixViewer.java \

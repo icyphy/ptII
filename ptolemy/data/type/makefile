@@ -86,6 +86,7 @@ OPTIONAL_FILES = \
 	'ArrayType$$TypeableElementTypeTerm.class' \
 	'ArrayType$$ElementTypeTerm.class' \
 	'BaseType$$ArrayBottomType.class' \
+	'BaseType$$DateType.class' \
 	'BaseType$$FloatType.class' \
 	'BaseType$$NilType.class' \
 	'BaseType$$ShortType.class' \

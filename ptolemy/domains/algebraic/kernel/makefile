@@ -58,7 +58,10 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'AlgebraicLoopDirector$$AlgebraicLoopSolver.class'
+	'AlgebraicLoopDirector$$AlgebraicLoopSolver.class' \
+	'AlgebraicLoopDirector$$Homotopy.class' \
+	'AlgebraicLoopDirector$$NewtonRaphson.class' \
+	'AlgebraicLoopDirector$$SuccessiveSubstitution.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
