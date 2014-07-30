@@ -26,15 +26,15 @@ ls -l $diffOutput
 
 newJavaFiles=/tmp/fixsince.newJavaFiles
 if [ ! -f $newJavaFiles ]; then
-    echo "Creating $newJavaFiles"
+    echo "Creating $newJavaFiles for new Java files."
     egrep "^Only in ${PTII}/adm/dists/ptII${newVersion}/" $diffOutput |
         egrep '.java$' |
         sed -e 's/Only in //' -e 's@: @/@' |
-	grep -v DEThreadActor.java |
+	grep -v DEThreadActor.java | grep -v jimblackler | grep -v omc/corba | grep -v org/json | grep -v swig |
 	sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@'> $newJavaFiles 
     (cd $PTII/adm/dists/ptII$oldVersion; $PTII/adm/bin/ptIItxtfiles) | egrep '.java$' | sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@' | sort > /tmp/fixsince.oldJavaFiles
     (cd $PTII/adm/dists/ptII$newVersion; $PTII/adm/bin/ptIItxtfiles) | egrep '.java$' | sed -e "s@$PTII/adm/dists/ptII$newVersion/@@" -e 's@^\./@@' | sort > /tmp/fixsince.newFiles
-    comm -13 /tmp/fixsince.oldJavaFiles /tmp/fixsince.newFiles >> $newJavaFiles
+    comm -13 /tmp/fixsince.oldJavaFiles /tmp/fixsince.newFiles | 	grep -v DEThreadActor.java | grep -v jimblackler | grep -v omc/corba | grep -v org/json | grep -v swig  >> $newJavaFiles
     sort $newJavaFiles | uniq | egrep -v "^com" > /tmp/fixsince.newJavaFiles.s
     mv /tmp/fixsince.newJavaFiles.s $newJavaFiles
 fi
