@@ -583,7 +583,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      </pre>
      where <i>d</i> is the <i>delta</i> parameter.
      <p>
-     For Homotopy, we solve f(x) = x - g(x).
+     For Homotopy, we solve f(x) = x - g(x) = 0.
      The problem is reformulated as H(x, lambda) = x - lambda g(x),
      where lambda has an initial value of 0 and is successively increased to 1.
      The implementation is equal to Program 3 of
@@ -677,8 +677,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                              int maxIterations)
                         throws IllegalActionException{
             super(variableNames, tolerance, maxIterations);
-            // Temporary variable used to store the result of g(.)
-            _g = new double[_nVars];
+            // Temporary variable used to store the result of f(x)=g(x)-x.
+            _f = new double[_nVars];
 
             // Initialize step size for Jacobian calculation
             _deltaX = new double[tolerance.length];            
@@ -716,9 +716,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // Evaluate the loop function to compute x_{n+1} = g(x_n).
                 // This calls the loop function of the outer class.
                 if (_iterationCount == 0){
-                    _evaluateLoopFunction(xIni, _g);
+                    _residual(xIni, _f);
                 }
-                final double[] xNew = _newtonStep(xIni, _g);
+                final double[] xNew = _newtonStep(xIni, _f);
                 _iterationCount++;
 
                 // Check for convergence
@@ -726,9 +726,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // For the NewtonRaphson, we do not compare x and xNew, but rather xNew and g(xNew).
                 // Otherwise, the test may indicate convergence if the Newton step is small.
-                _evaluateLoopFunction(xNew, _g);
+                _residual(xNew, _f);
                 for(int i = 0; i < xIni.length; i++){
-                    final double diff = Math.abs(xNew[i]-_g[i]);
+                    final double diff = Math.abs(_f[i]);
                     if (diff > Math.max(_tolerance[i], diff*_tolerance[i])){
                         _converged = false;
                         break;
@@ -753,26 +753,30 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** Return the new iterate of a Newton step. 
          * 
          * @param x The best known iterate.
-         * @param g The function value g(x).
-         * @return The new guess for the solution.
+         * @param f The function value f(x)=g(x)-x.
+         * @return The new guess for the solution f(x) = 0.
+         * 
          * @exception IllegalActionException If the solver fails to find a solution.
          */
-        protected double[] _newtonStep(final double[] x, final double[] g)
+        protected double[] _newtonStep(final double[] x, final double[] f)
                 throws IllegalActionException {
             final int n = x.length;
 
             double[] xNew = new double[n];
-            double[] gNew = new double[n];
+            double[] fNew = new double[n];
             System.arraycopy(x, 0, xNew, 0, n);
-            // Jacobian
+            // Jacobian of f(.)
             double[][] J = new double[n][n];
-            // Loop over each independent variable, and fill the Jacobian
+            // Loop over each independent variable, and fill the Jacobian.
+            // The loop function is g(x), and we attempt to solve f(x) = g(x)-x.
+            // Hence, the Jacobian can be approximated by 
+            // J[i][k] = (f_new[k] - f[k])/dX[i]
             for (int i = 0; i < n; i++){
                 final double xOri = xNew[i];
                 xNew[i] += _deltaX[i];
-                _evaluateLoopFunction(xNew, gNew);
+                _residual(xNew, fNew);
                 for(int k = 0; k < n; k++){
-                    J[i][k] = (gNew[k]-g[k])/_deltaX[i];
+                    J[i][k] = (fNew[k]-f[k])/_deltaX[i];
                 }
                 // Reset the coordinate to its old value
                 xNew[i] = xOri;
@@ -799,14 +803,14 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 throw new IllegalActionException(message.toString());
             }
             
-            // Solve J * d = -g(x_n) for d = x_{n+1}-x{n} 
+            // Solve J * d = -f(x_n) for d = x_{n+1}-x{n} 
             // to get the Newton step.
             if (n == 1){
-                final double d = -g[0]/J[0][0];
+                final double d = -f[0]/J[0][0];
                 xNew[0] = x[0] + d;
             }
             else{
-                final double[] d = _gaussElimination(J, g);
+                final double[] d = _gaussElimination(J, f);
                 for (int i = 0; i < n; i++)
                     xNew[i] = x[i] - d[i];
             }
@@ -895,14 +899,37 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             return r;
         }
         
+        /** Evaluate the residual function f(x) = g(x)-x.
+         * 
+         *  This function is called by the solver to residual function.
+         *  
+         *  @param x Input to the loop function g(x).
+         *  @param f Double vector of the same size as x. The result will be stored in this function.
+         *
+         *  @exception IllegalActionException If the prefire() method
+         *   returns false having previously returned true in the same
+         *   iteration, or if the prefire() or fire() method of the actor
+         *   throws it, or if evaluating the function yields a value that
+         *   is not a double.
+         */
+        protected void _residual(double[] x, double[] f)
+                throws IllegalActionException{
+            double[] g = new double[_nVars];
+            _evaluateLoopFunction(x, g);
+            for(int i = 0; i < _nVars; i++){
+                f[i] = g[i] - x[i];
+            }
+        }
+
+        
         ///////////////////////////////////////////////////////////////////
         ////             protected variables                           ////        
         
         /** Step size for finite difference approximation */
         protected double[] _deltaX;
         
-        /** Temporary variable used to store the result of g(.) */
-        protected double[] _g;
+        /** Temporary variable used to store the result of f(x) = g(x) -x  */
+        protected double[] _f;
 
     }
     
