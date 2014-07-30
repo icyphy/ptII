@@ -90,6 +90,9 @@ OPTIONAL_FILES = \
 	'HTMLModelExporter$$1.class' \
 	'HttpActor$$ActorServlet.class' \
 	'HttpRequest$$Method.class' \
+	'HttpActor$$HttpRequestItems.class' \
+	'HttpActor$$HttpResponseItems.class' \
+	'HttpResponse$$ErrorSource.class' \
 	'WebServer$$1.class' \
 	'WebServer$$RunnableServer.class' \
 	'HttpActor$$HttpRequest.class' \

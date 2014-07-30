@@ -176,6 +176,9 @@ JSRCS = \
 	DiscreteRandomSource.java \
 	Distributor.java \
 	ElementsToArray.java \
+	ExceptionManager.java \
+	ExceptionManagerModel.java \
+	ExceptionSubscriber.java \
 	Exec.java \
 	ExecutionTime.java \
 	Exit.java \

@@ -69,6 +69,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
 	auto \
+	invokedByAuto \
 	junit \
 	TestRunner.xml 
 

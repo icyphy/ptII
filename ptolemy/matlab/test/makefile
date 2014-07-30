@@ -77,7 +77,8 @@ MISC_FILES = \
 	ExpressionTest.xml \
 	MatlabExpression.xml \
 	mFileTest.m \
-	mFileTest.xml
+	mFileTest.xml \
+	TwoMatlabsDeadlockTest.xml
 
 JCLASS = $(JSRCS:%.java=%.class)
 
