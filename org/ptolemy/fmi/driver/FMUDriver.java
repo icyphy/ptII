@@ -207,7 +207,6 @@ public abstract class FMUDriver {
     protected void _setEnableLogging(boolean enableLogging) {
         // This method exists so as to avoid a warning from FindBugs.
         _enableLogging = enableLogging;
-        _enableLogging = true;
     }
 
     ///////////////////////////////////////////////////////////////////
