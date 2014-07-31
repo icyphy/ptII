@@ -79,7 +79,7 @@ public class FMUBuilder {
     ////                         public methods                    ////
 
     /** Build the specified shared library inside the FMU.
-     *  <p>A typicaly value is
+     *  <p>A typical value is
      *  <code>/tmp/FMUFile12345/binaries/linux64/stepCounter.dylib</code>.
      *
      *  <p>Typically the sharedLibrary is inside a temporary directory

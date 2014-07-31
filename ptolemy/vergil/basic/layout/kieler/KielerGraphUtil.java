@@ -56,7 +56,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 ///////////////////////////////////////////////////////////////////
 ////KielerGraphUtil
 /**
- * Static helper class to work with KIELER graph datas tructures.
+ * Static helper class to work with KIELER graph datas structures.
  *
  * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>)
  * @version $Id$

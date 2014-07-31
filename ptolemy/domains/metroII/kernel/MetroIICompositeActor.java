@@ -69,7 +69,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
     }
 
     /**
-     * Constructs a MetroIICompositeActor based on a given worksapce.
+     * Constructs a MetroIICompositeActor based on a given workspace.
      *
      * @param workspace
      *            The workspace for this object.

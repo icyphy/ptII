@@ -152,7 +152,7 @@ public class StreamExec implements ExecuteCommands {
      *  null is returned.  If appendToPath() has been called, and
      *  the then the environment for the subprocess is checked, which
      *  might be different than the environment for the current process
-     *  because appendToPath() was called.  Note that that key is searche
+     *  because appendToPath() was called.  Note that that key is searched
      *  for in a case-insensitive mode.
      */
     @Override

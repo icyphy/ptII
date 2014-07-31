@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
  * actors by calling startOrResume(MetroII event list) (@see StartOrResumable).
  * This implies that each firing is a process that executes and blocks to
  * propose MetroII events. The proposed events from actors will be passed to
- * upper level directors and ultramately passed to MetroIIDirector (@see
+ * upper level directors and ultimately passed to MetroIIDirector (@see
  * MetroIIDirector), where the states of the MetroII events are updated based on
  * constraint resolution and architectural models. In other words, the order of
  * firing may be affected by the architectural model. But causality should not

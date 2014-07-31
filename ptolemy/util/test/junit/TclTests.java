@@ -298,7 +298,7 @@ public class TclTests {
         _tclFileCount++;
     }
 
-    /** Set the cached vaue of the count of the number of failed tests.
+    /** Set the cached value of the count of the number of failed tests.
      *  @param count The object representing the number of failed tests.
      */
     protected static void _setFailedTestCount(Object count) {

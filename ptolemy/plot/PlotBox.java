@@ -3302,7 +3302,7 @@ out.println("\\begin{document}");
     /** The maximum x value of the range of the data to be plotted. */
     protected transient volatile double _xMax = 0;
 
-    /** The minimum y valud of the range of the data to be plotted. */
+    /** The minimum y value of the range of the data to be plotted. */
     protected transient volatile double _xMin = 0;
 
     /** The factor we pad by so that we don't plot points on the axes.

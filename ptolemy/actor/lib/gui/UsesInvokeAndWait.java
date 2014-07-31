@@ -31,7 +31,7 @@ package ptolemy.actor.lib.gui;
  * A marker interface indicating that the class calls
  * SwingUtilities.invokeAndWait().
  *
- * <p>Calls to SwingUtilties.invokeAndWait() do not nest.  For example
+ * <p>Calls to SwingUtilities.invokeAndWait() do not nest.  For example
  * ptolemy.vergil.basic.export.ExportModel can optionally run a model
  * by calling invokeAndWait().  However, if the model contains an
  * InteractiveShell actor, then the run will hang.  Thus, we check to

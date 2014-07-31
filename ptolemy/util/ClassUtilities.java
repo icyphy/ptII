@@ -162,6 +162,8 @@ public class ClassUtilities {
             // .getResource(entry) probably will not work.
             Class refClass = Class.forName("ptolemy.util.ClassUtilities");
             URL entryURL = refClass.getClassLoader().getResource(entry);
+            System.out.println("ClassUtilities.jarURLEntryResource(" + jarURLString
+                    + "): " + entry + " " + entryURL);
             if (entryURL == null && entry.indexOf("#") != -1) {
                 // If entry contains a #, then strip it off and try again.
                 entryURL = refClass.getClassLoader().getResource(

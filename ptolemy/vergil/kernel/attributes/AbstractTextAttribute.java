@@ -123,7 +123,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
         anchor.addChoice("northeast");
         anchor.addChoice("northwest");
         anchor.addChoice("south");
-        anchor.addChoice("sountheast");
+        anchor.addChoice("southeast");
         anchor.addChoice("southwest");
         anchor.addChoice("west");
     }

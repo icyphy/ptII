@@ -345,7 +345,7 @@ ExceptionSubscriber {
     // FIXME:  Would it make more sense to send the retry page here, only
     // if restart is successful?  Write a test case.
     @Override
-    public void exceptionHandled(boolean succesful, String message) {
+    public void exceptionHandled(boolean successful, String message) {
 
     }
 

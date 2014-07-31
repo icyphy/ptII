@@ -85,7 +85,7 @@ public class AFDXVlink {
     /** Constructor.
      * @param nm The name of the virtual-link.
      * @param b The value of the bag.
-     * @param ts The size of the trame.
+     * @param ts The size of the frame.
      * @param sched The name of the virtual-link scheduler.
      * @param src The initial actor connected to the virtual-link.
      */

@@ -125,7 +125,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  </ul>
 
  @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
- (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
+ (Based on my RxDatagram, and on the IRLink class written by Xiaojun Liu)
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating red (winthrop)

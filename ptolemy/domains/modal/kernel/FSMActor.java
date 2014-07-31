@@ -155,7 +155,7 @@ import ptolemy.kernel.util.Workspace;
  known during firings under a director with fixed-point semantics,
  such as SR or Continuous.
  <p>
- To refer to a channel specificly, a guard expression may use
+ To refer to a channel specifically, a guard expression may use
  <i>portName</i>_<i>channelIndex</i>, which has value equal to the token
  received on the port on the given channel. Similarly, it may refer
  to <i>portName</i>_<i>channelIndex</i>_<i>isPresent</i>.
@@ -4187,7 +4187,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     private transient long _outputPortsVersion = -1;
 
-    /** Set of outputs that must be made uknown at the end
+    /** Set of outputs that must be made unknown at the end
      *  of a firing because they are set on transitions that
      *  are not known to be enabled or disabled.
      */

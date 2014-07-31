@@ -713,7 +713,7 @@ public final class Workspace implements Nameable {
      *  <pre>
      *    int depth = 0;
      *    try {
-     *       synchrononized(obj) {
+     *       synchronized(obj) {
      *           ...
      *           depth = releaseReadPermission();
      *           obj.wait();

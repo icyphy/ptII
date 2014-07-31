@@ -383,7 +383,7 @@ public class SDFDirector
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer();
-        //                + getCodeGenerator().getMethodVisibiliyString()
+        //                + getCodeGenerator().getMethodVisibilityString()
         //                + " void execute() "
         //                + getCodeGenerator().getMethodExceptionString() + " {" + _eol);
         //

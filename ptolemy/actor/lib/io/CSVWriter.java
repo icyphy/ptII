@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
  @author  Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0
- @Pt.ProposedRating Yello (eal)
+ @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
 public class CSVWriter extends LineWriter {

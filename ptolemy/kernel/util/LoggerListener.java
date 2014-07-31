@@ -103,7 +103,7 @@ public class LoggerListener implements DebugListener {
 
     /** Create a logger.
      *  This constructor creates a logger that logs all messages,
-     *  and stores the log in system temporary directory (whereever that is).
+     *  and stores the log in system temporary directory (where ever that is).
      *  @param name The name for this logger. This should normally be a fully qualified
      *   classname or full name of the object being listened to.
      *  @param directory The directory in which to store the log file, or null to use the system temporary directory.

@@ -93,7 +93,7 @@ public class FMI20ModelExchangeCapabilities extends FMICapabilities {
      */
     public boolean canNotUseMemoryManagementFunctions;
 
-    /** True if the environment can serialze the internal FMU state,
+    /** True if the environment can serialize the internal FMU state,
      *  meaning that the following functions are supported:
      *  fmiDeSerializeFMUstate(), fmiSerialFMUState() and
      *  fmiSerializeFMUstateSize() are supported.  If this flag is

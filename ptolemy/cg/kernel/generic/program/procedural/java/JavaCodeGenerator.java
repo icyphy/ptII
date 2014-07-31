@@ -1366,7 +1366,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @return The visibility signature.
      */
     @Override
-    public String getMethodVisibiliyString() {
+    public String getMethodVisibilityString() {
         return "public ";
     }
 

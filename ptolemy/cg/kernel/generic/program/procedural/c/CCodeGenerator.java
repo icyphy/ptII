@@ -2954,7 +2954,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *
      *  <p>See the parent class
      *  {@link ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)}
-     *  for variable that are substutited by the parent class.</p>
+     *  for variable that are substituted by the parent class.</p>
      *
      *  <p>The following variables are substituted:
      *  <code>PTCG_CFILES</code>, <code>PTCG_OFILES</code>,

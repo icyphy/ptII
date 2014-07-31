@@ -187,16 +187,17 @@ public class PtidesPort extends MirrorPort {
      *  the event timestamp received at a network receiver port
      *  (<i>isNetworkPort</i> is true and the port is an output),
      *  where platform time is smaller than the event timestamp.
-     *  This is used to indicate that the designer knows that the execution
+     *  <p>This is used to indicate that the designer knows that the execution
      *  time on the sending platform is bigger than the time delay on the
-     *  sending platform.
-     *  Together with the networkDelayBound and the clockSycnhronizationError
-     *  this parameter is used to determine whether an event is arriving at
-     *  a network receiver too late.
-     *  The value specified for the platformDelayBound on a network transmitter
+     *  sending platform.</p>
+     *  <p>Together with the networkDelayBound and the
+     *  clockSychronizationErrorBound parameters, this parameter is
+     *  used to determine whether an event is arriving at a network
+     *  receiver too late.</p>
+     *  <p>The value specified for the platformDelayBound on a network transmitter
      *  and the value specified for the sourcePlatformDelayBound on a network
      *  receiver should ideally match, however, this is not enforced.
-     *  This is a double that defaults to 0.0.
+     *  This is a double that defaults to 0.0.</p>
      */
     public Parameter sourcePlatformDelayBound;
 

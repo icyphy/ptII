@@ -709,7 +709,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      * Return the visibility signature for run() and execute() (for Java).
      * @return The visibility signature, empty string for C.
      */
-    public String getMethodVisibiliyString() {
+    public String getMethodVisibilityString() {
         return "";
     }
 

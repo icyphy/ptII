@@ -268,7 +268,7 @@ public class DirectedGraph extends Graph {
      *  such that
      *
      *  <p><code>
-     *      (n1.getWeight() == weight1) && (n2.getWeight() == weight2)
+     *      (n1.getWeight() == weight1) &amp;&amp; (n2.getWeight() == weight2)
      *  </code>.
      *
      *  @param weight1 The first (source) node weight.

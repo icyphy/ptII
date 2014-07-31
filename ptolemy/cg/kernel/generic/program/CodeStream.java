@@ -503,7 +503,7 @@ public class CodeStream {
      *  @return The code block template that matches the signature, or
      *  the empty string if a code block with that signature cannot
      *  be found.
-     *  @exception IllegalActionException If thrown whilegetting a code block
+     *  @exception IllegalActionException If thrown while getting a code block
      *  template with the name of the signature.
      */
     public String getCodeBlockTemplate(Object signature)

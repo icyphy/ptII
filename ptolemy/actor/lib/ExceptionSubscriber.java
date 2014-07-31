@@ -1,6 +1,6 @@
 /* A subscriber to exceptions that are handled by CatchExceptionAttribute.
 
- Copyright (c) 2006-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -86,9 +86,9 @@ public interface ExceptionSubscriber {
     /** Invoked by an exception handler (e.g. {@link ptolemy.actor.lib.ExceptionManager}) after
      *  an exception has been handled.
      *
-     * @param succesful True if the exception was successfully handled; false
+     * @param successful True if the exception was successfully handled; false
      * otherwise
      * @param message A status message from the exception handler
      */
-    public void exceptionHandled(boolean succesful, String message);
+    public void exceptionHandled(boolean successful, String message);
 }

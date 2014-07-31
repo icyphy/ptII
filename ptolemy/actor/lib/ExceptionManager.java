@@ -1,6 +1,6 @@
 /* Catch exceptions and handle them with the specified policy.
 
- Copyright (c) 2006-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -474,7 +474,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** A list of all ExceptionSusbcribers, to be notified when an exception is
+    /** A list of all ExceptionSubscribers, to be notified when an exception is
      *  caught by this class.
      */
     private ArrayList<ExceptionSubscriber> _subscribers;

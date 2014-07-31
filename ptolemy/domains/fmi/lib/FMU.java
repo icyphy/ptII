@@ -299,7 +299,7 @@ public class FMU extends TypedAtomicActor implements Advanceable,
      *  @exception IllegalActionException If the specified attribute
      *  is <i>fmuFile</i> and the file cannot be opened or there
      *  is a problem creating or destroying the parameters
-     *  listed in thile.
+     *  listed in the file.
      */
     @Override
     public void attributeChanged(Attribute attribute)

@@ -134,7 +134,7 @@ import ptolemy.util.StringUtilities;
 
  <pre>
 class Main :
-  "Read the input and send the squary to the output"
+  "Read the input and send the square to the output"
   def fire(self) :
     token = self.input.get(0)
     self.output.broadcast(token.multiply(token))

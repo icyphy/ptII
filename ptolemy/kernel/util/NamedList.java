@@ -535,7 +535,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     private void enableHash() {
 
-        _hashedList = new HashMap<String, Nameable>(_threshhold + 1, 3.0f);
+        _hashedList = new HashMap<String, Nameable>(_threshold + 1, 3.0f);
 
         Iterator iterator = _namedList.iterator();
 
@@ -553,7 +553,7 @@ public final class NamedList implements Cloneable, Serializable {
     /** @serial The container (owner) of this list. */
     private Nameable _container;
 
-    private static final int _threshhold = 100;
+    private static final int _threshold = 100;
 
     /** @serial A LinkedList containing the elements. */
     private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
@@ -561,7 +561,7 @@ public final class NamedList implements Cloneable, Serializable {
         public boolean add(Nameable obj) {
             // Findbugs: "Ambiguous invocation of either an outer or
             // inherited method java.util.LinkedList.size()," so we use super.size()
-            if (super.size() > _threshhold && !_hashEnabled) {
+            if (super.size() > _threshold && !_hashEnabled) {
                 enableHash();
             }
             return super.add(obj);

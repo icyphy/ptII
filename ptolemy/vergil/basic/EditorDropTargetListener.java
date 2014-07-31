@@ -165,7 +165,7 @@ public class EditorDropTargetListener implements DropTargetListener {
         // dragEnter(dropEvent);
     }
 
-    /** If the transferrable object is recognized as a Ptolemy II object,
+    /** If the transferable object is recognized as a Ptolemy II object,
      *  then use the MoML description of the object to create a new
      *  instance of the object at the drop location. If the drop
      *  location is on top of an icon representing an instance of

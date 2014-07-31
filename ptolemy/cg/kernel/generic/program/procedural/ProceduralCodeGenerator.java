@@ -330,7 +330,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *
      *  <p>See the parent class
      *  {@link ptolemy.cg.kernel.generic.program.ProgramCodeGenerator#_writeMakefile(CompositeEntity, String)}
-     *  for variable that are substutited by the parent class.</p>
+     *  for variable that are substituted by the parent class.</p>
      *
      *  <p>This class substitutes the following variables:
      *  <dl>

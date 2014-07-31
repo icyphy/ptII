@@ -267,7 +267,7 @@ public class StaticSchedulingDirector extends PortDirector {
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer(_eol
-                + getCodeGenerator().getMethodVisibiliyString()
+                + getCodeGenerator().getMethodVisibilityString()
                 + " void execute() "
                 + getCodeGenerator().getMethodExceptionString() + " {" + _eol);
 
@@ -294,7 +294,7 @@ public class StaticSchedulingDirector extends PortDirector {
 
         code.append("if (!run()) {" + _eol + "break;" + _eol + "}" + _eol + "}"
                 + _eol + "}" + _eol + _eol + splitFireCode[0] + _eol
-                + getCodeGenerator().getMethodVisibiliyString()
+                + getCodeGenerator().getMethodVisibilityString()
                 + " boolean run() "
                 + getCodeGenerator().getMethodExceptionString() + " {" + _eol
                 + splitFireCode[1]);

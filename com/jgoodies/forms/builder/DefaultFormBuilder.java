@@ -68,7 +68,7 @@ import com.jgoodies.forms.layout.RowSpec;
  * start in the specified lead column, except appended separators that
  * span all columns.<p>
  *
- * It is temptive to use the DefaultFormBuilder all the time and
+ * It is tempting to use the DefaultFormBuilder all the time and
  * to let it add rows automatically. Use a simpler style if it increases
  * the code readability. Explicit row specifications and cell constraints
  * make your layout easier to understand - but harder to maintain.
