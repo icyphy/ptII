@@ -72,6 +72,12 @@ $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
+$CLASSPATH/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml
+$CLASSPATH/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml
+$CLASSPATH/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml
+$CLASSPATH/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml
+$CLASSPATH/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml
+$CLASSPATH/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
