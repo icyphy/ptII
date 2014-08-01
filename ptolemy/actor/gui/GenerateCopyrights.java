@@ -133,7 +133,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
-        _addIfPresent(copyrightsMap, "io.socket.SocketIO", "lib/socketio.htm");
+        _addIfPresent(copyrightsMap, "io.socket.SocketIO", "lib/socketio-license.htm");
 
         _addIfPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
                 "lib/javax.servlet-api-license.htm");
