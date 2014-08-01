@@ -276,7 +276,7 @@ replace CT.</p>
 <li>Hybrid Plant: <a href="../../domains/continuous/demo/HybridPlant/HybridPlant.xml">Deterministic</a>, 
 <a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Random</a>
 <li><a href="../../domains/continuous/demo/Hysteresis/Hysteresis.xml">Hysteresis</a>
-<li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithBernoulliLosses.xml">HysteresisWithBernoulliLosses</a>
+<li>HysteresisWithBernoulliLosses (<i>Removed after Ptolemy II 8.0</i>
 <li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>
 <li><a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml">HysteresisWithRandomLosses</a>
 <li><a href="../../domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml">Level Crossing Detector</a>,
@@ -447,9 +447,11 @@ LazyTypedCompositeActor is a replacement for TypedCompositeActor that does lazy 
 <li><i>Java Code Generation</i>
 <br>The code generation can generate Java code for SDF models that use a subset of Ptolemy actors.
 See <a href="../../codegen/java/README.txt">$PTII/ptolemy/codegen/java/README.txt</a> for details.
+(<i> $PTII/ptolemy/codegen was replaced with $PTII/ptolemy/cg after Ptolemy II 8.0</i>)
 <ul>
-  <li><a href="../../codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml">Expression demo with  Java CompiledCompositeActor</a>
-  <li><a href="../../codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml">Scale with Embedded Java</a>
+  <li>$PTII/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml: Expression demo with  Java CompiledCompositeActor. Moved. See <a href="../../cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml">$PTII/ptolem/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml</a>
+  <li>$PTII/ptolemy/codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml: Scale with Embedded Java.
+<i>Moved. See <a href="../../cg/lib/demo/Scale/ScaleJava.xml">$PTII/ptolem/cg/lib/demo/ScaleActor/ScaleJava.xml</a></i>
 </ul>
 (Bert Rodiers, Christopher Brooks)</p>
 
@@ -498,20 +500,21 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 </ul>
 
 <h3><a name="pnCodegen">PN Code Generation</a></h3>
+<i>PN Code Generation was removed after Ptoelmy II 8.0 because it never really worked in in 8.0</i>.
 <ul>
 <!-- Please keep the demos alphabetical -->
-<li><a href="../../codegen/c/domains/pn/demo/Gravitation/Gravitation.xml">Gravitation</a>
-<li><a href="../../codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml">PN Butterfly</a>
+<li>$PTII/ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.xml: Gravitation (<i>Removed after Ptolemy II 8.0</i>)
+<li>$PTII/ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml: PN Butterfly (<i>Removed after Ptolemy II 8.0</i>)
 </ul>
 
 <h3><a name="sdfCodegen">SDF Code Generation</a></h3>
 <ul>
 <!-- Please keep the demos alphabetical -->
-<li> <a href="../../codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml">Mod4Counter</a>
-<li><a href="../../actor/lib/jni/demo/Scale/Scale.xml">Scale</a>
-<li><a href="../../actor/lib/jni/demo/Scale/ScaleWithEmbeddedCFileActor.xml">Scale with EmbeddedCFileActor</a>
-<li><a href="../../actor/lib/jni/demo/SimplePassPointer/SimplePassPointer.xml">Simple Pass Pointer</a>
-<li><a href="../../actor/lib/jni/demo/SimplePassPointer/SimplePassPointerWithECFA.xml">Simple Pass Pointer With ECFA</a>
+<li> $PTII/ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml: Mod4Counter (<i>Removed after Ptolemy II 8.0, not supported in ptolemy/cg</i>)
+<li>$PTII/ptolemy/actor/lib/jni/demo/Scale/Scale.xml: Scale. Moved. See <a href="../../cg/lib/demo/Scale/ScaleC.xml">$PTII/ptolem/cg/lib/demo/Scale/ScaleC.xml</a>
+<li>$PTII/ptolemy/actor/lib/jni/demo/Scale/ScaleWithEmbeddedCFileActor.xml: Scale with EmbeddedCFileActor (<i>Removed after Ptolemy II 8.0</i>)
+<li>$PTII/ptolemy/actor/lib/jni/demo/SimplePassPointer/SimplePassPointer.xml: Simple Pass Pointer (<i>Removed after Ptolemy II 8.0</i>)
+<li>$PTII/ptolemy/actor/lib/jni/demo/SimplePassPointer/SimplePassPointerWithECFA.xml: Simple Pass Pointer With ECFA (<i>Removed after Ptolemy II 8.0</i>)
 
 </ul>
 
