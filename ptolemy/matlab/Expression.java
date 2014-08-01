@@ -233,12 +233,7 @@ public class Expression extends TypedAtomicActor {
         Expression newObject = (Expression) super.clone(workspace);
 
         newObject._addPathCommand = null;
-        try {
-            newObject._iteration = new Variable(newObject, "_iteration",
-                    new IntToken(1));
-        } catch (KernelException ex) {
-            throw new CloneNotSupportedException(ex.getMessage());
-        }
+        newObject._iteration = (Variable)newObject.getAttribute("_iteration");
         newObject._iterationCount = 1;
         newObject._previousPath = null;
         newObject._inputTokens = new HashMap<String, Token>();
