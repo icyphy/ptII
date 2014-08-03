@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Exception" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+		<!-- Exception analysis depends on the ontologies package being present -->
+		<input source="ptolemy/data/ontologies/exceptionAnalysis.xml"/>	
+
+		<!-- Email depends on javamail being installed -->
+		<input source="ptolemy/actor/lib/mail/exceptionEmail.xml"/>	
+
+		<!-- Others have no dependencies -->
+		<property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
+			<property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            	<property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
+            	</property>
+            	<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            	</property>
+            	<property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            	</property>
+        	</property>
+		</property>
+
+		<property name="ExceptionManager" class="ptolemy.actor.lib.ExceptionManager">
+        	<property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        	</property>
+		</property>
+
+      </group>
+    ?>
+  </configure>
+</entity>

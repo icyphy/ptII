@@ -345,8 +345,8 @@ ExceptionSubscriber {
     // FIXME:  Would it make more sense to send the retry page here, only
     // if restart is successful?  Write a test case.
     @Override
-    public void exceptionHandled(boolean successful, String message) {
-
+    public boolean exceptionHandled(boolean succesful, String message) {
+        return true;
     }
 
     /** Generate an HTTP response for the client if an exception occurs.  No
@@ -358,7 +358,8 @@ ExceptionSubscriber {
      */
 
     @Override
-    public synchronized boolean exceptionOccurred(String policy) {
+    public synchronized boolean exceptionOccurred(String policy, 
+            Throwable exception) {
 
         // If there is a pending request,
         // For "restart" policy, generate an error page with retry

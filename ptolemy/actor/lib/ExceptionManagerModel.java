@@ -47,19 +47,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ExceptionManagerModel extends CompositeEntity {
 
-    /** Create a new ExceptionManagerModel with the specified name and container.
-     *  @param container The container for the solver model.
-     *  @param name The name for the solver model.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @exception NameDuplicationException If the container already contains an
-     *   entity with the specified name.
-     */
-    public ExceptionManagerModel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        _exceptionManagerContainer = null;
-        _exceptionCatcher = null;
-    }
+
 
     /** Construct an ExceptionManager in the specified workspace.
      *  If the workspace argument is null, then use the default workspace.
@@ -69,8 +57,23 @@ public class ExceptionManagerModel extends CompositeEntity {
      */
     public ExceptionManagerModel(Workspace workspace) {
         super(workspace);
-        _exceptionManagerContainer = null;
+        _modelContainer = null;
     }
+    
+    /** Create a new ExceptionManagerModel with the specified name and container.
+     *  @param container The container for the solver model.
+     *  @param name The name for the solver model.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the container already contains an
+     *   entity with the specified name.
+     */
+    
+    public ExceptionManagerModel(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        _modelContainer = null;
+    }
+    
 
     /** Create a new ExceptionManagerModel with the specified workspace and the
      *  specified ExceptionManager.
@@ -81,9 +84,7 @@ public class ExceptionManagerModel extends CompositeEntity {
             Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
         super(workspace);
-        _exceptionManagerContainer = exceptionManager;
-        _exceptionCatcher = new CatchExceptionAttribute(this,
-                "exceptionCatcher");
+        _modelContainer = exceptionManager;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,36 +93,21 @@ public class ExceptionManagerModel extends CompositeEntity {
     /** Return the ExceptionManager that contains the model.
      *  @return The ExceptionManager that contains this model.
      */
-    public ExceptionManager getExceptionManagerContainer() {
-        return _exceptionManagerContainer;
-    }
-
-    /** Return the exception handling policy. */
-    public String getPolicy() {
-        if (_exceptionCatcher != null) {
-            return _exceptionCatcher.policy.getValueAsString();
-        } else {
-            return CatchExceptionAttribute.THROW;
-        }
+    public ExceptionManager getModelContainer() {
+        return _modelContainer;
     }
 
     /** Set the exception manager that contains this model.
      *  @param exceptionManager The exception manager that should contain this
      *  model.
      */
-    public void setExceptionManagerContainer(ExceptionManager exceptionManager) {
-        _exceptionManagerContainer = exceptionManager;
+    public void setModelContainer(ExceptionManager exceptionManager) {
+        _modelContainer = exceptionManager;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The attribute that catches exceptions.  Implemented in this class
-     * instead of ExceptionManager since CatchExceptionAttribute's constructor
-     * requires a CompositeEntity (which ExceptionManager is not).
-     */
-    private CatchExceptionAttribute _exceptionCatcher;
-
     /** The ExceptionManager that contains this model */
-    private ExceptionManager _exceptionManagerContainer;
+    private ExceptionManager _modelContainer;
 }

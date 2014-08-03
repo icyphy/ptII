@@ -179,6 +179,10 @@
             <input source="ptolemy/actor/designs/designPatterns.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
+
+		<!-- Exception managment -->
+			<input source="ptolemy/actor/lib/exception.xml"/>
+
 	    <!-- Don't add the FMUImport actor here, instead we do File - Import - Import FMU -->
             <!-- input source="ptolemy/actor/lib/fmi/fmi.xml"/ -->
             <!-- Graph transformation library -->
@@ -214,6 +218,7 @@
 
             <!-- Ontologies library -->
             <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
+
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>

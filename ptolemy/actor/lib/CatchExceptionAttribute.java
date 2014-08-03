@@ -376,7 +376,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
 
             // Notify all ExceptionSubscribers
             for (ExceptionSubscriber subscriber : _subscribers) {
-                subscriber.exceptionOccurred(policyValue);
+                subscriber.exceptionOccurred(policyValue, exception);
             }
 
             return true;

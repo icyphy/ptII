@@ -58,5 +58,15 @@
             	</property>
         	</property>
 		</property>
+		<property name="ExceptionAnalyzer" class="ptolemy.data.ontologies.ExceptionAnalyzer">
+			<property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            	<property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
+            	</property>
+            	<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            	</property>
+            	<property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            	</property>
+        	</property>
+		</property>
     </group>
 </entity>

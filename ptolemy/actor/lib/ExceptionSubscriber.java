@@ -73,15 +73,13 @@ public interface ExceptionSubscriber {
      *
      * @param policy The handling policy of the exception manager (for example,
      *  restart); see {@link ptolemy.actor.lib.CatchExceptionAttribute}
+     * @param exception The exception
      * @return True if the subscriber successfully processed the information;
      *  false otherwise (for example, an ExceptionEmailer that fails to send
      *  an email)
      */
-    // TODO:  Add NamdObj source?  Exception itself?
-    // TODO:  Preparation steps?  Like opening files etc.?  ExceptionReactions
-    // could also implement AbstractInitalizaleAttribute
-    // TODO:  Rename CatchExceptionAttribute to ExceptionManager?
-    public boolean exceptionOccurred(String policy);
+
+    public boolean exceptionOccurred(String policy, Throwable exception);
 
     /** Invoked by an exception handler (e.g. {@link ptolemy.actor.lib.ExceptionManager}) after
      *  an exception has been handled.
@@ -89,6 +87,9 @@ public interface ExceptionSubscriber {
      * @param successful True if the exception was successfully handled; false
      * otherwise
      * @param message A status message from the exception handler
+     * @return True if the subscriber successfully processed the information; 
+     *  false otherwise (for example, an ExceptionEmailer that fails to send 
+     *  an email)
      */
-    public void exceptionHandled(boolean successful, String message);
+    public boolean exceptionHandled(boolean successful, String message);
 }

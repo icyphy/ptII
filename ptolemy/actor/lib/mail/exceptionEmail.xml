@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Email" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+		<property name="ExceptionEmailer" class="ptolemy.actor.lib.mail.ExceptionEmailer">
+			<property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            	<property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
+            	</property>
+            	<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            	</property>
+           		<property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            	</property>
+        	</property>
+		</property>
+      </group>
+    ?>
+  </configure>
+</entity>
