@@ -337,6 +337,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/io/comm/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm/demo"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/io/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/vendors/misc/rxtx/RXTXcomm.jar"
                   targetdir="$INSTALL_PATH/vendors/misc/rxtx"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/jai/jai.jar"
@@ -425,6 +427,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr/doc"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/gr/lib/quicktime/quicktime.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr/lib/quicktime"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/petrinet/demo/demo.jar"/>
+                  targetdir="$INSTALL_PATH/ptolemy/domains/petrinet/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/psdf/psdf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/psdf/demo/demo.jar"
@@ -441,6 +445,12 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/sdf/lib/vq/data/data.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq/data"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/sdf/optimize/optimize.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/optimize"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/sdf/optimize/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/optimize/demo"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/taskpt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/tester/tester.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tester"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/tdl/tdl.jar"
