@@ -65,6 +65,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.SimpleErrorHandler;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -813,22 +814,30 @@ public class ConfigurationApplication implements ExecutionListener {
                             .getResource(spec);
 
                     if (specURL == null) {
-                        throw new Exception("getResource(\"" + spec
-                                + "\") returned null.");
-                    } else {
-                        // If we have a jar URL, convert spaces to %20
-                        // so as to avoid multiple windows with the
-                        // same file.  Web Start needs this if the Web
-                        // Start cache is in a directory that has
-                        // spaces in the path, which is the default
-                        // under Windows.
-                        specURL = JNLPUtilities.canonicalizeJarURL(specURL);
-
-                        // Verify that it can be opened
-                        InputStream urlStream = specURL.openStream();
-                        urlStream.close();
-                        return specURL;
+                        try {
+                            specURL = ClassUtilities.jarURLEntryResource(spec);
+                        } catch (IOException ex4) {
+                            // Ignore
+                        }
+                        if (specURL == null) {
+                            // If we have a jar URL, convert spaces to %20
+                            // so as to avoid multiple windows with the
+                            // same file.  Web Start needs this if the Web
+                            // Start cache is in a directory that has
+                            // spaces in the path, which is the default
+                            // under Windows.
+                            specURL = JNLPUtilities.canonicalizeJarURL(new URL(spec));
+                            if (specURL == null) {
+                                throw new Exception("JNLPUtilities.canonicalizeJarURL(new URL(\"" + spec
+                                        + "\")) returned null.");
+                            }
+                        }
                     }
+
+                    // Verify that it can be opened
+                    InputStream urlStream = specURL.openStream();
+                    urlStream.close();
+                    return specURL;
                 } catch (Exception ex3) {
                     // Use a very verbose message in case opening
                     // the configuration fails under Web Start.

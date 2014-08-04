@@ -228,6 +228,53 @@ public class HTMLAbout {
         return htmlBuffer.toString();
     }
 
+    /** Check that all the demos in otherDemos are in completeDemos.
+     *  Be sure to call {@link #about(Configuration)} before calling this method.   
+     *  @param completeDemos A URL pointing to the completeDemos.htm file
+     *  @return HTML listing demos in otherDemos that are not in completeDemos.
+     */
+    public static String checkCompleteDemos(String completeDemos) throws IOException {
+        URL demosURL = _getDemoURL(completeDemos);
+        StringBuffer results = new StringBuffer(
+                "<h1>Results of checking for demos not listed in full "
+                        + "demos</h1>\n"
+                        + "For each of the files below, we list demos that are "
+                        + "not included in <a href=\"" + demosURL + "\">"
+                        + "<code>" + demosURL + "</code></a>\n");
+        List completeDemosList = _getURLs(demosURL, ".*.xml$", true, 1);
+        if (_demosURLs == null) {
+            throw new NullPointerException("_demosURLs is null.  Call HTMLAbout.about(Configuration) first.");
+        }
+        Iterator demosFileNames = _demosURLs.iterator();
+        while (demosFileNames.hasNext()) {
+            String demosFileName = (String) demosFileNames.next();
+            URL demoURL = _getDemoURL(demosFileName);
+            if (demoURL != null) {
+                results.append("<h2><a href=\"" + demoURL + "\"><code>"
+                        + demoURL + "</code></a></h2>\n<ul>\n");
+
+                List demosList = _getURLs(demoURL, ".*.xml$", true, 0);
+                Iterator demos = demosList.iterator();
+                while (demos.hasNext()) {
+                    String demo = (String) demos.next();
+                    if (!completeDemosList.contains(demo)) {
+                        try {
+                            URL missingDemoURL = ConfigurationApplication
+                                    .specToURL(demo);
+                            results.append(" <li><a href=\"" + missingDemoURL
+                                    + "\">" + missingDemoURL + "</a></li>\n");
+                        } catch (IOException ex) {
+                            results.append(" <li><a href=\"file:/" + demo
+                                    + "\">" + demo + "</a></li>\n");
+                        }
+                    }
+                }
+                results.append("</ul>\n");
+            }
+        }
+        return results.toString();
+    }
+
     /** Call Configuration.openModel() on relative URLs that match a regexp.
      *  files are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
@@ -297,8 +344,8 @@ public class HTMLAbout {
             newURL = _temporaryHTMLFile(
                     "checkCompleteDemos",
                     ".htm",
-                    _checkCompleteDemos(
-                            "ptolemy/configs/doc/completeDemos.htm", _demosURLs));
+                    checkCompleteDemos(
+                            "ptolemy/configs/doc/completeDemos.htm"));
         } else if (event.getDescription().startsWith("about:checkModelSizes")) {
             // Expand all the local .xml files in the fragment
             // and check their sizes and locations
@@ -652,51 +699,6 @@ public class HTMLAbout {
         return url;
     }
 
-    /** Check that all the demos in otherDemos are in complete Demos
-     *  @param completeDemos A URL pointing to the completeDemos.htm file
-     *  @param otherDemos A list of Strings where each string names a demo.
-     *  @return HTML listing demos in otherDemos that are not in completeDemos.
-     */
-    private static String _checkCompleteDemos(String completeDemos,
-            List otherDemos) throws IOException {
-        URL demosURL = _getDemoURL(completeDemos);
-        StringBuffer results = new StringBuffer(
-                "<h1>Results of checking for demos not listed in full "
-                        + "demos</h1>\n"
-                        + "For each of the files below, we list demos that are "
-                        + "not included in <a href=\"" + demosURL + "\">"
-                        + "<code>" + demosURL + "</code></a>\n");
-        List completeDemosList = _getURLs(demosURL, ".*.xml$", true, 1);
-        Iterator demosFileNames = otherDemos.iterator();
-        while (demosFileNames.hasNext()) {
-            String demosFileName = (String) demosFileNames.next();
-            URL demoURL = _getDemoURL(demosFileName);
-            if (demoURL != null) {
-                results.append("<h2><a href=\"" + demoURL + "\"><code>"
-                        + demoURL + "</code></a></h2>\n<ul>\n");
-
-                List demosList = _getURLs(demoURL, ".*.xml$", true, 0);
-                Iterator demos = demosList.iterator();
-                while (demos.hasNext()) {
-                    String demo = (String) demos.next();
-                    if (!completeDemosList.contains(demo)) {
-                        try {
-                            URL missingDemoURL = ConfigurationApplication
-                                    .specToURL(demo);
-                            results.append(" <li><a href=\"" + missingDemoURL
-                                    + "\">" + missingDemoURL + "</a></li>\n");
-                        } catch (IOException ex) {
-                            results.append(" <li><a href=\"file:/" + demo
-                                    + "\">" + demo + "</a></li>\n");
-                        }
-                    }
-                }
-                results.append("</ul>\n");
-            }
-        }
-        return results.toString();
-    }
-
     /** Open up a file, return a list of relative URLs that match a regexp.
      *  @param demosURL The URL of the file containing URLs.
      *  @param regexp The regular expression, for example ".*.xml$".
@@ -822,12 +824,15 @@ public class HTMLAbout {
                         URL modelURL = null;
                         if (model.startsWith("jar:file:/")) {
                             modelURL = new URL(model);
+                            //System.out.print("HTMLAbout._getURLs(): jar:file:/: " + model);
                         } else {
                             if (model.startsWith("file:/")) {
                                 model = model.substring("file:/".length());
                             }
+                            //System.out.print("HTMLAbout._getURLs(): file:/: " + model);
                             modelURL = new File(model).toURI().toURL();
                         }
+                        //System.out.println(" " + modelURL);
                         boolean sawModel = modelList.contains(model);
                         if (!sawModel) {
                             modelList.add(model);

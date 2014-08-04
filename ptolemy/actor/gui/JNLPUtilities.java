@@ -31,6 +31,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
@@ -79,12 +81,52 @@ public class JNLPUtilities {
         // so we want to always refer to the files with the same URL
         // so as to avoid duplicate windows
         if (possibleJarURL.toExternalForm().startsWith("jar:")) {
+            String possibleJarURLPath = StringUtilities.substitute(
+                    possibleJarURL.toExternalForm(), " ", "%20");
+            if (possibleJarURLPath.contains("..")) {
+                // A jar URL with a relative path.  about:checkCompleteDemos will generate these.
+                String [] path = possibleJarURLPath.split("/");
+                ArrayList<String> paths = new ArrayList(Arrays.asList(path));
+
+                for (int j = 0; j < paths.size(); j++) {
+                    // System.out.println(paths.size() + " paths.get(" + j + "): "+ paths.get(j) + " paths: " + paths);
+                    if (paths.get(j).equals("..")) {
+                        if (j > 0) {
+                            //System.out.println(j-1 + " Removing: " + paths.get(j-1));
+                            paths.remove(j-1);
+                        }
+                        //System.out.println(j-1 + "Removing: " + paths.get(j-1));
+                        paths.remove(j-1);
+                        j = j-2;
+                    }
+                }
+                StringBuffer newPath = new StringBuffer();
+                for (String pathElement : paths) {
+                    newPath.append(pathElement + "/");
+                }
+                possibleJarURLPath = newPath.toString().substring(0, newPath.length()-1);
+                //System.out.println("JNLPUtilities: possibleJarURLPath: " + possibleJarURLPath);
+                try {
+                    URL jarURL = ClassUtilities.jarURLEntryResource(possibleJarURLPath);
+                    //System.out.println("JNLPUtilities: jarURL: " + jarURL);
+                    return jarURL;
+                } catch (IOException ex) {
+                    throw new java.net.MalformedURLException(ex.toString());
+                }
+            }
+
             // FIXME: Could it be that we only want to convert spaces before
             // the '!/' string?
-            URL jarURL = new URL(StringUtilities.substitute(
-                    possibleJarURL.toExternalForm(), " ", "%20"));
-
+            URL jarURL = new URL(possibleJarURLPath);
+            //System.out.println("JNLPUtilities: 2 jarURL: " + jarURL);
             // FIXME: should we check to see if the jarURL exists here?
+            if (jarURL == null) {
+                try {
+                    return ClassUtilities.jarURLEntryResource(possibleJarURLPath);
+                } catch (IOException ex) {
+                    throw new java.net.MalformedURLException(ex.toString());
+                }
+            }
             return jarURL;
         }
 

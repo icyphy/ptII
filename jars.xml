@@ -146,6 +146,7 @@
     <include name="ptolemy/domains/modal/modal/modal.jar" />
     <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
     <include name="ptolemy/domains/petrinet/petrinet.jar" />
+    <include name="ptolemy/domains/petrinet/demo/demo.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
     <include name="ptolemy/domains/pn/demo/demo.jar" />
     <include name="ptolemy/domains/pn/doc/doc.jar" />
@@ -175,6 +176,8 @@
     <include name="ptolemy/domains/sdf/lib/lib.jar" />
     <include name="ptolemy/domains/sdf/lib/vq/data/data.jar" />
     <include name="ptolemy/domains/sdf/lib/vq/vq.jar" />
+    <include name="ptolemy/domains/sdf/optimize/optimize.jar" />
+    <include name="ptolemy/domains/sdf/optimize/demo/demo.jar" />
     <include name="ptolemy/domains/sdf/sdf.jar" />
     <include name="ptolemy/domains/sequence/sequence.jar" />
     <include name="ptolemy/domains/space/space.jar" />
@@ -2445,6 +2448,34 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/sdf/optimize/optimize.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/sdf/optimize/optimize.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sdf/optimize/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/sdf/optimize/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/sdf/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sdf/optimize/demo/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/taskpt/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/taskpt/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/taskpt/demo/SharedMemory/*.xml"/>
+	<include name="ptolemy/domains/taskpt/demo/Task/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/tdl/tdl.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/tdl/tdl.jar"
@@ -3604,61 +3635,8 @@
 	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Cookies/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Cookies/pages/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/ErrorHandler/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Guidance/pages/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/*/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/*/pages/*.html"/>
       </fileset>
     </jar>
 
@@ -3668,6 +3646,16 @@
 	 >
       <fileset dir="${basedir}">
         <include name="org/ptolemy/qss/*.class"/>
+      </fileset>
+  </jar>
+
+    <!-- org/ptolemy/qss/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/qss/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/ptolemy/qss/demo/*/*.xml"/>
+        <include name="org/ptolemy/qss/demo/RLC/*.mo"/>
       </fileset>
   </jar>
 
@@ -4235,6 +4223,17 @@
       </fileset>
     </jar>
     
+    <!-- ptolemy/domains/petrinet/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/petrinet/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/*.jpg"/>
+	<include name="ptolemy/domains/petrinet/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+
     <!-- ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar"
@@ -4272,94 +4271,15 @@
 	 destfile="${basedir}/ptolemy/domains/sdf/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Array/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sdf/demo/*/*.xml"/>
 	<include name="ptolemy/domains/sdf/demo/Butterfly/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Butterfly/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Expression/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Eye/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/FixFIR/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/FixPoint/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/FourierSeries/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/FourierSeries/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/Gravitation/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Gravitation/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/HTVQ/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/HTVQ/*.java"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/HTVQ/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/LMSAdaptive/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/LogisticMap/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/MaximumEntropySpectrum/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/ModelDisplay/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/MultipleRuns/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/NoisySinewave/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/OrthogonalCom/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/OrthogonalCom/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/RijndaelEncryption/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/RijndaelEncryption/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sdf/demo/Sketch/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Sketch/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/SoundSpectrum/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Spectrum/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/SynthesizedVoice/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/demo/Type/*.xml"/>
       </fileset>
     </jar>
 
@@ -4451,6 +4371,15 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/hoc/demo/ThreadedComposite/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/io/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/io/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/io/demo/*/*.xml"/>
       </fileset>
     </jar>
 
@@ -4887,52 +4816,19 @@
 	 destfile="${basedir}/ptolemy/domains/de/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/AssemblyLine/*.xml"/>
+	<include name="ptolemy/domains/de/demo/*/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/Clock/*.wav"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/Clock/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/Inspection/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/LongRuns/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/ModalModel/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/OpenQueueingNetwork/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/QueueAndServer/*.xml"/>
+	<include name="ptolemy/domains/de/demo/*/*.wav"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/demo/RealTimeComposite/*.aif"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/RealTimeComposite/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/demo/SmartSender/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/SmartSender/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/TimingParadox/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/Trilateration/*.pdf"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/Trilateration/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/de/demo/VariableDelay/*.xml"/>
+	<include name="ptolemy/domains/de/demo/*.pdf"/>
       </fileset>
     </jar>
 

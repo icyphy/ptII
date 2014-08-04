@@ -253,3 +253,95 @@ test HTMLAbout-3.0 {GenerateCopyrights.generateCopyrights} {
     # changes on different machines.
     list [regexp {com/microstar/xml/aelfred-license.htm} $copyrights]
 } {1}
+
+######################################################################
+####
+#
+test HTMLAbout-4.0 {checkCompleteDemos} { 
+    set fullConfigurationURL [java::call ptolemy.util.FileUtilities nameToURL \
+			      {$CLASSPATH/ptolemy/configs/full/configuration.xml} \
+			      [java::null] \
+			      [java::null]]
+    puts "Reading $fullConfigurationURL"
+    set fullConfiguration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $fullConfigurationURL]
+
+    set about [java::call ptolemy.actor.gui.HTMLAbout about $fullConfiguration]
+    set checkCompleteDemosReport [java::call ptolemy.actor.gui.HTMLAbout checkCompleteDemos "ptolemy/configs/doc/completeDemos.htm"]
+    
+    # Substitute $PTII
+    set ptolemyPtIIDir [java::call System getProperty {ptolemy.ptII.dir}]
+    regsub -all $ptolemyPtIIDir $checkCompleteDemosReport {XXXPTIIXXX} results
+    list $results
+} {{<h1>Results of checking for demos not listed in full demos</h1>
+For each of the files below, we list demos that are not included in <a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm</code></a>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew7.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew7.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew6.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew6.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.1.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.1.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew5.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew4.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew4.0.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew3.0.2.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew3.0.2.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/bcvtb/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/bcvtb/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtiny.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosPtiny.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/doc/mainVergilPtiny.htm"><code>file:XXXPTIIXXX/doc/mainVergilPtiny.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/doc/mainVergilPtinyKepler.htm"><code>file:XXXPTIIXXX/doc/mainVergilPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demosPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demosPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtinyKepler.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/completeDemosPtinyKepler.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/visualsense/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/visualsense/intro.htm</code></a></h2>
+<ul>
+</ul>
+}}
+

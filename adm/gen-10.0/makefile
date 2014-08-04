@@ -211,7 +211,7 @@ release_mac:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII10.0.devel COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac2:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 ####
 release_nightly:

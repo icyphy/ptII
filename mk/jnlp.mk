@@ -228,6 +228,7 @@ BCVTB_ONLY_JNLP_JARS = \
 SDF_DEMO_JARS = \
 	ptolemy/actor/lib/comm/demo/demo.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
+	ptolemy/actor/lib/io/demo/demo.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
@@ -507,7 +508,9 @@ FULL_ONLY_JNLP_JARS = \
 	org/terraswarm/terraswarm.jar \
 	org/terraswarm/demo/demo.jar \
 	org/ptolemy/ptango/ptango.jar \
+	org/ptolemy/ptango/demo/demo.jar \
 	org/ptolemy/qss/qss.jar \
+	org/ptolemy/qss/demo/demo.jar \
 	$(PTFMI_JARS) \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
@@ -562,7 +565,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
-	ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar \
+	ptolemy/domains/petrinet/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar \
@@ -574,6 +577,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
+	ptolemy/domains/sdf/optimize/optimize.jar \
+	ptolemy/domains/sdf/optimize/demo/demo.jar \
+	ptolemy/domains/taskpt/demo/demo.jar \
 	ptolemy/domains/tdl/tdl.jar \
 	ptolemy/domains/tdl/demo/demo.jar \
 	ptolemy/domains/tester/tester.jar \
