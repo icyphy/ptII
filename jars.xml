@@ -63,6 +63,7 @@
     <include name="ptolemy/actor/lib/hoc/demo/demo.jar" />
     <include name="ptolemy/actor/lib/io/comm/comm.jar" />
     <include name="ptolemy/actor/lib/io/comm/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/io/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jai/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jai/jai.jar" />
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
@@ -1332,6 +1333,15 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/io/comm/demo/SerialPort/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/io/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/io/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/io/demo/*/*.xml"/>
       </fileset>
     </jar>
 
