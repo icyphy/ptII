@@ -671,29 +671,45 @@ public class GenerateCopyrights {
      */
     private static void _addIfPresent(Map<String, Set<String>> copyrightsMap,
             String className, String copyrightPath) {
+
+        boolean addIt = false;
+
         try {
             Class.forName(className);
-
-            Set<String> entitiesSet = copyrightsMap.get(copyrightPath);
-
-            if (entitiesSet == null) {
-                // This is the first time we've seen this copyright,
-                // add a key/value pair to copyrights, where the key
-                // is the URL of the copyright and the value is Set
-                // of entities that correspond with that copyright.
-                entitiesSet = new HashSet<String>();
-
-                entitiesSet.add(className);
-                copyrightsMap.put(copyrightPath, entitiesSet);
-            } else {
-                // Other classes are using this copyright, so add this
-                // one to the list.
-                entitiesSet.add(className);
-            }
+            addIt = true;
         } catch (Throwable throwable) {
-            // Ignore, this just means that the classname could
+            // Usually, ignore, this just means that the classname could
             // not be found, so we need not include information
             // about the copyright.
+
+            // However, under MacOSX, include any backtracking links
+            String osName = System.getProperty("os.name");
+            if (osName.startsWith("Mac OS") && copyrightPath.contains("backtrack")) {
+                addIt = true;
+            }
+        }
+
+        if (addIt) {
+            try {
+                Set<String> entitiesSet = copyrightsMap.get(copyrightPath);
+
+                if (entitiesSet == null) {
+                    // This is the first time we've seen this copyright,
+                    // add a key/value pair to copyrights, where the key
+                    // is the URL of the copyright and the value is Set
+                    // of entities that correspond with that copyright.
+                    entitiesSet = new HashSet<String>();
+
+                    entitiesSet.add(className);
+                    copyrightsMap.put(copyrightPath, entitiesSet);
+                } else {
+                    // Other classes are using this copyright, so add this
+                    // one to the list.
+                    entitiesSet.add(className);
+                }
+            } catch (Throwable throwable) {
+                // Ignore errors, it must means we 
+            }
         }
     }
 
