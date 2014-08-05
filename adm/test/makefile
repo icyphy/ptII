@@ -97,6 +97,10 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 chktestdir:
 	@$(ROOT)/adm/bin/chktestdir | sort
 
+# Check the demos for demos that have $PTII in them.
+dollarPTII:
+	(cd $(PTII); cat ptolemy/configs/doc/models.txt | sed 's@\$$CLASSPATH/@@' | xargs grep '$PTII' | grep -v StringAttribute)
+
 PTIITXTFILES=adm/bin/ptIItxtfiles
 TXTFILENAMES=/tmp/txtfilenames
 JAVAFILENAMES=/tmp/javafilenames
