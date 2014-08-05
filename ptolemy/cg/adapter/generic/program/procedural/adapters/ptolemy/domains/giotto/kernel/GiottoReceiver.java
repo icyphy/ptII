@@ -46,7 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
 ////GiottoReceiver
 
 /** The adapter for Giotto receiver.
- * Based on the SDF reciever created by Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
+ * Based on the SDF receiver created by Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
  *  @author Shanna-Shaye Forbes
  *  @version $Id$
  *  @since Ptolemy II 10.0

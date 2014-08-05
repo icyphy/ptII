@@ -642,7 +642,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @param building The building name.
      *  @param room The room number.
      *  @param deskno The desk number.
-     *  @return An array of RecortToken for prior occupants, which may be empty
+     *  @return An array of RecordToken for prior occupants, which may be empty
      *   if there are no prior occupants, or null if the database access is canceled
      *   or denied.
      *  @exception IllegalActionException

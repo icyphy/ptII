@@ -64,7 +64,7 @@ import ptolemy.math.Complex;
  The output of this actor is constrained to be a double, and input must be castable
  to a double. If the input signal is not left-continuous and the derivative constant
  is nonzero, then this actor will throw an exception as the derivative will be either infinite
- or undefined. If the derivative constant is zero, then this actor may recieve
+ or undefined. If the derivative constant is zero, then this actor may receive
  discontinuous input.
  <p>
  y[0]=Kp*x[0]

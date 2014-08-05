@@ -1662,7 +1662,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** Import a class with its full name, using "." instead
      *  of "$" to separate names of nested classes when they
-     *  are refered to. The imported class is added to a
+     *  are referred to. The imported class is added to a
      *  {@link Hashtable} to be looked up in name resolving.
      *
      *  @param classFullName The full name of the class to be

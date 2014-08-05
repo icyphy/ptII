@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  system.  At each call, it should return a list of Strings, which is a
  reduction of the list of input values.  At each firing, this actor
  inputs all available input keys and values.  It outputs the value
- tokens when its <i>doneReading</i> port recieves a true value.  This
+ tokens when its <i>doneReading</i> port receives a true value.  This
  should only happen after all inputs have been sent to the system.
 
  <p> When implementing a custom reduce method in a subclass of
@@ -141,7 +141,7 @@ public class ReduceWorker extends TypedAtomicActor {
     /**
      * A boolean input.  When this input is true, the
      * actor is done reading values, and it may output
-     * tokens for each key it recieved.
+     * tokens for each key it received.
      */
     public TypedIOPort doneReading;
 

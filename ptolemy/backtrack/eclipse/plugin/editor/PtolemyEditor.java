@@ -89,7 +89,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
                 .getColorManager());
     }
 
-    /** Notify all the reconsiling listeners after reconciliation is performed.
+    /** Notify all the reconciling listeners after reconciliation is performed.
      *
      *  @param ast The compilation unit of the Java source.
      *  @param forced Whether the reconciliation is forced.
