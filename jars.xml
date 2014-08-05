@@ -2459,10 +2459,10 @@
 
     <!-- ptolemy/domains/sdf/optimize/demo/demo.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/sdf/demo/demo.jar"
+	 destfile="${basedir}/ptolemy/domains/sdf/optimize/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/domains/sdf/optimize/demo/*.xml"/>
+	<include name="ptolemy/domains/sdf/optimize/demo/*/*.xml"/>
       </fileset>
     </jar>
 
