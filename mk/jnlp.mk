@@ -534,6 +534,9 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	ptolemy/actor/lib/js/js.jar \
 	ptolemy/actor/lib/js/demo/demo.jar \
+	$(PTOAUTHCLIENT_JAR) \
+	$(PTOAUTHCOMMON_JAR) \
+	$(PTSOCKETIO_JAR) \
 	$(PTJAVASCRIPT_JAR) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
