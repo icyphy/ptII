@@ -114,7 +114,7 @@ public class CodeStream {
      * adapter. Each actor should have its own codestream during code
      * generation.
      * @param templateArguments Template arguments to be substituted
-     * in the code.  Template arguments begin with "<" and end with ">".
+     * in the code.  Template arguments begin with "&lt;" and end with "&gt;".
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
@@ -767,7 +767,7 @@ public class CodeStream {
      * code block name, otherwise, it throws an exception.
      * @param name The given code block name.
      * @return The well-formed code block name after lexical checking.
-     * @exception Thrown if the given name is not well-formed.
+     * @exception IllegalActionException Thrown if the given name is not well-formed.
      */
     private static String _checkCodeBlockName(String name)
             throws IllegalActionException {
@@ -793,7 +793,7 @@ public class CodeStream {
      * IllegalActionException.
      * @param name The given parameter name.
      * @return The well-formed parameter name after lexical checking.
-     * @exception Thrown if the given name is not well-formed.
+     * @exception IllegalActionException Thrown if the given name is not well-formed.
      */
     private static String _checkParameterName(String name)
             throws IllegalActionException {
@@ -851,9 +851,9 @@ public class CodeStream {
     }
 
     /**
-     *
+     * Construct a code table adapter.
      * @param mayNotExist Indicate if the file is required to exist.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the file cannot be opened.
      */
     private void _constructCodeTableAdapter(boolean mayNotExist)
             throws IllegalActionException {
@@ -1171,6 +1171,8 @@ public class CodeStream {
      * @param codeInFile The given string buffer.
      * @param start The given start index to start parsing.
      * @param end The given end index to stop parsing.
+     * @param startSymbol The symbol from which to start.
+     * @param endSymbol The symbol on which to end.
      * @return The list of parameter expressions.
      */
     private static List<String> _parseParameterList(StringBuffer codeInFile,

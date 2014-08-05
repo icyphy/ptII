@@ -162,7 +162,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  to determine whether this is top level. Test if the containing actor
      *  is in the top level.
      *  @return true if the containing actor is in the top level.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If the director is not a PtidesDirector.
      */
     @Override
     protected boolean _isTopLevel() throws IllegalActionException {

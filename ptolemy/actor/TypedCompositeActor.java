@@ -62,19 +62,20 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 /**
- <p>A TypedCompositeActor is an aggregation of typed actors.</p>
+ A TypedCompositeActor is an aggregation of typed actors.
  <p>
  When exporting MoML, instances of this class identify their class name
  as TypedCompositeActor. If a derived class does not change this, then it
  too will be identified as a TypedCompositeActor. To change this in a
- derived class, put the following line in the constructor
+ derived class, put the following line in the constructor:</p>
  <pre>
  setClassName(<i>full class name</i>");
  </pre>
- If you do this, you will probably also want to override _exportMoMLContents()
+ <p>If you do this, you will probably also want to override _exportMoMLContents()
  to not generate a description of the contents of the composite, since
  they will be already defined in the Java class.
  </p>
+
  <p>
  The ports of a TypedCompositeActor are constrained to be TypedIOPorts,
  the relations to be TypedIORelations, and the actors to be instances of

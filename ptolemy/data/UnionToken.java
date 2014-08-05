@@ -162,7 +162,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     }
 
     /** Return the value of this token as a string.
-     *  The syntax is <code>{|<i>label</i> = <i>value</i>>|}</code>
+     *  The syntax is <code>{|<i>label</i> = <i>value</i>|}</code>
      *  @return A String beginning with "{|" that contains a label and value
      *  pair, ending with "|}".
      */

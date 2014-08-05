@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
 
  <p>The JNLP specification at
  <a href="http://jcp.org/jsr/detail/056.jsp"><code>http://jcp.org/jsr/detail/056.jsp</code></a>
- gives the following syntax for version-ids:
+ gives the following syntax for version-ids:</p>
  <pre>
  version-id ::= string ( separator string ) *
  string ::= char ( char ) *
@@ -61,14 +61,14 @@ import ptolemy.kernel.util.Workspace;
  modifier
  separator ::= "." | "-" | "_"
  </pre>
- Valid version-id include "1.3", "1.3.1", "1.3-beta_01".
+ <p> Valid version-id include "1.3", "1.3.1", "1.3-beta_01".</p>
 
  <p>The JNLP specification includes version-strings, which are used for
  matching one or more version-ids in a fashion similar to wildcard
  matches within a regular expression.  At this time, this class does
- not implement version-strings.
+ not implement version-strings.</p>
 
- <p>
+
  @see ptolemy.kernel.util.SingletonConfigurableAttribute
  @author Christopher Hylands
  @version $Id$

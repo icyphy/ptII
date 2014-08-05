@@ -73,7 +73,7 @@ public class TimeDelay
      *  @return the value of the delay parameter in the target
      *  language.
      *  @exception IllegalActionException If thrown while reading the
-     *  <i>delay</i parameter.
+     *  <i>delay</i> parameter.
      */
     @Override
     public String getAddTimeString() throws IllegalActionException {

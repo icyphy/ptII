@@ -43,7 +43,7 @@ import ptolemy.actor.gui.Placeable;
  * container.  Moreover, from one run to the next, this situation might change.
  * That is, it might create a container on one run, but on the next run, place
  * the display in specified container (like a control panel).
- * Objects that implement this interface should pass the following tests:
+ * Objects that implement this interface should pass the following tests:</p>
  * <ol>
  * <li>Run the model from the toolbar. The object creates a container.</li>
  * <li>Close the container during the run. The run continues without the container.</li>
@@ -58,7 +58,7 @@ import ptolemy.actor.gui.Placeable;
  * <li>Delete the actor. Frame should close, or display in the control
  * panel should disappear.</li>
  * </ol>
- * </p>
+ *
  * @author Edward A. Lee Contributor: Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 10.0

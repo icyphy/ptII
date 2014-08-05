@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  The parse tree created from the expression string consists of a
- hierarchy of node objects. This class represents logical operator(&&, ||)
+ hierarchy of node objects. This class represents logical operator(&amp;&amp;, ||)
  nodes in the parse tree.
 
  @author Neil Smyth, Steve Neuendorffer

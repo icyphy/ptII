@@ -104,8 +104,10 @@ public class CCodegenUtilities {
      * @param signature The signature of the method to find.
      * @param targetCpp Boolean indicating whether the target language is C or C++.
      * @return A string containing code to get the jni id of a Java method.
-     *      cid = (*env)->GetMethodID(env, stringClass,
-                               "<init>", "([C)V");
+     * <pre>
+     *      cid = (*env)-&gt;GetMethodID(env, stringClass,
+     *                          "&lt;init&gt;", "([C)V");
+     * </pre>
      */
     public static String jniGetMethodID(String jniClass, String name,
             String signature, boolean targetCpp) {

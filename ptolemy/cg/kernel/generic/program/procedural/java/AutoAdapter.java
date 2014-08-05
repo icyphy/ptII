@@ -1238,7 +1238,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  Typically this parameter is calle with getComponent() as
      *  the first argument.
      *  @param portName The escaped name of the port.
-     *  @exception Exception If a field cannot be access, or if
+     *  @return The field.
+     *  @exception NoSuchFieldException If a field cannot be access, or if
      *  getComponent() fails.
      */
     private static Field _findFieldByPortName(NamedObj component,
@@ -1299,6 +1300,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  the parameters should be generated.  Usually, this false when
      *  actor is a NamedObj and true when actor is a
      *  TypedCompositeActor.
+     *  @param generateElectricityConnections If true, invoke 
+     *  _generateElectricityConnections().
      *  @return code that calls the shared method that instantiates the actor
      *  @exception IllegalActionException If thrown while generating
      *  the containment code.
@@ -1380,6 +1383,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate code that creates the hierarchy.
+     *  @param component The component
      *  @return code that creates the hierarchy
      *  @exception IllegalActionException If thrown while generate code that
      *  connects the ports of the containers.
@@ -1608,11 +1612,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  For non-multiports, actorPortName and codegenPortName are the same.
      *  For multiports, codegenPortName will vary according to channel number
      *  while actorPortName will remain the same.
-     * @param type The type of the port.
-     * @param channel The channel number.
-     * For non-multiports, the channel number will be 0.
-     * @exception IllegalActionException If thrown while reading the
-     * variablesAsArrays parameter of the code generator.
+     *  @param type The type of the port.
+     *  @param channel The channel number.
+     *  For non-multiports, the channel number will be 0.
+     *  @return The code
+     *  @exception IllegalActionException If thrown while reading the
+     *  variablesAsArrays parameter of the code generator.
      */
     private String _generateGetInside(String actorPortName,
             String codegenPortName, Type type, int channel)
@@ -1691,11 +1696,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  For non-multiports, actorPortName and codegenPortName are the same.
      *  For multiports, codegenPortName will vary according to channel number
      *  while actorPortName will remain the same.
-     * @param type The type of the port.
-     * @param channel The channel number.
-     * For non-multiports, the channel number will be 0.
-     * @exception IllegalActionException If thrown while generating code to to
-     * gets data from the actor port and sends it to the codegen port.
+     *  @param type The type of the port.
+     *  @param channel The channel number.
+     *  For non-multiports, the channel number will be 0.
+     *  @return The inside declarations
+     *  @exception IllegalActionException If thrown while generating code to to
+     *  gets data from the actor port and sends it to the codegen port.
      */
     private String _generateGetInsideDeclarations(String actorPortName,
             String codegenPortName, Type type, int channel)
@@ -1883,8 +1889,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
     /** Return the code that is used to connect ports for situations
      *  where an actor may read parameters from a remote container.
-     * @exception IllegalActionException If thrown while reading the
-     * variablesAsArrays parameter of the code generator.
+     *  @param readingReoteParametersDepth The depth at which remote
+     *  parameters are being read.
+     *  @param portOrParameter The port or parameter.
+     *  @param escapedCodegenPortName The escaped port name.
+     *  @return The code
+     *  @exception IllegalActionException If thrown while reading the
+     *  variablesAsArrays parameter of the code generator.
      */
     private String _generateRemoteParameterConnections(
             int readingRemoteParametersDepth, String portOrParameter,

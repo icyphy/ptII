@@ -196,7 +196,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     /** Create the deterministic SDF with sharing buffers graph for a composite actor.
      * @return The generated profile of the composite actor.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If there are problems performing the analysis.
      */
     public StringBuffer createGraph() throws IllegalActionException {
 
@@ -442,11 +442,13 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * that depend on the input firings.
      * @param outputInputDependence The map from each each output firing to the set of input firings
      * that it depends on.
-     * @param inInputConnectedPorts
-     * @param inOutputConnectedPorts
+     * @param inInputConnectedPorts The input connected ports
+     * @param inOutputConnectedPorts The output connected ports
      * @param firingClusters The cluster of firings.
-     * @param clusters
-     * @exception IllegalActionException
+     * @param clusters The clusters
+     * @param actorFirings The actor firings.
+     * @exception IllegalActionException If thrown while getting the
+     * firings from the profile.
      */
     private void _clusterActorFirings(
             List<SimulationFiringFunction> outputFiringFunctions,
@@ -703,9 +705,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * by solving the balance equation.
      * @param port2Junction The map from a pair of connected ports to the junction between them.
      * @param actorFirings The list of firings of the internal actors inside the composite actor.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while getting the firings froim the profile,
+     * the token production rate or the token consumption rate.
      */
-
     private void _createDependencyGraph(CompositeActor container,
             Map firingVector, Map port2Junction, Set actorFirings)
             throws IllegalActionException {
@@ -976,9 +978,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * A junction is a counter denoting the number of tokens in a relation between two ports.
      * @param junction2InputPort The map from junctions to respective input ports
      * @param junction2OutputPort The map from junctions to respective output port
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while getting the token.
      */
-
     private void _createExpandedGraph(CompositeActor container,
             Map port2Junction, Map junction2InputPort, Map junction2OutputPort)
             throws IllegalActionException {

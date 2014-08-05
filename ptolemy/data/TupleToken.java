@@ -249,8 +249,8 @@ public class TupleToken extends Token {
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  FIXME: This is not currently supported by the expression language.
-     *  @return A string beginning with "<" that contains expressions
-     *   for every element in the tuple separated by commas, ending with ">".
+     *  @return A string beginning with "&lt;" that contains expressions
+     *   for every element in the tuple separated by commas, ending with "&gt;".
      */
     @Override
     public String toString() {

@@ -354,7 +354,8 @@ public class TypedCompositeActor
     /**
      * Generate the fire code of a Composite Actor.
      * @return The generated code.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while appending the
+     * fireBlock or processing the code.
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {
