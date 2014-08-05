@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Bouncer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
-    </property> 
+    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -63,11 +63,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 355.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 107, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 107, 834, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates that an actor can control&#10;its own location in the block diagram by setting&#10;the value of a parameter named &quot;_location&quot;.">
@@ -123,8 +123,8 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
             </property>
         </property>
@@ -154,6 +154,8 @@
         </property>
         <port name="locationY" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 105.0}">
             </property>
         </port>
@@ -184,8 +186,8 @@
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-               </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
                 </property>
             </property>
@@ -298,9 +300,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="373.0, 200.5">
         </property>
     </entity>
-    <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="109.5172947534353">
-        </property>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">

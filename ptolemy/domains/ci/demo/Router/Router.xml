@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 570]">
     </property>
@@ -92,7 +92,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 195.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 22, 931, 680}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 22, 952, 680}, maximized=false}">
     </property>
     <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -327,8 +327,8 @@ help it make decisions.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 200.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
             </property>
         </property>
@@ -387,8 +387,8 @@ help it make decisions.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 345.0}">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 70.0">
             </property>
         </property>
@@ -463,9 +463,7 @@ help it make decisions.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="MonitorValue - q1 length" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="7">
-        </property>
+    <entity name="MonitorValue - q1 length" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -482,9 +480,7 @@ help it make decisions.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="MonitorValue - q2 length" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
+    <entity name="MonitorValue - q2 length" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -532,8 +528,8 @@ help it make decisions.</text></svg></configure>
         <property name="period" class="ptolemy.data.expr.Parameter" value="250">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 60.0">
             </property>
         </property>
@@ -582,8 +578,8 @@ help it make decisions.</text></svg></configure>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-           <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-           </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 60.0">
             </property>
         </property>

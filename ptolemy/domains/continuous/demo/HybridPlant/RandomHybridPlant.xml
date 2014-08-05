@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RandomHybridPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -172,13 +172,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 176, 876, 588}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 176, 897, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 478]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[663, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 239.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5, 262.0}">
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hybrid model of a plant where a continuous flow&#10;of raw material is directed into bottles as the&#10;bottles (jobs) arrive. The top level is a discrete-&#10;event model with a modal continuous-time model&#10;inside. Model parameters are to the right.">
@@ -210,14 +210,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 320.0]">
         </property>
     </property>
-    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
         <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphy/workPlan/RandomHybridPlant">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-        </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -363,13 +361,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.392751412389176">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -381,13 +380,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.0900238010830083">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -405,13 +405,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.513464370264839">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -429,13 +430,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7585249938752707">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
@@ -453,13 +455,14 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7446045553853462">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="default"/>
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="idle.incomingPort" relation="relation3"/>

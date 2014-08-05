@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HanoiTower" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 894, 588}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 915, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 397]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.5, 198.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.5, 262.0}">
     </property>
     <property name="numberOfDisks" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -417,9 +417,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 220.0]">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 187, 905, 524}, maximized=false}">
@@ -965,11 +965,11 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <link port="Expression2.in" relation="relation8"/>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{{numberOfDisks,sourceTower,destinationTower}}">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 215.0]">
         </property>
@@ -1743,7 +1743,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </entity>
             <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-                <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="interpolationFactor">
+                <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="interpolationFactor">
                 </property>
                 <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1981,7 +1981,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </entity>
             <entity name="Repeat2" class="ptolemy.domains.sdf.lib.Repeat">
-                <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="interpolationFactor">
+                <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="interpolationFactor">
                 </property>
                 <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -2328,7 +2328,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <link port="Const4.output" relation="relation10"/>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="interpolationFactor">
+            <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="interpolationFactor">
             </property>
             <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
