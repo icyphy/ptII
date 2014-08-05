@@ -386,7 +386,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         }
     }
 
-    /** Find all of the ExceptionSubscribers in the model
+    /** Find all of the ExceptionSubscribers in the model.
      *
      *  @exception IllegalActionException If thrown by parent
      */

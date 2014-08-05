@@ -79,6 +79,10 @@ public class ExceptionManagerModel extends CompositeEntity {
      *  specified ExceptionManager.
      *  @param exceptionManager The ExceptionManager that contains the model.
      *  @param workspace The workspace that will list the entity.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public ExceptionManagerModel(ExceptionManager exceptionManager,
             Workspace workspace) throws IllegalActionException,
@@ -92,6 +96,7 @@ public class ExceptionManagerModel extends CompositeEntity {
 
     /** Return the ExceptionManager that contains the model.
      *  @return The ExceptionManager that contains this model.
+     *  @see #setModelContainer(ExceptionManager)
      */
     public ExceptionManager getModelContainer() {
         return _modelContainer;
@@ -100,6 +105,7 @@ public class ExceptionManagerModel extends CompositeEntity {
     /** Set the exception manager that contains this model.
      *  @param exceptionManager The exception manager that should contain this
      *  model.
+     *  @see #getModelContainer()
      */
     public void setModelContainer(ExceptionManager exceptionManager) {
         _modelContainer = exceptionManager;
