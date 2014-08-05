@@ -213,6 +213,9 @@ release_mac:
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
+release_mac2_setup:
+	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+
 ####
 release_nightly:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \

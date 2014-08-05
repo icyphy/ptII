@@ -416,16 +416,17 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 // this model to somebody else. Regenerate it again.
                 _generateCode();
                 classInstance = classLoader.loadClass(className);
-            } finally {
-                if (classLoader != null) {
-                    try {
-                        classLoader.close();
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(this, ex,
-                                "Failed to close \""
-                                        + (url == null ? "null" : url) + "\".");
-                    }
-                }
+            // java.net.URLClassLoader is not present in Java 1.6.
+//             } finally {
+//                 if (classLoader != null) {
+//                     try {
+//                         classLoader.close();
+//                     } catch (IOException ex) {
+//                         throw new IllegalActionException(this, ex,
+//                                 "Failed to close \""
+//                                         + (url == null ? "null" : url) + "\".");
+//                     }
+//                 }
             }
 
             _objectWrapper = classInstance.newInstance();
@@ -923,16 +924,17 @@ public class ModularCompiledSDFTypedCompositeActor extends
             } catch (Throwable throwable) {
                 throw new InternalErrorException(this, throwable,
                         "Failed to get the profile.");
-            } finally {
-                if (classLoader != null) {
-                    try {
-                        classLoader.close();
-                    } catch (IOException ex) {
-                        throw new InternalErrorException(this, ex,
-                                "Failed to close \""
-                                        + (url == null ? "null" : url) + "\".");
-                    }
-                }
+            // java.net.URLClassLoader is not present in Java 1.6.
+//             } finally {
+//                 if (classLoader != null) {
+//                     try {
+//                         classLoader.close();
+//                     } catch (IOException ex) {
+//                         throw new InternalErrorException(this, ex,
+//                                 "Failed to close \""
+//                                         + (url == null ? "null" : url) + "\".");
+//                     }
+//                 }
             }
         }
 

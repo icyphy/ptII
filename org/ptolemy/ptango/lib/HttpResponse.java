@@ -83,8 +83,12 @@ public class HttpResponse {
     /** Construct a new HttpResponse object from an HttpURLConnection object.
      */
     public HttpResponse(HttpURLConnection connection) {
-        _contentLength = connection.getContentLengthLong();
-        _contentType = connection.getContentType();
+        // FIXME: HttpURLConnection getContentLengthLong() is not
+        //present in Java 1.6, which we need to compile under Mac OS X.
+        //_contentLength = connection.getContentLengthLong();
+        _contentLength = connection.getContentLength();
+
+       _contentType = connection.getContentType();
 
         try {
             _responseCode = connection.getResponseCode();

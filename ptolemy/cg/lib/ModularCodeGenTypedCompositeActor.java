@@ -301,7 +301,7 @@ ModularCodeGenLazyTypedCompositeActor {
             URL[] urls = new URL[] { url };
             URLClassLoader classLoader = null;
             Class<?> classInstance = null;
-            try {
+            // try {
                 try {
                     classLoader = new URLClassLoader(urls);
                     classInstance = classLoader.loadClass(className);
@@ -356,17 +356,18 @@ ModularCodeGenLazyTypedCompositeActor {
                     _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
                 }
 
-            } finally {
-                if (classLoader != null) {
-                    try {
-                        classLoader.close();
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(this, ex,
-                                "Failed to close \""
-                                        + (url == null ? "null" : url) + "\".");
-                    }
-                }
-            }
+            // java.net.URLClassLoader is not present in Java 1.6.
+//             } finally {
+//                 if (classLoader != null) {
+//                     try {
+//                         classLoader.close();
+//                     } catch (IOException ex) {
+//                         throw new IllegalActionException(this, ex,
+//                                 "Failed to close \""
+//                                         + (url == null ? "null" : url) + "\".");
+//                     }
+//                 }
+//             }
             recompileThisLevel.setToken(new BooleanToken(false));
             recompileHierarchy.setToken(new BooleanToken(false));
 
@@ -661,23 +662,24 @@ ModularCodeGenLazyTypedCompositeActor {
                 URL[] urls = new URL[] { url };
 
                 URLClassLoader classLoader = null;
-                try {
+                //try {
                     classLoader = new URLClassLoader(urls);
                     classInstance = classLoader.loadClass(className);
                     _profile = (Profile) classInstance.newInstance();
                     portList();
-                } finally {
-                    if (classLoader != null) {
-                        try {
-                            classLoader.close();
-                        } catch (IOException ex) {
-                            throw new IllegalActionException(this, ex,
-                                    "Failed to close \""
-                                            + (url == null ? "null" : url)
-                                            + "\".");
-                        }
-                    }
-                }
+                // java.net.URLClassLoader is not present in Java 1.6.
+//                 } finally {
+//                     if (classLoader != null) {
+//                         try {
+//                             classLoader.close();
+//                         } catch (IOException ex) {
+//                             throw new IllegalActionException(this, ex,
+//                                     "Failed to close \""
+//                                             + (url == null ? "null" : url)
+//                                             + "\".");
+//                         }
+//                     }
+//                }
             }
         } catch (Throwable throwable) {
             try {

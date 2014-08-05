@@ -324,7 +324,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     URL url = null;
                     URLClassLoader classLoader = null;
                     Class<?> classInstance = null;
-                    try {
+                    //try {
                         try {
                             url = codeDirectory.asFile().toURI().toURL();
                             URL[] urls = new URL[] { url };
@@ -411,19 +411,20 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                             + "method in the wrapper class.");
                         }
                         _loadedCodeVersion = _workspace.getVersion();
-                    } finally {
-                        if (classLoader != null) {
-                            try {
-                                classLoader.close();
-                            } catch (IOException ex) {
-                                throw new IllegalActionException(this, ex,
-                                        "Failed to close \""
-                                                + (url == null ? "null" : url)
-                                                + "\".");
-                            }
-                        }
-                    }
+                       // java.net.URLClassLoader is not present in Java 1.6.
+//                     } finally {
+//                         if (classLoader != null) {
+//                             try {
+//                                 classLoader.close();
+//                             } catch (IOException ex) {
+//                                 throw new IllegalActionException(this, ex,
+//                                         "Failed to close \""
+//                                                 + (url == null ? "null" : url)
+//                                                 + "\".");
+//                             }
+//                         }
                 }
+
             }
 
             try {
