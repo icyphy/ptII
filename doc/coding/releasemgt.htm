@@ -386,7 +386,7 @@
 	  make docs
 	  cd codeDoc; find . -name "*.html" > /tmp/h
 	  cat /tmp/h | xargs cat > /tmp/docs
-	  cat /tmp/docs | aspell list -H --run-together-limit=10 | sort -u | 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' | 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | aspell list -H | sort -u
+	  cat /tmp/docs | aspell list -H --run-together-limit=10 --personal=$PTII/util/testsuite/ptlocaldict | sort -u | 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' | 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | aspell list -H | sort -u
 	</pre>
 
       <li> Run findbugs and look at the results:
