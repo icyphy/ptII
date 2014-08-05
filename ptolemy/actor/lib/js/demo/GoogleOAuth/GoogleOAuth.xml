@@ -50,13 +50,13 @@
         </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/files">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 105.0]">
         </property>
-        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img">
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img">
         </property>
-        <property name="resourceLocation3" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE">
+        <property name="resourceLocation3" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/WebServerDE">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">

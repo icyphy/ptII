@@ -143,7 +143,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 515.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -174,7 +174,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 540.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorPtides.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorPtides.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

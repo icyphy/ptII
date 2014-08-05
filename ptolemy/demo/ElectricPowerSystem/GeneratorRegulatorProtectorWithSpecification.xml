@@ -129,7 +129,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 560.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

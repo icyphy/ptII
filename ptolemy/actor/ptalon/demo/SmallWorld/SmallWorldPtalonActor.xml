@@ -243,7 +243,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Elaine Cheong
-Based on $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></svg></configure>
+Based on $CLASSPATH/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

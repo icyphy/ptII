@@ -40,7 +40,7 @@
         </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Guidance">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Guidance">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 90.0]">
         </property>

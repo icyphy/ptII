@@ -73,7 +73,7 @@
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
         <property name="command" class="ptolemy.actor.parameters.PortParameter" value="sh">
         </property>
-        <property name="directory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/ExecDemos">
+        <property name="directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ExecDemos">
         </property>
         <property name="ignoreIOExceptionReadErrors" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -97,7 +97,7 @@
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;$PTII/bin/vergil -runThenExit -directoryOrURL &quot; + demoDirectory + &quot; &quot; + model + &quot;\nexit\n&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;$CLASSPATH/bin/vergil -runThenExit -directoryOrURL &quot; + demoDirectory + &quot; &quot; + model + &quot;\nexit\n&quot;">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">

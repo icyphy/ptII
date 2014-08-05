@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 190.0]">
         </property>
     </property>
-    <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/ExecDemos/Demos">
+    <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ExecDemos/Demos">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

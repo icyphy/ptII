@@ -52,7 +52,7 @@ the init state)</text></svg></configure>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.9023255813955, 152.67906976744186}">
         </property>
         <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-            <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$PTII/sth">
+            <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/sth">
                 <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">

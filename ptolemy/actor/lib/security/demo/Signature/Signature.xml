@@ -42,7 +42,7 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This test reads DSA keys from the ptKeystore file. If this file is not present,
 it is generated automatically.  Alternatively, you may want to generate
 this file by hand.  To do this, run:
-(cd $PTII/ptolemy/actor/lib/security/demo/Signature; make ptKeystore)
+(cd $CLASSPATH/ptolemy/actor/lib/security/demo/Signature; make ptKeystore)
 
 This model illustrates how we can use KeyStores to manage public and private keys. 
 The KeyStore itself and each private key in the KeyStore can have a separate 

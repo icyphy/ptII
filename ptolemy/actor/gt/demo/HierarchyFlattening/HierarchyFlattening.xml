@@ -19,8 +19,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 90.0}">
             </property>
         </property>
-        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute" value="$PTII/ptolemy/actor/gt/patterns/*_succ?.xml [...]">
-            <property name="directory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/gt/patterns">
+        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute" value="$CLASSPATH/ptolemy/actor/gt/patterns/*_succ?.xml [...]">
+            <property name="directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/gt/patterns">
                 <display name="Directory"/>
             </property>
             <property name="filter" class="ptolemy.data.expr.StringParameter" value="*_succ?.xml">

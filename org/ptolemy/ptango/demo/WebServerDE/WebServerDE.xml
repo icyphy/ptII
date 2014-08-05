@@ -50,13 +50,13 @@
         </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/files">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 55.0]">
         </property>
-        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img">
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img">
         </property>
-        <property name="resourceLocation3" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE">
+        <property name="resourceLocation3" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/WebServerDE">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -138,7 +138,7 @@
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/WebServerDE/pages/index.html">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/WebServerDE/pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 160.0]">

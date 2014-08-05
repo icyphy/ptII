@@ -15,7 +15,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Cookies">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Cookies">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 45.0]">
         </property>
