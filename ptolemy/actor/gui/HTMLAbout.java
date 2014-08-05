@@ -232,6 +232,8 @@ public class HTMLAbout {
      *  Be sure to call {@link #about(Configuration)} before calling this method.   
      *  @param completeDemos A URL pointing to the completeDemos.htm file
      *  @return HTML listing demos in otherDemos that are not in completeDemos.
+     *  @exception IllegalActionException If there is a problem
+     *  reading the completeDemos.htm file.
      */
     public static String checkCompleteDemos(String completeDemos) throws IOException {
         URL demosURL = _getDemoURL(completeDemos);

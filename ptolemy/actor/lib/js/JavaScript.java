@@ -1342,7 +1342,7 @@ public class JavaScript extends TypedAtomicActor {
             // this setTimeout() call.
 
             // NOTE: The API of this method is intended to match that of Node.js.
-            final Integer id = new Integer(_timeoutCount++);
+            final Integer id = Integer.valueOf(_timeoutCount++);
             Time currentTime = getDirector().getModelTime();
             final Time callbackTime = currentTime.add(time * 0.001);
 
@@ -1452,10 +1452,10 @@ public class JavaScript extends TypedAtomicActor {
 
         /**
          * Uses an Authorization code to retrieve an Access code.
-         * @param providerName
-         * @param clientId
-         * @param clientSecret
-         * @param redirectUrl
+         * @param providerName The name of the provider, for example "google".
+         * @param clientId The clientID.
+         * @param clientSecret The client password
+         * @param redirectUrl The URL to which to redirect.
          * @param authCode The authorization code issued by the Authorization server.
          * @return The Access code token. This can be used to access the Resource server.
          * @exception IllegalActionException
