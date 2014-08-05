@@ -417,7 +417,7 @@ $WORKSPACE/adm/bin/killXServer</command>
     <entry>
       <string>jdk</string>
       <string-property>
-        <originalValue class="string">1.6.0</originalValue>
+        <originalValue class="string">(Default)</originalValue>
         <propertyOverridden>false</propertyOverridden>
       </string-property>
     </entry>
