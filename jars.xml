@@ -3635,8 +3635,10 @@
 	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/*/*.png"/>
         <include name="org/ptolemy/ptango/demo/*/*.xml"/>
         <include name="org/ptolemy/ptango/demo/*/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/files/*.gif"/>
       </fileset>
     </jar>
 
@@ -4330,6 +4332,7 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/fmi/demo/*/*.xml"/>
 	<include name="ptolemy/actor/lib/fmi/demo/*/*.fmu"/>
+	<include name="ptolemy/actor/lib/fmi/test/auto/*.fmu"/>
       </fileset>
     </jar>
 
