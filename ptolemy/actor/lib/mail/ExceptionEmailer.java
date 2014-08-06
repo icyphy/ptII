@@ -1,6 +1,6 @@
 /* An attribute that sends an email upon occurrence of an exception.
 
- Copyright (c) 2006-2013 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -83,7 +83,6 @@ import ptolemy.kernel.util.Settable;
  * @Pt.AcceptedRating Red (beth)
  * @see SendMail
  */
-
 public class ExceptionEmailer extends AbstractInitializableAttribute 
     implements ExceptionSubscriber {
     /** Invoked by an exception handler (e.g. CatchExceptionAttribute) when an
@@ -105,10 +104,11 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
      *  </pre>
      *  <p>In Eclipse, you will then need to refresh the project.</p> *
      *   
-     * @param policy  The exception handling policy (for example, restart) of 
-     * the exception handler; see {@link #CatchExceptionAttribute}
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
-    
     public ExceptionEmailer(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
