@@ -9,9 +9,9 @@
         </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/files">
         </property>
-        <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/files">
+        <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/files">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 55.0]">
         </property>
