@@ -1575,7 +1575,8 @@ public class Manager extends NamedObj implements Runnable {
             @Override
             public void run() {
                 if (_state != IDLE) {
-                    System.out.println("********** Waiting for model to stop.");
+                    System.out.println("# Manager._registerShutdownHook(): State is " + _state
+                            + ", which is not IDLE.  Waiting for model to stop.");
                 }
                 finish();
                 if (_thread != null && _thread.isAlive()) {
