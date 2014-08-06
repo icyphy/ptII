@@ -87,6 +87,7 @@ import ptolemy.util.FileUtilities;
  with "$", which get substituted
  with the appropriate values.</p>
  <table>
+ <caption>Predefined values</caption>
  <tr>
  <th>String</th>
  <th>Description</th>

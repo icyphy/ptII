@@ -177,7 +177,7 @@ public class Complex {
     }
 
     /** Return the angle or argument of this complex number.
-     *  @return A double in the range -<em>pi < /em> to <em>pi</em>.
+     *  @return A double in the range -<em>pi </em> to <em>pi</em>.
      */
     public final double angle() {
         return Math.atan2(imag, real);
@@ -185,7 +185,7 @@ public class Complex {
 
     /** Return the angle or argument of this complex number.
      *  @param z A complex number.
-     *  @return A double in the range -<em>pi < /em> to <em>pi</em>.
+     *  @return A double in the range -<em>pi </em> to <em>pi</em>.
      */
     public static double angle(Complex z) {
         return z.angle();

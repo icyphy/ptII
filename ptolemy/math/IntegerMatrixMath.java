@@ -191,7 +191,7 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new matrix that is the formed by bitwise ANDing z
-     *  with each element of the input matrix (matrix[i][j] & z).
+     *  with each element of the input matrix (matrix[i][j] &amp; z).
      */
     public static final int[][] bitwiseAnd(final int[][] matrix, final int z) {
         int rows = _rows(matrix);
@@ -310,7 +310,7 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new array that is the element-by-element bitwise XOR
-     *  of the two input matrices (matrix1[i][j] & matrix2[i][j]).  If
+     *  of the two input matrices (matrix1[i][j] &amp; matrix2[i][j]).  If
      *  the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */
@@ -716,7 +716,7 @@ public class IntegerMatrixMath {
      *  second argument.  If the second argument is positive, the
      *  elements are shifted left by the second argument. If the
      *  second argument is negative, the elements are shifted right
-     *  (arithmetically, with the >>> operator) by the absolute value
+     *  (arithmetically, with the &gt;&gt;&gt; operator) by the absolute value
      *  of the second argument. If the second argument is 0, no
      *  operation is performed (the matrix is just copied).
      *
@@ -754,7 +754,7 @@ public class IntegerMatrixMath {
      *  argument.  If the second argument is positive, the elements
      *  are shifted left by the second argument. If the second
      *  argument is negative, the elements are shifted right
-     *  (logically, with the >> operator) by the absolute value of the
+     *  (logically, with the &gt;&gt; operator) by the absolute value of the
      *  second argument. If the second argument is 0, no operation is
      *  performed (the matrix is just copied).
      *

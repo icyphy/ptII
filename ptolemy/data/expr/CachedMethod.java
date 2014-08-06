@@ -58,7 +58,7 @@ import ptolemy.kernel.util.InternalErrorException;
  <p> This class is used to represent two distinct types of Java methods
  that can be invoked.  The METHOD type corresponds to an instance
  method of a java class, invoked on an object of an appropriate class
- (the <it>base class</it>).  The FUNCTION type corresponds to a static
+ (the <i>base class</i>).  The FUNCTION type corresponds to a static
  method of a java class.  These types corresponds to the two distinct
  expression constructs that can be used to invoke Java methods.  The
  type of construct reflected can be queried using the

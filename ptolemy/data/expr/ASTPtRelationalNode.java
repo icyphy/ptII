@@ -41,10 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  The parse tree created from the expression string consists of a
  hierarchy of node objects. This class represents relational
- operator(>, >=, <, <=, ==, !=) nodes in the parse tree.
+ operator(&gt;, &ge;, &lt;, &le;, ==, !=) nodes in the parse tree.
  <p>
  Each node of this type has exactly two children. The resolved type
- is a BooleanToken.
+ is a BooleanToken.</p>
 
  @author Neil Smyth
  @version $Id$

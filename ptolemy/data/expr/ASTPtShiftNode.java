@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  The parse tree created from the expression string consists of a
  hierarchy of node objects. This class represents shift
- operators(>>, <<, <<<) nodes in the parse tree.
+ operators(&gt;&gt;, &lt;&lt;, &lt;&lt;&lt;) nodes in the parse tree.
  <p>
  Each node of this type has exactly two children. The resolved type
  is the type of the first child.

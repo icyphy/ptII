@@ -208,7 +208,7 @@ public class IntegerArrayMath {
     }
 
     /** Return a new array that is the formed by bitwise ANDing z with
-     *  each element of the input array (array[i] & z).  If the length
+     *  each element of the input array (array[i] &amp; z).  If the length
      *  of the array is 0, return a new array of length 0.
      */
     public static final int[] bitwiseAnd(final int[] array, final int z) {
@@ -223,7 +223,7 @@ public class IntegerArrayMath {
     }
 
     /** Return a new array that is the element-by-element bitwise AND
-     *  of the two input arrays (array1[i] & array2[i]).  If the
+     *  of the two input arrays (array1[i] &amp; array2[i]).  If the
      *  lengths of both arrays are 0, return a new array of length 0.
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
@@ -589,7 +589,7 @@ public class IntegerArrayMath {
      *  second argument.  If the second argument is positive, the
      *  elements are shifted left by the second argument. If the
      *  second argument is negative, the elements are shifted right
-     *  (arithmetically, with the >>> operator) by the absolute value
+     *  (arithmetically, with the &gt;&gt;&gt; operator) by the absolute value
      *  of the second argument. If the second argument is 0, no
      *  operation is performed (the array is just copied).
      *
@@ -619,7 +619,7 @@ public class IntegerArrayMath {
      *  argument.  If the second argument is positive, the elements
      *  are shifted left by the second argument. If the second
      *  argument is negative, the elements are shifted right
-     *  (logically, with the >>> operator) by the absolute value of
+     *  (logically, with the &gt;&gt;&gt; operator) by the absolute value of
      *  the second argument. If the second argument is 0, no operation
      *  is performed (the array is just copied).
      *

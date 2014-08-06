@@ -42,8 +42,9 @@ import javax.swing.text.html.StyleSheet;
  <p>This class is necessary to work around a bug under Windows where
  the "common places" portion of the JFileChooser dialog is affected
  by the background color of a component.  Sun has acknowledged the
- bug as <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6817933
-">#6817933</a>.  See also "<a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</a>."
+ bug as <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6817933">#6817933</a>.
+ See also 
+ "<a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</a>."
 
  <p> Every time JFileChooser is instantiated, saveBackground() should
  be called so that the background is properly set.  Then, in a finally
