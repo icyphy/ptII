@@ -1566,6 +1566,34 @@
 	<include name="ptolemy/backtrack/automatic/ptolemy/math/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/backtrack/eclipse/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/ast/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/ast/transform/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/build/build.xml"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/doc/backtrack.html"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/doc/index.html"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/doc/toc.xml"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/icons/standardize_tabs_spaces_icon.png"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/images/ptolemy.gif"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/actions/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/actions/codestyle/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/build/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/compatibility/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/console/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/dialogs/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/doc/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/editor/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/icons/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/images/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/preferences/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/util/*.class"/>
+	<include name="ptolemy/backtrack/eclipse/plugin/widgets/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/backtrack/manual/ptolemy/actor/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
