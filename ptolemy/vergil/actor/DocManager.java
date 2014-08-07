@@ -435,10 +435,23 @@ public class DocManager extends HandlerBase {
             if (toRead == null && lookForJavadoc) {
                 // If the class does not extend NamedObj, try to open
                 // the javadoc .html
+
+                //If we are searching for documentation and the ptdoc
+                //.xml file is not present, but the javadoc .html file
+                //is present, then display the .html file.  This is
+                //necessary to support links to classes that are not
+                //present in the models because we only generate ptdoc
+                //.xml files for classes that are in the models.
+
                 try {
+
                     Class targetClass = Class.forName(className);
-                    if (!_namedObjClass.isAssignableFrom(targetClass)
-                            || !lookForPtDoc) {
+                    // Commented out the conditional below so that
+                    // ptdoc:ptolemy.actor.LazyTypedCompositeActor
+                    // worked in whatsNew8.0.htm
+
+                    //if (!_namedObjClass.isAssignableFrom(targetClass)
+                    //|| !lookForPtDoc) {
 
                         // Look in the Application specific codeDoc directory.
                         docNameList.add(docNames[2]);
@@ -449,7 +462,7 @@ public class DocManager extends HandlerBase {
                             toRead = referenceClassLoader
                                     .getResource(docNames[3]);
                         }
-                    }
+                        //}
                 } catch (ClassNotFoundException ex) {
                     // Ignore, we could have the Sinewave Actor oriented class.
                 }
@@ -478,7 +491,6 @@ public class DocManager extends HandlerBase {
                 while (docNameIterator.hasNext()) {
                     String docName = (String) docNameIterator.next();
                     toRead = new URL(_remoteDocumentationURLBase + docName);
-
                     if (toRead != null) {
                         InputStream toReadStream = null;
                         try {
@@ -788,6 +800,9 @@ public class DocManager extends HandlerBase {
         // or the class name provided by the target.
         String className;
         if (_target == null) {
+            if (_targetClass == null) {
+                throw new NullPointerException("Both _target and _targetClass are null?");
+            }
             className = _targetClass.getName();
         } else {
             className = _target.getClassName();
@@ -872,7 +887,7 @@ public class DocManager extends HandlerBase {
                 } else if (toRead != null
                         && toRead.toExternalForm().endsWith(".html")) {
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            + "\">Base class Javadoc (" + baseClassName
+                            + "#in_browser\">Base class Javadoc (" + baseClassName
                             + ")</a></li>");
                 } else if (toRead != null
                         && toRead.toExternalForm().endsWith(".java")) {
