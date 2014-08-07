@@ -716,7 +716,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             _deltaX = new double[tolerance.length];
             for (int i = 0; i < tolerance.length; i++) {
                 // FIXME: _deltaX should take into account the scaling of the variable.
-                //        It should also be adaptive.
+                //        For FMUs, this can be obtained from the nominal attribute.
+                //        Maybe this should be an attribute of a port of a Ptolemy actor?
                 _deltaX[i] = 1E-5;
             }
 
@@ -728,38 +729,40 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  <p>
          *  This method iterates until a solution is found. If it does not
          *  converge within the maximum number of iterations, it throws
-         *  an IllegalActionException. A method that calls solve(double[] xInitial)
+         *  an IllegalActionException. A method that calls solve(double[] xIni)
          *  can then call converged() to check whether the exception is thrown because
          *  of lack of convergence.
          *
-         *  @param xIni Array with the initial values of the variables, to be replaced
-         *   with the solution by this method.
-         * @exception IllegalActionException If the prefire() method
-         *  returns false having previously returned true in the same
-         *  iteration, or if the prefire() or fire() method of the actor
-         *  throws it, or if evaluating the function yields a value that
-         *  is not a double, or if the solver fails to find a solution.
+         *  @param xIni Array with the initial values of the variables, which will be replaced
+         *              by this method with the solution.
+         *  @exception IllegalActionException If the prefire() method
+         *             returns false having previously returned true in the same
+         *             iteration, or if the prefire() or fire() method of the actor
+         *             throws it, or if evaluating the function yields a value that
+         *             is not a double, or if the solver fails to find a solution.
          */
         @Override
         public void solve(double[] xIni) throws IllegalActionException {
             _iterationCount = 0;
 
-            do {
-                // Evaluate the loop function to compute x_{n+1} = g(x_n).
-                // This calls the loop function of the outer class.
-                if (_iterationCount == 0) {
-                    _residual(xIni, _f);
-                }
-                final double[] xNew = _newtonStep(xIni, _f);
-                _iterationCount++;
+            // Evaluate the loop function to compute x_{n+1} = g(x_n).
+            // This calls the loop function of the outer class.
+            _residual(xIni, _f);
+            double[] xNew = new double[xIni.length];
 
-                // For the NewtonRaphson, we do not compare x and xNew, but rather xNew and g(xNew).
-                // Otherwise, the test may indicate convergence if the Newton step is small.
+            // Main iteration loop.
+            do {
+                xNew = _newtonStep(xIni, _f);
+
+                // Evaluate the loop function and store the residual in _f.
                 _residual(xNew, _f);
-                // Check for convergence
+                if(_debugging){
+                    _debug("Newton obtained residual " + DoubleArrayMath.toString(_f));
+                }
+                // Check for convergence.
                 _converged = _didConverge(_f);
 
-                // Update iterate
+                // Update iterate.
                 System.arraycopy(xNew, 0, xIni, 0, xIni.length);
 
                 // Check for maximum number of iterations in case we did not yet converge.
@@ -807,10 +810,13 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // Reset the coordinate to its old value
                 xNew[i] = xOri;
             }
-            // Check whether Jacobian is invertible
-            // FIXME: For now, we reject the problem. An improvement will be to try to recover from this,
-            //        for example by switching the solver, trying a different start value, increasing the
-            //        precision of the Jacobian approximation, adding relaxation, and/or some other means.
+            
+            // Check whether Jacobian is invertible.
+            // 
+            // For now, we reject the problem. An improvement will be to try to recover from this,
+            // for example by switching the solver, trying a different start value, adding
+            // a perturbation, increasing the precision of the Jacobian approximation, 
+            // adding relaxation, and/or some other means.
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5) {
                 StringBuffer message = new StringBuffer();
@@ -836,9 +842,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 xNew[0] = x[0] + d;
             } else {
                 final double[] d = _gaussElimination(J, f);
-                for (int i = 0; i < n; i++) {
-                    xNew[i] = x[i] - d[i];
-                }
+                xNew = DoubleArrayMath.subtract(x, d);
             }
             return xNew;
         }
@@ -846,17 +850,14 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** Return vector x that solves A*x=f by a Gauss elimination
          *  with normalization and interchange of rows.
          *
-         *  A is an NxN matrix
-         * Method solves the equation A*x=f for x.
-         *
-         * @param A Matrix
+         * @param A A square matrix
          * @param f Array with solution of A*x=f
-         * @return x Array x = A**(-1) * f
+         * @return x Array x = A^-1 * f
          */
-        protected double[] _gaussElimination(double[][] A, double[] f) {
+        protected double[] _gaussElimination(final double[][] A, final double[] f) {
             int i, j, k, piv, iMax, jMax;
-            int dim = f.length;
-            int dimP1 = dim + 1;
+            final int dim = f.length;
+            final int dimP1 = dim + 1;
             double[] r = new double[dim];
             double[][] B = new double[dim][dimP1];
             double[] tempRow = new double[dimP1];
@@ -894,12 +895,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 pivotElement = B[piv][piv];
 
-                // normalization of pivot row
+                // Normalization of pivot row.
                 for (j = 0; j < dimP1; j++) {
                     B[piv][j] = B[piv][j] / pivotElement;
                 }
 
-                // elimination
+                // Elimination.
                 for (k = 0; k < dim; k++) {
                     if (piv != k) {
                         a = B[k][piv];
@@ -920,8 +921,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
         /** Evaluate the residual function f(x) = x-g(x).
          *
-         *  This function is called by the solver to residual function.
-         *
          *  @param x Input to the loop function g(x).
          *  @param f Double vector of the same size as x. The result will be stored in this function.
          *
@@ -931,10 +930,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *   throws it, or if evaluating the function yields a value that
          *   is not a double.
          */
-        protected void _residual(double[] x, double[] f)
+        protected void _residual(final double[] x, double[] f)
                 throws IllegalActionException {
             double[] g = new double[_nVars];
             _evaluateLoopFunction(x, g);
+            _iterationCount++;
             for (int i = 0; i < _nVars; i++) {
                 f[i] = x[i] - g[i];
             }
@@ -971,10 +971,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             _converged = false;
 
             // Initialize step size for Jacobian calculation.
-            _deltaX = new double[tolerance.length];
-            for (int i = 0; i < tolerance.length; i++) {
+            _deltaX = new double[_nVars];
+            for (int i = 0; i < _nVars; i++) {
                 // FIXME: _deltaX should take into account the scaling of the variable.
-                //        It should also be adaptive.
                 _deltaX[i] = 1E-5;
             }
             /* Current guess of solution */
