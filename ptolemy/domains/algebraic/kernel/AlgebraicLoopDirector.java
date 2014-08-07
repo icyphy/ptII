@@ -988,42 +988,49 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             _xIni = new double[_nVars];
             
             // Solver parameters
-            ctmax = 0.8;
-            dmax = 0.2;
-            dmin = 0.001;
-            hmax = 1.28;
-            hmin = 0.000001;
-            hmn = 0.00001;
+            _ctmax = 0.8;
+            _dmax = 0.2;
+            _dmin = 0.001;
+            _hmax = 1.28;
+            _hmin = 0.000001;
+            _hmn = 0.00001;
             _h = 0.32;
-            cdmax = 1000.0;
-            angmax = Math.PI / 3.0;
-            acfac = 2.0;
+            _cdmax = 1000.0;
+            _angmax = Math.PI / 3.0;
+            _acfac = 2.0;
         }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** This method solves H(x, lambda) = x - lambda F(x) = 0.
+        /** This method solves u - lambda F(u) = 0
+         *  with initial values u=0 and lambda=0.
          *
          * The solution, for lambda=1, is a fixed point of F : Re^n -> Re^n.
-         * The implementation uses the notation x1 = (_x, lambda), where lambda starts
-         * at 0 and attains 1 at the solution. The function G(.) is the Jacobian G(.)=F'(.),
-         * which is approximated at the start of the solution using finite differences,
+         * 
+         * To allow a non-zero initial guess for the loop function, the problem 
+         * is reformulated as H(s, lambda, x0) = s - lambda (g(s+x0)-x0),
+         * where lambda has an initial value of 0 and is successively increased to 1,
+         * s is a coordinate transformation defined so that x = s+x0, where
+         * x0 is the initial iterate.
+         * 
+         * The Jacobian is approximated at the start of the solution using finite differences,
          * and then updated using Broyden's method.
          *
-         * The method starts with computing the Jacobian H'(x)=A. Next, it computes
-         * the tangent vector t = t(A).
-         * It then conducts a predictor (Euler) step u = x+h*t.
+         * The method starts with computing the Jacobian H'(x)=A, where
+         * x=(s, lambda). 
+         * Next, it computes the tangent vector t = t(A).
+         * It then conducts a predictor Euler step u = x+h*t.
          * After computing a perturbation vector pv, it corrects the iterates using
          * v = u - A^+ (H(u)-pv), where A^+ is the Moore-Penrose inverse of A.
          *
-         *  @param xIni Array with the initial values of the variables, to be replaced
-         *   with the solution by this method.
+         *  @param xIni Array with the initial values of the variables, which will be replaced
+         *              by this method with the obtained solution.
          * @exception IllegalActionException If the prefire() method
-         *  returns false having previously returned true in the same
-         *  iteration, or if the prefire() or fire() method of the actor
-         *  throws it, or if evaluating the function yields a value that
-         *  is not a double, or if the solver fails to find a solution.
+         *              returns false having previously returned true in the same
+         *              iteration, or if the prefire() or fire() method of the actor
+         *              throws it, or if evaluating the function yields a value that
+         *              is not a double, or if the solver fails to find a solution.
          */
         @Override
         public void solve(double[] xIni) throws IllegalActionException {
@@ -1043,10 +1050,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             double[] v = new double[n1];
 
             boolean switchToNewton = false;
-            // Copy initial guess.
-// FIXME            System.arraycopy(xIni, 0, x1, 0, _nVars);
-            // Set the last element, which is used for the homotopy, to zero.
-// FIXME            x1[_nVars] = 0.0;
+
+            // Set x1 to zero. The initial value xIni will be taken into account
+            // when the loop function is evaluated.
             for(int i = 0; i < n1; i++){
                x1[i] = 0.0;
             }
@@ -1058,26 +1064,28 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Compute _b and _q, the orthogonal decompositions of _b.
             double cond = _decomp();
+            
             // Check condition number of initial point.
-            if (cond > cdmax) {
+            if (cond > _cdmax) {
                 throw new IllegalActionException("Bad condition number '"
                         + cond
                         + "' of initial point. Select different initial point.");
             }
+            
             // Save the tangent vector
             for (int k = 0; k < n1; k++) {
                 _t[k] = _q[_nVars][k];
             }
-            // Set orientation for search.
+            
+            // Set the orientation for search.
             final double or = _getOrientation();
 
-            // Main iteration loop
+            // Main iteration loop.
+            double[] w = new double[_nVars];
             while (!_stopRequested) {
 
-                double[] w = new double[_nVars];
-
                 while (!_stopRequested && !switchToNewton) {
-                    if (Math.abs(_h) < hmin) {
+                    if (Math.abs(_h) < _hmin) {
                         StringBuffer message = new StringBuffer();
                         message.append("Failure at minimum step size after "
                                 + _iterationCount + " function evaluations.\n");
@@ -1102,20 +1110,15 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     }
                     // Evaluate the function for the value of the predictor step.
                     w = _map(u);
-                    // Return if current value is a solution
-                    // FIXME: This was added by mwetter and is not part of the original implementation.
-                    if (_converged){
-                       System.arraycopy(w, 0, xIni, 0, _nVars);
-                       return;
-                    }
+
                     // Update predictor.
                     // This sets _test=true if a call to Newton should be done.
-                    _updateQB(w, angmax);
+                    _updateQB(w, _angmax);
 
                     if (_test) {
                         // Newton corrector and update.
                         // If the step is a success, this call
-                        // assigns _test = true and updates _r
+                        // assigns _test = true and updates _r.
                         _newton(u, v, w);
                         if (_test) {
                             // Residual and contraction test are positive.
@@ -1124,12 +1127,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         } else {
                             // Residual or contraction test is negative.
                             // Try a smaller step.
-                            _h = _h / acfac;
+                            _h /= _acfac;
                         }
                     } else {
                         // PC step not accepted.
                         // Try a smaller step.
-                        _h = _h / acfac;
+                        _h /= _acfac;
                     }
                 }
                 if (!_stopRequested) {
@@ -1143,17 +1146,17 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     }
                     if (_doNewtonStep) {
                         _h = -(v[_nVars] - 1.0) / _q[_nVars][_nVars];
-                        if (Math.abs(_h) < hmn) {
+                        if (Math.abs(_h) < _hmn) {
                             // Obtained minimum step length.
                             succ = true;
                         }
                     } else {
-                        _h = Math.min(Math.abs(_h) * acfac, hmax);
+                        _h = Math.min(Math.abs(_h) * _acfac, _hmax);
                     }
                     // Assign new point on curve.
                     System.arraycopy(v, 0, x1, 0, n1);
 
-                    // Assign y = H(x)
+                    // Assign y = H(x).
                     System.arraycopy(_r, 0, _y, 0, _nVars);
 
                     if (succ) {
@@ -1161,7 +1164,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         for(int i = 0; i < _nVars; i++){
                             xIni[i] = x1[i]+_xIni[i];
                         }
-// FIXME                        System.arraycopy(x1, 0, xIni, 0, _nVars);
                         // Stop the curve tracing.
                         return;
                     }
@@ -1374,9 +1376,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 w[k] = w[k] - pv[k];
             }
             final double d1 = _l2norm(w);
-            if (d1 > dmax) {
+            if (d1 > _dmax) {
                 if (_debugging){
-                    _debug("Failed test on d1: " + d1 + " > " + dmax);
+                    _debug("Failed test on d1: " + d1 + " > " + _dmax);
                 }
                 _test = false;
                 return;
@@ -1404,10 +1406,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             final double d3 = _l2norm(p);
 
             // Compute contraction
-            final double contr = d3 / (d1 + dmin);
-            if (contr > ctmax) {
+            final double contr = d3 / (d1 + _dmin);
+            if (contr > _ctmax) {
                 if (_debugging){
-                    _debug("Failed contraction test 'contr > ctmax' as " + contr + " > " + ctmax);
+                    _debug("Failed contraction test 'contr > ctmax' as " + contr + " > " + _ctmax);
                 }
                 _test = false;
             }
@@ -1441,11 +1443,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // Perturb upper triangular matrix
             for (int i = 1; i < n; i++) {
                 for (int k = 0; k < i; k++) {
-                    if (Math.abs(_b[k][i]) > cdmax * Math.abs(_b[i][i])) {
+                    if (Math.abs(_b[k][i]) > _cdmax * Math.abs(_b[i][i])) {
                         if (_b[i][i] > 0) {
-                            _b[i][i] = Math.abs(_b[k][i]) / cdmax;
+                            _b[i][i] = Math.abs(_b[k][i]) / _cdmax;
                         } else {
-                            _b[i][i] = -Math.abs(_b[k][i]) / cdmax;
+                            _b[i][i] = -Math.abs(_b[k][i]) / _cdmax;
                         }
                     }
                 }
@@ -1511,34 +1513,34 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         ///////////////////////////////////////////////////////////////////
         ////             protected variables                           ////
         /** Maximum contraction rate in corrector step, 0 < ctmax < 1. */
-        protected double ctmax; // See also algorithm 7.2.13 in Allgower and Georg 
+        protected double _ctmax; // See also algorithm 7.2.13 in Allgower and Georg 
 
         /** Maximal norm for H */
-        protected double dmax;
+        protected double _dmax;
 
         /** Minimal norm for H */
-        protected double dmin;
+        protected double _dmin;
 
         /** Maximal step size */
-        protected double hmax;
+        protected double _hmax;
 
         /** Minimal step size */
-        protected double hmin;
+        protected double _hmin;
 
         /** Minimal Newton step size */
-        protected double hmn;
+        protected double _hmn;
 
         /** Initial step size */
         protected double _h;
 
         /** Maximum for condition estimate */
-        protected double cdmax;
+        protected double _cdmax;
 
         /** Maximal angle */
-        protected double angmax;
+        protected double _angmax;
 
         /** Acceleration factor for step length control */
-        protected double acfac;
+        protected double _acfac;
 
         /** Matrix b used in Newton algorithm. */
         protected double[][] _b;
