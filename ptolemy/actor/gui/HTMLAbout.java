@@ -297,14 +297,19 @@ public class HTMLAbout {
 
         while (models.hasNext()) {
             String model = (String) models.next();
-            URL modelURL = new URL(demosURL, model);
+            if (model.startsWith("ptdoc:")) {
+                Effigy context = configuration.getDirectory().entityList(Effigy.class).iterator().next();
+                HTMLViewer.getDocumentation(configuration, model.substring(6), context);
+            } else {
+                URL modelURL = new URL(demosURL, model);
 
-            try {
-                configuration.openModel(demosURL, modelURL,
-                        modelURL.toExternalForm());
-            } catch (Throwable throwable) {
-                throw new Exception("Failed to open '" + modelURL + "'",
-                        throwable);
+                try {
+                    configuration.openModel(demosURL, modelURL,
+                            modelURL.toExternalForm());
+                } catch (Throwable throwable) {
+                    throw new Exception("Failed to open '" + modelURL + "'",
+                            throwable);
+                }
             }
         }
 
@@ -407,7 +412,7 @@ public class HTMLAbout {
             // "ptolemy/configs/doc/completeDemos.htm"
             URI aboutURI = new URI(event.getDescription());
             newURL = generateLinks(aboutURI.getFragment(),
-                    ".*(.htm|.html|.pdf|.xml)", configuration);
+                    "(ptdoc:.*|.*(.htm|.html|.pdf|.xml))", configuration);
         } else if (event.getDescription().startsWith("about:runAllDemos")) {
             URI aboutURI = new URI(event.getDescription());
             newURL = runAllDemos(aboutURI.getFragment(), configuration);
@@ -555,7 +560,7 @@ public class HTMLAbout {
                 + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
                 + "    <td><a href=\"about:links#"
                 + fileName
-                + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+                + "\">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
                 + "    <td><a href=\"about:checkModelSizes#"
                 + fileName
                 + "\">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>\n"
@@ -724,6 +729,7 @@ public class HTMLAbout {
      */
     private static List _getURLs(URL demosURL, String regexp,
             boolean absoluteURLs, int depth) throws IOException {
+        //System.out.println("HTMLAbout._getURLs(" + demosURL + ", " + regexp + ", " + absoluteURLs + ", " + depth);
         StringBuffer demosBuffer = new StringBuffer();
         BufferedReader in = null;
         String demosURLParent = demosURL.toString().substring(0,
@@ -771,6 +777,7 @@ public class HTMLAbout {
                     // If the link does not start with http://, but ends
                     // with .xml, then we add it to the list
                     String model = modelLink;
+                    //System.out.println("HTMLAbout: modelLink: " + modelLink);
                     if (absoluteURLs) {
                         model = demosURLParent + modelLink;
                         Exception ex1 = null;
