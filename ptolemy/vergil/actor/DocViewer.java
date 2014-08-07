@@ -139,9 +139,9 @@ public class DocViewer extends HTMLViewer {
         super();
         try {
             _init(null, configuration, null, url);
-        } catch (ClassNotFoundException e) {
+        } catch (Throwable throwable) {
             // Should not happen.
-            throw new InternalErrorException("Unexpected exception");
+            throw new InternalErrorException(null, throwable, "Unexpected exception initializing viewer for " + url);
         }
     }
 
