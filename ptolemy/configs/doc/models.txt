@@ -80,6 +80,7 @@ $CLASSPATH/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
+$CLASSPATH/ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
 $CLASSPATH/ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml
 $CLASSPATH/ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.xml
