@@ -650,6 +650,21 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             return _iterationCount;
         }
 
+        /** Return true if each element of f is within the solver tolerance.
+         * 
+         * @param f Value of residual function to be tested.
+         * @return true if convergence is achieved, false otherwise.
+         */
+        protected boolean _didConverge(final double[] f){
+            for (int i = 0; i < f.length; i++) {
+                final double diff = Math.abs(f[i]);
+                if (diff > Math.max(_tolerance[i], diff * _tolerance[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         ///////////////////////////////////////////////////////////////////
         ////             protected variables                           ////
         /** Flag that indicates whether the solver converged */
@@ -728,19 +743,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 final double[] xNew = _newtonStep(xIni, _f);
                 _iterationCount++;
 
-                // Check for convergence
-                _converged = true;
-
                 // For the NewtonRaphson, we do not compare x and xNew, but rather xNew and g(xNew).
                 // Otherwise, the test may indicate convergence if the Newton step is small.
                 _residual(xNew, _f);
-                for (int i = 0; i < xIni.length; i++) {
-                    final double diff = Math.abs(_f[i]);
-                    if (diff > Math.max(_tolerance[i], diff * _tolerance[i])) {
-                        _converged = false;
-                        break;
-                    }
-                }
+                // Check for convergence
+                _converged = _didConverge(_f);
 
                 // Update iterate
                 System.arraycopy(xNew, 0, xIni, 0, xIni.length);
@@ -968,6 +975,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             _t = new double[_nVars + 1];
             _r = new double[_nVars];
 
+            // Allocate storage for initial value
+            _xIni = new double[_nVars];
+            
             // Solver parameters
             ctmax = 0.8;
             dmax = 0.2;
@@ -984,7 +994,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** This method solves H(x, lambda) = x - lambda F(x).
+        /** This method solves H(x, lambda) = x - lambda F(x) = 0.
          *
          * The solution, for lambda=1, is a fixed point of F : Re^n -> Re^n.
          * The implementation uses the notation x1 = (_x, lambda), where lambda starts
@@ -1008,6 +1018,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          */
         @Override
         public void solve(double[] xIni) throws IllegalActionException {
+            // Store initial guess
+            System.arraycopy(xIni, 0, _xIni, 0, _nVars);
+
             final int n1 = _nVars + 1;
 
             // Solution vector x1 is x in the first n elements,
@@ -1020,9 +1033,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             boolean switchToNewton = false;
             // Copy initial guess.
-            System.arraycopy(xIni, 0, x1, 0, _nVars);
+// FIXME            System.arraycopy(xIni, 0, x1, 0, _nVars);
             // Set the last element, which is used for the homotopy, to zero.
-            x1[_nVars] = 0;
+// FIXME            x1[_nVars] = 0.0;
+            for(int i = 0; i < n1; i++){
+               x1[i] = 0.0;
+            }
 
             boolean _doNewtonStep = false;
             // Counter for the number of function calls.
@@ -1044,7 +1060,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 _t[k] = _q[_nVars][k];
             }
             // Set orientation for search.
-            double or = _getOrientation();
+            final double or = _getOrientation();
 
             // Main iteration loop
             while (!_stopRequested) {
@@ -1057,9 +1073,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         message.append("Failure at minimum step size after "
                                 + mapct + " function evaluations.\n");
                         message.append("Last solution vector was "
-                                + DoubleArrayMath.toString(w) + "\n");
-                        message.append("with homotopy factor lambda at "
-                                + x1[_nVars]);
+                                + DoubleArrayMath.toString( DoubleArrayMath.add(w, _xIni) ) + "\n");
+                        message.append("with homotopy factor lambda = "
+                                + x1[_nVars] + "\n");
+                        message.append("(lambda should be 1 at solution.)\n");
                         throw new IllegalActionException(message.toString());
                     }
                     if (mapct > _maxIterations) {
@@ -1076,6 +1093,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     }
                     // Evaluate the function for the value of the predictor step.
                     w = _map(u);
+                    // Return if current value is a solution
+                    // FIXME: This was added by mwetter and is not part of the original implementation.
+                    if (_converged){
+                       System.arraycopy(w, 0, xIni, 0, _nVars);
+                       return;
+                    }
                     mapct++;
                     // Update predictor.
                     // This sets _test=true if a call to Newton should be done.
@@ -1128,7 +1151,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                     if (succ) {
                         // Copy the solution vector to the function argument.
-                        System.arraycopy(x1, 0, xIni, 0, _nVars);
+                        for(int i = 0; i < _nVars; i++){
+                            xIni[i] = x1[i]+_xIni[i];
+                        }
+// FIXME                        System.arraycopy(x1, 0, xIni, 0, _nVars);
                         // Stop the curve tracing.
                         return;
                     }
@@ -1136,7 +1162,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             }
         }
 
-        /** Evaluate the transpose of the Jacobian by using forward differences.
+        /** Evaluate the transpose of the Jacobian of H(x, lambda) = x - lambda F(x)
+         *  by using forward differences.
          *
          * @param x Point at which the Jacobian is approximated.
          * @param h Step size.
@@ -1150,11 +1177,19 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         double[][] _jac(double[] x, double h) throws IllegalActionException {
             final int n1 = _nVars + 1;
             double[][] b = new double[n1][_nVars];
+            // Note that the original implementation of Allgower uses h for the step
+            // size in all n1 coordinates. Our implementation uses h*_deltaX[i] for i = 0, ..., n1-2,
+            // and h for i = n1-1. This is done to take the scaling of the variable into account.
+            final double[] hNewton = new double[n1];
+            for (int i = 0; i < _nVars; i++){
+                hNewton[i] = h; // FIXME: uncomment to add scaling *_deltaX[i];
+            }
+            hNewton[_nVars] = h;
             for (int i = 0; i < n1; i++) {
-                x[i] = x[i] + h;
+                x[i] = x[i] + hNewton[i];
                 // Here, we use _y as a temporary storage, as it will be reset below.
                 _y = _map(x);
-                x[i] = x[i] - h;
+                x[i] = x[i] - hNewton[i];
                 for (int k = 0; k < _nVars; k++) {
                     b[i][k] = _y[k];
                 }
@@ -1163,7 +1198,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             _y = _map(x);
             for (int i = 0; i < n1; i++) {
                 for (int k = 0; k < _nVars; k++) {
-                    b[i][k] = (b[i][k] - _y[k]) / h;
+                    b[i][k] = (b[i][k] - _y[k]) / hNewton[i];
                 }
             }
             return b;
@@ -1180,14 +1215,22 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  is not a double.
          */
         double[] _map(final double[] x) throws IllegalActionException {
-            double[] y = new double[_nVars];
+            
             double[] g = new double[_nVars];
-            System.arraycopy(x, 0, y, 0, _nVars);
+            double[] y = new double[_nVars];
+            
+            for(int i = 0; i < _nVars; i++){
+                y[i] = x[i]+_xIni[i];
+            }
             _evaluateLoopFunction(y, g);
+            System.arraycopy(x, 0, y, 0, _nVars);
             for (int i = 0; i < _nVars; i++) {
-                // In this test case, F(_x) = Math.exp(....), and we seek
-                // _x that satisfies _x-F(_x) = 0.
-                y[i] -= x[_nVars] * g[i];
+//                y[i] -= x[_nVars] * g[i];
+                y[i] -= x[_nVars] * (g[i]-_xIni[i]);
+            }
+            if (_debugging){
+               _debug("Obtained y = " + DoubleArrayMath.toString(y) + "\n" +
+                      "with lambda = " + x[_nVars]);
             }
             return y;
         }
@@ -1306,7 +1349,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             final int n1 = n + 1;
             double[] pv = new double[n];
             double[] p = new double[n];
-
+            if (_debugging){
+               _debug("Entered _newton.");
+            }
             _test = true;
             // Perturb w
             for (int k = 0; k < n; k++) {
@@ -1322,6 +1367,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             }
             final double d1 = _l2norm(w);
             if (d1 > dmax) {
+                if (_debugging){
+                    _debug("Failed test on d1: " + d1 + " > " + dmax);
+                }
                 _test = false;
                 return;
             }
@@ -1350,6 +1398,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // Compute contraction
             final double contr = d3 / (d1 + dmin);
             if (contr > ctmax) {
+                if (_debugging){
+                    _debug("Failed contraction test 'contr > ctmax' as " + contr + " > " + ctmax);
+                }
                 _test = false;
             }
             for (int k = n - 2; k >= 0; k--) {
@@ -1451,8 +1502,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
         ///////////////////////////////////////////////////////////////////
         ////             protected variables                           ////
-        /** Maximum contraction rate in corrector step. */
-        protected double ctmax;
+        /** Maximum contraction rate in corrector step, 0 < ctmax < 1. */
+        protected double ctmax; // See also algorithm 7.2.13 in Allgower and Georg 
 
         /** Maximal norm for H */
         protected double dmax;
@@ -1492,6 +1543,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** Result of Newton step */
         protected double[] _r;
 
+        /** Initial guess */
+        protected double[] _xIni;
+        
         /** Current guess of solution */
         protected double[] _y;
 
