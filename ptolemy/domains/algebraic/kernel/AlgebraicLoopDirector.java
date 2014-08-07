@@ -64,7 +64,10 @@ import ptolemy.math.DoubleMatrixMath;
  <ol>
  <li> SuccessiveSubstitution: This simple strategy simply executes the model
  until all inputs have converge.
- <li> NewtonRaphson: FIXME: Not implemented yet.
+ <li> NewtonRaphson: The Newton-Raphson iteration.
+ <li> Homotopy: A homotopy method that uses Newton-Raphson iteration and Euler
+      updates that search along a curve on which a linear approximation to the
+      problem is successively replaced with the actual function.
  </ol>
  In all cases, the number of iterations is limited to <i>maxIterations</i>,
  and an exception will be thrown if convergence hasn't occurred by then.
@@ -103,9 +106,9 @@ import ptolemy.math.DoubleMatrixMath;
  to reach a fixed point where some or all signals are infinite.
  <p>
  For NewtonRaphson, we solve for g(x)=x by solving f(x)=0,
- where f(x) = g(x)-x. This is done by iterating as follows:
+ where f(x) = x-g(x). This is done by iterating as follows:
  <pre>
-   x_n+1 = x_n - f(x_n)/f'(x_n) = x_n - (g(x_n) - x_n)/(g'(x_n) - 1) .
+   x_n+1 = x_n - f(x_n)/f'(x_n) = x_n - (x_n - g(x_n))/(1 - g'(x_n)) .
  </pre>
  To estimate g'(x_n), we do
  <pre>
@@ -114,12 +117,17 @@ import ptolemy.math.DoubleMatrixMath;
  where <i>d</i> is the <i>delta</i> parameter.
  <p>
  For Homotopy, we solve f(x) = x - g(x).
- The problem is reformulated as H(x, lambda) = x - lambda g(x),
- where lambda has an initial value of 0 and is successively increased to 1.
+ The problem is reformulated as H(s, lambda, x0) = s - lambda (g(s+x0)-x0),
+ where lambda has an initial value of 0 and is successively increased to 1,
+ s is a coordinate transformation defined so that x = s+x0, where
+ x0 is the initial iterate.
+ <br>
  The implementation is equal to Program 3 of
  Eugene L. Allgower and Kurt Georg,
  Introduction to Numerical Continuation Methods,
  Classics in Applied Mathematics, Vol. 45, SIAM, 2003.
+ However, the implementation by Allgower and Georg assumes an initial iterate of 0,
+ which is the reason for the above coordinate transformation.
  <p>
  FIXME: Questions:
  <ul>
@@ -138,6 +146,9 @@ import ptolemy.math.DoubleMatrixMath;
  <li> Instead of estimating g'(x_n), we want to be able to optionally
       identify g'(x_n). But this is really tricky when x_n is a vector
       (i.e. where there are multiple input ports with defaultValue).
+      FIXME: This is addressed in the Homotopy algorithm which uses Broyden updates
+      to estimate the Jacobian. A similar mechanism could be added to the Newton
+      algorithm in future work.
  <li> This code is not at all optimized and may be quite inefficient.
  </ul>
 
@@ -181,7 +192,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
         errorTolerance.setExpression("1E-4");
 
-        ptolemy.domains.algebraic.kernel.AlgebraicLoopScheduler scheduler = new ptolemy.domains.algebraic.kernel.AlgebraicLoopScheduler(
+        AlgebraicLoopScheduler scheduler = new AlgebraicLoopScheduler(
                 this, uniqueName("Scheduler"));
         setScheduler(scheduler);
     }
@@ -619,7 +630,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             _variableNames = variableNames;
             _tolerance = tolerance;
             _maxIterations = maxIterations;
-            _iterationCount = 0;
         }
 
         /** Return true if the solver converged, false otherwise.
@@ -908,7 +918,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             return r;
         }
 
-        /** Evaluate the residual function f(x) = g(x)-x.
+        /** Evaluate the residual function f(x) = x-g(x).
          *
          *  This function is called by the solver to residual function.
          *
@@ -926,7 +936,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             double[] g = new double[_nVars];
             _evaluateLoopFunction(x, g);
             for (int i = 0; i < _nVars; i++) {
-                f[i] = g[i] - x[i];
+                f[i] = x[i] - g[i];
             }
         }
 
@@ -936,7 +946,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** Step size for finite difference approximation */
         protected double[] _deltaX;
 
-        /** Temporary variable used to store the result of f(x) = g(x) -x  */
+        /** Temporary variable used to store the result of f(x) = x-g(x) */
         protected double[] _f;
 
     }
@@ -1018,6 +1028,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          */
         @Override
         public void solve(double[] xIni) throws IllegalActionException {
+
+            _iterationCount = 0;
             // Store initial guess
             System.arraycopy(xIni, 0, _xIni, 0, _nVars);
 
@@ -1041,12 +1053,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             }
 
             boolean _doNewtonStep = false;
-            // Counter for the number of function calls.
-            int mapct = 0;
             // Compute transpose of the Jacobian at x.
             // This method also assigns _y.
             _b = _jac(x1, _h);
-            mapct += 1 + _nVars + 1;
+
             // Compute _b and _q, the orthogonal decompositions of _b.
             double cond = _decomp();
             // Check condition number of initial point.
@@ -1071,7 +1081,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     if (Math.abs(_h) < hmin) {
                         StringBuffer message = new StringBuffer();
                         message.append("Failure at minimum step size after "
-                                + mapct + " function evaluations.\n");
+                                + _iterationCount + " function evaluations.\n");
                         message.append("Last solution vector was "
                                 + DoubleArrayMath.toString( DoubleArrayMath.add(w, _xIni) ) + "\n");
                         message.append("with homotopy factor lambda = "
@@ -1079,7 +1089,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         message.append("(lambda should be 1 at solution.)\n");
                         throw new IllegalActionException(message.toString());
                     }
-                    if (mapct > _maxIterations) {
+                    if (_iterationCount > _maxIterations) {
                         throw new IllegalActionException(
                                 "Maximum number of function evaluations exceeded.");
                     }
@@ -1099,7 +1109,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                        System.arraycopy(w, 0, xIni, 0, _nVars);
                        return;
                     }
-                    mapct++;
                     // Update predictor.
                     // This sets _test=true if a call to Newton should be done.
                     _updateQB(w, angmax);
@@ -1109,7 +1118,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         // If the step is a success, this call
                         // assigns _test = true and updates _r
                         _newton(u, v, w);
-                        mapct++;
                         if (_test) {
                             // Residual and contraction test are positive.
                             // Get out of the predictor corrector loop.
@@ -1223,6 +1231,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 y[i] = x[i]+_xIni[i];
             }
             _evaluateLoopFunction(y, g);
+            _iterationCount++;
             System.arraycopy(x, 0, y, 0, _nVars);
             for (int i = 0; i < _nVars; i++) {
 //                y[i] -= x[_nVars] * g[i];
