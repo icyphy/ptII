@@ -491,6 +491,7 @@ FULL_10_0_JARS = \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/vergil/scr/scr.jar \
+	$(PTG4LTL_JAR) \
 	ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar \
 	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
 
