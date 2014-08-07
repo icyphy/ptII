@@ -192,7 +192,7 @@ those that can be used in more than one domain).
 <li><i>New generic actors</i>:
 <ul>
 <li><a href="ptdoc:ptolemy.actor.lib.DelayStart">DelayStart</a>
-<li><a href="ptdoc:ptolemy.actor.lib.FireAccumulator">FireAccumulator</a>
+<li>ptolemy.actor.lib.FireAccumulator <i>Removed</i>
 <li><a href="ptdoc:ptolemy.actor.lib.RemoveNilTokens">RemoveNilTokens</a>
 <li><a href="ptdoc:ptolemy.actor.lib.Triangular">Triangular</a>
 </ul>
@@ -206,7 +206,7 @@ those that can be used in more than one domain).
 
 <li><i>New Discrete Event (DE) actors</i>:
 <ul>
-<li><a href="ptdoc:ptolemy.domains.de.lib.UnionMerge">UnionMerge</a>
+<li>ptolemy.domains.de.lib.UnionMerge <i>Moved to ptolemy.actor.lib.UnionMerge</i>
 <li><a href="ptdoc:ptolemy.domains.de.lib.Wire">Wire</a>
 </ul>
 
@@ -266,17 +266,17 @@ A preference system for UI related preferences, including:
 <a href="ptdoc:ptolemy.actor.gui.WelcomeWindowTableau">WelcomeWindowTableau</a>:
 An alternative start up screen infrastructure.
 
-<li><a href="ptdoc:ptolemy.actor.lib.hoc.AbstractCase">AbstractCase</a>,
+<li>ptolemy.actor.lib.hoc.AbstractCase <i>(Removed)</i>,
  <a href="ptdoc:ptolemy.actor.lib.hoc.MultiCompositeActor">MultiCompositeActor</a>,
  <a href="ptdoc:ptolemy.actor.lib.hoc.MultiCompositePort">MultiCompositePort</a>,
  <a href="ptdoc:ptolemy.actor.lib.hoc.Refinement">Refinement</a>,
  <a href="ptdoc:ptolemy.actor.lib.hoc.RefinementPort">RefinementPort</a>,
- <a href="ptdoc:ptolemy.domains.ct.kernel.CTCaseDirector">CTCaseDirector</a>,
- <a href="ptdoc:ptolemy.domains.ct.kernel.CTCase">CTCase</a>,
- <a href="ptdoc:ptolemy.domains.ct.kernel.CTRefinement">CTRefinement</a>,
- <a href="ptdoc:ptolemy.vergil.fsm.CaseGraphFrame">CaseGraphFrame</a>,
- <a href="ptdoc:ptolemy.vergil.fsm.CaseGraphTableau">CaseGraphTableau</a>,
-<a href="ptdoc:ptolemy.domains.fsm.modal.Case">Case</a>:
+ ptolemy.domains.ct.kernel.CTCaseDirector, 
+ ptolemy.domains.ct.kernel.CTCase,
+ ptolemy.domains.ct.kernel.CTRefinement,
+ ptolemy.vergil.fsm.CaseGraphFrame,
+ ptolemy.vergil.fsm.CaseGraphTableau,
+ ptolemy.domains.fsm.modal.Case:
 
  Used by the <a href="#Case">Case facility</a>.
 
@@ -288,7 +288,7 @@ An alternative start up screen infrastructure.
 <li><a href="ptdoc:ptolemy.caltrop.ddi.DataflowWithRates">DataflowWithRates</a>,
  <a href="ptdoc:ptolemy.caltrop.ddi.DDFFactory">DDFFactory</a>,
  <a href="ptdoc:ptolemy.caltrop.ddi.DDF">DDF</a>,
- <a href="ptdoc:ptolemy.caltrop.ddi.util.DataflowWithRatesActorInterpreter">DataflowWithRatesActorInterpreter</a>:
+ ptolemy.caltrop.ddi.util.DataflowWithRatesActorInterpreter:
  Caltrop work by J&#246;rn W. Janneck, and Steve Neuendorffer
 
 <li><a href="ptdoc:ptolemy.data.expr.ASTPtUnionConstructNode">ASTPtUnionConstructNode</a>,
@@ -309,7 +309,7 @@ An alternative start up screen infrastructure.
     <br>"2:-2" (vhdl)
     <br>"5e-2" (length e exponent)
    </ul> 
-   <a href="ptdoc:ptolemy/math/FixPoint">FixPoint</a>:
+   <a href="ptdoc:ptolemy.math.FixPoint">FixPoint</a>:
    <ul> 
      <li> Provide "lossless" arithmetic operators. These operators
     will generate FixPoint results that "grow" if overflow occurs.
@@ -321,16 +321,16 @@ An alternative start up screen infrastructure.
 
 <li><a href="ptdoc:ptolemy.domains.csp.kernel.AbstractBranchController">AbstractBranchController</a>,
  <a href="ptdoc:ptolemy.domains.csp.kernel.BranchActor">BranchActor</a>,
- <a href="ptdoc:ptolemy.domains.csp.kernel.ConditionalBranchActor">ConditionalBranchActor</a>,
+ ptolemy.domains.csp.kernel.ConditionalBranchActor, 
  <a href="ptdoc:ptolemy.domains.csp.kernel.MultiwayBranchController">MultiwayBranchController</a>:
  Support for CSP changes
 
-<li><a href="ptdoc:ptolemy.domains.fsm.kernel.HSDirector">HSDirector</a>
-<li><a href="ptdoc:ptolemy.domains.fsm.kernel.HSFSMDirector">HSFSMDirector</a>
+<li>ptolemy.domains.fsm.kernel.HSDirector
+<li>ptolemy.domains.fsm.kernel.HSFSMDirector
 <li><a href="ptdoc:ptolemy.domains.sdf.kernel.CachedSDFScheduler">CachedSDFScheduler</a>
 
-<li><a href="ptdoc:ptolemy.domains.sr.kernel.IllegalOutputException">IllegalOutputException</a>,
-<a href="ptdoc:ptolemy.domains.sr/kernel/UnknownTokenException">UnknownTokenException</a>:
+<li>ptolemy.domains.sr.kernel.IllegalOutputException,
+ptolemy.domains.sr.kernel.UnknownTokenException:
   Synchronous/Reactive rework
 
 <li><a href="ptdoc:ptolemy.moml.LibraryBuilder">LibraryBuilder</a>:
@@ -366,7 +366,7 @@ to make regression tests that ensure that an exception is thrown.
  <a href="ptdoc:ptolemy.vergil.actor.PortTerminal">PortTerminal</a>,
  <a href="ptdoc:ptolemy.vergil.icon.ActorNameIcon">ActorNameIcon</a>,
  <a href="ptdoc:ptolemy.vergil.icon.NameIcon">NameIcon</a>,
- <a href="ptdoc:ptolemy.vergil.kernel.attributes/VisibleAttribute">VisibleAttribute</a>,
+ <a href="ptdoc:ptolemy.vergil.kernel.attributes.VisibleAttribute">VisibleAttribute</a>,
  <a href="ptdoc:ptolemy.vergil.toolbox.RotateOrFlipPorts">RotateOrFlipPorts</a>:
   Vergil features such as controllable port orientation.
   

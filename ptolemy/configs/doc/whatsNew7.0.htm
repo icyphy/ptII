@@ -43,7 +43,7 @@ Heterochronous Dataflow Domain (HDF) models.
 
 <p>Codegen has the following new features:
 <ul> 
-<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCActor">EmbeddedCActor</a> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
+<li>ptolemy.actor.lib.jni.EmbeddedCActor <i>($PTII/ptolemy/codegen was removed after Ptolemy II 8.0. Use $PTII/ptolemy/cg instead.)</i> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
 <li>Enhanced polymorphic type system
 <li>Support for invoking the Java plotter from a C version of a model
 <li><i>and many more<i>
@@ -393,18 +393,18 @@ valid array type (resulting in an unsatisifed inequality term).
 <li><a href="ptdoc:ptolemy.actor.lib.SingleTokenCommutator">SingleTokenCommutator</a>
 <li><a href="ptdoc:ptolemy.actor.lib.SubMatrix">SubMatrix</a>
 <li><a href="ptdoc:ptolemy.actor.lib.gui.ArrayPlotterXY">ArrayPlotterXY</a>
-<li><a href="ptdoc:ptolemy.actor.lib.gui.LEDMatrix">LEDMatrix</a>
-<li><a href="ptdoc:ptolemy.actor.lib.gui.ModelDisplay">ModelDisplay</a>
+<li>ptolemy.actor.lib.gui.LEDMatrix <i>Moved to ptolemy.vergil.actor.lib.LEDMatrix after Ptolemy II 8.0</i>
+<li>ptolemy.actor.lib.gui.ModelDisplay <i>Moved to ptolemy.vergil.actor.lib.ModelDisplay after Ptolemy II 8.0</i>
 <li><a href="ptdoc:ptolemy.actor.lib.hoc.MirrorComposite">MirrorComposite</a>
 <li><a href="ptdoc:ptolemy.actor.lib.hoc.RealTimeComposite">RealTimeComposite</a>
 <li><a href="ptdoc:ptolemy.actor.lib.javasound.ClipPlayer">ClipPlayer</a>
 <li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundActor">SoundActor</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlaye">SoundPlayer</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlayer">SoundPlayer</a>
 </ul>
 
-<li><i>New Continuous Time (CT) actors</i>:
+<li><i>New Continuous Time (CT) actors</i>: <i>The CT domain was removed after Ptolemy II 8.0</ct>
 <ul>
-<li><a href="ptdoc:ptolemy.domains.ct.lib.DiscreteClock">DiscreteClock</a>
+<li>ptolemy.domains.ct.lib.DiscreteClock
 </ul>
 
 <li><i>New Synchronous Dataflow (SDF) actors</i>:
@@ -424,9 +424,9 @@ valid array type (resulting in an unsatisifed inequality term).
 <li><a href="ptdoc:ptolemy.actor.FiringsRecordable">FiringsRecordable</a>
 <li><a href="ptdoc:ptolemy.actor.TokenGotEvent">TokenGotEvent</a>
 <li><a href="ptdoc:ptolemy.actor.TokenGotListener">TokenGotListener</a>
-<li><a href="ptdoc:ptolemy.actor.TypedCompositeActorWithCoSimulation.">TypedCompositeActorWithCoSimulation</a>
+<li><a href="ptdoc:ptolemy.actor.TypedCompositeActorWithCoSimulation">TypedCompositeActorWithCoSimulation</a>
 <li><a href="ptdoc:ptolemy.actor.gui.AbstractPlaceableActor">AbstractPlaceableActor</a>
-<li><a href="ptdoc:ptolemy.actor.gui.DependencyHighlighter">DependencyHighlighter</a>
+<li>ptolemy.actor.gui.DependencyHighlighter <i>Moved to ptolemy.vergil.basic.DependencyHighlighter</i>
 <li><a href="ptdoc:ptolemy.data.FloatToken">FloatToken</a>
 <li><a href="ptdoc:ptolemy.data.ShortToken">ShortToken</a>
 <li><a href="ptdoc:ptolemy.data.UnsizedArrayToken">UnsizedArrayToken</a>
@@ -444,36 +444,36 @@ valid array type (resulting in an unsatisifed inequality term).
 <h3>New Code Generation Actors</h3>
 (<i> $PTII/ptolemy/codegen was replaced with $PTII/ptolemy/cg after Ptolemy II 8.0</i>)
 <ul>
-<li>:ptolemy.codegen.c.actor.lib.ArrayElementAsMatrix
-<li>:ptolemy.codegen.c.actor.lib.ArrayPeakSearch
-<li>:ptolemy.codegen.c.actor.lib.CodegenActor
-<li>:ptolemy.codegen.c.actor.lib.CurrentTime
-<li>:ptolemy.codegen.c.actor.lib.Lattice
-<li>:ptolemy.codegen.c.actor.lib.MovingAverage
-<li>:ptolemy.codegen.c.actor.lib.Publisher
-<li>:ptolemy.codegen.c.actor.lib.PublisherTest
-<li>:ptolemy.codegen.c.actor.lib.RecursiveLattice
-<li>:ptolemy.codegen.c.actor.lib.SetVariable
-<li>:ptolemy.codegen.c.actor.lib.Subscriber
-<li>:ptolemy.codegen.c.actor.lib.SubscriptionAggregator
-<li>:ptolemy.codegen.c.actor.lib.VectorAssembler
-<li>:ptolemy.codegen.c.actor.lib.VectorDisassembler
-<li>:ptolemy.codegen.c.actor.lib.WallClockTime
-<li>:ptolemy.codegen.c.actor.lib.conversions.CartesianToComplex
-<li>:ptolemy.codegen.c.actor.lib.conversions.ComplexToCartesian
-<li>:ptolemy.codegen.c.actor.lib.gui.LEDMatrix
-<li>:ptolemy.codegen.c.actor.lib.hoc.MultiInstanceComposite
-<li>:ptolemy.codegen.c.actor.lib.test.RampNecessaryFiles
-<li>:ptolemy.codegen.c.domains.sdf.lib.BitsToInt
-<li>:ptolemy.codegen.c.domains.sdf.lib.Chop
-<li>:ptolemy.codegen.c.domains.sdf.lib.DownSample
-<li>:ptolemy.codegen.c.domains.sdf.lib.IntToBits
-<li>:ptolemy.codegen.c.domains.sdf.lib.LMSAdaptive
-<li>:ptolemy.codegen.c.domains.sdf.lib.RaisedCosine
-<li>:ptolemy.codegen.c.domains.sdf.lib.UpSample
-<li>:ptolemy.codegen.c.domains.sdf.lib.VariableFIR
-<li>:ptolemy.codegen.c.domains.sdf.lib.VariableLattice
-<li>:ptolemy.codegen.c.kernel.CCodegenUtilities
+<li>ptolemy.codegen.c.actor.lib.ArrayElementAsMatrix
+<li>ptolemy.codegen.c.actor.lib.ArrayPeakSearch
+<li>ptolemy.codegen.c.actor.lib.CodegenActor
+<li>ptolemy.codegen.c.actor.lib.CurrentTime
+<li>ptolemy.codegen.c.actor.lib.Lattice
+<li>ptolemy.codegen.c.actor.lib.MovingAverage
+<li>ptolemy.codegen.c.actor.lib.Publisher
+<li>ptolemy.codegen.c.actor.lib.PublisherTest
+<li>ptolemy.codegen.c.actor.lib.RecursiveLattice
+<li>ptolemy.codegen.c.actor.lib.SetVariable
+<li>ptolemy.codegen.c.actor.lib.Subscriber
+<li>ptolemy.codegen.c.actor.lib.SubscriptionAggregator
+<li>ptolemy.codegen.c.actor.lib.VectorAssembler
+<li>ptolemy.codegen.c.actor.lib.VectorDisassembler
+<li>ptolemy.codegen.c.actor.lib.WallClockTime
+<li>ptolemy.codegen.c.actor.lib.conversions.CartesianToComplex
+<li>ptolemy.codegen.c.actor.lib.conversions.ComplexToCartesian
+<li>ptolemy.codegen.c.actor.lib.gui.LEDMatrix
+<li>ptolemy.codegen.c.actor.lib.hoc.MultiInstanceComposite
+<li>ptolemy.codegen.c.actor.lib.test.RampNecessaryFiles
+<li>ptolemy.codegen.c.domains.sdf.lib.BitsToInt
+<li>ptolemy.codegen.c.domains.sdf.lib.Chop
+<li>ptolemy.codegen.c.domains.sdf.lib.DownSample
+<li>ptolemy.codegen.c.domains.sdf.lib.IntToBits
+<li>ptolemy.codegen.c.domains.sdf.lib.LMSAdaptive
+<li>ptolemy.codegen.c.domains.sdf.lib.RaisedCosine
+<li>ptolemy.codegen.c.domains.sdf.lib.UpSample
+<li>ptolemy.codegen.c.domains.sdf.lib.VariableFIR
+<li>ptolemy.codegen.c.domains.sdf.lib.VariableLattice
+<li>ptolemy.codegen.c.kernel.CCodegenUtilities
 </ul>
 
 <h2><a name="bugs">Bug fixes</a></h2>

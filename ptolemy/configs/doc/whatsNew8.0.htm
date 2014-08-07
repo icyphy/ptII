@@ -539,13 +539,13 @@ grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII10.0.devel/@@' |  s
 <li><i>New Domain Polymorphic actors</i>:
 
   <ul>
-    <li><a href="ptdoc:ptolemy.actor.lib.ClockSensor">ClockSensor</a>
-    <li><a href="ptdoc:ptolemy.actor.lib.ConfigurationSelect">ConfigurationSelect</a>
+    <li>ptolemy.actor.lib.ClockSensor (<i>Removed after Ptolemy II 8.0</i>)
+    <li><a href="ptdoc:ptolemy.actor.lib.ConfigurationSelecto">ConfigurationSelect</a>
     <li><a href="ptdoc:ptolemy.actor.lib.ConfigurationSwitch">ConfigurationSwitch</a>
     <li><a href="ptdoc:ptolemy.actor.lib.DiscreteClock">DiscreteClock</a>
     <li><a href="ptdoc:ptolemy.actor.lib.ExecutionTime">ExecutionTime</a>
 
-    <li><a href="ptdoc:ptolemy.actor.lib.logic.FuzzyLogic">FuzzyLogic</a>
+    <li><ptolemy.actor.lib.logic.FuzzyLogic (<i>Removed after Ptolemy II 8.0</i>)
     (Uses Edward Sarzonov's GPL'd Java Fuzzy Engine.  The FuzzyEngine distribution may be found at
     <a href="http://people.clarkson.edu/~esazonov/FuzzyEngine.htm#in_browser">http://people.clarkson.edu/~esazonov/FuzzyEngine.htm</a>
 
@@ -645,7 +645,7 @@ grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII10.0.devel/@@' |  s
 <li>ptolemy.actor
 
   <ul>
-  <li><a href="ptdoc:ptolemy.actor.CausalityMarker">CausalityMarker</a>
+  <li><ptolemy.actor.CausalityMarker
   <li><a href="ptdoc:ptolemy.actor.DoNothingDirector">DoNothingDirector</a>
   <li><a href="ptdoc:ptolemy.actor.LazyTypedCompositeActor">LazyTypedCompositeActor</a>
   <li><a href="ptdoc:ptolemy.actor.RelationWidthInference">RelationWidthInference</a>
@@ -687,7 +687,7 @@ Ptera.
     <li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.BooleanOperationElement">BooleanOperationElement</a>
     <li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.PortCreationOperation">PortCreationOperation</a>
     <li><a href="ptdoc:ptolemy.actor.gt.ingredients.operations.PortRemovalOperation">PortRemovalOperation</a>
-    <li><a href="ptdoc:ptolemy.actor.gt.util.RecursiveFileFilter">RecursiveFileFilter</a>
+    <li>ptolemy.actor.gt.util.RecursiveFileFilter (<i>Removed after Ptolemy II 8.0, see <a href="ptdoc:ptolemy.util.RecursiveFileFilter">ptolemy.util.RecursiveFileFilter</i>)
 </ul>
 </li>
 
@@ -728,25 +728,21 @@ Ptera.
   </ul>
 </li>
 
-<li>ptolemy.domains.fsm  
+<li>ptolemy.domains.fsm. (<i>The FSM domain was removed after Ptolemy II 8.0, see domains/modal instead</i>)
   <ul>
-    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.ConfigurableEntity">ConfigurableEntity</a>
-    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.Configurer">Configurer</a>
-    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.ContainmentExtender">ContainmentExtender</a>
-    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.FSMCausalityInterface">FSMCausalityInterface</a>
-    <li><a href="ptdoc:ptolemy.domains.fsm.kernel.RefinementActor">RefinementActor</a>
-  </ul>
-
-<li>ptolemy.domains.modal  
-  <ul>
-    <li><a href="ptdoc:ptolemy.domains.fsm.modal.MirrorCausalityInterface">MirrorCausalityInterface</a>
-    <li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementExtender">RefinementExtender</a>
-    <li><a href="ptdoc:ptolemy.domains.fsm.modal.RefinementSuggestion">RefinementSuggestion</a>
-    <li><a href="ptdoc:ptolemy.gui.PtGUIUtilities">PtGUIUtilities</a>
+    <li>ptolemy.domains.fsm.kernel.ConfigurableEntity</li>
+    <li>ptolemy.domains.fsm.kernel.Configurer</li>
+    <li>ptolemy.domains.fsm.kernel.ContainmentExtender</li>
+    <li>ptolemy.domains.fsm.kernel.FSMCausalityInterface</li>
+    <li>ptolemy.domains.fsm.kernel.RefinementActor</li>
+    <li>ptolemy.domains.fsm.modal.MirrorCausalityInterface</li>
+    <li>ptolemy.domains.fsm.modal.RefinementExtender<li>
+    <li>ptolemy.domains.fsm.modal.RefinementSuggestion</li>
   </ul>
 </li>
 <li>ptolemy.gui  
   <ul>
+    <li><a href="ptdoc:ptolemy.gui.PtGUIUtilities">PtGUIUtilities</a>
     <li><a href="ptdoc:ptolemy.gui.QueryChooser">QueryChooser</a>
     <li><a href="ptdoc:ptolemy.gui.QueryChooserHelper">QueryChooserHelper</a>
     <li><a href="ptdoc:ptolemy.gui.SettableQueryChooser">SettableQueryChooser</a>
@@ -758,7 +754,7 @@ Ptera.
 <li>ptolemy.kernel
   <ul>
      <li><a href="ptdoc:ptolemy.kernel.undo.UndoActionsList">UndoActionsList</a>
-     <li><a href="ptdoc:ptolemy.kernel.util.DecoratedAttribute">DecoratedAttribute</a>
+     <li>ptdoc:ptolemy.kernel.util.DecoratedAttribute (<i>Removed after Ptolemy II 8.0</i>)
      <li><a href="ptdoc:ptolemy.kernel.util.Decorator">Decorator</a>
      <li><a href="ptdoc:ptolemy.kernel.util.DropTargetHandler">DropTargetHandler</a>
      <li><a href="ptdoc:ptolemy.kernel.util.Flowable">Flowable</a>
@@ -782,7 +778,7 @@ Ptera.
 <li>ptolemy.util
   <ul>
     <li><a href="ptdoc:ptolemy.util.MultiHashMap">MultiHashMap</a>
-    <li><a href="ptdoc:ptolemy.util.MultiMap">MultiMap</a>
+    <li>ptolemy.util.MultiMap (<i>Removed after Ptolemy II 8.0</i>)
     <li><a href="ptdoc:ptolemy.util.OrderedResourceBundle">OrderedResourceBundle</a>
     <li><a href="ptdoc:ptolemy.util.RunnableExceptionCatcher">RunnableExceptionCatcher</a>
   </ul>
@@ -897,7 +893,7 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
 
   <tr>
    <td>ptolemy.vergil.kernel.ConfigureUnitsAction</td>
-   <td><a href="ptdoc:ptolemy.vergil.kernel.unit.ConfigureUnitsAction">ConfigureUnitsAction</a></td>
+   <td>ptolemy.vergil.kernel.unit.ConfigureUnitsAction</td>
   </tr>
 
   <tr>
