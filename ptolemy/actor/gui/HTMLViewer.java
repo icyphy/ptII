@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -53,6 +54,7 @@ import javax.swing.text.html.StyleSheet;
 
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -121,6 +123,57 @@ public class HTMLViewer extends TableauFrame implements Printable,
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Give a ptdoc: path, open the PtDoc viewer.
+     *  @param Configuration The Configuration.
+     *  @param className The dot separated classname, such as
+     *  ptolemy.kernel.util.NamedObj.
+     *  @param Effigy The controlling Effigy.
+     *  @exception IllegalActionException If thrown while searching
+     *  for the _getDocumentationActionClassName attribute in the
+     *  Configuration.
+     *  @exception ClassNotFoundException If the class named by the
+     *  _getDocumentationActionClassName attribute or
+     *  ptolemy.vergil.basic.GetDocumentationAction is not found.
+     *  @exception NoSuchMethodException If the class does not have
+     *  a getDocumentation(Configuration, String, Effigy) method.
+     *  @exception IllegalAccessException If thrown while calling
+     *  the getDocumentation() method.
+     *  @exception InvocationTargetException If thrown while calling
+     *  the getDocumentation() method.
+     */
+    public static void getDocumentation(Configuration configuration,
+            String className, Effigy context)
+            throws IllegalActionException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        // Read the _getDocumentationActionClassName from
+        // the configuration and attempt to call it.
+        // If _getDocumentationActionClassName is not set,
+        // then default to vergil GetDocumentationAction.
+
+        // FIXME: Refactor this code, use DocApplicationSpecializer
+
+        StringAttribute getDocumentationActionClassNameStringAttribute = (StringAttribute) configuration
+            .getAttribute("_getDocumentationActionClassName",
+                    StringAttribute.class);
+        String getDocumentationActionClassName = null;
+        if (getDocumentationActionClassNameStringAttribute != null) {
+            getDocumentationActionClassName = getDocumentationActionClassNameStringAttribute
+                .getExpression();
+        } else {
+            getDocumentationActionClassName = "ptolemy.vergil.basic.GetDocumentationAction";
+        }
+        Class getDocumentationActionClass = Class
+            .forName(getDocumentationActionClassName);
+        Method getDocumentationMethod = getDocumentationActionClass
+            .getMethod("getDocumentation", new Class[] {
+                        Configuration.class, String.class,
+                        Effigy.class });
+        //GetDocumentationAction.getDocumentation(configuration,
+        //        event.getDescription().substring(6), getEffigy());
+        getDocumentationMethod.invoke(null, new Object[] {
+                    configuration,
+                    className, context });
+    }
+
     /** Get the page displayed by this viewer.
      *  @return The page displayed by this viewer.
      *  @see #setPage(URL)
@@ -167,34 +220,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
             if (event.getDescription().startsWith("ptdoc:")) {
                 // Process "ptdoc:" hyperlinks
                 try {
-                    // Read the _getDocumentationActionClassName from
-                    // the configuration and attempt to call it.
-                    // If _getDocumentationActionClassName is not set,
-                    // then default to vergil GetDocumentationAction.
-
-                    // FIXME: Refactor this code, use DocApplicationSpecializer
-
-                    StringAttribute getDocumentationActionClassNameStringAttribute = (StringAttribute) getConfiguration()
-                            .getAttribute("_getDocumentationActionClassName",
-                                    StringAttribute.class);
-                    String getDocumentationActionClassName = null;
-                    if (getDocumentationActionClassNameStringAttribute != null) {
-                        getDocumentationActionClassName = getDocumentationActionClassNameStringAttribute
-                                .getExpression();
-                    } else {
-                        getDocumentationActionClassName = "ptolemy.vergil.basic.GetDocumentationAction";
-                    }
-                    Class getDocumentationActionClass = Class
-                            .forName(getDocumentationActionClassName);
-                    Method getDocumentationMethod = getDocumentationActionClass
-                            .getMethod("getDocumentation", new Class[] {
-                                    Configuration.class, String.class,
-                                    Effigy.class });
-                    //GetDocumentationAction.getDocumentation(getConfiguration(),
-                    //        event.getDescription().substring(6), getEffigy());
-                    getDocumentationMethod.invoke(null, new Object[] {
-                            getConfiguration(),
-                            event.getDescription().substring(6), getEffigy() });
+                    getDocumentation(getConfiguration(), event.getDescription().substring(6), getEffigy());
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
