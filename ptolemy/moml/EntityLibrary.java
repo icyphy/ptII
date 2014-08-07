@@ -73,12 +73,12 @@ import ptolemy.util.MessageHandler;
  processing instruction, as follows:
  <pre>
  &lt;?moml
- <group>
+ &lt;group&gt;[
  ... <i>MoML elements giving library contents</i> ...
- </group>
+ &lt;/group&gt;
  ?&gt;
  </pre>
- The processing instruction, which is enclosed in "&lt;?" and "?&gt"
+ The processing instruction, which is enclosed in "&lt;?" and "?&gt;"
  prevents premature evaluation of the MoML.  The processing instruction
  has a <i>target</i>, "moml", which specifies that it contains MoML code.
  The keyword "moml" in the processing instruction must

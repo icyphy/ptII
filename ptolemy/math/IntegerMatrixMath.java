@@ -209,7 +209,7 @@ public class IntegerMatrixMath {
     }
 
     /** Return a new array that is the element-by-element bitwise AND
-     *  of the two input matrices (matrix1[i][j] & matrix2[i][j]).  If
+     *  of the two input matrices (matrix1[i][j] &amp; matrix2[i][j]).  If
      *  the two matrices are not the same size, throw an
      *  IllegalArgumentException.
      */

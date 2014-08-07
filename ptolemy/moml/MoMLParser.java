@@ -147,9 +147,9 @@ import com.microstar.xml.XmlParser;
  MoML elements in some context, set the context and then place your
  MoML elements within a group element, as follows:
  <pre>
- &lt;group&gt
+ &lt;group&gt;
  ... sequence of MoML elements ...
- &lt;/group&gt
+ &lt;/group&gt;
  </pre>
  The group element is ignored, and just serves to aggregate the MoML
  elements, unless it has a name attribute.  If it has a name attribute,

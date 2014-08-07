@@ -130,7 +130,7 @@ public class Picture extends JPanel {
      *  of the width and the height of the image.  An element in the
      *  array might be set using a statement like:
      *  <pre>
-     *    pix[row*col] = (alpha << 24) | (red << 16) | (green << 8) | blue;
+     *    pix[row*col] = (alpha &lt;&lt; 24) | (red &lt;&lt; 16) | (green &lt;&lt; 8) | blue;
      *  </pre>
      *
      *  @param pixels The packed ARGB representation of the image.

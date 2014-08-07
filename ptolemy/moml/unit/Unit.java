@@ -104,7 +104,7 @@ public class Unit implements UnitPresentation {
     }
 
     /** The expression of the Unit that is commonly used by humans.
-     * For example, the unit 4.1868E7&lt2, 1, -3, 0, 0&gt will produce the
+     * For example, the unit 4.1868E7&lt;2, 1, -3, 0, 0&gt; will produce the
      * common expression "calorie second^-1".
      * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */

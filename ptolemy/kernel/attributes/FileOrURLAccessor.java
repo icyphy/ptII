@@ -77,6 +77,7 @@ import ptolemy.kernel.util.Settable;
  with "$", which get substituted
  with the appropriate values
  <table>
+ <caption>Preset values</caption>
  <tr>
  <th>String</th>
  <th>Description</th>

@@ -64,13 +64,13 @@ import ptolemy.util.FileUtilities;
  * MoMLModelAttributeControllerFactory, derived classes should use MoML
  * to set up the containment relationship.  For example,
  * <pre>
- * <property name="MyAttribute" class="ptolemy.moml.MoMLModelAttribute">
- *     <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
- *     </property>
- *     <configure>
+ * &lt;property name="MyAttribute" class="ptolemy.moml.MoMLModelAttribute"&gt;
+ *     &lt;property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory"&gt;
+ *     &lt;/property&gt;
+ *     &lt;configure&gt;
  *        ... my MoML text here ...
- *     </configure>
- * </property>
+ *     &lt;/configure&gt;
+ * &lt;/property&gt;
  * </pre>
  *
  * @author Dai Bui, Edward Lee, Ben Lickly, Charles Shelton

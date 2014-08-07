@@ -48,7 +48,8 @@ import ptolemy.moml.MoMLChangeRequest;
  In essence, the solution represents the constraints between a set of Unit
  variables, and a set of Units.
  The table below illustrates this.
- <TABLE BORDER = "1">
+ <table border = "1">
+ <caption>Unit Constraints</caption>
  <TR>
  <TH></TH>
  <TH>V1</TH>

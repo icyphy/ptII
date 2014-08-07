@@ -46,7 +46,7 @@ import java.util.Map;
  Rounding is an abstract class for all rounding strategies.
  The primary method of this class is {@link #round(BigDecimal) round}. This
  method will round a BigDecimal value to the appropriate integer
- and return a BigInteger object.
+ and return a BigInteger object.</p>
  <p>
  {@link BigDecimal} objects are rounded by calling the
  {@link BigDecimal#setScale(int)} method with the appropriate
@@ -56,7 +56,7 @@ import java.util.Map;
  are provided by this class to implement one of the supported
  routing modes.  Each of these rounding strategies are modeled
  after the rounding strategies provided by {@link BigDecimal}
- and include:
+ and include:</p>
 
  <ul>
 
@@ -67,7 +67,7 @@ import java.util.Map;
  the calculated value.
  This rounding mode is supported by the static
  {@link #roundUp(BigDecimal) roundUp} method and the Rounding
- singletons {@link #GENERAL}, {@link #UNKNOWN} and {@link #UP}.
+ singletons {@link #GENERAL}, {@link #UNKNOWN} and {@link #UP}.</li>
 
  <li> <i><b>down</b></i> <br>
  Rounding mode to round towards zero.
@@ -76,7 +76,7 @@ import java.util.Map;
  the magnitude of the calculated value.
  This rounding mode is supported by the static
  {@link #roundDown(BigDecimal) roundDown} method and the Rounding
- singleton {@link #DOWN}.
+ singleton {@link #DOWN}.</li>
 
  <li> <i><b>floor</b></i> <br>
  Rounding mode to round towards negative infinity.
@@ -84,7 +84,7 @@ import java.util.Map;
  if decimal is negative, behave as <b>round up</b>.
  This rounding mode is supported by the static
  {@link #roundFloor(BigDecimal) roundFloor} method and the Rounding
- singleton {@link #FLOOR}.
+ singleton {@link #FLOOR}.</li>
 
  <li> <i><b>ceiling</b></i> <br>
  Rounding mode to round towards positive infinity.
@@ -92,27 +92,27 @@ import java.util.Map;
  if decimal is negative, behave as <b>round down</b>.
  This rounding mode is supported by the static
  {@link #roundCeiling(BigDecimal) roundCeiling} method and the Rounding
- singleton {@link #CEILING}.
+ singleton {@link #CEILING}.</li>
 
  <li> <i><b>half up</b></i> <br>
  Rounding mode to round towards "nearest neighbor" unless
  both neighbors are equidistant, in which case round up.
- Behaves as for <b>round up</b> if the discarded fraction is >= .5;
+ Behaves as for <b>round up</b> if the discarded fraction is &ge; .5;
  otherwise, behaves as for <b>round down</b>. Note that this is the
  rounding mode that most of us were taught in grade school.
  Rounding mode to round towards zero.
  This rounding mode is supported by the static
  {@link #roundHalfUp(BigDecimal) roundHalfUp} method and the Rounding
- singleton {@link #HALF_UP}.
+ singleton {@link #HALF_UP}.</li>
 
  <li> <i><b>half down</b></i> <br>
  Rounding mode to round towards "nearest neighbor" unless
  both neighbors are equidistant, in which case round down.
- Behaves as for <b>round up</b> if the discarded fraction is > .5;
+ Behaves as for <b>round up</b> if the discarded fraction is &gt; .5;
  otherwise, behaves as for <b>ROUND_DOWN</b>.
  This rounding mode is supported by the static
  {@link #roundHalfDown(BigDecimal) roundHalfDown} method and the Rounding
- singleton {@link #HALF_DOWN}.
+ singleton {@link #HALF_DOWN}.</li>
 
  <li> <i><b>half even</b></i> <br>
  Rounding mode to round towards the "nearest neighbor" unless
@@ -125,7 +125,7 @@ import java.util.Map;
  over a sequence of calculations.
  This rounding mode is supported by the static
  {@link #roundHalfEven(BigDecimal) roundHalfEven} method and the Rounding
- singletons {@link #HALF_EVEN} and {@link #CONVERGENT}.
+ singletons {@link #HALF_EVEN} and {@link #CONVERGENT}.</li>
 
  <li> <i><b>half floor</b></i> <br>
  Rounding mode to round towards "nearest neighbor" unless
@@ -136,7 +136,7 @@ import java.util.Map;
  mode supported for BigDecimal values.
  This rounding mode is supported by the static
  {@link #roundHalfFloor(BigDecimal) roundHalfFloor} method and
- the Rounding singleton {@link #HALF_FLOOR}.
+ the Rounding singleton {@link #HALF_FLOOR}.</li>
 
  <li> <i><b>half ceiling</b></i> <br>
  Rounding mode to round towards "nearest neighbor" unless
@@ -148,22 +148,22 @@ import java.util.Map;
  supported for BigDecimal values.
  This rounding mode is supported by the static
  {@link #roundHalfFloor(BigDecimal) roundHalfCeiling} method and
- the Rounding singleton {@link #HALF_CEILING}.
+ the Rounding singleton {@link #HALF_CEILING}.</li>
 
  </ul>
 
 
- A specific strategy may be chosen dynamically by invoking forName() or
+ <p>A specific strategy may be chosen dynamically by invoking forName() or
  getName() with one of the above strategy names. Alternatively a strategy
- may be selected by using one of the static singletons.
+ may be selected by using one of the static singletons.</p>
  <p>
  The <i>truncate</i> and <i>nearest</i> strategies should be
  preferred since they
  correspond to capabilities available on many processors. Other
- rounding strategies may require costly code on practical hardware.
+ rounding strategies may require costly code on practical hardware.</p>
  <p>
  The active class functionality is provided by the quantize method which is
- normally invoked from Quantization.quantize.
+ normally invoked from Quantization.quantize.</p>
 
  @author Ed Willink, Contributor: Mike Wirthlin
  @version $Id$
@@ -315,7 +315,7 @@ public abstract class Rounding implements Cloneable {
 
     /** Rounding mode to round towards "nearest neighbor" unless
      * both neighbors are equidistant, in which case round down.
-     * Behaves as for ROUND_UP if the discarded fraction is > .5;
+     * Behaves as for ROUND_UP if the discarded fraction is &gt; .5;
      * otherwise, behaves as for ROUND_DOWN.
      *
      * @see BigDecimal#ROUND_HALF_UP
@@ -369,7 +369,7 @@ public abstract class Rounding implements Cloneable {
 
     /** Rounding mode to round towards "nearest neighbor" unless
      * both neighbors are equidistant, in which case round up.
-     * Behaves as for ROUND_UP if the discarded fraction is >= .5;
+     * Behaves as for ROUND_UP if the discarded fraction is &ge; .5;
      * otherwise, behaves as for ROUND_DOWN. Note that this is the
      * rounding mode that most of us were taught in grade school.
      * Rounding mode to round towards zero.

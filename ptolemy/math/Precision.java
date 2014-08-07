@@ -80,6 +80,7 @@ import java.util.regex.Pattern;
  column of the table represent equivalent Precision formats:
 
  <table border = 1>
+ <caption>Precision Formats.</caption>
  <tr><td><b>Format Name</b></td> <td><b>Format Spec</b></td>
  <td colspan = "6"><center><b>String Representation</b></center></td>
  </tr>
@@ -110,7 +111,7 @@ import java.util.regex.Pattern;
  <td>31:0</td>
  <td>U0:-7</td>
  </tr>
- <tr><td>{@link LengthExponentPrecisionFormat}</td>\
+ <tr><td>{@link LengthExponentPrecisionFormat}</td>
  <td>[total bits]e[binary point position]</td>
  <td>5e-2</td>
  <td>7e-7</td>

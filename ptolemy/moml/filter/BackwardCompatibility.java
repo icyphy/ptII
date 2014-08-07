@@ -38,11 +38,11 @@ import ptolemy.moml.MoMLFilter;
 /** Return a list where each element is a backward compatibility filter
  to be applied by the MoMLParser.
 
- <p>When this class is registered with
+ <p>When this class is registered with</p>
  <pre>
  MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters())
  </pre>
- method, it will cause MoMLParser to filter so that models from
+ <p>method, it will cause MoMLParser to filter so that models from
  earlier releases will run in the current release.</p>
 
  @see ptolemy.moml.MoMLFilter
