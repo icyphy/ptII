@@ -222,9 +222,20 @@ public class GetDocumentationAction extends FigureAction {
                     true, true, false, false);
             if (toRead != null) {
                 _lastClassName = null;
+                if (toRead.toExternalForm().endsWith(".html")) {
+                    // Sadly, Javadoc from Java 1.7 cannot be
+                    // displayed using a JEditorPane, so we open
+                    // javadoc in an external browser.  To test this
+                    // out, see
+                    // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                    // and modify the example so that it tries to view
+                    // the Javadoc for Object.
+                    toRead = new URL(toRead.toExternalForm() + "#in_browser");
+                }
                 // Opening a remote URL can be slow, so we report to the status bar.
                 BasicGraphFrame basicGraphFrame = BasicGraphFrame
                         .getBasicGraphFrame(context);
+                
                 if (basicGraphFrame != null) {
                     basicGraphFrame.report("Opening " + toRead);
                 }
@@ -282,7 +293,7 @@ public class GetDocumentationAction extends FigureAction {
                     }
                 }
                 // Pop up a query an prompt the user
-                String message = "The documentation was not found.\n"
+                String message = "The documentation for " + className + " was not found.\n"
                         + (_lastClassName != null
                                 && DocManager.getRemoteDocumentationURLBase() != null ? " We looked in \""
                                 + DocManager.getRemoteDocumentationURLBase()
