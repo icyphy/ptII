@@ -25,7 +25,6 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
