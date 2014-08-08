@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 An attribute that analyzes a model in the event of an exception.  To be used 
-with {@link ExceptionManager}. 
+with {@link ptolemy.actor.lib.ExceptionManager}. 
 
 @author Elizabeth Latronico
 @version $Id$
