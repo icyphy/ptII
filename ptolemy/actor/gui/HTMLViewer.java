@@ -124,10 +124,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
     ////                         public methods                    ////
 
     /** Give a ptdoc: path, open the PtDoc viewer.
-     *  @param Configuration The Configuration.
+     *  @param configuration The Configuration.
      *  @param className The dot separated classname, such as
      *  ptolemy.kernel.util.NamedObj.
-     *  @param Effigy The controlling Effigy.
+     *  @param contexty The controlling Effigy.
      *  @exception IllegalActionException If thrown while searching
      *  for the _getDocumentationActionClassName attribute in the
      *  Configuration.
