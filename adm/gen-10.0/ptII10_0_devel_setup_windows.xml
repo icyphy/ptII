@@ -160,6 +160,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/vergil/vergil.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/vergil/basic/imprt/accessor/accessor.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/accessor"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/vergil/basic/imprt/fmu/fmu.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/fmu"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/domains.jar"
@@ -325,6 +327,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/doc/img"/>
             <file src="../dists/ptII10.0.devel/jar_dist/lbnl/lbnl.jar"
                   targetdir="$INSTALL_PATH/lbnl"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lbnl/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/lbnl/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/gt/gt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gt"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/gt/demo/demo.jar"
@@ -587,7 +591,7 @@ The Ptiny pack is required.
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineLearning/machineLearning.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/machineLearning"/>
-            <file src="../dists/ptII10.0.devel/jar_dist/com/cureos"
+            <file src="../dists/ptII10.0.devel/jar_dist/com/cureos/cureos.jar"
                   targetdir="$INSTALL_PATH/com/cureos"/>
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/terraswarm/terraswarm.jar"
@@ -629,8 +633,16 @@ The Ptiny pack is required.
             <file src="../dists/ptII10.0.devel/doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
             <file src="../dists/ptII10.0.devel/doc/books/systems/PtolemyII_DigitalV1_02.pdf" targetdir="$INSTALL_PATH/doc/books/systems/"/>
-            <file src="../dists/ptII10.0.devel/jar_dist/doc/codeDoc.jar"
-                  targetdir="$INSTALL_PATH/doc"/>
+	    <!-- Java 1.7 and later produces html that is not properly rendered by JScrollPane, so we can't use
+		 vergil to view the Javadoc.
+		 If the javadoc output is in a jar file, then copying the file to a temporary file means that
+		 the page fails to display because the style sheet is not present.  Also, the links are bad.
+		 So, the solution is to go copy the contends of $PTII/doc/codeDoc to the install path -->
+
+            <!-- file src="../dists/ptII10.0.devel/jar_dist/doc/codeDoc.jar"
+                  targetdir="$INSTALL_PATH/doc"/ -->
+	    <file src="../dists/ptII10.0.devel/doc/codeDoc" targetdir="$INSTALL_PATH/doc"/>
+
         </pack>
 
         <pack name="FullDocs" required="no">

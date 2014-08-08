@@ -3310,9 +3310,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected JCanvasPanner _graphPanner;
 
-    /** The import FMU (Field Mock-up Unit) action. */
-    protected Action _importFMUAction;
-
     /** The instance of JGraph for this editor. */
     protected JGraph _jgraph;
 

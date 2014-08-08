@@ -204,6 +204,7 @@
     <include name="ptolemy/vergil/basic/export/html/html.jar" />
     <include name="ptolemy/vergil/basic/export/html/jsoup/jsoup.jar" />
     <include name="ptolemy/vergil/basic/export/web/web.jar" />
+    <include name="ptolemy/vergil/basic/imprt/accessor/accessor.jar" />
     <include name="ptolemy/vergil/basic/imprt/fmu/fmu.jar" />
     <include name="ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar" />
     <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar" />
@@ -873,6 +874,15 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/export/web/*.class"/>
 	<include name="ptolemy/vergil/basic/export/web/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/vergil/basic/imprt/accessor/accessor.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/imprt/accessor/accessor.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/imprt/accessor/*.class"/>
       </fileset>
     </jar>
 

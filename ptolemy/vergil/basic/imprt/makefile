@@ -33,7 +33,7 @@
 ME =		ptolemy/vergil/basic/imprt
 
 # If the $PTII/lib/g4ltl.jar file is found, then PTG4LTL_DIR is set to g4ltl.
-DIRS =		$(PTG4LTL_DIR) fmu 
+DIRS =		accessor $(PTG4LTL_DIR) fmu 
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -54,8 +54,10 @@ PTAUXALLJAR = imprtFull.jar
 
 # Include the .class files from these jars in PTAUXALLJARS
 PTAUXALLJARS = \
+		accessor/accessor.jar \
 		fmu/fmu.jar \
 		g4ltl/g4ltl.jar
+
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS)

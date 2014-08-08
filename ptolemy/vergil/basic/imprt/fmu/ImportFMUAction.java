@@ -55,9 +55,9 @@ import diva.graph.GraphController;
    <p>This package is optional.  To add the "Import FMU" menu choice
    to the GraphEditor, add the following to the configuration:</p>
    <pre>
-   &lt;property name="_importFMUClassName"
-   class="ptolemy.data.expr.StringParameter"
-   value="ptolemy.vergil.basic.imprt.fmu.ImportFMUAction"/&gt;
+   &lt;property name="_importActionClassNames"
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;}"/&gt;
    </pre>
    <p>{@link ptolemy.vergil.basic.BasicGraphFrame} checks for this
    parameter and adds the "Import FMU" menu choice if the class named
