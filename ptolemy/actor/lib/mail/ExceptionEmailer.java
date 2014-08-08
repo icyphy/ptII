@@ -66,6 +66,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExceptionEmailer
@@ -230,6 +231,32 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ExceptionEmailer newObject = (ExceptionEmailer) super.clone(workspace);
+
+        try {
+            _newline = new Parameter(newObject, "_newline");
+            _newline.setExpression("property(\"line.separator\")");
+        } catch(NameDuplicationException e){
+            // If exception occurs, OK if cloned object refers to original 
+            // _newline.  Preferable to leave it than set _newline to null
+            // Will be a problem if original actor is deleted from model.
+        } catch(IllegalActionException e2){
+        }
+        
+        newObject._password = null;
+        newObject._props = null;
+        
+        return newObject;
     }
     
     // TODO:  Allow sending an email upon exception handled.  Could have one or

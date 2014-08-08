@@ -48,6 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLModelAttribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -151,6 +152,26 @@ public class ExceptionManager extends MoMLModelAttribute implements
         _initializables.add(initializable);
     }
 
+    
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ExceptionManager newObject = (ExceptionManager) super.clone(workspace);
+
+        newObject._initializables = new LinkedHashSet<Initializable>();
+        newObject._initialized = false;
+        newObject._resetMessages = false;
+        newObject._restartDesired = false;
+        newObject._subscribers = new ArrayList();
+        
+        return newObject;
+    }
+    
     /** Do nothing upon execution error.  Exceptions are passed to this
      *  attribute through handleException().  This method is required by
      *  the ExecutionListener interface.
