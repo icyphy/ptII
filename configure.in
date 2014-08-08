@@ -3798,7 +3798,16 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     Note that JavaCC-4.1 and 4.2 will not work, there are problems with
     ReInit() being static or not static.
 
-    Configure looks for JavaCC in $PTII/vendors/sun/javacc-4.0
+    JavaCC-6.0 seems to not include the jjtree and javacc scripts, so
+    we recommend JavaCC-5.0.
+
+    Try:
+    cd $PTII/vendors/sun
+    wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+    unzip javacc-5.0.tar.gz
+    ./configure
+
+    Configure looks for JavaCC in $PTII/vendors/sun/javacc-5.0
     so either install JavaCC in that location or use the --with-javacc= flag
     and then rerun configure.'])
 	JJTREE=touch
