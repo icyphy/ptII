@@ -408,6 +408,10 @@ public class GenerateCopyrights {
                 //System.out.println("GenerateCopyrights: url: " + copyrightURL);
                 String foundCopyright = _findURL(copyrightURL);
 
+                if (copyrightURL.contains("backtrack") && !copyrightURL.contains("http")) {
+                    // If the backtrack copyright is not local, then don't print it.
+                    continue;
+                } 
                 htmlBuffer.append("<tr>\n" + "  <td> <a href=\""
                         + foundCopyright + "\"><code>"
                         + _canonicalizeURLToPTII(foundCopyright)
