@@ -32,9 +32,8 @@
 ME =		ptolemy/actor/lib/io/demo
 
 DIRS =		AppendToFile CopyFile \
-		CopyOfCopyFile \
 		FilePortParameter ReadExpressionsCommandLine \
-		ReadStdIn StandardInput
+		ReadStdIn
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -53,11 +52,9 @@ PTPACKAGE = 	demo
 PTCLASSALLJARS = \
 	AppendToFile/AppendToFile.jar \
 	CopyFile/CopyFile.jar \
-	CopyOfCopyFile/CopyOfCopyFile.jar \
 	FilePortParameter/FilePortParameter.jar \
 	ReadExpressionsCommandLine/ReadExpressionsCommandLine.jar \
-	ReadStdIn/ReadStdIn.jar \
-	StandardInput/StandardInput.jar
+	ReadStdIn/ReadStdIn.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
