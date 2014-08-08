@@ -12,9 +12,9 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 1009, 733}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 1028, 727}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[794, 617]">
     </property>
@@ -1155,7 +1155,7 @@ parameter.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="AverageNumberOfHops" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="AverageNumberOfHops" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -1172,7 +1172,7 @@ parameter.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 160.0]">
         </property>
     </entity>
-    <entity name="NumberOfLinks" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="NumberOfLinks" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
         </property>

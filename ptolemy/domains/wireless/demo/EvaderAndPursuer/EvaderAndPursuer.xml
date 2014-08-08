@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="EvaderAndPursuer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1009, 727}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1030, 727}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[796, 617]">
     </property>
@@ -1035,7 +1035,7 @@ sensors.</text></svg></configure>
             </property>
         </entity>
         <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 120.0">
             </property>
@@ -1080,7 +1080,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
                 <port name="decision" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -1105,7 +1105,7 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 215.0">
                     </property>
@@ -1119,9 +1119,9 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.8774982774709175">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1133,9 +1133,9 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.220347011045726E-4">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -1147,9 +1147,9 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.557958486487521">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -1161,9 +1161,9 @@ to another. Then delete this annotation.</text>
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6887221147302733">
                     </property>
-                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                 </relation>
                 <link port="state.incomingPort" relation="relation"/>
