@@ -716,6 +716,7 @@ mainVergil.htm: main.htm
 
 mainVergilPtiny.htm: mainVergil.htm
 	awk -f $(ROOT)/doc/javahtml.awk mainVergil.htm | \
+	grep -v ptolemy/domains/gr/doc/ | \
 	sed -e 's@completeDemos.htm@completeDemosPtiny.htm@' > $@  
 
 mainVergilPtinyKepler.htm: mainVergilPtiny.htm
