@@ -61,6 +61,8 @@ public class WebApplicationInfo {
      * @param applicationPath  The base path for the application
      * @param temporaryFileLocation  The directory where temporary files are
      * stored
+     * @throws Exception If the model does not yet have a name (for example, 
+     *  a new unsaved model)
      */
     public WebApplicationInfo(String modelName, String applicationPath,
             FileParameter temporaryFileLocation) throws Exception {
@@ -107,6 +109,7 @@ public class WebApplicationInfo {
      * duplicate
      *
      * @param servletPath  The new servlet path to add
+     * @parma servlet The servlet to associated with the servlet path
      * @exception Exception If the path has already been requested by another servlet
      */
     public void addServletInfo(URI servletPath, Servlet servlet)
@@ -176,9 +179,10 @@ public class WebApplicationInfo {
         }
     }
 
-    /** Get the base path of this web application
+    /** Get the base path of this web application.
      *
      * @return The base path of this web application
+     * @see #setApplicationPath(URI)
      */
     public URI getApplicationPath() {
         return _applicationPath;
@@ -194,16 +198,17 @@ public class WebApplicationInfo {
         return _servletInfo;
     }
 
-    /** Get the full model name of the model that is running the web application
+    /** Get the full model name of the model that is running the web application.
      *
      * @return  The full model name of the model that is running the web
      * application
+     * @see #setModelName(String)
      */
     public String getModelName() {
         return _modelName;
     }
 
-    /** Get the set of resource paths and their associated locations
+    /** Get the set of resource paths and their associated locations.
      *
      * @return The set of resource paths and their associated locations
      */
@@ -212,10 +217,11 @@ public class WebApplicationInfo {
     }
 
     /** Get the location where temporary files should be stored.  May be empty
-     * or null if the web application does not use temporary files
+     * or null if the web application does not use temporary files.
      *
      * @return  The location where temporary files should be stored.  May be
      * empty or null if the web application does not use temporary files
+     * @see #setTemporaryFileLocation(FileParameter)
      */
     public FileParameter getTemporaryFileLocation() {
         return _temporaryFileLocation;
@@ -232,7 +238,7 @@ public class WebApplicationInfo {
      * /webapp/start for service /start of application /webapp
      * @param path  The URL to check for existing mappings
      * @return True if the web application has already mapped a handler to the
-     * given URL
+     * given URL; false otherwise
      */
     public boolean hasPath(String path) {
 
@@ -273,6 +279,8 @@ public class WebApplicationInfo {
      * given URL; returns false otherwise.  See {@link #hasPath(String path)}
      *
      * @param path The URL to check for existing mappings
+     * @return True if the web application has already mapped a handler to the
+     * given URL; false otherwise
      */
     public boolean hasPath(URI path) {
         return hasPath(path.toString());
@@ -307,30 +315,33 @@ public class WebApplicationInfo {
         return false;
     }
 
-    /** Set the base path of this application
+    /** Set the base path of this application.
      *
      * @param applicationPath  The new base path to this application
+     * @see #getApplicationPath()
      */
     public void setApplicationPath(URI applicationPath) {
         _applicationPath = applicationPath;
     }
 
     /** Record the full model name from the model that is running the web
-     * application
+     * application.
      *
      * @param modelName  The full model name of the model that is running the
      * web application
+     * @see #getModelName()
      */
     public void setModelName(String modelName) {
         _modelName = modelName;
     }
 
     /** Set the location where temporary files should be stored.  May be null if
-     * the web application does not use temporary files
+     * the web application does not use temporary files.
      *
      * @param temporaryFileLocation  The location where temporary files should
      * be stored.  May be null if the web application does not use temporary
      * files
+     * @see #getTemporaryFileLocation()
      */
     public void setTemporaryFileLocation(FileParameter temporaryFileLocation) {
         _temporaryFileLocation = temporaryFileLocation;

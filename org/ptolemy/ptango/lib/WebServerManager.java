@@ -56,7 +56,12 @@ public final class WebServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    /** Return the existing web server manager; create and return a new one if 
+     * none is present yet.
+     * 
+     * @return The web server manager 
+     */
     public static WebServerManager getInstance() {
         if (_instance == null) {
             _instance = new WebServerManager();

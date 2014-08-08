@@ -52,8 +52,6 @@ import org.eclipse.jetty.util.resource.FileResource;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 ///////////////////////////////////////////////////////////////////
 ////WebServerUtilities
 
@@ -86,7 +84,7 @@ public class WebServerUtilities {
      *
      * @param portNumber The port number the web server receives requests on
      */
-    public WebServerUtilities(int portNumber) throws Exception {
+    public WebServerUtilities(int portNumber) {
 
         _applications = new HashSet<WebApplicationInfo>();
         _maxIdleTime = 30000;
@@ -109,7 +107,7 @@ public class WebServerUtilities {
      * @param maxIdleTime The maximum amount of time the web server will wait
      * before sending a timeout response page
      */
-    public WebServerUtilities(int portNumber, int maxIdleTime) throws Exception {
+    public WebServerUtilities(int portNumber, int maxIdleTime) {
 
         _applications = new HashSet<WebApplicationInfo>();
 
@@ -137,6 +135,7 @@ public class WebServerUtilities {
      *
      * @return The maximum amount of time the server will wait before returning
      * a timeout response page.
+     * @see #setMaxIdleTime(int)
      */
     public int getMaxIdleTime() {
         return _maxIdleTime;
@@ -300,6 +299,7 @@ public class WebServerUtilities {
      *
      * @param maxIdleTime The maximum amount of time, in milliseconds, that the
      * server will wait before returning a timeout response page
+     * @see #getMaxIdleTime()
      */
     public void setMaxIdleTime(int maxIdleTime) {
         // If the specified max idle time is <=0, use the default
@@ -439,6 +439,7 @@ public class WebServerUtilities {
      *  collection of handlers for this web server.
      *
      *  @param appInfo Information about the web application.
+     *  @throws Exception If the servlet cannot be started on the server
      */
     protected void _createServletHandler(WebApplicationInfo appInfo)
             throws Exception {
@@ -471,8 +472,11 @@ public class WebServerUtilities {
      *  created, as long as at least one search location is given.  New
      *  handlers are added to the _handlers list.
      *
-     *  @exception IllegalActionException If a FileParameter is found that is
-     *   not a valid URI or references a resource that cannot be found.
+     *  @param appInfo An object containing information needed to register the
+     *   new application
+     *  @throws Exception If a FileParameter is found that is not a valid URI or 
+     *  references a resource that cannot be found, or if the handler cannot
+     *  be started on the server 
      */
 
     // FIXME:  Throw exception instead of allowing an empty list?  An

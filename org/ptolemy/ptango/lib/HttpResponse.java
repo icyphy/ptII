@@ -71,6 +71,8 @@ public class HttpResponse {
 
     /** Construct a new HttpResponse with the given message. Used for creating
      *  responses when errors occur on the Ptolemy side, such as an IOException.
+     *  
+     *  @param message The response message
      */
     public HttpResponse(String message) {
         _body = "";
@@ -81,6 +83,8 @@ public class HttpResponse {
     }
 
     /** Construct a new HttpResponse object from an HttpURLConnection object.
+     * 
+     * @param connection The connection object
      */
     public HttpResponse(HttpURLConnection connection) {
         // FIXME: HttpURLConnection getContentLengthLong() is not
@@ -173,7 +177,7 @@ public class HttpResponse {
     }
 
     /** Return the source of the error, ErrorSource.CLIENT or
-     *  ErrorSource.SERVER, or ErrorSource.NONE if no error
+     *  ErrorSource.SERVER, or ErrorSource.NONE if no error.
      *
      * @return ErrorSource.CLIENT, ErrorSource.SERVER or Error.NONE.
      */
@@ -203,7 +207,7 @@ public class HttpResponse {
         return _responseMessage;
     }
 
-    /** Return all status items as a RecordToken
+    /** Return all status items as a RecordToken.
      *
      * @return All status items as a RecordToken
      */
@@ -298,7 +302,13 @@ public class HttpResponse {
      *  NONE:  Any other status code
      */
     public enum ErrorSource {
-        NONE, CLIENT, SERVER
+        // Each of these requires a comment to avoid Javadoc warnings
+        /** NONE:  Any other status code */
+        NONE,
+        /** CLIENT:  Status codes 4xx */
+        CLIENT, 
+        /** SERVER:  Status codes 5xx and -1 */
+        SERVER
     }
 
     ///////////////////////////////////////////////////////////////////

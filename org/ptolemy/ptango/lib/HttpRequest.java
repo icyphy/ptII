@@ -70,9 +70,10 @@ public class HttpRequest {
      *   According to the Java documentation,
      *   "GET POST HEAD OPTIONS PUT DELETE TRACE are legal, subject to protocol
      *   restrictions."
-     *  @param properties
-     *  @param body
-     *  @param timeout
+     *  @param properties Optional properties included as part of the header
+     *  @param body  The message content to send
+     *  @param timeout  The maximum timeout to wait for obtaining a connection,
+     *  issuing the request and receiving a response
      */
     public HttpRequest(URL url, Method method, RecordToken properties,
             String body, int timeout) {
@@ -90,6 +91,7 @@ public class HttpRequest {
      *  send a header, a body if applicable, and wait for a response.
      *  Return the response, or throw an error if no response is returned
      *  within the specified timeout.
+     *  @return An HttpRsponse object containing the response from the server
      */
     public HttpResponse execute() {
         OutputStreamWriter writer = null;
@@ -161,7 +163,7 @@ public class HttpRequest {
         return new HttpResponse(_connection);
     }
 
-    /** Disconnect the current HttpURLConnection
+    /** Disconnect the current HttpURLConnection.
      */
     public void disconnect() {
         if (_connection != null) {
@@ -172,6 +174,7 @@ public class HttpRequest {
 
     /** Get the body of the message.
      *  @return The body string.
+     *  @see #setBody()
      */
     public String getBody() {
         return _body;
@@ -179,6 +182,7 @@ public class HttpRequest {
 
     /** Get the current connection.
      *  @return The current connection.
+     *  @see #setConnection()
      */
     public HttpURLConnection getConnection() {
         return _connection;
@@ -186,6 +190,7 @@ public class HttpRequest {
 
     /** Set the lineBreak character sequence.
      *  @return A String containing the line break sequence.
+     *  @see #setLineBreak()
      */
     public String getLineBreak() {
         return _lineBreak;
@@ -193,6 +198,7 @@ public class HttpRequest {
 
     /** Get the request method.
      *  @return The request method.
+     *  @see #setMethod()
      */
     public Method getMethod() {
         return _method;
@@ -200,6 +206,7 @@ public class HttpRequest {
 
     /** Get the properties that determine the HTTP header.
      *  @return A record token that maps header fields to strings.
+     *  @see #setProperties()
      */
     public RecordToken getProperties() {
         return _properties;
@@ -207,6 +214,7 @@ public class HttpRequest {
 
     /** Get the timeout observed upon execution of the request.
      *  @return An integer denoting time in milliseconds.
+     *  @see #setTimeout()
      */
     public int getTimeout() {
         return _timeout;
@@ -214,6 +222,7 @@ public class HttpRequest {
 
     /** Get the currently set URL.
      *  @return The URL.
+     *  @see #setUrl()
      */
     public URL getUrl() {
         return _url;
@@ -221,6 +230,7 @@ public class HttpRequest {
 
     /** Set the body of the message.
      *  @param body The body of the message.
+     *  @see #getBody()
      */
     public void setBody(String body) {
         _body = body;
@@ -228,6 +238,7 @@ public class HttpRequest {
 
     /** Set the current connection.
      *  @param connection A HttpURLConnection object.
+     *  @see #getConnection()
      */
     public void setConnection(HttpURLConnection connection) {
         _connection = connection;
@@ -235,6 +246,7 @@ public class HttpRequest {
 
     /** Set the lineBreak character sequence.
      *  @param lineBreak A String containing the line break sequence.
+     *  @see #getLineBreak()
      */
     public void setLineBreak(String lineBreak) {
         _lineBreak = lineBreak;
@@ -242,6 +254,7 @@ public class HttpRequest {
 
     /** Set the request method.
      *  @param method The request method.
+     *  @see #getMethod()
      */
     public void setMethod(Method method) {
         _method = method;
@@ -249,6 +262,7 @@ public class HttpRequest {
 
     /** Set the properties that determine the HTTP header.
      *  @param properties A record token that maps header fields to strings.
+     *  @see #getProperties()
      */
     public void setProperties(RecordToken properties) {
         _properties = properties;
@@ -256,6 +270,7 @@ public class HttpRequest {
 
     /** Set the timeout observed upon execution of the request.
      * @param timeout An integer denoting time in milliseconds.
+     * @see #getTimeout()
      */
     public void setTimeout(int timeout) {
         _timeout = timeout;
@@ -263,6 +278,7 @@ public class HttpRequest {
 
     /** Set the url to send this HTTP request to.
      * @param url The target URL.
+     * @see #getUrl()
      */
     public void setUrl(URL url) {
         _url = url;
@@ -270,10 +286,29 @@ public class HttpRequest {
 
     /** Enumeration of possible HTTP request methods.
      * @author marten
-     *
      */
     public enum Method {
-        OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        // Each of these requires a comment to avoid Javadoc warnings
+        /** The OPTIONS method. Returns allowed methods for a URL.  */
+        OPTIONS,
+        /** The GET method.  Retrieves resource at the specified URL */
+        GET,
+        /** The HEAD method.  Returns Http header only; no body */
+        HEAD,
+        /** The POST method.  Uploads data to a service at the specified URL */
+        POST,
+        /** The PUT method.  Replaces contents at the specified URL. */
+        PUT,
+        /** The DELETE method.  Deletes the resource at the specified URL. */
+        DELETE,
+        /** The TRACE method.  Echos the content sent to the server.  Can create
+         * vulnerability to Cross Site Tracing attack.  
+         */
+        TRACE,
+        /** The CONNECT method.  Creates a tunnel between two machines through 
+         * a proxy or firewall machine.
+         */
+        CONNECT
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -354,7 +354,10 @@ ExceptionSubscriber {
      *  exception.
      *
      *  @param policy The exception handling policy of the exception handler;
-     *   see CatchExceptionAttribute
+     *   see {@link CatchExceptionAttribute}
+     *  @param exception  The exception that occurred
+     *  @return True since a response is always sent to the client, and there
+     *    there are no operations that throw exceptions
      */
 
     @Override
@@ -678,11 +681,6 @@ ExceptionSubscriber {
         // the URL after a specified period of time.  The retry page content and
         // time are currently fixed.
         // TODO:  Allow dynamic content and timers for retry
-
-        // FIXME:  Only supports GET at the moment.  For POST, have to re-submit
-        // the parameters
-        // FIXME:  Add a test for POST request
-        // FIXME:  Make string constants for methods (available from other class?)
 
         _response = new HttpResponseItems();
         _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
