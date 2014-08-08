@@ -10672,7 +10672,7 @@ $as_echo "$JSON_DIR" >&6; }; fi
 	# Used in org/makefile
 	PTJSON_DIR=json
 	# Used in doc/makefile
-	PTJSON_PACKAGES="org.json ptolemy.actor.lib.conversions.json"
+	PTJSON_PACKAGES="org.json ptolemy.actor.lib.conversions.json ptolemy.vergil.basic.imprt.accessor"
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/org/json/
     perhaps JSON is not installed?
