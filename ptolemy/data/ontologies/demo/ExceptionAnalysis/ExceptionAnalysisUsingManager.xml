@@ -18,14 +18,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
-    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="C:/workspace/ptII/org/ptolemy/ptango/demo/DOPpresence/icons/door.pdf">
-        </property>
-        <property name="scale" class="ptolemy.data.expr.Parameter" value="60.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 60.0}">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Cubicle Farm&#10;Calculates the area of a floor in a rectangular office building, &#10;and the area of each cubicle if the space is evenly divided into n cubicles.&#10;&#10;An exception occurs if 0 is specified for the number of cubicles, &#10;rendering the Area Per Cubicle invalid.&#10;However, the area of the floor should still be able to be calculated.&#10;&#10;NOTE:   The ExceptionManager only catches the first exception; others may exist.">
         </property>
