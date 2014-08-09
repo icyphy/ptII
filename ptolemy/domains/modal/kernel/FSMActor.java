@@ -49,6 +49,7 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.RandomSource;
@@ -4497,13 +4498,25 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             Time targetTime = _timeEnteredCurrentState
                     .add(((DoubleToken) arguments[0]).doubleValue());
-            Time currentTime = getDirector().getModelTime();
+            Director director = getDirector();
+            Time currentTime = director.getModelTime();
 
             if (targetTime.compareTo(currentTime) <= 0) {
                 // Note that current time may have passed the target time if
                 // the director was unable to honor the exact timing request.
                 // Presumably we are going to take a transition in this
                 // firing, so there should be no time for next expiration.
+            	
+            	// If the director supports superdense time, then we need to
+            	// ensure that we are not at microstep zero.
+            	if (director instanceof SuperdenseTimeDirector) {
+            		int microstep = ((SuperdenseTimeDirector)director).getIndex();
+            		if (microstep == 0) {
+            			// Request a refiring at the current time.
+            			director.fireAtCurrentTime(FSMActor.this);
+            			return BooleanToken.FALSE;
+            		}
+            	}
                 _timeOfNextTimeoutExpiration = null;
                 return BooleanToken.TRUE;
             }
@@ -4512,7 +4525,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // than this target time, the request a firing.
             if (_timeOfNextTimeoutExpiration == null
                     || _timeOfNextTimeoutExpiration.compareTo(targetTime) > 0) {
-                getDirector().fireAt(FSMActor.this, targetTime);
+            	director.fireAt(FSMActor.this, targetTime);
                 _timeOfNextTimeoutExpiration = targetTime;
             }
             return BooleanToken.FALSE;
