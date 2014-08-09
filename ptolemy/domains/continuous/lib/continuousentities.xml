@@ -34,6 +34,8 @@
   <entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
         <entity name="ContinuousTransferFunction"
                 class="ptolemy.domains.continuous.lib.ContinuousTransferFunction"/>
+        <entity name="DCMotor"
+                class="ptolemy.domains.continuous.lib.DCMotor"/>
         <entity name="Derivative"
                 class="ptolemy.domains.continuous.lib.Derivative"/>
         <entity name="DifferentialSystem"

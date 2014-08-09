@@ -73,6 +73,9 @@ OTHER_FILES_TO_BE_JARED = \
 	ContinuousTimeDelayIcon.xml \
 	ct2continuous \
 	continuousentities.xml \
+	DCMotor.xml \
+	DCMotorIcon.xml \
+	DCMotor.png \
 	EventSource.java \
 	integral.gif \
 	IntegratorIcon.xml \
