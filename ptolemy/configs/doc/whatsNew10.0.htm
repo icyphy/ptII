@@ -33,7 +33,17 @@
 	  <li><a href="#ModalModelUpdates">FSM/Modal Model updates</a></li>
 	</ul>
       </li>
-      <li><a href="#demos">New demonstrations</a></li>
+      <li><a href="#demos">New demonstrations</a>
+	<ul>
+	  <li><a href="#bcvtb">Building Controls Virtual Test Bed (BCVTB)</a></li>
+	  <li><a href="#EPS">Electric Power System (EPS)</a></li>
+	  <li><a href="#fuel">Fuel System</a></li>
+	  <li><a href="#probabilistic">Probabilistic Models</a></li>
+	  <li><a href="#ptango">Ptango (Internet of Things)</a></li>
+	</ul>
+      </li>
+      <li><a href="mocs">Models of Computation</a></li>
+      <li><a href="actorDemos">Actor Demonstrations</a></li>
       <li><a href="#other">Other Key New Capabilities</a></li>
       <li><a href="#libraries">New and Enhanced Actor Libraries</a></li>
       <li><a href="#features">Additional features</a></li>
@@ -52,7 +62,7 @@
     <h4>References</h4>
     <ul>
       <li>Patricia Derler, Elizabeth A. Latronico, Edward A. Lee, Man-Kit Leung, Ben Lickly, Charles Shelton, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Ontologies.pdf#in_browser">Ontologies</a>," a chapter from<br>
-      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
     </ul>
 
 
@@ -71,7 +81,7 @@
     <h4>References</h4>
     <ul>
       <li>Christopher Brooks, Edward A. Lee, Elizabeth A. Latronico, Baobing Wang, and Roxana Gheorghui, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/WebInterfaces.pdf#in_browser">Web Interfaces</a>," a chapter from<br>
-      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
     </ul>
 
 
@@ -107,10 +117,10 @@
     <h4>References</h4>
     <ul>
       <li>
-      Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Christian Motika, Reinhard von Hanxleden, and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/FiniteStateMachines.pdf#in_browser">Finite State Machines</a>," and<br>
-      Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Stavros Tripakis, Haiyang Zheng, and Ye Zhou, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ModalModels.pdf#in_browser">Modal Models</a>,"<br>
-      chapters from<br>
-      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+	Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Christian Motika, Reinhard von Hanxleden, and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/FiniteStateMachines.pdf#in_browser">Finite State Machines</a>," and<br>
+	Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Stavros Tripakis, Haiyang Zheng, and Ye Zhou, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ModalModels.pdf#in_browser">Modal Models</a>,"<br>
+	chapters from<br>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
     </ul>
 
     <h4><a name="ModalDemonstrations">ModalDemonstrations</a></h4>
@@ -118,7 +128,7 @@
       <li>See <a href="completeDemos.htm#modal">Modal Model Demonstrations</a> in the list of complete demonstrations</li>
     </ul>
 
-    <h2><a name="demos" id="demos">New demonstrations</a></h2>
+    <h3><a name="demos" id="demos">New demonstrations</a></h3>
     <!-- grep "Only in" /tmp/pt78.diff | grep 10.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII10.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
 
          OR
@@ -126,7 +136,7 @@
 
       -->
 
-    <h4>Building Controls Virtual Test Bed (BCVTB)<!-- lbl--></h4>
+    <h4><a name="bcvtb">Building Controls Virtual Test Bed (BCVTB)</a><!-- lbl--></h4>
     <a href="https://gaia.lbl.gov/bcvtb#in_browser">Building Controls Virtual Test Bed (BCVTB)</a> demos:
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../../lbnl/demo/CRoom/CRoom.xml">C Room</a></li>
@@ -134,7 +144,7 @@
       <li><a href="../../../lbnl/demo/SystemCommand/SystemCommand.xml">System Command</a></li>
     </ul>
 
-    <h4>Electric Power System (EPS)<!-- eps--></h4>
+    <h4><a name="EPS">Electric Power System (EPS)</a><!-- eps--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/ElectricPowerSystem/ContactorTester.xml">ContactorTester</a></li>
       <li><a href="../../demo/ElectricPowerSystem/GeneratorContactorLoad.xml">GeneratorContactorLoad</a></li>
@@ -149,13 +159,7 @@
       <li><a href="../../demo/ElectricPowerSystem/GeneratorTester.xml">GeneratorTester</a></li>
     </ul>
 
-    <h4>Execute Demos<!-- exec--></h4>
-    <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="../../demo/ExecDemos/ExecDemos.xml">ExecDemos</a></li>
-      <li><a href="../../demo/ExecDemos/RunDemos.xml">RunDemos</a></li>
-    </ul>
-
-    <h4>Fuel System<!-- fuel--></h4>
+    <h4><a name="fuel">Fuel System</a><!-- fuel--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/FuelSystem/FuelSystem2Tanks.xml">2 Tank Model</a></li>
       <li><a href="../../demo/FuelSystem/FuelSystemErrorHandling.xml">Tank Model with Error Handling</a></li>
@@ -165,13 +169,7 @@
       <li><a href="../../demo/FuelSystem/FuelSystem.xml">Simple Tank Model</a></li>
     </ul>
 
-    <h4>Office Space<!-- space--></h4>
-    <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="../../domains/space/demo/DOPCenter/DOPCenter.xml">UC Berkeley DOP Center Office Database</a><em>Requires password to run</em></li>
-      <li><a href="../../domains/space/demo/DOPCenter/Placard.xml">UC Berkeley DOP Center Office Database Door Placards</a><em>Requires password to run</em></li>
-    </ul>
-
-    <h4>Probabilistic Models<!-- probabilisticModels--></h4>
+    <h4><a name="probabilistic">Probabilistic Models</a><!-- probabilisticModels--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/ProbabilisticModels/ChannelFaultModel.xml">Channel Fault Model</a></li>
       <li><a href="../../demo/ProbabilisticModels/GaussianMixtureModel.xml">Gaussian Mixture Model</a></li>
@@ -181,15 +179,68 @@
       <li><a href="../../demo/ProbabilisticModels/TwoStateMarkovChain.xml">Discrete-Time Markov Chain</a></li>
     </ul>
 
-    <h3>Models of Computation</h3>
+    <h3><a name="ptango">Ptango (Internet of Things)</a><!-- ptango--></h3>
+    Ptango is a project between Bosch and UC Berkeley that involves the Internet of Things (IoT).
 
-    <h3>Cellular Automata (CA)<!-- ca--></h3>
+    <p>The Internet of Things is the idea that everyday objects are
+    uniquely addressable and have a representation in a structure
+    similar to the Internet.</p>
+
+    <p>Comparing and contrasting IoT with Cyber-physical Systems (CPS)
+    is useful. The key thing with CPS is the interaction between the
+    dynamics of the physical world and the dynamics of software and
+    networks. The focus of IoT is on the information flow between
+    physical devices and network services. In the Cyber-Physical
+    Systems Concept Map, IoT overlaps with wireless sensing and
+    actuating, though IoT is not necessarily wireless.</p>
+
+    <p>The name "Ptango" refers to the fact that with the Internet of
+    Things, it takes <b>more</b> than two to tango.</p>
+
+    <p>The research goal of Ptango is to invent a Model of Computation
+    (MoC) for the Internet of Things that assigns operational
+    semantics to the composition of Things.</p>
+
+    <p>Applications and features of interest include:</p>
+      <ul>
+	<li>Building control/home automation</li>
+	<li>Uniform device configurability</li>
+	<li>Grouping/multicast/delegated control</li>
+	<li>Data location transparency</li>
+	<li>Audit trails</li>
+      </ul>
+
+      <p>Ptango is using Representational state transfer (RESTful)
+      interfaces like http, which is stateless, where all the state is
+      carried in the request and reply. Via RESTful interfaces, our
+      work is focusing on a subset of IoT known as the Web of
+      Things. </p>
+
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><a href="../../../org/ptolemy/ptango/demo/Cookies/Cookies.xml">Cookies</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.xml">Eplus70Actuator</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml">ErrorHandler</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.xml">GuidanceSingleUserWithName</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/Guidance/Guidance.xml">Guidance</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.xml">OptimizationAdvisor</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/SmartRoom/SmartRoom.xml">SmartRoom</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml">UCBPowerPtera</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml">UCBPowerAnalyzerServer</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPower.xml">UCBPower</a></li>
+      <li><a href="../../../org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml">WebServerDE</a></li>
+    </ul>
+
+    See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
+
+    <h3><a name="mocs">Models of Computation</a></h3>
+
+    <h4>Cellular Automata (CA)<!-- ca--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ca/demo/Conway/Conway.xml">Conway's Game of Life</a></li>
       <li><a href="../../domains/ca/demo/ConwayRandom/ConwayRandom.xml">Conway's Game of Life Random</a></li>
     </ul>
 
-    <h3>Continuous<!-- continuous--></h3>
+    <h4>Continuous<!-- continuous--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/continuous/demo/DCMotor/DCMotor.xml">DCMotor</a></li>
       <li><a href="../../domains/continuous/demo/Derivative/Derivative.xml">Derivative</a></li>
@@ -199,20 +250,20 @@
       <li><a href="../../domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml">Two Machine Infinite Bus Control</a></li>
     </ul>
 
-    <h3>Discrete Event (DE)<!-- de--></h3>
+    <h4>Discrete Event (DE)<!-- de--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/de/demo/ClockDrift/ClockDrift.xml">Clock Drift</a></li>
       <li><a href="../../domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.xml">Open Queueing Network</a></li>
       <li><a href="../../domains/de/demo/Trilateration/Trilateration.xml">Trilateration</a></li>
     </ul>
 
-    <h3>Petrinet<!-- petrinet--></h3>
+    <h4>Petrinet<!-- petrinet--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml">Petri Net Dining Philosophers</a></li>
       <li><a href="../../domains/petrinet/demo/PetriNetSimple/PetriNetSimple.xml">Petri Net Dining Philosophers</a></li>
     </ul>
 
-    <h3>Pthales<!-- pthales--></h3>
+    <h4>Pthales<!-- pthales--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.xml">Adaptive Beam Forming</a></li>
       <li><a href="../../domains/pthales/demo/FFT/FFT.xml">FFT</a></li>
@@ -220,7 +271,7 @@
       <li><a href="../../domains/pthales/demo/Illustrative/Illustrative.xml">Illustrative</a></li>
     </ul>
 
-    <h3>Ptides<!-- ptides--></h3>
+    <h4>Ptides<!-- ptides--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ptides/demo/ActuatorPattern/ActuatorPattern.xml">Actuator triggering in Ptides</a></li>
       <li><a href="../../domains/ptides/demo/Controller/Controller.xml">Two Controllers</a></li>
@@ -235,20 +286,20 @@
       <li><a href="../../domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml">Synchrophasor</a></li>
     </ul>
 
-    <h3>Syncronous Dataflow<!-- sdf--></h3>
+    <h4>Syncronous Dataflow<!-- sdf--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/sdf/optimize/demo/SDFOptimize/SDFOptimize.xml">SDF Optimize</a></li>
     </ul>
 
 
-    <h3>Task<!-- taskpt--></h3>
+    <h4>Task<!-- taskpt--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/taskpt/demo/SharedMemory/SharedMemory.xml">SharedMemory</a></li>
       <li><a href="../../domains/taskpt/demo/Task/Task.xml">Task</a></li>
     </ul>
 
 
-    <h2>Actor Demonstrations</h2>
+    <h3>Actor Demonstrations</h3>
 
     <h4>Graph Transformation (GT)<!-- gt--></h4>
     <ul><!-- Please keep the demos alphabetical -->
@@ -288,36 +339,6 @@
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/lib/python/demo/RecordManipulation/RecordManipulation.xml">Python Record Manipulation</a></li>
     </ul>
-
-    <h4>New Demonstrations for other facilities</h4>
-
-    <h3>Code Generation (CG)<!-- cg--></h3>
-    <p>See <a name="#cgDemonstrations">Code Generation (CG) Demonstrations</a> above.</p>
-
-    <h3>Ontologies<!-- ontologies--></h3>
-    <p>See <a name="#OntologiesDemonstrations">Ontologies Demonstrations</a> above.</p>
-
-    <h3>Type System<!-- type--></h3>
-    <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="../../data/type/demo/Router/Router.xml">Router</a></li>
-    </ul>
-
-    <h3>Ptango (Internet of Things)<!-- ptango--></h3>
-    <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="../../../org/ptolemy/ptango/demo/Cookies/Cookies.xml">Cookies</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.xml">Eplus70Actuator</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml">ErrorHandler</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.xml">GuidanceSingleUserWithName</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/Guidance/Guidance.xml">Guidance</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.xml">OptimizationAdvisor</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/SmartRoom/SmartRoom.xml">SmartRoom</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml">UCBPowerPtera</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml">UCBPowerAnalyzerServer</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPower.xml">UCBPower</a></li>
-      <li><a href="../../../org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml">WebServerDE</a></li>
-    </ul>
-
-    See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
     <h2><a name="other" id="other">Other Key New Capabilities</a></h2>
     <ul>
@@ -430,7 +451,7 @@
 
     <h3>HandSimDroid</h3>
     In 2011, the <a href="https://chess.eecs.berkeley.edu/handsimdroid/#in_browser" target="_top">HandSimDroid</a>
- project developed a prototype that allows Ptolemy models to run under Android. Students from CMU (Anar Huseynov, Justin Killian, Ishwinder Singh) worked with Bosch researchers (Elizabeth Latronico, Charles Shelton) and Berkeley researchers to re-architect a portion of Ptolemy II so that models could run on a server and be displayed on a low-powered handset. The code for this effort is in
+    project developed a prototype that allows Ptolemy models to run under Android. Students from CMU (Anar Huseynov, Justin Killian, Ishwinder Singh) worked with Bosch researchers (Elizabeth Latronico, Charles Shelton) and Berkeley researchers to re-architect a portion of Ptolemy II so that models could run on a server and be displayed on a low-powered handset. The code for this effort is in
     <ul>
       <!-- Use in_browser because vergil has problems with the html generated by javadoc -->
       <li><a href="../../../doc/codeDoc/ptdb/package-summary.html#in_browser"><code>$PTII/ptdb</code></a></li>
