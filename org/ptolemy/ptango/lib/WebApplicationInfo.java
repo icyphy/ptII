@@ -109,7 +109,7 @@ public class WebApplicationInfo {
      * duplicate
      *
      * @param servletPath  The new servlet path to add
-     * @parma servlet The servlet to associated with the servlet path
+     * @param servlet The servlet to associated with the servlet path
      * @exception Exception If the path has already been requested by another servlet
      */
     public void addServletInfo(URI servletPath, Servlet servlet)
