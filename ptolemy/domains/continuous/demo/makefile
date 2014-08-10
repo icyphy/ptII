@@ -36,7 +36,7 @@ ROOT =		../../../..
 
 DIRS =		BouncingBall Brownian CarTracking \
 		CartPendulum ComparedClocks ContinuousInsideDE \
-		Derivative Friction FurutaPendulum \
+		DCMotor Derivative Friction FurutaPendulum \
 		HierarchicalExecution HybridPlant Hysteresis \
 		LevelCrossingDetector LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Noise Poisson Pendulum3D SampledClocks Satellite \
@@ -62,6 +62,7 @@ PTCLASSALLJARS = \
 	CartPendulum/CartPendulum.jar \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
+	DCMotor/DCMotor.jar \
 	Derivative/Derivative.jar \
 	Friction/Friction.jar \
 	FurutaPendulum/FurutaPendulum.jar \

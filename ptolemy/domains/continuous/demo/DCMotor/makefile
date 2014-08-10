@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
-# @Copyright (c) 2005-2014 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/continuous/demo/BouncingBall
+ME =		ptolemy/domains/continuous/demo/DCMotor
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	BouncingBall
+PTPACKAGE = 	DCMotor
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -49,8 +49,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	BouncingBall.xml \
-	BouncingBallWithoutGR.xml
+	DCMotor.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
