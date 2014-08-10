@@ -174,7 +174,7 @@ public class HttpRequest {
 
     /** Get the body of the message.
      *  @return The body string.
-     *  @see #setBody()
+     *  @see #setBody(String)
      */
     public String getBody() {
         return _body;
@@ -182,7 +182,7 @@ public class HttpRequest {
 
     /** Get the current connection.
      *  @return The current connection.
-     *  @see #setConnection()
+     *  @see #setConnection(HttpURLConnection)
      */
     public HttpURLConnection getConnection() {
         return _connection;
@@ -190,7 +190,7 @@ public class HttpRequest {
 
     /** Set the lineBreak character sequence.
      *  @return A String containing the line break sequence.
-     *  @see #setLineBreak()
+     *  @see #setLineBreak(String)
      */
     public String getLineBreak() {
         return _lineBreak;
@@ -198,7 +198,7 @@ public class HttpRequest {
 
     /** Get the request method.
      *  @return The request method.
-     *  @see #setMethod()
+     *  @see #setMethod(Method)
      */
     public Method getMethod() {
         return _method;
@@ -206,7 +206,7 @@ public class HttpRequest {
 
     /** Get the properties that determine the HTTP header.
      *  @return A record token that maps header fields to strings.
-     *  @see #setProperties()
+     *  @see #setProperties(RecordToken)
      */
     public RecordToken getProperties() {
         return _properties;
@@ -214,7 +214,7 @@ public class HttpRequest {
 
     /** Get the timeout observed upon execution of the request.
      *  @return An integer denoting time in milliseconds.
-     *  @see #setTimeout()
+     *  @see #setTimeout(int)
      */
     public int getTimeout() {
         return _timeout;
@@ -222,7 +222,7 @@ public class HttpRequest {
 
     /** Get the currently set URL.
      *  @return The URL.
-     *  @see #setUrl()
+     *  @see #setUrl(URL)
      */
     public URL getUrl() {
         return _url;
