@@ -80,7 +80,9 @@ OTHER_FILES_TO_BE_JARED = \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
-	NoiseIcon.xml
+	NoiseIcon.xml \
+	PWM.xml \
+	PWMIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
