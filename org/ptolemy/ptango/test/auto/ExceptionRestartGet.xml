@@ -31,7 +31,7 @@
     <entity name="Service" class="ptolemy.actor.lib.hoc.RunCompositeActor">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 210.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -302,12 +302,20 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 50.0]">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 617}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 252.265625}">
+        </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 180.0]">
             </property>
         </entity>
         <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 180.0]">
             </property>
@@ -338,7 +346,7 @@
             </property>
         </entity>
         <entity name="Discrete TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="15.0">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="20">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 290.0]">
             </property>

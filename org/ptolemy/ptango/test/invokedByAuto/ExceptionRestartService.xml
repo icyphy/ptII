@@ -27,7 +27,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for a web service that restarts upon crashing, then successfully handles a request&#10;&#10;Web service becomes 'active' after 4 seconds and will crash if accessed before this&#10;When an exception occurs, the model is restarted, and the HTTP actor will return a response page&#10;&#10;The response page includes Javascript that issues a second GET request after 10 seconds&#10;This second GET request will succeed">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for a web service that restarts upon crashing, then successfully handles a request&#10;&#10;Web service becomes 'active' after 6 seconds and will crash if accessed before this&#10;When an exception occurs, the model is restarted, and the HTTP actor will return a response page&#10;&#10;The response page includes Javascript that issues a second GET request after 10 seconds&#10;This second GET request will succeed">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 25.0]">
         </property>
@@ -104,7 +104,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[369.5625, 125.71875]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 0, 1345, 694}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 0, 1007, 670}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[779, 553]">
         </property>
@@ -338,7 +338,7 @@
         </property>
     </entity>
     <entity name="Discrete TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
-        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="4.0">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="6.0">
         </property>
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
