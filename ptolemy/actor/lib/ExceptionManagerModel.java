@@ -35,9 +35,8 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A composite entity that is the model contained by an ExceptionManager.
- * Based on {@link OntologySolverModel}
  *
- * @author Elizabeth Latronico
+ * @author Elizabeth Latronico, based on ptolemy.data.ontologies.OntologySolverModel by Charles Shelton.
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (beth)

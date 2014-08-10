@@ -127,7 +127,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  @param configuration The Configuration.
      *  @param className The dot separated classname, such as
      *  ptolemy.kernel.util.NamedObj.
-     *  @param contexty The controlling Effigy.
+     *  @param context The controlling Effigy.
      *  @exception IllegalActionException If thrown while searching
      *  for the _getDocumentationActionClassName attribute in the
      *  Configuration.
