@@ -189,6 +189,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/CartPendulum/CartPendulum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/DCMotor/DCMotor.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Derivative/Derivative.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Friction/Friction.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml
