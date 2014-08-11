@@ -545,6 +545,8 @@ The Ptiny pack is required.
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/ptango/ptango.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/ptango/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/ptango/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII10.0.devel/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"
