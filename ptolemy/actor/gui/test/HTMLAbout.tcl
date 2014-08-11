@@ -83,156 +83,157 @@ tag specially.
   <tr>
     <code>ptolemy/configs/doc/completeDemos.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemos.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/demos.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/demos.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/demos.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demos.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew10.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew8.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew7.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew6.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew6.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew5.1.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew5.1.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew5.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew5.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew4.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew4.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 <tr rowspan=4><center><b>BCVTB</b></center></tr>
   <tr>
     <code>ptolemy/configs/bcvtb/intro.htm</code>
     <td><a href="about:demos#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/bcvtb/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/completeDemosBcvtb.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/demosBcvtb.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/docsBcvtb.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 <tr rowspan=4><center><b>HyVisual</b></center></tr>
   <tr>
     <code>ptolemy/configs/hyvisual/intro.htm</code>
     <td><a href="about:demos#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/hyvisual/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/hyvisual/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 <tr rowspan=4><center><b>Ptiny</b></center></tr>
   <tr>
     <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/demosPtiny.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>doc/mainVergilPtiny.htm</code>
     <td><a href="about:demos#doc/mainVergilPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#doc/mainVergilPtiny.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtiny.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#doc/mainVergilPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 <tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>
   <tr>
     <code>ptolemy/configs/kepler/doc-index.htm</code>
     <td><a href="about:demos#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/kepler/doc-index.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>doc/mainVergilPtinyKepler.htm</code>
     <td><a href="about:demos#doc/mainVergilPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#doc/mainVergilPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#doc/mainVergilPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/demosPtinyKepler.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/docsPtinyKepler.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/completeDemosPtinyKepler.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 <tr rowspan=4><center><b>VisualSense</b></center></tr>
   <tr>
     <code>ptolemy/configs/visualsense/intro.htm</code>
     <td><a href="about:demos#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/visualsense/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/visualsense/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 </table>
 </body>
 </html>
 }}
+
 
 ######################################################################
 ####
@@ -282,6 +283,8 @@ For each of the files below, we list demos that are not included in <a href="fil
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>
 <ul>
+ <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml</a></li>
+ <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml</a></li>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew8.0.htm</code></a></h2>
 <ul>
