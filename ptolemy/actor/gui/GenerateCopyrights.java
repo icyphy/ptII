@@ -867,7 +867,7 @@ public class GenerateCopyrights {
         "Include Oracle's copyright" },
         { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
         { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
-        { "JavaMail", " ", " ", "Y", " ", "CDDL + Oracle" },
+        { "JavaMail", " ", " ", "Y", " ", "CDDL + GPLv2 with Classpath exception" },
         { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
         { "ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Oracle" },
         { "chic", " ", " ", "Y", "Y", "BSD" },
