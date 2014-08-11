@@ -50,8 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = SendMail.java
 
 OTHER_FILES_TO_BE_JARED = \
-	mail.xml \
-	JavaMail-license.htm
+	mail.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

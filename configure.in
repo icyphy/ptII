@@ -2651,9 +2651,9 @@ PTJAVAMAIL_DIR=
 
 # JavaMail Directory.  JavaMail is available from
 # https://java.net/projects/javamail/pages/Home
-JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
+JAVAMAIL_DIR='${PTII}/lib'
 
-# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+# JavaMail jar files.   Used to compile the mail actors.
 PTJAVAMAIL_JARS=
 
 JAVAMAIL_USER_DIR="$PTII/ptolemy/actor/lib/mail"
@@ -2664,9 +2664,9 @@ if test ! -d "$JAVAMAIL_USER_DIR"; then
 else
     AC_MSG_CHECKING([for JavaMail directory])
     AC_ARG_WITH(javamail, [  --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
-                          defaults to \$PTII/vendors/misc/javamail],
+                          defaults to \$PTII/lib],
 	JAVAMAIL_DIR=$withval,
-	JAVAMAIL_DIR=$PTII/vendors/misc/javamail)
+	JAVAMAIL_DIR=$PTII/lib)
 
     if test -f "$JAVAMAIL_DIR/javax.mail.jar"; then
 	# Set to mail and used in
@@ -2688,12 +2688,12 @@ else
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
     https://java.net/projects/javamail/pages/Home with
-      cd $PTII/vendors/misc/javamail
+      cd $PTII/lib
       wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
       cd $PTII
       ./configure])
 	# Note that we don't substitute in the ${PTII} here
-	JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
+	JAVAMAIL_DIR='${PTII}/lib'
     fi
 fi
 

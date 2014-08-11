@@ -204,8 +204,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.logic.fuzzy.FuzzyLogic",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.mail.SendMail",
-                "ptolemy/actor/lib/mail/JavaMail-license.htm");
+        _addIfPresent(copyrightsMap, "javax.mail.Address",
+                "lib/javamail-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
                 "ptolemy/actor/lib/opencv/opencv-copyright.htm");
         _addIfPresent(copyrightsMap,
@@ -867,7 +867,7 @@ public class GenerateCopyrights {
         "Include Oracle's copyright" },
         { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
         { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
-        { "JavaMail", " ", " ", "Y", " ", "CDDL + GPLv2 with Classpath exception" },
+        { "javamail", " ", " ", "Y", " ", "CDDL + GPLv2 with Classpath exception" },
         { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
         { "ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Oracle" },
         { "chic", " ", " ", "Y", "Y", "BSD" },
@@ -911,6 +911,7 @@ public class GenerateCopyrights {
         { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
         { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
         { "opencv", " ", " ", "Y", " ", "" },
+        { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
         { "protobuf", " ", " ", "Y", "Y", "BSD 3-Clause" },
         { "ptalon", "Y", " ", "Y", " ", "Antler: Public Domain" },
         { "ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Oracle" },
