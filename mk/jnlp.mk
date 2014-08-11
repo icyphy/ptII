@@ -382,7 +382,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/rendezvous/demo/demo.jar \
 	ptolemy/domains/rendezvous/doc/doc.jar \
 	ptolemy/domains/sr/demo/demo.jar \
-	ptolemy/domains/sr/doc/doc.jar \
+	ptolemy/domains/sr/doc/doc.jar
 
 PTINY_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinyApplication.jar
@@ -491,6 +491,7 @@ FULL_10_0_JARS = \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/vergil/scr/scr.jar \
+	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	$(PTG4LTL_JAR) \
 	ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar \
 	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
@@ -1579,13 +1580,13 @@ echo_plist_jars:
 
 # make echo_classpath_jars JARS=PTINY_JNLP_JARS
 echo_classpath_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | awk '{for(i=1;i<NF;i++) {printf("${CLASSPATHSEPARATOR}"); if ($$i !~ /^\//) {printf("${PTII}/")} printf("%s", $$i)} printf("${CLASSPATHSEPARATOR}\n")}'
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | awk '{for(i=1;i<=NF;i++) {printf("${CLASSPATHSEPARATOR}"); if ($$i !~ /^\//) {printf("${PTII}/")} printf("%s", $$i)} printf("${CLASSPATHSEPARATOR}\n")}'
 
 # How to run from the jars:
 # make vergil_run_full
 # We run in the /tmp directory to avoid looking in $PTII
 vergil_run:
-	(cd /tmp; $(JAVA) $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication $(CONFIGURATION))
+	(cd /tmp; $(JAVA) -Xmx4000m $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication $(CONFIGURATION))
 vergil_run_bcvtb:
 	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=-bcvtb
 vergil_run_full:
