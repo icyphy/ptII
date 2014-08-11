@@ -55,9 +55,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -109,7 +106,7 @@ import diva.gui.GUIUtilities;
  * an instance of ActorEditorGraphController.
  *
  * @see ActorEditorGraphController
- * @author Steve Neuendorffer, Contributor: Edward A. Lee, KIELER Layout: Christian Motika <cmot@informatik.uni-kiel.de>
+ * @author Steve Neuendorffer, Contributor: Edward A. Lee, KIELER Layout: Christian Motika &lt;cmot@informatik.uni-kiel.de&gt;
  * @version $Id$
  * @since Ptolemy II 2.0
  * @Pt.ProposedRating Red (neuendor)
@@ -431,6 +428,19 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     && configuration.getEntity("actor library") != null
                     && item != null) {
                 if (item.getActionCommand().equals("Import")) {
+
+                    /////////////////////////////////////////////////
+                    // IMPORTANT: Do not add any import actions to
+                    // this class that require 3rd-party libraries.
+                    // Instead, edit the defaultFullConfiguration.xml
+                    // and update _importActionClassNames.  See
+                    // ptolemy.vergil.basic.import.accessor.ImportAccessorAction
+
+                    // The reason to *not* add imports that use third-party libraries is because
+                    // various configurations such as Ptiny, Kepler and BCVTB use this class and 
+                    // we don't want to clutter Ptiny with third-party libraries.
+                    /////////////////////////////////////////////////
+
                     _importDesignPatternAction = new ImportDesignPatternAction();
                     JMenuItem importItem = new JMenuItem(
                             _importDesignPatternAction);
@@ -439,13 +449,20 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     JMenuItem importLibraryItem = new JMenuItem(
                             _importLibraryAction);
                     item.add(importLibraryItem);
-                    _importAccessorAction = new ImportAccessorAction(
-                            ActorGraphFrame.this,
-                            "http://www.terraswarm.org/accessors");
-                    JMenuItem importAccessorItem = new JMenuItem(
-                            _importAccessorAction);
-                    item.add(importAccessorItem);
+
+
                 } else if (item.getActionCommand().equals("Export")) {
+
+                    /////////////////////////////////////////////////
+                    // IMPORTANT: Do not add any export actions to this class
+                    // that require 3rd-party libraries.
+                    // Instead, edit defaultConfiguration.xml.
+                    
+                    // The reason to *not* add exports that use third-party libraries is because
+                    // various configurations such as Ptiny, Kepler and BCVTB use this class and 
+                    // we don't want to clutter Ptiny with third-party libraries.
+                    /////////////////////////////////////////////////
+
                     _exportDesignPatternAction = new ExportDesignPatternAction();
                     JMenuItem exportItem = new JMenuItem(
                             _exportDesignPatternAction);
@@ -515,9 +532,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
     /** The action for importing a library of components. */
     protected Action _importLibraryAction;
-
-    /** The action for importing accessors. */
-    protected Action _importAccessorAction;
 
     /** The action for instantiating an attribute. */
     protected Action _instantiateAttributeAction;
@@ -932,203 +946,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         public void actionPerformed(ActionEvent e) {
             setLastDirectory(ActorGraphFrame.importLibrary(getLastDirectory(),
                     ActorGraphFrame.this, getConfiguration()));
-        }
-    }
-
-    /** Action to import an accessor.
-     *  @author Patricia Derler
-     */
-    private static class ImportAccessorAction extends AbstractAction {
-        // FindBugs suggests making this static.
-
-        /** Create a new action to import an accessor.
-         * @param graphFrame
-         * @param initialLastLocation
-         */
-        public ImportAccessorAction(ExtendedGraphFrame graphFrame,
-                String initialLastLocation) {
-            super("Import Accessor");
-            _graphFrame = graphFrame;
-            _lastLocation = initialLastLocation;
-            putValue("tooltip", "Instantiate an accessor");
-            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
-        }
-
-        /** The graph frame that contains this action. */
-        private ExtendedGraphFrame _graphFrame;
-
-        /** The most recent accessor. */
-        private String _lastAccessorName;
-
-        /** The most recent location. */
-        private String _lastLocation;
-
-        /** Import an accessor.
-         */
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            final Query query = new Query();
-            query.setTextWidth(60);
-            query.addLine("location", "location", _lastLocation);
-            final JComboBox box = query.addChoice("accessor", "accessor",
-                    new String[] {}, _lastAccessorName);
-            updateComboBox(box, query);
-            query.addQueryListener(new QueryListener() {
-
-                @Override
-                public void changed(String name) {
-                    if (name.equals("location")) {
-                        updateComboBox(box, query);
-                    }
-                }
-            });
-            ComponentDialog dialog = new ComponentDialog(_graphFrame,
-                    "Instantiate Accessor", query);
-
-            if (dialog.buttonPressed().equals("OK")) {
-                // Get the associated Ptolemy model.
-                GraphController controller = _graphFrame.getJGraph()
-                        .getGraphPane().getGraphController();
-                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                        .getGraphModel();
-                NamedObj context = model.getPtolemyModel();
-
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = _graphFrame.getVisibleCanvasRectangle();
-                final double x = bounds.getWidth() / 2.0;
-                final double y = bounds.getHeight() / 2.0;
-
-                URL url;
-                String input = "";
-                _lastAccessorName = query.getStringValue("accessor");
-                final String urlSpec = _lastLocation + _lastAccessorName;
-                StringBuffer buffer = new StringBuffer();
-                buffer.append("<group name=\"auto\">\n");
-                try {
-                    url = new URL(urlSpec);
-
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(url.openStream()));
-                    StringBuffer contents = new StringBuffer();
-                    while ((input = in.readLine()) != null) {
-                        contents.append(input);
-                    }
-
-                    TransformerFactory factory = TransformerFactory
-                            .newInstance();
-                    String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
-                    Source xslt = new StreamSource(FileUtilities.nameToFile(
-                            xsltLocation, null));
-                    Transformer transformer = factory.newTransformer(xslt);
-                    StreamSource source = new StreamSource(
-                            new InputStreamReader(url.openStream()));
-                    StringWriter outWriter = new StringWriter();
-                    StreamResult result = new StreamResult(outWriter);
-                    transformer.transform(source, result);
-                    contents = outWriter.getBuffer();
-
-                    buffer.append(contents);
-                    in.close();
-                } catch (Exception e1) {
-                    MessageHandler.error("Failed to import accessor.", e1);
-                    return;
-                }
-                buffer.append("</group>\n");
-
-                // TODO set location
-
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, buffer.toString()) {
-                    @Override
-                    protected void _postParse(MoMLParser parser) {
-                        List<NamedObj> topObjects = parser.topObjectsCreated();
-                        if (topObjects == null) {
-                            return;
-                        }
-                        for (NamedObj object : topObjects) {
-                            Location location = (Location) object
-                                    .getAttribute("_location");
-                            // Set the location.
-                            if (location == null) {
-                                try {
-                                    location = new Location(object, "_location");
-                                } catch (KernelException e) {
-                                    // Ignore.
-                                }
-                            }
-                            if (location != null) {
-                                try {
-                                    location.setLocation(new double[] { x, y });
-                                } catch (IllegalActionException e) {
-                                    // Ignore.
-                                }
-                            }
-                            // Set the source.
-                            Attribute source = object
-                                    .getAttribute("accessorSource");
-                            if (source instanceof StringAttribute) {
-                                try {
-                                    ((StringAttribute) source)
-                                    .setExpression(urlSpec);
-                                    // Have to mark persistent or the urlSpec will be assumed to be part
-                                    // of the class definition and hence will not be exported to MoML.
-                                    /// FIXME: NOTHING WORKS HERE!!!! Tried setPersistent(true) and setDerviedLevel(1).
-                                    ((StringAttribute) source)
-                                    .setDerivedLevel(Integer.MAX_VALUE);
-                                } catch (IllegalActionException e) {
-                                    // Should not happen.
-                                    throw new InternalErrorException(object, e,
-                                            "Failed to set accessorSource");
-                                }
-                            }
-                        }
-                        parser.clearTopObjectsList();
-                        super._postParse(parser);
-                    }
-
-                    @Override
-                    protected void _preParse(MoMLParser parser) {
-                        super._preParse(parser);
-                        parser.clearTopObjectsList();
-                    }
-                };
-                context.requestChange(request);
-            }
-        }
-
-        private void updateComboBox(JComboBox box, Query query) {
-            box.removeAllItems();
-            URL url;
-            BufferedReader in;
-            try {
-                _lastLocation = query.getStringValue("location");
-                if (_lastLocation.endsWith(".xml")) {
-                    return;
-                } else if (!_lastLocation.endsWith("/")) {
-                    _lastLocation = _lastLocation + "/";
-                }
-                url = new URL(_lastLocation + "index.json");
-
-                in = new BufferedReader(new InputStreamReader(url.openStream()));
-
-                StringBuffer buffer = new StringBuffer();
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    buffer.append(inputLine);
-                }
-                in.close();
-
-                JSONArray array = new JSONArray(buffer.toString());
-                for (int i = 0; i < array.length(); i++) {
-                    box.addItem(array.get(i));
-                }
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
         }
     }
 
