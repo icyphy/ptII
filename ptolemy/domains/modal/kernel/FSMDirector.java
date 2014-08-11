@@ -562,7 +562,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Return a superdense time index for the current time. This
      * method delegates to the executive director, if there is one
      * that implements SuperdenseTimeDirector, and returns current
-     * time with index 0 otherwise.
+     * time with index 1 otherwise.
      *
      * @return A superdense time index.
      * @see #setIndex(int)
@@ -576,7 +576,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             return ((SuperdenseTimeDirector) executiveDirector).getIndex()
                     + _indexOffset;
         }
-        return 0;
+        return 1;
     }
 
     /**
