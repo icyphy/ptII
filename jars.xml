@@ -971,6 +971,9 @@
 	<include name="ptolemy/domains/continuous/lib/*.java"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/continuous/lib/*.png"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/lib/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
