@@ -3,16 +3,16 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
-  <doc>Configuration including only mature domains.</doc>
+  <doc>Configuration including only mature domains with a minimum of 3rd party libraries.</doc>
 
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/ptiny/intro.htm"/>
 
-  <!-- Remove the code generator from Ptiny -->
+  <!-- Remove the code generator and HTML export.  The BCVTB configuration has a similar line. -->
   <property name="_classesToRemove" class="ptolemy.data.expr.Parameter"
-            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;,&quot;ptolemy.vergil.basic.export.web.IconLink&quot;,&quot;ptolemy.vergil.basic.export.web.WebExportParameters&quot;}">
+            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;,&quot;ptolemy.vergil.basic.export.web.IconLink&quot;,&quot;ptolemy.vergil.basic.export.web.WebExportParameters&quot;,&quot;ptolemy.vergil.basic.export.web.HTMLText&quot;,&quot;ptolemy.vergil.basic.export.web.HTMLTextPosition&quot;}">
     <doc>An array of Strings, where each element names a class
       to removed by the MoMLFilter.</doc>
   </property>

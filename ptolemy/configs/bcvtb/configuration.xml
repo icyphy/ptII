@@ -21,6 +21,7 @@
             class="ptolemy.data.expr.Parameter"
             value="{&quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;}"/>
 
+  <!-- Remove the code generator and HTML export.  The Ptiny configuration has a similar line. -->
   <property name="_classesToRemove" 
             class="ptolemy.data.expr.Parameter"
             value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;,&quot;ptolemy.vergil.basic.export.web.IconLink&quot;,&quot;ptolemy.vergil.basic.export.web.WebExportParameters&quot;,&quot;ptolemy.vergil.basic.export.web.HTMLText&quot;,&quot;ptolemy.vergil.basic.export.web.HTMLTextPosition&quot;}">
