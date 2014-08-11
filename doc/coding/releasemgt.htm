@@ -471,11 +471,11 @@
 
   <p>To make a branch for 10.0.beta, use the following command:
     <pre>
-      svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 -m "Creating Ptolemy II 10.0.beta branch"
+      svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 -m "Creating Ptolemy II 10.0.beta branch"
     </pre>
     Then check out the release branch  with
     <pre>
-      svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
+      svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
 
     </pre>
     <I>Note that you should avoid dots in the tag name</I>
@@ -497,11 +497,12 @@
     <li> We build a separate src.tar.gz file under Unix so that the line
       endings are correct. 
       <pre>
-	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
+	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
 	cd ptII10.0.beta
 	setenv PTII `pwd`
 	./configure
-	make fast install
+	ant
+	ant jars
 	cd $PTII/adm/gen-10.0
 	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar release_sisyphus
 
@@ -510,7 +511,7 @@
       and untar'd.  Note that this does not require Java 3D on the build machine.
       Java 3D is needed for the applets, we copy the jars over later.
       <pre>
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar update_ftp
       </pre>
       or
       <pre>
@@ -534,16 +535,14 @@
 
     <li> We build the webstart jar files under Windows
       <pre>
-	cvs -d :ext:source:/home/cvs co -r rel-10-0-beta-2 ptII
-	cvs update -P -d
-	mv ptII ptII10.0.beta
+	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
 	cd ptII10.0.beta
 	export PTII=c:/tmp/cxh/ptII10.0.beta
 
 	<I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
-	<I>Use an older javac so that the .class files are compatible.  For example,  use java 1.4.x so that java 1.4.x and 1.5.x can use the .class files.</i> 
+	<I>Use an older javac so that the .class files are compatible.  For example,  use java 1.6.x so that java 1.7.x and 1.8.x can use the .class files.</i> 
 	<pre>
-	  export PATH=/cygdrive/c/j2sdk1.4.2_12/bin:${PATH}
+	  export PATH=/cygdrive/c/j2sdk1.6.0/bin:${PATH}
 	  java -version
 	  ./configure
 	  ant 
