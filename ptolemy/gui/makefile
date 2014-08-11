@@ -52,6 +52,7 @@ JSRCS = \
 	CancelException.java \
 	CloseListener.java \
 	ComponentDialog.java \
+	EditableParametersDialog.java \
 	ExtensionFilenameFilter.java \
 	GraphicalMessageHandler.java \
 	ImageExportable.java \

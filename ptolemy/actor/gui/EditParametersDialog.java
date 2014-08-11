@@ -291,6 +291,17 @@ public class EditParametersDialog extends ComponentDialog implements
         SwingUtilities.invokeLater(changeFailedRunnable);
     }
 
+    /** Do the layout and then pack.
+     */
+    public void doLayoutAndPack() {
+        // The doLayoutAndPack method is declared in the
+        // ptolemy.gui.EditableParametersDialog interface.
+        // That interface is necessary to avoid a dependency
+        // between ptolemy.gui.Query and this class.
+        doLayout();
+        pack();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

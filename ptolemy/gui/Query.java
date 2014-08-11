@@ -27,6 +27,12 @@
  */
 package ptolemy.gui;
 
+/////////////////////
+// IMPORTANT!!!!!
+// Avoid importing any packages from ptolemy.* here so that we
+// can ship Ptplot.
+/////////////////////
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -88,10 +94,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import ptolemy.actor.gui.EditParametersDialog;
+//import ptolemy.actor.gui.EditParametersDialog;
 
+/////////////////////
+// IMPORTANT!!!!!
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
+/////////////////////
+
 ///////////////////////////////////////////////////////////////////
 //// Query
 
@@ -902,19 +912,29 @@ public class Query extends JPanel {
         textArea.getActionMap().put("TRANSFER_TEXT", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // This code is necessary for r64799: Behavior of a
+                // dialogue: shift+ENTER = new line, ENTER = commit
+                // This was not consistent with the dialogue of
+                // transitions in modal models, in fact, it was not
+                // possible to add new lines to, e.g. guard
+                // expressions, anymore.  Changed to new ENTER,
+                // shift+ENTER behavior.
+
                 area.insert("\n", area.getCaretPosition());
                 if (area.getRows() < 4) {
                     area.setRows(area.getRows() + 1);
                     area.revalidate();
                     Component parent = area.getParent();
                     while (parent != null
-                            && !(parent instanceof EditParametersDialog)) {
+                            && !(parent instanceof EditableParametersDialog)) {
                         parent = parent.getParent();
                     }
-                    if (parent instanceof EditParametersDialog) {
-                        EditParametersDialog dialog = (EditParametersDialog) parent;
-                        dialog.doLayout();
-                        dialog.pack();
+                    if (parent instanceof EditableParametersDialog) {
+                        // We use an interface her to avoid a
+                        // dependency on
+                        // ptolemy.actor.gui.EditParametersDialog.
+                        EditableParametersDialog dialog = (EditableParametersDialog) parent;
+                        dialog.doLayoutAndPack();
                     }
                 }
             }
