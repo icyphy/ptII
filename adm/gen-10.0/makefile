@@ -298,8 +298,6 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/misc/rxtx/RXTXcomm.jar $(PTIIDIST)/vendors/misc/rxtx/
 	mkdir -p $(PTIIDIST)/vendors/misc/joystick/
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
-	mkdir -p $(PTIIDIST)/vendors/misc/javamail/
-	cp $(PTIIHOME)/vendors/misc/javamail/javax.mail.jar $(PTIIDIST)/vendors/misc/javamail/
 	# Tools used to build installers.
 	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
 	ln -s $(PTIIHOME)/vendors/launch4j $(PTIIDIST)/vendors/launch4j
