@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MergedEvents" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[71, 152]">
     </property>
@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 39.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 22, 666, 456}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 22, 900, 634}, maximized=false}">
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 35.0}">
@@ -32,7 +32,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 262.0}">
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a generalized square wave</doc>
@@ -51,7 +51,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="327.0, 245.0">
         </property>
     </entity>
-    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+    <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 180.0">
         </property>
     </entity>
@@ -157,8 +157,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 235.0">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-               <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-               </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="82.0, 40.0">
                 </property>
             </property>
