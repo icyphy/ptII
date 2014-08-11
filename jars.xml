@@ -4036,6 +4036,9 @@
 	<include name="ptolemy/domains/continuous/demo/ContinuousInsideDE/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/continuous/demo/DCMotor/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/demo/Derivative/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
