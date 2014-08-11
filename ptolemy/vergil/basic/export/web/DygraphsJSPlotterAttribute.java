@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
  * then click the "Configure" button).
  * </p><p>
  * <i>dataJSON</i> contains the data series to be plotted in the chart area of
- * the page. Two JavaScript array formats are acceptable:
+ * the page. Two JavaScript array formats are acceptable:</p>
  * <ul>
  * <li>[{name:"series 1", value:[[x1, y1], [x2, y2], ..., [xn, yn]]},
  *      {name:"series 2", value:[[x'1, y'1], [x'2, y'2], ..., [x'n, y'n]]},
@@ -63,7 +63,6 @@ import ptolemy.kernel.util.NamedObj;
  * <li>[{name:"series 1", value:[{x:x1, y:y1, text:"event 1 info"}, {x:x2, y:y2,
  * text:"event 2 info"}, ...]}, {...}, ...]</li>
  * </ul>
- * </p>
  *
  * @author Baobing (Brian) Wang
  * @version $Id$

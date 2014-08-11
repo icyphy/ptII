@@ -63,7 +63,7 @@ public class UnitLibrary {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The Identity Unit, i.e. 1.0*<0, 0, ..., 0> */
+    /** The Identity Unit, i.e. 1.0*&lt;0, 0, ..., 0&gt; */
     public static final Unit Identity;
 
     ///////////////////////////////////////////////////////////////////

@@ -36,9 +36,9 @@ import ptolemy.data.unit.UnitUtilities;
 
 /**
  Class that contains the internal representation of a Unit.
- A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
+ A Unit has the mathematical notation  <b>S</b>&lt;E1, E2, ..., En&gt;
  where <b>S</b> is the
- <i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
+ <i>scale</i> and &lt;E1, E2, ..., En&gt; is the <i>type</i> of the Unit.
  <p>
  This class also contains methods for operating on Units, such as multiply,
  divide, etc.

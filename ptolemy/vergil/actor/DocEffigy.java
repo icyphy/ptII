@@ -121,7 +121,7 @@ public class DocEffigy extends Effigy {
          *  if the URL does not end with extension ".xml", or
          *  if it does end with ".xml" but the file does not contain
          *  a line that starts with the string
-         *  "<!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML"
+         *  "&lt;!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML"
          *  within the first five lines, then return null.
          *  @param container The container for the effigy.
          *  @param base The base for relative file references, or null if

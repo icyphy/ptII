@@ -154,7 +154,7 @@ import ptolemy.plot.PlotBox;
  of the data plotting region is always white because the dataset colors
  were designed for a white background.
 
- <dt><a name="-bigendian flag"><code>-bigendian</code></a>
+ <dt><a name="bigendianFlag"><code>-bigendian</code></a>
  <dd>Data files are in big-endian, or network binary format.
  See the <code>-binary</code> command line argument documentation
  below for details about the format.
@@ -163,7 +163,7 @@ import ptolemy.plot.PlotBox;
  format file, created on a big-endian machine, such as a Sun SPARC,
  use the <code>-bigendian</code> flag.
 
- <dt><a name="-binary flag"><code>-binary</code></a>
+ <dt><a name="binaryFlag"><code>-binary</code></a>
  <dd>Data files are in a binary format.
  The endian-ism of the data depends on which of the two
  subformats below are chosen.
@@ -263,7 +263,7 @@ import ptolemy.plot.PlotBox;
  </menu>
  The default is <code>helvetica-PLAIN-12</code>.
 
- <dt><a name="-littleendian"><code>-littleendian</code></a>
+ <dt><a name="littleendian"><code>-littleendian</code></a>
  <dd>Data files are in little-endian, or x86 binary format.
  See the <code>-binary</code> command line argument documentation
  above for details about the format.
@@ -368,7 +368,7 @@ import ptolemy.plot.PlotBox;
  <b>Unsupported in the Java version.</b>
  </dl>
 
- <h2><a name="pxgraph script compatibility issues">Compatibility Issues</a></h2>
+ <h2><a name="pxgraphScriptCompatibilityIssues">Compatibility Issues</a></h2>
  Various compatibility issues are documented above in <b>bold</b>.
  Below are some other issues:
  <ol>

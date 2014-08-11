@@ -161,9 +161,9 @@ public abstract class WebContent extends StringParameter implements
      *  other elements; therefore, the provideContent() method always calls both
      *  _provideAttributes() and _provideElements().  For example, a HTML
      *  attribute for a Javascript method call:
-     *  onclick="runMethod()"
+     *  <code>onclick="runMethod()"</code>
      *  requires that a
-     *  <script> function runMethod() { } </script> element be defined.
+     *  <code>&lt;script&gt; function runMethod() { } &lt;/script&gt;</code> element be defined.
      *  Subclasses should override _provideAttributes() and _provideElements().
      *
      *  @param exporter The web exporter to be used

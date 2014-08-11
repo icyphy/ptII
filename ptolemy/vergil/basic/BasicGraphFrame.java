@@ -2208,9 +2208,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
             } catch (Throwable throwable) {
-                System.err
+                if (!_printedImportActionClassNamesMessage) {
+                    _printedImportActionClassNamesMessage = true;
+                    System.err
                         .println("Problem reading the _importActionClassNames parameter from "
                                 + "the confinguration: " + throwable);
+                }
             }
 
             // PDF Action.
@@ -3457,6 +3460,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /**  Action to print the model. */
     private Action _printAction = new PrintAction("Print");
+
+    /** True if the message about problems reading
+     *  _importActionClassNames has been printed.
+     */   
+    private static boolean _printedImportActionClassNamesMessage = false;
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();

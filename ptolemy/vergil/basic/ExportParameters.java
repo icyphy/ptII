@@ -171,8 +171,9 @@ public class ExportParameters {
      *  an HttpService uses a URL as a path since the WebServer has a
      *  resource handler to serve files.  The HTML to include e.g. an image
      *  would be:
-     *  <img src="/files/imagename.gif"> </img>
-     *
+     *  <pre>
+     *  &lt;img src="/files/imagename.gif"/&gt;
+     *  </pre>
      *  even though the image is stored in $PTT/org/ptolemy/ptango/temp, since
      *  the resource handler is mapped to http://hostname:port/servicename/files.
      */

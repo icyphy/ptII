@@ -209,7 +209,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  Note that deferIfNecessary() is not synchronized, but the caller of
  deferIfNecessary() should be synchronized on the Plot object.
  <p>
- This plotter has some <A NAME="ptplot limitations">limitations</a>:
+ This plotter has some <a name="ptplotLimitations">limitations</a>:
  <ul>
  <li> If you zoom in far enough, the plot becomes unreliable.
  In particular, if the total extent of the plot is more than

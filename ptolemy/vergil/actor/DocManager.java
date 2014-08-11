@@ -127,12 +127,12 @@ import com.microstar.xml.XmlParser;
  Documentation for ports and parameters is given using the
  following forms:
  <pre>
- &lt;port name="<i>portName</i>">
+ &lt;port name="<i>portName</i>"
  <i>documentation</i>
- &lt/port&gt;
- &lt;property name="<i>parameterName</i>">
+ &lt;/port&gt;
+ &lt;property name="<i>parameterName</i>"
  <i>documentation</i>
- &lt/property&gt;
+ &lt;/property&gt;
  </pre>
  The use of the "property" keyword matches MoML.
 

@@ -111,7 +111,7 @@ public class EffigyFactory extends CompositeEntity {
      *  from the URL.  Any text that matches <code>&lt;?xml.*?&gt;</code>
      *  is removed before checking.
      *  @param input The DTD to check.
-     *  @param dtdStart The start of the DTD, typically "<!DOCTYPE".
+     *  @param dtdStart The start of the DTD, typically "&lt;!DOCTYPE".
      *  @param dtdEndRegExp The optional ending regular expression.  If
      *  this parameter is null, then it is ignored.
      *  @return True if the input starts with dtdStart and, if dtdEndRegExp

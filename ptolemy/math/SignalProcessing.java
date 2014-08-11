@@ -1358,7 +1358,7 @@ public class SignalProcessing {
     /** Return a new array that is the result of inserting (n-1) zeroes
      *  between each successive sample in the input array, resulting in an
      *  array of length n * L, where L is the length of the original array.
-     *  Throw an exception for n <= 0.
+     *  Throw an exception for n &le; 0.
      *  @param x The input array of doubles.
      *  @param n An integer specifying the upsampling factor.
      *  @return A new array of doubles.
@@ -1511,12 +1511,11 @@ public class SignalProcessing {
     /** This class generates samples of a Gaussian function with the
      *  specified mean and standard deviation.
      *  The function computed is :
-     *  <p>
      *  <pre>
      *  h(t) = (1/(sqrt(2 * PI) * stdDev) *
      *         exp(-(t - mean)<sup>2</sup> / (2 * stdDev<sup>2</sup>))
      *  </pre>
-     *  </p>
+
      */
     public static class GaussianSampleGenerator implements DoubleUnaryOperation {
         /** Construct a GaussianSampleGenerator.
@@ -1654,12 +1653,10 @@ public class SignalProcessing {
 
     /** This class generates samples of a sinusoidal wave.
      *  The function computed is :
-     *  <p>
      *  <pre>
      *  h(t) = cos(frequency * t + phase)
      *  </pre>
      *  where the argument is taken to be in radians.
-     *  </p>
      *  To use this class to generate a sine wave, simply
      *  set the phase to -Math.PI*0.5 from the
      *  phase, since sin(t) = cos(t - PI/2).

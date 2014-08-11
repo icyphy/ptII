@@ -305,7 +305,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  release that is currently running.  This variable may be read
      *  to take action if the assumed version does not match the current
      *  version.  For example,
-     *  <p>
+     *  
      *  <pre>
      *  VersionAttribute assumedVersion = ...;
      *  if (VersionAttribute.CURRENT_VERSION.isLessThan(assumedVersion)) {
@@ -314,8 +314,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  </pre>
      *  <p>
      *  Similarly, this variable may be used to change the Ptolemy II
-     *  functionality depending on the version number:
-     *  <p>
+     *  functionality depending on the version number:</p>
      *  <pre>
      *  if (VersionAttribute.CURRENT_VERSION.compareTo(
      *         new VersionAttribute("2.0")) &ge; 0 ) {

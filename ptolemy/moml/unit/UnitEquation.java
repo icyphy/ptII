@@ -70,9 +70,9 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
 
     /** Transform to the canonical form of the equation.
      * The canonical form of an equation is
-     * <b>
+     * <pre>
      * Ex1, Ex2, ..., Exn = A
-     * <b>
+     * </pre>
      * where each Exi is a Unit term containing only one variable, and A is a
      * Unit term containing one Unit and no variables.
      * @return unitEquation The UnitEquation in canonical form.

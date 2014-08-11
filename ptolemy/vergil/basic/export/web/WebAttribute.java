@@ -117,10 +117,10 @@ public class WebAttribute extends StringAttribute {
     }
 
     /** Return the web name of this element; for example, "myElement" in
-     * <div name="myElement"> </div> in HTML.
+     * &lt;div name="myElement"&gt; &lt;/div&gt; in HTML.
      *
      * @return The web name of this element; for example, "myElement" in
-     * <div name="myElement"> </div> in HTML.
+     * &lt;div name="myElement"&gt; &lt;/div&gt; in HTML.
      * @see #setWebName(String)
      */
     public String getWebName() {
@@ -128,10 +128,10 @@ public class WebAttribute extends StringAttribute {
     }
 
     /** Set the web name of this element; for example, "myElement" in
-     * <div name="myElement"> </div> in HTML.
+     * &lt;div name="myElement"&gt; &lt;/div&gt; in HTML.
      *
      * @param webName The web name of this element; for example, "myElement" in
-     * <div name="myElement"> </div> in HTML.
+     * &lt;div name="myElement"&gt; &lt;/div&gt; in HTML.
      * @see #getWebName()
      */
     public void setWebName(String webName) {
@@ -176,7 +176,7 @@ public class WebAttribute extends StringAttribute {
     }
 
     /** The desired name of this attribute in the web file, for example,
-     * "href" in <a href="http://ptolemy.org"></div>.
+     * "href" in &lt;a href="http://ptolemy.org"&gt;&lt;/div&gt;.
      */
     private String _webName;
 }
