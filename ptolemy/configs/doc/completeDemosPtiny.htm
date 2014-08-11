@@ -122,7 +122,7 @@
       <li><a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a> </li>
       <!--vergilDocs-->
 
-      <!-- SigmaDelta uses DEDirector, which is not in bcvtb -->
+      <!-- Car Tracking uses SR actors, which are not in bcvtb -->
       <!--/bcvtbDocs-->
       <li><a href="../../domains/continuous/demo/CarTracking/CarTracking.xml">Car Tracking</a></li> 
       <!--bcvtbDocs-->
@@ -134,6 +134,7 @@
       <li><a href="../../domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml">Continuous Inside DE</a></li>
       <!--bcvtbDocs-->
 
+      <li><a href="../../domains/continuous/demo/DCMotor/DCMotor.xml">DCMotor</a> (New in Ptolemy II 10.0)</li>
       <li><a href="../../domains/continuous/demo/Derivative/Derivative.xml">Derivative</a> 
       <li><a href="../../domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml">Distributed Generation Hybrid Control</a>
       <li><a href="../../domains/continuous/demo/Transmission/EfficiencyCurve.xml">Efficiency Curve</a></li> 
@@ -475,188 +476,30 @@
 
     <!--/ptinyKeplerDocs-->
     <!-- Ptiny does not include gt because it requires extra UI classes -->
-    <h2><a name="modelTransformation">Model Transformation</a></h2>
-    <ul>
-      <!-- Please keep the demos alphabetical -->
-
-      <!--Ptiny does not include Ptalon-->
-      <!--vergilDocs-->
-
-      <!-- BouncingBall uses Java3D -->
-      <!--vergilDocs-->
-      <li><a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Model-Based Transformation) </li>
-      <li><a href="../../actor/gt/demo/ConstOptimization/ConstOptimizationDE.xml">ConstOptimization</a> (With TransformationController)  </li>
-      <li><a href="../../actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml">ConstOptimization</a> (Without TransformationController) </li>
-      <li><a href="../../actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a> </li>
-      <li><a href="../../actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> </li>
-      <li><a href="../../actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a> </li>
-      <li><a href="../../actor/gt/demo/MapReduce/MapReduce.xml">MapReduce</a> </li>
-      <li><a href="../../actor/gt/demo/MapReduce/MapReduceDDF.xml">MapReduceDDF</a> </li>
-      <li><a href="../../actor/gt/demo/ModelExecution/ModelExecution.xml">ModelExecution</a> </li>
-      <li><a href="../../actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
-      <li><a href="../../actor/gt/demo/ModelGeneration/ModelGenerationDE.xml">ModelGeneration DE</a> </li>
-      <li><a href="../../actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
-      <li><a href="../../actor/gt/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> </li>
-      <li><a href="../../actor/gt/demo/SinewaveOptimization/Sinewave.xml">Sinewave</a> </li>
-      <li><a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a> </li>
-    </ul>
+    <!--vergilDocs-->
 
     <!--ptinyKeplerDocs-->
 
     <!--/ptinyKeplerDocs-->
     <!-- Ptiny does not include cg -->
-
-    <h2><a name="cg">Code Generation</a></h2>
-
-    <h3><a name="cgLib">Library Demos</a></h3>
-    <!-- Please keep the demos alphabetical -->
-    <ul>
-      <li><a href="../../cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml">CompiledCompositeActor</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECG.xml">Discrete Event Code Generation</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/ModularCG/ModularCG.xml">ModularCG</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml">ModularCGPubSub</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/Scale/ScaleC.xml">Scale C</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/Scale/ScaleJava.xml">Scale Java</a>(New in Ptolemy II 10.0) </li>
-    </ul>
-
-    <h3><a name="cgDE">C DE Demos</a></h3>
-    <!-- Please keep the demos alphabetical -->
-    <ul>
-      <li><a href="../../cg/lib/demo/DECG/DECGHelloWorld.xml">Hello World!</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGClockRamp.xml">Clock and Ramp</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGMath.xml">Maths</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGPiSquare.xml">Pi Square Calculus</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGPi.xml">Pi Calculus</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGPoisson.xml">Poisson Clock</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGDelay.xml">Time Delay</a>(New in Ptolemy II 10.0) </li>
-    </ul>
-
-    <!-- codegen is obsolete -->
-    <!-- <h2><a name"codegen"><code>ptolemy/codegen</code></a></h2> -->
-    Older Ptolemy code generation demos that use files  in <code>ptolemy/codegen</code>.
-
-    <h3><a name="sdfCodegen">C SDF Code Generation</a></h3>
-    <ul>
-      <li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
-      <li><a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
-      <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>   
-    </ul>
-    -->
-
+    <!--vergilDocs-->
     <!--ptinyKeplerDocs-->
+
 
     <!--/ptinyKeplerDocs-->
     <!-- Ptiny does not include actor/lib/js -->
-    <h2><a name="javascript">JavaScript</a></h2>
-    <ul>
-      <li><a href="../../actor/lib/js/demo/Factorial/Factorial.xml">Factorial</a></li>
-      <li><a href="../../actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml">GoogleOAuth</a></li>
-      <li><a href="../../actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml">JavaScript Shell</a></li>
-      <li><a href="../../actor/lib/js/demo/ModelBuilder/ModelBuilder.xml">Model Builder</a></li>
-      <li><a href="../../actor/lib/js/demo/Spontaneous/Spontaneous.xml">Spontaneous</a></li>
-      <li><a href="../../actor/lib/js/demo/StockPrice/StockPrice.xml">Stock Price</a></li>
-    </ul>
-
+    <!--vergilDocs-->
     <!--ptinyKeplerDocs-->
 
     <!--/ptinyKeplerDocs-->
-    <!-- Ptiny does not include data/ontologies -->
-    <h2><a name="ontologies">Ontology Analysis</a></h2>
-    <ul>
-      <li><a href="../../data/ontologies/demo/CarTracking/CarTracking.xml">CarTracking</a> (Dimensional analysis) (New in Ptolemy II 10.0) </li>
-      <li><a href="../../data/ontologies/demo/ConstNonconst/ConstNonconst.xml">Simple Constant/Nonconstant Analysis</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../data/ontologies/demo/ConstNonconst/Const.xml">Simple Constant Analysis</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation.xml">Abstract Interpretation Analysis</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis.xml">Expression Monotonicity Analysis</a> (New in Ptolemy II 10.0) </li>
-    </ul>
+    <!--vergilDocs-->
 
-    <h2><a name="optimizationAndML">Optimization and Machine Learning</a></h2>
-    <h3><a name="optimization">Optimization</a></h3>
-    <ul>
-      <li><a href="../../../org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml">Constrained Simple Linear Regression</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml">Simple Function Minimization</a> (New in Ptolemy II 10.0) </li>
-    </ul>
-    <h3><a name="particleFilter">Particle Filter</a></h3>
-    <ul>
-      <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.xml">Open-Loop Target Localization - Single Robot</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.xml">Open-Loop Target Localization - Two Robots</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml">Multi-Observer Particle Filtering</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization - Distributed Computation</a> (New in Ptolemy II 10.0) </li>
-    </ul>
-    <h3><a name="probabilistic">Probabilistic Models</a></h3>
-    <ul>
-      <li><a href="../../demo/ProbabilisticModels/ChannelFaultModel.xml"> Channel Fault Model</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../demo/ProbabilisticModels/GaussianMixtureModel.xml">Gaussian Mixture Model</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../demo/ProbabilisticModels/GMMConvergenceAnalysis.xml">Gaussian Mixture Model Parameter Estimation</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModel.xml">Hidden Markov Model</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">Hidden Markov Model Analysis</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../demo/ProbabilisticModels/TwoStateMarkovChain.xml">Discrete-Time Markov Chain</a> (New in Ptolemy II 10.0) </li>
-    </ul>
-
+    <!--Ptiny does not include optimization and machine learning, it is still too new. -->
+    <!--vergilDocs-->
 
     <!-- Ptiny does not include these somewhat esoteric models -->
-    <h2><a name="ptango">Ptango: The Internet of things</a></h2>
-    <ul>
-      <li><a href="../../../org/ptolemy/ptango/demo/Cookies/Cookies.xml">Cookies</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml">ErrorHandler</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.xml">Eplus70Actuator</a>(New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/Guidance/Guidance.xml">Guidance</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.xml">GuidanceSingleUserWithName</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.xml"> OptimizationAdvisor</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/SmartRoom/SmartRoom.xml">SmartRoom</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPower.xml">UCBPower</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml">UCBPowerAnalyzerServer</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml">UCBPowerPtera</a> (New in Ptolemy II 10.0) </li>
-      <li><a href="../../../org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml">WebServerDE</a> (New in Ptolemy II 10.0) </li>
-    </ul>
+    <!--vergilDocs-->
+
     <!-- Ptiny does not include these somewhat esoteric models -->
-    <h2><a name="classes">Actor-Oriented Classes</a></h2>
-    <ul>
-      <li><a href="../../configs/doc/ClassesIllustrated.xml">Classes Illustrated</a></li> 
-    </ul>
-    <h2><a name="curriculum">Curriculum</a></h2>
-    <ul>
-      <li><a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a></li> 
-    </ul>
-
-    <!-- Don't ship Fuzzy because it is gpl'd -->
-    <!-- ../../actor/lib/logic/fuzzy/demo/ArchitectureModel/ArchitectureModel.xml Architecture Model (Fuzzy Logic) /a  -->
-
-    <h2><a name="systemTypes"></a><a href="../../domains/modal/demo/SystemLevelType/README.htm">System Level Types</a>
-      <!-- The SystemLevelType models are included here so that we can be sure that they open -->
-      <ul>
-	<li><a href="../../domains/modal/demo/SystemLevelType/CSPDomain.xml"><code>CSPDomain.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/CSPDomain_PolyActor.xml"><code>CSPDomain_PolyActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/CSPDomain_SDFActor.xml"><code>CSPDomain_SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DEDomain.xml"><code>DEDomain.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DEDomain_PolyActor.xml"><code>DEDomain_PolyActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DEDomain_SDFActor.xml"><code>DEDomain_SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DP.xml"><code>DP.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DummyDirector1.xml"><code>DummyDirector1.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DummyDirector1_SDFActor.xml"><code>DummyDirector1_SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DummyDirector2.xml"><code>DummyDirector2.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/DummyDirector2_SDFActor.xml"><code>DummyDirector2_SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/InterruptableWaitingThreadA.xml"><code>InterruptableWaitingThreadA.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/Interrupter.xml"><code>Interrupter.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/Monitor.xml"><code>Monitor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/PNDomain.xml"><code>PNDomain.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/PNDomain_PolyActor.xml"><code>PNDomain_PolyActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/PNDomain_SDFActor.xml"><code>PNDomain_SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/PolyActor.xml"><code>PolyActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/SDFActor.xml"><code>SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/SDFDomain.xml"><code>SDFDomain.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/SDFDomain_PolyActor.xml"><code>SDFDomain_PolyActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/SDFDomain_SDFActor.xml"><code>SDFDomain_SDFActor.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/ThreadA.xml"><code>ThreadA.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/ThreadA_Monitor_ThreadB.xml"><code>ThreadA_Monitor_ThreadB.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/ThreadB.xml"><code>ThreadB.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/ThreadBNotifies.xml"><code>ThreadBNotifies.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/Trigger.xml"><code>Trigger.xml</code></a>
-	<li><a href="../../domains/modal/demo/SystemLevelType/UNKNOWN.xml"><code>UNKNOWN.xml</code></a>
-      </ul>
-
-  </body>
-</html>
 </body>
 </html>
