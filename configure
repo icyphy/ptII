@@ -1686,7 +1686,7 @@ Optional Packages:
   --with-smackx=JAR       use smackx.jar from JAR,
                           defaults to \$PTII/lib/smackx.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
-                          defaults to \$PTII/vendors/misc/javamail
+                          defaults to \$PTII/lib
   --with-javascript=JAR       use js.jar from JAR,
                           defaults to \$PTII/lib/js.jar
   --with-oauthclient=JAR       use oauth from JAR,
@@ -8317,9 +8317,9 @@ PTJAVAMAIL_DIR=
 
 # JavaMail Directory.  JavaMail is available from
 # https://java.net/projects/javamail/pages/Home
-JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
+JAVAMAIL_DIR='${PTII}/lib'
 
-# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+# JavaMail jar files.   Used to compile the mail actors.
 PTJAVAMAIL_JARS=
 
 JAVAMAIL_USER_DIR="$PTII/ptolemy/actor/lib/mail"
@@ -8337,7 +8337,7 @@ $as_echo_n "checking for JavaMail directory... " >&6; }
 if test "${with_javamail+set}" = set; then :
   withval=$with_javamail; JAVAMAIL_DIR=$withval
 else
-  JAVAMAIL_DIR=$PTII/vendors/misc/javamail
+  JAVAMAIL_DIR=$PTII/lib
 fi
 
 
@@ -8363,7 +8363,7 @@ $as_echo "$JAVAMAIL_DIR" >&6; }; fi
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
     https://java.net/projects/javamail/pages/Home with
-      cd $PTII/vendors/misc/javamail
+      cd $PTII/lib
       wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
       cd $PTII
       ./configure" >&5
@@ -8374,12 +8374,12 @@ $as_echo "$as_me: WARNING: Failed to find javax.mail.jar
     plan on using the Ptolemy actors that send email.
     The JavaMail interface can be downloaded from
     https://java.net/projects/javamail/pages/Home with
-      cd $PTII/vendors/misc/javamail
+      cd $PTII/lib
       wget --no-check-certificate http://java.net/projects/javamail/downloads/download/javax.mail.jar
       cd $PTII
       ./configure" >&2;}
 	# Note that we don't substitute in the ${PTII} here
-	JAVAMAIL_DIR='${PTII}/vendors/misc/javamail'
+	JAVAMAIL_DIR='${PTII}/lib'
     fi
 fi
 
