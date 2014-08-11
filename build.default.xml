@@ -109,6 +109,7 @@
     <pathelement location="lib/jna.jar" />
     <pathelement location="lib/junit-4.8.2.jar" />
     <pathelement location="lib/JUnitParams-0.3.0.jar"/>
+    <pathelement location="lib/javax.mail.jar" />
     <pathelement location="lib/js.jar" />
     <pathelement location="lib/jython.jar" />
     <pathelement location="lib/kieler.jar" />
@@ -227,6 +228,7 @@
     <exclude name="ptolemy/domains/space/" />
     <exclude name="ptolemy/matlab/" />
     <exclude name="ptolemy/moml/jxta/" />
+    <exclude name="ptolemy/plot/adm/"/>
     <exclude name="ptolemy/plot/servlet/" />
     <exclude name="ptolemy/vergil/basic/export/itextpdf/" />
     <exclude name="ptolemy/vergil/basic/export/html/" />

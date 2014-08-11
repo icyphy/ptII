@@ -1000,6 +1000,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/domains/gro/"/>
 <exclude name="ptolemy/domains/pdf/"/>
 <exclude name="ptolemy/moml/test/NoPackageActor.java"/>
+<exclude name="ptolemy/plot/adm/"/>
 <exclude name="ptolemy/plot/servlet/"/>
 <exclude name="reports/"/>
 <exclude name="signed/" />
