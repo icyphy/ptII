@@ -188,6 +188,7 @@ $(ROOT)/ptolemy/gui/QueryChooser.class:
 # ptolemy.gui has lots of classes, we need only a few of them.
 PTOLEMYGUIFILES = \
 	ptolemy/gui/JFileChooserBugFix.class \
+	ptolemy/gui/ImageExportable.class \
 	ptolemy/gui/PtGUIUtilities.class \
 	ptolemy/gui/Query.class \
 	'ptolemy/gui/Query$$1.class' \
@@ -502,12 +503,13 @@ fixtmpdist:
 	echo "# zip might not get the permissions of configure right, so we run /bin/sh" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "../config.status: ../configure" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	(cd ..; /bin/sh ./configure)" >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	(cd ..; /bin/sh ./configure)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	chmod a+x ptinvoke" >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo 'makebat: ptinvoke' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo '	rm -f makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo '	ln -s ptinvoke makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	chmod a+x ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo '$$(BAT_FILES): makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	# We need $@ in bin/makefile, so we use awk to avoid substitution
@@ -521,28 +523,23 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/UndoListener.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/SettableQueryChooser.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/QueryChooser.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/Query.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/QueryListener.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/JFileChooserBugFix.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/PtGUIUtilities.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/CloseListener.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/ComponentDialog.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/package.html" \
+		"$(PTII)/ptolemy/gui/ComponentDialog.java" \
+		"$(PTII)/ptolemy/gui/EditableParametersDialog.java" \
+		"$(PTII)/ptolemy/gui/ImageExportable.java" \
+		"$(PTII)/ptolemy/gui/JFileChooserBugFix.java" \
+		"$(PTII)/ptolemy/gui/PtGUIUtilities.java" \
+		"$(PTII)/ptolemy/gui/PtFileChooser.java" \
+		"$(PTII)/ptolemy/gui/PtFilenameFilter.java" \
+		"$(PTII)/ptolemy/gui/Query.java" \
+		"$(PTII)/ptolemy/gui/QueryChooser.java" \
+		"$(PTII)/ptolemy/gui/QueryListener.java" \
+		"$(PTII)/ptolemy/gui/SettableQueryChooser.java" \
+		"$(PTII)/ptolemy/gui/UndoListener.java" \
+		"$(PTII)/ptolemy/gui/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	# Remove most of the .java files
-	egrep -v "BasicJApplet|CancelException|GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|QueryChooserHelper.java|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
+	egrep -v "BasicJApplet|CancelException|ExtensionFilenameFilter|GraphicalMessageHandler|JTextAreaExec|MacOSXAdapter|MessageHandler|MemoryCleaner|ShellInterpreter|QueryChooserHelper.java|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
 		"$(PTII)/ptolemy/gui/makefile" | \
 		sed "s/ test / /" | \
 		sed "s/\ttest//" > \
@@ -551,20 +548,15 @@ fixtmpdist:
 	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	# Remove most of the .java files
 	cp "$(PTII)/ptolemy/util/CancelException.java" \
+		"$(PTII)/ptolemy/util/MessageHandler.java" \
+		"$(PTII)/ptolemy/util/RunnableExceptionCatcher.java" \
+		"$(PTII)/ptolemy/util/StringUtilities.java" \
+		"$(PTII)/ptolemy/util/SimpleMessageHandler.java" \
+		"$(PTII)/ptolemy/util/ClassUtilities.java" \
+		"$(PTII)/ptolemy/util/FileUtilities.java" \
+		"$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	cp "$(PTII)/ptolemy/util/MessageHandler.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	cp "$(PTII)/ptolemy/util/RunnableExceptionCatcher.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	cp "$(PTII)/ptolemy/util/StringUtilities.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	cp "$(PTII)/ptolemy/util/ClassUtilities.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	cp "$(PTII)/ptolemy/util/FileUtilities.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	cp "$(PTII)/ptolemy/util/package.html" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "ExecuteCommands|OrderedResourceBundle|StreamExec|StringBufferExec.java|XSLTUtilities" \
+	egrep -v "ExecuteCommands|JVMBitWidth|MultiHashMap.java|OrderedResourceBundle|RecursiveFileFilter|StreamExec|StringBufferExec.java|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" | \
 		sed "s/ test / /" | \
 		sed "s/\ttest/\t/" > \

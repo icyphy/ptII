@@ -82,8 +82,8 @@ RELATIVE_ME = ../..
 PTTMPDIST =	$(PTMPDIR)/$(PTDIST)
 
 # Files to ship in the top level directory
-TOPFILES = config/confTest.java config/install-sh \
-	config/JavaHome.java config/SystemJar.java \
+TOPFILES = build.xml.in config/confTest.java config/install-sh \
+	config/JavaHome.java config/RootDirectory.java config/SystemJar.java \
 	configure configure.in copyright.txt \
 	.classpath.in \
 	mk/ptII.mk.in mk/ptcommon.mk mk/ptdir.mk mk/ptno-compile.mk \
@@ -97,7 +97,7 @@ PTDIST_EX =	$(PTTMPDIR)/$(PTDIST_EX_BASE)
 GNUTAR =	tar
 
 # Minimal path for testing.  The path should not include GNU make.
-TESTPATH = 	/opt/local/j2sdk1.4.2_02/bin/:/bin:/usr/ccs/bin:.
+TESTPATH = 	/opt/local/j2sdk1.4.2_02/bin/:/bin:/usr/bin:/usr/ccs/bin:.
 
 # InstallShield Java executable
 # See http://www.installshield.com/java
@@ -188,7 +188,7 @@ buildjdist:
 diststest:
 	rm -rf $(PTTMPDIR)/$(PTDIST)
 	gzcat < $(PTDIST).tar.gz > $(PTTMPDIR)/$(PTDIST).tar
-	cd $(PTTMPDIR);	/bin/tar -xvf $(PTDIST).tar
+	cd $(PTTMPDIR);	tar -xvf $(PTDIST).tar
 	(cd $(PTTMPDIR)/$(PTDIST); \
 		PATH=$(TESTPATH) PTII=`pwd` configure; \
 		PATH=$(TESTPATH) PTII=`pwd` make clean install; \
