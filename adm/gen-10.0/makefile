@@ -189,16 +189,16 @@ release_newton_remote4_test:
 
 ####
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc clean all src.jar
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc remote4_Test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/etc/alternatives/jar update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.devel PTIIADM=/home/cxh/src/ptII10.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc update_ftp
 
 ####
 release_windows:
@@ -257,6 +257,9 @@ clean:	full_clean_setup
 	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
 
 FINDCLEAN = $(GENDIR)/findclean
+
+# Don't use javadoc from Java 1.6 here, it will hang
+JAVADOC=javadoc
 
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
@@ -447,15 +450,15 @@ $(PTIIDIST):
 	rm -rf $(PTIIDIST)/jar_dist
 	$(MAKE) $(PTIIDIST)/jar_dist
 	@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc all_packages)
+	(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) all_packages)
 
 
 dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
-	    (cd $(PTIIDIST); PTII=`pwd` ./configure; PTII=`pwd`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`pwd` make JAVADOC=javadoc all_packages); \
+	    (cd $(PTIIDIST); PTII=`pwd` JAVADOC=$(JAVADOC) ./configure; PTII=`pwd`; ant; \
+		(cd $(PTIIDIST)/doc; PTII=`pwd` make JAVADOC=$(JAVADOC) all_packages); \
 		ant jars; PTII=`pwd` $(MAKE) -k jar_dist); \
 	fi
 
@@ -1030,7 +1033,7 @@ update_ptii_ftp:
 		moog:$(PTII_FTP)
 untar:
 	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh moog "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh moog "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
@@ -1177,7 +1180,7 @@ nonjsall:
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 				tests \
 			);  \
 		    fi ; \
@@ -1747,7 +1750,7 @@ remote1distjsall_1:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -1763,7 +1766,7 @@ remote1distjsall_2:
 		install)
 	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
 
@@ -2071,7 +2074,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 			tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2174,7 +2177,7 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); \
 		$(OTHERMAKE) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 		tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2543,7 +2546,7 @@ remote6buildjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 				jsoriginal clean jsbuild JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -2558,7 +2561,7 @@ remote6autojsall:
 			( cd $$x/test ; \
 			echo making jstest_jauto in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
 				jstest_jauto; \
 			);  \
 		    fi ; \
