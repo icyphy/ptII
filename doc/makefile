@@ -781,7 +781,7 @@ docs: $(FULL_DOCS)
 codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
 
@@ -874,7 +874,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/vergil/unit/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m $(JDOCBREAKITERATOR)"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m $(JDOCBREAKITERATOR)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 
 # Rule to check that ALLPACKAGES names directories that exist
@@ -906,7 +906,7 @@ PTDOCFLAGS = -d doc/codeDoc
 ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
 codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx512m \
+		"$(JAVADOC)" -J-Xmx1500m \
 			$(PTDOCFLAGS) \
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
@@ -920,7 +920,7 @@ codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
 			../ptolemy/configs/doc/models.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx512m \
+	"$(JAVA)" -Xmx1500m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt \
@@ -950,13 +950,13 @@ codeDocBcvtb.jar: $(BCVTB_DOCS)
 codeDocBcvtb/doc/codeDoc/tree.html:
 	if [ ! -d codeDocBcvtb ]; then mkdir -p codeDocBcvtb; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocBcvtb/doc/codeDoc $(BCVTBPACKAGES) $(COREPACKAGES) )
 
 # Rules to build for Bcvtb
 codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx512m \
+		"$(JAVADOC)" -J-Xmx1500m \
 			-d doc/codeDocBcvtb/doc/codeDoc \
 			$(PTDOCLET) \
 			$(BCVTBPACKAGES) )
@@ -969,7 +969,7 @@ codeDocBcvtb/doc/codeDoc/allNamedObjs.txt: \
 codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocBcvtb/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/bcvtb/bcvtbModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx512m \
+	"$(JAVA)" -Xmx1500m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocBcvtb/doc/codeDoc/allNamedObjs.txt \
@@ -998,13 +998,13 @@ codeDocHyVisual.jar: $(HYVISUAL_DOCS)
 codeDocHyVisual/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) $(COREPACKAGES) )
 
 # Rules to build for HyVisual
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx512m \
+		"$(JAVADOC)" -J-Xmx1500m \
 			-d doc/codeDocHyVisual/doc/codeDoc \
 			$(PTDOCLET) \
 			$(HYVISUALPACKAGES) )
@@ -1017,7 +1017,7 @@ codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/hyvisual/hyvisualModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx512m \
+	"$(JAVA)" -Xmx1500m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocHyVisual/doc/codeDoc/allNamedObjs.txt \
@@ -1046,13 +1046,13 @@ codeDocViptos.jar: $(VIPTOS_DOCS)
 codeDocViptos/doc/codeDoc/tree.html:
 	if [ ! -d codeDocViptos ]; then mkdir -p codeDocViptos; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 
 # Run PtDoclet
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx512m \
+		"$(JAVADOC)" -J-Xmx1500m \
 			-d doc/codeDocViptos/doc/codeDoc \
 			$(PTDOCLET) \
 	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
@@ -1066,7 +1066,7 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		../ptolemy/configs/viptos/viptosModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx512m \
+	"$(JAVA)" -Xmx1500m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
@@ -1095,13 +1095,13 @@ codeDocVisualSense.jar: $(VISUALSENSE_DOCS)
 codeDocVisualSense/doc/codeDoc/tree.html:
 	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # Run PtDoclet
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx512m \
+		"$(JAVADOC)" -J-Xmx1500m \
 			-d doc/codeDocVisualSense/doc/codeDoc \
 			$(PTDOCLET) \
 		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
@@ -1115,7 +1115,7 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		../ptolemy/configs/visualsense/visualsenseModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx512m \
+	"$(JAVA)" -Xmx1500m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
