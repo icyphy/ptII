@@ -265,11 +265,13 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
             getDirector().transferOutputs();
 
             if (_tokens != null) {
-                for (Const mappedConst : _tokens.keySet()) {
-                    mappedConst.value.setToken(_tokens.get(mappedConst));
-                    mappedConst.fire();
+                for (CommunicationRequestPort requestPort : _tokens.keySet()) {
+                    List<Token> tokens = _tokens.get(requestPort);
+                    for (int i = 0; i < tokens.size(); i++) {
+                        requestPort.value.setToken(tokens.get(i));
+                        requestPort.fire();
+                    }
                 }
-
                 _tokens.clear();
             }
             getDirector().fire();
@@ -286,6 +288,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                                     .takeToken();
                             Receiver receiver = (Receiver) ((ObjectToken) recordToken
                                     .get("receiver")).getValue();
+                            System.out.println(" --- " + receiver);
                             Token token = recordToken.get("token");
                             receiver.put(token);
                         }
@@ -355,7 +358,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** Set the name of the CommunicationRequestPort that will be receiving tokens from
      *  this actor port.
      *  @param port The actorport.
-     *  @param inputPortName The name of the CommunicationRePort.
+     *  @param inputPortName The name of the CommunicationRequestPort.
      */
     public void setInputPortName(Port port, String inputPortName) {
         if (_communicationRequestPortNames == null) {
@@ -385,13 +388,18 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                             + " missing");
         }
         if (_tokens == null) {
-            _tokens = new HashMap<CommunicationRequestPort, Token>();
+            _tokens = new HashMap<CommunicationRequestPort, List<Token>>();
         }
         if (token != null) {
             RecordToken recordToken = new RecordToken(new String[] {
                     "receiver", "token" }, new Token[] {
                     new ObjectToken(receiver), token });
-            _tokens.put(port, recordToken);
+            List<Token> tokens = _tokens.get(port);
+            if (tokens == null) {
+                tokens = new ArrayList<Token>();
+            }
+            tokens.add(recordToken);
+            _tokens.put(port, tokens);
             if (_justMonitor) {
                 receiver.put(token);
             }
@@ -444,11 +452,15 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** Version for _decoratedObjects. */
     private long _decoratedObjectsVersion = -1L;
 
-    private HashMap<CommunicationRequestPort, Token> _tokens;
+    /** List of tokens for every request port. These tokens are sent from
+     *  intermediate receivers and are read and processed in the fire. */
+    private HashMap<CommunicationRequestPort, List<Token>> _tokens;
 
     /** Listeners registered to receive events from this object. */
     private ArrayList<CommunicationAspectListener> _listeners;
 
+    /** Name of request ports for every actor port that is decorated. 
+     */
     private HashMap<Port, String> _communicationRequestPortNames;
 
     private boolean _justMonitor;
