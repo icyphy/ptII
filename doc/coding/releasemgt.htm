@@ -499,32 +499,31 @@
       <pre>
 	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
 	cd ptII10.0.beta
-	setenv PTII `pwd`
+	export PTII=`pwd`
+	export JAVA_HOME=/usr/lib/jvm/java-1.6.0
+	export PATH=${JAVA_HOME}/bin:${PATH}
 	./configure
 	ant
 	ant jars
 	cd $PTII/adm/gen-10.0
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar release_sisyphus
-
+	make release_sisyphus
       </pre>
+
       The resulting file with the .class files gets copied to the website
       and untar'd.  Note that this does not require Java 3D on the build machine.
       Java 3D is needed for the applets, we copy the jars over later.
+      While in $PTII/adm/gen-10.0, run:
       <pre>
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar update_ftp
-      </pre>
-      or
-      <pre>
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/ptII10.0.beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+	make release_sisyphus_update_ftp
       </pre>
       <ol>
-	<li> Fix the links to ptplot downloads:
+	<li> On moog, fix the links to ptplot downloads:
 	  <pre>
-	    cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/plot
-	    ln -s ../../../../../java/ptplot5.7/ptolemy/plot/ptplot5.7* .
+	    cd /home/www/ptweb/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/plot
+	    ln -s ../../../../../java/ptplot5.10/ptolemy/plot/ptplot5.7* .
 	    cd doc
 	    rm -rf download
-	    ln -s ../../../../../../java/ptplot5.7.beta/ptolemy/plot/doc/download .
+	    ln -s ../../../../../../java/ptplot5.10.beta/ptolemy/plot/doc/download .
 	  </pre>
 
 	<li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
@@ -544,8 +543,9 @@
 	<pre>
 	  export PATH=/cygdrive/c/j2sdk1.6.0/bin:${PATH}
 	  java -version
-	  ./configure
-	  ant 
+	  ./configure 
+	  ant
+	  ant javadoc
 	  ant jars
 
 	  <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
@@ -553,7 +553,7 @@
 
 	  make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`"
 	</pre>
-	<I>xxx</I> is the ptkeystore password.
+	<code>~/.certpw</code> contains the ptkeystore password.
 
 	<li>Build the webstart files.  <i>This is complex . . .</i>
 	  <br/>The high level view is that we export the models as HTML by
@@ -569,6 +569,7 @@
 		tar -zxf ptII10.0.1.src.tar.gz
 		cd ptII10.0.1
 		export PTII=`pwd`
+		./configure
 		ant; ant jars
 	      </pre>
 	    </li>
