@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/fmi/fmus/omc
 FMUS_CS =
 
 # Model Exchange FMUS.
-FMUS_ME =	Influenza
+FMUS_ME =	Influenza Test1
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
@@ -58,7 +58,8 @@ PTPACKAGE = 	fmus
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Influenza.jar
+	Influenza/Influenza.jar \
+	Test1/Test1.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

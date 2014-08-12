@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="Test1"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
+  description=""
+  generationTool="OpenModelica Compiler 1.9.1+dev (r21841) (Bootstrapping version)"
+  generationDateAndTime="2014-08-11T20:13:36Z"
+  variableNamingConvention="structured"
+  numberOfEventIndicators="0">
+  <ModelExchange
+    modelIdentifier="Test1">
+  </ModelExchange>
+  <TypeDefinitions>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0" stopTime="1.0" tolerance="1e-06"/>
+  <ModelVariables>
+  <!-- Index of variable = "1" -->
+  <ScalarVariable
+    name="x"
+    valueReference="0"
+    variability="continuous"
+    causality="local"
+    initial="exact">
+    <Real start="1.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "2" -->
+  <ScalarVariable
+    name="der(x)"
+    valueReference="1"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real derivative="1"/>
+  </ScalarVariable>
+  <!-- Index of variable = "3" -->
+  <ScalarVariable
+    name="a"
+    valueReference="2"
+    variability="fixed"
+    causality="parameter"
+    initial="exact">
+    <Real start="-1.0"/>
+  </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Outputs>
+    </Outputs>
+    <Derivatives>
+      <Unknown index="2" dependencies="1" dependenciesKind="fixed" />
+    </Derivatives>
+    <InitialUnknowns>
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>

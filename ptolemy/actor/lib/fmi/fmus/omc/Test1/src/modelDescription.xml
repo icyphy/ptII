@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="Influenza"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
+  description=""
+  generationTool="OpenModelica Compiler 1.9.1+dev (r21841) (Bootstrapping version)"
+  generationDateAndTime="2014-08-11T17:24:25Z"
+  variableNamingConvention="structured"
+  numberOfEventIndicators="0">
+  <ModelExchange
+    modelIdentifier="Influenza">
+  </ModelExchange>
+  <TypeDefinitions>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0" stopTime="1.0" tolerance="1e-06"/>
+  <ModelVariables>
+  <!-- Index of variable = "1" -->
+  <ScalarVariable
+    name="Deceased"
+    valueReference="0"
+    variability="continuous"
+    causality="local"
+    initial="exact">
+    <Real start="0.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "2" -->
+  <ScalarVariable
+    name="Infectious"
+    valueReference="1"
+    variability="continuous"
+    causality="local"
+    initial="exact">
+    <Real start="0.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "3" -->
+  <ScalarVariable
+    name="Recovered"
+    valueReference="2"
+    variability="continuous"
+    causality="local"
+    initial="exact">
+    <Real start="0.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "4" -->
+  <ScalarVariable
+    name="Removed"
+    valueReference="3"
+    variability="continuous"
+    causality="local"
+    initial="exact">
+    <Real start="0.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "5" -->
+  <ScalarVariable
+    name="Susceptible"
+    valueReference="4"
+    variability="continuous"
+    causality="local"
+    initial="exact">
+    <Real start="499000.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "6" -->
+  <ScalarVariable
+    name="der(Deceased)"
+    valueReference="5"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real derivative="1"/>
+  </ScalarVariable>
+  <!-- Index of variable = "7" -->
+  <ScalarVariable
+    name="der(Infectious)"
+    valueReference="6"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real derivative="2"/>
+  </ScalarVariable>
+  <!-- Index of variable = "8" -->
+  <ScalarVariable
+    name="der(Recovered)"
+    valueReference="7"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real derivative="3"/>
+  </ScalarVariable>
+  <!-- Index of variable = "9" -->
+  <ScalarVariable
+    name="der(Removed)"
+    valueReference="8"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real derivative="4"/>
+  </ScalarVariable>
+  <!-- Index of variable = "10" -->
+  <ScalarVariable
+    name="der(Susceptible)"
+    valueReference="9"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real derivative="5"/>
+  </ScalarVariable>
+  <!-- Index of variable = "11" -->
+  <ScalarVariable
+    name="Population"
+    valueReference="10"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "12" -->
+  <ScalarVariable
+    name="R"
+    valueReference="11"
+    variability="continuous"
+    causality="local"
+    initial="calculated">
+    <Real/>
+  </ScalarVariable>
+  <!-- Index of variable = "13" -->
+  <ScalarVariable
+    name="EncounterRate"
+    valueReference="12"
+    variability="fixed"
+    causality="parameter"
+    initial="exact">
+    <Real start="4.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "14" -->
+  <ScalarVariable
+    name="MortalityProb"
+    valueReference="13"
+    variability="fixed"
+    causality="parameter"
+    initial="exact">
+    <Real start="0.01"/>
+  </ScalarVariable>
+  <!-- Index of variable = "15" -->
+  <ScalarVariable
+    name="MortalityTime"
+    valueReference="14"
+    variability="fixed"
+    causality="parameter"
+    initial="exact">
+    <Real start="1.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "16" -->
+  <ScalarVariable
+    name="RecoveryTime"
+    valueReference="15"
+    variability="fixed"
+    causality="parameter"
+    initial="exact">
+    <Real start="3.0"/>
+  </ScalarVariable>
+  <!-- Index of variable = "17" -->
+  <ScalarVariable
+    name="TransmissionProb"
+    valueReference="16"
+    variability="fixed"
+    causality="parameter"
+    initial="exact">
+    <Real start="0.15"/>
+  </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Outputs>
+    </Outputs>
+    <Derivatives>
+      <Unknown index="6" dependencies="1" dependenciesKind="fixed" />
+      <Unknown index="7" dependencies="2" dependenciesKind="fixed" />
+      <Unknown index="8" dependencies="3" dependenciesKind="fixed" />
+      <Unknown index="9" dependencies="4" dependenciesKind="fixed" />
+      <Unknown index="10" dependencies="5" dependenciesKind="fixed" />
+    </Derivatives>
+    <InitialUnknowns>
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>
