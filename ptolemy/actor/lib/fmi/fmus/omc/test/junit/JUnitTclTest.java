@@ -27,7 +27,7 @@
 
  */
 
-package ptolemy.actor.lib.fmi.fmus.openmodelica.test.junit;
+package ptolemy.actor.lib.fmi.fmus.omc.test.junit;
 
 import ptolemy.util.test.junit.JUnitTclTestBase;
 
@@ -36,7 +36,7 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
 /**
  * Run the auto/ and Tcl tests under JUnit.
  * <pre>
- * (cd $PTII/ptolemy/actor/lib/io/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.actor.lib.fmi.fmus.openmodelica.test.junit.JUnitTclTest)
+ * (cd $PTII/ptolemy/actor/lib/io/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.actor.lib.fmi.fmus.omc.test.junit.JUnitTclTest)
  * </pre>
  *
  * <p> A copy of this file appears in each test/junit subdirectory
