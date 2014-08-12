@@ -327,19 +327,28 @@ public class FMIModelDescription {
             getNativeLibrary();
         }
         Function function = null;
-        String name1 = modelIdentifier + "_" + functionName;
-        String name2 = functionName;
+        // FMI-2.0
+        String name1 = modelIdentifier + "_" + functionName.replace("fmi", "fmi2");
+        // FMI-2.0RC1
+        String name2 = modelIdentifier + "_" + functionName;
+        // FMI-1.0?
+        String name3 = functionName;
         try {
             function = _nativeLibrary.getFunction(name1);
         } catch (UnsatisfiedLinkError error) {
             try {
                 function = _nativeLibrary.getFunction(name2);
             } catch (UnsatisfiedLinkError error2) {
-                UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
-                        "Could not find the function, \"" + name1 + "\" or \""
-                                + name2 + "\" in " + _nativeLibrary);
-                //linkError.initCause(error);
-                throw linkError;
+                try {
+                    function = _nativeLibrary.getFunction(name3);
+                } catch (UnsatisfiedLinkError error3) {
+                    UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
+                            "Could not find the function, \"" + name1 + "\" or \""
+                            + name2 + "\" or \"" + name3
+                            + "\" in " + _nativeLibrary);
+                    //linkError.initCause(error);
+                    throw linkError;
+                }
             }
         }
         return function;
