@@ -1179,7 +1179,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
-	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
@@ -1192,7 +1192,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 			cp -p $$jarfile `dirname $(SIGNED_DIR)/$$jarfile`; \
 		fi; \
 		echo "# Updating the manifest of $(SIGNED_DIR)/$$jarfile with the Permissions: attribute."; \
-		$(JAR) -umf $(PTII)/$(JNLP_MANIFEST) $(SIGNED_DIR)/$$jarfile; \
+		"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(SIGNED_DIR)/$$jarfile; \
 		echo "# Signing $(SIGNED_DIR)/$$jarfile"; \
 		"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
