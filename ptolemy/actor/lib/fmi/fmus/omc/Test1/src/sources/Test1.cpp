@@ -1,5 +1,5 @@
 // define class name and unique id
-#define FMI2_FUNCTION_PREFIX Test1_
+//#define FMI2_FUNCTION_PREFIX Test1_
 #include <fmi2TypesPlatform.h>
 #include <fmi2Functions.h>
 #define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
