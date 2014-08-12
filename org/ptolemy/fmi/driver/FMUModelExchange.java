@@ -307,13 +307,13 @@ public class FMUModelExchange extends FMUDriver {
             // event iteration
             eventInfo20.newDiscreteStatesNeeded = (byte) 1;
             eventInfo20.terminateSimulation = (byte) 0;
-            System.out.println(eventInfo20.toString());
+            System.out.println("FMUModelExchange: " + eventInfo20.toString());
             while (eventInfo20.newDiscreteStatesNeeded == (byte) 1
                     && !(eventInfo20.terminateSimulation == (byte) 1)) {
                 // update discrete states
                 eventInfo20Reference = new FMI20EventInfo.ByReference(
                         eventInfo20);
-                System.out.println(eventInfo20Reference.toString());
+                System.out.println("FMUModelExchange: " + eventInfo20Reference.toString());
 
                 invoke(fmiModelDescription, "fmiNewDiscreteStates",
                         new Object[] { fmiComponent, eventInfo20Reference },
