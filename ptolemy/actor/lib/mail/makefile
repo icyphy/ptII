@@ -47,7 +47,9 @@ PTPACKAGE = 	mail
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = SendMail.java
+JSRCS = \
+	ExceptionEmailer.java \
+	SendMail.java
 
 OTHER_FILES_TO_BE_JARED = \
 	mail.xml

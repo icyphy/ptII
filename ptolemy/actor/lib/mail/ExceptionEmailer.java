@@ -243,15 +243,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ExceptionEmailer newObject = (ExceptionEmailer) super.clone(workspace);
 
-        try {
-            _newline = new Parameter(newObject, "_newline");
-            _newline.setExpression("property(\"line.separator\")");
-        } catch(NameDuplicationException e){
-            // If exception occurs, OK if cloned object refers to original 
-            // _newline.  Preferable to leave it than set _newline to null
-            // Will be a problem if original actor is deleted from model.
-        } catch(IllegalActionException e2){
-        }
+        newObject._newline = (Parameter)newObject.getAttribute("_newline");
+        newObject._newline.setExpression("property(\"line.separator\")");
         
         newObject._password = null;
         newObject._props = null;
