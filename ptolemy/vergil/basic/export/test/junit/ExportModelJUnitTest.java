@@ -289,6 +289,7 @@ public class ExportModelJUnitTest {
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
+                "RecordManipulation", // Python demo pops up a dialog.
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SerialPort.xml", // Requires serial port.
