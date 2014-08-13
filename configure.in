@@ -2067,7 +2067,7 @@ else
     fi
 fi
 
-if test -z "$PTDBXML_JARS"; then
+if test -z "$PTDB_DIR" = ""; then
    updateExcludes "ptdb/"
 else
    updateClasspath "$PTDBXML_JAR"
