@@ -1179,7 +1179,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
-	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
@@ -1192,7 +1192,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 			cp -p $$jarfile `dirname $(SIGNED_DIR)/$$jarfile`; \
 		fi; \
 		echo "# Updating the manifest of $(SIGNED_DIR)/$$jarfile with the Permissions: attribute."; \
-		"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(SIGNED_DIR)/$$jarfile; \
+		$(JAR) -umf $(PTII)/$(JNLP_MANIFEST) $(SIGNED_DIR)/$$jarfile; \
 		echo "# Signing $(SIGNED_DIR)/$$jarfile"; \
 		"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
@@ -1324,7 +1324,7 @@ key_list:
 
 # Update a location with the files necessary to download
 DIST_BASE = ptolemyII/ptII10.0/jnlp-$(PTVERSION)
-DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
+DIST_DIR = /home/www/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
@@ -1358,7 +1358,7 @@ jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII10.0/$(PTVERSION)
+DIST_JAR=/home/www/ptweb/ptolemyII/ptII10.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_JAR)/ptolemy/domains/gr
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
@@ -1797,7 +1797,7 @@ osgi_demo_test:
 #   
 #   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII10.0/jnlp-modularSemantics jnlp_dist
 
-# This will create /export/home/pt0/ptweb/ptolemyII/ptII10.0/jnlp-modularSemantics
+# This will create /home/www/ptweb/ptolemyII/ptII10.0/jnlp-modularSemantics
 #
 # 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
 # the passwords and the alias.  This file is used by copernicus to create signed jars.
@@ -1920,7 +1920,7 @@ $(HTML_MODEL):
 
 # Update the website, create links.
 update_html_model: html_model
-	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
+	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd /home/www/ptweb/ptolemyII/ptII10.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
 
 # We have two sets (!) of jar files: unsigned for applets and signed for JNLP Web Start
 #
