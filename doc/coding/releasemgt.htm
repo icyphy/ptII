@@ -93,7 +93,7 @@
 	</pre>
       </li>
 
-      <li> Clean the tree by running <CODE>make checkjunk</CODE>
+      <li> Clean the tree by running <code>make checkjunk</code>
 	and adding files as appropriate to the makefiles:
 	<pre>
 	  cd $PTII
@@ -106,7 +106,7 @@
 	<code>$PTII/adm/gen-<i>x.y</i></code>/src.ex.
 
       </li>
-      <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
+      <li> Run <a href="../../util/testsuite/chkjava"><code>$PTII/util/testsuite/chkjava</code></a> on the java files and fix problems
 	<br/>Shortcut: Run it only the most recent files added
 
 	<br/>Create a list of java files by
@@ -287,12 +287,12 @@
 	  </pre>
       </li>
 
-      <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
-	the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
+      <li> Run <code>$PTII/adm/copyright/fixcopyrights</code> (not shipped with
+	the release) and update the copyrights on the <code>.java</code>, <code>.tcl</code> and makefiles
       </li>
 
       <li>Run
-	<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
+	<code>$PTII/adm/copyright/chkcopyright</code> on all the nightly buildfiles.
 	<br/>Do:
 	<pre>
 	  cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
@@ -352,7 +352,7 @@
 	  cat /tmp/c2 | grep Regents | awk -F : '{print $1}'
 	</pre>
 
-      <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
+      <li> Run <code>$PTII/adm/bin/fixsince</code> (not shipped with
 	the release) and update the @since tags.  To use
 	<code>fixsince</code>, first edit <code>$PTII/adm/bin/fixsince</code>
 	and update the variables at the top.  Then
@@ -367,7 +367,7 @@
 	</pre>
         Then edit fixsince and comment out the cp line and then commit the changes.
 
-      <li> Run <CODE>cd $PTII/doc; make chkpackagehtml</CODE> (not shipped with
+      <li> Run <code>cd $PTII/doc; make chkpackagehtml</code> (not shipped with
 	the release) and create any missing <code>package.html</code>
 	or <code>README.txt</code> files.
 	<pre>
@@ -478,7 +478,7 @@
       svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
 
     </pre>
-    <I>Note that you should avoid dots in the tag name</I>
+    <i>Note that you should avoid dots in the tag name</i>
     <li> Update the version numbers, see
       <code>$PTII/makefile</code> and <code>$PTII/ptolemy/plot/makefile</code>.
 
@@ -526,7 +526,7 @@
 	    ln -s ../../../../../../java/ptplot5.10.beta/ptolemy/plot/doc/download .
 	  </pre>
 
-	<li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
+	<li> Copy gr.jar from a Windows box to <code>ptolemy/domains/gr</code>
 
 	<li> Copy codeDoc.jar from a Windows box and unjar it
       </ol>
@@ -538,18 +538,21 @@
 	cd ptII10.0.beta
 	export PTII=c:/tmp/cxh/ptII10.0.beta
 
-	<I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
-	<I>Use an older javac so that the .class files are compatible.  For example,  use java 1.6.x so that java 1.7.x and 1.8.x can use the .class files.</i> 
+	<i>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</i>
+	<i>Use an older javac so that the .class files are compatible.  For example,  use java 1.6.x so that java 1.7.x and 1.8.x can use the .class files.</i> 
+
+	<i>However, Javadoc from 1.6.0_26 hangs while running, so use a more recent javadoc.</i>
 	<pre>
-	  export PATH=/cygdrive/c/j2sdk1.6.0/bin:${PATH}
+ 	  export PATH=/cygdrive/c/Program\ Files/Java/jdk1.6.0_26/bin:${PATH}
+ 	  export JAVADOC=c:/Program\ Files/Java/jdk1.8.0_11/bin/javadoc
 	  java -version
 	  ./configure 
 	  ant
-	  ant javadoc
+	  (cd $PTII/doc; make codeDoc/tree.html)
 	  ant jars
 
-	  <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
-	    need access to the ptII account on moog </I>
+	  <i>Copy <code>~ptII/adm/certs/ptkeystore</code> to $PTII.  Note you will
+	    need access to the ptII account on moog </i>
 
 	  make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`"
 	</pre>
@@ -606,7 +609,7 @@ $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -open
 	      <pre>
 		make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`" jnlp_dist
 	      </pre>
-	      <I>xxx</I> is the ptkeystore password. 
+	      <i>xxx</i> is the ptkeystore password. 
 	    </li>
 
 	    <li> Edit <code>$PTII/ptKeystore.properties</code> and change the
