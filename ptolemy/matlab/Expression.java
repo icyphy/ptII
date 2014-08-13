@@ -52,10 +52,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.matlab.Engine.ConversionParameters;
@@ -189,6 +189,12 @@ public class Expression extends TypedAtomicActor {
         getIntegerMatrices = new Parameter(this, "getIntegerMatrices",
                 new BooleanToken(_dataParameters.getIntMatrices));
         new CheckBoxStyle(getIntegerMatrices, "style");
+        
+        clearEnvironment = new Parameter(this, "clearEnvironment",
+                new BooleanToken(true));
+        clearEnvironment.setTypeEquals(BaseType.BOOLEAN);
+        clearEnvironment.setToken(BooleanToken.TRUE);
+
 
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "_iteration", new IntToken(1));
@@ -216,6 +222,9 @@ public class Expression extends TypedAtomicActor {
      all elements represent integers, and if so, an IntMatrixToken is
      returned, default is <i>false</i> for performance reasons. */
     public Parameter getIntegerMatrices;
+    
+    /** If true, clear variables and globals before each execution. */
+    public Parameter clearEnvironment;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -381,6 +390,9 @@ public class Expression extends TypedAtomicActor {
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
+        
+        boolean clearEnvironmentValue = ((BooleanToken) clearEnvironment
+                .getToken()).booleanValue();
 
         try {
 
@@ -391,13 +403,16 @@ public class Expression extends TypedAtomicActor {
             }
 
             synchronized (Engine.semaphore) {
-                // The following clears variables, but preserves any
-                // persistent storage created by a function (this usually
-                // for speed-up purposes to avoid recalculation on every
-                // function call)
-                matlabEngine
-                .evalString(engine, "clear variables;clear globals");
-
+                
+                if(clearEnvironmentValue) {
+                    // The following clears variables, but preserves any
+                    // persistent storage created by a function (this usually
+                    // for speed-up purposes to avoid recalculation on every
+                    // function call)
+                    matlabEngine.evalString(engine,
+                            "clear variables;clear globals");
+                }
+                
                 if (_addPathCommand != null) {
                     matlabEngine.evalString(engine, _addPathCommand);
                 }

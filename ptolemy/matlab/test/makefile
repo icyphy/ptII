@@ -72,6 +72,7 @@ EXTRA_SRCS =    $(TCL_SRCS) $(JSRCS) \
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	alljtests.tcl \
+	ClearEnvironment.xml \
 	Counter1.xml \
 	Counter2.xml \
 	ExpressionTest.xml \
