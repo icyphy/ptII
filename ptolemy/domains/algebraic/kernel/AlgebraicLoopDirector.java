@@ -62,7 +62,7 @@ import ptolemy.math.DoubleMatrixMath;
  according to the specified solver method until all inputs change by less
  than a specified errorTolerance. The methods implemented are:
  <ol>
- <li> SuccessiveSubstitution: This simple strategy simply executes the model
+ <li> SuccessiveSubstitution: This simple strategy executes the model
  until all inputs have converge.
  <li> NewtonRaphson: The Newton-Raphson iteration.
  <li> Homotopy: A homotopy method that uses Newton-Raphson iteration and Euler
@@ -969,7 +969,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 int maxIterations) throws IllegalActionException {
             super(variableNames, tolerance, maxIterations);
             _converged = false;
-            _n1 = _nVars;
+            _n1 = _nVars+1;
 
             // Initialize step size for Jacobian calculation.
             _deltaX = new double[_nVars];
