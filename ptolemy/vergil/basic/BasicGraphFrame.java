@@ -2183,28 +2183,30 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 Parameter importActionClassNames = (Parameter) configuration
                         .getAttribute("_importActionClassNames",
                                 Parameter.class);
-                ArrayToken importActionClassNamesToken = (ArrayToken) importActionClassNames
-                        .getToken();
-                for (int i = 0; i < importActionClassNamesToken.length(); i++) {
-                    String importActionClassName = ((StringToken) importActionClassNamesToken
-                            .getElement(i)).stringValue();
-                    try {
-                        // Get the class, instantiate it and add it to the menu.
-                        Class importActionClass = Class
-                                .forName(importActionClassName);
-                        Constructor constructor = importActionClass
-                                .getDeclaredConstructor(new Class[] { Top.class });
-                        AbstractAction importAction = (AbstractAction) constructor
-                                .newInstance(new Object[] { this });
-                        JMenuItem importItem = new JMenuItem(importAction);
-                        importMenu.add(importItem);
-                    } catch (Throwable throwable) {
-                        // We do not want to abort at this point because the worst
-                        // case is that we will have no Import FMU in the menu.
-                        // That is better than preventing the user from opening a model.
-                        System.err
-                                .println("Warning: Tried to create the an import menu item, but failed: "
-                                        + throwable);
+                if (importActionClassNames != null) {
+                    ArrayToken importActionClassNamesToken = (ArrayToken) importActionClassNames
+                            .getToken();
+                    for (int i = 0; i < importActionClassNamesToken.length(); i++) {
+                        String importActionClassName = ((StringToken) importActionClassNamesToken
+                                .getElement(i)).stringValue();
+                        try {
+                            // Get the class, instantiate it and add it to the menu.
+                            Class importActionClass = Class
+                                    .forName(importActionClassName);
+                            Constructor constructor = importActionClass
+                                    .getDeclaredConstructor(new Class[] { Top.class });
+                            AbstractAction importAction = (AbstractAction) constructor
+                                    .newInstance(new Object[] { this });
+                            JMenuItem importItem = new JMenuItem(importAction);
+                            importMenu.add(importItem);
+                        } catch (Throwable throwable) {
+                            // We do not want to abort at this point because the worst
+                            // case is that we will have no Import FMU in the menu.
+                            // That is better than preventing the user from opening a model.
+                            System.err
+                                    .println("Warning: Tried to create the an import menu item, but failed: "
+                                            + throwable);
+                        }
                     }
                 }
             } catch (Throwable throwable) {
@@ -2212,7 +2214,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     _printedImportActionClassNamesMessage = true;
                     System.err
                         .println("Problem reading the _importActionClassNames parameter from "
-                                + "the confinguration: " + throwable);
+                                + "the configuration: " + throwable);
                 }
             }
 
