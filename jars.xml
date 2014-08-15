@@ -223,6 +223,297 @@
     <include name="ptolemy/verification/demo/demo.jar" />
     <include name="ptolemy/verification/verification.jar" />
     <include name="ptserver/ptserver.jar" />
+
+    <!-- Demos from $PTII/adm/bin/updateantjar here -->
+    <include name="lbnl/demo/CRoom/CRoom.jar" />
+    <include name="lbnl/demo/MatlabRoom/MatlabRoom.jar" />
+    <include name="lbnl/demo/SystemCommand/SystemCommand.jar" />
+    <include name="org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar" />
+    <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar" />
+    <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar" />
+    <include name="org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar" />
+    <include name="org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar" />
+    <include name="org/ptolemy/ptango/demo/Cookies/Cookies.jar" />
+    <include name="org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar" />
+    <include name="org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar" />
+    <include name="org/ptolemy/ptango/demo/Guidance/Guidance.jar" />
+    <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar" />
+    <include name="org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar" />
+    <include name="org/ptolemy/ptango/demo/UCBPower/UCBPower.jar" />
+    <include name="org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar" />
+    <include name="org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar" />
+    <include name="org/ptolemy/qss/demo/RLC/RLC.jar" />
+    <include name="ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jar" />
+    <include name="ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.jar" />
+    <include name="ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.jar" />
+    <include name="ptolemy/actor/gt/demo/GameOfLife/GameOfLife.jar" />
+    <include name="ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.jar" />
+    <include name="ptolemy/actor/gt/demo/MapReduce/MapReduce.jar" />
+    <include name="ptolemy/actor/gt/demo/ModelExecution/ModelExecution.jar" />
+    <include name="ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.jar" />
+    <include name="ptolemy/actor/gt/demo/PublisherTest/PublisherTest.jar" />
+    <include name="ptolemy/actor/gt/demo/RegressionTest/RegressionTest.jar" />
+    <include name="ptolemy/actor/gt/demo/SinewaveOptimization/SinewaveOptimization.jar" />
+    <include name="ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.jar" />
+    <include name="ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.jar" />
+    <include name="ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.jar" />
+    <include name="ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.jar" />
+    <include name="ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.jar" />
+    <include name="ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.jar" />
+    <include name="ptolemy/actor/lib/fmi/demo/FMULevelStairs/FMULevelStairs.jar" />
+    <include name="ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX.jar" />
+    <include name="ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs.jar" />
+    <include name="ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/Case/Case.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/DFTSubSet/DFTSubSet.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/HocDE/HocDE.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/MobileFunction/MobileFunction.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.jar" />
+    <include name="ptolemy/actor/lib/hoc/demo/ThreadedComposite/ThreadedComposite.jar" />
+    <include name="ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.jar" />
+    <include name="ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.jar" />
+    <include name="ptolemy/actor/lib/io/demo/CopyFile/CopyFile.jar" />
+    <include name="ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter.jar" />
+    <include name="ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsCommandLine.jar" />
+    <include name="ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn.jar" />
+    <include name="ptolemy/actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.jar" />
+    <include name="ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jar" />
+    <include name="ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar" />
+    <include name="ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.jar" />
+    <include name="ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.jar" />
+    <include name="ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.jar" />
+    <include name="ptolemy/actor/lib/js/demo/Factorial/Factorial.jar" />
+    <include name="ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.jar" />
+    <include name="ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.jar" />
+    <include name="ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.jar" />
+    <include name="ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.jar" />
+    <include name="ptolemy/actor/lib/js/demo/StockPrice/StockPrice.jar" />
+    <include name="ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.jar" />
+    <include name="ptolemy/actor/lib/python/demo/PythonScale/PythonScale.jar" />
+    <include name="ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.jar" />
+    <include name="ptolemy/actor/lib/security/demo/Signature/Signature.jar" />
+    <include name="ptolemy/actor/parameters/demo/Bouncer/Bouncer.jar" />
+    <include name="ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.jar" />
+    <include name="ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.jar" />
+    <include name="ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.jar" />
+    <include name="ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.jar" />
+    <include name="ptolemy/actor/ptalon/demo/MapReduce/MapReduce.jar" />
+    <include name="ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.jar" />
+    <include name="ptolemy/actor/ptalon/demo/Unicycle/Unicycle.jar" />
+    <include name="ptolemy/actor/ptalon/gt/demo/Adder/Adder.jar" />
+    <include name="ptolemy/backtrack/demo/PrimeTest/PrimeTest.jar" />
+    <include name="ptolemy/backtrack/demo/RampRollback/RampRollback.jar" />
+    <include name="ptolemy/backtrack/demo/TrialModule/TrialModule.jar" />
+    <include name="ptolemy/caltrop/demo/FunctionClosures/FunctionClosures.jar" />
+    <include name="ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinition.jar" />
+    <include name="ptolemy/caltrop/demo/Primes/Primes.jar" />
+    <include name="ptolemy/caltrop/demo/SDFDDI/SDFDDI.jar" />
+    <include name="ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.jar" />
+    <include name="ptolemy/cg/lib/demo/DECG/DECG.jar" />
+    <include name="ptolemy/cg/lib/demo/ModularCG/ModularCG.jar" />
+    <include name="ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub.jar" />
+    <include name="ptolemy/cg/lib/demo/Scale/Scale.jar" />
+    <include name="ptolemy/configs/doc/doc.jar" />
+    <include name="ptolemy/data/ontologies/demo/CarTracking/CarTracking.jar" />
+    <include name="ptolemy/data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation.jar" />
+    <include name="ptolemy/data/ontologies/demo/ConstNonconst/ConstNonconst.jar" />
+    <include name="ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis.jar" />
+    <include name="ptolemy/data/type/demo/Objects/Objects.jar" />
+    <include name="ptolemy/data/type/demo/Router/Router.jar" />
+    <include name="ptolemy/data/unit/demo/StaticUnits/StaticUnits.jar" />
+    <include name="ptolemy/data/unit/demo/Units/Units.jar" />
+    <include name="ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar" />
+    <include name="ptolemy/demo/ExecDemos/ExecDemos.jar" />
+    <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
+    <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
+    <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
+    <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
+    <include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.jar" />
+    <include name="ptolemy/domains/algebraic/demo/RLC/RLC.jar" />
+    <include name="ptolemy/domains/ca/demo/Conway/Conway.jar" />
+    <include name="ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.jar" />
+    <include name="ptolemy/domains/ci/demo/Router/Router.jar" />
+    <include name="ptolemy/domains/continuous/demo/BouncingBall/BouncingBall.jar" />
+    <include name="ptolemy/domains/continuous/demo/Brownian/Brownian.jar" />
+    <include name="ptolemy/domains/continuous/demo/CarTracking/CarTracking.jar" />
+    <include name="ptolemy/domains/continuous/demo/CartPendulum/CartPendulum.jar" />
+    <include name="ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.jar" />
+    <include name="ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.jar" />
+    <include name="ptolemy/domains/continuous/demo/DCMotor/DCMotor.jar" />
+    <include name="ptolemy/domains/continuous/demo/Derivative/Derivative.jar" />
+    <include name="ptolemy/domains/continuous/demo/Friction/Friction.jar" />
+    <include name="ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.jar" />
+    <include name="ptolemy/domains/continuous/demo/HierarchicalExecution/HierarchicalExecution.jar" />
+    <include name="ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.jar" />
+    <include name="ptolemy/domains/continuous/demo/Hysteresis/Hysteresis.jar" />
+    <include name="ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.jar" />
+    <include name="ptolemy/domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar" />
+    <include name="ptolemy/domains/continuous/demo/Lorenz/Lorenz.jar" />
+    <include name="ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradle.jar" />
+    <include name="ptolemy/domains/continuous/demo/Noise/Noise.jar" />
+    <include name="ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.jar" />
+    <include name="ptolemy/domains/continuous/demo/Poisson/Poisson.jar" />
+    <include name="ptolemy/domains/continuous/demo/SampledClocks/SampledClocks.jar" />
+    <include name="ptolemy/domains/continuous/demo/Satellite/Satellite.jar" />
+    <include name="ptolemy/domains/continuous/demo/SigmaDelta/SigmaDelta.jar" />
+    <include name="ptolemy/domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.jar" />
+    <include name="ptolemy/domains/continuous/demo/Sinusoid/Sinusoid.jar" />
+    <include name="ptolemy/domains/continuous/demo/SquareWave/SquareWave.jar" />
+    <include name="ptolemy/domains/continuous/demo/Starmac/Starmac.jar" />
+    <include name="ptolemy/domains/continuous/demo/StickyMasses/StickyMasses.jar" />
+    <include name="ptolemy/domains/continuous/demo/Switch/Switch.jar" />
+    <include name="ptolemy/domains/continuous/demo/Thermostat/Thermostat.jar" />
+    <include name="ptolemy/domains/continuous/demo/Transmission/Transmission.jar" />
+    <include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar" />
+    <include name="ptolemy/domains/continuous/demo/V2V/V2V.jar" />
+    <include name="ptolemy/domains/csp/demo/Barrier/Barrier.jar" />
+    <include name="ptolemy/domains/csp/demo/ResourcePool/ResourcePool.jar" />
+    <include name="ptolemy/domains/csp/demo/WriteRegulator/WriteRegulator.jar" />
+    <include name="ptolemy/domains/curriculum/demo/Curriculum/Curriculum.jar" />
+    <include name="ptolemy/domains/dde/demo/LocalZeno/LocalZeno.jar" />
+    <include name="ptolemy/domains/ddf/demo/Eratosthenes/Eratosthenes.jar" />
+    <include name="ptolemy/domains/ddf/demo/Factorial/Factorial.jar" />
+    <include name="ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.jar" />
+    <include name="ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.jar" />
+    <include name="ptolemy/domains/ddf/demo/Loop/Loop.jar" />
+    <include name="ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.jar" />
+    <include name="ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.jar" />
+    <include name="ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.jar" />
+    <include name="ptolemy/domains/de/demo/AssemblyLine/AssemblyLine.jar" />
+    <include name="ptolemy/domains/de/demo/Clock/Clock.jar" />
+    <include name="ptolemy/domains/de/demo/ClockDrift/ClockDrift.jar" />
+    <include name="ptolemy/domains/de/demo/Inspection/Inspection.jar" />
+    <include name="ptolemy/domains/de/demo/LongRuns/LongRuns.jar" />
+    <include name="ptolemy/domains/de/demo/ModalModel/ModalModel.jar" />
+    <include name="ptolemy/domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.jar" />
+    <include name="ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.jar" />
+    <include name="ptolemy/domains/de/demo/RealTimeComposite/RealTimeComposite.jar" />
+    <include name="ptolemy/domains/de/demo/SmartSender/SmartSender.jar" />
+    <include name="ptolemy/domains/de/demo/TimingParadox/TimingParadox.jar" />
+    <include name="ptolemy/domains/de/demo/Trilateration/Trilateration.jar" />
+    <include name="ptolemy/domains/de/demo/VariableDelay/VariableDelay.jar" />
+    <include name="ptolemy/domains/dt/demo/Eye/Eye.jar" />
+    <include name="ptolemy/domains/giotto/demo/Composite/Composite.jar" />
+    <include name="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.jar" />
+    <include name="ptolemy/domains/giotto/demo/Multimode/Multimode.jar" />
+    <include name="ptolemy/domains/giotto/demo/Simple/Simple.jar" />
+    <include name="ptolemy/domains/gr/demo/FurutaPendulum/FurutaPendulum.jar" />
+    <include name="ptolemy/domains/gr/demo/Helen/Helen.jar" />
+    <include name="ptolemy/domains/gr/demo/Pendulum/Pendulum.jar" />
+    <include name="ptolemy/domains/gr/demo/Pong/Pong.jar" />
+    <include name="ptolemy/domains/gr/demo/SolarSystem/SolarSystem.jar" />
+    <include name="ptolemy/domains/gr/demo/StickyMasses/StickyMasses.jar" />
+    <include name="ptolemy/domains/gr/demo/Universe/Universe.jar" />
+    <include name="ptolemy/domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.jar" />
+    <include name="ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.jar" />
+    <include name="ptolemy/domains/hdf/demo/Hysteresis/Hysteresis.jar" />
+    <include name="ptolemy/domains/hdf/demo/Merge/Merge.jar" />
+    <include name="ptolemy/domains/modal/demo/ABP/ABP.jar" />
+    <include name="ptolemy/domains/modal/demo/Blending/Blending.jar" />
+    <include name="ptolemy/domains/modal/demo/Case/Case.jar" />
+    <include name="ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.jar" />
+    <include name="ptolemy/domains/modal/demo/ModalBSC/ModalBSC.jar" />
+    <include name="ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.jar" />
+    <include name="ptolemy/domains/modal/demo/StateTracker/StateTracker.jar" />
+    <include name="ptolemy/domains/modal/demo/SystemLevelType/SystemLevelType.jar" />
+    <include name="ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" />
+    <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
+    <include name="ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.jar" />
+    <include name="ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.jar" />
+    <include name="ptolemy/domains/pn/demo/CounterMachine/CounterMachine.jar" />
+    <include name="ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.jar" />
+    <include name="ptolemy/domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.jar" />
+    <include name="ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.jar" />
+    <include name="ptolemy/domains/pn/demo/QR/QR.jar" />
+    <include name="ptolemy/domains/pn/demo/RemoveNilTokens/RemoveNilTokens.jar" />
+    <include name="ptolemy/domains/pn/demo/Stack/Stack.jar" />
+    <include name="ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar" />
+    <include name="ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.jar" />
+    <include name="ptolemy/domains/ptera/demo/CarWash/CarWash.jar" />
+    <include name="ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.jar" />
+    <include name="ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.jar" />
+    <include name="ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.jar" />
+    <include name="ptolemy/domains/pthales/demo/FFT/FFT.jar" />
+    <include name="ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.jar" />
+    <include name="ptolemy/domains/pthales/demo/Illustrative/Illustrative.jar" />
+    <include name="ptolemy/domains/ptides/demo/ActuatorPattern/ActuatorPattern.jar" />
+    <include name="ptolemy/domains/ptides/demo/CoSimulation/CoSimulation.jar" />
+    <include name="ptolemy/domains/ptides/demo/Controller/Controller.jar" />
+    <include name="ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant.jar" />
+    <include name="ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator.jar" />
+    <include name="ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA.jar" />
+    <include name="ptolemy/domains/ptides/demo/MultipleCores/MultipleCores.jar" />
+    <include name="ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar" />
+    <include name="ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.jar" />
+    <include name="ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.jar" />
+    <include name="ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.jar" />
+    <include name="ptolemy/domains/rendezvous/demo/Barrier/Barrier.jar" />
+    <include name="ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.jar" />
+    <include name="ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.jar" />
+    <include name="ptolemy/domains/rendezvous/demo/WriteRegulator/WriteRegulator.jar" />
+    <include name="ptolemy/domains/scr/demo/FuelSystemSCR/FuelSystemSCR.jar" />
+    <include name="ptolemy/domains/scr/demo/HelloWorldSCR/HelloWorldSCR.jar" />
+    <include name="ptolemy/domains/scr/demo/SafetyInjection/SafetyInjection.jar" />
+    <include name="ptolemy/domains/scr/demo/TrafficLight/TrafficLight.jar" />
+    <include name="ptolemy/domains/sdf/demo/Array/Array.jar" />
+    <include name="ptolemy/domains/sdf/demo/Butterfly/Butterfly.jar" />
+    <include name="ptolemy/domains/sdf/demo/Expression/Expression.jar" />
+    <include name="ptolemy/domains/sdf/demo/Eye/Eye.jar" />
+    <include name="ptolemy/domains/sdf/demo/FixFIR/FixFIR.jar" />
+    <include name="ptolemy/domains/sdf/demo/FixPoint/FixPoint.jar" />
+    <include name="ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.jar" />
+    <include name="ptolemy/domains/sdf/demo/Gravitation/Gravitation.jar" />
+    <include name="ptolemy/domains/sdf/demo/HTVQ/HTVQ.jar" />
+    <include name="ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.jar" />
+    <include name="ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.jar" />
+    <include name="ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.jar" />
+    <include name="ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.jar" />
+    <include name="ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.jar" />
+    <include name="ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.jar" />
+    <include name="ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.jar" />
+    <include name="ptolemy/domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.jar" />
+    <include name="ptolemy/domains/sdf/demo/Sketch/Sketch.jar" />
+    <include name="ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.jar" />
+    <include name="ptolemy/domains/sdf/demo/Spectrum/Spectrum.jar" />
+    <include name="ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.jar" />
+    <include name="ptolemy/domains/sdf/optimize/demo/SDFOptimize/SDFOptimize.jar" />
+    <include name="ptolemy/domains/space/demo/DOPCenter/DOPCenter.jar" />
+    <include name="ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.jar" />
+    <include name="ptolemy/domains/sr/demo/GuardedCount/GuardedCount.jar" />
+    <include name="ptolemy/domains/sr/demo/TokenRing/TokenRing.jar" />
+    <include name="ptolemy/domains/sr/demo/TrafficLight/TrafficLight.jar" />
+    <include name="ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.jar" />
+    <include name="ptolemy/domains/taskpt/demo/Task/Task.jar" />
+    <include name="ptolemy/domains/tm/demo/Controllers/Controllers.jar" />
+    <include name="ptolemy/domains/tm/demo/FFT/FFT.jar" />
+    <include name="ptolemy/domains/tm/demo/MergedEvents/MergedEvents.jar" />
+    <include name="ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.jar" />
+    <include name="ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.jar" />
+    <include name="ptolemy/domains/wireless/demo/CircularRange/CircularRange.jar" />
+    <include name="ptolemy/domains/wireless/demo/Collisions/Collisions.jar" />
+    <include name="ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.jar" />
+    <include name="ptolemy/domains/wireless/demo/Intersections/Intersections.jar" />
+    <include name="ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.jar" />
+    <include name="ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar" />
+    <include name="ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.jar" />
+    <include name="ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.jar" />
+    <include name="ptolemy/domains/wireless/demo/SmartParking/SmartParking.jar" />
+    <include name="ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.jar" />
+    <include name="ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.jar" />
+    <include name="ptolemy/domains/wireless/demo/Zigbee/Zigbee.jar" />
+    <include name="ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.jar" />
+    <include name="ptolemy/matlab/demo/MatlabExpression/MatlabExpression.jar" />
+    <include name="ptolemy/moml/demo/Networked/Networked.jar" />
+    <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.jar" />
+    <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.jar" />
+    <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.jar" />
+    <include name="ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.jar" />
+    <include name="ptolemy/verification/demo/RailroadControl/RailroadControl.jar" />
+    <include name="ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.jar" />
+    <include name="ptolemy/verification/demo/iRobotHillClimbing/iRobotHillClimbing.jar" />
+
   </patternset>
 
   <target name="help">
@@ -5345,6 +5636,2348 @@
 	<include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.class"/>
       </fileset>
     </jar>
+
+    <!-- Demos from $PTII/adm/bin/updateantjar here -->
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}lbnl/demo/CRoom/CRoom.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="lbnl/demo/CRoom/*.c"/>
+        <include name="lbnl/demo/CRoom/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}lbnl/demo/MatlabRoom/MatlabRoom.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="lbnl/demo/MatlabRoom/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}lbnl/demo/SystemCommand/SystemCommand.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="lbnl/demo/SystemCommand/*.class"/>
+        <include name="lbnl/demo/SystemCommand/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/optimization/demo/LinearRegression/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/optimization/demo/SimpleOptimization/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/Cookies/Cookies.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Cookies/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/Cookies/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.html"/>
+        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.pdf"/>
+        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/ErrorHandler/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/Guidance/Guidance.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/Guidance/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/UCBPower/UCBPower.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/qss/demo/RLC/RLC.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/qss/demo/RLC/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/BouncingBallX2/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/ConstOptimization/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/DiningPhilosophers/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/GameOfLife/GameOfLife.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/GameOfLife/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/HierarchyFlattening/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/MapReduce/MapReduce.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/MapReduce/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/ModelExecution/ModelExecution.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/ModelExecution/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/ModelGeneration/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/PublisherTest/PublisherTest.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/PublisherTest/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/RegressionTest/RegressionTest.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/RegressionTest/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/gt/demo/SinewaveOptimization/SinewaveOptimization.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/gt/demo/SinewaveOptimization/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/colt/demo/ColtRandom/ColtRandom.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/colt/demo/ColtRandom/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/comm/demo/ConvolutionalCoder/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/comm/demo/Scrambler/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/comm/demo/TrellisDecoder/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/comm/demo/ViterbiDecoder/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/demo/FMUBouncingBall/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/fmi/demo/FMULevelStairs/FMULevelStairs.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/demo/FMULevelStairs/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/demo/FMUSimulationX/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/demo/FMUStairs/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/ApplyFFT/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/Case/Case.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/Case/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/DFTSubSet/DFTSubSet.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/DFTSubSet/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/HocDE/HocDE.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/HocDE/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/IterateOverArray/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/MobileFunction/MobileFunction.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/MobileFunction/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/ModelReference/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/hoc/demo/ThreadedComposite/ThreadedComposite.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/hoc/demo/ThreadedComposite/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/io/comm/demo/SerialPort/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/io/demo/AppendToFile/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/io/demo/CopyFile/CopyFile.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/io/demo/CopyFile/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/io/demo/FilePortParameter/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsCommandLine.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/io/demo/ReadStdIn/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/jai/demo/AdaptiveMedian/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/jai/demo/ImageReconstruction/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/jai/demo/VQSequenceDisplay/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/javasound/demo/KarplusStrong/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/jmf/demo/JMFJAI/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/jmf/demo/VideoCapture/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/js/demo/Factorial/Factorial.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/js/demo/Factorial/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/js/demo/GoogleOAuth/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/js/demo/JavaScriptShell/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/js/demo/ModelBuilder/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/js/demo/Spontaneous/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/js/demo/StockPrice/StockPrice.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/js/demo/StockPrice/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/python/demo/Ptolemnizer/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/python/demo/PythonScale/PythonScale.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/python/demo/PythonScale/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/python/demo/RecordManipulation/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/lib/security/demo/Signature/Signature.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/security/demo/Signature/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/parameters/demo/Bouncer/Bouncer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/parameters/demo/Bouncer/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/parameters/demo/SliderParameter/SliderParameter.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/parameters/demo/SliderParameter/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/CruiseControl/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/EightChannelFFT/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/GameOfLife/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/demo/MapReduce/MapReduce.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/MapReduce/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/SmallWorld/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/demo/Unicycle/Unicycle.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/Unicycle/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/actor/ptalon/gt/demo/Adder/Adder.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/gt/demo/Adder/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/backtrack/demo/PrimeTest/PrimeTest.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/backtrack/demo/PrimeTest/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/backtrack/demo/RampRollback/RampRollback.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/backtrack/demo/RampRollback/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/backtrack/demo/TrialModule/TrialModule.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/backtrack/demo/TrialModule/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/caltrop/demo/FunctionClosures/FunctionClosures.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/caltrop/demo/FunctionClosures/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinition.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/caltrop/demo/FunctionDefinition/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/caltrop/demo/Primes/Primes.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/caltrop/demo/Primes/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/caltrop/demo/SDFDDI/SDFDDI.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/caltrop/demo/SDFDDI/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/demo/CompiledCompositeActor/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/cg/lib/demo/DECG/DECG.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/demo/DECG/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/cg/lib/demo/ModularCG/ModularCG.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/demo/ModularCG/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/demo/ModularCGPubSub/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/cg/lib/demo/Scale/Scale.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/lib/demo/Scale/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/configs/doc/doc.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/configs/doc/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/ontologies/demo/CarTracking/CarTracking.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/ontologies/demo/CarTracking/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/ontologies/demo/ConstAbstractInterpretation/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/ontologies/demo/ConstNonconst/ConstNonconst.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/ontologies/demo/ConstNonconst/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/ontologies/demo/MonotonicityAnalysis/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/type/demo/Objects/Objects.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/type/demo/Objects/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/type/demo/Router/Router.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/type/demo/Router/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/unit/demo/StaticUnits/StaticUnits.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/unit/demo/StaticUnits/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/data/unit/demo/Units/Units.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/data/unit/demo/Units/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/ElectricPowerSystem/*.pdf"/>
+        <include name="ptolemy/demo/ElectricPowerSystem/*.xml"/>
+        <include name="ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorMetro/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/demo/ExecDemos/ExecDemos.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/ExecDemos/*.xml"/>
+        <include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
+        <include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/demo/ExecDemos/Demos/Demos.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
+        <include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/demo/FuelSystem/FuelSystem.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/FuelSystem/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/ProbabilisticModels/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/distributed/demo/Sleep/Sleep.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/distributed/demo/Sleep/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/algebraic/demo/RLC/RLC.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/algebraic/demo/RLC/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ca/demo/Conway/Conway.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ca/demo/Conway/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ca/demo/ConwayRandom/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ci/demo/Router/Router.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ci/demo/Router/*.class"/>
+        <include name="ptolemy/domains/ci/demo/Router/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/BouncingBall/BouncingBall.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/BouncingBall/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Brownian/Brownian.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Brownian/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/CarTracking/CarTracking.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/CarTracking/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/CartPendulum/CartPendulum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/CartPendulum/*.pdf"/>
+        <include name="ptolemy/domains/continuous/demo/CartPendulum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/ComparedClocks/ComparedClocks.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/ComparedClocks/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/ContinuousInsideDE/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/DCMotor/DCMotor.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/DCMotor/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Derivative/Derivative.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Derivative/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Friction/Friction.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Friction/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/FurutaPendulum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/HierarchicalExecution/HierarchicalExecution.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/HierarchicalExecution/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/HybridPlant/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Hysteresis/Hysteresis.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Hysteresis/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/LevelCrossingDetector/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Lorenz/Lorenz.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Lorenz/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradle.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/NewtonsCradle/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Noise/Noise.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Noise/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Pendulum3D/*.pdf"/>
+        <include name="ptolemy/domains/continuous/demo/Pendulum3D/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Poisson/Poisson.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Poisson/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/SampledClocks/SampledClocks.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/SampledClocks/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Satellite/Satellite.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Satellite/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/SigmaDelta/SigmaDelta.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/SigmaDelta/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/SinuBouncingBall/*.pdf"/>
+        <include name="ptolemy/domains/continuous/demo/SinuBouncingBall/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Sinusoid/Sinusoid.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Sinusoid/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/SquareWave/SquareWave.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/SquareWave/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Starmac/Starmac.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Starmac/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/StickyMasses/StickyMasses.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/StickyMasses/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Switch/Switch.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Switch/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Thermostat/Thermostat.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Thermostat/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/Transmission/Transmission.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/Transmission/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/continuous/demo/V2V/V2V.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/continuous/demo/V2V/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/csp/demo/Barrier/Barrier.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/csp/demo/Barrier/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/csp/demo/ResourcePool/ResourcePool.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/csp/demo/ResourcePool/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/csp/demo/WriteRegulator/WriteRegulator.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/csp/demo/WriteRegulator/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/curriculum/demo/Curriculum/Curriculum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/curriculum/demo/Curriculum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/dde/demo/LocalZeno/LocalZeno.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/dde/demo/LocalZeno/*.class"/>
+        <include name="ptolemy/domains/dde/demo/LocalZeno/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/Eratosthenes/Eratosthenes.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/Eratosthenes/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/Factorial/Factorial.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/Factorial/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/HanoiTower/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/IfThenElse/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/Loop/Loop.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/Loop/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/OrderedMerge/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/RandomWalk/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ddf/demo/RijndaelEncryption/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/AssemblyLine/AssemblyLine.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/AssemblyLine/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/Clock/Clock.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/Clock/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/ClockDrift/ClockDrift.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/ClockDrift/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/Inspection/Inspection.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/Inspection/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/LongRuns/LongRuns.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/LongRuns/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/ModalModel/ModalModel.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/ModalModel/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/OpenQueueingNetwork/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/QueueAndServer/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/RealTimeComposite/RealTimeComposite.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/RealTimeComposite/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/SmartSender/SmartSender.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/SmartSender/*.class"/>
+        <include name="ptolemy/domains/de/demo/SmartSender/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/TimingParadox/TimingParadox.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/TimingParadox/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/Trilateration/Trilateration.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/Trilateration/*.pdf"/>
+        <include name="ptolemy/domains/de/demo/Trilateration/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/de/demo/VariableDelay/VariableDelay.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/de/demo/VariableDelay/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/dt/demo/Eye/Eye.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/dt/demo/Eye/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/giotto/demo/Composite/Composite.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/giotto/demo/Composite/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/giotto/demo/Hierarchy/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/giotto/demo/Multimode/Multimode.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/giotto/demo/Multimode/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/giotto/demo/Simple/Simple.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/giotto/demo/Simple/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/FurutaPendulum/FurutaPendulum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/FurutaPendulum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/Helen/Helen.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/Helen/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/Pendulum/Pendulum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/Pendulum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/Pong/Pong.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/Pong/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/SolarSystem/SolarSystem.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/SolarSystem/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/StickyMasses/StickyMasses.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/StickyMasses/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/gr/demo/Universe/Universe.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/gr/demo/Universe/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/hdf/demo/AdaptiveCoding/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/hdf/demo/Fibonacci/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/hdf/demo/Hysteresis/Hysteresis.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/hdf/demo/Hysteresis/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/hdf/demo/Merge/Merge.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/hdf/demo/Merge/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/ABP/ABP.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/ABP/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/Blending/Blending.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/Blending/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/Case/Case.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/Case/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/ChainedTransitions/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/ModalBSC/ModalBSC.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/ModalBSC/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/MultipleRuns/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/StateTracker/StateTracker.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/StateTracker/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/modal/demo/SystemLevelType/SystemLevelType.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/modal/demo/SystemLevelType/*.xml"/>
+        <include name="ptolemy/domains/modal/demo/SystemLevelType/fmv/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/openmodelica/demo/OpenModelica/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/petrinet/demo/PetriNetSimple/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/BrockAckerman/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/CounterMachine/CounterMachine.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/CounterMachine/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/NondeterministicMerge/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/NondeterministicMergeWithFeedback/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/OrderedMerge/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/QR/QR.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/QR/*.class"/>
+        <include name="ptolemy/domains/pn/demo/QR/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/RemoveNilTokens/RemoveNilTokens.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/RemoveNilTokens/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pn/demo/Stack/Stack.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pn/demo/Stack/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/psdf/demo/BlindCommunication/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptera/demo/AdaptiveCarWash/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptera/demo/CarWash/CarWash.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptera/demo/CarWash/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptera/demo/SimultaneousCarWash/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptera/demo/TrafficLight/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pthales/demo/AdaptiveBeamForming/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pthales/demo/FFT/FFT.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pthales/demo/FFT/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pthales/demo/HelloWorld/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/pthales/demo/Illustrative/Illustrative.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/pthales/demo/Illustrative/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/ActuatorPattern/ActuatorPattern.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/ActuatorPattern/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/CoSimulation/CoSimulation.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/CoSimulation/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/Controller/Controller.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/Controller/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/DistributedPowerPlant/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/MixedSimulator/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/MultiPlatformTDMA/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/MultipleCores/MultipleCores.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/MultipleCores/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/PowerPlant/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/PrintingPress/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/ptides/demo/PtidesSynchrophasor/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/rendezvous/demo/Barrier/Barrier.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/rendezvous/demo/Barrier/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/rendezvous/demo/ResourcePool/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/rendezvous/demo/Sequencing/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/rendezvous/demo/WriteRegulator/WriteRegulator.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/rendezvous/demo/WriteRegulator/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/scr/demo/FuelSystemSCR/FuelSystemSCR.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/scr/demo/FuelSystemSCR/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/scr/demo/HelloWorldSCR/HelloWorldSCR.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/scr/demo/HelloWorldSCR/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/scr/demo/SafetyInjection/SafetyInjection.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/scr/demo/SafetyInjection/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/scr/demo/TrafficLight/TrafficLight.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/scr/demo/TrafficLight/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Array/Array.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Array/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Butterfly/Butterfly.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Butterfly/*.class"/>
+        <include name="ptolemy/domains/sdf/demo/Butterfly/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Expression/Expression.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Expression/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Eye/Eye.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Eye/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/FixFIR/FixFIR.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/FixFIR/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/FixPoint/FixPoint.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/FixPoint/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/FourierSeries/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Gravitation/Gravitation.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Gravitation/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/HTVQ/HTVQ.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/HTVQ/*.class"/>
+        <include name="ptolemy/domains/sdf/demo/HTVQ/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/LMSAdaptive/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/LogisticMap/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/MaximumEntropySpectrum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/ModelDisplay/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/MultipleRuns/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/NoisySinewave/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/OrthogonalCom/*.class"/>
+        <include name="ptolemy/domains/sdf/demo/OrthogonalCom/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/RijndaelEncryption/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Sketch/Sketch.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Sketch/*.class"/>
+        <include name="ptolemy/domains/sdf/demo/Sketch/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/SoundSpectrum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/Spectrum/Spectrum.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/Spectrum/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/demo/SynthesizedVoice/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sdf/optimize/demo/SDFOptimize/SDFOptimize.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sdf/optimize/demo/SDFOptimize/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/space/demo/DOPCenter/DOPCenter.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/space/demo/DOPCenter/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sr/demo/FeedbackLoop/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sr/demo/GuardedCount/GuardedCount.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sr/demo/GuardedCount/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sr/demo/TokenRing/TokenRing.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sr/demo/TokenRing/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/sr/demo/TrafficLight/TrafficLight.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sr/demo/TrafficLight/*.pdf"/>
+        <include name="ptolemy/domains/sr/demo/TrafficLight/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/taskpt/demo/SharedMemory/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/taskpt/demo/Task/Task.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/taskpt/demo/Task/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/tm/demo/Controllers/Controllers.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/tm/demo/Controllers/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/tm/demo/FFT/FFT.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/tm/demo/FFT/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/tm/demo/MergedEvents/MergedEvents.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/tm/demo/MergedEvents/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/tm/demo/SimpleTasks/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/AntennaPattern/AntennaPattern.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/AntennaPattern/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/CircularRange/CircularRange.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/CircularRange/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/Collisions/Collisions.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/Collisions/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/EvaderAndPursuer/*.class"/>
+        <include name="ptolemy/domains/wireless/demo/EvaderAndPursuer/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/Intersections/Intersections.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/Intersections/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/LinkVisualizer/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/PowerVariability/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/SmallWorld/*.class"/>
+        <include name="ptolemy/domains/wireless/demo/SmallWorld/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/SmartParking/SmartParking.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/SmartParking/*.class"/>
+        <include name="ptolemy/domains/wireless/demo/SmartParking/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/TerrainModel/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/WirelessSoundDetection/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/domains/wireless/demo/Zigbee/Zigbee.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/domains/wireless/demo/Zigbee/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/matlab/demo/MatlabContinuous/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/matlab/demo/MatlabExpression/MatlabExpression.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/matlab/demo/MatlabExpression/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/moml/demo/Networked/Networked.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/moml/demo/Networked/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/vergil/kernel/attributes/demo/AnimateVergil/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/verification/demo/RailroadControl/RailroadControl.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/verification/demo/RailroadControl/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/verification/demo/SimpleTrafficLight/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}ptolemy/verification/demo/iRobotHillClimbing/iRobotHillClimbing.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/verification/demo/iRobotHillClimbing/*.xml"/>
+        <include name="ptolemy/verification/demo/iRobotHillClimbing/iRobotExecution/*.c"/>
+        <include name="ptolemy/verification/demo/iRobotHillClimbing/iRobotExecution/*.h"/>
+       </fileset>
+    </jar>
+
+
   </target>
 
   <path id="ptII.jars.path">
