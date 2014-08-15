@@ -303,11 +303,11 @@ public class HttpResponse {
      */
     public enum ErrorSource {
         // Each of these requires a comment to avoid Javadoc warnings
-        /** NONE:  Any other status code */
+        /** NONE:  Any other status code. */
         NONE,
-        /** CLIENT:  Status codes 4xx */
+        /** CLIENT:  Status codes 4xx. */
         CLIENT, 
-        /** SERVER:  Status codes 5xx and -1 */
+        /** SERVER:  Status codes 5xx and -1. */
         SERVER
     }
 
