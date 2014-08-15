@@ -1,0 +1,35 @@
+#!/bin/sh
+# Script to create a section of an ant file that will create jars for demos
+
+modelsFile=$PTII/ptolemy/configs/doc/models.txt
+
+if [ ! -f "$modelsFile" ]; then
+   echo "Creating $modelsFile"
+   (cd "$PTII/ptolemy/configs/doc"; make models.txt)
+fi
+
+if [ ! -f "$modelsFile" ]; then
+   echo "$0: $modelsFile does not exist.  Tried running make in that directory and it was not created."
+fi
+
+modelDirectories=`cat $modelsFile | sed 's@^\$CLASSPATH/@@' | xargs -n 1 dirname | sort | uniq`
+
+for modelDirectory in $modelDirectories
+do
+    model=`basename $modelDirectory`
+    echo "    <include name=\"$modelDirectory/$model.jar\" />"
+done
+
+for modelDirectory in $modelDirectories
+do
+	model=`basename $modelDirectory`
+	echo "    <jar defaultexcludes=\"yes\""
+	echo "         destfile=\"\${basedir}$modelDirectory/$model.jar\""
+	echo "         >"
+	echo "       <fileset dir=\"\${basedir}\">"
+	#	files=`(cd ptolemy/verification/demo/iRobotHillClimbing; make echo_models) | awk -v modelDirectory=$modelDirectory '{for(i=1;i<=NF;i++) { print "modelDirectory "/" $i}}'`
+	(cd $modelDirectory ; "$PTII/adm/bin/tree2ant") | sed "s@XXXChangeMeXXX@$modelDirectory@"
+	echo "       </fileset>"
+        echo "    </jar>"
+	echo ""
+done
