@@ -432,13 +432,17 @@ public class WebServer extends AbstractInitializableAttribute {
                     // can also be run from within a .jar file
 
                     // If expression starts with $PTII/ , strip this
+                    // Also strip out $CLASSPATH (WebStart uses this)
                     // Assumes .jar file uses $PTII as root location
                     // Assumes full path is given
                     // TODO:  What to do about paths relative to model's location?
                     // Would these work?  None are used so far.
+                    
                     String expression = base.getExpression();
                     if (expression.startsWith("$PTII/")) {
                         expression = expression.substring(6);
+                    } else if (expression.startsWith("$CLASSPATH/")) {
+                        expression = expression.substring(11);
                     }
 
                     // Get directory.  Add trailing "/"
@@ -466,6 +470,7 @@ public class WebServer extends AbstractInitializableAttribute {
                         if (_debugging) {
                             _debug("Adding resource location: " + baseAsURL);
                         }
+                        System.out.println("baseAsURL: " + baseAsURL);
                         resourceLocations.add(new FileResource(baseAsURL));
                     }
                 } catch (URISyntaxException e2) {

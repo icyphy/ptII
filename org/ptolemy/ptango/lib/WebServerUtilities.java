@@ -513,8 +513,8 @@ public class WebServerUtilities {
                             // Add the new resource locations (if any)
                             // FIXME:  Check if this cast is OK.  Otherwise
                             // will have to manually remember the resources
-                            ResourceCollection resources = (ResourceCollection) handler
-                                    .getBaseResource();
+                            ResourceCollection resources = (ResourceCollection) 
+                                    handler.getBaseResource();
 
                             for (FileResource resource : appInfo
                                     .getResourceInfo().get(path)) {
@@ -622,9 +622,13 @@ public class WebServerUtilities {
                         // setResourceBase(String) is a wrapper for
                         // setBaseResource(ResourceCollection) that only allows
                         // one location.
-                        resourceHandler.setBaseResource(new ResourceCollection(
-                                resources.toArray(new FileResource[resources
-                                        .size()])));
+                        
+                        ResourceCollection collection 
+                            = new ResourceCollection();
+                        collection.setResources(resources
+                                .toArray(new FileResource[resources.size()]));
+                        
+                        resourceHandler.setBaseResource(collection);
 
                         fileHandler.setHandler(resourceHandler);
                         handlers.add(fileHandler);

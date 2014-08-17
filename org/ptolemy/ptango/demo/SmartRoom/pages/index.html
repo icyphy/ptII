@@ -8,9 +8,6 @@
 		      by default.  Mainly for mobile, but doesn't hurt on desktop. -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<link rel="stylesheet" href="common.css" />
-		<link rel="stylesheet" href="berkeley.css" />
-		
 		<!-- Desktop-specific CSS -->
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 		
@@ -18,6 +15,9 @@
 		<!-- jQueryMobile not available through Google CDN -->
 		<!--  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" /> -->
 		
+		<!--  Custom CSS -->
+		<link rel="stylesheet" href="/common.css" />
+		<link rel="stylesheet" href="/berkeley.css" />
 		
 		<!--  Use Google CDN when possible, since it is very common, and 
 		      will probably already have downloaded to user's device.  
@@ -29,13 +29,6 @@
 		<!-- jQueryUI not available through Google CDN -->
 		<!--  Used for toggle checkboxes -->
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-		 
-		<!-- Mobile-specific JS-->
-		<!-- jQueryMobile not available through Google CDN -->
-		<!-- <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"> </script> --> 
-		
-		<!--  Dygraphs -->
-		<!-- <script src="http://dygraphs.com/dygraph-combined.js"> </script> -->
 		
 		<!--  Heat map graphic uses the d3 library --> 
 		<script src="http://d3js.org/d3.v3.min.js"> </script>
@@ -48,32 +41,11 @@
 	
 	<!-- Header -->
 	<header data-role="header"> 
-		 <!-- Nav bar -->
-		 <!--  
-	 	<nav>
-	 		<ul> 
-	 			<li> <a href="index.html"> HEAT MAP </a> </li>
-	 			<li> <a href="sensors.html"> SENSORS </a> </li>
-	 			<li> <a href="settings.html"> SETTINGS </a> </li>
-	 			<li> <a href="about.html"> ABOUT</a> </li>
-	 		</ul>
-	 	</nav>
-	 	-->
-	</header>		
- 	
 
+	</header>		
  	
  	<!-- Content -->
 	<div>
-		<!-- TODO:  Add flip switch for heat map? jQueryUI? -->
-		<!--  
-		<label for="flip"> Heat map:</label>
-		<select name="flip" id="flip" data-role="slider">
-			<option value="off">Off</option>
-			<option value="on">On</option>
-		</select> 
-		-->
-		
 		<!-- Toggle radio group from jQueryUI -->
 		<div id="radio-group" class="radio-group">
 			<input type="radio" id="radio1" name="radio" checked="checked" onclick="postMarkers()"/><label for="radio1">View Heat Map</label>

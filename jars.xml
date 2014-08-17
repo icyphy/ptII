@@ -615,6 +615,40 @@
       <fileset dir="${basedir}">
 	<include name="com/microstar/xml/*.htm"/>
       </fileset>
+      <!--  Files required by demos -->
+      <fileset dir="${basedir}">
+	<include name="doc/img/PtolemyIISmall.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/files/*.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.*"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/UCBPower/*.png"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/UCBPower/*.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/UCBPowerPtera/data/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/WebServerDE/img/*.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
+      </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/*.class"/>
       </fileset>

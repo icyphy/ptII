@@ -432,6 +432,8 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
         <port name="TDay" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 155.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -439,6 +441,8 @@ Michael Wetter (LBNL)</text></svg></configure>
         </port>
         <port name="TNight" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 195.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -446,6 +450,8 @@ Michael Wetter (LBNL)</text></svg></configure>
         </port>
         <port name="LTime" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 235.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -453,6 +459,8 @@ Michael Wetter (LBNL)</text></svg></configure>
         </port>
         <port name="RTime" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 275.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2479,7 +2487,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
         <display name="ParseParameters&#10;."/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[511.0, 159.75]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 134, 928, 641}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 127, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -2640,7 +2648,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     <entity name="Initiation" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 145.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 128, 928, 641}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 127, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -2960,7 +2968,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
             </port>
         </entity>
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="files/dygraphsJS.html">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/OptimizationAdvisor/files/dygraphsJS.html">
             </property>
             <doc>Read an entire file and output as a string</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[377.75, 272.5]">
