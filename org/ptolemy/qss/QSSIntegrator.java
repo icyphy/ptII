@@ -223,11 +223,11 @@ public class QSSIntegrator extends TypedAtomicActor {
                 // Update the time of the next output, which is the time it will take to
                 // get from the current state to previous output value plus or minus the quantum
                 // at the updated slope.
-                nextOutputTime = _nextCrossingTime(previousSlope, x,
+                nextOutputTime = _nextCrossingTime(slope, x,
                         previousOutputValue, quantumValue, currentTime);
             }
             // Calculate the next output value
-            nextOutputValue = _nextOutputValue(previousSlope,
+            nextOutputValue = _nextOutputValue(slope,
                     previousOutputValue, quantumValue);
         }
 
