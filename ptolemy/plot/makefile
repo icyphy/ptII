@@ -654,7 +654,7 @@ isj:
 
 # Update the ftp site
 # Update a location with the files necessary to download
-DIST_BASE = /export/home/pt0/ptweb/java
+DIST_BASE = /home/www/ptweb/java
 DIST_DIR = $(DIST_BASE)/$(PTDIST)
 
 
