@@ -951,5 +951,5 @@ jnlps_index: $(ROOT)/mk/ptcommon.mk
 	fi;
 
 echo_models:
-	echo $(OTHER_FILES_TO_BE_JARED)
+	@echo $(OTHER_FILES_TO_BE_JARED)
 
