@@ -5,7 +5,7 @@
 findit() {
    find . -name "$1" | grep -v package.html | grep -v test | grep -v junit | xargs -n 1 dirname | sort | uniq | \
        awk -v extension=$1 '{dir=substr($0, 2, length($0)-1);
-             print "        <include name=\"ptolemy/cg" dir "/" extension "\"/>";
+             print "        <include name=\"XXXChangeMeXXX" dir "/" extension "\"/>";
        }'
 }
 
@@ -16,10 +16,12 @@ findit "*.h" >> $includes
 findit "*.in" >> $includes
 findit "*.html" >> $includes
 findit "*.j" >> $includes
+findit "*.pdf" >> $includes
 findit "*.xml" >> $includes
 
-sort $includes | awk '{
-             print "      <fileset dir=\"${basedir}\">";
-             print $0
-             print "      </fileset>"
-   }'
+sort $includes
+# | awk '{
+#             print "      <fileset dir=\"${basedir}\">";
+#             print $0
+#             print "      </fileset>"
+#   }'
