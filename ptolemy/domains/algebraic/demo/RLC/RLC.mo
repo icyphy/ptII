@@ -1,5 +1,6 @@
 within ;
 model RLC "RLC circuit"
+
   Modelica.Electrical.Analog.Basic.Resistor R1(R=1) "Resistor"
     annotation (Placement(transformation(extent={{-20,30},{0,50}})));
   Modelica.Electrical.Analog.Basic.Capacitor C(C=1) "Capacitor" annotation (
@@ -51,5 +52,7 @@ equation
       color={0,0,255},
       smooth=Smooth.None));
   annotation (uses(Modelica(version="3.2.1")), Diagram(coordinateSystem(
-          preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
+          preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics),
+    experiment(StopTime=20, Tolerance=1e-05),
+    __Dymola_experimentSetupOutput);
 end RLC;
