@@ -603,6 +603,11 @@
     </jar>
 
     <!-- ptolemy/ptsupport.jar -->
+    <!-- This jar file should only contain the classes
+	 necessary to run the minimum model.  Demos
+	 and domains should go elsewhere.
+	 This jar file should contain as little third-party
+	 licensed software as possible. -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/ptsupport.jar"
 	 >
@@ -614,40 +619,6 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="com/microstar/xml/*.htm"/>
-      </fileset>
-      <!--  Files required by demos -->
-      <fileset dir="${basedir}">
-	<include name="doc/img/PtolemyIISmall.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/files/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.*"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/UCBPower/*.png"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/UCBPower/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/UCBPowerPtera/data/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/WebServerDE/img/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/*.class"/>
@@ -4001,10 +3972,14 @@
 	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/*/*.gif"/>
         <include name="org/ptolemy/ptango/demo/*/*.png"/>
         <include name="org/ptolemy/ptango/demo/*/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/*/files/*.html"/>
         <include name="org/ptolemy/ptango/demo/*/pages/*.html"/>
         <include name="org/ptolemy/ptango/demo/files/*.gif"/>
+	<include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
+	<include name="org/ptolemy/ptango/demo/WebServerDE/img/*.gif"/>
       </fileset>
     </jar>
 
