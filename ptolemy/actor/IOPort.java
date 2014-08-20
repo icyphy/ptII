@@ -216,6 +216,26 @@ public class IOPort extends ComponentPort {
         setInput(isInput);
         setOutput(isOutput);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public parameters                 ////
+
+    /** The default value of the port. By default, this parameter is
+     *  empty. If this value is not empty, then the port is persistent,
+     *  which means that the get methods always return a token (they never
+     *  throw NoTokenException).  However, {@link #hasToken(int)},
+     *  {@link #hasToken(int, int)},
+     *  and {@link #hasTokenInside(int)}
+     *  continue to report whatever the receiver reports, which
+     *  generally is true only if the receiver actually has enough
+     *  new tokens.
+     *  <p>
+     *  If this port is an output port, then the persistent value is
+     *  used only when retrieving a token from the inside. I.e., it
+     *  will be used only if the output port belongs to an opaque
+     *  composite actor.
+     */
+    public Parameter defaultValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -278,6 +298,8 @@ public class IOPort extends ComponentPort {
                     createReceivers();
                 }
             }
+        } else if (attribute == defaultValue) {
+        	_persistentToken = defaultValue.getToken();
         }
         super.attributeChanged(attribute);
     }
@@ -959,7 +981,10 @@ public class IOPort extends ComponentPort {
         if (_debugging) {
             _debug("get from channel " + channelIndex + ": " + token);
         }
-        _persistentToken = token;
+        // If this port is persistent, then remember the value of this input.
+        if (_persistentToken != null) {
+        	_persistentToken = token;
+        }
 
         return token;
     }
@@ -1030,7 +1055,7 @@ public class IOPort extends ComponentPort {
         if (_persistentToken != null && !hasToken(channelIndex, vectorLength)) {
             int i = 0;
             while (localReceivers[channelIndex][0].hasToken()) {
-                retArray[i++] = localReceivers[channelIndex][0].get();
+                retArray[i] = localReceivers[channelIndex][0].get();
                 _persistentToken = retArray[i++];
             }
             // If there are not enough tokens, fill up the vector with
@@ -1231,8 +1256,6 @@ public class IOPort extends ComponentPort {
         if (token == null) {
             if (_persistentToken != null) {
                 token = _persistentToken;
-            } else if (defaultValue.getToken() != null) {
-                token = defaultValue.getToken();
             } else {
                 throw new NoTokenException(this, "No token to return.");
             }
@@ -1241,7 +1264,10 @@ public class IOPort extends ComponentPort {
         if (_debugging) {
             _debug("get from inside channel " + channelIndex + ": " + token);
         }
-        _persistentToken = token;
+        // If the port is persistent, update the remembered value.
+        if (_persistentToken != null) {
+        	_persistentToken = token;
+        }
         return token;
     }
 
@@ -2812,7 +2838,7 @@ public class IOPort extends ComponentPort {
     }
 
     /** If port has default value reset the saved persistent value.
-     * @exception IllegalActionException If defaultValue cannot be retrieved.
+     *  @exception IllegalActionException If defaultValue cannot be retrieved.
      */
     public void reset() throws IllegalActionException {
         _persistentToken = null;
@@ -3743,16 +3769,6 @@ public class IOPort extends ComponentPort {
             _workspace.doneWriting();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public parameters                 ////
-
-    /** The default value of the port. By default, this parameter is
-     *         empty. If this value is not empty, the port is persistent.
-     */
-    public Parameter defaultValue;
-
-    private Token _persistentToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -4893,6 +4909,9 @@ public class IOPort extends ComponentPort {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** List of communication aspects specified for the port. */
+    private List<CommunicationAspect> _communicationAspects;
+
     /** The default width. In case there is no unique solution for a relation
      *  connected to this port the default width will be used.
      */
@@ -4929,22 +4948,6 @@ public class IOPort extends ComponentPort {
 
     // Indicate whether the port is a multiport. Default false.
     private boolean _isMultiport = false;
-
-    // The cached width of the port, which is the sum of the widths of the
-    // linked relations.  The default 0 because initially there are no
-    // linked relations.  It is set or updated when getWidth() is called.
-    // 'transient' means that the variable will not be serialized.
-    private transient int _width = 0;
-
-    // Constrains on the width of this port (it has to be equal to the parameters).
-    private Set<Parameter> _widthEqualToParameter = new HashSet<Parameter>();
-
-    // Constraints on the width of this port (it has to be equal to the width of the port).
-    private Set<IOPort> _widthEqualToPort = new HashSet<IOPort>();
-
-    // The workspace version number on the last update of the _width.
-    // 'transient' means that the variable will not be serialized.
-    private transient long _widthVersion = -1;
 
     // The cached inside width of the port, which is the sum of the
     // widths of the inside relations.  The default 0 because
@@ -4996,8 +4999,8 @@ public class IOPort extends ComponentPort {
     private transient int _numberOfSources;
     private transient long _numberOfSourcesVersion = -1;
 
-    /** List of communication aspects specified for the port. */
-    private List<CommunicationAspect> _communicationAspects;
+    /** Value of defaultValue or the most recently received token. */
+    private Token _persistentToken;
 
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;
@@ -5007,4 +5010,19 @@ public class IOPort extends ComponentPort {
     private transient LinkedList<IOPort> _sourcePortList;
     private transient long _sourcePortListVersion;
 
+    // The cached width of the port, which is the sum of the widths of the
+    // linked relations.  The default 0 because initially there are no
+    // linked relations.  It is set or updated when getWidth() is called.
+    // 'transient' means that the variable will not be serialized.
+    private transient int _width = 0;
+
+    // Constrains on the width of this port (it has to be equal to the parameters).
+    private Set<Parameter> _widthEqualToParameter = new HashSet<Parameter>();
+
+    // Constraints on the width of this port (it has to be equal to the width of the port).
+    private Set<IOPort> _widthEqualToPort = new HashSet<IOPort>();
+
+    // The workspace version number on the last update of the _width.
+    // 'transient' means that the variable will not be serialized.
+    private transient long _widthVersion = -1;
 }
