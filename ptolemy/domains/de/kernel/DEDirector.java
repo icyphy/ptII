@@ -1010,7 +1010,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         while (outports.hasNext() && !moreOutputsToTransfer) {
             IOPort outport = outports.next();
             for (int i = 0; i < outport.getWidthInside(); i++) {
-                if (outport.hasTokenInside(i)) {
+                if (outport.hasNewTokenInside(i)) {
                     moreOutputsToTransfer = true;
                     break;
                 }
@@ -1951,7 +1951,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
                 // iterate all the channels of the current input port.
                 for (int i = 0; i < port.getWidth(); i++) {
-                    if (port.hasToken(i)) {
+                    if (port.hasNewToken(i)) {
                         if (_debugging) {
                             _debug("Port named " + port.getName()
                                     + " still has input on channel " + i
