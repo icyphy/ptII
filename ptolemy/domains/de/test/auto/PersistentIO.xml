@@ -1,0 +1,277 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PersistentIO" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 22, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000007">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.91997612847223, 265.6192220052084}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="clock outputs token &#10;every 1 time unit&#10;starting at time 5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-215.0, -10.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="period1_2">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="clock outputs token &#10;every 1 time unit&#10;until time 5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-215.0, -10.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="period1_1">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="clock outputs token &#10;every 1 time unit">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-220.0, 5.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="period1_3">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates the use of persistent ports.&#10;By setting the default value of a port, the values&#10;become persistent; i.e. the last value received, or if&#10;no value has been received, the default value, is &#10;produced on the output.&#10;&#10;Inputs are directly connected to the outputs inside&#10;the CompositeActor. Some inputs and outputs&#10;are persistent. The inputs receive triggers from &#10;different clocks. When either input or output of a &#10;connection is persistent, a token is plotted,&#10;whenever the CompositeActor is triggered &#10;(even if the connected upstream input port on the &#10;CompositeActor did not receive a token).&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[265.0, 275.0]">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[302.5, 127.5]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{775, 365}">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 425.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="11.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 425.0]">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 470.0]">
+            </property>
+        </port>
+        <port name="port4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="11.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 525.0]">
+            </property>
+        </port>
+        <port name="port5" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 470.0]">
+            </property>
+        </port>
+        <port name="port6" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 575.0]">
+            </property>
+        </port>
+        <port name="port7" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 625.0]">
+            </property>
+        </port>
+        <port name="port8" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 525.0]">
+            </property>
+        </port>
+        <port name="port9" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 575.0]">
+            </property>
+        </port>
+        <port name="port10" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 625.0]">
+            </property>
+        </port>
+        <port name="port11" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 675.0]">
+            </property>
+        </port>
+        <port name="port12" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 675.0]">
+            </property>
+        </port>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation"/>
+        <link port="port3" relation="relation3"/>
+        <link port="port4" relation="relation2"/>
+        <link port="port5" relation="relation3"/>
+        <link port="port6" relation="relation4"/>
+        <link port="port7" relation="relation5"/>
+        <link port="port8" relation="relation2"/>
+        <link port="port9" relation="relation4"/>
+        <link port="port10" relation="relation5"/>
+        <link port="port11" relation="relation6"/>
+        <link port="port12" relation="relation6"/>
+    </entity>
+    <entity name="period1_1" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="period1_3" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="period1_2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{3}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="event@5" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[57.5, 194.16015625]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 70.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{11.0, 11.0, 11.0, 11.0, 11.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 3, 3, 3, 3, 3}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 210.0]">
+        </property>
+    </entity>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[240.0, 105.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[230.0, 125.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[112.5, 194.16015625]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="CompositeActor.port" relation="relation11"/>
+    <link port="CompositeActor.port2" relation="relation4"/>
+    <link port="CompositeActor.port3" relation="relation4"/>
+    <link port="CompositeActor.port4" relation="relation"/>
+    <link port="CompositeActor.port5" relation="relation2"/>
+    <link port="CompositeActor.port6" relation="relation"/>
+    <link port="CompositeActor.port7" relation="relation9"/>
+    <link port="CompositeActor.port8" relation="relation5"/>
+    <link port="CompositeActor.port9" relation="relation6"/>
+    <link port="CompositeActor.port10" relation="relation7"/>
+    <link port="CompositeActor.port11" relation="relation8"/>
+    <link port="period1_1.output" relation="relation4"/>
+    <link port="period1_1.stop" relation="relation3"/>
+    <link port="period1_3.output" relation="relation9"/>
+    <link port="period1_2.output" relation="relation"/>
+    <link port="period1_2.start" relation="relation3"/>
+    <link port="event@5.output" relation="relation3"/>
+    <link port="Test.input" relation="relation11"/>
+    <link port="Test2.input" relation="relation2"/>
+    <link port="Test3.input" relation="relation5"/>
+    <link port="Test4.input" relation="relation6"/>
+    <link port="Test5.input" relation="relation7"/>
+    <link port="Test6.input" relation="relation8"/>
+</entity>
