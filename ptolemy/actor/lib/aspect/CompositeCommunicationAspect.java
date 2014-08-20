@@ -288,7 +288,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                                     .takeToken();
                             Receiver receiver = (Receiver) ((ObjectToken) recordToken
                                     .get("receiver")).getValue();
-                            System.out.println(" --- " + receiver);
+                            // Use listener mechanism instead of println?
+                            // System.out.println("CompositeCommunicationAspect: --- " + receiver);
                             Token token = recordToken.get("token");
                             receiver.put(token);
                         }
