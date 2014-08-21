@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000007">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.91997612847223, 265.6192220052083}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.91997612847223, 265.6192220052084}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -49,16 +49,12 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates the use of persistent ports.&#10;By setting the default value of a port, the values&#10;become persistent; i.e. the last value received, or if&#10;no value has been received, the default value, is &#10;produced on the output.&#10;&#10;Inputs are directly connected to the outputs inside&#10;the CompositeActor. Some inputs and outputs&#10;are persistent. The inputs receive triggers from &#10;different clocks. When either input or output of a &#10;connection is persistent, a token is plotted,&#10;whenever the CompositeActor is triggered &#10;(even if the connected upstream input port on the &#10;CompositeActor did not receive a token).&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates the use of persistent ports.&#10;By setting the defaultValue of a port, the values&#10;become persistent; i.e. the last value received, or if&#10;no value has been received, the default value, is &#10;produced on the output.&#10;&#10;Inputs are directly connected to the outputs inside&#10;the CompositeActor. Some inputs and outputs&#10;are persistent. The inputs receive triggers from &#10;different clocks. When either input or output of a &#10;connection is persistent, a token is plotted,&#10;whenever the CompositeActor is triggered &#10;(even if the connected upstream input port on the &#10;CompositeActor did not receive a token).&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[265.0, 275.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Through" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[302.5, 127.5]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -237,17 +233,17 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="CompositeActor.port" relation="relation2"/>
-    <link port="CompositeActor.port2" relation="relation4"/>
-    <link port="CompositeActor.port3" relation="relation4"/>
-    <link port="CompositeActor.port4" relation="relation"/>
-    <link port="CompositeActor.port5" relation="relation7"/>
-    <link port="CompositeActor.port6" relation="relation"/>
-    <link port="CompositeActor.port7" relation="relation9"/>
-    <link port="CompositeActor.port8" relation="relation5"/>
-    <link port="CompositeActor.port9" relation="relation10"/>
-    <link port="CompositeActor.port10" relation="relation8"/>
-    <link port="CompositeActor.port11" relation="relation6"/>
+    <link port="Through.port" relation="relation2"/>
+    <link port="Through.port2" relation="relation4"/>
+    <link port="Through.port3" relation="relation4"/>
+    <link port="Through.port4" relation="relation"/>
+    <link port="Through.port5" relation="relation7"/>
+    <link port="Through.port6" relation="relation"/>
+    <link port="Through.port7" relation="relation9"/>
+    <link port="Through.port8" relation="relation5"/>
+    <link port="Through.port9" relation="relation10"/>
+    <link port="Through.port10" relation="relation8"/>
+    <link port="Through.port11" relation="relation6"/>
     <link port="period1_1.output" relation="relation4"/>
     <link port="period1_1.stop" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation2"/>
