@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ErrorHandler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1388, 737}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 929, 615}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 627]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 505]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0633910945382758">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{564.9018151815183, 302.37525783828386}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 252.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ErrorHandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
@@ -54,7 +54,7 @@
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 50.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -64,13 +64,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Dai Bui,  Elizabeth Latronico, and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 460.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Type given for postRequest&#10;to aid type inference.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 360.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -78,19 +78,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 100.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to build a modal web service.&#10;In this case, the service switches modes when an error&#10;occurs running in the normal mode. Note that it will&#10;switch modes for all users. There is no notion of sessions here.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 105.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 325.0]">
         </property>
         <port name="getRequest" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -115,8 +115,6 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -633,7 +631,7 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 325.0]">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -643,7 +641,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 210.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -655,7 +653,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{50.0, 135.0}">
+        <vertex name="vertex1" value="[50.0, 210.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

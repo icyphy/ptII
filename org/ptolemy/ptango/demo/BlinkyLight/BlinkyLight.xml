@@ -4,13 +4,13 @@
 <entity name="BlinkyLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 32, 1335, 680}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 32, 1360, 973}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1107, 563]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1126, 863]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5929738496387742">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.56884691352419">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{708.2550151801548, 784.8374233128834}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{935.0802208911415, 532.293602330779}">
     </property>
     <property name="onThreshold" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -244,6 +244,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service for configuring a light and a sensor in a room.&#10;The sensor will turn the light on and off according to user-defined thresholds.&#10;Thrashing (repeated on/off light behavior) may occur depending on the thresholds&#10;and the proximity of the light to the sensor.  Drag light or sensor to change proximity.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -200.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 1185.0]">
         </property>
     </property>
     <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">

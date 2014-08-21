@@ -2,28 +2,28 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Cookies" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 22, 1456, 905}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 22, 1425, 887}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1222, 795]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1191, 777]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0572384606472804">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{468.1914062500001, 384.78145949360567}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{595.5, 388.5}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Cookies">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[597.0, 70.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[87.0, 50.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -42,29 +42,29 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[792.0, 40.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If there is a cookie named &quot;name&quot;, then&#10;customize the page served, otherwise&#10;use a generic welcome page.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[532.0, 145.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8078/cookies,&#10;set the cookie named &quot;name&quot; to the value &#10;given in the request's parameters&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[574.1875915527344, 326.728271484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[681.1875915527344, 351.728271484375]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this case, the postParameters output contains a record token&#10;with only one field, &quot;name&quot;. We feed this record back directly to&#10;set a cookie named &quot;name&quot;.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[574.1875915527344, 386.728271484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[681.1875915527344, 411.728271484375]">
         </property>
     </property>
     <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.0, 340.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -80,7 +80,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /cookies">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.0, 305.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -88,11 +88,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST /cookies">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.0, 355.0]">
         </property>
     </property>
     <property name="Line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[7.0, 525.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -108,19 +108,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST cookies/delete">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[7.0, 545.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests to http://localhost:8078/cookies/delete,&#10;send a RecordToken with the label &quot;name&quot; and the value empty string&#10;which notifies HttpActor to delete the cookie&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[672.0, 535.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the input port is set to&#10;to &quot;{name=string}&quot; to assist type inference.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 45.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression4">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -149,25 +149,25 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{50.0, -5.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[157.0, 20.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we return only a line of text, instead of a complete HTML page.&#10;The cookies web page uses an ajax call to /cookies/delete .  Ajax is&#10;used to insert new data into an existing web page. So, here, we only&#10;need the new message.&#10;&#10;Ajax is used so that the URL in the browser does not change.  &#10;We want to keep /cookies , not /cookies/delete , as the URL, &#10;so that our cookies will be saved relative to the /cookies URL.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[672.0, 600.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In HttpActor, specify the name of the cookie &#10;to get in the requestedCookies parameter.&#10;Here, we look for a cookie called &quot;name&quot;.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[187.0, 145.0]">
         </property>
     </property>
     <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the list of cookies in your browser, please try:&#10;Safari's Web Inspector Storage Navigator (in Developer Tools)&#10;Firebug for Firefox:  https://getfirebug.com/">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[657.0, 60.0]">
         </property>
     </property>
     <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -175,7 +175,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Elizabeth Latronico, Roxana Gheorghiu, and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[7.0, 730.0]">
         </property>
     </property>
     <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -183,13 +183,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[657.0, 25.0]">
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the input port is set to&#10;to &quot;{name=string}&quot; to assist type inference.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-109.18759155273438, -61.728271484375]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-104.18759155273438, -61.728271484375]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression3">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -201,7 +201,7 @@
         </property>
         <property name="requestedCookies" class="ptolemy.data.expr.Parameter" value="{&quot;name&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[242.0, 250.0]">
         </property>
         <port name="setCookies" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -209,7 +209,7 @@
             </property>
         </port>
     </entity>
-    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
         <property name="template" class="ptolemy.data.expr.FileParameter" value="pages/template.html">
             <display name="Template HTML file"/>
         </property>
@@ -219,7 +219,7 @@
         <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Save the new HTML page to a separate file"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[782.0, 240.0]">
         </property>
         <port name="welcomeMessage" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -227,7 +227,7 @@
             </property>
         </port>
     </entity>
-    <entity name="HTMLPageAssembler2" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+    <entity name="HTMLPageAssembler2" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
         <property name="template" class="ptolemy.data.expr.FileParameter" value="pages/template.html">
             <display name="Template HTML file"/>
         </property>
@@ -237,7 +237,7 @@
         <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Save the new HTML page to a separate file"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[347.0, 485.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -257,7 +257,7 @@
         </property>
         <property name="requestedCookies" class="ptolemy.data.expr.Parameter" value="{&quot;name&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[277.0, 590.0]">
         </property>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -290,7 +290,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 665.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[452.0, 690.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -314,7 +314,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[547.0, 600.0]">
         </property>
     </entity>
     <entity name="Expression3" class="ptolemy.actor.lib.Expression">
@@ -328,7 +328,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[368.99998474121094, 392.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.99998474121094, 417.5]">
         </property>
         <port name="post" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -355,7 +355,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[537.0, 240.0]">
         </property>
         <port name="cookies" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -366,37 +366,37 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[272.0, 135.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[197.0, 315.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 460.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.0, 485.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 665.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[202.0, 690.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay5" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[422.0, 645.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[505.0, 620.0]">
+        <vertex name="vertex1" value="[612.0, 645.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -408,15 +408,15 @@
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[185.0, 290.0]">
+        <vertex name="vertex1" value="[292.0, 315.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{65.0, 110.0}">
+        <vertex name="vertex1" value="[172.0, 135.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[50.0, 460.0]">
+        <vertex name="vertex1" value="[157.0, 485.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -426,7 +426,7 @@
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[55.0, 665.0]">
+        <vertex name="vertex1" value="[162.0, 690.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

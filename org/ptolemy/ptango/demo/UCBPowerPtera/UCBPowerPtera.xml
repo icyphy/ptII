@@ -2,27 +2,27 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UCBPowerPtera" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 845.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 680.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, 19, 1451, 861}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1521, 957}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 722]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1287, 847]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7689030883919">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{892.7338123769605, 572.3420936910851}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{643.5, 423.5}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             <display name="Background Color"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 840.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 675.0]">
         </property>
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 865.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 700.0]">
         </property>
     </property>
     <property name="monitoringPeriod" class="ptolemy.data.expr.Parameter" value="5">
@@ -62,13 +62,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 890.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 725.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model periodically reads power consumptions in kW of various UC Berkeley buildings from respective &#10;URLs. This model computes average recent power consumptions of each building and sends alterts to &#10;registered emails. Parameter monitoringPeriod determines intervals between readings in seconds.&#10;The mailConfigurationFile parameter points to the file that configures the email alerting service.&#10;&#10;This model demonstrates how to use the Ptera to describe an internet service workflow. It also uses&#10;the model reference mechanism to spawn separate reading workflows for buildings.&#10;&#10;Author: Dai Bui">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model periodically reads power consumptions in kW of various UC Berkeley buildings from respective &#10;URLs. This model computes average recent power consumptions of each building and sends alterts to &#10;registered emails. Parameter monitoringPeriod determines intervals between readings in seconds.&#10;The mailConfigurationFile parameter points to the file that configures the email alerting service.&#10;&#10;This model demonstrates how to use the Ptera to describe an internet service workflow. It also uses&#10;the model reference mechanism to spawn separate reading workflows for buildings.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 925.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 760.0]">
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -76,13 +76,13 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, -40.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="UC Berkeley Power Consumption">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -80.0]">
         </property>
     </property>
     <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
@@ -101,11 +101,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 915.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 750.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Dai Bui">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 900.0]">
         </property>
     </property>
     <class name="SingleReaderClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 860.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 695.0]">
         </property>
         <property name="URI" class="ptolemy.data.expr.Parameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -402,7 +410,7 @@
         <link port="Const5.trigger" relation="relation3"/>
     </class>
     <entity name="InstanceOfSingleReaderClass" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 225.0]">
         </property>
         <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/8737f287-14df-5ccd-82df-e66ca7374b63?limit=1&quot;">
         </property>
@@ -414,7 +422,7 @@
         </property>
     </entity>
     <entity name="InstanceOfSingleReaderClass2" class="SingleReaderClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 95.0]">
         </property>
         <property name="URI" class="ptolemy.data.expr.Parameter" value="&quot;http://new.openbms.org/backend/api/data/uuid/888da9eb-5b39-5636-b495-94c1d1b57f35?limit=1&quot;">
         </property>

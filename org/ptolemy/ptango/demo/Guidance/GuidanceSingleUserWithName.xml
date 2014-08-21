@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GuidanceSingleUserWithName" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -32,7 +32,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[170.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[155.0, 30.0]">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -42,7 +42,7 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Guidance">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 75.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -59,45 +59,45 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 22, 1168, 549}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 22, 1249, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[934, 439]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1015, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9754683387441481">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{510.61865234375, 252.07601492745536}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{507.5, 262.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a GET request, return a welcome page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For a POST request, return a map &#10;with the user's location on it">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 310.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HTMLModelExporter creates a web page &#10;from the specified model.  &#10;Make sure directoryToExportTo is set to &#10;$TMPDIR&#10;so that the WebServer can find the image&#10;generated from the model, while searching its&#10;temporaryFileLocation which is also set to $TMPDIR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 255.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FileReader reads the specified file&#10;and returns it as a string token&#10;Here, the file is a .html file containing &#10;a welcome web page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 150.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The MicrostepDelays ensure that the web page resposne &#10;occurs after the request, in logical time">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 420.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -105,11 +105,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 480.0]">
         </property>
     </property>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 255.0]">
         </property>
         <port name="name" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -138,7 +146,7 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 255.0]">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -168,7 +176,7 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 210.0]">
         </property>
     </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
@@ -180,7 +188,7 @@
         </property>
         <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 285.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 270.0]">
         </property>
         <port name="name" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -199,13 +207,13 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 145.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 380.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -231,11 +239,11 @@
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{130.0, 160.0}">
+        <vertex name="vertex1" value="[115.0, 145.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{135.0, 395.0}">
+        <vertex name="vertex1" value="[120.0, 380.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
