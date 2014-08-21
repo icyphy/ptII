@@ -47,9 +47,9 @@ PTCLASSJAR =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	circuit.pdf \
 	RLC.mo \
-	RLC.xml \
-	RLCFlat.xml
+	RLC.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
