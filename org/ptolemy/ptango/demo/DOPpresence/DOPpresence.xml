@@ -33,7 +33,7 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/DOPpresence/pages">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 40.0]">
         </property>

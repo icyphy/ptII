@@ -130,7 +130,7 @@
         </property>
     </property>
     <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/algebraic/demo/RLC/circuit.pdf">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/algebraic/demo/RLC/circuit.pdf">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
         </property>

@@ -49,7 +49,7 @@
         </property>
     </property>
     <property name="Annotation29" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See $PTII/actor/lib/mail/package.html&#10;for instructions">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See $CLASSPATH/actor/lib/mail/package.html&#10;for instructions">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, -25.0]">
         </property>
@@ -253,11 +253,11 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8082">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/OccupancyAlert">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/OccupancyAlert">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -20.0]">
         </property>
-        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/OccupancyAlert/pages">
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/OccupancyAlert/pages">
         </property>
     </property>
     <property name="power306Live" class="ptolemy.data.expr.Parameter" value="false">
