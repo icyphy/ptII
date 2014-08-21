@@ -4663,3 +4663,44 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
     </port>
 </entity>
 }}
+
+######################################################################
+####
+# 
+set moml35_1 {
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="foo" class="ptolemy.actor.TypedCompositeActor">
+   <port name="C" class="ptolemy.actor.TypedIOPort"></port>
+   <relation name="R2" class="ptolemy.actor.TypedIORelation"></relation>
+   <entity name="C1" class="NotAClassC1">
+       <port name="A" class="ptolemy.actor.TypedIOPort"></port>
+       <relation name="R1" class="ptolemy.actor.TypedIORelation"></relation>
+       <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
+           <port name="B" class="ptolemy.actor.TypedIOPort"></port>
+       </entity>
+   </entity>
+   <entity name="C2" class="NotAClassC2">
+   </entity>
+   <link port="C" relation="C1.Rxx"/>
+</entity>
+}
+
+test MoMLParser-35.1 {test missing classes } {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    java::call ptolemy.moml.MoMLParser setErrorHandler $recorderErrorHandler
+
+    jdkCaptureErr {
+	set toplevel [$parser parse $moml35_1]
+    } errMsg
+    java::call ptolemy.moml.MoMLParser setErrorHandler [java::null]
+    # This used to fail because LevelCrossing Links had problems, now we
+    # try to link to a non-existent relation
+    list $errMsg [string range [$recorderErrorHandler getMessages] 0 130]
+} {{Warning: Missing Classes: NotAClassC2, NotAClassC1
+} {RecorderErrorHandler: Error encountered in:
+<entity name="C1" class="NotAClassC1">
+ptolemy.kernel.util.IllegalActionException: Cann}}

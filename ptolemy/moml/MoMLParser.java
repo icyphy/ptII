@@ -759,6 +759,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _resetUndo();
         }
 
+        // See https://projects.ecoinformatics.org/ecoinfo/issues/6587: summarize missing actors
+        if (_missingClasses != null) {
+            StringBuffer warning = new StringBuffer();
+            for(String missingClass : _missingClasses) {
+                warning.append(missingClass + ", ");
+            }
+            // Get rid of the trailing comma and space.
+            warning.delete(warning.length()-2, warning.length());
+
+            // Adding another dialog is annoying, so we print out the warning.
+            System.err.println("Warning: Missing Classes: " + warning);
+
+            // MessageHandler(String) is not selectable, so we use MessageHandler(String, Throwable).            
+            //MessageHandler.warning("Missing Classes", new Exception(warning.toString()));
+        }
+
         // If there were any unrecognized elements, warn the user.
         if (_unrecognized != null) {
             StringBuffer warning = new StringBuffer(
@@ -2159,6 +2175,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     @Override
     public void startDocument() {
         _paramsToParse.clear();
+        _missingClasses = null;
         if (_scopeExtenders != null) {
             _scopeExtenders.clear();
         }
@@ -4135,6 +4152,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // If we are running inside an applet, then
                         // we may end up getting a SecurityException,
                         // so we want to be sure to not throw away ex2
+                        _updateMissingClasses(className);
                         throw new IllegalActionException(null, ex2,
                                 "Cannot find class: " + className);
                     }
@@ -4204,15 +4222,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     try {
                         reference = _attemptToFindMoMLClass(className, source);
                     } catch (XmlException ex2) {
+                        _updateMissingClasses(className);
                         throw new Exception("-- " + errorMessage.toString()
                                 + className + ": XmlException:\n"
                                 + ex2.getMessage());
                     } catch (ClassFormatError ex3) {
+                        _updateMissingClasses(className);
                         throw new Exception("-- :" + errorMessage.toString()
                                 + className + ": ClassFormatError: "
                                 + "found invalid Java class file.\n"
                                 + ex3.getMessage());
                     } catch (Exception ex4) {
+                        _updateMissingClasses(className);
                         throw new Exception("-- " + errorMessage.toString()
                                 + className + ": Exception:\n"
                                 + ex4.getMessage());
@@ -7339,6 +7360,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _xmlFileName = _xmlFile != null ? _xmlFile.toString() : null;
     }
 
+    /** Add a class name to the list of missing classes.
+     *  @param className the class name to be added.
+     */   
+    private void _updateMissingClasses(String className) {
+        if (_missingClasses == null) {
+            _missingClasses = new HashSet<String>();
+        }
+        _missingClasses.add(className);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // Remote xmlFiles that the user approved of when the security concern
@@ -7475,6 +7506,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // next input must be </if>, which closes the <if> block. If it is 0, then
     // all the elements are processed normally.
     private Stack _ifElementStack;
+
+    // List of missing actors.
+    private Set<String> _missingClasses;
 
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
