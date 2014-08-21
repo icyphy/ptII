@@ -2,20 +2,20 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WebServerDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 22, 1473, 868}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1370, 772}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1239, 758]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1142, 655]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1238036386886148">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.8037109375, 320.7983529546379}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{487.1538944723619, 303.60505653266335}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ptolemnizer.&#10;&#10;The web service &quot;ptolemnizes&quot; a string by locating&#10;leading t's and replacing with pt's.&#10;&#10;Run the model and navigate to that location&#10;(or click on this comment).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, -10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -10.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/ptolemnizer#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -105,7 +105,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 570.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -119,7 +119,7 @@
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/ptolemnizer/*">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
         </property>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -141,7 +141,7 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/WebServerDE/pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 215.0]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
@@ -229,7 +229,7 @@
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 175.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -265,7 +265,7 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{-5.0, 100.0}">
+        <vertex name="vertex1" value="[-5.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

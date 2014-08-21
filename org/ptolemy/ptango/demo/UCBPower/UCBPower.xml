@@ -2,18 +2,18 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UCBPower" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 101, 751, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 0, 1011, 728}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[523, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 616]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8503175404565144">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.532171875, 303.1328125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.5, 308.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/UCBPower&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/UCBPower&#10;&#10;The web service allows the user to pick a date range, &#10;then shows an energy consumption map for three &#10;UC Berkeley buildings.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/UCBPower#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -73,7 +73,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[407.75, 228.75]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -87,19 +87,19 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For GET requests, return a welcome page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[92.75, 233.75]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For POST requests, execute the model specified by&#10;HTMLModelExporter and return a page with the model&#10;and its results">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[182.75, 333.75]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use backward type inference so that types can be resolved&#10;despite internet data sources of unknown type">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 245.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -115,7 +115,7 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="20000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[122.75, 293.75]">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -142,7 +142,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[102.75, 218.75]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -159,7 +159,7 @@
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
         <display name="RecordDisassembler&#10;."/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.5, 430.625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[208.25, 459.375]">
         </property>
         <port name="dateStart" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -200,7 +200,7 @@
         </property>
         <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[472.75, 418.75]">
         </property>
         <property name="dateStart" class="ptolemy.data.expr.Parameter" value="">
         </property>
@@ -265,13 +265,13 @@
         </port>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.5, 532.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[63.25, 561.25]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.5, 497.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[323.25, 526.25]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -283,7 +283,7 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[342.75, 293.75]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -293,7 +293,7 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[170.5, 400.625]">
+        <vertex name="vertex1" value="[168.25, 429.375]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>

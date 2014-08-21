@@ -130,6 +130,10 @@ jQuery(document).ready((function() {
 <h1>
 UCB Power Consumption Map
 </h1>
+<div>
+<p> This web service inputs a date range, then shows an energy consumption map 
+for three UC Berkeley buildings.  </p>
+</div>
 <form action="UCBPower" method="post" 
 	onsubmit="return validateForm()">
 <div id="onlineOffline">
@@ -141,9 +145,9 @@ UCB Power Consumption Map
 <div class="readTime" id="readTime"> <p>Please select a: <br /></p>
 <table>
 <tr>
- <td> start date: </td>
+ <td> Start date: </td>
  <td> <input type="text" name= "dateStartPicker" id="dateStartPicker" /> </td> 
- <td> start time: </td>
+ <td> Start time: </td>
  <td>
  <select name="hourMenuStart" id="hourMenuStart">
 	<option value=1>01</option>
@@ -294,8 +298,8 @@ UCB Power Consumption Map
 <td>(millisec:)</td><td> <input type="text" name="dateStart"  id="startMSec"></td>
 </tr>
 <tr>
-<td> end date: </td>
-<td> <input type="text" name="dateEndPicker" id="dateEndPicker"> </td> <td> end time: </td>
+<td> End date: </td>
+<td> <input type="text" name="dateEndPicker" id="dateEndPicker"> </td> <td> End time: </td>
 <td>
 <select name="hourMenuEnd" id="hourMenuEnd">
 <option value=1>01</option>

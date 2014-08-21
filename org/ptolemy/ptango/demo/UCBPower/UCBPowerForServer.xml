@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UCBPowerForServer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
@@ -11,7 +11,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 1140.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1165, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1165, 730}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[937, 613]">
     </property>
@@ -72,9 +72,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data on power consumption per square foot for three building on the Berkeley campus&#10;from a web service (or optionally from local files that cache the data) and renders a visualization&#10;of the power consumption over time as color changes on the buildings. The color is more red for larger&#10;power consumption per square foot, and more green for less.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads data on power consumption per square foot for three buildings on the Berkeley campus&#10;from a web service (or optionally from local files that cache the data) and renders a visualization&#10;of the power consumption over time as color changes on the buildings. The color is more red for larger&#10;power consumption per square foot, and more green for less.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 790.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 790.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -344,31 +344,43 @@
     </property>
     <port name="dateStart" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1230.0}">
         </property>
     </port>
     <port name="dateEnd" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1255.0}">
         </property>
     </port>
     <port name="displayOption" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1425.0}">
         </property>
     </port>
     <port name="startDay" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1295.0}">
         </property>
     </port>
     <port name="endDay" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1315.0}">
         </property>
     </port>
     <port name="useOnlineData" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 1365.0}">
         </property>
     </port>
@@ -1203,6 +1215,8 @@ icon color.</text></svg></configure>
                         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                         </property>
                         <configure>
+                        </configure>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -1290,6 +1304,8 @@ icon color.</text></svg></configure>
                         </property>
                         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1058, 357]">
                         </property>
+                        <configure>
+                        </configure>
                         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -1384,6 +1400,8 @@ icon color.</text></svg></configure>
                         </property>
                         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                         </property>
+                        <configure>
+                        </configure>
                         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">

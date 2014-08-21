@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="IndoorLocalizationMap" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+<entity name="IndoorLocalizationMapSingleUser" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 10, 1084, 795}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 0, 1062, 772}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 679]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 655]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0394581861012957">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{122.3152860620383, 181.97864321608043}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{111.73284980141506, 170.4341672954006}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -84,7 +84,7 @@
         </property>
         <property name="evaluateScript" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&lt;form accept-charset=&quot;UTF-8&quot; action=&quot;guidance&quot; method=&quot;post&quot;&gt;&#10;	&lt;p&gt; Next location?  Please enter: &lt;/p&gt;&#10;	&lt;p&gt; Name  &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot;/&gt;&#10;	&lt;br&gt;&#10;	X coordinate &lt;input type=&quot;text&quot; name=&quot;xCoord&quot; id=&quot;xCoord&quot;/&gt;&#10;	Y coordinate &lt;input type=&quot;text&quot; name=&quot;yCoord&quot; id=&quot;yCoord&quot;/&gt;&#10;	&lt;input type=&quot;submit&quot; value=&quot;Calculate location&quot; /&gt;&#10;	&lt;/p&gt;		&#10;&lt;/form&gt;">
+        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&lt;form accept-charset=&quot;UTF-8&quot; action=&quot;guidance&quot; method=&quot;post&quot;&gt;&#10;	&lt;p&gt; Next location?  Please enter: &lt;/p&gt;&#10;	&lt;p&gt; Name  &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot;/&gt;&#10;	&lt;br&gt;&#10;	X coordinate (1 to 450) &lt;input type=&quot;text&quot; name=&quot;xCoord&quot; id=&quot;xCoord&quot;/&gt;&#10;	Y coordinate (1 to 250) &lt;input type=&quot;text&quot; name=&quot;yCoord&quot; id=&quot;yCoord&quot;/&gt;&#10;	&lt;input type=&quot;submit&quot; value=&quot;Calculate location&quot; /&gt;&#10;	&lt;/p&gt;		&#10;&lt;/form&gt;">
         </property>
         <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
         </property>
@@ -120,7 +120,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 185.0]">
         </property>
     </property>
-    <property name="name" class="ptolemy.actor.parameters.PortParameter" value="&quot;sam&quot;">
+    <property name="name" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -145,7 +145,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 45.0]">
         </property>
     </property>
-    <property name="xCoord" class="ptolemy.actor.parameters.PortParameter" value="&quot;20&quot;">
+    <property name="xCoord" class="ptolemy.actor.parameters.PortParameter" value="&quot;450&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -170,7 +170,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 75.0]">
         </property>
     </property>
-    <property name="yCoord" class="ptolemy.actor.parameters.PortParameter" value="&quot;50&quot;">
+    <property name="yCoord" class="ptolemy.actor.parameters.PortParameter" value="&quot;250&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -225,16 +225,22 @@
     </property>
     <port name="name" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{980.0, 40.0}">
         </property>
     </port>
     <port name="xCoord" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{980.0, 70.0}">
         </property>
     </port>
     <port name="yCoord" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{980.0, 100.0}">
         </property>
     </port>
@@ -433,9 +439,9 @@
         <link port="Const3.output" relation="relation6"/>
     </class>
     <entity name="MarkerInstance1" class="MarkerClassDefinition">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 250.0]">
         </property>
-        <property name="markerName" class="ptolemy.data.expr.Parameter" value="&quot;sam&quot;">
+        <property name="markerName" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>

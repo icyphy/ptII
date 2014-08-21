@@ -8,22 +8,19 @@
 	<body>
 	<div>
 		<div id="welcomeMessage"> 
-			Welcome to the indoor guidance application! <br>
+			<p> Welcome to the indoor guidance application! </p>  
+			<p> Please enter your name and location to see your position on a map of 
+			the UC Berkeley DOP Center.  </p>
 		</div>
 		
 		<form accept-charset="UTF-8" action="guidance" method="post">
-			<p> Please enter: </p>
 			<p> Name  <input type="text" name="name" id="name"/>
 				<br>
-				X coordinate <input type="text" name="xCoord" id="xCoord"/>
-				Y coordinate <input type="text" name="yCoord" id="yCoord"/>
+				X coordinate (1 to 450) <input type="text" name="xCoord" id="xCoord"/>
+				Y coordinate (1 to 250) <input type="text" name="yCoord" id="yCoord"/>
 				<input type="submit" value="Calculate location" />
 			</p>		
 		</form>
-			
-		<div> <p> The next demo improvement is to retrieve the x and y coordinates from 
-		Sensor Andrew.  Also, the demo will be expanded to accommodate multiple people. </p> 
-		</div>
 
 	</div>
 	</body>
