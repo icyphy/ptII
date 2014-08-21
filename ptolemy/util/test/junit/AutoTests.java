@@ -28,6 +28,7 @@
 
 package ptolemy.util.test.junit;
 
+import java.lang.reflect.Method;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -104,10 +105,12 @@ public class AutoTests extends ModelTests {
                         .getConstructor(String.class);
 
             }
-            _applicationConstructor.newInstance(fullPath);
+            Object instance = _applicationConstructor.newInstance(fullPath);
+
             System.out.println("----------------- testing again " + fullPath);
             System.out.flush();
-            _applicationConstructor.newInstance(fullPath);
+            Method rerunMethod = _applicationClass.getMethod("rerun", (Class<?>[])null);
+            rerunMethod.invoke(instance, (Object[])null);
         } else {
             System.err.println("----------------- *** Skipping testing of "
                     + fullPath);
