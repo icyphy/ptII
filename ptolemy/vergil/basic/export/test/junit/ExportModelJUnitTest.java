@@ -271,6 +271,7 @@ public class ExportModelJUnitTest {
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+                "DOPpresence.xml", // Requires access to ptango's mysql port and the database password.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
                 "EPlus70Actuator.xml", // Hangs in a strange way after running.o
