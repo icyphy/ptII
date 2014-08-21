@@ -6515,6 +6515,8 @@
          destfile="${basedir}ptolemy/domains/algebraic/demo/RLC/RLC.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/domains/algebraic/demo/RLC/*.mo"/>
+        <include name="ptolemy/domains/algebraic/demo/RLC/*.pdf"/>
         <include name="ptolemy/domains/algebraic/demo/RLC/*.xml"/>
        </fileset>
     </jar>
