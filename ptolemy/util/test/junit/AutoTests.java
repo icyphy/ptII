@@ -105,6 +105,9 @@ public class AutoTests extends ModelTests {
 
             }
             _applicationConstructor.newInstance(fullPath);
+            System.out.println("----------------- testing again " + fullPath);
+            System.out.flush();
+            _applicationConstructor.newInstance(fullPath);
         } else {
             System.err.println("----------------- *** Skipping testing of "
                     + fullPath);
