@@ -445,6 +445,8 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
                 return true;
             }
         }
+        // If all input ports have default values, then report
+        // that this actor is non-strict.
         // NOTE: If the actor has no input ports at all, this
         // returns false, indicating the actor is non-strict.
         return false;
