@@ -4,13 +4,13 @@
 <entity name="TemperatureSimulation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1042, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1048, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[814, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[814, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.0, 240.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.0, 262.0}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/TemperatureSimulation">
@@ -57,6 +57,22 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run EnergyPlus simulation with the POSTed setpoint&#10;Output is written to pages/temperatures.csv">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 210.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 410.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes a model that requires&#10;EnergyPlus.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">

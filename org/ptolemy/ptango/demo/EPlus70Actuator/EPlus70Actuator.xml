@@ -386,6 +386,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 885.0]">
         </property>
     </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes a model that requires&#10;EnergyPlus.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 455.0]">
+        </property>
+    </property>
     <class name="SequenceToJSONItemClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 50.0]">
         </property>
