@@ -19,7 +19,7 @@ $CLASSPATH/org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.xml
 $CLASSPATH/org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.xml
 $CLASSPATH/org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.xml
 $CLASSPATH/org/ptolemy/ptango/demo/SmartRoom/SmartRoom.xml
-$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulator/TemperatureSimulator.xml
+$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPower.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml
