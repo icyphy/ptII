@@ -574,10 +574,15 @@ PartiallyOrderedToken {
         _simpleDateFormat.setTimeZone(_timeZone);
         String timeString = _simpleDateFormat.format(c.getTime());
 
-        return "\"" + timeString.substring(0, timeString.length() - 9)
+        String beforeTimeZone = timeString.substring(0, timeString.lastIndexOf(" "));
+        beforeTimeZone = beforeTimeZone.substring(0, beforeTimeZone.lastIndexOf(" "));
+        
+        String remainder = timeString.substring(beforeTimeZone.length());
+        
+        return "\"" + beforeTimeZone
                 + String.format("%03d", getMicrosecond())
                 + String.format("%03d", getNanosecond())
-                + timeString.substring(timeString.length() - 9) + "\"";
+                + remainder + "\"";
     }
 
     /** A token that represents a missing value.
