@@ -223,12 +223,12 @@ public class IOPort extends ComponentPort {
     /** The default value of the port. By default, this parameter is
      *  empty. If this value is not empty, then the port is persistent,
      *  which means that the get methods always return a token (they never
-     *  throw NoTokenException).  However, {@link #hasToken(int)},
+     *  throw NoTokenException), and that {@link #hasToken(int)},
      *  {@link #hasToken(int, int)},
      *  and {@link #hasTokenInside(int)}
-     *  continue to report whatever the receiver reports, which
-     *  generally is true only if the receiver actually has enough
-     *  new tokens.
+     *  always return true, indicating that a token is available.
+     *  To determine whether there is a new token, use
+     *  {@link #hasNewToken(int)} or {@link #hasNewTokenInside(int)}.
      *  <p>
      *  If this port is an output port, then the persistent value is
      *  used only when retrieving a token from the inside. I.e., it
@@ -956,7 +956,7 @@ public class IOPort extends ComponentPort {
             try {
                 localToken = localReceivers[channelIndex][j].get();
             } catch (NoTokenException ex) {
-                if (defaultValue.getToken() == null) {
+                if (_persistentToken == null) {
                     throw ex;
                 }
             }
@@ -1239,7 +1239,7 @@ public class IOPort extends ComponentPort {
             try {
                 localToken = localReceivers[channelIndex][j].get();
             } catch (NoTokenException ex) {
-                if (defaultValue.getToken() == null) {
+                if (_persistentToken == null) {
                     throw ex;
                 }
             }
@@ -1983,6 +1983,103 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Return true if the specified channel has a new token to deliver
+     *  via the get() method.  If this port is not an input, or if the
+     *  channel index is out of range, then throw an exception.
+     *  Note that this does not report any tokens in inside receivers
+     *  of an output port. Those are accessible only through
+     *  getInsideReceivers().
+     *
+     *  @param channelIndex The channel index.
+     *  @return True if there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an input port, or if the channel index is out
+     *   of range.
+     */
+    public boolean hasNewToken(int channelIndex) throws IllegalActionException {
+        // The getReceivers() method throws an IllegalActionException if
+        // there's no director.
+        Receiver[][] receivers = getReceivers();
+        boolean result = false;
+
+        if (receivers != null && channelIndex >= receivers.length) {
+            if (!isInput()) {
+                throw new IllegalActionException(this,
+                        "Port is not an input port!");
+            } else {
+                throw new IllegalActionException(this, "Channel index "
+                        + channelIndex
+                        + " is out of range, because width is only "
+                        + getWidth() + ".");
+            }
+        }
+
+        if (receivers != null && receivers[channelIndex] != null) {
+            for (int j = 0; j < receivers[channelIndex].length; j++) {
+                if (receivers[channelIndex][j].hasToken()) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        if (_debugging) {
+            _debug("hasToken on channel " + channelIndex + " returns " + result);
+        }
+
+        return result;
+    }
+
+    /** Return true if the specified channel has a token to deliver
+     *  via the getInside() method.  If this port is not an output, or
+     *  if the channel index is out of range, then throw an exception.
+     *  Note that this does not report any tokens in receivers of an
+     *  input port.
+     *
+     *  @param channelIndex The channel index.
+     *  @return True if there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an output port, or if the channel index is out
+     *   of range.
+     */
+    public boolean hasNewTokenInside(int channelIndex)
+            throws IllegalActionException {
+        // The getInsideReceivers() method throws an
+        // IllegalActionException if there's no director.
+        Receiver[][] receivers = getInsideReceivers();
+        boolean result = false;
+
+        if (channelIndex >= receivers.length) {
+            if (!isOutput()) {
+                throw new IllegalActionException(this,
+                        "Port is not an output port!");
+            } else {
+                throw new IllegalActionException(this, "Channel index "
+                        + channelIndex
+                        + " is out of range, because inside width is only "
+                        + getWidthInside() + ".");
+            }
+        }
+
+        if (receivers[channelIndex] != null) {
+            for (int j = 0; j < receivers[channelIndex].length; j++) {
+                if (receivers[channelIndex][j].hasToken()) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        if (_debugging) {
+            _debug("hasTokenInside on channel " + channelIndex + " returns "
+                    + result);
+        }
+
+        return result;
+    }
+
     /** Return true if the specified channel can accept a token via the
      *  put() method.  If this port is not an output, or the channel index
      *  is out of range, then throw IllegalActionException.  If there
@@ -2084,58 +2181,10 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex) throws IllegalActionException {
-        if (defaultValue.getToken() != null) {
+        if (_persistentToken != null) {
             return true;
         }
         return hasNewToken(channelIndex);
-    }
-
-    /** Return true if the specified channel has a new token to deliver
-     *  via the get() method.  If this port is not an input, or if the
-     *  channel index is out of range, then throw an exception.
-     *  Note that this does not report any tokens in inside receivers
-     *  of an output port. Those are accessible only through
-     *  getInsideReceivers().
-     *
-     *  @param channelIndex The channel index.
-     *  @return True if there is a token in the channel.
-     *  @exception IllegalActionException If the receivers do not support
-     *   this query, if there is no director, and hence no receivers,
-     *   if the port is not an input port, or if the channel index is out
-     *   of range.
-     */
-    public boolean hasNewToken(int channelIndex) throws IllegalActionException {
-        // The getReceivers() method throws an IllegalActionException if
-        // there's no director.
-        Receiver[][] receivers = getReceivers();
-        boolean result = false;
-
-        if (receivers != null && channelIndex >= receivers.length) {
-            if (!isInput()) {
-                throw new IllegalActionException(this,
-                        "Port is not an input port!");
-            } else {
-                throw new IllegalActionException(this, "Channel index "
-                        + channelIndex
-                        + " is out of range, because width is only "
-                        + getWidth() + ".");
-            }
-        }
-
-        if (receivers != null && receivers[channelIndex] != null) {
-            for (int j = 0; j < receivers[channelIndex].length; j++) {
-                if (receivers[channelIndex][j].hasToken()) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-
-        if (_debugging) {
-            _debug("hasToken on channel " + channelIndex + " returns " + result);
-        }
-
-        return result;
     }
     
     /** Return true if the specified channel has the specified number
@@ -2156,7 +2205,7 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasToken(int channelIndex, int tokens)
             throws IllegalActionException {
-        if (defaultValue.getToken() != null) {
+        if (_persistentToken != null) {
             return true;
         }
 
@@ -2189,55 +2238,6 @@ public class IOPort extends ComponentPort {
         return result;
     }
     
-    /** Return true if the specified channel has a token to deliver
-     *  via the getInside() method.  If this port is not an output, or
-     *  if the channel index is out of range, then throw an exception.
-     *  Note that this does not report any tokens in receivers of an
-     *  input port.
-     *
-     *  @param channelIndex The channel index.
-     *  @return True if there is a token in the channel.
-     *  @exception IllegalActionException If the receivers do not support
-     *   this query, if there is no director, and hence no receivers,
-     *   if the port is not an output port, or if the channel index is out
-     *   of range.
-     */
-    public boolean hasNewTokenInside(int channelIndex)
-            throws IllegalActionException {
-        // The getInsideReceivers() method throws an
-        // IllegalActionException if there's no director.
-        Receiver[][] receivers = getInsideReceivers();
-        boolean result = false;
-
-        if (channelIndex >= receivers.length) {
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "Port is not an output port!");
-            } else {
-                throw new IllegalActionException(this, "Channel index "
-                        + channelIndex
-                        + " is out of range, because inside width is only "
-                        + getWidthInside() + ".");
-            }
-        }
-
-        if (receivers[channelIndex] != null) {
-            for (int j = 0; j < receivers[channelIndex].length; j++) {
-                if (receivers[channelIndex][j].hasToken()) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-
-        if (_debugging) {
-            _debug("hasTokenInside on channel " + channelIndex + " returns "
-                    + result);
-        }
-
-        return result;
-    }
-
     /** Return true if the port is persisent or the specified channel 
      *  has a token to deliver
      *  via the getInside() method.  If this port is not an output, or
@@ -2254,7 +2254,7 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasTokenInside(int channelIndex)
             throws IllegalActionException {
-        if (defaultValue.getToken() != null) {
+        if (_persistentToken != null) {
             return true;
         }
 
@@ -2878,10 +2878,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If defaultValue cannot be retrieved.
      */
     public void reset() throws IllegalActionException {
-        _persistentToken = null;
-        if (defaultValue.getToken() != null) {
-            _persistentToken = defaultValue.getToken();
-        }
+    	_persistentToken = defaultValue.getToken();
     }
 
     /** Send the specified token to all receivers connected to the
