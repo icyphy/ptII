@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 25, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={342, 266, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -84,7 +84,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 165.0}">
         </property>
         <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeExecutionAspect">
@@ -93,7 +93,7 @@
             </property>
             <property name="executionTime" class="ptolemy.data.expr.Parameter" value="20.0">
             </property>
-            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ExecutionRequestPort">
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ExecutionRequestPort2">
             </property>
         </property>
         <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
@@ -110,7 +110,7 @@
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="CommunicationRequestPort">
+                <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="CommunicationRequestPort2">
                 </property>
             </property>
         </port>
@@ -258,14 +258,56 @@
                 </property>
             </property>
         </entity>
+        <entity name="CommunicationRequestPort2" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 315.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeExecutionAspect">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 230.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CompositeExecutionAspect">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="CommunicationRequestPort.output" relation="relation"/>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{225.0, 215.0}">
+            </vertex>
+        </relation>
+        <link port="CommunicationRequestPort.output" relation="relation3"/>
         <link port="CommunicationResponsePort.input" relation="relation2"/>
-        <link port="Server.input" relation="relation"/>
+        <link port="Server.input" relation="relation5"/>
         <link port="Server.output" relation="relation2"/>
+        <link port="CommunicationRequestPort2.output" relation="relation4"/>
+        <link port="Merge.input" relation="relation3"/>
+        <link port="Merge.input" relation="relation4"/>
+        <link port="Merge.output" relation="relation5"/>
     </entity>
     <entity name="CompositeExecutionAspect" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -294,31 +336,36 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 200.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={701, 602, 710, 298}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[710, 254]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{250, 265}">
-            </property>
-        </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 200}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 200.0]">
             </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <entity name="ExecutionRequestPort2" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
             </property>
-            <vertex name="vertex1" value="{200.0, 200.0}">
-            </vertex>
-        </relation>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 285.0]">
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 230}">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="ExecutionRequestPort.output" relation="relation2"/>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="ExecutionRequestPort.output" relation="relation3"/>
         <link port="ExecutionResponsePort.input" relation="relation"/>
-        <link port="Display.input" relation="relation2"/>
         <link port="Server.input" relation="relation2"/>
         <link port="Server.output" relation="relation"/>
+        <link port="ExecutionRequestPort2.output" relation="relation4"/>
+        <link port="Merge.input" relation="relation3"/>
+        <link port="Merge.input" relation="relation4"/>
+        <link port="Merge.output" relation="relation2"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
