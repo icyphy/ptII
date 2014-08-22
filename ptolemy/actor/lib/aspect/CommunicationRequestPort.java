@@ -108,6 +108,7 @@ public class CommunicationRequestPort extends Const {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        value.setExpression("");
         _beforeInitialization = false;
     }
 

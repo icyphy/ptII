@@ -246,6 +246,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
         _lastTimeScheduled.clear();
         initializeDecoratedActors();
         _actors.add(this);
+        _requestPorts = new HashMap<NamedObj, String>();
 
         for (ExecutionAspectListener listener : _executionAspectListeners) {
             listener.initialize(_actors, this);

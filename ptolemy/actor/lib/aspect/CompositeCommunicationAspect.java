@@ -223,6 +223,14 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         _decoratedObjects = list;
         return list;
     }
+    
+    /** Initialize actor, reset variables.
+     */
+    @Override
+    public void initialize() throws IllegalActionException {
+        _tokens = null;
+        super.initialize();
+    }
 
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
