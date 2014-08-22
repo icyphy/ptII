@@ -55,6 +55,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -462,7 +463,11 @@ public class DatabaseManager extends TypedAtomicActor {
      *  Otherwise, use the parameter values and prompt for a password to
      *  open a new connection.
      *  @return A connection to the database, or null if the user cancels.
-     *  @exception IllegalActionException If
+     *  @exception IllegalActionException If the password file cannot
+     *  be read and "ptolemy.ptII.isRunningNightlyBuild" property
+     *  exists and is not empty or if the "ptolemy.ptII.batchMode"
+     *  property exists and is not empty and the property
+     *  "ptolemyII.ptII.testingMessageHandler" is not set.
      */
     public Connection getConnection() throws IllegalActionException {
         if (_connection != null) {
@@ -483,8 +488,13 @@ public class DatabaseManager extends TypedAtomicActor {
                                 "Failed to read a line from " + passwordFile);
                     }
                 } catch (Exception ex) {
-                    System.out.println(getFullName() + ": Failed to read "
-                            + passwordFile.stringValue() + ex);
+                    if (MessageHandler.isRunningNightlyBuild()) {
+                        throw new IllegalActionException(this, ex, "Failed to read "
+                                + passwordFile.stringValue());
+                    } else {
+                        System.out.println(getFullName() + ": Failed to read "
+                                + passwordFile.stringValue() + ex);
+                    }
                 } finally {
                     if (reader != null) {
                         try {
