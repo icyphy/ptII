@@ -3155,3 +3155,65 @@ update_moog:
 # Invoke the coverity scan.
 coverity:
 	(cd $(PTII); adm/bin/coverity)
+
+
+# Build from the website
+PTBUILDRELEASE=tmp/build/ptII$(VERSION)
+build_release: $(PTBUILDRELEASE)
+
+ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+
+$(PTBUILDRELEASE):
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE) directory so that we can update the website"
+	@echo "#"
+	@echo "$@ `date`"
+	if [ ! -d tmp/build ]; then mkdir -p tmp/build; fi
+	(cd tmp/build; wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
+
+
+$(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
+	@echo "#"
+	@echo "# Building in the $(PTBUILDRELEASE) directory so that we can update the website"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd doc; make codeDoc/tree.html); ant jars)
+
+$(PTBUILDRELEASE)/signed:
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE)/signed directory so that we can update the website"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`")
+
+$(PTBUILDRELEASE)/test.out:
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE)/test.out by running the longest tests, which export the models.  This will take about 45 minutes."
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; ant test.longest >& test.out)
+
+$(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit:
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit by running a script."
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./updateDemos >& doit)
+
+$(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out:
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out by running the doit script."
+	@echo "# This will run export the models for WebStart."
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
+
+$(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out by running the scpDemos script."
+	@echo "# This will copy the JNLP and WebStart demos to the website"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./scpDemos >& scpDemos.out)
+
+
