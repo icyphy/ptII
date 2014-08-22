@@ -180,7 +180,6 @@ $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.xml
-$CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankFlattened.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankRefactored.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/RLC/RLC.xml
 $CLASSPATH/ptolemy/domains/ca/demo/Conway/Conway.xml
