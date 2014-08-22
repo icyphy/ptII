@@ -13,11 +13,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.0, 262.0}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/TemperatureSimulation">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 60.0]">
         </property>
-        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/TemperatureSimulation/pages">
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/pages">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
