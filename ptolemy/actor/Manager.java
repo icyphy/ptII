@@ -1571,26 +1571,33 @@ public class Manager extends NamedObj implements Runnable {
      *  if the JVM is shut down (by control-C, the user logging out, etc.).
      */
     protected void _registerShutdownHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                if (_state != IDLE) {
-                    System.out.println("# Manager._registerShutdownHook(): State is " + _state
-                            + ", which is not IDLE.  Waiting for model to stop.");
-                }
-                finish();
-                if (_thread != null && _thread.isAlive()) {
-                    try {
-                        // This seems dangerous. Could prevent the process
-                        // from dying. We use a timeout here of 30 seconds.
-                        _thread.join(SHUTDOWN_TIME);
-                    } catch (InterruptedException e) {
-                        // Failed to stop the thread.
-                        e.printStackTrace();
+        try {
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                    @Override
+                    public void run() {
+                        if (_state != IDLE) {
+                            System.out.println("# Manager._registerShutdownHook(): State is " + _state
+                                    + ", which is not IDLE.  Waiting for model to stop.");
+                        }
+                        finish();
+                        if (_thread != null && _thread.isAlive()) {
+                            try {
+                                // This seems dangerous. Could prevent the process
+                                // from dying. We use a timeout here of 30 seconds.
+                                _thread.join(SHUTDOWN_TIME);
+                            } catch (InterruptedException e) {
+                                // Failed to stop the thread.
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
+        } catch (java.security.AccessControlException ex) {
+            // This exception gets triggered by
+            // http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/vergil/Vergil.htm
+            System.out.println("Warning: failed to add a shutdown hook."
+                    + "(Running a model in an applet always causes this)");
+        }
     }
 
     /** Set the state of execution and notify listeners if the state
