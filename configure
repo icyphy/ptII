@@ -5878,7 +5878,7 @@ $as_echo "$as_me: WARNING: You are running Java $JVERSION, which does not
     fi
 fi
 
-if test -z "$PTDB_DIR" = ""; then
+if test -z "$PTDB_DIR"; then
    updateExcludes "ptdb/"
 else
    updateClasspath "$PTDBXML_JAR"
