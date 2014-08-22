@@ -61,10 +61,7 @@ PartiallyOrderedToken {
      *  is the local time zone.
      */
     public DateToken() {
-        _isNil = false;
-        _precision = PRECISION_MILLISECOND;
-        _timeZone = TimeZone.getDefault();
-        _value = Calendar.getInstance().getTimeInMillis();
+        this(Calendar.getInstance().getTimeInMillis(), PRECISION_MILLISECOND, TimeZone.getDefault());
     }
 
     /** Construct a DateToken that represents the time since January 1, 1970.
@@ -73,10 +70,7 @@ PartiallyOrderedToken {
      *  of milliseconds.
      */
     public DateToken(long value) {
-        _isNil = false;
-        _precision = PRECISION_MILLISECOND;
-        _timeZone = TimeZone.getDefault();
-        _value = value;
+        this(value, PRECISION_MILLISECOND, TimeZone.getDefault());
     }
 
     /** Construct a DateToken that represents the time since January 1, 1970.
@@ -85,10 +79,7 @@ PartiallyOrderedToken {
      *  @param precision The precision.
      */
     public DateToken(long value, int precision) {
-        _isNil = false;
-        _precision = precision;
-        _timeZone = TimeZone.getDefault();
-        _value = value;
+        this(value, precision, TimeZone.getDefault());
     }
 
     /** Construct a DateToken that represents the time since January 1, 1970.
@@ -159,11 +150,17 @@ PartiallyOrderedToken {
                 if (value.startsWith("\"") && value.endsWith("\"")) {
                     value = value.substring(1, value.length() - 1);
                 }
+                String beforeTimeZone = value.substring(0, value.lastIndexOf(" "));
+                String timeZoneString = beforeTimeZone.substring(beforeTimeZone.lastIndexOf(" ") + 1, value.lastIndexOf(" "));
+                
+                TimeZone timeZone = TimeZone.getTimeZone(timeZoneString);
+                
                 Calendar calendar = Calendar.getInstance();
+                
                 if (value.length() == _SIMPLE_DATE_FORMAT.length()) {
                     calendar.setTime(_simpleDateFormat.parse(value));
                     _value = calendar.getTimeInMillis();
-                    _timeZone = calendar.getTimeZone();
+                    _timeZone = timeZone;
                     _precision = PRECISION_MILLISECOND;
                     _calendar = calendar;
                 } else if (value.length() == _SIMPLE_DATE_FORMAT.length() + 3) {
@@ -174,7 +171,7 @@ PartiallyOrderedToken {
                     calendar.setTime(_simpleDateFormat.parse(value));
                     _value = calendar.getTimeInMillis();
                     _value = _value * 1000 + Integer.parseInt(micros);
-                    _timeZone = calendar.getTimeZone();
+                    _timeZone = timeZone;
                     _precision = PRECISION_MICROSECOND;
                     _calendar = calendar;
                 } else if (value.length() == _SIMPLE_DATE_FORMAT.length() + 6) {
@@ -188,10 +185,11 @@ PartiallyOrderedToken {
                     _value = calendar.getTimeInMillis();
                     _value = (_value * 1000 + Integer.parseInt(micros)) * 1000
                             + Integer.parseInt(nanos);
-                    _timeZone = calendar.getTimeZone();
+                    _timeZone = timeZone;
                     _precision = PRECISION_NANOSECOND;
                     _calendar = calendar;
                 }
+                calendar.setTimeZone(_timeZone);
             } catch (ParseException ex2) {
                 throw new IllegalActionException(null, ex, "The date value \""
                         + value + "\" could not be parsed to a Date."
@@ -360,7 +358,7 @@ PartiallyOrderedToken {
         if (_precision < PRECISION_NANOSECOND) {
             return 0;
         } else if (_precision == PRECISION_NANOSECOND) {
-            return (int) _value % 1000;
+            return (int) (_value % 1000);
         }
         return 0;
     }
