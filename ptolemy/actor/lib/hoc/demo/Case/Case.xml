@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Case" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 22, 957, 528}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 22, 978, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[744, 418]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[744, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0, 209.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0, 262.0}">
     </property>
     <property name="Documentation" class="ptolemy.vergil.basic.DocAttribute">
         <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to use the Case actor.&#10;Looking inside the Case actor will reveal that it&#10;has three distinct refinements. Which one is executed&#10;depends on the value of the control input provided to&#10;it. In this example, the control value cycles through&#10;the list {0, 1, 2, 3} repeatedly. The &quot;0&quot; refinement&#10;is executed when the control is 0, the &quot;1&quot; refinement is&#10;executed when the control is 1, and the &quot;default&quot; refinement&#10;is executed otherwise.">
@@ -37,7 +37,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee&#10;Codegen implementation:  Gang Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 375.0]">
         </property>
@@ -56,16 +56,6 @@
     </configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 50}">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code,&#10;you need to have the directory&#10;containing jvm.dll in your path.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_14\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_14\jre\bin\server.&#10;It is used for invoking JVM to load&#10;GUI interface only. ">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 70.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -147,9 +137,9 @@
         </port>
         <entity name="1" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">
@@ -209,9 +199,9 @@
         </entity>
         <entity name="0" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 65.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 65.0}">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">
@@ -245,9 +235,9 @@
         </entity>
         <entity name="default" class="ptolemy.actor.lib.hoc.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.lib.hoc.RefinementPort">
