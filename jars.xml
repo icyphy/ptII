@@ -4757,14 +4757,8 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/data/unit/demo/StaticUnits/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/data/unit/demo/StaticUnits/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/data/unit/demo/StaticUnits/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/data/unit/demo/Units/*.xml"/>
       </fileset>
     </jar>
@@ -6438,6 +6432,8 @@
          destfile="${basedir}ptolemy/data/unit/demo/StaticUnits/StaticUnits.jar"
          >
        <fileset dir="${basedir}">
+	<include name="ptolemy/data/unit/demo/StaticUnits/*.gif"/>
+	<include name="ptolemy/data/unit/demo/StaticUnits/*.htm"/>
         <include name="ptolemy/data/unit/demo/StaticUnits/*.xml"/>
        </fileset>
     </jar>
