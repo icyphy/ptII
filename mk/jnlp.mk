@@ -591,6 +591,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tester/tester.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
+	ptolemy/domains/tm/tm.jar \
 	ptolemy/verification/verification.jar \
 	ptolemy/verification/demo/demo.jar \
 	$(PTERA_JARS) \
