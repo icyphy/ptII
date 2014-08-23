@@ -1351,9 +1351,13 @@ WEBSERVER_USER=$(USER)
 WEBSERVER=moog
 
 jnlp_dist_update:
-	tar -cf - $(SIGNED_DIR) $(JNLPS) \
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	-tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvpf -"
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 jnlp_dist_nightly:
