@@ -336,7 +336,7 @@ $(PTIIDIST):
 	mv $(PTIIDIST)/doc/img/makefile_tmp \
 		$(PTIIDIST)/doc/img/makefile
 	# Fix up doc/makefile
-	egrep -v "coroutine|giotto.cgc|openmodelica" \
+	egrep -v "coroutine|giotto.cgc|metroII|openmodelica" \
 		< $(PTIIDIST)/doc/makefile \
 		> $(PTIIDIST)/doc/makefile_tmp
 	mv $(PTIIDIST)/doc/makefile_tmp \
@@ -3163,13 +3163,18 @@ build_release: $(PTBUILDRELEASE)
 
 ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
+ptbuildrelease2: $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+
+ptbuildrelease4: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+
 $(PTBUILDRELEASE):
 	@echo "#"
 	@echo "# Creating the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
 	if [ ! -d tmp/build ]; then mkdir -p tmp/build; fi
-	(cd tmp/build; wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
+	#(cd tmp/build; wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
+	(cd tmp/build; tar -xf ../../ptII$(VERSION).src.tar);
 
 
 $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
@@ -3177,21 +3182,21 @@ $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "# Building in the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd doc; make codeDoc/tree.html); ant jars)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
 	@echo "# Creating the $(PTBUILDRELEASE)/signed directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`")
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; make jnlp_dist USER=`whoami` STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`")
 
 $(PTBUILDRELEASE)/test.out:
 	@echo "#"
 	@echo "# Creating the $(PTBUILDRELEASE)/test.out by running the longest tests, which export the models.  This will take about 45 minutes."
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; ant test.longest >& test.out)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:2.0; echo "DISPLAY=$$DISPLAY"; ant test.longest >& test.out)
 
 $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit:
 	@echo "#"
@@ -3206,7 +3211,7 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out:
 	@echo "# This will run export the models for WebStart."
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; (cd bin; make); cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
 
 $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 	@echo "#"
