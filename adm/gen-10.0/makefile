@@ -3211,7 +3211,10 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out:
 	@echo "# This will run export the models for WebStart."
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; (cd bin; make); cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:2.0; cp $(HOME)/ptKeystore.properties . ; (cd bin; make); cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
+
+clean_ptrelease_doit.out:
+	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out
 
 $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 	@echo "#"
@@ -3220,5 +3223,8 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./scpDemos >& scpDemos.out)
+
+clean_ptrelease_scpDemos.out:
+	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
 
