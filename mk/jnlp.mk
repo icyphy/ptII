@@ -552,6 +552,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/distributed/distributed.jar \
+	ptolemy/distributed/domains/sdf/sdf.jar \
 	ptolemy/distributed/demo/demo.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
@@ -585,6 +586,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/sdf/optimize/optimize.jar \
 	ptolemy/domains/sdf/optimize/demo/demo.jar \
+	ptolemy/domains/taskpt/taskpt.jar \
 	ptolemy/domains/taskpt/demo/demo.jar \
 	ptolemy/domains/tdl/tdl.jar \
 	ptolemy/domains/tdl/demo/demo.jar \
