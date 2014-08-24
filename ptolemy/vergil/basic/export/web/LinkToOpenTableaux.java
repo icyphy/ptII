@@ -136,7 +136,6 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     @Override
     protected void _provideEachAttribute(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
-
         WebAttribute webAttribute;
 
         // Create a table of effigies associated with any
@@ -328,6 +327,20 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         WebElement webElement;
         // Look for any open tableaux for the object.
         List<Tableau> tableaux = effigy.entityList(Tableau.class);
+
+        // ThreadedComposite extends MirrorComposite.
+        // ThreadedComposites do not have a top level tableau, they
+        // contain an effigy that contains a tableau.
+
+        // To replicate:
+        // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml $PTII/ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution
+
+        if (tableaux.size() == 0) {
+            List<PtolemyEffigy> effigies = effigy.entityList(PtolemyEffigy.class);
+            if (effigies != null && effigies.size() > 0) {
+                tableaux = effigies.get(0).entityList(Tableau.class);
+            }
+        }
         // If there are multiple tableaux open, use only the first one.
         if (tableaux.size() > 0) {
             // The ddf IfThenElse model has a composite called +1/-1 Gain,
