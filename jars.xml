@@ -2036,7 +2036,7 @@
 
     <!-- ptolemy/distributed/domains/sdf/sdf.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/sdf/sdf.jar"
+	 destfile="${basedir}/ptolemy/distributed/domains/sdf/sdf.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/domains/sdf/kernel/*.class"/>
