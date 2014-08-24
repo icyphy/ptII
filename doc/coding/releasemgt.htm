@@ -537,7 +537,7 @@
 	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
 	cd ptII10.0.beta
 	export PTII=c:/tmp/cxh/ptII10.0.beta
-
+      </pre>
 	<i>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</i>
 	<i>Use an older javac so that the .class files are compatible.  For example,  use java 1.6.x so that java 1.7.x and 1.8.x can use the .class files.</i> 
 
@@ -550,9 +550,9 @@
 	  ant
 	  (cd $PTII/doc; make codeDoc/tree.html)
 	  ant jars
-
-     </li>
-	<li>Build the webstart files.  <i>This is complex . . .</i>
+	</pre>
+    </li>
+    <li>Build the webstart files.  <i>This is complex . . .</i>
 	  <br/>The high level view is that we export the models as HTML by
 	  running a test using ant,then we export the models as WebStart JNLP files
 	  and then copy the appropriate files over to the web server.
@@ -575,15 +575,16 @@
 	      It is important to run <code>make install</code> so that any demo-specific makefiles are created.  These makefiles would include resources like images or pdfs that are listed in <code>makefile</code>'s <code>OTHER_FILES_TO_BE_JARED</code> variable.
 
 	    </li>
-
-	    <li> <i>Copy <code>/home/ptII/adm/certs/ptkeystore</code> from moog to $PTII.  Note you will
+	    <li> Copy <code>/home/ptII/adm/certs/ptkeystore</code> from moog to $PTII.  Note you will
 	    need access to the ptII account on moog.
-	<pre>
-	  make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`"
-	</pre>
-	<code>~/.certpw</code> contains the ptkeystore password.
+	    </li>
+	    <li> Build the jnlp files:
+	      <pre>
+		make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`"
+	      </pre>
+	      <code>~/.certpw</code> contains the ptkeystore password.
 
-	</li>
+	    </li>
 	    <li> If you are running on a remote machine, start up Xvfb:
 	      <pre>
 		Xvfb :2 -screen 0 1024x768x24 &
