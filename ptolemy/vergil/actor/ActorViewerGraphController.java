@@ -240,25 +240,26 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 boolean isActorOfInterest = false;
 
                 try {
-
-                    StringParameter actorInteractionAddonParameter;
-                    actorInteractionAddonParameter = (StringParameter) this
-                            .getConfiguration().getAttribute(
+                    // The Vergil Applet at $PTII/ptolemy/vergil/Vergil.htm might not have a configuration?
+                    Configuration configuration = getConfiguration();
+                    if (configuration != null) {
+                        StringParameter actorInteractionAddonParameter;
+                        actorInteractionAddonParameter = (StringParameter) configuration.getAttribute(
                                     "_actorInteractionAddon", Parameter.class);
 
-                    if (actorInteractionAddonParameter != null) {
-                        String actorInteractionAddonClassName = actorInteractionAddonParameter
+                        if (actorInteractionAddonParameter != null) {
+                            String actorInteractionAddonClassName = actorInteractionAddonParameter
                                 .stringValue();
 
-                        Class actorInteractionAddonClass = Class
+                            Class actorInteractionAddonClass = Class
                                 .forName(actorInteractionAddonClassName);
 
-                        ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                            ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
                                 .newInstance();
 
-                        isActorOfInterest = actorInteractionAddon
+                            isActorOfInterest = actorInteractionAddon
                                 .isActorOfInterestForAddonController((NamedObj) semanticObject);
-
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -305,13 +306,14 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _linkController.setConfiguration(configuration);
 
         try {
+            // The Vergil Applet at $PTII/ptolemy/vergil/Vergil.htm might not have a configuration?
+            if (configuration != null) {
+                StringParameter actorInteractionAddon;
+                actorInteractionAddon = (StringParameter) configuration.getAttribute("_actorInteractionAddon", Parameter.class);
 
-            StringParameter actorInteractionAddon;
-            actorInteractionAddon = (StringParameter) this.getConfiguration()
-                    .getAttribute("_actorInteractionAddon", Parameter.class);
-
-            if (actorInteractionAddon != null) {
-                _addonActorController.setConfiguration(configuration);
+                if (actorInteractionAddon != null) {
+                    _addonActorController.setConfiguration(configuration);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -333,13 +335,15 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _attributeController.addHotKeys(jgraph);
 
         try {
+            // The Vergil Applet at $PTII/ptolemy/vergil/Vergil.htm might not have a configuration?
+            Configuration configuration = getConfiguration();
+            if (configuration != null) {
+                StringParameter actorInteractionAddon;
+                actorInteractionAddon = (StringParameter) configuration.getAttribute("_actorInteractionAddon", Parameter.class);
 
-            StringParameter actorInteractionAddon;
-            actorInteractionAddon = (StringParameter) this.getConfiguration()
-                    .getAttribute("_actorInteractionAddon", Parameter.class);
-
-            if (actorInteractionAddon != null) {
-                _addonActorController.addHotKeys(jgraph);
+                if (actorInteractionAddon != null) {
+                    _addonActorController.addHotKeys(jgraph);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -366,25 +370,26 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
         try {
 
-            StringParameter actorInteractionAddonParameter;
-            actorInteractionAddonParameter = (StringParameter) this
-                    .getConfiguration().getAttribute("_actorInteractionAddon",
+            // The Vergil Applet at $PTII/ptolemy/vergil/Vergil.htm might not have a configuration?
+            Configuration configuration = getConfiguration();
+            if (configuration != null) {
+                StringParameter actorInteractionAddonParameter;
+                actorInteractionAddonParameter = (StringParameter) configuration.getAttribute("_actorInteractionAddon",
                             Parameter.class);
 
-            if (actorInteractionAddonParameter != null) {
-                String actorInteractionAddonClassName = actorInteractionAddonParameter
+                if (actorInteractionAddonParameter != null) {
+                    String actorInteractionAddonClassName = actorInteractionAddonParameter
                         .stringValue();
-                Class actorInteractionAddonClass = Class
+                    Class actorInteractionAddonClass = Class
                         .forName(actorInteractionAddonClassName);
 
-                ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                    ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
                         .newInstance();
 
-                _addonActorController = actorInteractionAddon
+                    _addonActorController = actorInteractionAddon
                         .getControllerInstance(this, false);
-
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
