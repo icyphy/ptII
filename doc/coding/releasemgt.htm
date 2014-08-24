@@ -569,7 +569,7 @@
 		export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc
 		./configure
 		ant
-		(cd doc; make codeDoc/tree.html)
+		(cd doc; make JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc codeDoc/tree.html)
 		make install
 	      </pre>
 	      It is important to run <code>make install</code> so that any demo-specific makefiles are created.  These makefiles would include resources like images or pdfs that are listed in <code>makefile</code>'s <code>OTHER_FILES_TO_BE_JARED</code> variable.
