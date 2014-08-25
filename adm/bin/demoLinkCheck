@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# $Id$
+
+# Script to check that the demos in completeDemos.htm have a page that
+# has a demoLink.
+
+# Not all models will have on-line versions, but as models are added,
+# we want to be sure that the appropriate toc.htm files are updated.
+
+modelsFile=/tmp/demoLinkCheck.models.$$
+cat $PTII/ptolemy/configs/doc/models.txt | sed 's@$CLASSPATH/@@' | sed 's/.xml//' | sort | uniq  > $modelsFile
+
+tocs=`cd $PTII; find . -name "toc.htm"`
+
+tocDemosFile=/tmp/demoLinkCheck.tocDemos.$$
+
+echo $tocs | xargs grep demoLink | awk -F \" '{print $4}' | sed 's@/$@@' | sort | uniq > $tocDemosFile
+
+comm -3 $modelsFile $tocDemosFile
+
+
+
+
