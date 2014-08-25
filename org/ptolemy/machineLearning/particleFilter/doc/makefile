@@ -1,9 +1,10 @@
-# Makefile org sources from outside of Ptolemy
+# Makefile for Ptolemy II Particle Filter domain documentation
 #
-# @Version: $Id$
-# @Author: Ilge Akkaya
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
+#
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,61 +28,49 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../../..
+ME =		ptolemy/actor/lib/particleFilter/doc
 
-DIRS = demo doc test
+# Root of the Java directory
+ROOT =		../../../../..
 
-# $(ME) is used in ptdir.mk
-ME = org/ptolemy/machineLearning/particleFilter
+DIRS =
 
 CLASSPATH =	$(ROOT)
 
-# True source directory
-VPATH =	$(ROOT)/$(ME)
-
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = particleFilter
-PTCLASSJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	ConstraintsCalculator.java \
-	MutualInformationCalculator.java \
-	Optimizer.java \
-	ParticleFilter.java \
-	ParticleFilterRange.java \
-	Particle.java  
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	ParticleFilterRangeIcon.xml \
-	particleFilter.xml \
-	ParticleFilterIcon.xml
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test doc
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = demo doc test \
-	'Optimizer$$1.class' \
-	'ParticleFilter$$1.class' \
-	'ParticleFilter$$Particle.class' \
-	'ParticleFilter$$VariableScope.class'
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+all:
+	@echo "Nothing to be done in this directory"
 
-all: jclass
-install: jclass jars
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
