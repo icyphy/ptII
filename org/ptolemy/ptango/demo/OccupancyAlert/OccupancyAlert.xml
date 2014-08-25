@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 914]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5120000000000001">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5357942430086565">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{628.5, 457.00000000000006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{635.4429812811119, 451.3574218750001}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -29,7 +29,7 @@
     <property name="Annotation19" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Class to check if someone &#10;is trapped in the elevator&#10;and to send mail if so&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[599.75, -391.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1020.0, -385.0]">
         </property>
     </property>
     <property name="Annotation22" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,15 +43,15 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: Install library &#10;for SendMail actor first&#10;&#10;Model requires email &#10;password to run, at:&#10;$HOME/.mailPassword.txt&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires an email &#10;password to run at:&#10;$HOME/.mailPassword.txt&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.25, -341.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 890.0]">
         </property>
     </property>
     <property name="Annotation29" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See $CLASSPATH/actor/lib/mail/package.html&#10;for instructions">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.25, -176.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 975.0]">
         </property>
     </property>
     <property name="PowerSensorTimeout" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -70,7 +70,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[24.75, -116.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -110.0]">
         </property>
     </property>
     <property name="reading306" class="ptolemy.data.expr.Parameter" value="&quot;23.600000&quot;">
@@ -89,7 +89,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.75, -166.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, -160.0]">
         </property>
     </property>
     <property name="reading307" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -108,10 +108,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.75, -141.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, -135.0]">
         </property>
     </property>
-    <property name="reading308" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+    <property name="reading308" class="ptolemy.data.expr.Parameter" value="&quot;25.391808&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -127,7 +127,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.75, -116.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, -110.0]">
         </property>
     </property>
     <property name="power306" class="ptolemy.data.expr.Parameter" value="true">
@@ -146,7 +146,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[24.75, -261.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -255.0]">
         </property>
     </property>
     <property name="power307" class="ptolemy.data.expr.Parameter" value="true">
@@ -165,7 +165,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[24.75, -236.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -230.0]">
         </property>
     </property>
     <property name="power308" class="ptolemy.data.expr.Parameter" value="true">
@@ -184,7 +184,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[24.75, -216.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -210.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -196,13 +196,13 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Admin page:&#10;For each elevator, occupied vs. unoccupied&#10;Power on or off&#10;Submit and cancel&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.25, 203.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 170.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /simulator/admin">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.25, 163.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-465.0, 130.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -227,7 +227,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[19.75, -341.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, -335.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -276,7 +276,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.75, -306.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -300.0]">
         </property>
     </property>
     <property name="power307Live" class="ptolemy.data.expr.Parameter" value="false">
@@ -295,7 +295,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.75, -281.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -275.0]">
         </property>
     </property>
     <property name="power308Live" class="ptolemy.data.expr.Parameter" value="false">
@@ -314,7 +314,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.75, -261.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -255.0]">
         </property>
     </property>
     <property name="elevatorLive" class="ptolemy.data.expr.Parameter" value="false">
@@ -333,7 +333,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.75, -336.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -330.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -357,31 +357,31 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="True if someone &#10;in elevator&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.75, -396.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -390.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="True if power on">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.75, -301.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, -295.0]">
         </property>
     </property>
     <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Timeout for detecting&#10;power outage">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[19.75, -176.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, -170.0]">
         </property>
     </property>
     <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="True if live data used;&#10;false if simulated&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[224.75, -391.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, -385.0]">
         </property>
     </property>
     <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Readings from &#10;power sensors&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.75, -231.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, -225.0]">
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -399,7 +399,7 @@
     <property name="Annotation20" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Class to extract data from &#10;SensorAndrew XML output">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[599.75, -266.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1020.0, -260.0]">
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -415,7 +415,7 @@
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptOccupancyAlertPassword.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[494.75, -151.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, -145.0]">
         </property>
     </property>
     <property name="Annotation21" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -425,7 +425,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="XMPPGateway change to:&#10;Username:  terraswarm1&#10;Password:  enter the terraswarm1 password in &#10;$HOME/.ptOccupancyAlertPassword.txt&#10; ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[604.75, -191.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, -185.0]">
         </property>
     </property>
     <property name="Annotation24" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -456,8 +456,66 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-510.0, 1280.0]">
         </property>
     </property>
+    <property name="Annotation27" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;to detect when an elevator is occupied.&#10;&#10;Email will be sent if it is determined that the elevator is stuck&#10;&#10;The web services is available at http://localhost:8082/simulator.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8082/simulator#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-285.0, -365.0]">
+        </property>
+    </property>
+    <property name="Annotation30" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The web services admin page is available at&#10;http://localhost:8082/simulator/admin.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8082/simulator/admin#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-305.0, 250.0]">
+        </property>
+    </property>
     <class name="SendMailIfTrapped" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.75, -356.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, -350.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An actor that sends mail to If This Then That&#10;when a token arrives on the &quot;trigger&quot; input port">
@@ -753,7 +811,7 @@
         <link port="Discard.input" relation="relation14"/>
     </class>
     <class name="SensorAndrewDataExtractorClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.75, -261.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, -255.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 135, 928, 617}, maximized=false}">
         </property>
@@ -914,7 +972,7 @@
     <entity name="HttpActor2" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/simulator/admin">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-410.25, 278.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-415.0, 245.0]">
         </property>
     </entity>
     <entity name="FileReader2" class="ptolemy.actor.lib.io.FileReader">
@@ -942,11 +1000,11 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/liveadmin.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.25, 258.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, 225.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-300.25, 213.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 180.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
