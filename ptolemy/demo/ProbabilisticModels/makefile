@@ -55,6 +55,8 @@ EXAMPLE_MODELS = \
 	TwoStateMarkovChain.xml
 
 OTHER_FILES_TO_BE_JARED = \
+	index.htm \
+	toc.html \
 	$(EXAMPLE_MODELS)
 
 EXTRA_SRCS = \

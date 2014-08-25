@@ -1,10 +1,10 @@
-# Makefile tests of the Higher Order Component polymorphic actors
+# Makefile for Ptolemy II Higher Order Components
 #
-# @Authors: Christopher Hylands
+# @Authors: (makefile only) Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2012 The Regents of the University of California.
+# @Copyright (c) 2001-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,11 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/actor/lib/hoc/test
+# This directory contains polymorphic higher order component actors.
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+ME =		ptolemy/actor/lib/hoc
+
+DIRS = 		doc demo test
+
+# Root of the Java directory
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -41,53 +44,100 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+# Used to build jar files
+PTPACKAGE = 	hoc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = IterateOverArrayCloneTest.java
+# Keep this list alphabetized.
+JSRCS = \
+	ApplyFilterOverArray.java \
+	ApplyFunction.java \
+	ApplyFunctionOverSequence.java \
+	Case.java \
+	CaseDirector.java \
+	ExecuteActor.java \
+	ExecuteCompositeActor.java \
+	IterateOverArray.java \
+	LifeCycleManager.java \
+	MirrorComposite.java \
+	MirrorPort.java \
+	MobileFunction.java \
+	MobileModel.java \
+	ModelReference.java \
+	ModelUtilities.java \
+	MultiCompositeActor.java \
+	MultiCompositePort.java \
+	MultiInstanceComposite.java \
+	RealTimeComposite.java \
+	ReflectComposite.java \
+	Refinement.java \
+	RefinementPort.java \
+	RunCompositeActor.java \
+	ThreadedComposite.java
 
-# Non-graphical Java tests written in Tcl.
-JSIMPLE_TESTS = \
-	IterateOverArray.tcl
+OTHER_FILES_TO_BE_JARED = \
+	ApplyFunctionIcon.xml \
+	CaseIcon.xml \
+	ExecuteActorIcon.xml \
+	MobileFunctionIcon.xml \
+	MobileModelIcon.xml \
+	ModelReferenceIcon.xml \
+	RunCompositeActorIcon.xml \
+	hoc.xml \
+	hocSimple.xml
 
-# Graphical Java tests that use Tcl.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	$(JSIMPLE_TESTS) \
-	ModelReferenceSlowDown.xml \
-        ModelReferenceSlowDown_Inner.xml \
-	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl  junit \
-	auto
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	demo \
+	doc \
+	'AbstractCase$$CaseDirector.class' \
+	'ApplyFunction$$1.class' \
+	'ApplyFunction$$ReturnTypeFunction.class' \
+	'CaseDirector$$1.class' \
+	'IterateOverArray$$1.class' \
+	'IterateOverArray$$2.class' \
+	'IterateOverArray$$3.class' \
+	'IterateOverArray$$GLBArrayElementFunction.class' \
+	'IterateOverArray$$GLBArrayFunction.class' \
+	'IterateOverArray$$IterateComposite.class' \
+	'IterateOverArray$$IterateComposite$$1.class' \
+	'IterateOverArray$$IterateDirector.class' \
+	'IterateOverArray$$IteratePort.class' \
+	'MirrorComposite$$1.class' \
+	'MirrorComposite$$2.class' \
+	'MirrorComposite$$MirrorCompositeContents$$1.class' \
+	'MirrorComposite$$MirrorCompositeContents.class' \
+	'ModelReference$$1.class' \
+	'RealTimeComposite$$InputFrame.class' \
+	'RealTimeComposite$$OutputFrame.class' \
+	'RealTimeComposite$$QueuedToken.class' \
+	'RealTimeComposite$$RealTimeDirector.class' \
+	'RealTimeComposite$$RealTimeDirector$$RealTimeThread.class' \
+	'ReflectComposite$$1.class' \
+	'ReflectComposite$$2.class' \
+	'ReflectComposite$$ReflectCompositeContents$$1.class' \
+	'ReflectComposite$$ReflectCompositeContents.class' \
+	'ThreadedComposite$$1.class' \
+	'ThreadedComposite$$QueuedToken.class' \
+	'ThreadedComposite$$ThreadedDirector$$CompositeThread.class' \
+	'ThreadedComposite$$ThreadedDirector.class' \
+	'ThreadedComposite$$TokenFrame$$FrameType.class' \
+	'ThreadedComposite$$TokenFrame.class'
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
-
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
-
-test_java: jclass
-
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
-	$(JTCLSH) alljtests.tcl
+all: jclass
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

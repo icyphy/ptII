@@ -1,10 +1,10 @@
-# Makefile for Optimization library
+# Makefile for Ptolemy II optimization domain documentation
 #
-# @Authors: Christopher Brooks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
-# @Version: $Id$
+# @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
 #
-# @Copyright (c) 2012-2014 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,62 +29,47 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/ptolemy/optimization
+ME =		ptolemy/domains/optimization/doc
 
-DIRS =		demo doc test
+# Root of the Java directory
+ROOT =		../../../..
 
-# Root of the Ptolemy II directory
-ROOT =		../../..
+DIRS =
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Variables and rules used to create source file distributions
-PTPACKAGE = 	optimization
+# Used to build jar files
+PTPACKAGE = 	doc
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Java Sources, keep these alphabetical,
-JSRCS = \
-	CompositeOptimizer.java  
-
 OTHER_FILES_TO_BE_JARED = \
-	CompositeOptimizerIcon.xml \
-	compositeOptimizer.xml \
-	optimization.xml
+	acks.htm \
+	body.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
 # Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
-# Non-source files such as README files and subdirectories
-MISC_FILES = doc
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc \
-	test \
-	'CompositeOptimizer$$1.class' \
-	'CompositeOptimizer$$OptimizerComposite.class' \
-	'CompositeOptimizer$$OptimizerDirector$$1.class' \
-	'CompositeOptimizer$$OptimizerDirector.class'
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-KRUFT =
+all:
+	@echo "Nothing to be done in this directory"
 
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: sources jclass
-
-install: all jars 
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
- 
-
-
