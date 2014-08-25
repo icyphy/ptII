@@ -21,7 +21,7 @@ disable any packages that make it easy to build.
 
 2) Run the OpenModelica compiler on your .mo file with the command
 
-omc +s +simCodeTarget=sfmi <your file>.mo
+omc +s +simCodeTarget=sfmi <your file>.mo Modelica
 
 This will create two files: <your model>_FMI.cpp and
 modelDescription.xml

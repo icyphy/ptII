@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/fmi/fmus/omc
 FMUS_CS =
 
 # Model Exchange FMUS.
-FMUS_ME =	Influenza Test1
+FMUS_ME =	Influenza Linsys Linsys2 Test1
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)

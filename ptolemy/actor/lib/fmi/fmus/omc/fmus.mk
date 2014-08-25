@@ -92,6 +92,13 @@ install: jclass $(FMU_NAME).fmu jars
 $(FMU_NAME).fmu: $(FMU_SRCS)
 	(cd src/sources; $(MAKE))
 
+# Test the FMU by running fmucheck.
+fmuCheck: $(FMU_NAME).fmu
+	if [ -f fmuCheck/input.csv ]; then \
+		fmuCheck -i fmuCheck/input.csv -o fmuCheck/result.csv -h 1 -s 10 $(FMU_NAME).fmu; \
+	else \
+		fmuCheck -l 5 $(FMU_NAME).fmu; \
+	fi
 # We don't check in the fmu because it will be different on each platform
 # Instead, run make update to update the test directory.
 # The JModelica Tests are in a separate directory.
