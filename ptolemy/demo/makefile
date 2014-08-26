@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		8275BMC AirManagementSystem BestMasterClock Brewery ElectricPowerSystem ExecDemos FaultModels FuelSystem ProbabilisticModels test
+DIRS = 		8275BMC AirManagementSystem BestMasterClock ElectricPowerSystem ExecDemos FaultModels FuelSystem ProbabilisticModels test
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -49,7 +49,6 @@ PTCLASSJAR =
 PTAUXALLJARS = \
 	8275BMC/8275BMC.jar \
 	AirManagementSystem/AirManagementSystem.jar \
-	Brewery/Brewery.jar \
 	BestMasterClock/BestMasterClock.jar \
 	ElectricPowerSystem/ElectricPowerSystem.jar \
 	ExecDemos/ExecDemos.jar \
