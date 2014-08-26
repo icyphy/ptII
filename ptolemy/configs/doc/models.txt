@@ -134,8 +134,6 @@ $CLASSPATH/ptolemy/demo/AirManagementSystem/AirManagementSystemCausalityLoop.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/AMS_AMSSim.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/HeatExchangerTester.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/PhysicalPlantCausalityLoop.xml
-$CLASSPATH/ptolemy/demo/Brewery/Brewery.xml
-$CLASSPATH/ptolemy/demo/Brewery/BreweryWireless.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorContactorLoad.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml
