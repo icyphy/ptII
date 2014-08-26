@@ -1,11 +1,13 @@
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange.xml
 $CLASSPATH/org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml
 $CLASSPATH/org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml
 $CLASSPATH/org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight.xml
