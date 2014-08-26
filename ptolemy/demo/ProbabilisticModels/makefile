@@ -56,7 +56,7 @@ EXAMPLE_MODELS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \
-	toc.html \
+	toc.htm \
 	$(EXAMPLE_MODELS)
 
 EXTRA_SRCS = \
