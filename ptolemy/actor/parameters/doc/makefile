@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Caltrop Demo documentation
+# Makefile for Ptolemy II parameters documentation
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks,
 #
-# @Version: $Id$
+# @Version: $Id: makefile 47419 2007-12-06 16:22:20Z cxh $
 #
-# @Copyright (c) 2007-2009 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/caltrop/doc
+ME =		ptolemy/actor/parameters/doc
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 DIRS =
 

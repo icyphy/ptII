@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II HOC domain documentation
+# Makefile for Ptolemy II Ptalon documentation
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks,
 #

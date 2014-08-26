@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/security
 
-DIRS =		demo test    	
+DIRS =		demo doc test
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -80,6 +80,7 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	doc \
 	'KeyStoreActor$$_StreamReaderThread.class' \
 	'KeyToken$$1.class' \
 	'KeyToken$$KeyType.class'
