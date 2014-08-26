@@ -49,6 +49,11 @@ PTPACKAGE = 	doc
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	acks.htm \
+	body.htm \
+	index.htm \
+	main.htm \
+	toc.htm \
 	PtangoWebExport.zargo
 
 # Files that are not compiled, such as .tcl and .itcl files.

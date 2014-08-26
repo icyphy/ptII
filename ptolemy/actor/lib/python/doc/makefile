@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II scripting actors
+# Makefile for Ptolemy II Python domain documentation
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
-# @Version: $Id$
+# @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
 #
-# @Copyright (c) 2003-2009 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,52 +26,51 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                                               PT_COPYRIGHT_VERSION_2
-#                                               COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =            ptolemy/actor/lib/python
-
-DIRS = 		test demo doc
+ME =		ptolemy/actor/lib/python/doc
 
 # Root of the Java directory
-ROOT =          ../../../..
+ROOT =		../../../../..
 
-# JYTHON_JAR is set in $PTII/mk/ptII.mk by running configure
-CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar
+DIRS =
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     python
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-# Keep this list alphabetized.
-JSRCS = PythonScript.java
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	jython-license.htm \
-	python.xml
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = doc test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-        doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+all:
+	@echo "Nothing to be done in this directory"
 
-all: jclass
-install: jclass jars
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

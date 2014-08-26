@@ -56,6 +56,12 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	LatticeComposition.ppt \
 	LatticeComposition_TweetSlide.ppt \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm \
 	ontologies_class_diagram.zargo \
 	ontologies_class_diagram_extracted_Java.zargo
 

@@ -99,7 +99,7 @@ import com.sun.jna.ptr.PointerByReference;
 //// FMUImport
 
 /**
- * Invoke a Functional Mock-up Interface (FMI) 1.0 Co-Simulation
+ * Invoke a Functional Mock-up Interface (FMI) 
  * Functional Mock-up Unit (FMU).
  *
  * <p>Read in a <code>.fmu</code> file named by the

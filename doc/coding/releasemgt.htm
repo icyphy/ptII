@@ -34,22 +34,18 @@
 
       <li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
       </li>
-      <li>If necessary create applets for new demos
+      <li>If necessary, add new demos to toc.htm files
 	<br/>Run
 	<pre>
-	  cd $PTII/ptolemy/configs/doc
-	  make check_applets
+	  cd $PTII
+	  $PTII/adm/bin/demoLinkCheck
 	</pre>
 	<p>Note that not all the applets listed are missing.  Some of them
-	  use the serial port, JAI, JMF etc.</p>
-	<p>To add an applet:</p>
+	  use the serial port, JAI, JMF etc. A sample command to create the demoLink lines:</p>
+
 	<pre>
-	  cd $PTII
-	  make install
-	  cd $PTII/ptolemy/domains/wireless/demo/SmartParking
-	  $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/wireless/demo/SmartParking SmartParking.xml
+	  grep ptides $PTII/ptolemy/configs/doc/models.txt | sed 's@$CLASSPATH/@@' | awk '{nf = split($0, f, "/"); print "demoLink(\"\", \"" $1 "\", \"" f[nf] "\");"}' | sed 's@.xml")@")@' | sed 's@.xml",@",@'
 	</pre>
-	Then add the <code>.htm</code> files to the makefile.
       </li>
       <li> Ptolemy handled 
 	<a href="about:copyright"><code>about:copyright</code></a>

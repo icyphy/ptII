@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/javascript
 
-DIRS = 		demo test
+DIRS = 		demo doc test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -58,12 +58,13 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	doc \
 	$(PTCLASSJAR) \
 
 JCLASS = $(JSRCS:%.java=%.class)
