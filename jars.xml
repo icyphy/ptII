@@ -328,9 +328,13 @@
     <include name="ptolemy/data/type/demo/Router/Router.jar" />
     <include name="ptolemy/data/unit/demo/StaticUnits/StaticUnits.jar" />
     <include name="ptolemy/data/unit/demo/Units/Units.jar" />
+    <include name="ptolemy/demo/8275BMC/8275BMC.jar" />
+    <include name="ptolemy/demo/AirManagementSystem/AirManagementSystem.jar" />
+    <include name="ptolemy/demo/BestMasterClock/BestMasterClock.jar" />
     <include name="ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar" />
     <include name="ptolemy/demo/ExecDemos/ExecDemos.jar" />
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
+    <include name="ptolemy/demo/FaultModels/FaultModels.jar" />
     <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
     <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
     <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
@@ -6474,6 +6478,33 @@
     </jar>
 
     <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/8275BMC/8275BMC.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/8275BMC/*.pdf"/>
+        <include name="ptolemy/demo/8275BMC/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/AirManagementSystem/AirManagementSystem.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/AirManagementSystem/*.pdf"/>
+        <include name="ptolemy/demo/AirManagementSystem/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/BestMasterClock/BestMasterClock.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/BestMasterClock/*.pdf"/>
+        <include name="ptolemy/demo/BestMasterClock/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
          destfile="${basedir}/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar"
          >
        <fileset dir="${basedir}">
@@ -6499,6 +6530,15 @@
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
         <include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/FaultModels/FaultModels.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/FaultModels/*.pdf"/>
+        <include name="ptolemy/demo/FaultModels/*.xml"/>
        </fileset>
     </jar>
 
