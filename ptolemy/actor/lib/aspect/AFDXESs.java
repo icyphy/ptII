@@ -200,7 +200,6 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
             if (entry.getValue().size() > 0) {
                 TimedEvent e = entry.getValue().getFirst();
-                System.out.println("----" + e.contents);
                 if (e.timeStamp.compareTo(currentTime) == 0) {
                     Time lastTimeStamp = currentTime;
                     AFDXVlink vl = _virtualLinkTable.get(entry.getKey());
@@ -413,8 +412,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
         IOPort receiverContainer = receiver.getContainer();
         Actor emitterSource = ((IntermediateReceiver) source).source;
 
-        System.out.println("...token " + token.toString() + " receiver " + receiver);
-        System.out.println("...portVLTABLE=" + _portToVirtualLinks.toString());
+//        System.out.println("...token " + token.toString() + " receiver " + receiver);
+//        System.out.println("...portVLTABLE=" + _portToVirtualLinks.toString());
 
         AFDXVlink vl = _portToVirtualLinks.get(receiverContainer);
         vl.setSource(emitterSource);
