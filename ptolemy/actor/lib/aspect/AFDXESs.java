@@ -32,6 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.aspect;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
@@ -109,7 +110,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
         _portToVirtualLinks = new HashMap<IOPort, AFDXVlink>();
 
         _lastEmissionTable = new HashMap<String, Time>();
-        _afdxVLinksQueue = new HashMap<String, LinkedList<TimedEvent>>();
+        _afdxVLinksQueue = new LinkedHashMap<String, LinkedList<TimedEvent>>();
         _afdxSchedMuxsQueue = new HashMap<String, LinkedList<TimedEvent>>();
 
         // icon description
@@ -167,7 +168,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AFDXESs newObject = (AFDXESs) super.clone(workspace);
 
-        newObject._afdxVLinksQueue = new HashMap();
+        newObject._afdxVLinksQueue = new LinkedHashMap();
         newObject._afdxSchedMuxsQueue = new HashMap();
         newObject._virtualLinkTable = new HashMap();
         newObject._portToVirtualLinks = new HashMap();
@@ -199,7 +200,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
             if (entry.getValue().size() > 0) {
                 TimedEvent e = entry.getValue().getFirst();
-
+                System.out.println("----" + e.contents);
                 if (e.timeStamp.compareTo(currentTime) == 0) {
                     Time lastTimeStamp = currentTime;
                     AFDXVlink vl = _virtualLinkTable.get(entry.getKey());
@@ -333,7 +334,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
         _nextFireTime = null;
 
-        _afdxVLinksQueue = new HashMap();
+        _afdxVLinksQueue = new LinkedHashMap();
         _virtualLinkTable = new HashMap();
         //_portToVirtualLinks = new HashMap();
 
@@ -412,8 +413,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
         IOPort receiverContainer = receiver.getContainer();
         Actor emitterSource = ((IntermediateReceiver) source).source;
 
-        //System.out.println("token" + token.toString());
-        //System.out.println("portVLTABLE=" + _portToVirtualLinks.toString());
+        System.out.println("...token " + token.toString() + " receiver " + receiver);
+        System.out.println("...portVLTABLE=" + _portToVirtualLinks.toString());
 
         AFDXVlink vl = _portToVirtualLinks.get(receiverContainer);
         vl.setSource(emitterSource);
@@ -597,7 +598,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
     /** Tokens received as input to the AFDX traffic regulator
      * (aka Lissor or Shaper).
      */
-    protected HashMap<String, LinkedList<TimedEvent>> _afdxVLinksQueue;
+    protected LinkedHashMap<String, LinkedList<TimedEvent>> _afdxVLinksQueue;
 
     /** Routing table for virtual link object.
      */

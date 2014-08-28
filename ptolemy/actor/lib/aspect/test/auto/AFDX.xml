@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8453453453453453">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.9644760213145, 342.27933156638534}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.96447602131457, 342.27933156638534}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.21">
@@ -587,7 +587,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest5" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.41E-4, 0.032444, 0.150444, 0.182444}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4.44E-4, 0.032444, 0.150444, 0.182444}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -595,13 +595,13 @@
         </property>
     </entity>
     <entity name="NonStrictTest6" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.46E-4, 0.200146}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.49E-4, 0.200146}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 580.0]">
         </property>
     </entity>
     <entity name="NonStrictTest7" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9.01E-4, 0.032904, 0.150904, 0.182904}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9.04E-4, 0.032904, 0.150904, 0.182904}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 645.0]">
         </property>
