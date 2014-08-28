@@ -47,8 +47,10 @@ jQuery(document).ready((function() {
    // if this code is used as arguments for actor's parameters
    
    // Create date pickers.  The date pickers should not allow future dates
-   jQuery("#dateStartPicker").datepicker({ maxDate: "+0d" });
-   jQuery("#dateEndPicker").datepicker({ maxDate: "+0d" });
+   // sMAP server thinks the current time is six months ago.  
+   // Set date accordingly.
+   jQuery("#dateStartPicker").datepicker({ maxDate: "-6md" });
+   jQuery("#dateEndPicker").datepicker({ maxDate: "-6m" });
    
    // Default to offline data.  Hide the date picker
    jQuery("#offlineOption").attr("checked", true);
@@ -450,9 +452,13 @@ for three UC Berkeley buildings.  </p>
 <td>
 (millisec:) </td> <td> <input type="text" name="dateEnd" id="endMSec" /> </td>
 </tr>
+<tr><td> (Note: Latest online data is from 6 months ago) </td></tr>
 </table>
 </div>
-<button type="submit" id="submitBtn">Submit</button>
+<div> <p>
+	<button type="submit" id="submitBtn">Submit</button>
+	</p>
+</div>
 
 </form>
 </body>
