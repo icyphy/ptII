@@ -138,17 +138,16 @@ public class DocAttribute extends SingletonAttribute {
      *   is none.
      */
     public String getParameterDoc(String name) {
-        // FIXME: why is this a StringParameter and getPortDoc is a StringAttribute
-        StringParameter parameterAttribute = (StringParameter) getAttribute(name
+        Attribute parameterAttribute = getAttribute(name
                 + " (parameter)");
-        if (parameterAttribute != null) {
-            return parameterAttribute.getExpression();
+        if (parameterAttribute instanceof Settable) {
+            return ((Settable)parameterAttribute).getExpression();
         }
         // Might be a port-parameter.  Try that.
-        parameterAttribute = (StringParameter) getAttribute(name
+        parameterAttribute = getAttribute(name
                 + " (port-parameter)");
-        if (parameterAttribute != null) {
-            return parameterAttribute.getExpression();
+        if (parameterAttribute instanceof Settable) {
+            return ((Settable)parameterAttribute).getExpression();
         }
         return null;
     }
@@ -248,6 +247,9 @@ public class DocAttribute extends SingletonAttribute {
                 String name = attribute.getName() + modifier;
                 if (getAttribute(name) == null) {
                     try {
+                    	// FIXME: Using a StringParameter here is a really poor choice.
+                    	// It will try to parse anything with a dollar sign.
+                    	// But fixing this in a backward compatible way appears to be hard.
                         new StringParameter(this, name);
                     } catch (KernelException e) {
                         throw new InternalErrorException(e);

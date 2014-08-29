@@ -59,13 +59,17 @@ import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
@@ -198,6 +202,31 @@ public class DocViewer extends HTMLViewer {
     protected void _addMainPane() {
     }
 
+    /** Add a Build menu item.
+     */
+    @Override
+    protected void _addMenus() {
+        super._addMenus();
+
+        Tableau tableau = getTableau();
+        if (tableau != null) {
+            Effigy tableauContainer = (Effigy) tableau.getContainer();
+            if (tableauContainer != null) {
+                JMenu buildMenu = new JMenu("Build");
+                buildMenu.setMnemonic(KeyEvent.VK_B);
+                _menubar.add(buildMenu);
+
+                BuildMenuListener buildMenuListener = new BuildMenuListener();
+                String name = "Build docs";
+                JMenuItem item = new JMenuItem(name);
+                item.setActionCommand(name);
+                item.setMnemonic(name.charAt(0));
+                item.addActionListener(buildMenuListener);
+                buildMenu.add(item);
+            }
+        }
+    }
+
     /** Display the help file given by the configuration, or if there is
      *  none, then the file specified by the public variable helpFile.
      *  To specify a default help file in the configuration, create
@@ -312,7 +341,7 @@ public class DocViewer extends HTMLViewer {
      */
     private String _getParameterEntries(NamedObj target, DocManager manager) {
         //check for exclusion attributes in the configuration
-        //exclusion attributes can excluse params from the documentation
+        //exclusion attributes can exclude params from the documentation
         //by their name.  an exclusion can be "exact" or "contains".  an "exact"
         //exclusion requires the name on the exclusion list to exactly match
         //the name of the param.  a "contains" exclusion just requires that the
@@ -340,6 +369,9 @@ public class DocViewer extends HTMLViewer {
         Iterator attributes = target.attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable parameter = (Settable) attributes.next();
+            if (_isHidden((NamedObj)parameter)) {
+            	continue;
+            }
             if (parameter instanceof PortParameter) {
                 // Skip this one.
                 continue;
@@ -417,6 +449,9 @@ public class DocViewer extends HTMLViewer {
         Iterator ports = ((Entity) target).portList().iterator();
         while (ports.hasNext()) {
             Port port = (Port) ports.next();
+            if (_isHidden(port)) {
+            	continue;
+            }
             if (port instanceof ParameterPort) {
                 // Skip this one.
                 continue;
@@ -551,6 +586,9 @@ public class DocViewer extends HTMLViewer {
                 .iterator();
         while (attributes.hasNext()) {
             Settable parameter = (Settable) attributes.next();
+            if (_isHidden((NamedObj)parameter)) {
+            	continue;
+            }
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {
                 doc = "No description.";
@@ -1005,29 +1043,33 @@ public class DocViewer extends HTMLViewer {
         seeAlsoPane.getCaret().setDot(0);
     }
 
-    /** Add a Build menu item.
+    /** Return true if the specified object is intended to be hidden.
+     *  @param object The object.
+     *  @param name The property name.
+     *  @return True if the property is set.
      */
-    @Override
-    protected void _addMenus() {
-        super._addMenus();
+    private boolean _isHidden(NamedObj object) {
+        Attribute attribute = object.getAttribute("_hide");
 
-        Tableau tableau = getTableau();
-        if (tableau != null) {
-            Effigy tableauContainer = (Effigy) tableau.getContainer();
-            if (tableauContainer != null) {
-                JMenu buildMenu = new JMenu("Build");
-                buildMenu.setMnemonic(KeyEvent.VK_B);
-                _menubar.add(buildMenu);
+        if (attribute == null) {
+            return false;
+        }
 
-                BuildMenuListener buildMenuListener = new BuildMenuListener();
-                String name = "Build docs";
-                JMenuItem item = new JMenuItem(name);
-                item.setActionCommand(name);
-                item.setMnemonic(name.charAt(0));
-                item.addActionListener(buildMenuListener);
-                buildMenu.add(item);
+        if (attribute instanceof Parameter) {
+            try {
+                Token token = ((Parameter) attribute).getToken();
+
+                if (token instanceof BooleanToken) {
+                    if (!((BooleanToken) token).booleanValue()) {
+                        return false;
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore, using default of true.
             }
         }
+
+        return true;
     }
 
     /** Populate the window displaying ports and parameters.

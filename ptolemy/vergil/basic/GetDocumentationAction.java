@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
@@ -486,7 +487,9 @@ public class GetDocumentationAction extends FigureAction {
                 throw new InternalErrorException(exception);
             }
         } else {
-            if (_isMultipleDocumentationAllowed()) {
+            if (_isMultipleDocumentationAllowed() ||
+            		// For some reason, the frame might be null.
+            		(tableau instanceof Tableau) && ((Tableau)tableau).getFrame() == null) {
                 try {
                     // FIXME: This is necessary for Kepler, but
                     // not for Ptolemy?  Why?

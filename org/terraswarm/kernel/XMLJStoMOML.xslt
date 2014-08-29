@@ -5,19 +5,46 @@
   version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="/class">
-	<entity name="{@name}" class="org.terraswarm.kernel.AccessorOne">       
+	<entity name="{@name}" class="org.terraswarm.kernel.AccessorOne">
+		<!-- Convert the script into a value for the script parameter. -->    
         <property name="script" class="ptolemy.kernel.util.StringAttribute">
         	<!-- Convert the body of the <script>...</script> element into the value of the "value" attribute. -->
 			<xsl:attribute name="value">
 				<xsl:value-of select="script"/>
             </xsl:attribute>
-			<property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+        </property>
+
+		<!-- Convert the documentation into a value for the script parameter. -->    
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+        	<property name="description" class="ptolemy.kernel.util.StringAttribute">
+        		<xsl:attribute name="value">
+        			<xsl:value-of select="documentation"/>
+            	</xsl:attribute>
+            </property>
+            <!-- Get documentation for each input. -->
+            <xsl:for-each select="input">
+		    	<property name="{@name} (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="{@description}">
+            	</property>
+            </xsl:for-each>
+            <!-- Get documentation for each output. -->
+            <xsl:for-each select="output">
+		    	<property name="{@name} (port)" class="ptolemy.kernel.util.StringAttribute" value="{@description}">
+            	</property>
+            </xsl:for-each>
+            <!-- Get author information. -->
+            <property name="author" class="ptolemy.kernel.util.StringAttribute">
+        		<xsl:attribute name="value">
+        			<xsl:value-of select="author"/>
+            	</xsl:attribute>
+            </property>
+            <!-- Get version information. -->
+            <property name="version" class="ptolemy.kernel.util.StringAttribute">
+        		<xsl:attribute name="value">
+        			<xsl:value-of select="version"/>
+            	</xsl:attribute>
             </property>
         </property>
-        <!-- Put at an arbitrary location in Vergil. -->
-		<property name="_location" class="ptolemy.kernel.util.Location" value="[37.5, 150.0]">
-        </property>
-			
+
 		<!-- Create a PortParameter for each input. -->
 		<!-- NOTE: We ignore the type, if any, and infer the type from the value. -->
 		<xsl:for-each select="input">

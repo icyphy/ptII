@@ -47,19 +47,16 @@ import javax.xml.transform.stream.StreamSource;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -67,7 +64,6 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
@@ -76,7 +72,7 @@ import diva.graph.GraphController;
 /**
    An Action to Import an Internet of Things (IoT) Accessor.
 
-   <p>This package is optional.  To add the "Import FMU" menu choice
+   <p>This package is optional.  To add the "Import Accessor" menu choice
    to the GraphEditor, add the following to the configuration:</p>
    <pre>
    &lt;property name="_importActionClassNames"
@@ -109,7 +105,11 @@ public class ImportAccessorAction extends AbstractAction {
      */
     public ImportAccessorAction(Top frame) {
         super("Import Accessor");
-        _frame = frame;
+        if (!(frame instanceof BasicGraphFrame)) {
+            throw new InternalErrorException("Frame " + _frame
+                    + " is not a BasicGraphFrame?");
+        }
+        _frame = (BasicGraphFrame)frame;
         _lastLocation = "http://www.terraswarm.org/accessors";
         putValue("tooltip", "Instantiate an accessor");
         // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
@@ -123,152 +123,129 @@ public class ImportAccessorAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-        Class basicGraphFrameClass = null;
-        try {
-            basicGraphFrameClass = Class
-                .forName("ptolemy.vergil.basic.BasicGraphFrame");
-        } catch (Throwable throwable) {
-            throw new InternalErrorException(null, throwable,
-                    "Could not find ptolemy.vergil.basic.BasicGraphFrame?");
-        }
-        if (basicGraphFrameClass == null) {
-            throw new InternalErrorException(null, null,
-                    "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
-        } else if (!basicGraphFrameClass.isInstance(_frame)) {
-            throw new InternalErrorException("Frame " + _frame
-                    + " is not a BasicGraphFrame?");
-        } else {
-            BasicGraphFrame basicGraphFrame = (BasicGraphFrame) _frame;
+    	final Query query = new Query();
+    	query.setTextWidth(60);
+    	query.addLine("location", "location", _lastLocation);
+    	final JComboBox box = query.addChoice("accessor", "accessor",
+    			new String[] {}, _lastAccessorName);
+    	updateComboBox(box, query);
+    	query.addQueryListener(new QueryListener() {
+    		@Override
+    		public void changed(String name) {
+    			if (name.equals("location")) {
+    				updateComboBox(box, query);
+    			}
+    		}
+    	});
+    	ComponentDialog dialog = new ComponentDialog(_frame,
+    			"Instantiate Accessor", query);
 
-            final Query query = new Query();
-            query.setTextWidth(60);
-            query.addLine("location", "location", _lastLocation);
-            final JComboBox box = query.addChoice("accessor", "accessor",
-                    new String[] {}, _lastAccessorName);
-            updateComboBox(box, query);
-            query.addQueryListener(new QueryListener() {
+    	if (dialog.buttonPressed().equals("OK")) {
+    		// Get the associated Ptolemy model.
+    		GraphController controller = _frame.getJGraph()
+    				.getGraphPane().getGraphController();
+    		AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+    				.getGraphModel();
+    		NamedObj context = model.getPtolemyModel();
 
-                    @Override
-                    public void changed(String name) {
-                        if (name.equals("location")) {
-                            updateComboBox(box, query);
-                        }
-                    }
-                });
-            ComponentDialog dialog = new ComponentDialog(_frame,
-                    "Instantiate Accessor", query);
+    		// Use the center of the screen as a location.
+    		Rectangle2D bounds = _frame.getVisibleCanvasRectangle();
+    		final double x = bounds.getWidth() / 2.0;
+    		final double y = bounds.getHeight() / 2.0;
 
-            if (dialog.buttonPressed().equals("OK")) {
-                // Get the associated Ptolemy model.
-                GraphController controller = basicGraphFrame.getJGraph()
-                    .getGraphPane().getGraphController();
-                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                    .getGraphModel();
-                NamedObj context = model.getPtolemyModel();
+    		URL url;
+    		String input = "";
+    		_lastAccessorName = query.getStringValue("accessor");
+    		final String urlSpec = _lastLocation + _lastAccessorName;
+    		StringBuffer buffer = new StringBuffer();
+    		buffer.append("<group name=\"auto\">\n");
+    		try {
+    			url = new URL(urlSpec);
 
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = basicGraphFrame.getVisibleCanvasRectangle();
-                final double x = bounds.getWidth() / 2.0;
-                final double y = bounds.getHeight() / 2.0;
+    			BufferedReader in = new BufferedReader(
+    					new InputStreamReader(url.openStream()));
+    			StringBuffer contents = new StringBuffer();
+    			while ((input = in.readLine()) != null) {
+    				contents.append(input);
+    			}
 
-                URL url;
-                String input = "";
-                _lastAccessorName = query.getStringValue("accessor");
-                final String urlSpec = _lastLocation + _lastAccessorName;
-                StringBuffer buffer = new StringBuffer();
-                buffer.append("<group name=\"auto\">\n");
-                try {
-                    url = new URL(urlSpec);
+    			TransformerFactory factory = TransformerFactory.newInstance();
+    			String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
+    			Source xslt = new StreamSource(FileUtilities.nameToFile(
+    					xsltLocation, null));
+    			Transformer transformer = factory.newTransformer(xslt);
+    			StreamSource source = new StreamSource(
+    					new InputStreamReader(url.openStream()));
+    			StringWriter outWriter = new StringWriter();
+    			StreamResult result = new StreamResult(outWriter);
+    			transformer.transform(source, result);
+    			contents = outWriter.getBuffer();
 
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(url.openStream()));
-                    StringBuffer contents = new StringBuffer();
-                    while ((input = in.readLine()) != null) {
-                        contents.append(input);
-                    }
+    			buffer.append(contents);
+    			in.close();
+    		} catch (Exception e1) {
+    			MessageHandler.error("Failed to import accessor.", e1);
+    			return;
+    		}
+    		buffer.append("</group>\n");
 
-                    TransformerFactory factory = TransformerFactory
-                        .newInstance();
-                    String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
-                    Source xslt = new StreamSource(FileUtilities.nameToFile(
-                                    xsltLocation, null));
-                    Transformer transformer = factory.newTransformer(xslt);
-                    StreamSource source = new StreamSource(
-                            new InputStreamReader(url.openStream()));
-                    StringWriter outWriter = new StringWriter();
-                    StreamResult result = new StreamResult(outWriter);
-                    transformer.transform(source, result);
-                    contents = outWriter.getBuffer();
+    		// TODO set location
 
-                    buffer.append(contents);
-                    in.close();
-                } catch (Exception e1) {
-                    MessageHandler.error("Failed to import accessor.", e1);
-                    return;
-                }
-                buffer.append("</group>\n");
+    		MoMLChangeRequest request = new MoMLChangeRequest(this,
+    				context, buffer.toString()) {
+    			@Override
+    			protected void _postParse(MoMLParser parser) {
+    				List<NamedObj> topObjects = parser.topObjectsCreated();
+    				if (topObjects == null) {
+    					return;
+    				}
+    				for (NamedObj object : topObjects) {
+    					Location location = (Location) object.getAttribute("_location");
+    					// Set the location.
+    					if (location == null) {
+    						try {
+    							location = new Location(object, "_location");
+    						} catch (KernelException e) {
+    							// Ignore.
+    						}
+    					}
+    					if (location != null) {
+    						try {
+    							location.setLocation(new double[] { x, y });
+    						} catch (IllegalActionException e) {
+    							// Ignore.
+    						}
+    					}
+    					// Set the source.
+    					Attribute source = object.getAttribute("accessorSource");
+    					if (source instanceof StringAttribute) {
+    						try {
+    							((StringAttribute) source).setExpression(urlSpec);
+    							// Have to mark persistent or the urlSpec will be assumed to be part
+    							// of the class definition and hence will not be exported to MoML.
+    							((StringAttribute) source).setDerivedLevel(Integer.MAX_VALUE);
+    							((StringAttribute) source).setPersistent(true);
+    						} catch (IllegalActionException e) {
+    							// Should not happen.
+    							throw new InternalErrorException(object, e,
+    									"Failed to set accessorSource");
+    						}
+    					}
+    				}
+    				parser.clearTopObjectsList();
+    				super._postParse(parser);
+    			}
 
-                // TODO set location
-
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, buffer.toString()) {
-                        @Override
-                        protected void _postParse(MoMLParser parser) {
-                            List<NamedObj> topObjects = parser.topObjectsCreated();
-                            if (topObjects == null) {
-                                return;
-                            }
-                            for (NamedObj object : topObjects) {
-                                Location location = (Location) object
-                                    .getAttribute("_location");
-                                // Set the location.
-                                if (location == null) {
-                                    try {
-                                        location = new Location(object, "_location");
-                                    } catch (KernelException e) {
-                                        // Ignore.
-                                    }
-                                }
-                                if (location != null) {
-                                    try {
-                                        location.setLocation(new double[] { x, y });
-                                    } catch (IllegalActionException e) {
-                                        // Ignore.
-                                    }
-                                }
-                                // Set the source.
-                                Attribute source = object
-                                    .getAttribute("accessorSource");
-                                if (source instanceof StringAttribute) {
-                                    try {
-                                        ((StringAttribute) source)
-                                            .setExpression(urlSpec);
-                                        // Have to mark persistent or the urlSpec will be assumed to be part
-                                        // of the class definition and hence will not be exported to MoML.
-                                        /// FIXME: NOTHING WORKS HERE!!!! Tried setPersistent(true) and setDerviedLevel(1).
-                                        ((StringAttribute) source)
-                                            .setDerivedLevel(Integer.MAX_VALUE);
-                                    } catch (IllegalActionException e) {
-                                        // Should not happen.
-                                        throw new InternalErrorException(object, e,
-                                                "Failed to set accessorSource");
-                                    }
-                                }
-                            }
-                            parser.clearTopObjectsList();
-                            super._postParse(parser);
-                        }
-
-                        @Override
-                        protected void _preParse(MoMLParser parser) {
-                            super._preParse(parser);
-                            parser.clearTopObjectsList();
-                        }
-                    };
-                context.requestChange(request);
-            }
-        }
+    			@Override
+    			protected void _preParse(MoMLParser parser) {
+    				super._preParse(parser);
+    				parser.clearTopObjectsList();
+    			}
+    		};
+    		context.requestChange(request);
+    	}
     }
+
     private void updateComboBox(JComboBox box, Query query) {
         box.removeAllItems();
         URL url;
@@ -308,7 +285,7 @@ public class ImportAccessorAction extends AbstractAction {
     ////                    private variables
 
     /** The top-level window of the contents to be exported. */
-    Top _frame;
+    BasicGraphFrame _frame;
 
     /** The most recent accessor. */
     private String _lastAccessorName;
