@@ -96,7 +96,6 @@ public class IntermediateReceiver extends AbstractReceiver {
     @Override
     public void clear() throws IllegalActionException {
         communicationAspect.reset();
-        _receiver.clear();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
@@ -168,6 +167,17 @@ public class IntermediateReceiver extends AbstractReceiver {
         communicationAspect.sendToken(this, _receiver, token);
         ((Actor) _receiver.getContainer().getContainer()).getDirector()
         .notifyTokenSentToCommunicationAspect();
+    }
+    
+    /** Reset this receiver to its initial state, which in this base
+     *  class is the same as calling clear().
+     *  @exception IllegalActionException If reset() is not supported by
+     *   the domain.
+     */
+    @Override
+    public void reset() throws IllegalActionException {
+        super.reset();
+        _receiver.reset();
     }
 
     /** Set the container of the internal receiver.
