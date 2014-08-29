@@ -66,7 +66,6 @@ EXTRA_SRCS = \
 	index.htm \
 	toc.htm
 
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =

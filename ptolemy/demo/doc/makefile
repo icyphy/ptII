@@ -1,9 +1,10 @@
-# Makefile for Ptolemy model that executes a suite of other Ptolemy II models.
+# Makefile for Ptolemy II Demo documentation
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks,
 #
-# @Copyright (c) 2005-2014 The Regents of the University of California.
+# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
+#
+# @Copyright (c) 2007-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,56 +28,49 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/demo
+ME =		ptolemy/actor/demo/doc
 
-DIRS = 		8275BMC AirManagementSystem BestMasterClock ElectricPowerSystem ExecDemos FaultModels FuelSystem ProbabilisticModels doc test
+# Root of the Java directory
+ROOT =		../../..
 
-# Root of Ptolemy II directory
-ROOT =		../..
+DIRS =
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml and util/ classes
-PTAUXALLJARS = \
-	8275BMC/8275BMC.jar \
-	AirManagementSystem/AirManagementSystem.jar \
-	BestMasterClock/BestMasterClock.jar \
-	ElectricPowerSystem/ElectricPowerSystem.jar \
-	ExecDemos/ExecDemos.jar \
-	FaultModels/FaultModels.jar \
-	FuelSystem/FuelSystem.jar \
-	ProbabilisticModels/ProbabilisticModels.jar \
-	doc/doc.jar
+OTHER_FILES_TO_BE_JARED = \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
-
-PTAUXALLJAR = $(PTPACKAGE).jar
-
-OTHER_FILES_TO_BE_JARED =
-
+# Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES = \
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-# Files to remove with 'make clean'
-KRUFT = \
-	*.jar
+all:
+	@echo "Nothing to be done in this directory"
 
-all: suball $(EXTRA_SRCS)
-install: subinstall jars
+install: jars
 
-# Include rules for directories that contain only subdirectories.
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

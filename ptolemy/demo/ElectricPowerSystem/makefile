@@ -58,23 +58,13 @@ EXAMPLE_MODELS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
-	CostConstraint.txt \
-	GeneratorContactorLoad.mo \
-	generator-contactor-load.png \
-	GeneratorTest.mo \
-	InformalDiagram.pdf \
-	Overview.xml \
-	OverviewEvenSimpler.xml \
-	OverviewSimpler.xml \
-	Specification.txt \
-	TimingConstraint.txt \
-	onOffSupervisor.fmu \
 	Contactor.xml \
 	ContactorIcon.xml \
-	Generator.xml \
-	ElectricPowerSystem.htm \
 	Controller.xml \
+	CostConstraint.txt \
 	Gen_Ctrl_Load.fmu \
+	Generator.xml \
+	GeneratorContactorLoad.mo \
 	GeneratorContactorLoadFMU.xml \
 	GeneratorContactorLoadSimXFMU.xml \
 	GeneratorRegulatorProtectorMetro \
@@ -90,7 +80,18 @@ OTHER_FILES_TO_BE_JARED = \
 	GeneratorRegulatorProtectorWithProcessor.xml \
 	GeneratorRegulatorProtectorWithSpecification.xml \
 	GeneratorRegulatorProtectorWithSpecificationAsAspect.xml \
-	onOffSupervisorSimX.fmu
+	GeneratorTest.mo \
+	InformalDiagram.pdf \
+	Overview.xml \
+	OverviewEvenSimpler.xml \
+	OverviewSimpler.xml \
+	Specification.txt \
+	TimingConstraint.txt \
+	generator-contactor-load.png \
+	index.htm \
+	onOffSupervisor.fmu \
+	onOffSupervisorSimX.fmu \
+	toc.htm
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
@@ -98,8 +99,7 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 
 #	$(EXAMPLE_MODEL_HTML) \
-#	index.htm \
-#	toc.htm
+
 
 
 # Sources that may or may not be present, but if they are present, we don't
