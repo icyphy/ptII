@@ -88,9 +88,13 @@ OTHER_FILES_TO_BE_JARED = \
 	Specification.txt \
 	TimingConstraint.txt \
 	generator-contactor-load.png \
-	index.htm \
 	onOffSupervisor.fmu \
 	onOffSupervisorSimX.fmu \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
 	toc.htm
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)

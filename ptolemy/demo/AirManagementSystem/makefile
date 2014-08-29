@@ -60,7 +60,13 @@ OTHER_FILES_TO_BE_JARED = \
 	AMS_AMSSim.xml \
 	AMS.mo \
 	FlowChart.pdf \
-	NEWamsStateSpaceModel.pdf
+	NEWamsStateSpaceModel.pdf \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 

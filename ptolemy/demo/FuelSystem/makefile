@@ -63,7 +63,11 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
+	acks.htm \
+	body.htm \
+	buttons.htm \
 	index.htm \
+	main.htm \
 	toc.htm
 
 # Sources that may or may not be present, but if they are present, we don't
