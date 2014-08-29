@@ -326,9 +326,7 @@
     <include name="ptolemy/data/type/demo/Router/Router.jar" />
     <include name="ptolemy/data/unit/demo/StaticUnits/StaticUnits.jar" />
     <include name="ptolemy/data/unit/demo/Units/Units.jar" />
-    <include name="ptolemy/demo/8275BMC/8275BMC.jar" />
     <include name="ptolemy/demo/AirManagementSystem/AirManagementSystem.jar" />
-    <include name="ptolemy/demo/BestMasterClock/BestMasterClock.jar" />
     <include name="ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar" />
     <include name="ptolemy/demo/ExecDemos/ExecDemos.jar" />
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
@@ -6459,29 +6457,11 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/demo/8275BMC/8275BMC.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/demo/8275BMC/*.pdf"/>
-        <include name="ptolemy/demo/8275BMC/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
          destfile="${basedir}/ptolemy/demo/AirManagementSystem/AirManagementSystem.jar"
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/AirManagementSystem/*.pdf"/>
         <include name="ptolemy/demo/AirManagementSystem/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/demo/BestMasterClock/BestMasterClock.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/demo/BestMasterClock/*.pdf"/>
-        <include name="ptolemy/demo/BestMasterClock/*.xml"/>
        </fileset>
     </jar>
 

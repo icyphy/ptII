@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		8275BMC AirManagementSystem BestMasterClock ElectricPowerSystem ExecDemos FaultModels FuelSystem ProbabilisticModels doc test
+DIRS = 		AirManagementSystem ElectricPowerSystem ExecDemos FaultModels FuelSystem ProbabilisticModels doc test
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -47,9 +47,7 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
-	8275BMC/8275BMC.jar \
 	AirManagementSystem/AirManagementSystem.jar \
-	BestMasterClock/BestMasterClock.jar \
 	ElectricPowerSystem/ElectricPowerSystem.jar \
 	ExecDemos/ExecDemos.jar \
 	FaultModels/FaultModels.jar \
