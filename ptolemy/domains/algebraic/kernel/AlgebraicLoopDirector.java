@@ -356,7 +356,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     }
 
     /** Initialize the director and all deeply contained actors by calling
-     *  the super.initialize() method.
+     *  the super.initialize() method, then identify all the break variables
+     *  (where an input port has a defaultValue set) and adjust the I/O
+     *  dependencies so that the super
      *  @exception IllegalActionException If the superclass throws it.
      */
     @Override
@@ -390,13 +392,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     Receiver[][] receivers = port.getReceivers();
                     for (Receiver[] receivers2 : receivers) {
                         for (Receiver receiver : receivers2) {
-                            _breakVariables
-                            .add((AlgebraicLoopReceiver) receiver);
+                            _breakVariables.add((AlgebraicLoopReceiver) receiver);
                             // Set both the initial value and the updated value of the receiver.
-                            ((AlgebraicLoopReceiver) receiver)
-                            ._setInitialValue(initialValue);
-                            ((AlgebraicLoopReceiver) receiver)
-                            .put(initialValue);
+                            ((AlgebraicLoopReceiver) receiver)._setInitialValue(initialValue);
+                            ((AlgebraicLoopReceiver) receiver).put(initialValue);
                         }
                     }
                     if (_debugging) {
@@ -441,7 +440,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             throw new IllegalActionException("Solver '" + method.stringValue()
                     + "' is not a valid keyword.");
         }
-
     }
 
     /** Return a new FixedPointReceiver. If a subclass overrides this
