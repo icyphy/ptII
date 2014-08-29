@@ -48,6 +48,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -93,8 +94,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -162,7 +161,7 @@ import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
-import ptolemy.vergil.tree.CompositeTreeModel;
+import ptolemy.vergil.tree.ClassAndEntityTreeModel;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
@@ -2783,14 +2782,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // EditIconFrame will have a EditorIcon as a model, not a CompositeEntity.
                 _treeViewScrollPane = null;
             } else {
-                _treeViewModel = new CompositeTreeModel(
+                _treeViewModel = new ClassAndEntityTreeModel(
                         (CompositeEntity) getModel().toplevel());
 
                 // Second arguments prevents parameter values from showing in the library,
                 // I'm not sure if that is relevant for the hierarchy tree browser.
                 _treeView = new PTree(_treeViewModel, false);
-                _treeView
-                        .addTreeSelectionListener(new HierarchyTreeSelectionListener());
+                // Replaced by mouse listener.
+                // _treeView.addTreeSelectionListener(new HierarchyTreeSelectionListener());
+                _treeView.addMouseListener(new HierarchyTreeMouseAdapter());
                 _treeView.setBackground(BACKGROUND_COLOR);
                 _treeView.setCellRenderer(new HierarchyTreeCellRenderer());
 
@@ -3384,7 +3384,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected JScrollPane _treeViewScrollPane;
 
     /** The tree view  model. */
-    protected CompositeTreeModel _treeViewModel;
+    protected ClassAndEntityTreeModel _treeViewModel;
 
     /** Action for zoom fitting. */
     protected Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
@@ -4100,12 +4100,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// HierarchyTreeSelectionListener
 
     /** The user selected a node in the Hierarchy tree browser */
+    // Replaced by mouse listener
+    /*
     private class HierarchyTreeSelectionListener implements
             TreeSelectionListener {
-        /** The value of the selection in the model hierarchy tree
-         *  browser changed.
-         *  @param event The event.
-         */
+        // The value of the selection in the model hierarchy tree
+        // browser changed.
         @Override
         public void valueChanged(TreeSelectionEvent event) {
             // Returns the last path element of the selection.
@@ -4121,6 +4121,32 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             + lastSelectedPathComponent, throwable);
                 }
             }
+        }
+    }
+	*/
+    
+    ///////////////////////////////////////////////////////////////////
+    //// HierarchyTreeMouseAdapter
+
+    /** Listen for clicks of the mouse on the tree.
+     */
+    private class HierarchyTreeMouseAdapter extends MouseAdapter {
+        public void mousePressed(MouseEvent e) {
+        	if(e.getClickCount() == 2) {
+        		// Returns the last path element of the selection.
+        		// This method is useful only when the selection model allows a single selection.
+        		Object lastSelectedPathComponent = _treeView
+        				.getLastSelectedPathComponent();
+        		if (lastSelectedPathComponent instanceof NamedObj) {
+        			try {
+        				getConfiguration().openInstance(
+        						(NamedObj) lastSelectedPathComponent);
+        			} catch (Throwable throwable) {
+        				MessageHandler.error("Could not open "
+        						+ lastSelectedPathComponent, throwable);
+        			}
+        		}
+        	}
         }
     }
 
