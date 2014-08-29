@@ -96,7 +96,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     @Override
     public void clear() throws IllegalActionException {
         communicationAspect.reset();
-        //_receiver.reset();
+        _receiver.clear();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.

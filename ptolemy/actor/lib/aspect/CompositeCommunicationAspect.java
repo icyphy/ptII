@@ -100,7 +100,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     public CompositeCommunicationAspect(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        _initialize();
+        _init();
     }
 
     /** Construct a CompositeCommunicationAspectAttributes with a name and a container.
@@ -122,7 +122,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     public CompositeCommunicationAspect(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _initialize();
+        _init();
     }
 
     /** This parameter indicates whether the tokens received via the
@@ -296,8 +296,6 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                                     .takeToken();
                             Receiver receiver = (Receiver) ((ObjectToken) recordToken
                                     .get("receiver")).getValue();
-                            // Use listener mechanism instead of println?
-                            // System.out.println("CompositeCommunicationAspect: --- " + receiver);
                             Token token = recordToken.get("token");
                             receiver.put(token);
                         }
@@ -438,7 +436,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      * @exception IllegalActionException If color attribute cannot be initialized.
      * @exception NameDuplicationException If color attribute cannot be initialized.
      */
-    private void _initialize() throws IllegalActionException,
+    private void _init() throws IllegalActionException,
             NameDuplicationException {
         ColorAttribute color = new ColorAttribute(this,
                 decoratorHighlightColorName);

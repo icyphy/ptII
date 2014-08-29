@@ -244,9 +244,11 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _remainingTimes = new HashMap<NamedObj, Time>();
-        _lastTimeScheduled = new HashMap<NamedObj, Time>();
         _actors = new ArrayList<NamedObj>();
+        _lastActorFinished = false;
+        _lastActorThatFinished = null;
+        _lastTimeScheduled = new HashMap<NamedObj, Time>();
+        _remainingTimes = new HashMap<NamedObj, Time>();
 
         initializeDecoratedActors();
         _actors.add(this);
