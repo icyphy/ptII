@@ -7742,6 +7742,7 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/domains/space/demo/DOPCenter/*.xml"/>
+        <include name="ptolemy/domains/space/demo/doc/*.htm"/>
        </fileset>
     </jar>
 

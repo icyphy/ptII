@@ -19,6 +19,7 @@ echo $tocs | xargs grep demoLink | awk -F \" '{print $4}' | sed 's@/$@@' | sort 
 
 comm -3 $modelsFile $tocDemosFile
 
-
+echo "Check these tocs for links to .htm files instead of demoLink()s"
+echo $tocs | xargs grep href | grep .htm | awk -F : '{for (i = 2; i <= NF; i++) {if ($i ~ /demo/) {print $0}}}' | grep -v '<!--'
 
 
