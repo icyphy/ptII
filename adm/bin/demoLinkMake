@@ -30,6 +30,10 @@ awk -v tocdir=$tocdir ' $0 ~ /demo/ {
     startString = "<a href=\""
     start = index($0, startString)
     end = index($0, "\" target=\"main\">")
+    if (end == 0) {
+       # Could be a reference to a .xml file
+       end = index($0, ".xml\">")
+    }
     startTarget = start + length(startString)
     target=substr($0, startTarget, end - startTarget)
 
@@ -62,6 +66,10 @@ awk -v tocdir=$tocdir ' $0 ~ /demo/ {
         url = substr(url, 1, length(url) - 4)
     }
 
+    if (url ~ /\.xml$/) {
+        url = substr(url, 1, length(url) - 4)
+    }
+
     if (url !~ /\$/) {
         url = url "/"
     }
@@ -69,12 +77,18 @@ awk -v tocdir=$tocdir ' $0 ~ /demo/ {
     # Get the description
     targetString = "target=\"main\">"
     end = index($0, targetString)
+    if (end == 0) {
+        targetString=".xml\">"
+        end = index($0, targetString)
+    }
     endTarget = end + length(targetString)
     closeTag = index($0, "</a>")
 
     description = substr($0, endTarget, closeTag - endTarget)
 
-    print "demoLink(\"" indent "\", \"" url "\", \"" description "\");"
+    if (length(description) > 0) {
+        print "demoLink(\"" indent "\", \"" url "\", \"" description "\");"
+    }
 }' $toc
 
 echo "</script>"
