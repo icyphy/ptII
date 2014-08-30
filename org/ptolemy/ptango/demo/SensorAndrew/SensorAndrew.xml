@@ -11,14 +11,16 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-335.0, -170.0]">
         </property>
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/SensorAndrew">
+        </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1073, 949}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1067, 956}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 839]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5633961352528757">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-204.1347656249999, 519.2480468750001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-204.1347656249999, 519.2480468750003}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">

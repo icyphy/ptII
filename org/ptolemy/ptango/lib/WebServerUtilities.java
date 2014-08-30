@@ -516,7 +516,7 @@ public class WebServerUtilities {
                             ResourceCollection resources = (ResourceCollection) 
                                     handler.getBaseResource();
 
-                            for (FileResource resource : appInfo
+                            for (Resource resource : appInfo
                                     .getResourceInfo().get(path)) {
                                 if (!resource.isContainedIn(resources)) {
                                     // Jetty doesn't seem to offer a method
@@ -531,7 +531,7 @@ public class WebServerUtilities {
                                     newResources.add(resource);
                                     resources
                                             .setResources(newResources
-                                                    .toArray(new FileResource[newResources
+                                                    .toArray(new Resource[newResources
                                                             .size()]));
 
                                 }
@@ -553,7 +553,7 @@ public class WebServerUtilities {
                                     newResources.add(tempResource);
                                     resources
                                             .setResources(newResources
-                                                    .toArray(new FileResource[newResources
+                                                    .toArray(new Resource[newResources
                                                             .size()]));
                                 }
                             }
@@ -589,7 +589,7 @@ public class WebServerUtilities {
 
                     // Tell handler to search requested locations and temporary file
                     // location (if any) for files
-                    ArrayList<FileResource> resources = new ArrayList<FileResource>();
+                    ArrayList<Resource> resources = new ArrayList<Resource>();
                     resources.addAll(appInfo.getResourceInfo().get(path));
 
                     if (appInfo.getTemporaryFileLocation() != null
@@ -626,7 +626,7 @@ public class WebServerUtilities {
                         ResourceCollection collection 
                             = new ResourceCollection();
                         collection.setResources(resources
-                                .toArray(new FileResource[resources.size()]));
+                                .toArray(new Resource[resources.size()]));
                         
                         resourceHandler.setBaseResource(collection);
 

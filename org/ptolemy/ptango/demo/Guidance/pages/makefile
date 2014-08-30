@@ -46,8 +46,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	index.html \
-	labFloorplan.png 
+	index.html 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{509.00392587939695, 229.20116206030153}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{529.6173052763819, 233.72722989949756}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
@@ -269,31 +269,6 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
-    <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Map.xml">
-        </property>
-        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 725.0]">
-        </property>
-        <port name="result" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{sensors=arrayType({x=double,y=double,name=string,value=double}), values=arrayType({x=double,y=double,value=double})}">
-            </property>
-        </port>
-        <port name="lights" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="sensors" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
@@ -859,6 +834,31 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 515.0]">
         </property>
     </entity>
+    <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Map.xml">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 725.0]">
+        </property>
+        <port name="lights" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="sensors" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="result" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{sensors=arrayType({x=double,y=double,name=string,value=double}), values=arrayType({x=double,y=double,value=double})}">
+            </property>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[260.0, 415.0]">
         </vertex>
@@ -908,10 +908,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[160.0, 705.0]">
         </vertex>
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
@@ -965,13 +961,13 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HttpActor.response" relation="relation9"/>
     <link port="HttpActor.getRequestURI" relation="relation7"/>
@@ -997,16 +993,13 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
     <link port="FileReader.trigger" relation="relation7"/>
     <link port="MicrostepDelay.input" relation="relation8"/>
     <link port="MicrostepDelay.output" relation="relation9"/>
-    <link port="VisualModelReference.result" relation="relation26"/>
-    <link port="VisualModelReference.lights" relation="relation14"/>
-    <link port="VisualModelReference.sensors" relation="relation27"/>
     <link port="MicrostepDelay3.input" relation="relation11"/>
     <link port="MicrostepDelay3.output" relation="relation12"/>
     <link port="TokenToJSON2.input" relation="relation26"/>
     <link port="TokenToJSON2.output" relation="relation11"/>
-    <link port="Const3.output" relation="relation14"/>
+    <link port="Const3.output" relation="relation27"/>
     <link port="Const3.trigger" relation="relation13"/>
-    <link port="Const4.output" relation="relation27"/>
+    <link port="Const4.output" relation="relation28"/>
     <link port="Const4.trigger" relation="relation13"/>
     <link port="MicrostepDelay4.input" relation="relation17"/>
     <link port="MicrostepDelay4.output" relation="relation18"/>
@@ -1030,4 +1023,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
     <link port="Const5.trigger" relation="relation15"/>
     <link port="TokenToJSON3.input" relation="relation16"/>
     <link port="TokenToJSON3.output" relation="relation17"/>
+    <link port="ModelReference.lights" relation="relation27"/>
+    <link port="ModelReference.sensors" relation="relation28"/>
+    <link port="ModelReference.result" relation="relation26"/>
 </entity>

@@ -49,7 +49,8 @@ OTHER_FILES_TO_BE_JARED = \
 	Guidance.xml \
 	GuidanceSingleUserWithName.xml \
 	IndoorLocalizationMap.xml \
-	IndoorLocalizationMapSingleUser.xml  
+	IndoorLocalizationMapSingleUser.xml  \
+	labFloorplan.png
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

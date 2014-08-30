@@ -35,7 +35,7 @@ import java.util.Set;
 
 import javax.servlet.Servlet;
 
-import org.eclipse.jetty.util.resource.FileResource;
+import org.eclipse.jetty.util.resource.Resource;
 
 import ptolemy.data.expr.FileParameter;
 
@@ -96,7 +96,7 @@ public class WebApplicationInfo {
 
         // Initialize lists
         _servletInfo = new HashMap<URI, Servlet>();
-        _resourceInfo = new HashMap<URI, HashSet<FileResource>>();
+        _resourceInfo = new HashMap<URI, HashSet<Resource>>();
 
     }
 
@@ -156,7 +156,7 @@ public class WebApplicationInfo {
      * a servlet, or if the resource does not exist
      */
     public void addResourceInfo(URI resourcePath,
-            Set<FileResource> resourceLocations) throws Exception {
+            Set<Resource> resourceLocations) throws Exception {
         if (resourcePath == null || _servletInfo.containsKey(resourcePath)
                 || resourceLocations == null || resourceLocations.isEmpty()) {
             throw new Exception("Duplicate path requested by a resource, "
@@ -164,7 +164,7 @@ public class WebApplicationInfo {
                     + " . Please check servlet paths for matches.");
         }
 
-        for (FileResource resource : resourceLocations) {
+        for (Resource resource : resourceLocations) {
             if (!resource.exists()) {
                 throw new Exception("Resource " + resource.getName()
                         + " does not exist. Please check the path and "
@@ -212,7 +212,7 @@ public class WebApplicationInfo {
      *
      * @return The set of resource paths and their associated locations
      */
-    public HashMap<URI, HashSet<FileResource>> getResourceInfo() {
+    public HashMap<URI, HashSet<Resource>> getResourceInfo() {
         return _resourceInfo;
     }
 
@@ -397,7 +397,7 @@ public class WebApplicationInfo {
      *
      * See also comments in {@link org.ptolemy.ptango.lib.WebServer}
      */
-    private HashMap<URI, HashSet<FileResource>> _resourceInfo;
+    private HashMap<URI, HashSet<Resource>> _resourceInfo;
 
     /** A map associating servlet paths with servlets.
      *

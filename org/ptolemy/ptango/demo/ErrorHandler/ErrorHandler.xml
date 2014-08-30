@@ -4,7 +4,7 @@
 <entity name="ErrorHandler" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 929, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 923, 622}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 505]">
     </property>
@@ -13,9 +13,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 252.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ErrorHandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/errorhandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/ErrorHandler#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/errorhandler#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -120,7 +120,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 370, 934, 635}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 63, 928, 641}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -204,7 +204,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 50.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 254, 1463, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-297, 149, 1457, 615}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1229, 497]">
             </property>
@@ -239,7 +239,7 @@
                 </property>
             </entity>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -314,7 +314,7 @@
                 </property>
             </entity>
             <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -408,7 +408,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 170.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 345, 1601, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-317, 149, 1595, 631}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1367, 514]">
             </property>
@@ -437,7 +437,7 @@
                 </property>
             </port>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -508,7 +508,7 @@
                 </property>
             </entity>
             <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -627,7 +627,7 @@
         <link port="error2.error" relation="errorRelation"/>
     </entity>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/ErrorHandler/*">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/errorhandler/*">
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>

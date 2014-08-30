@@ -46,6 +46,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+    livingroom.png \
 	Map.xml \
 	SmartRoom.xml 
 

@@ -3,6 +3,15 @@
 <head>
 <!-- Use HTML5 tags.  Use charset utf-8 to support extended character set -->
 <meta charset="utf-8"/>
+
+<!-- Disable image caching, since a new map is created for each request 
+     http://stackoverflow.com/questions/728616/disable-cache-for-some-images -->
+<meta Http-Equiv="Cache-Control" Content="no-cache">
+<meta Http-Equiv="Pragma" Content="no-cache">
+<meta Http-Equiv="Expires" Content="0">
+<meta Http-Equiv="Pragma-directive: no-cache">
+<meta Http-Equiv="Cache-directive: no-cache">
+
 <title>UCB Power Consumption Map</title>
 
 <!--  Can omit "type" attribute for stylesheets and scripts in HTML5 -->
@@ -452,7 +461,7 @@ for three UC Berkeley buildings.  </p>
 <td>
 (millisec:) </td> <td> <input type="text" name="dateEnd" id="endMSec" /> </td>
 </tr>
-<tr><td> (Note: Latest online data is from 6 months ago) </td></tr>
+<tr><td> (Note: Latest online data is from 6 months ago for some sources) </td></tr>
 </table>
 </div>
 <div> <p>

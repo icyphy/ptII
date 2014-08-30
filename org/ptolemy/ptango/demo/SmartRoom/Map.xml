@@ -2,17 +2,17 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Map" class="ptolemy.actor.TypedCompositeActor">
-    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="pages/livingroom.png">
+    <property name="Image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/SmartRoom/livingroom.png">
         </property>
-        <property name="scale" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 0.0}">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 15, 1287, 615}, maximized=false}">
     </property>
@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.648074369189907">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{784.3206967213116, 361.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{784.320696721311, 361.4999999999997}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -320,36 +320,50 @@
     </property>
     <port name="blocksHigh" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 220.0}">
         </property>
     </port>
     <port name="blocksWide" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 305.0}">
         </property>
     </port>
     <port name="blockHeight" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 250.0}">
         </property>
     </port>
     <port name="blockWidth" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 335.0}">
         </property>
     </port>
     <port name="result" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 160.0}">
         </property>
     </port>
     <port name="lights" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 95.0}">
         </property>
     </port>
     <port name="sensors" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 125.0}">
         </property>
     </port>

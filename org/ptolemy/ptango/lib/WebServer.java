@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.eclipse.jetty.util.resource.FileResource;
+import org.eclipse.jetty.util.resource.Resource;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.IntToken;
@@ -417,7 +417,8 @@ public class WebServer extends AbstractInitializableAttribute {
         // Specify directories or URLs in which to look for resources.
         // These are given by all instances of FileParameter in this
         // WebServer. Use a LinkedHashSet to preserve the order.
-        LinkedHashSet<FileResource> resourceLocations = new LinkedHashSet<FileResource>();
+        LinkedHashSet<Resource> resourceLocations = 
+                new LinkedHashSet<Resource>();
         List<FileParameter> bases = attributeList(FileParameter.class);
         // To prevent duplicates, keep track of bases added
         // This set includes the temporary file location
@@ -470,13 +471,15 @@ public class WebServer extends AbstractInitializableAttribute {
                         if (_debugging) {
                             _debug("Adding resource location: " + baseAsURL);
                         }
-                        System.out.println("baseAsURL: " + baseAsURL);
-                        resourceLocations.add(new FileResource(baseAsURL));
+
+                        // Use Resource.newResource() to support WebStart
+                        // http://67-23-9-112.static.slicehost.net/faq?s=960-WebStart&t=Eclipse
+                        resourceLocations.add(Resource.newResource(baseAsURL));
                     }
-                } catch (URISyntaxException e2) {
+               /* } catch (URISyntaxException e2) {
                     throw new IllegalActionException(this,
                             "Resource base is not a valid URI: "
-                                    + base.stringValue());
+                                    + base.stringValue()); */
                 } catch (IOException e3) {
                     throw new IllegalActionException(this,
                             "Can't access resource base: " + base.stringValue());

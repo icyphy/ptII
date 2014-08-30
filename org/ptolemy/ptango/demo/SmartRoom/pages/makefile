@@ -49,8 +49,7 @@ OTHER_FILES_TO_BE_JARED = \
 	berkeley.css \
 	common.css \
 	heatmap.js \
-	index.html \
-	livingroom.png
+	index.html 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 
