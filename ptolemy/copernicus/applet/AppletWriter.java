@@ -1513,6 +1513,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtVonMises", coltJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", coltJar);
 
+        String fmiJar = "ptolemy/actor/lib/fmi/fmi.jar";
+        auxiliaryJarMap.put("ptolemy.actor.lib.fmi.FMUImport", fmiJar);
+
         String gtJar = "ptolemy/actor/gt/gt.jar";
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelGenerator", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
@@ -1523,6 +1526,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 gtJar);
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
+
+        String javaScriptJar = "ptolemy/actor/lib/js/js.jar";
+        auxiliaryJarMap.put("ptolemy.actor.lib.js.JavaScript", javaScriptJar);
 
         String jniJar = "ptolemy/actor/jni/jni.jar";
         auxiliaryJarMap.put("ptolemy.actor.jni.CompiledCompositeActor", jniJar);
@@ -1678,6 +1684,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put("distributed sdf.jar needs client.jar",
                     "ptolemy/distributed/client/client.jar");
         }
+
+        if (jarFilesThatHaveBeenRequired.contains(fmJar)) {
+            auxiliaryClassMap.put("fmi needs lib/jna-4.0.0-variadic.jar",
+                    "lib/jna-4.0.0-variadic.jar");
+        }
+
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
                 || jarFilesThatHaveBeenRequired
                         .contains("ptolemy/domains/ptera/ptera.jar")) {
@@ -1712,6 +1724,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             _configurationName = "-fullViewer";
         }
+
+        if (jarFilesThatHaveBeenRequired.contains(javaScriptJar)) {
+            auxiliaryClassMap.put("actor/lib/js/js.jar needs lib/js.jar",
+                    "lib/js.jar");
+            auxiliaryClassMap.put("actor/lib/js/js.jar needs lib/*oath2.client*.jar",
+                    "lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar");
+            auxiliaryClassMap.put("actor/lib/js/js.jar needs lib/*oath2.common*.jar",
+                    "lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar");
+            auxiliaryClassMap.put("actor/lib/js/js.jar needs lib/socketio.jar",
+                    "lib/socketio.jar");
+        }
+
 
         if (jarFilesThatHaveBeenRequired.contains(jniJar)) {
             auxiliaryClassMap.put("jni jar needs codegen jar",
