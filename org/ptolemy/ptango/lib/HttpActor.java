@@ -1030,7 +1030,10 @@ ExceptionSubscriber {
 
                 // Set the content length (enables persistent
                 // connections) and send the buffer
-                writer.println(_response.response);
+                // Use print rather than println to prevent an extra \n on the response.
+                writer.print(_response.response);
+                // Printwriter only flushes println() automatically. So force a flush.
+                writer.flush();
                 response.setContentLength(bytes.size());
                 bytes.writeTo(response.getOutputStream());
 
