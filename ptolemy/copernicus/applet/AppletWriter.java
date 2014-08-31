@@ -1685,7 +1685,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/distributed/client/client.jar");
         }
 
-        if (jarFilesThatHaveBeenRequired.contains(fmJar)) {
+        if (jarFilesThatHaveBeenRequired.contains(fmiJar)) {
+            auxiliaryClassMap.put("fmi needs org/ptolemy/fmi/fmi.jar",
+                    "org/ptolemy/fmi/fmi.jar");
             auxiliaryClassMap.put("fmi needs lib/jna-4.0.0-variadic.jar",
                     "lib/jna-4.0.0-variadic.jar");
         }
