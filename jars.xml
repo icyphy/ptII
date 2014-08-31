@@ -5938,6 +5938,7 @@
          destfile="${basedir}/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/demo/FMUBouncingBall/*.fmu"/>
         <include name="ptolemy/actor/lib/fmi/demo/FMUBouncingBall/*.xml"/>
        </fileset>
     </jar>
@@ -5946,6 +5947,7 @@
          destfile="${basedir}/ptolemy/actor/lib/fmi/demo/FMULevelStairs/FMULevelStairs.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/test/auto/levelStairs.fmu"/>
         <include name="ptolemy/actor/lib/fmi/demo/FMULevelStairs/*.xml"/>
        </fileset>
     </jar>
@@ -5954,6 +5956,7 @@
          destfile="${basedir}/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX.jar"
          >
        <fileset dir="${basedir}">
+	<include name="ptolemy/demo/ElectricPowerSystem/Gen_Ctrl_Load.fmu"/>
         <include name="ptolemy/actor/lib/fmi/demo/FMUSimulationX/*.xml"/>
        </fileset>
     </jar>
@@ -5962,6 +5965,8 @@
          destfile="${basedir}/ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/lib/fmi/test/auto/stairsA.fmu"/>
+        <include name="ptolemy/actor/lib/fmi/test/auto/stairsB.fmu"/>
         <include name="ptolemy/actor/lib/fmi/demo/FMUStairs/*.xml"/>
        </fileset>
     </jar>
@@ -5970,6 +5975,9 @@
          destfile="${basedir}/ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.jar"
          >
        <fileset dir="${basedir}">
+	<include name="doc/papers/y14/constructive/models/BallDynamics.xml"/>
+	<include name="doc/papers/y14/constructive/models/CalculateImpulsiveForce.xml"/>
+	<include name="ptolemy/actor/lib/fmi/test/auto/ballDynamics.fmu"/>
         <include name="ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/*.xml"/>
        </fileset>
     </jar>
