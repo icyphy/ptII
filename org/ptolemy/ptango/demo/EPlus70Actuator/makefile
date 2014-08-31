@@ -1,4 +1,4 @@
-# Makefile for Ptolemy model that runs Energy Plus.
+# Makefile for the demo of an HVAC system using EnergyPlus.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -46,8 +46,15 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+    bcvtb-license.htm \
 	EMSWindowShadeControl.idf \
+	energyplus-license.htm \
+	energyplus-license.pdf \
 	EPlus70Actuator.xml \
+	EPlus70ActuatorResult.html \
+	USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.ddy \
+	USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw \
+	USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.stat \
 	variables.cfg 
 
 EXTRA_SRCS = \

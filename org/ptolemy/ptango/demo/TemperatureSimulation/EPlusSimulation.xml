@@ -115,7 +115,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 295.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 57, 1272, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 36, 1272, 615}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1044, 498]">
     </property>
@@ -213,7 +213,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE1: Using Chicago weather data files until&#10;Pittsburgh files are loaded onto ptango sever.&#10;&#10;NOTE2:  The weather data files&#10;USA_PA_Pittsburgh.Intl.AP.725200_TMY.*&#10;must be copied to your $EnergyPlus/WeatherData &#10;directory, where $EnergyPlus is the directory &#10;EnergyPlus is installed &#10;&#10;Unfortunately the Simulator actor prepends the&#10;current directory when using a long file name,&#10;and short file names default to the &#10;$EnergyPlus/WeatherData directory">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE1: Using Chicago weather data files until&#10;Pittsburgh files are loaded onto ptango sever.&#10;&#10;NOTE2:  To use Pittsburgh data, the files&#10;USA_PA_Pittsburgh.Intl.AP.725200_TMY.*&#10;must be copied to your $EnergyPlus/WeatherData &#10;directory, where $EnergyPlus is the directory &#10;EnergyPlus is installed &#10;&#10;Unfortunately the Simulator actor prepends the&#10;current directory when using a long file name,&#10;and short file names default to the &#10;$EnergyPlus/WeatherData directory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 60.0]">
         </property>
@@ -295,22 +295,26 @@ This is for illustration purposes only and not needed by the above model.</text>
     </property>
     <port name="trigger" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 305.0}">
         </property>
     </port>
     <port name="done" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 335.0}">
         </property>
     </port>
     <port name="TRooHigCoo" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 115.0}">
         </property>
     </port>
     <entity name="RunTime" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;25.498 seconds&quot;">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -328,8 +332,6 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
     </entity>
     <entity name="SimulationTime" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;1 days&quot;">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>

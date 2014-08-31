@@ -1,4 +1,4 @@
-# Makefile for files for the ptango OptimizationAdvisor demo.
+# Makefile for files for the ptango BlinkyLight demo.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/OptimizationAdvisor/files
+ME =		org/ptolemy/ptango/demo/BlinkyLight/pages
 
 DIRS =	
 
@@ -41,14 +41,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	files
+PTPACKAGE = 	pages
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	dygraphsJS.html \
-	intro.html \
-	template.html
+	blinkylight.css \
+	blinkylight.html \
+	blinkylight.js \
+	livingroom.png \
+	PtolemyIISmallIcon.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

@@ -49,15 +49,22 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Include these jars in PTAUXALLJAR
 # (Copied syntax from \ptolemy\demo )
 PTAUXALLJARS = \
+    BlinkyLight/BlinkyLight.jar \
+    Chat/Chat.jar \
 	Cookies/Cookies.jar \
+	DOPpresence/DOPpresence.jar \
 	EPlus70Actuator/EPlus70Actuator.jar \
 	ErrorHandler/ErrorHandler.jar \
+	Exception/Exception.jar \
 	files/files.jar \
 	Guidance/Guidance.jar \
+	OccupancyAlert/OccupancyAlert.jar \
 	OptimizationAdvisor/OptimizationAdvisor.jar \
+	SensorAndrew/SensorAndrew.jar \
 	SmartRoom/SmartRoom.jar \
-	UCBPower/UCBPower.xml \
-	UCBPowerPtera/UCBPowerPtera.xml \
+	TemperatureSimulation/TemperatureSimulation.jar \
+	UCBPower/UCBPower.jar \
+	UCBPowerPtera/UCBPowerPtera.jar \
 	WebServerDE/WebServerDE.jar 
 
 PTAUXALLJAR = $(PTPACKAGE).jar

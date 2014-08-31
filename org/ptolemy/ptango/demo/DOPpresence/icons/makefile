@@ -1,4 +1,4 @@
-# Makefile for files for the ptango OptimizationAdvisor demo.
+# Makefile for files for the ptango DOP presence demo.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/OptimizationAdvisor/files
+ME =		org/ptolemy/ptango/demo/DOPpresence/icons
 
 DIRS =	
 
@@ -41,14 +41,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	files
+PTPACKAGE = 	icons
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	dygraphsJS.html \
-	intro.html \
-	template.html
+	door.pdf \
+	kiosk.pdf \
+	notify.pdf \
+	police.pdf
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

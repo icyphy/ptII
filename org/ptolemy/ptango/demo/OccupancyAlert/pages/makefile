@@ -1,4 +1,4 @@
-# Makefile for files for the ptango OptimizationAdvisor demo.
+# Makefile for demo that issues alerts if elevator is occupied and power is out.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/OptimizationAdvisor/files
+ME =		org/ptolemy/ptango/demo/OccupancyAlert/pages
 
 DIRS =	
 
@@ -41,14 +41,25 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	files
+PTPACKAGE = 	pages
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	dygraphsJS.html \
-	intro.html \
-	template.html
+	admin.html \
+	admin.js \
+	banr2.jpg \
+	berkeley-text.gif \
+	berkeley.css \
+	index.js \
+	liveadmin.html \
+	liveadmin.js \
+	map.html \
+	map.js \
+	occupancy.css \
+	occupancy.html \
+	SwarmLabFloorPlan.svg \
+	SwarmLabXMLToText.xsl
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

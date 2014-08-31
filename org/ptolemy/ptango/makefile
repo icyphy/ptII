@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS =  doc lib test #demo
+DIRS =  demo doc lib test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -52,9 +52,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	doc/doc.jar \
-	lib/lib.jar 
-
-#	demo/demo.jar
+	lib/lib.jar \
+	demo/demo.jar
 
 OTHER_FILES_TO_BE_JARED = \
 	jettysandbox.policy

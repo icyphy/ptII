@@ -1,4 +1,4 @@
-# Makefile for files for the ptango OptimizationAdvisor demo.
+# Makefile for Ptolemy model of a light / sensor web service
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -29,26 +29,24 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/OptimizationAdvisor/files
+ME =		org/ptolemy/ptango/demo/BlinkyLight
 
-DIRS =	
+DIRS =	pages
 
 # Root of Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	files
+PTPACKAGE = 	BlinkyLight
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	dygraphsJS.html \
-	intro.html \
-	template.html
+	BlinkyLight.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

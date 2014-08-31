@@ -46,14 +46,22 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	berkeley.css \
-	cmu.css \
-	common.css \
+	banr2.jpg \
+	berkeley-text.gif \
+	berkeleyeplus.css \
+	carnegiemellon-logo.gif \
+	cmueplus.css \
+	commoneplus.css \
 	index.html \
+	index.js \
+	onlinegraphs.html \
 	scaifefloor2.png \
 	sensorandrew.js \
 	strophe-license.js \
 	strophe.js \
+	temperature21setpoint.csv \
+	temperature23setpoint.csv \
+	temperature25setpoint.csv \
 	tempmap.js
 
 EXTRA_SRCS = \

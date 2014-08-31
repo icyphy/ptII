@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/ptango/demo/DOPpresence
 
-DIRS =	
+DIRS =	icons pages
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..

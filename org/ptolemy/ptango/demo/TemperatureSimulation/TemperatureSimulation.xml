@@ -4,7 +4,7 @@
 <entity name="TemperatureSimulation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1048, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1042, 641}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[814, 524]">
     </property>
@@ -13,15 +13,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.0, 262.0}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 60.0]">
         </property>
-        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/pages">
+        <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/eplus&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/eplus&#10;&#10;The web service simulates the temperature of rooms in&#10;Carnegie Mellon University's Scaife Hall using EnergyPlus&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/eplus#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -56,7 +56,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run EnergyPlus simulation with the POSTed setpoint&#10;Output is written to pages/temperatures.csv">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 300.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -64,7 +64,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 500.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -72,13 +72,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes a model that requires&#10;EnergyPlus.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/eplus">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 310.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -91,7 +91,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 470.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -106,7 +106,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 470.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -123,11 +123,11 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/onlinegraphs.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 200}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 290.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 215.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -141,7 +141,7 @@
         </port>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 355.0]">
         </property>
         <port name="setpoint" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -150,7 +150,7 @@
         </port>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 395.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -163,7 +163,7 @@
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 385.0]">
         </property>
         <port name="modelFileOrURL" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
