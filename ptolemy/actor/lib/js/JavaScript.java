@@ -883,6 +883,10 @@ public class JavaScript extends TypedAtomicActor {
          *  @return The buffered inputs.
          */
         public Object get(NativeJavaObject portWrapper, Double channel) {
+        	if (portWrapper == null) {
+                throw new InternalErrorException(JavaScript.this, null,
+                        "Invalid (null) port argument to get(port, channel).");
+        	}
             // In JavaScript, all numbers are doubles. So we have to convert
             // to an integer.
             int channelNumber = 0;
@@ -898,7 +902,7 @@ public class JavaScript extends TypedAtomicActor {
                     channelNumber = channel.intValue();
                 } else {
                     throw new InternalErrorException(JavaScript.this, null,
-                            "Second argument to send(port, channel) is required to be an integer. Got "
+                            "Second argument to get(port, channel) is required to be an integer. Got "
                                     + channel);
                 }
             }
@@ -1192,7 +1196,8 @@ public class JavaScript extends TypedAtomicActor {
         /** Read the specified URL and return its contents.
          *  @param url The URL to read.
          *  @return The content of the URL.
-         *  @exception IOException If the specified URL can't be read.
+         *  @exception IOException If the specified URL can't be read (that is, a response code
+         *   was received that is not in the range 
          */
         public String readURL(String url) throws IOException {
             // FIXME: We should have a version that takes a callback function
@@ -1210,8 +1215,12 @@ public class JavaScript extends TypedAtomicActor {
             HttpRequest request = new HttpRequest();
             request.setUrl(new URL(url));
 
-            // TODO: Any action in case of error?
             HttpResponse response = request.execute();
+            if (!response.isSuccessful()) {
+            	throw new IOException("Failed to read URL: " + url +
+            			"\nResponse code: " + response.getResponseCode() +
+            			"\nResponse message: " + response.getResponseMessage());
+            }
             return response.getBody();
         }
 
