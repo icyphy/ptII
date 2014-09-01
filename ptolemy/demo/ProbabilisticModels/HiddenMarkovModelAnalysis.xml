@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2000">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -23,11 +23,11 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulation of a three-state Hidden Markov Model with Gaussian emissions.&#10;The Observation Sequence plot displays the generated samples that are drawn from a&#10;Gaussian distribution. The mean and standard deviation of the observed variable&#10;depends on the hidden state. The initial probability distribution over the hidden states&#10;is specified by immediate transitions from an init state to the three hidden states.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
         </property>
     </property>
     <entity name="Switch" class="ptolemy.actor.lib.Switch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 185.0}">
         </property>
     </entity>
     <entity name="Histogram" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -43,7 +43,7 @@
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 195.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -52,8 +52,8 @@
 <title>Empirical Histograms of Latent Distributions</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-7.1000000000000005" max="5.6"/>
-<yRange min="0.0" max="108.0"/>
+<xRange min="-6.700000000000001" max="4.8"/>
+<yRange min="0.0" max="7.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
@@ -64,7 +64,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[623, 385]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 310.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -73,8 +73,8 @@
 <title>Observed Variable</title>
 <xLabel>n</xLabel>
 <yLabel>x(n)</yLabel>
-<xRange min="0.0" max="1999.0"/>
-<yRange min="-7.005743778396349" max="5.496285987511074"/>
+<xRange min="0.0" max="99.0"/>
+<yRange min="-6.666584653577114" max="4.703368446319864"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -82,7 +82,7 @@
     <entity name="HMM" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 300.0}">
         </property>
         <port name="p" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -91,8 +91,6 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="errorCause" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -161,7 +159,7 @@
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{489.52879333496094, 305.74804687500006}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{489.5287933349609, 305.74804687500006}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A: Transition Probability Matrix&#10;pi: Prior Probability Distribution&#10;m: Vector of means. &#10;sigma: Vector of standard deviations&#10;&#10;At state i, samples are distributed according to Y ~ N( m(i), sigma(i)">
@@ -378,7 +376,7 @@
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="m(0)">
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -449,7 +447,7 @@
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="m(1)">
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -520,7 +518,7 @@
                 </property>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="m(2)">
                 </property>
                 <doc>Create a constant sequence.</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -578,7 +576,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=195.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=305.0,y=195.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -586,17 +584,17 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=195.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=305.0,y=195.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{105.0, 185.0}">
+        <vertex name="vertex1" value="{105.0, 240.0}">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HMM.p&quot;,x=35.0,y=265.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=185.0}, points={85.0,255.0,85.0,185.0} },{ head={id=&quot;Switch.input&quot;,x=195.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=185.0}, points={} },{ head={id=&quot;observation sequence.input&quot;,x=145.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=185.0}, points={105.0,120.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HMM.p&quot;,x=35.0,y=300.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=240.0}, points={85.0,290.0,85.0,240.0} },{ head={id=&quot;Switch.input&quot;,x=150.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=240.0}, points={105.0,185.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -604,20 +602,27 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=195.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=305.0,y=195.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[110.0, 310.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=105.0,y=310.0}, tail={id=&quot;.Scale.input&quot;,x=155.0,y=310.0}, points={} } }">
+        </property>
     </relation>
     <link port="Switch.input" relation="relation5"/>
     <link port="Switch.output" relation="relation3"/>
     <link port="Switch.output" relation="relation4"/>
     <link port="Switch.output" relation="relation2"/>
-    <link port="Switch.control" relation="relation"/>
+    <link port="Switch.control" relation="relation6"/>
     <link port="Histogram.input" relation="relation3"/>
     <link port="Histogram.input" relation="relation4"/>
     <link port="Histogram.input" relation="relation2"/>
     <link port="observation sequence.input" relation="relation5"/>
+    <link port="observation sequence.input" relation="relation6"/>
     <link port="HMM.p" relation="relation5"/>
-    <link port="HMM.state" relation="relation"/>
+    <link port="HMM.state" relation="relation6"/>
 </entity>

@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 1399, 878}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1403, 878}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1165, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1169, 768]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1816487839335517">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{487.723898210752, 307.919921875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{489.41644850758576, 307.919921875}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a model of a point source transmitting data over different channel characteristics.&#10;The Receiver actor has five identical instances, each receiving the same data sequence over&#10;different channels with fault characteristics.&#10;&#10;Two types of faults have been defined: &#10;Stuck-At Fault: The channel gets stuck at a certain value with some probability&#10;during each token transfer and if it gets stuck, it repeats the last healthy value from then on.&#10;&#10;Packet Drop: For each packet that is transmitted, the packet gets dropped with some probability.&#10;">
