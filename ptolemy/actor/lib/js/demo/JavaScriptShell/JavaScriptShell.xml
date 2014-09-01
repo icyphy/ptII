@@ -4,31 +4,39 @@
 <entity name="JavaScriptShell" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 398, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 398, 988, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[754, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2825278810408922">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.9999999999997, 187.2800384963768}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.0, 262.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.12905883789062, 56.4215087890625]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[149.12905883789062, 26.4215087890625]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[29.129058837890625, 236.4215087890625]">
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 22, 654, 388}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[84.12905883789062, 141.4215087890625]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -42,7 +50,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[379.1290588378906, 191.4215087890625]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -69,13 +77,13 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 90.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[399.1290588378906, 131.4215087890625]">
         </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 90.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.1290588378906, 131.4215087890625]">
         </property>
         <port name="script" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -225,7 +233,7 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 90.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[244.12905883789062, 131.4215087890625]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

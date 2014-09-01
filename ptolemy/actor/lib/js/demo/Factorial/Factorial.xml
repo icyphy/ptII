@@ -24,6 +24,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 25.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 175.0]">
+        </property>
+    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var value = get(input);&#10;  if (value &lt; 0) {&#10;     error(&quot;Input must be greater than or equal to 0.&quot;);&#10;  } else {&#10;     var total = 1;&#10;     while(value &gt; 1) {&#10;       total *= value;&#10;       value--;&#10;     }&#10;     send(total, output);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">

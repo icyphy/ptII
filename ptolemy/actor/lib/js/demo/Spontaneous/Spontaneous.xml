@@ -42,6 +42,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 310.0]">
         </property>
     </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 380.0]">
+        </property>
+    </property>
     <entity name="Spontaneous" class="ptolemy.actor.lib.js.JavaScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function initialize() {&#10;  function schedule() {&#10;    setTimeout(function() {&#10;      send(true, tick);&#10;      schedule();&#10;    }, 2000);&#10;  };&#10;  schedule();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
