@@ -46,6 +46,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	graphs.html \
+	graphs.js \
+	strophe-license.htm \
+	temperatures21setpoint.csv \
+	temperatures23setpoint.csv \
+	temperatures25setpoint.csv \
 	banr2.jpg \
 	berkeley-text.gif \
 	berkeleyeplus.css \
@@ -57,11 +63,11 @@ OTHER_FILES_TO_BE_JARED = \
 	onlinegraphs.html \
 	scaifefloor2.png \
 	sensorandrew.js \
-	strophe-license.js \
+	strophe-license.htm \
 	strophe.js \
-	temperature21setpoint.csv \
-	temperature23setpoint.csv \
-	temperature25setpoint.csv \
+	temperatures21setpoint.csv \
+	temperatures23setpoint.csv \
+	temperatures25setpoint.csv \
 	tempmap.js
 
 EXTRA_SRCS = \

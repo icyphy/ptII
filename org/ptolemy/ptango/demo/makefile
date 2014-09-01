@@ -29,8 +29,11 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = Cookies EPlus70Actuator ErrorHandler files Guidance OptimizationAdvisor \
-		SmartRoom UCBPower UCBPowerPtera WebServerDE
+DIRS = BlinkyLight Chat Cookies DOPpresence \
+	EPlus70Actuator ErrorHandler Exception files Guidance \
+	OccupancyAlert OptimizationAdvisor SensorAndrew \
+	SmartRoom TemperatureSimulation \
+	UCBPower UCBPowerPtera WebServerDE
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -44,13 +47,13 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	demo
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include these jars in PTAUXALLJAR
 # (Copied syntax from \ptolemy\demo )
 PTAUXALLJARS = \
-    BlinkyLight/BlinkyLight.jar \
-    Chat/Chat.jar \
+	BlinkyLight/BlinkyLight.jar \
+	Chat/Chat.jar \
 	Cookies/Cookies.jar \
 	DOPpresence/DOPpresence.jar \
 	EPlus70Actuator/EPlus70Actuator.jar \
@@ -78,7 +81,7 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES = \
+OPTIONAL_FILES = $(DIRS)
 
 # Files to remove with 'make clean'
 KRUFT = \

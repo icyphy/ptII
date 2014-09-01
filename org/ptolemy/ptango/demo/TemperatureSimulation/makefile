@@ -45,18 +45,19 @@ PTPACKAGE = 	TemperatureSimulation
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
-OTHER_FILES_TO_BE_JARED = 
-    EPlusScaife.idf \
-    EPlusScaife.osm \ 
-    EPlusScaife.skp \
-    EPlusSimulation.xml \
-    FileServer.xml \
-    scaifethermalzones.png \
-    TemperatureSimulation.xml \
-    USA_PA_Pittsburgh.Intl.AP.725200_TMY3.ddy \
-    USA_PA_Pittsburgh.Intl.AP.725200_TMY3.epw \
-    USA_PA_Pittsburgh.Intl.AP.725200_TMY3.stat \
-    variables.cfg 
+OTHER_FILES_TO_BE_JARED = \
+	EPlusScaife.idf \
+	EPlusScaife.osm \
+	EPlusScaife.skp \
+	EPlusSimulation.xml \
+	FileServer.xml \
+	scaifethermalzones.png \
+	pages \
+	TemperatureSimulation.xml \
+	USA_PA_Pittsburgh.Intl.AP.725200_TMY3.ddy \
+	USA_PA_Pittsburgh.Intl.AP.725200_TMY3.epw \
+	USA_PA_Pittsburgh.Intl.AP.725200_TMY3.stat \
+	variables.cfg 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

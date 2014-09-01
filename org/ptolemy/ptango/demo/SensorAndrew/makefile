@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/ptango/demo/SensorAndrew
 
-DIRS =	pages
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -47,16 +47,17 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	SensorAndrew.xml \
-	SensorAndrewXMLToText.xsl 
+	SensorAndrewXMLtoText.xsl \
+	pages
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = pages
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = pages
 
 # Files to remove with 'make clean'
 KRUFT = \

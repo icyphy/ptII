@@ -1,9 +1,9 @@
-# Makefile for Ptolemy model that offers a text Ptolemnizer web service.
+# Makefile for Ptolemy model that offers exception handling strategies for web data.
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2011-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,9 +29,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/WebServerDE
+ME =		org/ptolemy/ptango/demo/Exception
 
-DIRS =	img pages
+DIRS =	
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -41,14 +41,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	WebServerDE
+PTPACKAGE = 	Exception
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	img \
-	pages \
-	WebServerDE.xml 
+	Exception.xml \
+	RestartExceptionManager.xml \
+	RestartFire.xml \
+	RestartInitialize.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

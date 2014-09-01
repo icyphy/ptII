@@ -236,11 +236,15 @@
     <include name="org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar" />
     <include name="org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar" />
     <include name="org/ptolemy/ptango/demo/Cookies/Cookies.jar" />
+    <include name="org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar" />
     <include name="org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar" />
     <include name="org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar" />
     <include name="org/ptolemy/ptango/demo/Guidance/Guidance.jar" />
+    <include name="org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar" />
     <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar" />
+    <include name="org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar" />
     <include name="org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar" />
+    <include name="org/ptolemy/ptango/demo/TemperatureSimulation.jar" />
     <include name="org/ptolemy/ptango/demo/UCBPower/UCBPower.jar" />
     <include name="org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar" />
     <include name="org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar" />
@@ -5727,6 +5731,20 @@
     </jar>
 
     <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/DOPpresence/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/DOPpresence/icons/*.pdf"/>
+        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.css"/>
+        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.gif"/>
+        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.js"/>
+        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.jpg"/>
+        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
          destfile="${basedir}org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar"
          >
        <fileset dir="${basedir}">
@@ -5754,6 +5772,21 @@
     </jar>
 
     <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.css"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.gif"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.jpg"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.js"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.svg"/>
+        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.xsl"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
          destfile="${basedir}org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar"
          >
        <fileset dir="${basedir}">
@@ -5763,11 +5796,45 @@
     </jar>
 
     <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/SensorAndrew/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/SensorAndrew/*.xsl"/>
+        <include name="org/ptolemy/ptango/demo/SensorAndrew/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
          destfile="${basedir}org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar"
          >
        <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/SmartRoom/*.png"/>
         <include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
         <include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.cfg"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.ddy"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.epw"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.idf"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.osf"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.png"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.skp"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.stat"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.csv"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.gif"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.htm"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.jpg"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.js"/>
+        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.png"/>
        </fileset>
     </jar>
 
@@ -5775,7 +5842,10 @@
          destfile="${basedir}org/ptolemy/ptango/demo/UCBPower/UCBPower.jar"
          >
        <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
         <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
         <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
        </fileset>
     </jar>
@@ -5784,7 +5854,9 @@
          destfile="${basedir}org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar"
          >
        <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.txt"/>
         <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/data/*.txt"/>
        </fileset>
     </jar>
 
@@ -5793,6 +5865,7 @@
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif"/>
         <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
        </fileset>
     </jar>

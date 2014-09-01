@@ -59,7 +59,7 @@ OTHER_FILES_TO_BE_JARED = \
 	occupancy.css \
 	occupancy.html \
 	SwarmLabFloorPlan.svg \
-	SwarmLabXMLToText.xsl
+	SwarmLabXMLtoText.xsl 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

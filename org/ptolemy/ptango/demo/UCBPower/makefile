@@ -46,11 +46,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	buildingsToXY \
 	buildings.txt \
 	buildingsCampusUUID.txt \
-	buildingsXtoY \
+	buildingsToXY \
 	buildingsUUID.txt \
-	DataReadingExample.xml \
+	data \
+	pages \
 	ucb_medium_map.png \
 	UCBPower.xml \
 	UCBPowerAnalyzerForServer.xml \
