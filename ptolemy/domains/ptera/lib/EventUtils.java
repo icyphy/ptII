@@ -34,7 +34,6 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.expr.ContainmentExtender;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
@@ -92,25 +91,13 @@ public class EventUtils {
      *  @return The effigy, or null if not found.
      *  @exception IllegalActionException If attributes cannot be retrieved, or
      *   the container that an attribute points to is invalid.
+     *  @deprecated Use ptolemy.actor.gui.Effigy.findToplevelEffigy() instead
      */
     public static Effigy findToplevelEffigy(NamedObj object)
             throws IllegalActionException {
-        NamedObj toplevel;
-        do {
-            toplevel = object.toplevel();
-            Effigy effigy = Configuration.findEffigy(toplevel);
-            if (effigy != null) {
-                return effigy;
-            }
-            ContainmentExtender extender = (ContainmentExtender) toplevel
-                    .getAttribute("_containmentExtender",
-                            ContainmentExtender.class);
-            object = toplevel;
-            if (extender != null) {
-                object = extender.getExtendedContainer();
-            }
-        } while (toplevel != object);
-        return null;
+        // actor.lib.hoc.ExecuteActor was calling this method in
+        // ptera.EventUtils, which meant that hoc depended on ptera.
+        return Effigy.findToplevelEffigy(object);
     }
 
     /** Get the tableau to be used by the event that requires a tableau in its

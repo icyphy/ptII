@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.data.expr.ContainmentExtender;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -244,6 +245,37 @@ public class Effigy extends CompositeEntity {
         }
 
         return true;
+    }
+
+    /** Find the effigy associated with the top level of the object, and if not
+     *  found but the top level has a ContainmentExtender attribute, use that
+     *  attribute to find the containment extender of the top level and continue
+     *  the search.
+     *
+     *  @param object The object.
+     *  @return The effigy, or null if not found.
+     *  @exception IllegalActionException If attributes cannot be retrieved, or
+     *   the container that an attribute points to is invalid.
+     */
+    public static Effigy findToplevelEffigy(NamedObj object)
+            throws IllegalActionException {
+        // FIXME: Should topEffigy call this method?
+        NamedObj toplevel;
+        do {
+            toplevel = object.toplevel();
+            Effigy effigy = Configuration.findEffigy(toplevel);
+            if (effigy != null) {
+                return effigy;
+            }
+            ContainmentExtender extender = (ContainmentExtender) toplevel
+                    .getAttribute("_containmentExtender",
+                            ContainmentExtender.class);
+            object = toplevel;
+            if (extender != null) {
+                object = extender.getExtendedContainer();
+            }
+        } while (toplevel != object);
+        return null;
     }
 
     /** Get a tableau factory that offers views of this effigy, or
@@ -506,6 +538,7 @@ public class Effigy extends CompositeEntity {
     public Effigy topEffigy() {
         Nameable container = getContainer();
 
+        // FIXME: Should topEffigy Effigy.findToplevelEffigy?
         if (container instanceof Effigy) {
             return ((Effigy) container).topEffigy();
         } else {
