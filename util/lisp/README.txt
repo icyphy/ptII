@@ -3,8 +3,6 @@ $Id$
 util/lisp/README.txt
 
 This directory contains GNU Emacs Lisp files
-gud.el	       Grand Unified Debugger, modified by
-	         Zoltan Kemenczy of Research In Motion Ltd.
 
 jindent.el     Used by $PTII/util/testsuite/jindent to indent java files
 ptemacs.el     Sample $HOME/.emacs file. To use this file, be sure
