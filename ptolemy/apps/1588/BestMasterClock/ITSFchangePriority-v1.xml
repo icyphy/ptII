@@ -79,7 +79,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, -25.0]">
         </property>
     </property>
-    <entity name="1588Clock" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 800.0]">
         </property>
@@ -138,19 +138,19 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -257,7 +257,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -302,7 +302,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 1, 1, 255}">
@@ -312,7 +312,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -320,7 +320,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 1, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -330,7 +330,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 5, 0, 8, 128, 128, 5, 0, 5, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -340,7 +340,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{8856, 13, 2, 1, 12, 128, 31, 2, 5, 4, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -506,7 +506,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -547,7 +547,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 2, 1, 255}">
@@ -557,7 +557,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 2, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -565,7 +565,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 5, 0, 8, 128, 128, 5, 0, 5, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -575,7 +575,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{37412, 20, 3, 1, 12, 128, 30, 46, 5, 1, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -733,7 +733,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -774,7 +774,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 3, 1, 255}">
@@ -784,7 +784,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 3, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -792,7 +792,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 5, 0, 8, 128, 128, 5, 0, 5, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -802,7 +802,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{37412, 20, 3, 1, 12, 128, 30, 46, 5, 1, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -960,7 +960,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1015,7 +1015,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 4, 1, 255}">
@@ -1025,7 +1025,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1033,7 +1033,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 5, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1043,7 +1043,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 5, 0, 8, 128, 128, 5, 0, 5, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1053,7 +1053,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{37412, 20, 3, 1, 12, 128, 30, 46, 5, 1, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -1220,7 +1220,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Clock5" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock5" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-185.0, 430.0]">
         </property>
@@ -1279,13 +1279,13 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1297,7 +1297,7 @@
                 <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1404,7 +1404,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -1435,7 +1435,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 1, 1, 255}">
@@ -1445,7 +1445,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 1, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -1453,7 +1453,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 10, 0, 14, 128, 128, 10, 0, 10, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -1463,7 +1463,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -1621,7 +1621,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{38629, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -1676,7 +1676,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 2, 1, 255}">
@@ -1686,7 +1686,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -1694,7 +1694,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 2, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -1704,7 +1704,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 10, 0, 14, 128, 128, 10, 0, 10, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -1714,7 +1714,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{9880, 14, 2, 1, 12, 128, 30, 49, 10, 4, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38588, 20, 4, 8, 128, 128, 5, 1, 10, 257, 0, 255}">
@@ -1880,7 +1880,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1935,7 +1935,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 3, 1, 255}">
@@ -1945,7 +1945,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1953,7 +1953,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 3, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -1963,7 +1963,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 10, 0, 14, 128, 128, 10, 0, 10, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -1973,7 +1973,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -2139,7 +2139,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2194,7 +2194,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 4, 1, 255}">
@@ -2204,7 +2204,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2212,7 +2212,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 10, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2222,7 +2222,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 10, 0, 14, 128, 128, 10, 0, 10, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 255}">
@@ -2232,7 +2232,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{38628, 20, 4, 8, 128, 128, 5, 1, 10, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -2399,7 +2399,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Clock6" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock6" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 460.0]">
         </property>
@@ -2468,13 +2468,13 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2486,7 +2486,7 @@
                 <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -2593,7 +2593,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -2624,7 +2624,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 1, 1, 255}">
@@ -2634,7 +2634,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 1, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -2642,7 +2642,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 20, 0, 8, 128, 128, 20, 0, 20, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -2652,7 +2652,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -2810,7 +2810,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2865,7 +2865,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 2, 1, 255}">
@@ -2875,7 +2875,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2883,7 +2883,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 2, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -2893,7 +2893,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 20, 0, 8, 128, 128, 20, 0, 20, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -2903,7 +2903,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -3069,7 +3069,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{41700, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -3124,7 +3124,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 3, 1, 255}">
@@ -3134,7 +3134,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -3144,7 +3144,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 3, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -3154,7 +3154,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 20, 0, 8, 128, 128, 20, 0, 20, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -3164,7 +3164,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{38737, 10, 2, 8, 128, 128, 5, 3, 20, 4, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -3330,7 +3330,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -3385,7 +3385,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 4, 1, 255}">
@@ -3395,7 +3395,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -3403,7 +3403,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 20, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -3413,7 +3413,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 20, 0, 8, 128, 128, 20, 0, 20, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 255}">
@@ -3423,7 +3423,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{41699, 5, 1, 8, 128, 128, 5, 0, 20, 3, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -3590,7 +3590,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Clock2" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock2" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 490.0]">
         </property>
@@ -3653,13 +3653,13 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{54072, 20, 2, 8, 128, 128, 5, 1, 30, 4, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{54072, 20, 2, 8, 128, 128, 5, 1, 30, 4, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
@@ -3760,7 +3760,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -3791,7 +3791,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 1, 1, 255}">
@@ -3801,7 +3801,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 1, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -3809,7 +3809,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 30, 0, 13, 12, 128, 30, 0, 30, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -3819,7 +3819,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 50, 0, 5, 128, 128, 50, 0, 50, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 255}">
@@ -3829,7 +3829,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -3987,7 +3987,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -4028,7 +4028,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 2, 1, 255}">
@@ -4038,7 +4038,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 2, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -4046,7 +4046,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 30, 0, 13, 12, 128, 30, 0, 30, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -4056,7 +4056,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 50, 0, 5, 128, 128, 50, 0, 50, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 255}">
@@ -4066,7 +4066,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -4224,7 +4224,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -4265,7 +4265,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 3, 1, 255}">
@@ -4275,7 +4275,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 3, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -4283,7 +4283,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 30, 0, 13, 12, 128, 30, 0, 30, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -4293,7 +4293,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 50, 0, 5, 128, 128, 50, 0, 50, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 255}">
@@ -4303,7 +4303,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -4461,7 +4461,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{54073, 20, 2, 8, 128, 128, 5, 1, 30, 4, 255, 255}">
@@ -4516,7 +4516,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 4, 1, 255}">
@@ -4526,7 +4526,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{54072, 20, 2, 8, 128, 128, 5, 1, 30, 4, 255, 255}">
@@ -4534,7 +4534,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 30, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{54072, 20, 2, 8, 128, 128, 5, 1, 30, 4, 255, 255}">
@@ -4544,7 +4544,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 30, 0, 13, 12, 128, 30, 0, 30, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{54072, 20, 2, 8, 128, 128, 5, 1, 30, 4, 255, 255}">
@@ -4556,7 +4556,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 50, 0, 5, 128, 128, 50, 0, 50, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{50472, 20, 2, 2, 128, 128, 10, 1, 50, 4, 255, 255}">
@@ -15113,7 +15113,7 @@
         <link port="TimeDelay2.output" relation="relation32"/>
         <link port="TimeDelay2.delay" relation="relation53"/>
     </entity>
-    <entity name="1588Clock3" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock3" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 770.0]">
         </property>
@@ -15170,7 +15170,7 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15182,13 +15182,13 @@
                 <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -15295,7 +15295,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -15340,7 +15340,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 1, 1, 255}">
@@ -15350,7 +15350,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -15358,7 +15358,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 1, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -15368,7 +15368,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 13, 0, 15, 128, 128, 13, 0, 13, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15378,7 +15378,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -15544,7 +15544,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{31134, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15589,7 +15589,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 2, 1, 255}">
@@ -15599,7 +15599,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15609,7 +15609,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 2, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15619,7 +15619,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 13, 0, 15, 128, 128, 13, 0, 13, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15629,7 +15629,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{10233, 14, 3, 1, 12, 128, 31, 1, 13, 4, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -15795,7 +15795,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -15826,7 +15826,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 3, 1, 255}">
@@ -15836,7 +15836,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 3, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -15844,7 +15844,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 13, 0, 15, 128, 128, 13, 0, 13, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -15854,7 +15854,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -16012,7 +16012,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -16057,7 +16057,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 4, 1, 255}">
@@ -16067,7 +16067,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -16075,7 +16075,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 13, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -16085,7 +16085,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 13, 0, 15, 128, 128, 13, 0, 13, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 255}">
@@ -16095,7 +16095,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{31133, 5, 4, 8, 128, 128, 5, 0, 13, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -16262,7 +16262,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Clock4" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock4" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-620.0, 400.0]">
         </property>
@@ -16319,13 +16319,13 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{61723, 10, 4, 8, 128, 128, 5, 2, 14, 2, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -16337,7 +16337,7 @@
                 <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{61723, 10, 4, 8, 128, 128, 5, 2, 14, 2, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 255}">
@@ -16444,7 +16444,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -16475,7 +16475,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 1, 1, 255}">
@@ -16485,7 +16485,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 1, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -16493,7 +16493,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 14, 0, 15, 128, 128, 14, 0, 14, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 1}">
@@ -16503,7 +16503,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -16661,7 +16661,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{61724, 10, 4, 8, 128, 128, 5, 2, 14, 2, 255, 255}">
@@ -16706,7 +16706,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 2, 1, 255}">
@@ -16716,7 +16716,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{61723, 10, 4, 8, 128, 128, 5, 2, 14, 2, 255, 255}">
@@ -16724,7 +16724,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 2, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{61723, 10, 4, 8, 128, 128, 5, 2, 14, 2, 255, 255}">
@@ -16734,7 +16734,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 14, 0, 15, 128, 128, 14, 0, 14, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 1}">
@@ -16744,7 +16744,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{61723, 10, 4, 8, 128, 128, 5, 2, 14, 257, 255, 255}">
@@ -16910,7 +16910,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{12369, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 255}">
@@ -16955,7 +16955,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 3, 1, 255}">
@@ -16965,7 +16965,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 255}">
@@ -16975,7 +16975,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 3, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 255}">
@@ -16985,7 +16985,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 14, 0, 15, 128, 128, 14, 0, 14, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 1}">
@@ -16995,7 +16995,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{61678, 10, 4, 1, 12, 128, 30, 2, 14, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12280, 13, 4, 1, 12, 128, 30, 3, 14, 258, 255, 255}">
@@ -17161,7 +17161,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17206,7 +17206,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 4, 1, 255}">
@@ -17216,7 +17216,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17224,7 +17224,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 14, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17234,7 +17234,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 14, 0, 15, 128, 128, 14, 0, 14, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 1}">
@@ -17244,7 +17244,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{12368, 13, 4, 8, 128, 128, 5, 1, 14, 3, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -17411,7 +17411,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Clock7" class="ptolemy.demo.BestMasterClock.1588ClockClass">
+    <entity name="1588Clock7" class="ptolemy.apps.1588.BestMasterClock.1588ClockClass">
         <display name="Boundary             Clock"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-660.0, 855.0]">
         </property>
@@ -17474,7 +17474,7 @@
         <property name="rogueLimit" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <entity name="computeEBEST" class="ptolemy.actor.TypedCompositeActor">
-            <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17486,13 +17486,13 @@
                 <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                 </property>
             </entity>
-            <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+            <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                 <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                 </property>
                 <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17599,7 +17599,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17644,7 +17644,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 1, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 1, 1, 255}">
@@ -17654,7 +17654,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17662,7 +17662,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 1, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17672,7 +17672,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 31, 0, 1, 12, 128, 31, 0, 31, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17682,7 +17682,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 15, 0, 116, 128, 128, 15, 0, 15, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 1}">
@@ -17692,7 +17692,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{46223, 10, 3, 8, 128, 128, 5, 2, 15, 256, 255, 255}">
@@ -17858,7 +17858,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17903,7 +17903,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 2, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 2, 1, 255}">
@@ -17913,7 +17913,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17921,7 +17921,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 2, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17931,7 +17931,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 31, 0, 1, 12, 128, 31, 0, 31, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -17941,7 +17941,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 15, 0, 116, 128, 128, 15, 0, 15, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 1}">
@@ -17951,7 +17951,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{10138, 14, 3, 15, 128, 128, 14, 0, 15, 4, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">
@@ -18117,7 +18117,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="timeoutCount1" class="ptolemy.data.expr.Parameter" value="0">
@@ -18148,7 +18148,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 3, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 3, 1, 255}">
@@ -18158,7 +18158,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 3, 2, 255}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="2">
@@ -18166,7 +18166,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 31, 0, 1, 12, 128, 31, 0, 31, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18176,7 +18176,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 15, 0, 116, 128, 128, 15, 0, 15, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 1}">
@@ -18186,7 +18186,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 0}">
                     </property>
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
@@ -18344,7 +18344,7 @@
                 </entity>
             </entity>
         </entity>
-        <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+        <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
             <property name="timeoutCount0" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="erbest" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18389,7 +18389,7 @@
                         </property>
                     </entity>
                 </entity>
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 4, 0, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 4, 1, 255}">
@@ -18399,7 +18399,7 @@
                     <property name="slotB" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18407,7 +18407,7 @@
                     <property name="slotA" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 31, 4, 2, 255}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18417,7 +18417,7 @@
                 </entity>
             </entity>
             <entity name="recommended state Fig26" class="ptolemy.actor.TypedCompositeActor">
-                <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 31, 0, 1, 12, 128, 31, 0, 31, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18429,7 +18429,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 15, 0, 116, 128, 128, 15, 0, 15, 0, 0, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 1}">
@@ -18439,7 +18439,7 @@
                     <property name="mergeSlot" class="ptolemy.data.expr.Parameter" value="255">
                     </property>
                 </entity>
-                <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+                <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
                     <property name="A" class="ptolemy.data.expr.Parameter" value="{11829, 13, 4, 8, 128, 128, 5, 1, 15, 2, 255, 0}">
                     </property>
                     <property name="B" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 510, 255, 255}">

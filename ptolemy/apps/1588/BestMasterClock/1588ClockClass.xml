@@ -3693,7 +3693,7 @@
             <link port="TrueGate7.input" relation="relation37"/>
             <link port="TrueGate7.output" relation="relation38"/>
         </entity>
-        <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+        <entity name="NEWfigure27-4" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 200.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -3709,7 +3709,7 @@
             <property name="NAME" class="ptolemy.data.expr.StringParameter" value="F27 ci 0 1:2">
             </property>
         </entity>
-        <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+        <entity name="NEWfigure27-5" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 335.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -3725,7 +3725,7 @@
             <property name="NAME" class="ptolemy.data.expr.StringParameter" value="F27 ci 0 3:4">
             </property>
         </entity>
-        <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.Figure27-8Class">
+        <entity name="NEWfigure27-6" class="ptolemy.apps.1588.BestMasterClock.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 265.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18532,7 +18532,7 @@
         <link port="Merge.output" relation="relation6"/>
         <link port="Const.output" relation="relation8"/>
     </entity>
-    <entity name="1588Port3" class="ptolemy.demo.BestMasterClock.1588PortClass">
+    <entity name="1588Port3" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 60.0]">
         </property>
         <property name="portNum" class="ptolemy.data.expr.Parameter" value="1">
@@ -18665,7 +18665,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Port6" class="ptolemy.demo.BestMasterClock.1588PortClass">
+    <entity name="1588Port6" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 240.0]">
         </property>
         <property name="portNum" class="ptolemy.data.expr.Parameter" value="2">
@@ -18798,7 +18798,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Port7" class="ptolemy.demo.BestMasterClock.1588PortClass">
+    <entity name="1588Port7" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 405.0]">
         </property>
         <property name="portNum" class="ptolemy.data.expr.Parameter" value="3">
@@ -18931,7 +18931,7 @@
             </entity>
         </entity>
     </entity>
-    <entity name="1588Port8" class="ptolemy.demo.BestMasterClock.1588PortClass">
+    <entity name="1588Port8" class="ptolemy.apps.1588.BestMasterClock.1588PortClass">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 615.0]">
         </property>
         <property name="useStepsRemoved" class="ptolemy.data.expr.Parameter" value="useStepsRemoved">
