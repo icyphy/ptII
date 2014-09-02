@@ -1533,6 +1533,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String jniJar = "ptolemy/actor/jni/jni.jar";
         auxiliaryJarMap.put("ptolemy.actor.jni.CompiledCompositeActor", jniJar);
 
+
+        String jsonJar = "ptolemy/actor/lib/conversions/json/json.jar";
+        auxiliaryJarMap.put("ptolemy.actor.lib.conversions.json.JSONToToken", jsonJar);
+        auxiliaryJarMap.put("ptolemy.actor.lib.conversions.json.TokenToJSON", jsonJar);
+
         // Ptalon requires multiple jar files
         String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
         auxiliaryJarMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
@@ -1742,6 +1747,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (jarFilesThatHaveBeenRequired.contains(jniJar)) {
             auxiliaryClassMap.put("jni jar needs codegen jar",
                     "ptolemy/codegen/codegen.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(jsonJar)) {
+            auxiliaryClassMap.put("json jar needs org/json/json.jar",
+                    "org/json/json.jar");
         }
 
         if (jarFilesThatHaveBeenRequired
@@ -2333,6 +2343,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // For example, <code>{{"ptolemy.domains.sdf.kernel.SDFDirectory",
     // "ptolemy/domains/sdf/sdf.jar"}}</code> means that <code>sdf.jar</code>
     // should be included in the jar files
+    // For example: <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.domains.sdf.kernel.SDFDirector&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;}}">
+    // </property>
+
     private Map _userSpecifiedJars() {
         String parameterName = "_jnlpClassesToJars";
         Parameter jnlpClassesToJarsParameter = (Parameter) _model
