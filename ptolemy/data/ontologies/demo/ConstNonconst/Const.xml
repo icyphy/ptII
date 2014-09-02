@@ -4,6 +4,8 @@
 <entity name="Const" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.ontologies.lattice.LatticeOntologySolver&quot;,&quot;ptolemy/domains/continuous/continuous.jar&quot;},{&quot;ptolemy.data.ontologies.gui.OntologyDisplayActions&quot;,&quot;ptolemy/data/ontologies/ontologies.jar&quot;}}">
+    </property>
     <property name="ConstNonconstSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/lattice/adapters/constLattice/ConstNonconstSolverModel.xml">
         </property>
