@@ -731,52 +731,37 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         + _getDomainJar(object.getClass().getPackage()
                                 .getName()));
             }
-            if (className.contains("ptolemy.codegen")) {
-                if (_debug) {
-                    System.out.println("allAttributeJars: " + object + " "
-                            + className + "ptolemy/codegen/codegen.jar");
+            
+            Map<String,String> attributeMap = new HashMap<String,String>();
+            attributeMap.put("ptolemy.codegen", "ptolemy/codegen/codegen.jar");
+            attributeMap.put("ptolemy.data.ontologies",
+                    "ptolemy/data/ontologies/ontologies.jar");
+            attributeMap.put("ptolemy.vergil.kernel.attributes",
+                    "ptolemy/vergil/vergilApplet.jar");
+            attributeMap.put("tolemy.vergil.basic.export.html",
+                    "ptolemy/vergil/basic/export/html/html.jar");
+            attributeMap.put("ptolemy.vergil.basic.export.web",
+                    "ptolemy/vergil/basic/export/web/web.jar");
+            attributeMap.put("ptolemy.vergil.basic.layout",
+                    "ptolemy/vergil/basic/layout/layout.jar");
+
+            boolean foundOne = false;
+            for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
+                if (className.contains(entry.getKey())) {
+                    if (_debug) {
+                        System.out.println("_allAtomicEntityJars layout: "
+                                + className + " "
+                                + entry.getValue());
+                    }
+                    results.put(className, entry.getValue());
+                    foundOne = true;
+                    break;
                 }
-                results.put(className, "ptolemy/codegen/codegen.jar");
-            } else if (className.contains("ptolemy.data.ontologies")) {
-                if (_debug) {
-                    System.out.println("_allAttributeJars ontologies: "
-                            + className + " "
-                            + "ptolemy/data/ontologies/ontologies.jar");
-                }
-                results.put(className, "ptolemy/data/ontologies/ontologies.jar");
-            } else if (className.contains("ptolemy.vergil.kernel.attributes")) {
-                if (_debug) {
-                    System.out.println("_allAttributeJars export.web: "
-                            + className + " "
-                            + "ptolemy/vergil/vergilApplet.jar");
-                }
-                results.put(className, "ptolemy/vergil/vergilApplet.jar");
-            } else if (className.contains("ptolemy.vergil.basic.export.html")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: "
-                            + className + " "
-                            + "ptolemy/vergil/basic/export/html/html.jar");
-                }
-                results.put(className,
-                        "ptolemy/vergil/basic/export/html/html.jar");
-            } else if (className.contains("ptolemy.vergil.basic.export.web")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: "
-                            + className + " "
-                            + "ptolemy/vergil/basic/export/web/web.jar");
-                }
-                results.put(className,
-                        "ptolemy/vergil/basic/export/web/web.jar");
-            } else if (className.contains("ptolemy.vergil.basic.layout")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars layout: "
-                            + className + " "
-                            + "ptolemy/vergil/basic/layout/layout.jar");
-                }
-                results.put(className, "ptolemy/vergil/basic/layout/layout.jar");
-            } else {
+            }
+
+            if (! foundOne) {
                 results.put(object.getClass().getName(), _getDomainJar(object
-                        .getClass().getPackage().getName()));
+                                .getClass().getPackage().getName()));
             }
         }
 
@@ -1006,27 +991,36 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + ((CompositeActor) componentEntity).getDirector()
                                     .getClass());
                 }
-                if (componentEntity.getClass().getName()
-                        .contains("ptolemy.domains.scr")) {
-                    // This hack includes codegen.jar so that we can generate JNLP the domains.scr
-                    results.put(((CompositeActor) componentEntity).getClass()
-                            .getName(), "ptolemy/domains/scr/scr.jar");
-                } else {
+
+                String className = componentEntity.getClass().getName();
+                Map<String,String> componentMap = new HashMap<String,String>();
+                componentMap.put("org.ptolemy.machineLearning.particleFilter", 
+                    "org/ptolemy/machineLearning/particleFilter/particleFilter.jar");
+                componentMap.put("ptolemy.domains.scr",
+                        "ptolemy/domains/scr/scr.jar");
+                componentMap.put("ptolemy.domains.pthales.lib.PthalesCompositeActor",
+                        "ptolemy/domains/pthales/pthales.jar");
+
+                boolean foundOne = false;
+                for (Map.Entry<String, String> entry : componentMap.entrySet()) {
+                    if (className.contains(entry.getKey())) {
+                        if (_debug) {
+                            System.out.println("_deepOpaqueEntityJars3: "
+                                    + className + " "
+                                    + entry.getValue());
+                        }
+                        results.put(className, entry.getValue());
+                        foundOne = true;
+                        break;
+                    }
+                }
+                if (! foundOne) {
                     results.put(((CompositeActor) componentEntity)
                             .getDirector().getClass().getName(),
                             _getDomainJar(((CompositeActor) componentEntity)
                                     .getDirector().getClass().getPackage()
                                     .getName()));
 
-                }
-                if (componentEntity
-                        .getClass()
-                        .getName()
-                        .contains(
-                                "ptolemy.domains.pthales.lib.PthalesCompositeActor")) {
-                    results.put(
-                            "ptolemy.domains.pthales.lib.PthalesCompositeActor",
-                            "ptolemy/domains/pthales/pthales.jar");
                 }
             }
         }
@@ -1538,6 +1532,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.conversions.json.JSONToToken", jsonJar);
         auxiliaryJarMap.put("ptolemy.actor.lib.conversions.json.TokenToJSON", jsonJar);
 
+        String optimizationJar = "org/ptolemy/optimization/optimization.jar";
+        auxiliaryJarMap
+                .put("org.ptolemy.optimization.CompositeOptimizer", optimizationJar);
+
         // Ptalon requires multiple jar files
         String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
         auxiliaryJarMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
@@ -1752,6 +1750,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (jarFilesThatHaveBeenRequired.contains(jsonJar)) {
             auxiliaryClassMap.put("json jar needs org/json/json.jar",
                     "org/json/json.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(optimizationJar)) {
+            auxiliaryClassMap.put("optimization requires cureos", "com/cureos/cureos.jar");
         }
 
         if (jarFilesThatHaveBeenRequired
