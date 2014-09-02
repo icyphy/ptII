@@ -441,6 +441,7 @@ HYVISUAL_DOCS = \
 
 PTMACHINE_LEARNING_PACKAGES = \
 	com.cureos.numerics \
+	org.ptolemy.faultModels \
 	org.ptolemy.machineImprovisation \
 	org.ptolemy.machineLearning \
 	org.ptolemy.machineLearning.hmm \

@@ -29,6 +29,7 @@
     <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
+    <include name="org/ptolemy/faultModels/faultModels.jar" />
     <include name="org/ptolemy/machineLearning/machineLearning.jar" />
     <include name="org/ptolemy/optimization.jar" />
     <include name="org/ptolemy/ptango/ptango.jar" />
@@ -3919,6 +3920,15 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="org/ptolemy/fmi/driver/*.htm"/>
+      </fileset>
+    </jar>
+
+    <!-- org/ptolemy/faultModels/faultModels.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/faultModels/faultModels.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/faultModels/*.class"/>
       </fileset>
     </jar>
 
