@@ -244,7 +244,8 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = { "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+        String[] skip = { 
+                "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
                 "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
@@ -262,6 +263,9 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String[] skip = { "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
+                "AirManagementSystem.xml", // Assert is thrown.
+                "AirManagementSystemCausalityLoop", // Deliberately brings up message on run.
+                "AMS_AMSSim", // FMU does not reliably build everywhere.
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
@@ -271,6 +275,7 @@ public class ExportModelJUnitTest {
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+                "PhysicalPlantCausalityLoop", // Deliberately brings up message on run.  AMS
                 "ptango", // Skip running all ptango demos, they do not provide useful exportable output.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."

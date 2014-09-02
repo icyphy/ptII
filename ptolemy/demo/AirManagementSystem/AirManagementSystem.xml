@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1216, 919}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1216, 919}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[982, 809]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4174261757200146">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.875, 308.74342528292186}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.875, 308.7434252829219}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click on this comment to see the document on which this model is based.">
@@ -176,7 +176,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="0.23476469830000002"/>
-<yRange min="316.7372262582533" max="322.29380292805973"/>
+<yRange min="316.91670400775666" max="322.3918335645507"/>
 </plot>?>
         </configure>
     </entity>
@@ -197,10 +197,6 @@
                     </property>
                 </port>
             </entity>
-            <entity name="Assert" class="ptolemy.actor.lib.Assert">
-            </entity>
-            <link port="Assert._correspondingOutputPort_Pv" relation="relation4"/>
-            <link port="Assert._correspondingOutputPort_Pc" relation="relation"/>
         </entity>
         <entity name="HeatExchanger" class="ptolemy.demo.AirManagementSystem.HeatExchanger">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1680, 1024}, maximized=false}">
