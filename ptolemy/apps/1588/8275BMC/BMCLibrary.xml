@@ -7368,7 +7368,7 @@
                 <link port="CurrentTime.trigger" relation="relation"/>
                 <link port="SetVariable.input" relation="relation2"/>
             </entity>
-            <entity name="1588Clock" class="ptolemy.demo.8275BMC.1588ClockClass">
+            <entity name="1588Clock" class="ptolemy.apps.1588.8275BMC.1588ClockClass">
                 <display name="Boundary             Clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, -115.0]">
                 </property>
@@ -7446,7 +7446,7 @@
                         </entity>
                     </entity>
                 </entity>
-                <entity name="1588Port3" class="ptolemy.demo.8275BMC.1588PortClass">
+                <entity name="1588Port3" class="ptolemy.apps.1588.8275BMC.1588PortClass">
                     <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
                         <display name="Compute ERBEST"/>
                         <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
@@ -7565,7 +7565,7 @@
                         </entity>
                     </entity>
                 </entity>
-                <entity name="1588Port6" class="ptolemy.demo.8275BMC.1588PortClass">
+                <entity name="1588Port6" class="ptolemy.apps.1588.8275BMC.1588PortClass">
                     <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
                         <display name="Compute ERBEST"/>
                         <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
@@ -7684,7 +7684,7 @@
                         </entity>
                     </entity>
                 </entity>
-                <entity name="1588Port7" class="ptolemy.demo.8275BMC.1588PortClass">
+                <entity name="1588Port7" class="ptolemy.apps.1588.8275BMC.1588PortClass">
                     <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
                         <display name="Compute ERBEST"/>
                         <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
@@ -7803,7 +7803,7 @@
                         </entity>
                     </entity>
                 </entity>
-                <entity name="1588Port8" class="ptolemy.demo.8275BMC.1588PortClass">
+                <entity name="1588Port8" class="ptolemy.apps.1588.8275BMC.1588PortClass">
                     <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
                         <display name="Compute ERBEST"/>
                         <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
