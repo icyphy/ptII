@@ -738,7 +738,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/data/ontologies/ontologies.jar");
             attributeMap.put("ptolemy.vergil.kernel.attributes",
                     "ptolemy/vergil/vergilApplet.jar");
-            attributeMap.put("tolemy.vergil.basic.export.html",
+            attributeMap.put("ptolemy.vergil.basic.export.html.jsoup",
+                    "ptolemy/vergil/basic/export/html/jsoup/jsoup.jar");
+            attributeMap.put("ptolemy.vergil.basic.export.html",
                     "ptolemy/vergil/basic/export/html/html.jar");
             attributeMap.put("ptolemy.vergil.basic.export.web",
                     "ptolemy/vergil/basic/export/web/web.jar");
@@ -852,76 +854,65 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 .getName()));
             }
 
-            if (className.contains("ptolemy.backtrack")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars backtrac: "
-                            + className + " "
-                            + "ptolemy/backtrack/backtrack.jar");
+            Map<String,String> atomicMap = new HashMap<String,String>();
+            atomicMap.put("ptolemy.backtrack",
+                    "ptolemy/backtrack/backtrack.jar");
+            atomicMap.put("ptolemy.actor.lib.aspect",
+                    "ptolemy/actor/lib/aspect/aspect.jar");
+            atomicMap.put("ptolemy.actor.lib.jai",
+                    "ptolemy/actor/lib/jai/jai.jar");
+            atomicMap.put("ptolemy.actor.lib.jmf",
+                    "ptolemy/actor/lib/jmf/jmf.jar");
+            atomicMap.put("ptolemy.domains.scr",
+                    "ptolemy/domains/scr/scr.jar");
+            atomicMap.put("ptolemy.vergil.basic.export.html.jsoup",
+                    "ptolemy/vergil/basic/export/html/jsoup/jsoup.jar");
+            atomicMap.put("ptolemy.vergil.basic.export.html",
+                    "ptolemy/vergil/basic/export/html/html.jar");
+            atomicMap.put("ptolemy.vergil.basic.export.web",
+                    "ptolemy/vergil/basic/export/web/web.jar");
+
+            boolean foundOne = false;
+            for (Map.Entry<String, String> entry : atomicMap.entrySet()) {
+                if (className.contains(entry.getKey())) {
+                    if (_debug) {
+                        System.out.println("_allAtomicEntityJars layout: "
+                                + className + " "
+                                + entry.getValue());
+                    }
+                    results.put(className, entry.getValue());
+                    foundOne = true;
+                    // FIXME: Don't break here because className might
+                    // be html.jsoup, which matches twice.
+
+                    //break;
                 }
-                results.put(className, "ptolemy/backtrack/backtrack.jar");
-            } else if (className.contains("ptolemy.actor.lib.aspect")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars aspect: "
-                            + className + " "
-                            + "ptolemy/actor/lib/aspect/aspect.jar");
-                }
-                results.put(className, "ptolemy/actor/lib/aspect/aspect.jar");
-            } else if (className.contains("ptolemy.actor.lib.jai")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars JAI: " + className
-                            + " " + "ptolemy/actor/lib/jai/jai.jar");
-                }
-                results.put(className, "ptolemy/actor/lib/jai/jai.jar");
-            } else if (className.contains("ptolemy.actor.lib.jmf")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars JMF: " + className
-                            + " " + "ptolemy/actor/lib/jmf/jmf.jar");
-                }
-                results.put(className, "ptolemy/actor/lib/jmf/jmf.jar");
-            } else if (className.contains("ptolemy.domains.scr")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars SCR: " + className
-                            + " " + "ptolemy/domains/scr/scr.jar");
-                }
-                results.put(className, "ptolemy/domains/scr/scr.jar");
-            } else if (className.contains("ptolemy.vergil.basic.export.html")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.html: "
-                            + className + " "
-                            + "ptolemy/vergil/basic/export/html/html.jar");
-                }
-                results.put(className,
-                        "ptolemy/vergil/basic/export/html/html.jar");
-            } else if (className.contains("ptolemy.vergil.basic.export.web")) {
-                if (_debug) {
-                    System.out.println("_allAtomicEntityJars export.web: "
-                            + className + " "
-                            + "ptolemy/vergil/basic/export/web/web.jar");
-                }
-                results.put(className,
-                        "ptolemy/vergil/basic/export/web/web.jar");
-            } else if (className.contains("lib.gui.")) {
-                // Needed for ptolemy.domains.sr.lib.gui.NonStrictDisplay and any other classes in domains.*.lib.gui.
-                // We get the package of the package.
-                String packageName = object.getClass().getPackage().getName();
-                String parentPackage = packageName.substring(0,
-                        packageName.lastIndexOf("."));
-                if (_debug) {
-                    System.out
+            }
+
+            if (! foundOne) {
+                if (className.contains("lib.gui.")) {
+                    // Needed for ptolemy.domains.sr.lib.gui.NonStrictDisplay and any other classes in domains.*.lib.gui.
+                    // We get the package of the package.
+                    String packageName = object.getClass().getPackage().getName();
+                    String parentPackage = packageName.substring(0,
+                            packageName.lastIndexOf("."));
+                    if (_debug) {
+                        System.out
                             .println("_allAtomicEntityJars export.web: Adjust for class with lib.gui "
                                     + className
                                     + " "
                                     + _getDomainJar(parentPackage)
                                     + " "
                                     + parentPackage);
-                }
+                    }
 
-                results.put(object.getClass().getName(),
-                        _getDomainJar(parentPackage));
-            } else {
-                // Add in the entity
-                results.put(object.getClass().getName(), _getDomainJar(object
-                        .getClass().getPackage().getName()));
+                    results.put(object.getClass().getName(),
+                            _getDomainJar(parentPackage));
+                } else {
+                    // Add in the entity
+                    results.put(object.getClass().getName(), _getDomainJar(object
+                                    .getClass().getPackage().getName()));
+                }
             }
 
             if (object instanceof AtomicActor) {
@@ -1752,6 +1743,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "org/json/json.jar");
         }
 
+        if (jarFilesThatHaveBeenRequired.contains(
+                        "ptolemy/vergil/basic/export/html/jsoup/jsoup.jar")) {
+            auxiliaryClassMap.put("jsoup.jar needs lib/jsoup-1.7.3.jar",
+                    "lib/jsoup-1.7.3.jar");
+        }
+
         if (jarFilesThatHaveBeenRequired.contains(optimizationJar)) {
             auxiliaryClassMap.put("optimization requires cureos", "com/cureos/cureos.jar");
         }
@@ -1774,6 +1771,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put(
                     "ontologies requires vergil/ontologies/ontologies.jar",
                     "ptolemy/vergil/ontologies/ontologies.jar");
+            auxiliaryClassMap.put(
+                    "ontologies requires continuous",
+                    "ptolemy/domains/continuous/continuous.jar");
         }
 
         if (jarFilesThatHaveBeenRequired

@@ -236,6 +236,7 @@
     <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar" />
     <include name="org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar" />
     <include name="org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar" />
+    <include name="org/ptolemy/ptango/demo/BlinkyLight/BlinkyLigh.jar" />
     <include name="org/ptolemy/ptango/demo/Cookies/Cookies.jar" />
     <include name="org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar" />
     <include name="org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar" />
@@ -335,7 +336,6 @@
     <include name="ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar" />
     <include name="ptolemy/demo/ExecDemos/ExecDemos.jar" />
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
-    <include name="ptolemy/demo/FaultModels/FaultModels.jar" />
     <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
     <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
     <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
@@ -5692,7 +5692,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar"
+         destfile="${basedir}/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/*.xml"/>
@@ -5700,7 +5700,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar"
+         destfile="${basedir}/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/*.xml"/>
@@ -5708,7 +5708,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar"
+         destfile="${basedir}/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/*.xml"/>
@@ -5716,7 +5716,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar"
+         destfile="${basedir}/org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/optimization/demo/LinearRegression/*.xml"/>
@@ -5724,7 +5724,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar"
+         destfile="${basedir}/org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/optimization/demo/SimpleOptimization/*.xml"/>
@@ -5732,7 +5732,20 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/Cookies/Cookies.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/BlinkyLight/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.css"/>
+        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.gif"/>
+        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.js"/>
+        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.png"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Cookies/Cookies.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/Cookies/*.xml"/>
@@ -5741,7 +5754,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/DOPpresence/*.xml"/>
@@ -5755,7 +5768,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.html"/>
@@ -5765,7 +5778,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/ErrorHandler/*.xml"/>
@@ -5773,7 +5786,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/Guidance/Guidance.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Guidance/Guidance.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
@@ -5782,7 +5795,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/OccupancyAlert/*.xml"/>
@@ -5797,7 +5810,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/*.xml"/>
@@ -5806,7 +5819,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/SensorAndrew/*.xml"/>
@@ -5816,7 +5829,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/SmartRoom/*.png"/>
@@ -5826,7 +5839,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.cfg"/>
@@ -5849,7 +5862,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/UCBPower/UCBPower.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/UCBPower/UCBPower.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
@@ -5861,7 +5874,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.txt"/>
@@ -5871,7 +5884,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar"
+         destfile="${basedir}/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
@@ -5881,7 +5894,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}org/ptolemy/qss/demo/RLC/RLC.jar"
+         destfile="${basedir}/org/ptolemy/qss/demo/RLC/RLC.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/qss/demo/RLC/*.xml"/>
@@ -6582,16 +6595,6 @@
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
         <include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/demo/FaultModels/FaultModels.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/demo/FaultModels/*.class"/>
-        <include name="ptolemy/demo/FaultModels/*.pdf"/>
-        <include name="ptolemy/demo/FaultModels/*.xml"/>
        </fileset>
     </jar>
 
