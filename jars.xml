@@ -5666,7 +5666,7 @@
     <!-- Demos from $PTII/adm/bin/updateantjar here -->
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}lbnl/demo/CRoom/CRoom.jar"
+         destfile="${basedir}/lbnl/demo/CRoom/CRoom.jar"
          >
        <fileset dir="${basedir}">
         <include name="lbnl/demo/CRoom/*.c"/>
@@ -5675,7 +5675,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}lbnl/demo/MatlabRoom/MatlabRoom.jar"
+         destfile="${basedir}/lbnl/demo/MatlabRoom/MatlabRoom.jar"
          >
        <fileset dir="${basedir}">
         <include name="lbnl/demo/MatlabRoom/*.xml"/>
@@ -5683,7 +5683,7 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}lbnl/demo/SystemCommand/SystemCommand.jar"
+         destfile="${basedir}/lbnl/demo/SystemCommand/SystemCommand.jar"
          >
        <fileset dir="${basedir}">
         <include name="lbnl/demo/SystemCommand/*.class"/>
