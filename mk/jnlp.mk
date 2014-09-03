@@ -249,6 +249,7 @@ JSOUP_JARS = \
 
 PTFMI_JARS = \
 	lib/jna.jar \
+	lib/jna-4.0.0-variadic.jar \
 	org/ptolemy/fmi/fmi.jar \
 	ptolemy/actor/lib/fmi/fmi.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
