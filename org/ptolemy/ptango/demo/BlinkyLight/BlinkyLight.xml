@@ -4,13 +4,13 @@
 <entity name="BlinkyLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 32, 1335, 680}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 32, 1351, 1014}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1107, 563]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1117, 904]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6732105930421022">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.26878834355824, 8.333588957055156}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{778.3280135801174, 391.98242187500006}">
     </property>
     <property name="onThreshold" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -31,7 +31,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -80.0]">
         </property>
     </property>
-    <property name="offThreshold" class="ptolemy.data.expr.Parameter" value="760">
+    <property name="offThreshold" class="ptolemy.data.expr.Parameter" value="400">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -217,9 +217,28 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room/light&#10;Returns light status and light amount&#10;Request is cached until a light status change occurs (&quot;long polling&quot;)&#10;(See SensorAndrew demo)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room/light&#10;Returns light status and light amount&#10;Request is cached until a light status change occurs (&quot;long polling&quot;)&#10;(See SensorAndrew demo)&#10;Click on this annotation to go to http://localhost:8078/room/light">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.500030517578125, 355.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/room/light#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 395}">
+            </property>
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -229,9 +248,28 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room request&#10;Returns main page; Initial light status is off&#10;Generates GET to /room/light and then POST to /room/markers">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room request&#10;Returns main page; Initial light status is off&#10;Generates GET to /room/light and then POST to /room/markers&#10;Click on this annotation to view http://localhost:8078/room">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, -15.0}">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/room#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 25}">
+            </property>
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1438,7 +1476,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/blinkylight.html">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/BlinkyLight/pages/blinkylight.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[277.0, 135.0]">
