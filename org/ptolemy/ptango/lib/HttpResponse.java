@@ -132,9 +132,6 @@ public class HttpResponse {
             try {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
-                    if (!line.endsWith(_lineBreak)) {
-                        response.append(_lineBreak);
-                    }
                 }
 
                 _body = response.toString();
@@ -331,9 +328,6 @@ public class HttpResponse {
     /** Labels for returning the status as a RecordToken */
     static final String[] _labels = { "responseCode", "responseMessage",
         "successful", "furtherActionExpected" };
-
-    /** The locally used line break character sequence. */
-    private String _lineBreak = System.getProperty("line.separator");
 
     /** A code indicating the status of the response.
      *  See http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
