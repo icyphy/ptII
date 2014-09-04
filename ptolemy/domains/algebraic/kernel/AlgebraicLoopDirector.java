@@ -453,6 +453,20 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         AlgebraicLoopReceiver receiver = new AlgebraicLoopReceiver(this);
         return receiver;
     }
+    
+    /** Postfire all contained actors.
+     * @throws IllegalActionException If the superclass throws it, or
+     *  if any of the contained actors throw it.
+     */
+    public boolean postfire() throws IllegalActionException {
+    	CompositeEntity container = (CompositeEntity)getContainer();
+    	@SuppressWarnings("unchecked")
+		List<Actor> actors = container.deepEntityList();
+    	for (Actor actor : actors) {
+    		actor.postfire();
+    	}
+    	return super.postfire();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
