@@ -442,22 +442,22 @@ public class WebServer extends AbstractInitializableAttribute {
                     String expression = base.getExpression();
                     if (expression.startsWith("$PTII/")) {
                         expression = expression.substring(6);
-                    } else if (expression.startsWith("$CLASSPATH/")) {
-                        expression = expression.substring(11);
-                    }
+                    }                    
 
-                    // Get directory.  Add trailing "/"
+                    // Get directory
                     // Try ClassLoader first to resolve any directories within
                     // Ptolemy tree.  If the directory is not part of the tree
                     // (e.g. $TMPDIR), the ClassLoader will not find it, so then
                     // use the expression directly
                     URL baseURL;
 
-                    if (this.getClass().getClassLoader()
+                    if (expression.startsWith("$CLASSPATH/")) {
+                        baseURL = base.asURL();
+                    }
+                    else if (this.getClass().getClassLoader()
                             .getResource(expression) != null) {
                         baseURL = new URL(this.getClass().getClassLoader()
-                                .getResource(expression).toExternalForm()
-                                + "/");
+                                .getResource(expression).toExternalForm());
                     } else {
                         baseURL = base.asURL();
                     }
@@ -471,15 +471,16 @@ public class WebServer extends AbstractInitializableAttribute {
                         if (_debugging) {
                             _debug("Adding resource location: " + baseAsURL);
                         }
-
+                        
                         // Use Resource.newResource() to support WebStart
                         // http://67-23-9-112.static.slicehost.net/faq?s=960-WebStart&t=Eclipse
-                        resourceLocations.add(Resource.newResource(baseAsURL));
+                        String stringURL = baseAsURL.toExternalForm();
+                        if (!stringURL.endsWith("/")) {
+                            stringURL = stringURL + "/";
+                        }
+                        
+                        resourceLocations.add(Resource.newResource(stringURL));
                     }
-               /* } catch (URISyntaxException e2) {
-                    throw new IllegalActionException(this,
-                            "Resource base is not a valid URI: "
-                                    + base.stringValue()); */
                 } catch (IOException e3) {
                     throw new IllegalActionException(this,
                             "Can't access resource base: " + base.stringValue());
