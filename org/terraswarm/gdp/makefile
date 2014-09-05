@@ -73,14 +73,14 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 KRUFT = .cpp *.c *.choices
 
-JNA_JAR = jnaerator-0.11-shaded.jar
+JNAERATOR_JAR = jnaerator-0.11-shaded.jar
 
 all: jclass
 install: jclass jars
 
 # Rebuild the jar file
-jna: $(JNA_JAR) src/gdp
-	java -jar $(JNA_JAR) -library gdp -I src/gdp src/gdp/gdp/gdp.h -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
+jna: $(JNAERATOR_JAR) src/gdp
+	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp -I src/gdp src/gdp/gdp/gdp.h src/gdp/ep/ep.h -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
 
 src/gdp:
 	mkdir src
