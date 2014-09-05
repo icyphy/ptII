@@ -73,7 +73,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 KRUFT = .cpp *.c *.choices
 
-JNAERATOR_JAR = jnaerator-0.11-shaded.jar
+
+JNAERATOR_JAR = jnaerator-0.12-20140626.234513-58-shaded.jar
 
 all: jclass
 install: jclass jars
@@ -81,15 +82,30 @@ install: jclass jars
 # Rebuild the jar file
 jna: $(JNAERATOR_JAR) src/gdp
 	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp -I src/gdp src/gdp/gdp/gdp.h src/gdp/ep/ep.h -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
+	# Fix up some issues:
+	for file in *.java; do \
+	sed -e 's/NativeSize/NativeSizeT/g' \
+	    -e 's/import com.ochafik.lang.jnaerator.runtime.NativeSizeT;/import org.ptolemy.fmi.NativeSizeT;/' \
+	    -e 's/public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;/public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF);/' \
+		$$file > /tmp/gdp.fix; \
+	mv /tmp/gdp.fix $$file; \
+        done
+
 
 src/gdp:
+	# You will need a password for this, ask Eric.
 	mkdir src
 	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
 
-jnaerator-0.11-shaded.jar:
-	# You will need a password for this, ask Eric.
-	wget http://search.maven.org/remotecontent?filepath=com/nativelibs4java/jnaerator/0.11/jnaerator-0.11-shaded.jar
-	mv 'remotecontent?filepath=com%2Fnativelibs4java%2Fjnaerator%2F0.11%2Fjnaerator-0.11-shaded.jar' $@
+jnaerator-0.12-20140626.234513-58-shaded.jar:
+	wget --no-check-certificate https://oss.sonatype.org/content/groups/public/com/nativelibs4java/jnaerator/0.12-SNAPSHOT/jnaerator-0.12-20140626.234513-58-shaded.jar
+
+
+# jnaerator-0.11-shaded.jar does not generate getFieldOrder(), which is needed in more recent versions of JNA.
+#
+#jnaerator-0.11-shaded.jar:
+#	wget http://search.maven.org/remotecontent?filepath=com/nativelibs4java/jnaerator/0.11/jnaerator-0.11-shaded.jar
+#	mv 'remotecontent?filepath=com%2Fnativelibs4java%2Fjnaerator%2F0.11%2Fjnaerator-0.11-shaded.jar' $@
 
 
 
