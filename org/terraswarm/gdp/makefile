@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = 
+DIRS = apps
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -52,13 +52,17 @@ PTPACKAGE = 	gdp
 PTCLASSALLJARS =
 
 JSRCS = \
-	GdpLibrary.java
+	EP_DBG.java \
+	EP_STAT.java \
+	EP_TIME_SPEC.java \
+	GdpLibrary.java \
+	ep_stat_to_string.java \
+	gdp_datum.java
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 all: suball
 install: subinstall
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
@@ -91,13 +95,18 @@ jna: $(JNAERATOR_JAR) src/gdp
 	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp -I $(GDP_SRC) $(GDP_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
-	sed -e 's/NativeSize/NativeSizeT/g' \
-	    -e 's/import com.ochafik.lang.jnaerator.runtime.NativeSizeT;/import org.ptolemy.fmi.NativeSizeT;/' \
-	    -e 's/public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;/public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF);/' \
+	sed -e 's@NativeSize@NativeSizeT@g' \
+	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize@' \
+	    -e 's@import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt;@// import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt; // Fixed by cxh in makefile.@' \
+	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); //Fixed by cxh in makefile.@' \
+	    -e 's@\(public static final GlobalInt __EpDbgCurGen = new GlobalInt(GdpLibrary.JNA_NATIVE_LIB, "__EpDbgCurGen");\)@//\1@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done
 
+
+update:
+	cd src/gdp; git pull
 
 src/gdp:
 	# You will need a password for this, ask Eric.
