@@ -496,7 +496,7 @@ public interface GdpLibrary extends Library {
 	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((1) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep.h</i> */
-	public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); //Fixed by cxh in makefile.
+	public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.
 	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
 	public static final int EP_OSCF_HAS_SYS_TYPES_H = (int)1;
 	/**

@@ -55,6 +55,8 @@ JSRCS = \
 	EP_DBG.java \
 	EP_STAT.java \
 	EP_TIME_SPEC.java \
+	Event2Library.java \
+	evbuffer_ptr.java \
 	GdpLibrary.java \
 	ep_stat_to_string.java \
 	gdp_datum.java
@@ -90,25 +92,53 @@ GDP_H_FILES = \
 	$(GDP_SRC)/ep/ep.h \
 	$(GDP_SRC)/ep/ep_dbg.h
 
+LIBEVENT_VERSION = 2.0.21-stable
+LIBEVENT=libevent-$(LIBEVENT_VERSION)
+LIBEVENT_SRC=src/$(LIBEVENT)
+
+
+LIBEVENT_H_FILES = \
+	$(LIBEVENT_SRC)/include/event2/buffer.h
+
 # Rebuild the jar file
 jna: $(JNAERATOR_JAR) src/gdp
 	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp -I $(GDP_SRC) $(GDP_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
+	java -jar $(JNAERATOR_JAR) -runtime JNA -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
+	echo "Fixing $$file"; \
 	sed -e 's@NativeSize@NativeSizeT@g' \
 	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize@' \
 	    -e 's@import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt;@// import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt; // Fixed by cxh in makefile.@' \
-	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); //Fixed by cxh in makefile.@' \
+	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.@' \
 	    -e 's@\(public static final GlobalInt __EpDbgCurGen = new GlobalInt(GdpLibrary.JNA_NATIVE_LIB, "__EpDbgCurGen");\)@//\1@' \
+	    -e 's@\(.*NativeSizeTByReference.*\)@// \1 // Commented out by makefile because NativeSizeTByReference is not in jna.@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done
 
 
+# libevent:
+# "The libevent API provides a mechanism to execute a callback function
+# when a specific event occurs on a file descriptor or after a timeout
+# has been reached. Furthermore, libevent also support callbacks due
+# to signals or regular timeouts."
+#
+# We have a local copy so that we can run JNAeator
+#
+# Run "make libevent" to get the libevent source.
+libevent: $(LIBEVENT_SRC)
+$(LIBEVENT_SRC):
+	# Github is too stupid to handle wget, so you will need to go to http://libevent.org, download it and thenrun
+	# cd src; tar -zxf $(LIBEVENT).tar.gz
+
 update:
 	cd src/gdp; git pull
 
-src/gdp:
+# Run "make gdp" to get the gdp source.
+gdp: $(GDP_SRC)
+
+$(GDP_SRC):
 	# You will need a password for this, ask Eric.
 	mkdir src
 	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git

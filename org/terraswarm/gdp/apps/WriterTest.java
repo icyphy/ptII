@@ -28,8 +28,11 @@
 
 package org.terraswarm.gdp.apps;
 
-import com.sun.jna.Pointer;
+
+import com.sun.jna.Memory;
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
 import java.io.BufferedReader;
@@ -40,6 +43,8 @@ import java.nio.ByteBuffer;
 import org.ptolemy.fmi.NativeSizeT;
 
 import org.terraswarm.gdp.EP_STAT;
+import org.terraswarm.gdp.Event2Library;
+import org.terraswarm.gdp.Event2Library.evbuffer;
 import org.terraswarm.gdp.GdpLibrary;
 import org.terraswarm.gdp.GdpLibrary.gdp_gcl_t;
 import org.terraswarm.gdp.ep_stat_to_string;
@@ -138,15 +143,31 @@ public class WriterTest {
         BufferedReader bufferedReader = null;
         try {
            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            while((buf=bufferedReader.readLine())!=null){
+           String line;
+           // 200 is a magic number from writer-test and seems wrong.
+           final int bufferLength = 200;
+           while((line = bufferedReader.readLine())!=null){
                 System.out.println("Got input \"" +  buf + "\"");
+
                 // FIXME: gdp/gdp_buf.h has
                 // #define gdp_buf_write(b, i, z)	evbuffer_add(b, i, z)
                 // evbuffer_add is declared in /usr/local/include/event2/buffer.h
                 //gdp_buf_write(datum->dbuf, buf, buf.length());
 
-                //evbuffer_add(datum.dbuf, buf, buf.length());
-                System.err.println("FIXME: no definition of evbuffer_add");
+                // See FMULibrary for similar code.
+                // FIXME: we should probably have alloc and free methods and avoid lieaks.
+                if (line.length() > bufferLength) {
+                    throw new Exception("The length of the line \"" + line
+                            + "\" is greater than " + bufferLength );
+                }
+                Memory memory = new Memory(bufferLength);
+                // FIXME: not sure about alignment.
+                Memory alignedMemory = memory.align(4);
+                memory.clear();
+                Pointer pointer = alignedMemory.share(0);
+                pointer.setString(0, line);
+
+                Event2Library.INSTANCE.evbuffer_add(new evbuffer(datum.dbuf.getValue()), pointer, new NativeSizeT(line.length()));
 
 		estat = GdpLibrary.INSTANCE.gdp_gcl_publish(gclh, datum);
                 if (estat.code.intValue() != 0) {
@@ -191,8 +212,9 @@ public class WriterTest {
      *  @param datum The datum to be printed.
      */   
     private static void _gdp_datum_print(gdp_datum datum) {
-        // unsigned char *d; // From gdp_api.c
-        int length = -1;
+        Pointer d;
+        NativeSizeT length = new NativeSizeT();
+        length.setValue(-1);
         if (datum == null) {
             System.out.println("null datum");
         }
@@ -203,7 +225,7 @@ public class WriterTest {
             // In gdp_api.c, gdp_datum_print() calls:
             // l = gdp_buf_getlength(datum->dbuf);
             // gdp_buf.h has an inline call to evbuffer_get_length(buf), which we don't yet have 
-            //length = GdpLibrary.INSTANCE.gdp_buf_getlength(datum.dbuf);
+            length = Event2Library.INSTANCE.evbuffer_get_length(new evbuffer(datum.dbuf.getValue()));
             System.out.print("len " + datum.dlen + "/" + length);
 
             // In gdp_api.c, this method calls:
@@ -215,6 +237,8 @@ public class WriterTest {
             // A different idea would be to have a gdp_buf.c method
             // that calls evbuffer_pullup so that we don't need to run
             // JNA on that class.
+
+            d = Event2Library.INSTANCE.evbuffer_pullup(new evbuffer(datum.dbuf.getValue()), new NativeLong(length.longValue()));
         }
         if (datum.ts.tv_sec != Long.MIN_VALUE) {
             System.out.print(", timestamp ");
@@ -223,7 +247,7 @@ public class WriterTest {
         } else {
             System.out.print(", no timestamp ");
         }
-        if (length > 0) {
+        if (length.longValue() > 0) {
             // gdp_api.c has
             //fprintf(fp, "\n	 %s%.*s%s", EpChar->lquote, l, d, EpChar->rquote);
             // However, we don't know how to get the value of d yet.
