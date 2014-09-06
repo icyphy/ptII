@@ -1,0 +1,1174 @@
+/**
+ * 
+ */
+package org.terraswarm.gdp;
+
+import java.nio.ByteBuffer;
+
+import org.ptolemy.fmi.NativeSizeT;
+import org.terraswarm.gdp.EP_STAT.ByValue;
+
+import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
+
+/**
+ * @author cxh
+ *
+ */
+public class GdpLibraryImplementation implements GdpLibrary {
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_assert_failure(com.sun.jna.Pointer, com.sun.jna.Pointer, com.sun.jna.Pointer, int)
+     */
+    @Override
+    public void ep_assert_failure(Pointer expr, Pointer type, Pointer file,
+            int line) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_assert_failure(java.lang.String, java.lang.String, java.lang.String, int)
+     */
+    @Override
+    public void ep_assert_failure(String expr, String type, String file,
+            int line) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_assert_abort(com.sun.jna.Pointer)
+     */
+    @Override
+    public void ep_assert_abort(Pointer msg) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_assert_abort(java.lang.String)
+     */
+    @Override
+    public void ep_assert_abort(String msg) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_from_errno(int)
+     */
+    @Override
+    public ByValue ep_stat_from_errno(int uerrno) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_reg_strings(org.terraswarm.gdp.ep_stat_to_string)
+     */
+    @Override
+    public void ep_stat_reg_strings(ep_stat_to_string ep_stat_to_stringPtr1) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_tostr(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.ptolemy.fmi.NativeSizeT)
+     */
+    @Override
+    public Pointer ep_stat_tostr(ByValue estat, Pointer buf, NativeSizeT bsize) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_tostr(org.terraswarm.gdp.EP_STAT.ByValue, java.nio.ByteBuffer, org.ptolemy.fmi.NativeSizeT)
+     */
+    @Override
+    public Pointer ep_stat_tostr(ByValue estat, ByteBuffer buf,
+            NativeSizeT bsize) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_sev_tostr(int)
+     */
+    @Override
+    public String ep_stat_sev_tostr(int sev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_register(org.terraswarm.gdp.EP_STAT.ByValue, org.terraswarm.gdp.EP_STAT.ByValue, org.terraswarm.gdp.GdpLibrary.EP_STAT_HANDLER_FUNCP)
+     */
+    @Override
+    public PointerByReference ep_stat_register(ByValue estat, ByValue mask,
+            EP_STAT_HANDLER_FUNCP f) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_unregister(com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue ep_stat_unregister(Pointer h) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_unregister(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue ep_stat_unregister(PointerByReference h) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_post(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, java.lang.Object[])
+     */
+    @Override
+    public ByValue ep_stat_post(ByValue c, Pointer defmsg, Object... varArgs1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_post(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, java.lang.Object[])
+     */
+    @Override
+    public ByValue ep_stat_post(ByValue c, String defmsg, Object... varArgs1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_vpost(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, java.lang.Object[])
+     */
+    @Override
+    public ByValue ep_stat_vpost(ByValue c, Pointer defmsg, Object... av) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_vpost(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, java.lang.Object[])
+     */
+    @Override
+    public ByValue ep_stat_vpost(ByValue c, String defmsg, Object... av) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.GdpLibrary.FILE, java.lang.Object[])
+     */
+    @Override
+    public void ep_stat_print(ByValue c, Pointer defmsg, FILE fp,
+            Object... varArgs1) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.GdpLibrary.FILE, java.lang.Object[])
+     */
+    @Override
+    public void ep_stat_print(ByValue c, String defmsg, FILE fp,
+            Object... varArgs1) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.GdpLibrary.FILE, java.lang.Object[])
+     */
+    @Override
+    public void ep_stat_vprint(ByValue c, Pointer defmsg, FILE fp, Object... av) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.GdpLibrary.FILE, java.lang.Object[])
+     */
+    @Override
+    public void ep_stat_vprint(ByValue c, String defmsg, FILE fp, Object... av) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_stat_abort(org.terraswarm.gdp.EP_STAT.ByValue)
+     */
+    @Override
+    public void ep_stat_abort(ByValue c) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_lib_init(int)
+     */
+    @Override
+    public ByValue ep_lib_init(int flags) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_mem_malloc(org.ptolemy.fmi.NativeSizeT)
+     */
+    @Override
+    public Pointer ep_mem_malloc(NativeSizeT size_t1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_mem_zalloc(org.ptolemy.fmi.NativeSizeT)
+     */
+    @Override
+    public Pointer ep_mem_zalloc(NativeSizeT size_t1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_mem_strdup(com.sun.jna.Pointer)
+     */
+    @Override
+    public Pointer ep_mem_strdup(Pointer charPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_mem_strdup(java.lang.String)
+     */
+    @Override
+    public Pointer ep_mem_strdup(String charPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_mem_free(com.sun.jna.Pointer)
+     */
+    @Override
+    public void ep_mem_free(Pointer voidPtr1) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getintparam(com.sun.jna.Pointer, int)
+     */
+    @Override
+    public int ep_adm_getintparam(Pointer name, int def) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getintparam(java.lang.String, int)
+     */
+    @Override
+    public int ep_adm_getintparam(String name, int def) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getlongparam(com.sun.jna.Pointer, com.sun.jna.NativeLong)
+     */
+    @Override
+    public NativeLong ep_adm_getlongparam(Pointer name, NativeLong def) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getlongparam(java.lang.String, com.sun.jna.NativeLong)
+     */
+    @Override
+    public NativeLong ep_adm_getlongparam(String name, NativeLong def) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getboolparam(com.sun.jna.Pointer, byte)
+     */
+    @Override
+    public byte ep_adm_getboolparam(Pointer name, byte def) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getboolparam(java.lang.String, byte)
+     */
+    @Override
+    public byte ep_adm_getboolparam(String name, byte def) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getstrparam(com.sun.jna.Pointer, com.sun.jna.Pointer)
+     */
+    @Override
+    public Pointer ep_adm_getstrparam(Pointer name, Pointer def) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_adm_getstrparam(java.lang.String, java.lang.String)
+     */
+    @Override
+    public Pointer ep_adm_getstrparam(String name, String def) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_fopensmem(com.sun.jna.Pointer, org.ptolemy.fmi.NativeSizeT, com.sun.jna.Pointer)
+     */
+    @Override
+    public FILE ep_fopensmem(Pointer buf, NativeSizeT bufsz, Pointer mode) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_fopensmem(com.sun.jna.Pointer, org.ptolemy.fmi.NativeSizeT, java.lang.String)
+     */
+    @Override
+    public FILE ep_fopensmem(Pointer buf, NativeSizeT bufsz, String mode) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_fread_unlocked(com.sun.jna.Pointer, org.ptolemy.fmi.NativeSizeT, org.ptolemy.fmi.NativeSizeT, org.terraswarm.gdp.GdpLibrary.FILE)
+     */
+    @Override
+    public NativeSizeT ep_fread_unlocked(Pointer buf, NativeSizeT sz,
+            NativeSizeT n, FILE fp) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_fwrite_unlocked(com.sun.jna.Pointer, org.ptolemy.fmi.NativeSizeT, org.ptolemy.fmi.NativeSizeT, org.terraswarm.gdp.GdpLibrary.FILE)
+     */
+    @Override
+    public NativeSizeT ep_fwrite_unlocked(Pointer buf, NativeSizeT sz,
+            NativeSizeT n, FILE fp) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_now(org.terraswarm.gdp.EP_TIME_SPEC)
+     */
+    @Override
+    public ByValue ep_time_now(EP_TIME_SPEC tv) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_accuracy()
+     */
+    @Override
+    public float ep_time_accuracy() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_setaccuracy(float)
+     */
+    @Override
+    public void ep_time_setaccuracy(float acc) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_format(org.terraswarm.gdp.EP_TIME_SPEC, com.sun.jna.Pointer, org.ptolemy.fmi.NativeSizeT, byte)
+     */
+    @Override
+    public void ep_time_format(EP_TIME_SPEC tv, Pointer buf, NativeSizeT bz,
+            byte human) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_format(org.terraswarm.gdp.EP_TIME_SPEC, java.nio.ByteBuffer, org.ptolemy.fmi.NativeSizeT, byte)
+     */
+    @Override
+    public void ep_time_format(EP_TIME_SPEC tv, ByteBuffer buf, NativeSizeT bz,
+            byte human) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_print(org.terraswarm.gdp.EP_TIME_SPEC, org.terraswarm.gdp.GdpLibrary.FILE, byte)
+     */
+    @Override
+    public void ep_time_print(EP_TIME_SPEC tv, FILE fp, byte human) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_parse(com.sun.jna.Pointer, org.terraswarm.gdp.EP_TIME_SPEC)
+     */
+    @Override
+    public ByValue ep_time_parse(Pointer timestr, EP_TIME_SPEC tv) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_parse(java.lang.String, org.terraswarm.gdp.EP_TIME_SPEC)
+     */
+    @Override
+    public ByValue ep_time_parse(String timestr, EP_TIME_SPEC tv) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_time_nanosleep(long)
+     */
+    @Override
+    public ByValue ep_time_nanosleep(long int64_t1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_init(com.sun.jna.Pointer, int)
+     */
+    @Override
+    public int ep_thr_mutex_init(Pointer mtx, int type) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_init(com.sun.jna.ptr.PointerByReference, int)
+     */
+    @Override
+    public int ep_thr_mutex_init(PointerByReference mtx, int type) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_destroy(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_mutex_destroy(Pointer mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_destroy(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_mutex_destroy(PointerByReference mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_lock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_mutex_lock(Pointer mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_lock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_mutex_lock(PointerByReference mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_trylock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_mutex_trylock(Pointer mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_trylock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_mutex_trylock(PointerByReference mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_unlock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_mutex_unlock(Pointer mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_mutex_unlock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_mutex_unlock(PointerByReference mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_init(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_cond_init(Pointer cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_init(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_cond_init(PointerByReference cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_destroy(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_cond_destroy(Pointer cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_destroy(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_cond_destroy(PointerByReference cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_signal(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_cond_signal(Pointer cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_signal(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_cond_signal(PointerByReference cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_wait(com.sun.jna.Pointer, com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_cond_wait(Pointer cv, Pointer mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_wait(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_cond_wait(PointerByReference cv, PointerByReference mtx) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_broadcast(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_cond_broadcast(Pointer cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_cond_broadcast(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_cond_broadcast(PointerByReference cv) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_init(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_init(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_init(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_init(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_destroy(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_destroy(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_destroy(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_destroy(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_rdlock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_rdlock(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_rdlock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_rdlock(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_tryrdlock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_tryrdlock(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_tryrdlock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_tryrdlock(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_wrlock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_wrlock(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_wrlock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_wrlock(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_trywrlock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_trywrlock(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_trywrlock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_trywrlock(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_unlock(com.sun.jna.Pointer)
+     */
+    @Override
+    public int ep_thr_rwlock_unlock(Pointer rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#ep_thr_rwlock_unlock(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int ep_thr_rwlock_unlock(PointerByReference rwl) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_buf_dump(com.sun.jna.Pointer, org.terraswarm.gdp.GdpLibrary.FILE)
+     */
+    @Override
+    public void gdp_buf_dump(Pointer buf, FILE fp) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_buf_dump(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.GdpLibrary.FILE)
+     */
+    @Override
+    public void gdp_buf_dump(PointerByReference buf, FILE fp) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#_gdp_stat_init()
+     */
+    @Override
+    public void _gdp_stat_init() {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_new(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_event_new(PointerByReference gevp) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_free(com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue gdp_event_free(Pointer gev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_free(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_event_free(PointerByReference gev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_trigger(com.sun.jna.Pointer)
+     */
+    @Override
+    public void gdp_event_trigger(Pointer gev) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_trigger(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public void gdp_event_trigger(PointerByReference gev) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_next(byte)
+     */
+    @Override
+    public PointerByReference gdp_event_next(byte wait$) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_gettype(com.sun.jna.Pointer)
+     */
+    @Override
+    public int gdp_event_gettype(Pointer gev) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_gettype(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public int gdp_event_gettype(PointerByReference gev) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_getgcl(com.sun.jna.Pointer)
+     */
+    @Override
+    public PointerByReference gdp_event_getgcl(Pointer gev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_getgcl(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public PointerByReference gdp_event_getgcl(PointerByReference gev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_getdatum(com.sun.jna.Pointer)
+     */
+    @Override
+    public gdp_datum gdp_event_getdatum(Pointer gev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_event_getdatum(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public gdp_datum gdp_event_getdatum(PointerByReference gev) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_init()
+     */
+    @Override
+    public ByValue gdp_init() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_run_accept_event_loop(com.sun.jna.Pointer)
+     */
+    @Override
+    public Pointer gdp_run_accept_event_loop(Pointer voidPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_create(com.sun.jna.Pointer, com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_gcl_create(Pointer gcl_name_t1,
+            PointerByReference gdp_gcl_tPtrPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_create(java.nio.ByteBuffer, com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_gcl_create(ByteBuffer gcl_name_t1,
+            PointerByReference gdp_gcl_tPtrPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_open(com.sun.jna.Pointer, int, com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_gcl_open(Pointer name, int rw, PointerByReference gclh) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_open(java.nio.ByteBuffer, int, com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_gcl_open(ByteBuffer name, int rw, PointerByReference gclh) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_close(com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue gdp_gcl_close(Pointer gclh) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_close(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public ByValue gdp_gcl_close(PointerByReference gclh) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_publish(com.sun.jna.Pointer, org.terraswarm.gdp.gdp_datum)
+     */
+    @Override
+    public ByValue gdp_gcl_publish(Pointer gclh, gdp_datum gdp_datum_tPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_publish(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.gdp_datum)
+     */
+    @Override
+    public ByValue gdp_gcl_publish(PointerByReference gclh,
+            gdp_datum gdp_datum_tPtr1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_read(com.sun.jna.Pointer, long, org.terraswarm.gdp.gdp_datum)
+     */
+    @Override
+    public ByValue gdp_gcl_read(Pointer gclh, long recno, gdp_datum datum) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_read(com.sun.jna.ptr.PointerByReference, long, org.terraswarm.gdp.gdp_datum)
+     */
+    @Override
+    public ByValue gdp_gcl_read(PointerByReference gclh, long recno,
+            gdp_datum datum) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_subscribe(com.sun.jna.Pointer, long, long, org.terraswarm.gdp.GdpLibrary.gdp_gcl_sub_cbfunc_t, com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue gdp_gcl_subscribe(Pointer gclh, long start, long stop,
+            gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_subscribe(com.sun.jna.ptr.PointerByReference, long, long, org.terraswarm.gdp.GdpLibrary.gdp_gcl_sub_cbfunc_t, com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue gdp_gcl_subscribe(PointerByReference gclh, long start,
+            long stop, gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_getname(com.sun.jna.Pointer)
+     */
+    @Override
+    public Pointer gdp_gcl_getname(Pointer gclh) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_getname(com.sun.jna.ptr.PointerByReference)
+     */
+    @Override
+    public Pointer gdp_gcl_getname(PointerByReference gclh) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_name_is_zero(com.sun.jna.Pointer)
+     */
+    @Override
+    public byte gdp_gcl_name_is_zero(Pointer gcl_name_t1) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_name_is_zero(java.nio.ByteBuffer)
+     */
+    @Override
+    public byte gdp_gcl_name_is_zero(ByteBuffer gcl_name_t1) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_print(com.sun.jna.Pointer, org.terraswarm.gdp.GdpLibrary.FILE, int, int)
+     */
+    @Override
+    public void gdp_gcl_print(Pointer gclh, FILE fp, int detail, int indent) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_print(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.GdpLibrary.FILE, int, int)
+     */
+    @Override
+    public void gdp_gcl_print(PointerByReference gclh, FILE fp, int detail,
+            int indent) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_printable_name(com.sun.jna.Pointer, com.sun.jna.Pointer)
+     */
+    @Override
+    public Pointer gdp_gcl_printable_name(Pointer internal, Pointer external) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_printable_name(java.nio.ByteBuffer, java.nio.ByteBuffer)
+     */
+    @Override
+    public Pointer gdp_gcl_printable_name(ByteBuffer internal,
+            ByteBuffer external) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_internal_name(com.sun.jna.Pointer, com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue gdp_gcl_internal_name(Pointer external, Pointer internal) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_internal_name(java.nio.ByteBuffer, java.nio.ByteBuffer)
+     */
+    @Override
+    public ByValue gdp_gcl_internal_name(ByteBuffer external,
+            ByteBuffer internal) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_parse_name(com.sun.jna.Pointer, com.sun.jna.Pointer)
+     */
+    @Override
+    public ByValue gdp_gcl_parse_name(Pointer ext, Pointer internal) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_gcl_parse_name(java.lang.String, java.nio.ByteBuffer)
+     */
+    @Override
+    public ByValue gdp_gcl_parse_name(String ext, ByteBuffer internal) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_datum_new()
+     */
+    @Override
+    public gdp_datum gdp_datum_new() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_datum_free(org.terraswarm.gdp.gdp_datum)
+     */
+    @Override
+    public void gdp_datum_free(gdp_datum gdp_datum_tPtr1) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.terraswarm.gdp.GdpLibrary#gdp_datum_print(org.terraswarm.gdp.gdp_datum, org.terraswarm.gdp.GdpLibrary.FILE)
+     */
+    @Override
+    public void gdp_datum_print(gdp_datum datum, FILE fp) {
+        // TODO Auto-generated method stub
+
+    }
+
+}
