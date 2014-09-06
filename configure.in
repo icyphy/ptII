@@ -2924,6 +2924,13 @@ PTFMI_DIR=
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES=
 
+# PTGDP_DIR is set to fmi if jna.jar was found
+# $PTII/org/terraswarm/makefile uses PTGDP_DIR
+PTGDP_DIR=
+
+# PTGDP_PACKAGES is used in doc/makefile
+PTGDP_PACKAGES=
+
 # The location of the jna.jar file, typically $PTII/lib/jna.jar
 JNA_JAR=
 
@@ -2942,6 +2949,8 @@ else
         PT_MSG_RESULT($JNA_JAR)
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
+	PTGDP_DIR=gdp
+	PTGDP_PACKAGES="org.ptolemy.terraswarm.gdp org.ptolemy.terraswarm.gdp.apps"
 	if test -d "$PTII/ptolemy/domains/fmi"; then
 	    PTFMI_PACKAGES="$PTFMI_PACKAGES ptolemy.domains.fmi.kernel ptolemy.domains.fmi.lib"
         fi
@@ -6168,6 +6177,13 @@ AC_SUBST(PTG4LTL_DIR)
 
 # Packages in Ptolemy that depend on g4ltl.jar
 AC_SUBST(PTG4LTL_PACKAGES)
+
+# PTGDP_DIR is set to fmi if jna.jar was found
+# $PTII/ptolemy/actor/lib/makefile uses PTGDP_DIR
+AC_SUBST(PTGDP_DIR)
+
+# PTGDP_PACKAGES is used in doc/makefile
+AC_SUBST(PTGDP_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
