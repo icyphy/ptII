@@ -1,7 +1,7 @@
-# Makefile org.terraswarm Global Data Plane sources
+# Makefile org.terraswarm Global Data Plane applications
 #
 # @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -32,10 +32,10 @@
 DIRS = 
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # $(ME) is used in ptdir.mk
-ME =		org.terraswarm.gdp
+ME =		org.terraswarm.gdp.apps
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
@@ -44,7 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	gdp
+PTPACKAGE = 	apps
 #PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -52,7 +52,7 @@ PTPACKAGE = 	gdp
 PTCLASSALLJARS =
 
 JSRCS = \
-	GdpLibrary.java
+	WriterTest.java
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -71,52 +71,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-KRUFT = .cpp *.c *.choices
-
-
-JNAERATOR_JAR = jnaerator-0.12-20140626.234513-58-shaded.jar
-
 all: jclass
 install: jclass jars
-
-GDP_SRC = src/gdp
-
-GDP_H_FILES = \
-	$(GDP_SRC)/gdp/gdp.h \
-	$(GDP_SRC)/ep/ep.h \
-	$(GDP_SRC)/ep/ep_dbg.h
-
-# Rebuild the jar file
-jna: $(JNAERATOR_JAR) src/gdp
-	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp -I $(GDP_SRC) $(GDP_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
-	# Fix up some issues:
-	for file in *.java; do \
-	sed -e 's/NativeSize/NativeSizeT/g' \
-	    -e 's/import com.ochafik.lang.jnaerator.runtime.NativeSizeT;/import org.ptolemy.fmi.NativeSizeT;/' \
-	    -e 's/public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;/public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF);/' \
-		$$file > /tmp/gdp.fix; \
-	mv /tmp/gdp.fix $$file; \
-        done
-
-
-src/gdp:
-	# You will need a password for this, ask Eric.
-	mkdir src
-	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
-
-jnaerator-0.12-20140626.234513-58-shaded.jar:
-	wget --no-check-certificate https://oss.sonatype.org/content/groups/public/com/nativelibs4java/jnaerator/0.12-SNAPSHOT/jnaerator-0.12-20140626.234513-58-shaded.jar
-
-
-# jnaerator-0.11-shaded.jar does not generate getFieldOrder(), which is needed in more recent versions of JNA.
-#
-#jnaerator-0.11-shaded.jar:
-#	wget http://search.maven.org/remotecontent?filepath=com/nativelibs4java/jnaerator/0.11/jnaerator-0.11-shaded.jar
-#	mv 'remotecontent?filepath=com%2Fnativelibs4java%2Fjnaerator%2F0.11%2Fjnaerator-0.11-shaded.jar' $@
-
-
-
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
