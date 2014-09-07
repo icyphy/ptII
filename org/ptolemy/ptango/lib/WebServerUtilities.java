@@ -73,6 +73,7 @@ public class WebServerUtilities {
     public WebServerUtilities() {
 
         _applications = new HashSet<WebApplicationInfo>();
+        _dynamicPortSelection = false;
         _portNumber = DEFAULT_PORT_NUMBER;
         _maxIdleTime = DEFAULT_MAX_IDLE_TIME;
 
@@ -87,6 +88,7 @@ public class WebServerUtilities {
     public WebServerUtilities(int portNumber) {
 
         _applications = new HashSet<WebApplicationInfo>();
+        _dynamicPortSelection = false;
         _maxIdleTime = 30000;
 
         // If port number is <= 0 or maximum idle time is <= 0 use defaults
@@ -110,6 +112,7 @@ public class WebServerUtilities {
     public WebServerUtilities(int portNumber, int maxIdleTime) {
 
         _applications = new HashSet<WebApplicationInfo>();
+        _dynamicPortSelection = false;
 
         // If port number is <= 0 or maximum idle time is <= 0 use defaults
         if (portNumber <= 0) {
@@ -129,6 +132,15 @@ public class WebServerUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Return true if dynamic port selection is permitted; false otherwise
+     * 
+     * @return True if dynamic port selection is permitted; false otherwise
+     * @see #setDynamicPortSelection(boolean)
+     */
+    public boolean getDynamicPortSelection() {
+        return _dynamicPortSelection;
+    }
 
     /** Return the maximum amount of time the server will wait before returning
      * a timeout response page.
@@ -221,65 +233,7 @@ public class WebServerUtilities {
         // If this is the first application, need to create a Jetty server and
         // set the server's properties
         if (_applications.isEmpty()) {
-            _server = new Server();
-            _selectChannelConnector = new SelectChannelConnector();
-            _selectChannelConnector.setPort(_portNumber);
-            _selectChannelConnector.setMaxIdleTime(_maxIdleTime);
-
-            // Don't allow other programs to use this port (e.g. another
-            // Jetty instance)
-            // FIXME:  Need to catch exception
-            _selectChannelConnector.setReuseAddress(false);
-            _server.setConnectors(new Connector[] { _selectChannelConnector });
-
-            // Create a ContextHandlerCollection containing only a
-            // DefaultHandler.  Other handlers will be added later for web apps
-            // See "Configuring the Server - Handlers"
-            // http://www.eclipse.org/jetty/documentation/current/quickstart-config-what.html
-
-            ContextHandlerCollection handlers = new ContextHandlerCollection();
-            handlers.addHandler(new DefaultHandler());
-            _server.setHandler(handlers);
-
-            // Start the server in a new thread. Use a custom uncaught exception
-            // handler so the server thread can log information about exceptions
-            // to the _exceptionMessage variable that the main thread can access
-            _startAttempted = false;
-            _exception = null;
-            _serverThread = new Thread(new RunnableServer());
-            _serverThread.start();
-
-            // Wait until the server has attempted to start
-            // The server thread will set _startAttempted to true
-            // Then, see if an exception has occurred
-            synchronized (_lock) {
-                while (!_startAttempted) {
-                    try {
-                        _lock.wait();
-                    } catch (InterruptedException e) {
-                        // FIXME: Do anything special if thread is interrupted?
-                        break;
-                    }
-                }
-            }
-
-            // If an exception occurred, re-throw it
-            // One alternative considered was to use a Callable instead of a
-            // a Runnable, since a Callable can throw an exception
-            // However, the calling thread gets the exception back by calling
-            // Future.get(), which blocks the calling thread
-            // Since in normal operation the server thread runs indefinitely,
-            // Future.get() would block Ptolemy model execution indefinitely
-            if (_exception != null) {
-                if (_exception instanceof BindException) {
-                    throw new Exception("The web server attempted to start on"
-                            + " port " + _portNumber + ", but this port is "
-                            + "already in use.  Perhaps another instance of "
-                            + "Ptolemy is running a web server on this port?");
-                } else {
-                    throw new Exception(_exception);
-                }
-            }
+            startServer();
         }
 
         // Add this application to the list of registered applications
@@ -294,6 +248,16 @@ public class WebServerUtilities {
         _createResourceHandlers(appInfo);
     }
 
+    /** Set a flag indicating if dynamic port selection is permitted.
+     * 
+     * @param dynamicPortSelection True if dynamic port selection is permitted; 
+     * false otherwise
+     * @see #getDynamicPortSelection()
+     */
+    public void setDynamicPortSelection(boolean dynamicPortSelection) {
+        _dynamicPortSelection = dynamicPortSelection;
+    }
+    
     /** Set the maximum amount of time, in milliseconds, that the server will
      * wait before returning a timeout response page.
      *
@@ -421,10 +385,10 @@ public class WebServerUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Use 8080 as the default port number that the server listens to for
+    /** Use 8078 as the default port number that the server listens to for
      * incoming requests.
      */
-    static final int DEFAULT_PORT_NUMBER = 8080;
+    static final int DEFAULT_PORT_NUMBER = 8078;
 
     /** Use 30 seconds (30000 milliseconds) as the default time the server
      * will wait before returning a timeout response page.
@@ -646,22 +610,147 @@ public class WebServerUtilities {
             handler.start();
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    private void startServer() throws Exception {
+        _server = new Server();
+        _selectChannelConnector = new SelectChannelConnector();
+        _selectChannelConnector.setPort(_portNumber);
+        _selectChannelConnector.setMaxIdleTime(_maxIdleTime);
+
+        // Don't allow other programs to use this port (e.g. another
+        // Jetty instance)
+        // FIXME:  Need to catch exception
+        _selectChannelConnector.setReuseAddress(false);
+        _server.setConnectors(new Connector[] { _selectChannelConnector });
+
+        // Create a ContextHandlerCollection containing only a
+        // DefaultHandler.  Other handlers will be added later for web apps
+        // See "Configuring the Server - Handlers"
+        // http://www.eclipse.org/jetty/documentation/current/quickstart-config-what.html
+
+        ContextHandlerCollection handlers = new ContextHandlerCollection();
+        handlers.addHandler(new DefaultHandler());
+        _server.setHandler(handlers);
+
+        // Start the server in a new thread. Use a custom uncaught exception
+        // handler so the server thread can log information about exceptions
+        // to the _exceptionMessage variable that the main thread can access
+        _startAttempted = false;
+        _exception = null;
+        _serverThread = new Thread(new RunnableServer());
+        _serverThread.start();
+
+        // Wait until the server has attempted to start
+        // The server thread will set _startAttempted to true
+        // Then, see if an exception has occurred
+        synchronized (_lock) {
+            while (!_startAttempted) {
+                try {
+                    _lock.wait();
+                } catch (InterruptedException e) {
+                    // FIXME: Do anything special if thread is interrupted?
+                    break;
+                }
+            }
+        }
+        
+        boolean success = false;
+                
+        // If an exception occurred, re-throw it
+        // One alternative considered was to use a Callable instead of a
+        // a Runnable, since a Callable can throw an exception
+        // However, the calling thread gets the exception back by calling
+        // Future.get(), which blocks the calling thread
+        // Since in normal operation the server thread runs indefinitely,
+        // Future.get() would block Ptolemy model execution indefinitely
+        if (_exception != null) {
+            if (_exception instanceof BindException) {
+                if (_dynamicPortSelection) {
+                    _portNumber = _initialDynamicPortNumber; 
+                    
+                    while (_portNumber <= _maxDynamicPortNumber) {
+                        _startAttempted = false;
+                        _exception = null;
+                        _serverThread = new Thread(new RunnableServer());
+                        
+                        _selectChannelConnector.setPort(_portNumber);
+                        _serverThread.start();
+
+                        // Wait until the server has attempted to start
+                        // The server thread will set _startAttempted to true
+                        // Then, see if an exception has occurred
+                        synchronized (_lock) {
+                            while (!_startAttempted) {
+                                try {
+                                    _lock.wait();
+                                } catch (InterruptedException e) {
+                                    // FIXME: Do anything special if thread is interrupted?
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (_exception != null) {
+                            if (_exception instanceof BindException) {
+                                _portNumber++;
+                            } else {
+                                throw new Exception(_exception);
+                            }
+                        } else {
+                            // No exception means server started successfully
+                            success = true;
+                            break;
+                        } 
+                    }
+                    
+                    // Ran out of port numbers to try
+                    if (!success) {
+                        throw new Exception("The web server could not find an " 
+                                + "available port between " 
+                                + _initialDynamicPortNumber + " and " 
+                                + _maxDynamicPortNumber);
+                    }
+                } else {
+                throw new Exception("The web server attempted to start on"
+                        + " port " + _portNumber + ", but this port is "
+                        + "already in use.  Perhaps another instance of "
+                        + "Ptolemy is running a web server on this port?");
+                }
+            } else {
+                throw new Exception(_exception);
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The set of applications running on this web server. */
     private HashSet<WebApplicationInfo> _applications;
+    
+    /** A flag indicating if dynamic port selection is allowed. */
+    private boolean _dynamicPortSelection;
 
     /** An exception thrown (if any) when the server is started.  The main
      * thread will check if this exception has been set by the server thread. */
     private Exception _exception;
+    
+    /** The initial port number to try, under dynamic port selection.  
+     *  Note that the port specified in the constructor will be tried first. */
+    private int _initialDynamicPortNumber = 8001;
 
     /** A lock to synchronize the main and server threads when starting the
      * server.
      */
     private Object _lock = new Object();
 
+    /** The maximum port number to try, under dynamic port selection.  A 
+     * maximum is specified so the server won't try indefinitely. */
+    private int _maxDynamicPortNumber = 8999;
+    
     /** The maximum idle time for a connection, in milliseconds.
      */
     private int _maxIdleTime;
@@ -685,7 +774,7 @@ public class WebServerUtilities {
     /** A Runnable class to run a Jetty web server in a separate thread.
      */
     private class RunnableServer implements Runnable {
-
+        
         /** Run the Jetty web server.  Stop the server if this thread is
          *  interrupted (for example, when the model is finished executing,
          *  WebServer's wrapup() will interrupt this thread) or if an

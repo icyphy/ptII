@@ -145,29 +145,47 @@ public final class WebServerManager {
      * application was successfully registered; false otherwise.
      *
      * @param appInfo Information about the registered web application
-     * @param portNumber The port number to host this web application on
+     * @param portNumber The desired port number to host this web application on
+     * @return The actual port number the web application is running on (may be 
+     * different from the portNumber parameter if dynamic selection is enabled)
      * @exception Exception thrown if web server cannot be instantiated or if
      * application conflicts with an already-registered application
      */
 
-    public void register(WebApplicationInfo appInfo, int portNumber)
+    public int register(WebApplicationInfo appInfo, int portNumber,
+            boolean dynamicPortSelection)
             throws Exception {
         // Fetch server at this port, if any.  If none, create and start a new
-        // server for this port.  If the port number is <=0, use the default
-        // port of 8080
+        // server for this port.  If the port number is <=0, WebServerUtilities
+        // uses a default port
         WebServerUtilities server = null;
 
+        // If dynamic port selection is enabled, can reuse any server currently
+        // hosting models for this Ptolemy instance. Check preferred port first.
+        // TODO:  Server sharing could be prohibited in the future if desired
+        // for security reasons, depending on the application
+        // Otherwise, retrieve any server at the specified port
+        // Create a new server if no suitable server is found
+      
         for (WebServerUtilities theServer : _servers) {
             if (theServer.getPortNumber() == portNumber) {
                 server = theServer;
                 break;
             }
+            
+            if (dynamicPortSelection && !_servers.isEmpty()) {
+                for (WebServerUtilities reuseServer : _servers) {
+                    server = reuseServer;
+                    break;
+                }
+            }
         }
 
         if (server == null) {
             server = new WebServerUtilities(portNumber);
+            server.setDynamicPortSelection(dynamicPortSelection);
         }
-
+        
         // Register this application.  This will check for URL conflicts,
         // create handlers for this app (context and resource), and start the
         // server if not already started
@@ -175,6 +193,8 @@ public final class WebServerManager {
 
         // Update information about this server in the server table
         _servers.add(server);
+        
+        return server.getPortNumber();
     }
 
     /** Unregister the following application with the manager.  Remove all
@@ -229,5 +249,6 @@ public final class WebServerManager {
     /** The singleton instance of the WebServerManager class */
     private static WebServerManager _instance = null;
 
-    private HashSet<WebServerUtilities> _servers = new HashSet<WebServerUtilities>();
+    private HashSet<WebServerUtilities> _servers = 
+            new HashSet<WebServerUtilities>();
 }

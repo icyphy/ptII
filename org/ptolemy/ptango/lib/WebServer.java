@@ -40,6 +40,7 @@ import java.util.List;
 import org.eclipse.jetty.util.resource.Resource;
 
 import ptolemy.actor.AbstractInitializableAttribute;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -91,9 +92,14 @@ public class WebServer extends AbstractInitializableAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        port = new Parameter(this, "port");
-        port.setTypeEquals(BaseType.INT);
-        port.setExpression(Integer.toString(_portNumber));
+        preferredPort = new Parameter(this, "preferredPort");
+        preferredPort.setTypeEquals(BaseType.INT);
+        preferredPort.setExpression(Integer
+                .toString(WebServerUtilities.DEFAULT_PORT_NUMBER));
+        
+        dynamicPortSelection = new Parameter(this, "dynamicPortSelection");
+        dynamicPortSelection.setTypeEquals(BaseType.BOOLEAN);
+        dynamicPortSelection.setExpression(Boolean.toString(false));
 
         applicationPath = new StringParameter(this, "applicationPath");
         applicationPath.setExpression("/");
@@ -151,6 +157,14 @@ public class WebServer extends AbstractInitializableAttribute {
 
         temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
         temporaryFileLocation.setExpression("$TMPDIR");
+        
+        deployedPort = new Parameter(this, "deployedPort");
+        deployedPort.setExpression("-1");
+        deployedPort.setVisibility(Settable.NOT_EDITABLE);
+        // Don't save deployed port in MoML.  Otherwise, Ptolemy will ask you to 
+        // save the model upon exiting every time a new deployed port is chosen
+        deployedPort.setPersistent(false);
+        _deployedPort = -1;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,7 +174,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  single application.
      *
      *  This defaults to "/", meaning, accept requests for all URLs.
-     *  For example, if the WebServer is handling requests on {@link #port} 8078
+     *  For example, if the WebServer is handling requests on {@link #preferredPort} 8078
      *  of localhost, the model will handle all requests that begin with
      *  <pre>
      *  http://localhost:8078/
@@ -189,17 +203,28 @@ public class WebServer extends AbstractInitializableAttribute {
      *  respectively.
      */
     public StringParameter applicationPath;
-
-    /** The port number to respond to. This is a integer that
-     *  defaults to 8078.
+    
+    /** The port number the server is listening to.  Can be different from 
+     *  preferredPort if dynamic port selection is enabled.
      */
-    public Parameter port;
+    public Parameter deployedPort;
+    
+    /** A parameter specifying whether to allow dynamic port selection.   
+     *  If true, the WebServer will try different ports (starting with the 
+     *  one specified by port, if given) until a free one is found.
+     */
+    public Parameter dynamicPortSelection;
+    
+    /** The preferred port number for the server to listen to. This is a integer 
+     *  that defaults to 8078.
+     */
+    public Parameter preferredPort;
 
     /** The URL prefix used to request resources (files) from this web service.
      *
      *  This defaults to "/", meaning, clients should issue requests for files
      *  to the base URL.  For example, if the WebServer is handling requests on
-     *  {@link #port} 8078 of localhost, the client can request file "image.png"
+     *  {@link #preferredPort} 8078 of localhost, the client can request file "image.png"
      *  using:
      *  <pre>
      *  http://localhost:8078/image.png
@@ -254,7 +279,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  {@link #resourcePath} regarding the URL.
      */
     public FileParameter resourceLocation;
-
+   
     /** A directory where the web server will look for resources
      *  (like image files and the like). This specifies an additional
      *  resource location after {@link #resourceLocation}, but the
@@ -290,8 +315,14 @@ public class WebServer extends AbstractInitializableAttribute {
         // In the future, changes could be propagated immediately to the
         // web server.
 
-        if (attribute == port) {
-            _portNumber = ((IntToken) port.getToken()).intValue();
+        if (attribute == dynamicPortSelection) {
+          
+            // Disable data entry to port parameter under dynamic port selection
+            if (((BooleanToken)dynamicPortSelection.getToken()).booleanValue()){
+                preferredPort.setVisibility(Settable.NOT_EDITABLE);
+            } else {
+                preferredPort.setVisibility(Settable.FULL);
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -308,12 +339,39 @@ public class WebServer extends AbstractInitializableAttribute {
         WebServer newObject = (WebServer) super.clone(workspace);
         // _appInfo is set in initialize()
         newObject._appInfo = null;
-        newObject._portNumber = _portNumber;
         newObject._serverManager = WebServerManager.getInstance();
 
         return newObject;
     }
 
+    /** Get the port that the web server is listening to
+     *  Note there is no setPort(), since the WebServer does not support 
+     *  setting the port at all times (e.g. when already running), and the 
+     *  port may be chosen dynamically in some cases.
+     *  
+     * @return The port that the web server is listening to
+     */
+    public int getDeployedPort() {
+        
+        // TODO: Eventually delete this once object referencing is working OK 
+        // from a Const or Expression
+        return _deployedPort;
+        
+        /*
+        if (deployedPort == null) {
+            return -1;
+        }
+        
+        // Force evaluation of deployedPort
+        try {
+            deployedPort.validate();
+            return ((IntToken) deployedPort.getToken()).intValue();
+        } catch(IllegalActionException e) {
+            return -1;
+        }
+        */
+    }
+    
     /** Collect servlets from all model objects implementing HttpService
      *  and start the web server in a new thread.
      *  <p>
@@ -341,6 +399,12 @@ public class WebServer extends AbstractInitializableAttribute {
 
         if (_debugging) {
             _debug("Initializing web server.");
+        }
+        
+        int preferredPortValue = WebServerUtilities.DEFAULT_PORT_NUMBER;
+        
+        if (preferredPort != null && !preferredPort.getExpression().isEmpty()) {
+           preferredPortValue = Integer.parseInt(preferredPort.getExpression());
         }
 
         // Get the web server manager to register this application with
@@ -488,6 +552,7 @@ public class WebServer extends AbstractInitializableAttribute {
             }
         }
 
+        
         // Throw an exception if resource path is not a valid URI, if a
         // duplicate path is requested or if the directory does not exist
         try {
@@ -502,11 +567,24 @@ public class WebServer extends AbstractInitializableAttribute {
         }
 
         try {
-            _serverManager.register(_appInfo, _portNumber);
+            int actualPort = 
+            _serverManager.register(_appInfo, preferredPortValue, 
+               ((BooleanToken) dynamicPortSelection.getToken()).booleanValue());
+            if (actualPort != -1) {
+                
+                deployedPort.setExpression(Integer.toString(actualPort));
+                ((IntToken) deployedPort.getToken()).intValue();
+                deployedPort.validate();
+                _deployedPort = actualPort;
+                
+                
+            }
         } catch (Exception e) {
             throw new IllegalActionException(this, e,
                     "Failed to register web server.");
         }
+        
+        
     }
 
     /** Unregister this application with the web server manager.
@@ -519,20 +597,26 @@ public class WebServer extends AbstractInitializableAttribute {
         if (_debugging) {
             _debug("Unregistering web application.");
         }
-        // Only attempt to unregister application if registration was
-        // successful.
+        
+        if (deployedPort != null && deployedPort.getExpression() != null) {
+            // Only attempt to unregister application if registration was
+            // successful.
 
-        // If we are exporting to JNLP, then initialized might not
-        // have been called.
-        if (_serverManager != null
-                && _appInfo != null
-                && _serverManager.isRegistered(_appInfo.getModelName(),
-                        _portNumber)) {
-            try {
-                _serverManager.unregister(_appInfo, _portNumber);
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e,
-                        "Failed to stop web application.");
+            // If we are exporting to JNLP, then initialize might not
+            // have been called.
+            
+            int deployedPortValue = 
+                    Integer.parseInt(deployedPort.getExpression());
+            if (_serverManager != null
+                    && _appInfo != null
+                    && _serverManager.isRegistered(_appInfo.getModelName(),
+                            deployedPortValue)) {
+                try {
+                    _serverManager.unregister(_appInfo, deployedPortValue);
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, e,
+                            "Failed to stop web application.");
+                }
             }
         }
     }
@@ -543,10 +627,9 @@ public class WebServer extends AbstractInitializableAttribute {
     /** Info about the web application defined by the model.
      */
     private WebApplicationInfo _appInfo;
-
-    /** The port number the server receives requests on.
-     */
-    private int _portNumber = 8078;
+    
+    /** The port the web server is listening to. */
+    private int _deployedPort;
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;
