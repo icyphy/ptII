@@ -74,5 +74,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+run: WriterTest.class
+	$(JAVA) -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

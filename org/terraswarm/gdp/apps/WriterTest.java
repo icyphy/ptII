@@ -30,6 +30,7 @@ package org.terraswarm.gdp.apps;
 
 
 import com.sun.jna.Memory;
+import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -70,19 +71,23 @@ import ptolemy.util.StringUtilities;
 */
 public class WriterTest {
     public static void main(String [] argv) throws Throwable {
+        Native.setProtected(true);
 
-	PointerByReference /*gdp_gcl_t*/ gclh = null;
-        ByteBuffer /*gcl_name_t*/ gcliname = null;
+        // Was:	gdp_gcl_t *gclh;
+	PointerByReference gclh = new PointerByReference();
+        gdp_gcl_t gclhReally = new gdp_gcl_t(gclh.getValue());
+        
+
+	// Was: gcl_name_t gcliname;
+        // BTW - gcl_name_t is defined in gdp/gdp/gdp.h:
+        // typedef uint8_t                            gcl_name_t[32];
+        ByteBuffer gcliname = ByteBuffer.allocate(32);
+
 	int opt;
 	EP_STAT estat;
 	boolean append = false;
 	String xname = null;
 	String buf = "";
-
-        String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
-
-        // FIXME: use .so for linux:
-        NativeLibrary nativeLibrary = NativeLibrary.getInstance(ptII + "/lib/libgdp.dylib");
 
         int argc = argv.length;
         for (int i = 0; i < argv.length; i++) {
@@ -105,15 +110,23 @@ public class WriterTest {
             System.exit(64 /* EX_USAGE from /usr/includes/sysexits.h */);
 	}
 
+        System.err.println("About to initialize the GDP.");
 	estat = GdpLibrary.INSTANCE.gdp_init();
 	if (/*!EP_STAT_ISOK(estat)*/ estat.code.intValue() != 0) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);
 	}
+        System.err.println("GDP Initialized.");
 
 	if (xname == null) {
             // create a new GCL handle
+            System.err.println("About to create a new handle.");
+
+            // Was: estat = gdp_gcl_create(NULL, &gclh);
+            // gdp.h declared: extern EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t **);
             estat = GdpLibrary.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
+
+            System.err.println("Handle created: " + estat);
 	} else {
             GdpLibrary.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
             if (append) {
@@ -137,7 +150,9 @@ public class WriterTest {
 
 	System.out.println("Starting to read input.");
 
+        System.out.println("About to create a gdp_datum.");
 	gdp_datum datum = GdpLibrary.INSTANCE.gdp_datum_new();
+        System.out.println("Done creating a gdp_datum");
 
 
         BufferedReader bufferedReader = null;
