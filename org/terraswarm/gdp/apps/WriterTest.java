@@ -44,8 +44,8 @@ import java.nio.ByteBuffer;
 import org.ptolemy.fmi.NativeSizeT;
 
 import org.terraswarm.gdp.EP_STAT;
-import org.terraswarm.gdp.Event2Library;
-import org.terraswarm.gdp.Event2Library.evbuffer;
+//import org.terraswarm.gdp.Event2Library;
+//import org.terraswarm.gdp.Event2Library.evbuffer;
 import org.terraswarm.gdp.Gdp10Library;
 import org.terraswarm.gdp.Gdp10Library.gdp_gcl_t;
 import org.terraswarm.gdp.ep_stat_to_string;
@@ -165,7 +165,8 @@ public class WriterTest {
         System.out.println("About to create a gdp_datum.");
 	gdp_datum datum = Gdp10Library.INSTANCE.gdp_datum_new();
         System.out.println("Done creating a gdp_datum");
-
+        // Invoke with -Djna.dump_memory=true
+        System.out.println("datum: " + datum);
 
         BufferedReader bufferedReader = null;
         try {
@@ -174,7 +175,7 @@ public class WriterTest {
            // 200 is a magic number from writer-test and seems wrong.
            final int bufferLength = 200;
            while((line = bufferedReader.readLine())!=null){
-                System.out.println("Got input \"" +  buf + "\"");
+                System.out.println("Got input \"" +  line + "\"");
 
                 // FIXME: gdp/gdp_buf.h has
                 // #define gdp_buf_write(b, i, z)	evbuffer_add(b, i, z)
@@ -194,7 +195,7 @@ public class WriterTest {
                 Pointer pointer = alignedMemory.share(0);
                 pointer.setString(0, line);
 
-                Event2Library.INSTANCE.evbuffer_add(new evbuffer(datum.dbuf.getValue()), pointer, new NativeSizeT(line.length()));
+                Gdp10Library.INSTANCE.gdp_buf_write(datum.dbuf.getValue(), pointer, new NativeSizeT(line.length()));
 
 		estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclh, datum);
                 if (estat.code.intValue() != 0) {
@@ -251,8 +252,7 @@ public class WriterTest {
         } else {
             // In gdp_api.c, gdp_datum_print() calls:
             // l = gdp_buf_getlength(datum->dbuf);
-            // gdp_buf.h has an inline call to evbuffer_get_length(buf), which we don't yet have 
-            length = Event2Library.INSTANCE.evbuffer_get_length(new evbuffer(datum.dbuf.getValue()));
+            length = Gdp10Library.INSTANCE.gdp_buf_getlength(datum.dbuf.getValue());
             System.out.print("len " + datum.dlen + "/" + length);
 
             // In gdp_api.c, this method calls:
@@ -265,7 +265,8 @@ public class WriterTest {
             // that calls evbuffer_pullup so that we don't need to run
             // JNA on that class.
 
-            d = Event2Library.INSTANCE.evbuffer_pullup(new evbuffer(datum.dbuf.getValue()), new NativeLong(length.longValue()));
+            //d = Event2Library.INSTANCE.evbuffer_pullup(new evbuffer(datum.dbuf.getValue()), new NativeLong(length.longValue()));
+            d = Gdp10Library.INSTANCE.gdp_buf_getptr(datum.dbuf.getValue(), new NativeSizeT(length.longValue()));
         }
         if (datum.ts.tv_sec != Long.MIN_VALUE) {
             System.out.print(", timestamp ");

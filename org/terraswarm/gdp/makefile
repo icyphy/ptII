@@ -54,12 +54,9 @@ PTCLASSALLJARS =
 JSRCS = \
 	EP_DBG.java \
 	EP_STAT.java \
-	EP_TIME_SPEC.java \
-	Event2Library.java \
-	Gdp10Library.java \
 	ep_stat_to_string.java \
-	evbuffer_cb_info.java \
-	evbuffer_ptr.java \
+	EP_TIME_SPEC.java \
+	Gdp10Library.java \
 	gdp_datum.java
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -90,29 +87,38 @@ GDP_SRC = src/gdp
 
 GDP_H_FILES = \
 	$(GDP_SRC)/gdp/gdp.h \
+	$(GDP_SRC)/gdp/gdp_buf.h \
 	$(GDP_SRC)/ep/ep.h \
-	$(GDP_SRC)/ep/ep_dbg.h
+	$(GDP_SRC)/ep/ep_dbg.h \
+	$(GDP_SRC)/ep/ep_thr.h
+
+PTHREAD_H_FILES = \
+	/usr/include/pthread.h \
+	/usr/include/bits/pthreadtypes.h
 
 LIBEVENT_VERSION = 2.0.21-stable
 LIBEVENT=libevent-$(LIBEVENT_VERSION)
 LIBEVENT_SRC=src/$(LIBEVENT)
 
-
 LIBEVENT_H_FILES = \
 	$(LIBEVENT_SRC)/include/event2/buffer.h
 
+
 # Rebuild the jar file
 jna: $(JNAERATOR_JAR) src/gdp
-	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
-	java -jar $(JNAERATOR_JAR) -runtime JNA -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
+	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
 	echo "Fixing $$file"; \
 	sed -e 's@NativeSize@NativeSizeT@g' \
 	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize@' \
-	    -e 's@import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt;@// import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt; // Fixed by cxh in makefile.@' \
+	    -e 's@\(import com.ochafik.lang.jnaerator.runtime.\)@// \1@' \
 	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.@' \
-	    -e 's@\(public static final GlobalInt __EpDbgCurGen = new GlobalInt(Gdp[0-9]*Library.JNA_NATIVE_LIB, "__EpDbgCurGen");\)@//\1@' \
+	    -e 's@\(.*CharByReference.*\)@// \1@' \
+	    -e 's@\(public static final GlobalInt\)@// \1@' \
+	    -e 's@\(public static final GlobalPointerType\)@// \1@' \
+	    -e 's@\(public static final GlobalStruct\)@// \1@' \
+	    -e 's@\(public static final Pointer PTHREAD_CANCELED = (Pointer)-1;\)@// \1@' \
 	    -e 's@\(.*NativeSizeTByReference.*\)@// \1 // Commented out by makefile because NativeSizeTByReference is not in jna.@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
