@@ -24,7 +24,7 @@ index bf7a0b0..786224a 100644
  LD=	ld
  LDFLAGS=-L.
 diff --git a/gdp/Makefile b/gdp/Makefile
-index 39eff32..6bf459f 100644
+index 39eff32..f9f3339 100644
 --- a/gdp/Makefile
 +++ b/gdp/Makefile
 @@ -29,7 +29,7 @@ O=		-O
@@ -36,11 +36,12 @@ index 39eff32..6bf459f 100644
  LIBCRYPTO=	-lcrypto
  LIBEVENT=	-levent -levent_pthreads
  LIBEP=		-L../ep -lep
-@@ -49,6 +49,7 @@ libgdp.a: ${OBJS}
+@@ -49,6 +49,8 @@ libgdp.a: ${OBJS}
  libgdp.so.${GDPLIBVER}: ${OBJS}
  	${CC} ${SHARED} -o $@ ${OBJS} ${LDFLAGS}
  	${MV} $@ ${LIBDIR}
 +	cp ${LIBDIR}/$@ ${LIBDIR}/libgdp.${GDPLIBVER}.dylib
++	cp ${LIBDIR}/$@ ${LIBDIR}/libgdp.${GDPLIBVER}.so
  
  ${OBJS}: ${HFILES}
  
