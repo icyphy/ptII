@@ -113,8 +113,10 @@ public class WriterTest {
             }
         }
 
+        // System.out.println("WriterTest: argv.length: " + argv.length + ", argc: " + argc);
+
         if (argc > 0) {
-            xname = argv[argc];
+            xname = argv[argv.length-argc];
             argc--;
         } 
 	if (argc != 0 || (append && xname == null)) {
