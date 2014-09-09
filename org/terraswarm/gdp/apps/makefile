@@ -75,7 +75,7 @@ all: jclass
 install: jclass jars
 
 run: WriterTest.class
-	$(JAVA) -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest
+	$(JAVA) -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest -D gdp.datum=48
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

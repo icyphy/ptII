@@ -56,9 +56,10 @@ JSRCS = \
 	EP_STAT.java \
 	EP_TIME_SPEC.java \
 	Event2Library.java \
-	evbuffer_ptr.java \
-	GdpLibrary.java \
+	Gdp10Library.java \
 	ep_stat_to_string.java \
+	evbuffer_cb_info.java \
+	evbuffer_ptr.java \
 	gdp_datum.java
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -102,7 +103,7 @@ LIBEVENT_H_FILES = \
 
 # Rebuild the jar file
 jna: $(JNAERATOR_JAR) src/gdp
-	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp -I $(GDP_SRC) $(GDP_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
+	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
 	java -jar $(JNAERATOR_JAR) -runtime JNA -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -o $(PTII) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
@@ -111,7 +112,7 @@ jna: $(JNAERATOR_JAR) src/gdp
 	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize@' \
 	    -e 's@import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt;@// import com.ochafik.lang.jnaerator.runtime.globals.GlobalInt; // Fixed by cxh in makefile.@' \
 	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.@' \
-	    -e 's@\(public static final GlobalInt __EpDbgCurGen = new GlobalInt(GdpLibrary.JNA_NATIVE_LIB, "__EpDbgCurGen");\)@//\1@' \
+	    -e 's@\(public static final GlobalInt __EpDbgCurGen = new GlobalInt(Gdp[0-9]*Library.JNA_NATIVE_LIB, "__EpDbgCurGen");\)@//\1@' \
 	    -e 's@\(.*NativeSizeTByReference.*\)@// \1 // Commented out by makefile because NativeSizeTByReference is not in jna.@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
@@ -140,7 +141,7 @@ gdp: $(GDP_SRC)
 
 $(GDP_SRC):
 	# You will need a password for this, ask Eric.
-	mkdir src
+	@if [! -d src ]; then mkdir src; echo "making the src/ directory."; fi
 	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
 
 jnaerator-0.12-20140626.234513-58-shaded.jar:

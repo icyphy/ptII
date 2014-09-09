@@ -46,8 +46,8 @@ import org.ptolemy.fmi.NativeSizeT;
 import org.terraswarm.gdp.EP_STAT;
 import org.terraswarm.gdp.Event2Library;
 import org.terraswarm.gdp.Event2Library.evbuffer;
-import org.terraswarm.gdp.GdpLibrary;
-import org.terraswarm.gdp.GdpLibrary.gdp_gcl_t;
+import org.terraswarm.gdp.Gdp10Library;
+import org.terraswarm.gdp.Gdp10Library.gdp_gcl_t;
 import org.terraswarm.gdp.ep_stat_to_string;
 import org.terraswarm.gdp.gdp_datum;
 
@@ -71,7 +71,19 @@ import ptolemy.util.StringUtilities;
 */
 public class WriterTest {
     public static void main(String [] argv) throws Throwable {
+        // See
+        // https://twall.github.io/jna/4.1.0/overview-summary.html#crash-protection
+        // "It is not uncommon when defining a new library and writing
+        // tests to encounter memory access errors which crash the
+        // VM. These are often caused by improper mappings or invalid
+        // arguments passed to the native library. To generate Java
+        // errors instead of crashing the VM, call
+        // Native.setProtected(true). Not all platforms support this
+        // protection; if not, the value of Native.isProtected() will
+        // remain false."
         Native.setProtected(true);
+        // Will be false on the Mac.
+        System.out.println("Native.isProtected(): " + Native.isProtected());
 
         // Was:	gdp_gcl_t *gclh;
 	PointerByReference gclh = new PointerByReference();
@@ -91,12 +103,12 @@ public class WriterTest {
 
         int argc = argv.length;
         for (int i = 0; i < argv.length; i++) {
-            if (argv[i].equals('a')) {
+            if (argv[i].equals("-a")) {
                 append = true;
                 argc--;
-            } else if (argv[i].equals('D')) {
+            } else if (argv[i].equals("-D")) {
                 argc--;
-                GdpLibrary.INSTANCE.ep_dbg_set(argv[i+1]);
+                Gdp10Library.INSTANCE.ep_dbg_set(argv[i+1]);
             }
         }
 
@@ -111,7 +123,7 @@ public class WriterTest {
 	}
 
         System.err.println("About to initialize the GDP.");
-	estat = GdpLibrary.INSTANCE.gdp_init();
+	estat = Gdp10Library.INSTANCE.gdp_init();
 	if (/*!EP_STAT_ISOK(estat)*/ estat.code.intValue() != 0) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);
@@ -124,15 +136,15 @@ public class WriterTest {
 
             // Was: estat = gdp_gcl_create(NULL, &gclh);
             // gdp.h declared: extern EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t **);
-            estat = GdpLibrary.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
+            estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
 
             System.err.println("Handle created: " + estat);
 	} else {
-            GdpLibrary.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
+            Gdp10Library.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
             if (append) {
-                estat = GdpLibrary.INSTANCE.gdp_gcl_open(gcliname, GdpLibrary.gdp_iomode_t.GDP_MODE_AO, gclh);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
             } else {
-                estat = GdpLibrary.INSTANCE.gdp_gcl_create(gcliname, gclh);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname, gclh);
             }
 	}
 	// EP_STAT_CHECK(estat, goto fail0);
@@ -140,18 +152,18 @@ public class WriterTest {
             _fail0(estat);
         }
 
-	//GdpLibrary.INSTANCE.gdp_gcl_print(gclh, stdout, 0, 0);
+	//Gdp10Library.INSTANCE.gdp_gcl_print(gclh, stdout, 0, 0);
         System.out.print("GCL" + System.identityHashCode(gclh) + ":");
 
         // FIXME: Need to allocate something 44 chars long (GDP_GCL_PNAME_LEN in gdp.h)
-        // GdpLibrary.INSTANCE.gdp_gcl_printable_name(gclh, nbuf);
+        // Gdp10Library.INSTANCE.gdp_gcl_printable_name(gclh, nbuf);
         // Print nbuf
 
 
 	System.out.println("Starting to read input.");
 
         System.out.println("About to create a gdp_datum.");
-	gdp_datum datum = GdpLibrary.INSTANCE.gdp_datum_new();
+	gdp_datum datum = Gdp10Library.INSTANCE.gdp_datum_new();
         System.out.println("Done creating a gdp_datum");
 
 
@@ -184,7 +196,7 @@ public class WriterTest {
 
                 Event2Library.INSTANCE.evbuffer_add(new evbuffer(datum.dbuf.getValue()), pointer, new NativeSizeT(line.length()));
 
-		estat = GdpLibrary.INSTANCE.gdp_gcl_publish(gclh, datum);
+		estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclh, datum);
                 if (estat.code.intValue() != 0) {
                     _fail1(estat, gclh);
                 }
@@ -198,12 +210,12 @@ public class WriterTest {
                 bufferedReader.close();
             }
         }
-	GdpLibrary.INSTANCE.gdp_datum_free(datum);
+	Gdp10Library.INSTANCE.gdp_datum_free(datum);
         _fail0(estat);
     }
 
     private static int _fail1(EP_STAT estat, PointerByReference gclh) {
-	GdpLibrary.INSTANCE.gdp_gcl_close(gclh);
+	Gdp10Library.INSTANCE.gdp_gcl_close(gclh);
         return _fail0(estat);
     }
 
