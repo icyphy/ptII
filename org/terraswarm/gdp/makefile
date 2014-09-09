@@ -96,10 +96,14 @@ GDP_H_FILES = \
 #PTHREADTYPES_H = /usr/include/bits/pthreadtypes.h
 #PTHREADTYPES_H = /usr/include/sys/_types.h
 
-# Unfortunately, we need pthread.h because gdp_datum uses it.
-PTHREAD_H_FILES = \
-	/usr/include/pthread.h \
-	$(PTHREADTYPES_H)
+# Unfortunately, we need pthread.h because gdp_datum uses it if
+# -DEP_OSCF_USE_PTHREADS=0 is not defined
+
+#PTHREAD_H_FILES = \
+#	/usr/include/pthread.h \
+#	$(PTHREADTYPES_H)
+
+STD=	-DEP_OSCF_USE_PTHREADS=0
 
 LIBEVENT_VERSION = 2.0.21-stable
 LIBEVENT=libevent-$(LIBEVENT_VERSION)
@@ -111,7 +115,7 @@ LIBEVENT_H_FILES = \
 
 # Rebuild the jar file
 jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
-	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
+	java -jar $(JNAERATOR_JAR) -runtime JNA $(STD) -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
 	echo "Fixing $$file"; \

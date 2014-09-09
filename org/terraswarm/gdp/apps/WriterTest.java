@@ -109,6 +109,7 @@ public class WriterTest {
             } else if (argv[i].equals("-D")) {
                 argc--;
                 Gdp10Library.INSTANCE.ep_dbg_set(argv[i+1]);
+                argc--;
             }
         }
 
@@ -140,13 +141,17 @@ public class WriterTest {
 
             System.err.println("Handle created: " + estat);
 	} else {
+            System.err.println("About to parse " + xname);
             Gdp10Library.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
             if (append) {
+                System.err.println("About to call gdp_gcl_open()");
                 estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
             } else {
+                System.err.println("About to call gdp_gcl_create()");
                 estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname, gclh);
             }
 	}
+        System.err.println("About to check error code");
 	// EP_STAT_CHECK(estat, goto fail0);
         if (estat.code.intValue() != 0) {
             _fail0(estat);

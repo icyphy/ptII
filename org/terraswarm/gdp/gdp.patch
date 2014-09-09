@@ -1,5 +1,5 @@
 diff --git a/apps/Makefile b/apps/Makefile
-index ed51ab9..dc9ced2 100644
+index ed51ab9..112fab1 100644
 --- a/apps/Makefile
 +++ b/apps/Makefile
 @@ -11,6 +11,7 @@ JANSSONROOT=	${HOME}/src/jansson-2.6
@@ -10,13 +10,25 @@ index ed51ab9..dc9ced2 100644
  LIBEVENT2=	-levent -levent_pthreads -pthread
  INCCRYPTO=
  LIBCRYPTO=	-lcrypto
+@@ -19,7 +20,7 @@ LDFLAGS=	${LIBGDP} ${LIBEP} ${LIBJANSSON} ${LIBEVENT2} ${LIBCRYPTO}
+ PG=
+ O=		-O
+ WALL=		-Wall
+-STD=
++STD=	-DEP_OSCF_USE_PTHREADS=0
+ COPTS=		${PG} -g ${WALL} $O ${STD}
+ CFLAGS=		${COPTS} ${INCS}
+ 
 diff --git a/ep/Makefile b/ep/Makefile
-index bf7a0b0..786224a 100644
+index bf7a0b0..1176905 100644
 --- a/ep/Makefile
 +++ b/ep/Makefile
-@@ -123,7 +123,7 @@ O=	-O
+@@ -121,9 +121,9 @@ CC=	cc
+ PG=
+ O=	-O
  WALL=	-Wall
- STD=
+-STD=
++STD=	-DEP_OSCF_USE_PTHREADS=0
  COPTS=	${PG} -g ${WALL} $O ${STD}
 -CFLAGS=	${COPTS} ${INCLS} -I${CURDIR} -I.. -fPIC
 +CFLAGS=	${COPTS} ${INCLS} -I${CURDIR} -I.. -I/usr/local/include -fPIC
@@ -24,12 +36,15 @@ index bf7a0b0..786224a 100644
  LD=	ld
  LDFLAGS=-L.
 diff --git a/gdp/Makefile b/gdp/Makefile
-index 39eff32..f9f3339 100644
+index 39eff32..8cb7fef 100644
 --- a/gdp/Makefile
 +++ b/gdp/Makefile
-@@ -29,7 +29,7 @@ O=		-O
+@@ -27,9 +27,9 @@ LIBCRYPTO=	-lcrypto
+ PG=
+ O=		-O
  WALL=		-Wall
- STD=
+-STD=
++STD=	-DEP_OSCF_USE_PTHREADS=0
  COPTS=		${PG} -g ${WALL} $O ${STD}
 -CFLAGS=		${COPTS} -I.. -fPIC
 +CFLAGS=		${COPTS} -I.. -fPIC -I/usr/local/include
@@ -45,8 +60,97 @@ index 39eff32..f9f3339 100644
  
  ${OBJS}: ${HFILES}
  
+diff --git a/gdp/gdp.h b/gdp/gdp.h
+index 38f98ea..e8ee32d 100644
+--- a/gdp/gdp.h
++++ b/gdp/gdp.h
+@@ -82,7 +82,7 @@ typedef struct gdp_datum
+ {
+ 	EP_THR_MUTEX		mutex;		// locking mutex (mostly for dbuf)
+ 	struct gdp_datum	*next;		// next in free list
+-	bool				inuse:1;	// indicates that the datum is in use
++        bool				inuse:1;	// indicates that the datum is in use
+ 	gdp_recno_t			recno;		// the record number
+ 	EP_TIME_SPEC		ts;			// timestamp for this message
+ 	size_t				dlen;		// length of data buffer (redundant)
+diff --git a/gdp/gdp_api.c b/gdp/gdp_api.c
+index 8a29304..8f7235f 100644
+--- a/gdp/gdp_api.c
++++ b/gdp/gdp_api.c
+@@ -232,32 +232,46 @@ gdp_gcl_create(gcl_name_t gcl_name,
+ 	gdp_req_t *req = NULL;
+ 	EP_STAT estat = EP_STAT_OK;
+ 
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: start\n");
++
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_gcl_newhandle()\n");
+ 	// allocate the memory to hold the gcl_handle
+ 	//		Note that ep_mem_* always returns, hence no test here
+ 	estat = _gdp_gcl_newhandle(gcl_name, &gclh);
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: done calling gdp_gcl_newhandle()\n");
+ 	EP_STAT_CHECK(estat, goto fail0);
+ 
+-	if (gcl_name == NULL || gdp_gcl_name_is_zero(gcl_name))
++	if (gcl_name == NULL || gdp_gcl_name_is_zero(gcl_name)) {
++                ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_gcl_newname()\n");
+ 		_gdp_gcl_newname(gclh->gcl_name);
++        }
+ 
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_req_new()\n");
+ 	estat = _gdp_req_new(GDP_CMD_CREATE, gclh, _GdpChannel, 0, &req);
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: done calling gdp_req_new()\n");
+ 	EP_STAT_CHECK(estat, goto fail1);
+ 
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_invoke()\n");
+ 	estat = _gdp_invoke(req);
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: done calling gdp_invoke()\n");
+ 	EP_STAT_CHECK(estat, goto fail1);
+ 
+ 	// success
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_req_free()\n");
+ 	_gdp_req_free(req);
+ 	*pgclh = gclh;
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: end\n");
+ 	return estat;
+ 
+ fail1:
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: fail1\n");
+ 	if (gclh != NULL)
+ 		_gdp_gcl_freehandle(gclh);
+ 	if (req != NULL)
+ 		_gdp_req_free(req);
+ 
+ fail0:
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: fail2\n");
+ 	if (ep_dbg_test(Dbg, 8))
+ 	{
+ 		char ebuf[100];
+diff --git a/gdp/gdp_gcl.c b/gdp/gdp_gcl.c
+index 7d87a4b..7de509b 100644
+--- a/gdp/gdp_gcl.c
++++ b/gdp/gdp_gcl.c
+@@ -133,6 +133,7 @@ _gdp_gcl_newhandle(gcl_name_t gcl_name, gdp_gcl_t **pgclh)
+ 	EP_STAT estat = EP_STAT_OK;
+ 	gdp_gcl_t *gclh;
+ 
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_newhandle: start\n");
+ 	// allocate the memory to hold the gcl_handle
+ 	gclh = ep_mem_zalloc(sizeof *gclh);
+ 	if (gclh == NULL)
+@@ -145,9 +146,11 @@ _gdp_gcl_newhandle(gcl_name_t gcl_name, gdp_gcl_t **pgclh)
+ 
+ 	// success
+ 	*pgclh = gclh;
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_newhandle: end\n");
+ 	return estat;
+ 
+ fail1:
++        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_newhandle: fail\n");
+ 	estat = ep_stat_from_errno(errno);
+ 	return estat;
+ }
 diff --git a/gdpd/Makefile b/gdpd/Makefile
-index e5143d0..a0a2ecd 100644
+index e5143d0..9e72744 100644
 --- a/gdpd/Makefile
 +++ b/gdpd/Makefile
 @@ -11,6 +11,7 @@ JANSSONROOT=    ${HOME}/src/jansson-2.6
@@ -57,3 +161,12 @@ index e5143d0..a0a2ecd 100644
  LIBEVENT2=	-levent -levent_pthreads -pthread
  INCCRYPTO=
  LIBCRYPTO=	-lcrypto
+@@ -19,7 +20,7 @@ LDFLAGS=	${LIBGDP} ${LIBEP} ${LIBJANSSON} ${LIBEVENT2} ${LIBCRYPTO}
+ PG=
+ O=		-O
+ WALL=		-Wall
+-STD=
++STD=	-DEP_OSCF_USE_PTHREADS=0
+ COPTS=		${PG} -g ${WALL} $O ${STD}
+ CFLAGS=		${COPTS} ${INCS}
+ 
