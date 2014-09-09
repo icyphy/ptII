@@ -1,0 +1,58 @@
+diff --git a/apps/Makefile b/apps/Makefile
+index ed51ab9..dc9ced2 100644
+--- a/apps/Makefile
++++ b/apps/Makefile
+@@ -11,6 +11,7 @@ JANSSONROOT=	${HOME}/src/jansson-2.6
+ #LIBJANSSON=	-L${JANSSONROOT} -ljansson
+ #EVENT2ROOT=	${HOME}/src
+ #INCEVENT2=	-I${EVENT2ROOT}
++INCEVENT2=	-I/usr/local/include
+ LIBEVENT2=	-levent -levent_pthreads -pthread
+ INCCRYPTO=
+ LIBCRYPTO=	-lcrypto
+diff --git a/ep/Makefile b/ep/Makefile
+index bf7a0b0..786224a 100644
+--- a/ep/Makefile
++++ b/ep/Makefile
+@@ -123,7 +123,7 @@ O=	-O
+ WALL=	-Wall
+ STD=
+ COPTS=	${PG} -g ${WALL} $O ${STD}
+-CFLAGS=	${COPTS} ${INCLS} -I${CURDIR} -I.. -fPIC
++CFLAGS=	${COPTS} ${INCLS} -I${CURDIR} -I.. -I/usr/local/include -fPIC
+ RM=	rm
+ LD=	ld
+ LDFLAGS=-L.
+diff --git a/gdp/Makefile b/gdp/Makefile
+index 39eff32..6bf459f 100644
+--- a/gdp/Makefile
++++ b/gdp/Makefile
+@@ -29,7 +29,7 @@ O=		-O
+ WALL=		-Wall
+ STD=
+ COPTS=		${PG} -g ${WALL} $O ${STD}
+-CFLAGS=		${COPTS} -I.. -fPIC
++CFLAGS=		${COPTS} -I.. -fPIC -I/usr/local/include
+ LIBCRYPTO=	-lcrypto
+ LIBEVENT=	-levent -levent_pthreads
+ LIBEP=		-L../ep -lep
+@@ -49,6 +49,7 @@ libgdp.a: ${OBJS}
+ libgdp.so.${GDPLIBVER}: ${OBJS}
+ 	${CC} ${SHARED} -o $@ ${OBJS} ${LDFLAGS}
+ 	${MV} $@ ${LIBDIR}
++	cp ${LIBDIR}/$@ ${LIBDIR}/libgdp.${GDPLIBVER}.dylib
+ 
+ ${OBJS}: ${HFILES}
+ 
+diff --git a/gdpd/Makefile b/gdpd/Makefile
+index e5143d0..a0a2ecd 100644
+--- a/gdpd/Makefile
++++ b/gdpd/Makefile
+@@ -11,6 +11,7 @@ JANSSONROOT=    ${HOME}/src/jansson-2.6
+ #LIBJANSSON=	-L${JANSSONROOT} -ljansson
+ #EVENT2ROOT=	${HOME}/src
+ #INCEVENT2=	-I${EVENT2ROOT}
++INCEVENT2=	-I/usr/local/include
+ LIBEVENT2=	-levent -levent_pthreads -pthread
+ INCCRYPTO=
+ LIBCRYPTO=	-lcrypto

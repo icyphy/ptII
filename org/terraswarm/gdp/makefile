@@ -92,9 +92,14 @@ GDP_H_FILES = \
 	$(GDP_SRC)/ep/ep_dbg.h \
 	$(GDP_SRC)/ep/ep_thr.h
 
+# Present under Linux, but not MacOS.
+#PTHREADTYPES_H = /usr/include/bits/pthreadtypes.h
+#PTHREADTYPES_H = /usr/include/sys/_types.h
+
+# Unfortunately, we need pthread.h because gdp_datum uses it.
 PTHREAD_H_FILES = \
 	/usr/include/pthread.h \
-	/usr/include/bits/pthreadtypes.h
+	$(PTHREADTYPES_H)
 
 LIBEVENT_VERSION = 2.0.21-stable
 LIBEVENT=libevent-$(LIBEVENT_VERSION)
@@ -120,10 +125,23 @@ jna: $(JNAERATOR_JAR) src/gdp
 	    -e 's@\(public static final GlobalStruct\)@// \1@' \
 	    -e 's@\(public static final Pointer PTHREAD_CANCELED = (Pointer)-1;\)@// \1@' \
 	    -e 's@\(.*NativeSizeTByReference.*\)@// \1 // Commented out by makefile because NativeSizeTByReference is not in jna.@' \
+	    -e 's@\(.*time_tPtr1.*\)@// \1@' \
+	    -e 's@\(.*time_t1.*\)@// \1@' \
+	    -e 's@\(.*tmPtr1.*\)@// \1@' \
+	    -e 's#\(.*@Deprecated.*\)#// \1#' \
+	    -e 's@\(.*(Pointer)1.*\)@// \1@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done
-
+	#
+	@echo "gdp_datum.java will need some edits because the JNAerator does not understand bitfields."
+	sed -e 's@abstract@/* abstract Fixed in makefile.*/@' \
+            -e 's@return Arrays.asList("mutex", "next", "recno", "ts", "dlen", "dbuf");@return Arrays.asList("mutex", "next", "inuse" /*Fixed in makefile.*/, "recno", "ts", "dlen", "dbuf");@' \
+	    -e 's@\(/\*\* Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) \*/\)@ \1 public short inuse;@' \
+	    -e 's@mutex, gdp_datum.ByReference next, long recno@mutex, gdp_datum.ByReference next, short inuse /*Fixed in makefile*/,long recno@' \
+	    -e 's@this.next = next;@this.next = next; this.inuse = inuse; /*Fixed in makefile. */@' \
+		gdp_datum.java > /tmp/gdp.fix
+	cp /tmp/gdp.fix gdp_datum.java
 
 # libevent:
 # "The libevent API provides a mechanism to execute a callback function
@@ -149,6 +167,9 @@ $(GDP_SRC):
 	# You will need a password for this, ask Eric.
 	@if [! -d src ]; then mkdir src; echo "making the src/ directory."; fi
 	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
+	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."
+	cd src/gdp; patch -p1 < ../../gdp.patch
+	cd src/gdp; $(MAKE)
 
 jnaerator-0.12-20140626.234513-58-shaded.jar:
 	wget --no-check-certificate https://oss.sonatype.org/content/groups/public/com/nativelibs4java/jnaerator/0.12-SNAPSHOT/jnaerator-0.12-20140626.234513-58-shaded.jar

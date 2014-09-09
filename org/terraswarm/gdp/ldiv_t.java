@@ -11,9 +11,9 @@ import java.util.List;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public class ldiv_t extends Structure {
-	/** Quotient. */
+	/** quotient */
 	public NativeLong quot;
-	/** Remainder. */
+	/** remainder */
 	public NativeLong rem;
 	public ldiv_t() {
 		super();
@@ -22,8 +22,8 @@ public class ldiv_t extends Structure {
 		return Arrays.asList("quot", "rem");
 	}
 	/**
-	 * @param quot Quotient.<br>
-	 * @param rem Remainder.
+	 * @param quot quotient<br>
+	 * @param rem remainder
 	 */
 	public ldiv_t(NativeLong quot, NativeLong rem) {
 		super();
