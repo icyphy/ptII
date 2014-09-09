@@ -23,7 +23,7 @@ public /* abstract Fixed in makefile.*/ class gdp_datum extends Structure {
 	 * C type : gdp_datum*
 	 */
 	public gdp_datum.ByReference next;
-	 /** Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) */ public short inuse;
+	 /** Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) */ public byte inuse;
 	/**
 	 * the record number<br>
 	 * C type : gdp_recno_t
@@ -60,7 +60,7 @@ public /* abstract Fixed in makefile.*/ class gdp_datum extends Structure {
 	 * @param dbuf data buffer<br>
 	 * C type : gdp_buf_t*
 	 */
-	public gdp_datum(EP_THR_MUTEX mutex, gdp_datum.ByReference next, short inuse /*Fixed in makefile*/,long recno, EP_TIME_SPEC ts, NativeSizeT dlen, PointerByReference dbuf) {
+	public gdp_datum(EP_THR_MUTEX mutex, gdp_datum.ByReference next, byte inuse /*Fixed in makefile*/,long recno, EP_TIME_SPEC ts, NativeSizeT dlen, PointerByReference dbuf) {
 		super();
 		this.mutex = mutex;
 		this.next = next; this.inuse = inuse; /*Fixed in makefile. */

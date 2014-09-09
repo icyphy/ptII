@@ -110,7 +110,7 @@ LIBEVENT_H_FILES = \
 
 
 # Rebuild the jar file
-jna: $(JNAERATOR_JAR) src/gdp
+jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
 	java -jar $(JNAERATOR_JAR) -runtime JNA -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
@@ -137,8 +137,8 @@ jna: $(JNAERATOR_JAR) src/gdp
 	@echo "gdp_datum.java will need some edits because the JNAerator does not understand bitfields."
 	sed -e 's@abstract@/* abstract Fixed in makefile.*/@' \
             -e 's@return Arrays.asList("mutex", "next", "recno", "ts", "dlen", "dbuf");@return Arrays.asList("mutex", "next", "inuse" /*Fixed in makefile.*/, "recno", "ts", "dlen", "dbuf");@' \
-	    -e 's@\(/\*\* Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) \*/\)@ \1 public short inuse;@' \
-	    -e 's@mutex, gdp_datum.ByReference next, long recno@mutex, gdp_datum.ByReference next, short inuse /*Fixed in makefile*/,long recno@' \
+	    -e 's@\(/\*\* Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) \*/\)@ \1 public byte inuse;@' \
+	    -e 's@mutex, gdp_datum.ByReference next, long recno@mutex, gdp_datum.ByReference next, byte inuse /*Fixed in makefile*/,long recno@' \
 	    -e 's@this.next = next;@this.next = next; this.inuse = inuse; /*Fixed in makefile. */@' \
 		gdp_datum.java > /tmp/gdp.fix
 	cp /tmp/gdp.fix gdp_datum.java
@@ -154,8 +154,13 @@ jna: $(JNAERATOR_JAR) src/gdp
 # Run "make libevent" to get the libevent source.
 libevent: $(LIBEVENT_SRC)
 $(LIBEVENT_SRC):
-	# Github is too stupid to handle wget, so you will need to go to http://libevent.org, download it and thenrun
-	# cd src; tar -zxf $(LIBEVENT).tar.gz
+	@if [ ! -d $(LIBEVENT_SRC) ]; then \
+		echo "Github is too stupid to handle wget, so you will need to go to http://libevent.org, download it and then run"; \
+		echo " cd src; tar -zxf ~/Downloads/$(LIBEVENT).tar.gz; cd .."; \
+		exit 2; \
+	else \
+		echo "$(LIBEVENT_SRC) exists!"; \
+	fi
 
 update:
 	cd src/gdp; git pull
@@ -165,7 +170,7 @@ gdp: $(GDP_SRC)
 
 $(GDP_SRC):
 	# You will need a password for this, ask Eric.
-	@if [! -d src ]; then mkdir src; echo "making the src/ directory."; fi
+	@if [ ! -d src ]; then mkdir src; echo "making the src/ directory."; fi
 	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
 	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."
 	cd src/gdp; patch -p1 < ../../gdp.patch
