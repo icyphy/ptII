@@ -5,7 +5,9 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8071">
+        </property>
+        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
@@ -13,7 +15,7 @@
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/files">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 5.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -28,7 +30,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.0, 295.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{530.1944095477387, 264.7468592964824}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -126,7 +128,7 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 480.0]">
         </property>
     </property>
     <property name="initialParameters" class="ptolemy.data.expr.Parameter" value="{TDay = &quot;24&quot;, TNight = &quot;15&quot;, LTime = &quot;0&quot;, RTime = &quot;0&quot;}">
@@ -149,11 +151,11 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8078/start&#10;&#10;or double click on this comment.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8071/start&#10;&#10;or double click on this comment.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 285.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/start#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -176,19 +178,63 @@ Michael Wetter (LBNL)</text></svg></configure>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Users can specify four parameters in the web page:&#10;TDay: desired temperature during the day in celsius&#10;TNight: desired temperature during the night in celsius&#10;LTime: time to leave home for work ([0, 24])&#10;RTime: time to return home from work ([0, 24])&#10;&#10;During [LTime, RTime], the heater will be turned off &#10;no matter what the temperature is to save energy. It&#10;will be turned on one hour before RTime to warm up &#10;the room so that it will not be too cold inside when &#10;the user returns home.&#10;&#10;If LTime &gt;= RTime, they are both ignored.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 320.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[348.5, 142.125]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[37.5, 122.5]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 35.0]">
+        </property>
+    </property>
+    <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/start#in_browser&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number and link for header comment&#10;Force evaluation on model start">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, -20.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -196,7 +242,7 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="15000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[433.5, 207.125]">
         </property>
         <port name="getCookies" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -210,7 +256,7 @@ Michael Wetter (LBNL)</text></svg></configure>
         </port>
     </entity>
     <entity name="Simulator" class="ptolemy.actor.lib.hoc.RunCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 159.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[914.5, 181.875]">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2497,7 +2543,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     </entity>
     <entity name="ParseParameters" class="ptolemy.actor.TypedCompositeActor">
         <display name="ParseParameters&#10;."/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[511.0, 159.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[779.5, 181.875]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 127, 928, 641}, maximized=false}">
         </property>
@@ -2658,7 +2704,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
         <link port="ExpressionToToken4.output" relation="relation12"/>
     </entity>
     <entity name="Initiation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[588.5, 197.125]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 127, 928, 641}, maximized=false}">
         </property>
@@ -2813,7 +2859,7 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialTemperatures">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[641.0, 394.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[894.5, 426.875]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2821,14 +2867,14 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     <entity name="Previous2" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialEvents">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[626.0, 459.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[879.5, 491.875]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="PageGenerator" class="ptolemy.actor.TypedCompositeActor">
         <display name="PageGenerator&#10;.&#10;."/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 290.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -3215,25 +3261,25 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
         <link port="Expression2.in" relation="relation17"/>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 190.0]">
         </property>
     </entity>
     <entity name="Previous3" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialParameters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[516.0, 229.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 255.0]">
         </property>
     </entity>
     <entity name="Previous4" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initialCost">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[611.0, 519.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[864.5, 551.875]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 290.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -3241,32 +3287,112 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     <entity name="HttpActor2" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[62.625, 224.375]">
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="files/intro.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[960.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[232.625, 199.375]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[177.5, 157.5]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 100.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 65.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 75.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 75.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="link">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 75.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;http://localhost:&quot; + port + &quot;/start#in_browser&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 75.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
+        <link port="SetVariable.output" relation="relation4"/>
+        <link port="SetVariable2.input" relation="relation3"/>
+        <link port="Expression.output" relation="relation3"/>
+        <link port="Expression.trigger" relation="relation4"/>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[715.0, 310.0]">
+        <vertex name="vertex1" value="[998.5, 287.125]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[705.0, 295.0]">
+        <vertex name="vertex1" value="[988.5, 272.125]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -3286,13 +3412,13 @@ Thus, the cost is multiplied by 15 to get monthly cost.</text></svg></configure>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[451.0, 184.75]">
+        <vertex name="vertex1" value="[719.5, 206.875]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[695.0, 335.0]">
+        <vertex name="vertex1" value="[978.5, 312.125]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">

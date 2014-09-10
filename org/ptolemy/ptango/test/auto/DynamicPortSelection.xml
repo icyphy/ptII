@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.7613065326634, 402.2091708542715}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.7613065326633, 402.20917085427146}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at a dynamic port, with link of the form http://localhost:8078/test&#10;The link activated by this comment will be updated dynamically&#10;&#10;Please run the model and double click on this comment.&#10;&#10;&#10;&#10;&#10;">
@@ -74,7 +74,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 145.0]">
         </property>
     </property>
-    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getDeployedPort()">
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -174,7 +174,7 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getDeployedPort()">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -211,8 +211,6 @@
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -298,22 +296,16 @@
         </property>
         <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="status" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>

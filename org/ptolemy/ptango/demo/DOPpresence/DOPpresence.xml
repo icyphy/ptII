@@ -4,7 +4,7 @@
 <entity name="DOPpresence" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 42, 1323, 894}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 0, 1317, 901}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1089, 784]">
     </property>
@@ -26,13 +26,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A web service that accepts a username and door code,&#10;checks a database, and triggers a door unlock and an email &#10;for valid username / door code combinations.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 35.0]">
-        </property>
-    </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8076">
+        </property>
+        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 85.0]">
@@ -43,13 +41,13 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET request:  Return welcome page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 185.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST request:  Return true/false success status and info message&#10; Also, if successful, send mail to dopresence@embedded.eecs.berkeley.edu&#10; Perform case-insensitive check, since iPad auto-capitalizes first letter&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 220.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -74,7 +72,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 75.0]">
         </property>
     </property>
     <property name="doorCode" class="ptolemy.data.expr.Parameter" value="&quot;code&quot;">
@@ -93,13 +91,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 95.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model&#10;enableBackwardTypeInference false here,&#10;due to DatabaseSelect">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 180.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -122,6 +120,75 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Beth Latronic, Armin Wasicek">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 750.0]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 260.0]">
+        </property>
+    </property>
+    <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/cookies#in_browser&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number and link for header comment&#10;Force evaluation on model start">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 210.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8076/dop&#10;&#10;The service accepts a username and door code, &#10;checks a database, and triggers a door unlock &#10;and an email for valid username / door code combinations.&#10;&#10;&#10;&#10;">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[240.0, 35.0]">
         </property>
     </property>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
@@ -151,7 +218,7 @@
     <entity name="Kiosk" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 400.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={986, 704, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 134, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -1009,6 +1076,10 @@
         <link port="Const.trigger" relation="relation3"/>
         <link port="Const2.output" relation="relation2"/>
         <link port="Const2.trigger" relation="relation3"/>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[945.0, 325.0]">
+        </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[490.0, 410.0]">

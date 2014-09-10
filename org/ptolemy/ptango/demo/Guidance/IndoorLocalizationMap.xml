@@ -14,13 +14,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={222, 5, 770, 734}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={222, 5, 773, 734}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[542, 617]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[545, 617]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9520157119780591">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.90224560301496, 283.67038316582915}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.4778498510618, 283.67038316582915}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -66,7 +66,7 @@
         </property>
         <property name="evaluateScript" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&lt;div&gt; &#10;&lt;p&gt; This demo is designed to show Sensor Andrew's mobile phone indoor localization capabilities. &lt;/p&gt;&#10;&#10;&lt;p&gt; A map shows the location of up to five devices.  Each mobile device periodically POSTs its location (X, Y coords) and ID number to http://localhost:8078/guidance &lt;/p&gt;&#10;&#10;&lt;p&gt; A GET request to http://localhost:8078/guidance?rate=0 will show the map and all markers. The map will refresh at the given rate (enter 0 if refresh is not desired).  The rate parameter is required. &lt;/p&gt;&#10;&#10;&lt;p&gt; If running without mobile devices, enter a new location in the form fields at the bottom to move a marker. &lt;/p&gt;&#10;&lt;/div&gt;&#10;&#10;&lt;div id=&quot;welcomeMessage&quot;&gt; &lt;/div&gt;">
+        <property name="startText" class="ptolemy.data.expr.StringParameter" value="&lt;div&gt; &#10;&lt;p&gt; This demo is designed to show Sensor Andrew's mobile phone indoor localization capabilities. &lt;/p&gt;&#10;&#10;&lt;p&gt; A map shows the location of up to five devices.  Each mobile device periodically POSTs its location (X, Y coords) and ID number to http://localhost:8074/guidance &lt;/p&gt;&#10;&#10;&lt;p&gt; A GET request to http://localhost:8074/guidance?rate=0 will show the map and all markers. The map will refresh at the given rate (enter 0 if refresh is not desired).  The rate parameter is required. &lt;/p&gt;&#10;&#10;&lt;p&gt; If running without mobile devices, enter a new location in the form fields at the bottom to move a marker. &lt;/p&gt;&#10;&lt;/div&gt;&#10;&#10;&lt;div id=&quot;welcomeMessage&quot;&gt; &lt;/div&gt;">
         </property>
         <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;&#10;&lt;form accept-charset=&quot;UTF-8&quot; action=&quot;guidance&quot; method=&quot;post&quot;&gt;&#10;	&lt;p&gt; New location? &lt;/p&gt;&#10;	&lt;p&gt; ID (1 to 5):  &lt;input type=&quot;text&quot; name=&quot;ID&quot; id=&quot;ID&quot;/&gt;&#10;	&lt;br&gt; &#10;	X (1 to 500): &lt;input type=&quot;text&quot; name=&quot;xCoord&quot; id=&quot;xCoord&quot;/&gt;&#10;	&lt;br&gt;&#10;	Y (1 to 600): &lt;input type=&quot;text&quot; name=&quot;yCoord&quot; id=&quot;yCoord&quot;/&gt;&#10;	&lt;br&gt;&#10;	&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;	&lt;/p&gt;		&#10;&lt;/form&gt;&#10;">
         </property>
