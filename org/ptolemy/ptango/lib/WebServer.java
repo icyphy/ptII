@@ -41,7 +41,6 @@ import org.eclipse.jetty.util.resource.Resource;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -164,7 +163,6 @@ public class WebServer extends AbstractInitializableAttribute {
         // Don't save deployed port in MoML.  Otherwise, Ptolemy will ask you to 
         // save the model upon exiting every time a new deployed port is chosen
         deployedPort.setPersistent(false);
-        _deployedPort = -1;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -342,34 +340,6 @@ public class WebServer extends AbstractInitializableAttribute {
         newObject._serverManager = WebServerManager.getInstance();
 
         return newObject;
-    }
-
-    /** Get the port that the web server is listening to
-     *  Note there is no setPort(), since the WebServer does not support 
-     *  setting the port at all times (e.g. when already running), and the 
-     *  port may be chosen dynamically in some cases.
-     *  
-     * @return The port that the web server is listening to
-     */
-    public int getDeployedPort() {
-        
-        // TODO: Eventually delete this once object referencing is working OK 
-        // from a Const or Expression
-        return _deployedPort;
-        
-        /*
-        if (deployedPort == null) {
-            return -1;
-        }
-        
-        // Force evaluation of deployedPort
-        try {
-            deployedPort.validate();
-            return ((IntToken) deployedPort.getToken()).intValue();
-        } catch(IllegalActionException e) {
-            return -1;
-        }
-        */
     }
     
     /** Collect servlets from all model objects implementing HttpService
@@ -573,18 +543,13 @@ public class WebServer extends AbstractInitializableAttribute {
             if (actualPort != -1) {
                 
                 deployedPort.setExpression(Integer.toString(actualPort));
-                ((IntToken) deployedPort.getToken()).intValue();
+                //((IntToken) deployedPort.getToken()).intValue();
                 deployedPort.validate();
-                _deployedPort = actualPort;
-                
-                
             }
         } catch (Exception e) {
             throw new IllegalActionException(this, e,
                     "Failed to register web server.");
         }
-        
-        
     }
 
     /** Unregister this application with the web server manager.
@@ -627,9 +592,6 @@ public class WebServer extends AbstractInitializableAttribute {
     /** Info about the web application defined by the model.
      */
     private WebApplicationInfo _appInfo;
-    
-    /** The port the web server is listening to. */
-    private int _deployedPort;
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;
