@@ -56,8 +56,7 @@ JSRCS = \
 	EP_STAT.java \
 	ep_stat_to_string.java \
 	EP_TIME_SPEC.java \
-	Gdp10Library.java \
-	gdp_datum.java
+	Gdp10Library.java
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
