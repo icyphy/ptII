@@ -49,7 +49,7 @@ import org.terraswarm.gdp.EP_STAT;
 import org.terraswarm.gdp.Gdp10Library;
 import org.terraswarm.gdp.Gdp10Library.gdp_gcl_t;
 import org.terraswarm.gdp.ep_stat_to_string;
-import org.terraswarm.gdp.gdp_datum;
+//import org.terraswarm.gdp.gdp_datum;
 
 import ptolemy.util.StringUtilities;
 
@@ -127,7 +127,7 @@ public class WriterTest {
 
         System.err.println("About to initialize the GDP.");
 	estat = Gdp10Library.INSTANCE.gdp_init();
-	if (/*!EP_STAT_ISOK(estat)*/ estat.code.intValue() != 0) {
+	if (!EP_STAT_ISOK(estat)) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);
 	}
@@ -153,9 +153,9 @@ public class WriterTest {
                 estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname, gclh);
             }
 	}
-        System.err.println("About to check error code");
+        System.err.println("About to check error code after either creating a new handle, gdp_gcl_open() or gdp_gcl_create()");
 	// EP_STAT_CHECK(estat, goto fail0);
-        if (estat.code.intValue() != 0) {
+        if (!EP_STAT_ISOK(estat)) {
             _fail0(estat);
         }
 
@@ -170,7 +170,7 @@ public class WriterTest {
 	System.out.println("Starting to read input.");
 
         System.out.println("About to create a gdp_datum.");
-	gdp_datum datum = Gdp10Library.INSTANCE.gdp_datum_new();
+	PointerByReference datum = Gdp10Library.INSTANCE.gdp_datum_new();
         System.out.println("Done creating a gdp_datum");
         // Invoke with -Djna.dump_memory=true
         System.out.println("datum: " + datum);
@@ -202,14 +202,22 @@ public class WriterTest {
                 Pointer pointer = alignedMemory.share(0);
                 pointer.setString(0, line);
 
-                Gdp10Library.INSTANCE.gdp_buf_write(datum.dbuf.getValue(), pointer, new NativeSizeT(line.length()));
-
+                System.out.println("About to call gdp_datum_getbuf()");
+                PointerByReference dbuf = Gdp10Library.INSTANCE.gdp_datum_getbuf(datum);
+                System.out.println("About to call gdp_buf_write(): pointer: " + pointer + "pointer.getString(): " + pointer.getString(0));
+                Gdp10Library.INSTANCE.gdp_buf_write(dbuf, pointer, new NativeSizeT(line.length()));
+                
+                System.out.println("About to call gdp_gcl_publish()");
+                System.out.println("gclh: " + gclh);
+                System.out.print("datum: " + datum);
+                _gdp_datum_print(datum/*, stdout*/);
 		estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclh, datum);
-                if (estat.code.intValue() != 0) {
+                if (!EP_STAT_ISOK(estat)) {
                     _fail1(estat, gclh);
                 }
                 // Instead of calling the gdp_datum_print() method in C, we implement our own.
                 //gdp_datum_print(datum, stdout);
+                System.out.println("About to call gdp_datum_print()");
                 _gdp_datum_print(datum/*, stdout*/);
 
             }
@@ -222,45 +230,48 @@ public class WriterTest {
         _fail0(estat);
     }
 
-    private static int _fail1(EP_STAT estat, PointerByReference gclh) {
+    private static void _fail1(EP_STAT estat, PointerByReference gclh) {
 	Gdp10Library.INSTANCE.gdp_gcl_close(gclh);
-        return _fail0(estat);
+        _fail0(estat);
     }
 
-    private static int _fail0(EP_STAT estat) {
+    private static void _fail0(EP_STAT estat) {
         // FIXME: EP_STAT_ISOK is a macro in the original c code.  See ../_jnaerator.macros.cpp.
-        //if (EP_STAT_ISOK(estat)) {
-        //    estat = EP_STAT_OK;
-        //}
+        if (EP_STAT_ISOK(estat)) {
+            estat = EP_STAT_OK;
+        }
 
         // FIXME: writer-test.c has:
 	// fprintf(stderr, "exiting with status %s\n",
 	//		ep_stat_tostr(estat, buf, sizeof buf));
         // I have no idea what to do with ep_stat_tostr(), so we just print
-	System.err.println("exiting with status " + estat);
+	System.err.println("exiting with status " + estat + ", code: " + estat.code);
 
-	return /*!EP_STAT_ISOK(estat)*/ (estat.code.intValue() == 0 ? 1 : 0);
+	System.exit(EP_STAT_ISOK(estat) ? 0 : 1);
     }
 
     /** Print the datum to standard out.  This is a port of
      *  gdp_datum_print from gdp/gdp_api.c by Eric Allman.
      *  @param datum The datum to be printed.
      */   
-    private static void _gdp_datum_print(gdp_datum datum) {
-        Pointer d;
+    private static void _gdp_datum_print(/*gdp_datum*/PointerByReference datum) {
+        
+        Pointer d = null;
         NativeSizeT length = new NativeSizeT();
         length.setValue(-1);
         if (datum == null) {
             System.out.println("null datum");
         }
-        System.out.print("GDP record " + datum.recno);
-        if (datum.dbuf == null) {
+        System.out.print("GDP record " + 
+                Gdp10Library.INSTANCE.gdp_datum_getrecno(datum) + ", ");
+        PointerByReference dbuf = Gdp10Library.INSTANCE.gdp_datum_getbuf(datum);
+        if (dbuf == null) {
             System.out.print("no data");
         } else {
             // In gdp_api.c, gdp_datum_print() calls:
             // l = gdp_buf_getlength(datum->dbuf);
-            length = Gdp10Library.INSTANCE.gdp_buf_getlength(datum.dbuf.getValue());
-            System.out.print("len " + datum.dlen + "/" + length);
+            length = Gdp10Library.INSTANCE.gdp_buf_getlength(dbuf);
+            System.out.print("len " + length);
 
             // In gdp_api.c, this method calls:
             // d = gdp_buf_getptr(datum->dbuf, l);
@@ -273,20 +284,62 @@ public class WriterTest {
             // JNA on that class.
 
             //d = Event2Library.INSTANCE.evbuffer_pullup(new evbuffer(datum.dbuf.getValue()), new NativeLong(length.longValue()));
-            d = Gdp10Library.INSTANCE.gdp_buf_getptr(datum.dbuf.getValue(), new NativeSizeT(length.longValue()));
+            d = Gdp10Library.INSTANCE.gdp_buf_getptr(dbuf, new NativeSizeT(length.longValue()));
         }
-        if (datum.ts.tv_sec != Long.MIN_VALUE) {
+        //Gdp10Library.INSTANCE.gdp_buf_getts(dbuf, new NativeSizeT(length.longValue()));
+        //if (datum.ts.tv_sec != Long.MIN_VALUE) {
             System.out.print(", timestamp ");
             System.out.print("FIXME");
             //ep_time_print(&datum->ts, fp, true);
-        } else {
-            System.out.print(", no timestamp ");
-        }
+            //} else {
+            //System.out.print(", no timestamp ");
+            //}
         if (length.longValue() > 0) {
             // gdp_api.c has
             //fprintf(fp, "\n	 %s%.*s%s", EpChar->lquote, l, d, EpChar->rquote);
-            // However, we don't know how to get the value of d yet.
-            System.out.print("\n \"FIXME\"");
+            System.out.println("\n  \"" + length + d + "\"");
         }
     }
+
+    // From ep_stat.h by Eric Allman.  
+    // See LIBEP_LICENSE. (FIXME)
+    public static final int EP_STAT_SEV_OK      = 0;	// everything OK (also 1, 2, and 3)
+    public static final int EP_STAT_SEV_WARN	= 4;	// warning or temp error, may work later
+    public static final int EP_STAT_SEV_ERROR	= 5;	// normal error
+    public static final int EP_STAT_SEV_SEVERE	= 6;	// severe error, should back out
+    public static final int EP_STAT_SEV_ABORT	= 7;	// internal error
+
+    public static final int _EP_STAT_SEVBITS =	3;
+    public static final int _EP_STAT_REGBITS = 11;
+    public static final int _EP_STAT_MODBITS =	8;
+    public static final int _EP_STAT_DETBITS = 42;
+    public static final int _EP_STAT_MODSHIFT =	_EP_STAT_DETBITS;
+    public static final int _EP_STAT_REGSHIFT =	(_EP_STAT_MODSHIFT + _EP_STAT_MODBITS);
+    public static final int _EP_STAT_SEVSHIFT =	(_EP_STAT_REGSHIFT + _EP_STAT_REGBITS);
+
+    /** Return true if the status code is ok.
+     *  @param estat The status code.
+     *  @return true if the code is less than EP_STAT_SEV_WARN
+     */
+    public static boolean EP_STAT_ISOK(EP_STAT estat) {
+        long code = estat.code.longValue();
+        //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
+        long EP_STAT_SEVERITY = (code >> _EP_STAT_SEVSHIFT) & ((1l << _EP_STAT_SEVBITS) - 1);
+
+        //System.out.println("EP_STAT_ISOK(): code: " + code + ", EP_STAT_SEVERITY: " + EP_STAT_SEVERITY 
+        //        + ", EP_STAT_SEV_WARN: " + EP_STAT_SEV_WARN 
+        //        + "EP_STAT_SEVERITY < EP_STAT_SEV_WARN: " + (EP_STAT_SEVERITY < EP_STAT_SEV_WARN));
+        return EP_STAT_SEVERITY < EP_STAT_SEV_WARN;
+    }
+    
+    public static EP_STAT EP_STAT_NEW(int s, int r, int m, int d) {
+        long code = ((((s) & ((1l << _EP_STAT_SEVBITS) - 1)) << _EP_STAT_SEVSHIFT) | 
+                (((r) & ((1l << _EP_STAT_REGBITS) - 1)) << _EP_STAT_REGSHIFT) | 
+                (((m) & ((1l << _EP_STAT_MODBITS) - 1)) << _EP_STAT_MODSHIFT) |
+                (((d) & ((1l << _EP_STAT_DETBITS) - 1))));
+        return new EP_STAT( new NativeLong(code));
+    }                    
+
+    // #define EP_STAT_OK		EP_STAT_NEW(EP_STAT_SEV_OK, 0, 0, 0)
+    public static EP_STAT EP_STAT_OK = EP_STAT_NEW(EP_STAT_SEV_OK, 0, 0, 0);
 }

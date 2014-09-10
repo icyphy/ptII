@@ -8,10 +8,8 @@ import com.sun.jna.NativeLibrary;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import org.terraswarm.gdp.EP_STAT.ByValue;
 /**
  * JNA Wrapper for library <b>gdp.1.0</b><br>
@@ -105,8 +103,6 @@ public interface Gdp10Library extends Library {
 	public static final int EP_OSCF_HAS_STRING_H = (int)1;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_FORBIDDEN = (int)403;
-	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
-	public static final int EP_THR_MUTEX_NORMAL = (int)0;
 	/**
 	 * define<br>
 	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((11) & ((1UL << 42) - 1)))<br>
@@ -194,8 +190,6 @@ public interface Gdp10Library extends Library {
 	public static final int EP_STAT_SEV_ERROR = (int)(5);
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_NOTIMPL = (int)501;
-	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
-	public static final int EP_THR_MUTEX_ERRORCHECK = (int)0;
 	/**
 	 * define<br>
 	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((406) & ((1UL << 42) - 1)))<br>
@@ -246,6 +240,13 @@ public interface Gdp10Library extends Library {
 	public static final int EP_OSCF_HAS_STDLIB_H = (int)1;
 	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
 	public static final int EP_OSCF_HAS_UNISTD_H = (int)1;
+	/**
+	 * define<br>
+	 * Conversion Error : null<br>
+	 * SKIPPED:<br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h</i><br>
+	 * = { { 0, 0, 0, 0, 0, 0, { 0, 0 } } }
+	 */
 	/**
 	 * define<br>
 	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((402) & ((1UL << 42) - 1)))<br>
@@ -345,8 +346,6 @@ public interface Gdp10Library extends Library {
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
 	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))
 	 */
-	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
-	public static final int EP_THR_MUTEX_RECURSIVE = (int)0;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_DELETED = (int)202;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
@@ -414,6 +413,13 @@ public interface Gdp10Library extends Library {
 	public static final int GDP_MODULE = (int)1;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_PRECONFAILED = (int)412;
+	/**
+	 * define<br>
+	 * Conversion Error : null<br>
+	 * SKIPPED:<br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h</i><br>
+	 * = { { 0, 0, 0, 0, 0, (void*)0, 0, 0 } }
+	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_MAX_REGISTRIES = (int)((1 << 11) - 1);
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
@@ -441,6 +447,13 @@ public interface Gdp10Library extends Library {
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
 	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((4) & ((1UL << 42) - 1)))
 	 */
+	/**
+	 * define<br>
+	 * Conversion Error : null<br>
+	 * SKIPPED:<br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h</i><br>
+	 * = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } }
+	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_METHNOTALLOWED = (int)405;
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
@@ -452,6 +465,8 @@ public interface Gdp10Library extends Library {
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
 	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((19) & ((1UL << 42) - 1)))
 	 */
+	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
+	public static final int EP_OSCF_USE_PTHREADS = (int)1;
 	/**
 	 * define<br>
 	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((500) & ((1UL << 42) - 1)))<br>
@@ -531,13 +546,13 @@ public interface Gdp10Library extends Library {
 		 */
 		int apply(ByValue estat, Pointer defmsg, Object... av);
 	};
-	/** <i>native declaration : src/gdp/gdp/gdp.h:131</i> */
+	/** <i>native declaration : src/gdp/gdp/gdp.h:130</i> */
 	public interface gdp_gcl_sub_cbfunc_t extends Callback {
 		/**
 		 * @param gclh the GCL triggering the call<br>
 		 * @param datum the message triggering the call
 		 */
-		void apply(Pointer gclh, gdp_datum datum, Pointer cbarg);
+		void apply(Pointer gclh, PointerByReference datum, Pointer cbarg);
 	};
 	/**
 	 * called if the assertion failed<br>
@@ -911,6 +926,91 @@ public interface Gdp10Library extends Library {
 	 */
 	ByValue ep_time_nanosleep(long int64_t1);
 	/**
+	 * Original signature : <code>int ep_thr_mutex_init(EP_THR_MUTEX*, int)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:41</i>
+	 */
+	int ep_thr_mutex_init(Pointer mtx, int type);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_destroy(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:43</i>
+	 */
+	int ep_thr_mutex_destroy(Pointer mtx);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_lock(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:45</i>
+	 */
+	int ep_thr_mutex_lock(Pointer mtx);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_trylock(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:47</i>
+	 */
+	int ep_thr_mutex_trylock(Pointer mtx);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_unlock(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:49</i>
+	 */
+	int ep_thr_mutex_unlock(Pointer mtx);
+	/**
+	 * Original signature : <code>int ep_thr_cond_init(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:52</i>
+	 */
+	int ep_thr_cond_init(Pointer cv);
+	/**
+	 * Original signature : <code>int ep_thr_cond_destroy(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:54</i>
+	 */
+	int ep_thr_cond_destroy(Pointer cv);
+	/**
+	 * Original signature : <code>int ep_thr_cond_signal(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:56</i>
+	 */
+	int ep_thr_cond_signal(Pointer cv);
+	/**
+	 * Original signature : <code>int ep_thr_cond_wait(EP_THR_COND*, EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:58</i>
+	 */
+	int ep_thr_cond_wait(Pointer cv, Pointer mtx);
+	/**
+	 * Original signature : <code>int ep_thr_cond_broadcast(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:60</i>
+	 */
+	int ep_thr_cond_broadcast(Pointer cv);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_init(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:63</i>
+	 */
+	int ep_thr_rwlock_init(Pointer rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_destroy(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:65</i>
+	 */
+	int ep_thr_rwlock_destroy(Pointer rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_rdlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:67</i>
+	 */
+	int ep_thr_rwlock_rdlock(Pointer rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_tryrdlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:69</i>
+	 */
+	int ep_thr_rwlock_tryrdlock(Pointer rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_wrlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:71</i>
+	 */
+	int ep_thr_rwlock_wrlock(Pointer rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_trywrlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:73</i>
+	 */
+	int ep_thr_rwlock_trywrlock(Pointer rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_unlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:75</i>
+	 */
+	int ep_thr_rwlock_unlock(Pointer rwl);
+	/**
 	 * Original signature : <code>gdp_buf_t* gdp_buf_new()</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:2</i>
 	 */
@@ -942,20 +1042,15 @@ public interface Gdp10Library extends Library {
 	/**
 	 * Original signature : <code>void gdp_buf_setlock(gdp_buf_t*, EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:8</i><br>
-	 * @deprecated use the safer methods {@link #gdp_buf_setlock(com.sun.jna.ptr.PointerByReference, java.nio.IntBuffer)} and {@link #gdp_buf_setlock(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.IntByReference)} instead
+	 * @deprecated use the safer method {@link #gdp_buf_setlock(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
-	void gdp_buf_setlock(Pointer buf, IntByReference m);
+	void gdp_buf_setlock(Pointer buf, Pointer m);
 	/**
 	 * Original signature : <code>void gdp_buf_setlock(gdp_buf_t*, EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:8</i>
 	 */
-	void gdp_buf_setlock(PointerByReference buf, IntBuffer m);
-	/**
-	 * Original signature : <code>void gdp_buf_setlock(gdp_buf_t*, EP_THR_MUTEX*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:8</i>
-	 */
-	void gdp_buf_setlock(PointerByReference buf, IntByReference m);
+	void gdp_buf_setlock(PointerByReference buf, Pointer m);
 	/**
 	 * Original signature : <code>size_t gdp_buf_getlength(gdp_buf_t*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:10</i><br>
@@ -1077,13 +1172,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * get next event (fills in gev structure)<br>
 	 * Original signature : <code>gdp_event_t* gdp_event_next(bool)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:63</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:62</i>
 	 */
 	PointerByReference gdp_event_next(byte wait$);
 	/**
 	 * free an event (required after gdp_event_next)<br>
 	 * Original signature : <code>EP_STAT gdp_event_free(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:68</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:67</i><br>
 	 * @deprecated use the safer method {@link #gdp_event_free(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1091,13 +1186,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * free an event (required after gdp_event_next)<br>
 	 * Original signature : <code>EP_STAT gdp_event_free(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:68</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:67</i>
 	 */
 	ByValue gdp_event_free(PointerByReference gev);
 	/**
 	 * get the type of an event<br>
 	 * Original signature : <code>int gdp_event_gettype(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:73</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:72</i><br>
 	 * @deprecated use the safer method {@link #gdp_event_gettype(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1105,13 +1200,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * get the type of an event<br>
 	 * Original signature : <code>int gdp_event_gettype(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:73</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:72</i>
 	 */
 	int gdp_event_gettype(PointerByReference gev);
 	/**
 	 * get the GCL handle<br>
 	 * Original signature : <code>gdp_gcl_t* gdp_event_getgcl(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:78</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:77</i><br>
 	 * @deprecated use the safer method {@link #gdp_event_getgcl(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1119,41 +1214,41 @@ public interface Gdp10Library extends Library {
 	/**
 	 * get the GCL handle<br>
 	 * Original signature : <code>gdp_gcl_t* gdp_event_getgcl(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:78</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:77</i>
 	 */
 	PointerByReference gdp_event_getgcl(PointerByReference gev);
 	/**
 	 * get the datum<br>
-	 * Original signature : <code>gdp_datum_t* gdp_event_getdatum(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:83</i><br>
+	 * Original signature : <code>void** gdp_event_getdatum(gdp_event_t*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:82</i><br>
 	 * @deprecated use the safer method {@link #gdp_event_getdatum(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
-	gdp_datum gdp_event_getdatum(Pointer gev);
+	PointerByReference gdp_event_getdatum(Pointer gev);
 	/**
 	 * get the datum<br>
-	 * Original signature : <code>gdp_datum_t* gdp_event_getdatum(gdp_event_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:83</i>
+	 * Original signature : <code>void** gdp_event_getdatum(gdp_event_t*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:82</i>
 	 */
-	gdp_datum gdp_event_getdatum(PointerByReference gev);
+	PointerByReference gdp_event_getdatum(PointerByReference gev);
 	/**
 	 * initialize the library<br>
 	 * Original signature : <code>EP_STAT gdp_init()</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:91</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:90</i>
 	 */
 	ByValue gdp_init();
 	/**
 	 * run event loop (normally run from gdp_init; never returns)<br>
 	 * Original signature : <code>void* gdp_run_accept_event_loop(void*)</code><br>
 	 * @param voidPtr1 unused<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:97</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:96</i>
 	 */
 	Pointer gdp_run_accept_event_loop(Pointer voidPtr1);
 	/**
 	 * create a new GCL<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t**)</code><br>
 	 * @param gdp_gcl_tPtrPtr1 pointer to result GCL handle<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:103</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:102</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_create(java.nio.ByteBuffer, com.sun.jna.ptr.PointerByReference)} and {@link #gdp_gcl_create(com.sun.jna.Pointer, com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1162,7 +1257,7 @@ public interface Gdp10Library extends Library {
 	 * create a new GCL<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t**)</code><br>
 	 * @param gdp_gcl_tPtrPtr1 pointer to result GCL handle<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:103</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:102</i>
 	 */
 	ByValue gdp_gcl_create(ByteBuffer gcl_name_t1, PointerByReference gdp_gcl_tPtrPtr1);
 	/**
@@ -1170,7 +1265,7 @@ public interface Gdp10Library extends Library {
 	 * Original signature : <code>EP_STAT gdp_gcl_open(gcl_name_t, gdp_iomode_t, gdp_gcl_t**)</code><br>
 	 * @param name GCL name to open<br>
 	 * @param rw read/write (append)<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:110</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:109</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_open(java.nio.ByteBuffer, int, com.sun.jna.ptr.PointerByReference)} and {@link #gdp_gcl_open(com.sun.jna.Pointer, int, com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1180,13 +1275,13 @@ public interface Gdp10Library extends Library {
 	 * Original signature : <code>EP_STAT gdp_gcl_open(gcl_name_t, gdp_iomode_t, gdp_gcl_t**)</code><br>
 	 * @param name GCL name to open<br>
 	 * @param rw read/write (append)<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:110</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:109</i>
 	 */
 	ByValue gdp_gcl_open(ByteBuffer name, int rw, PointerByReference gclh);
 	/**
 	 * close an open GCL<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_close(gdp_gcl_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:115</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:114</i><br>
 	 * @deprecated use the safer method {@link #gdp_gcl_close(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1194,51 +1289,51 @@ public interface Gdp10Library extends Library {
 	/**
 	 * close an open GCL<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_close(gdp_gcl_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:115</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:114</i>
 	 */
 	ByValue gdp_gcl_close(PointerByReference gclh);
 	/**
 	 * append to a writable GCL<br>
-	 * Original signature : <code>EP_STAT gdp_gcl_publish(gdp_gcl_t*, gdp_datum_t*)</code><br>
+	 * Original signature : <code>EP_STAT gdp_gcl_publish(gdp_gcl_t*, void**)</code><br>
 	 * @param gclh writable GCL handle<br>
-	 * @param gdp_datum_tPtr1 message to write<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:122</i><br>
-	 * @deprecated use the safer method {@link #gdp_gcl_publish(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.gdp_datum)} instead
+	 * @param voidPtrPtr1 message to write<br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:121</i><br>
+	 * @deprecated use the safer method {@link #gdp_gcl_publish(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
-	ByValue gdp_gcl_publish(Pointer gclh, gdp_datum gdp_datum_tPtr1);
+	ByValue gdp_gcl_publish(Pointer gclh, PointerByReference voidPtrPtr1);
 	/**
 	 * append to a writable GCL<br>
-	 * Original signature : <code>EP_STAT gdp_gcl_publish(gdp_gcl_t*, gdp_datum_t*)</code><br>
+	 * Original signature : <code>EP_STAT gdp_gcl_publish(gdp_gcl_t*, void**)</code><br>
 	 * @param gclh writable GCL handle<br>
-	 * @param gdp_datum_tPtr1 message to write<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:122</i>
+	 * @param voidPtrPtr1 message to write<br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:121</i>
 	 */
-	ByValue gdp_gcl_publish(PointerByReference gclh, gdp_datum gdp_datum_tPtr1);
+	ByValue gdp_gcl_publish(PointerByReference gclh, PointerByReference voidPtrPtr1);
 	/**
 	 * read from a readable GCL<br>
-	 * Original signature : <code>EP_STAT gdp_gcl_read(gdp_gcl_t*, gdp_recno_t, gdp_datum_t*)</code><br>
+	 * Original signature : <code>EP_STAT gdp_gcl_read(gdp_gcl_t*, gdp_recno_t, void**)</code><br>
 	 * @param gclh readable GCL handle<br>
 	 * @param recno GCL record number<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:129</i><br>
-	 * @deprecated use the safer method {@link #gdp_gcl_read(com.sun.jna.ptr.PointerByReference, long, org.terraswarm.gdp.gdp_datum)} instead
+	 * <i>native declaration : src/gdp/gdp/gdp.h:128</i><br>
+	 * @deprecated use the safer method {@link #gdp_gcl_read(com.sun.jna.ptr.PointerByReference, long, com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
-	ByValue gdp_gcl_read(Pointer gclh, long recno, gdp_datum datum);
+	ByValue gdp_gcl_read(Pointer gclh, long recno, PointerByReference datum);
 	/**
 	 * read from a readable GCL<br>
-	 * Original signature : <code>EP_STAT gdp_gcl_read(gdp_gcl_t*, gdp_recno_t, gdp_datum_t*)</code><br>
+	 * Original signature : <code>EP_STAT gdp_gcl_read(gdp_gcl_t*, gdp_recno_t, void**)</code><br>
 	 * @param gclh readable GCL handle<br>
 	 * @param recno GCL record number<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:129</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:128</i>
 	 */
-	ByValue gdp_gcl_read(PointerByReference gclh, long recno, gdp_datum datum);
+	ByValue gdp_gcl_read(PointerByReference gclh, long recno, PointerByReference datum);
 	/**
 	 * Original signature : <code>EP_STAT gdp_gcl_subscribe(gdp_gcl_t*, gdp_recno_t, gdp_recno_t, gdp_gcl_sub_cbfunc_t, void*)</code><br>
 	 * @param gclh readable GCL handle<br>
 	 * @param start first record to retrieve<br>
 	 * @param stop last record to retrieve<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:138</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:137</i><br>
 	 * @deprecated use the safer method {@link #gdp_gcl_subscribe(com.sun.jna.ptr.PointerByReference, long, long, org.terraswarm.gdp.Gdp10Library.gdp_gcl_sub_cbfunc_t, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1248,13 +1343,13 @@ public interface Gdp10Library extends Library {
 	 * @param gclh readable GCL handle<br>
 	 * @param start first record to retrieve<br>
 	 * @param stop last record to retrieve<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:138</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:137</i>
 	 */
 	ByValue gdp_gcl_subscribe(PointerByReference gclh, long start, long stop, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
 	/**
 	 * XXX: should this be in a more generic "getstat" function?<br>
 	 * Original signature : <code>gcl_name_t* gdp_gcl_getname(const gdp_gcl_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:143</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:142</i><br>
 	 * @deprecated use the safer method {@link #gdp_gcl_getname(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1262,13 +1357,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * XXX: should this be in a more generic "getstat" function?<br>
 	 * Original signature : <code>gcl_name_t* gdp_gcl_getname(const gdp_gcl_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:143</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:142</i>
 	 */
 	Pointer gdp_gcl_getname(PointerByReference gclh);
 	/**
 	 * check to see if a GCL name is valid<br>
 	 * Original signature : <code>bool gdp_gcl_name_is_zero(const gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:148</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:147</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_name_is_zero(java.nio.ByteBuffer)} and {@link #gdp_gcl_name_is_zero(com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1276,7 +1371,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * check to see if a GCL name is valid<br>
 	 * Original signature : <code>bool gdp_gcl_name_is_zero(const gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:148</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:147</i>
 	 */
 	byte gdp_gcl_name_is_zero(ByteBuffer gcl_name_t1);
 	/**
@@ -1285,7 +1380,7 @@ public interface Gdp10Library extends Library {
 	 * @param gclh GCL handle to print<br>
 	 * @param fp file to print it to<br>
 	 * @param detail not used at this time<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:156</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:155</i><br>
 	 * @deprecated use the safer method {@link #gdp_gcl_print(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference, int, int)} instead
 	 */
 // 	@Deprecated 
@@ -1296,13 +1391,13 @@ public interface Gdp10Library extends Library {
 	 * @param gclh GCL handle to print<br>
 	 * @param fp file to print it to<br>
 	 * @param detail not used at this time<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:156</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:155</i>
 	 */
 	void gdp_gcl_print(PointerByReference gclh, PointerByReference fp, int detail, int indent);
 	/**
 	 * make a printable GCL name from a binary version<br>
 	 * Original signature : <code>char* gdp_gcl_printable_name(const gcl_name_t, gcl_pname_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:161</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:160</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_printable_name(java.nio.ByteBuffer, java.nio.ByteBuffer)} and {@link #gdp_gcl_printable_name(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1310,13 +1405,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * make a printable GCL name from a binary version<br>
 	 * Original signature : <code>char* gdp_gcl_printable_name(const gcl_name_t, gcl_pname_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:161</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:160</i>
 	 */
 	Pointer gdp_gcl_printable_name(ByteBuffer internal, ByteBuffer external);
 	/**
 	 * make a binary GCL name from a printable version<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_internal_name(const gcl_pname_t, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:166</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:165</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_internal_name(java.nio.ByteBuffer, java.nio.ByteBuffer)} and {@link #gdp_gcl_internal_name(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1324,13 +1419,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * make a binary GCL name from a printable version<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_internal_name(const gcl_pname_t, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:166</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:165</i>
 	 */
 	ByValue gdp_gcl_internal_name(ByteBuffer external, ByteBuffer internal);
 	/**
 	 * parse a (possibly human-friendly) GCL name<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_parse_name(const char*, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:171</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:170</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_parse_name(java.lang.String, java.nio.ByteBuffer)} and {@link #gdp_gcl_parse_name(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1338,73 +1433,73 @@ public interface Gdp10Library extends Library {
 	/**
 	 * parse a (possibly human-friendly) GCL name<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_parse_name(const char*, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:171</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:170</i>
 	 */
 	ByValue gdp_gcl_parse_name(String ext, ByteBuffer internal);
 	/**
 	 * allocate a new message<br>
-	 * Original signature : <code>gdp_datum_t* gdp_datum_new()</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:176</i>
+	 * Original signature : <code>void** gdp_datum_new()</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:175</i>
 	 */
-	gdp_datum gdp_datum_new();
+	PointerByReference gdp_datum_new();
 	/**
 	 * free a message<br>
-	 * Original signature : <code>void gdp_datum_free(gdp_datum_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:181</i>
+	 * Original signature : <code>void gdp_datum_free(void**)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:180</i>
 	 */
-	void gdp_datum_free(gdp_datum gdp_datum_tPtr1);
+	void gdp_datum_free(PointerByReference voidPtrPtr1);
 	/**
 	 * print a message (for debugging)<br>
-	 * Original signature : <code>void gdp_datum_print(const gdp_datum_t*, FILE*)</code><br>
+	 * Original signature : <code>void gdp_datum_print(const void**, FILE*)</code><br>
 	 * @param datum message to print<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:187</i><br>
-	 * @deprecated use the safer method {@link #gdp_datum_print(org.terraswarm.gdp.gdp_datum, com.sun.jna.ptr.PointerByReference)} instead
+	 * <i>native declaration : src/gdp/gdp/gdp.h:186</i><br>
+	 * @deprecated use the safer method {@link #gdp_datum_print(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
-	void gdp_datum_print(gdp_datum datum, Pointer fp);
+	void gdp_datum_print(PointerByReference datum, Pointer fp);
 	/**
 	 * print a message (for debugging)<br>
-	 * Original signature : <code>void gdp_datum_print(const gdp_datum_t*, FILE*)</code><br>
+	 * Original signature : <code>void gdp_datum_print(const void**, FILE*)</code><br>
 	 * @param datum message to print<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:187</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:186</i>
 	 */
-	void gdp_datum_print(gdp_datum datum, PointerByReference fp);
+	void gdp_datum_print(PointerByReference datum, PointerByReference fp);
 	/**
 	 * get the record number from a datum<br>
-	 * Original signature : <code>gdp_recno_t gdp_datum_getrecno(const gdp_datum_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:192</i>
+	 * Original signature : <code>gdp_recno_t gdp_datum_getrecno(const void**)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:191</i>
 	 */
-	long gdp_datum_getrecno(gdp_datum datum);
+	long gdp_datum_getrecno(PointerByReference datum);
 	/**
 	 * set a record number in a datum<br>
-	 * Original signature : <code>void gdp_datum_setrecno(gdp_datum_t*, gdp_recno_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:197</i>
+	 * Original signature : <code>void gdp_datum_setrecno(void**, gdp_recno_t)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:196</i>
 	 */
-	void gdp_datum_setrecno(gdp_datum datum, long recno);
+	void gdp_datum_setrecno(PointerByReference datum, long recno);
 	/**
 	 * get the timestamp from a datum<br>
-	 * Original signature : <code>void gdp_datum_getts(const gdp_datum_t*, EP_TIME_SPEC*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:202</i>
+	 * Original signature : <code>void gdp_datum_getts(const void**, EP_TIME_SPEC*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:201</i>
 	 */
-	void gdp_datum_getts(gdp_datum datum, EP_TIME_SPEC ts);
+	void gdp_datum_getts(PointerByReference datum, EP_TIME_SPEC ts);
 	/**
 	 * set the timestamp in a datum<br>
-	 * Original signature : <code>void gdp_datum_setts(gdp_datum_t*, EP_TIME_SPEC*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:207</i>
+	 * Original signature : <code>void gdp_datum_setts(void**, EP_TIME_SPEC*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:206</i>
 	 */
-	void gdp_datum_setts(gdp_datum datum, EP_TIME_SPEC ts);
+	void gdp_datum_setts(PointerByReference datum, EP_TIME_SPEC ts);
 	/**
 	 * get the data length from a datum<br>
-	 * Original signature : <code>size_t gdp_datum_getdlen(const gdp_datum_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:212</i>
+	 * Original signature : <code>size_t gdp_datum_getdlen(const void**)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:211</i>
 	 */
-	NativeSizeT gdp_datum_getdlen(gdp_datum datum);
+	NativeSizeT gdp_datum_getdlen(PointerByReference datum);
 	/**
 	 * get the data buffer from a datum<br>
-	 * Original signature : <code>gdp_buf_t* gdp_datum_getdbuf(const gdp_datum_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:217</i>
+	 * Original signature : <code>gdp_buf_t* gdp_datum_getbuf(const void**)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:216</i>
 	 */
-	PointerByReference gdp_datum_getdbuf(gdp_datum datum);
+	PointerByReference gdp_datum_getbuf(PointerByReference datum);
 	/**
 	 * support functions<br>
 	 * Original signature : <code>int ep_dbg_flaglevel(EP_DBG*)</code><br>

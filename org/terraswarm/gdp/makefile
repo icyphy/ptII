@@ -103,7 +103,7 @@ GDP_H_FILES = \
 #	/usr/include/pthread.h \
 #	$(PTHREADTYPES_H)
 
-STD=	-DEP_OSCF_USE_PTHREADS=0
+#STD=	-DEP_OSCF_USE_PTHREADS=0
 
 LIBEVENT_VERSION = 2.0.21-stable
 LIBEVENT=libevent-$(LIBEVENT_VERSION)
@@ -114,8 +114,9 @@ LIBEVENT_H_FILES = \
 
 
 # Rebuild the jar file
+# We define gdp_datum_t and gdp_datum as void * so that JNAerator does not generate gdp_datum.java, which would refer to pthreads.
 jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
-	java -jar $(JNAERATOR_JAR) -runtime JNA $(STD) -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
+	java -jar $(JNAERATOR_JAR) -runtime JNA -Dgdp_datum_t="void *" -Dgdp_datum="void *" -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
 	echo "Fixing $$file"; \
@@ -137,7 +138,10 @@ jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done
-	#
+
+
+# Not needed, but we leave it here for now.
+fix_gdp_datum:
 	@echo "gdp_datum.java will need some edits because the JNAerator does not understand bitfields."
 	sed -e 's@abstract@/* abstract Fixed in makefile.*/@' \
             -e 's@return Arrays.asList("mutex", "next", "recno", "ts", "dlen", "dbuf");@return Arrays.asList("mutex", "next", "inuse" /*Fixed in makefile.*/, "recno", "ts", "dlen", "dbuf");@' \
@@ -175,7 +179,9 @@ gdp: $(GDP_SRC)
 $(GDP_SRC):
 	# You will need a password for this, ask Eric.
 	@if [ ! -d src ]; then mkdir src; echo "making the src/ directory."; fi
-	cd src; git clone https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
+	cd src; git clone https://$(USER)@repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
+
+patch_gdp:
 	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."
 	cd src/gdp; patch -p1 < ../../gdp.patch
 	cd src/gdp; $(MAKE)

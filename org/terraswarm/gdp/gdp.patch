@@ -1,57 +1,21 @@
-diff --git a/apps/Makefile b/apps/Makefile
-index ed51ab9..112fab1 100644
---- a/apps/Makefile
-+++ b/apps/Makefile
-@@ -11,6 +11,7 @@ JANSSONROOT=	${HOME}/src/jansson-2.6
- #LIBJANSSON=	-L${JANSSONROOT} -ljansson
- #EVENT2ROOT=	${HOME}/src
- #INCEVENT2=	-I${EVENT2ROOT}
-+INCEVENT2=	-I/usr/local/include
- LIBEVENT2=	-levent -levent_pthreads -pthread
- INCCRYPTO=
- LIBCRYPTO=	-lcrypto
-@@ -19,7 +20,7 @@ LDFLAGS=	${LIBGDP} ${LIBEP} ${LIBJANSSON} ${LIBEVENT2} ${LIBCRYPTO}
- PG=
- O=		-O
- WALL=		-Wall
--STD=
-+STD=	-DEP_OSCF_USE_PTHREADS=0
- COPTS=		${PG} -g ${WALL} $O ${STD}
- CFLAGS=		${COPTS} ${INCS}
- 
-diff --git a/ep/Makefile b/ep/Makefile
-index bf7a0b0..1176905 100644
---- a/ep/Makefile
-+++ b/ep/Makefile
-@@ -121,9 +121,9 @@ CC=	cc
- PG=
- O=	-O
- WALL=	-Wall
--STD=
-+STD=	-DEP_OSCF_USE_PTHREADS=0
- COPTS=	${PG} -g ${WALL} $O ${STD}
--CFLAGS=	${COPTS} ${INCLS} -I${CURDIR} -I.. -fPIC
-+CFLAGS=	${COPTS} ${INCLS} -I${CURDIR} -I.. -I/usr/local/include -fPIC
- RM=	rm
- LD=	ld
- LDFLAGS=-L.
+diff --git a/apps/writer-test.c b/apps/writer-test.c
+index fe7b8e5..3866c2f 100644
+--- a/apps/writer-test.c
++++ b/apps/writer-test.c
+@@ -89,6 +89,8 @@ main(int argc, char **argv)
+ 		fprintf(stdout, "Got input %s%s%s\n", EpChar->lquote, buf,
+ 				EpChar->rquote);
+ 		gdp_buf_write(gdp_datum_getbuf(datum), buf, strlen(buf));
++                printf("About to call gdp_gcl_publish()");
++		gdp_datum_print(datum, stdout);
+ 		estat = gdp_gcl_publish(gclh, datum);
+ 		EP_STAT_CHECK(estat, goto fail1);
+ 		gdp_datum_print(datum, stdout);
 diff --git a/gdp/Makefile b/gdp/Makefile
-index 39eff32..8cb7fef 100644
+index 10e3643..27ece05 100644
 --- a/gdp/Makefile
 +++ b/gdp/Makefile
-@@ -27,9 +27,9 @@ LIBCRYPTO=	-lcrypto
- PG=
- O=		-O
- WALL=		-Wall
--STD=
-+STD=	-DEP_OSCF_USE_PTHREADS=0
- COPTS=		${PG} -g ${WALL} $O ${STD}
--CFLAGS=		${COPTS} -I.. -fPIC
-+CFLAGS=		${COPTS} -I.. -fPIC -I/usr/local/include
- LIBCRYPTO=	-lcrypto
- LIBEVENT=	-levent -levent_pthreads
- LIBEP=		-L../ep -lep
-@@ -49,6 +49,8 @@ libgdp.a: ${OBJS}
+@@ -53,6 +53,8 @@ libgdp.a: ${OBJS}
  libgdp.so.${GDPLIBVER}: ${OBJS}
  	${CC} ${SHARED} -o $@ ${OBJS} ${LDFLAGS}
  	${MV} $@ ${LIBDIR}
@@ -60,113 +24,161 @@ index 39eff32..8cb7fef 100644
  
  ${OBJS}: ${HFILES}
  
-diff --git a/gdp/gdp.h b/gdp/gdp.h
-index 38f98ea..e8ee32d 100644
---- a/gdp/gdp.h
-+++ b/gdp/gdp.h
-@@ -82,7 +82,7 @@ typedef struct gdp_datum
- {
- 	EP_THR_MUTEX		mutex;		// locking mutex (mostly for dbuf)
- 	struct gdp_datum	*next;		// next in free list
--	bool				inuse:1;	// indicates that the datum is in use
-+        bool				inuse:1;	// indicates that the datum is in use
- 	gdp_recno_t			recno;		// the record number
- 	EP_TIME_SPEC		ts;			// timestamp for this message
- 	size_t				dlen;		// length of data buffer (redundant)
 diff --git a/gdp/gdp_api.c b/gdp/gdp_api.c
-index 8a29304..8f7235f 100644
+index 8a29304..786299e 100644
 --- a/gdp/gdp_api.c
 +++ b/gdp/gdp_api.c
-@@ -232,32 +232,46 @@ gdp_gcl_create(gcl_name_t gcl_name,
- 	gdp_req_t *req = NULL;
- 	EP_STAT estat = EP_STAT_OK;
+@@ -218,6 +218,110 @@ gdp_init(void)
+ }
  
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: start\n");
+ 
++void
++ep_pprint(FILE *fp,
++	const char *fmt,
++	int argc,
++	const char *const *argv)
++{
++	const char *ap;
++	char c;
++	int i;
 +
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_gcl_newhandle()\n");
++	while ((c = *fmt++) != '\0')
++	{
++		// if it's not a percent, just copy through
++		if (c != '%')
++		{
++			putc(c, fp);
++			continue;
++		}
++
++		// if it is, look at the next byte
++		if ((c = *fmt++) == '\0')
++		{
++			// hack for percent at end of string
++			putc('%', fp);
++			break;
++		}
++
++		if (!isdigit(c))
++		{
++			// bogus character, unless %%
++			putc('%', fp);
++			if (c != '%')
++				putc(c, fp);
++			continue;
++		}
++
++		// interpolate Nth argument
++		i = c - '0';
++		if (i <= 0 || i > argc)
++			ap = "(unknown)";
++		else if (argv[i - 1] == NULL)
++			ap = "(null)";
++		else
++			ap = argv[i - 1];
++
++		while ((c = *ap++) != '\0')
++			putc(c, fp);
++	}
++}
++
++#define MAXARGS		10
++
++void
++ep_stat_print(EP_STAT stat,
++	const char *defmsg,
++	FILE *fp,
++	...)
++{
++	va_list av;
++
++	va_start(av, fp);
++	ep_stat_vprint(stat, defmsg, fp, av);
++	va_end(av);
++}
++
++void
++ep_stat_vprint(EP_STAT stat,
++	const char *defmsg,
++	FILE *fp,
++	va_list av)
++{
++	int i;
++	const char *ap;
++	const char *arglist[MAXARGS];
++	char sbuf[100];
++
++	i = 0;
++	while (i < MAXARGS && (ap = va_arg(av, const char *)) != NULL)
++	{
++		arglist[i++] = ap;
++	}
++
++	fprintf(fp, "Status %s: ",
++			ep_stat_tostr(stat, sbuf, sizeof sbuf));
++
++	if (defmsg != NULL)
++		ep_pprint(fp, defmsg, i, arglist);
++	else if (EP_STAT_IS_SAME(stat, EP_STAT_OK))
++	{
++		fprintf(fp, "EP_ST_OK");
++	}
++	else
++	{
++		int j;
++
++		fprintf(fp, "Unknown stat message, args = ");
++		if (i <= 0)
++			fprintf(fp, " <none>");
++		for (j = 0; j < i; j++)
++			fprintf(fp, " %s", arglist[j]);
++	}
++	putc('\n', fp);
++}
++
+ /*
+ **	GDP_GCL_CREATE --- create a new GCL
+ **
+@@ -234,21 +338,32 @@ gdp_gcl_create(gcl_name_t gcl_name,
+ 
  	// allocate the memory to hold the gcl_handle
  	//		Note that ep_mem_* always returns, hence no test here
++        ep_dbg_cprintf(Dbg, 10, "gdp_gcl_create() start\n");
++        ep_dbg_cprintf(Dbg, 10, "gdp_gcl_create(): about to call gdp_gcl_newhandle()\n");
  	estat = _gdp_gcl_newhandle(gcl_name, &gclh);
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: done calling gdp_gcl_newhandle()\n");
  	EP_STAT_CHECK(estat, goto fail0);
++        ep_stat_print(estat, "gdp_gcl_create() estat is", stdout);
  
 -	if (gcl_name == NULL || gdp_gcl_name_is_zero(gcl_name))
 +	if (gcl_name == NULL || gdp_gcl_name_is_zero(gcl_name)) {
-+                ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_gcl_newname()\n");
++                ep_dbg_cprintf(Dbg, 10, "gdp_gcl_create(): about to call gdp_gcl_newname()\n");
  		_gdp_gcl_newname(gclh->gcl_name);
+-
++                ep_stat_print(estat, "gdp_gcl_create() estat is", stdout);
 +        }
- 
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_req_new()\n");
++        ep_dbg_cprintf(Dbg, 10, "gdp_gcl_create(): about to call gdp_gcl_reqnew()\n");
  	estat = _gdp_req_new(GDP_CMD_CREATE, gclh, _GdpChannel, 0, &req);
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: done calling gdp_req_new()\n");
++        ep_stat_print(estat, "gdp_gcl_create() estat is", stdout);
  	EP_STAT_CHECK(estat, goto fail1);
  
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_invoke()\n");
++        ep_dbg_cprintf(Dbg, 10, "gdp_gcl_create(): about to call gdp_gcl_invoke()\n");
  	estat = _gdp_invoke(req);
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: done calling gdp_invoke()\n");
++        ep_stat_print(estat, "gdp_gcl_create() estat is", stdout);
  	EP_STAT_CHECK(estat, goto fail1);
  
  	// success
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: about to call gdp_req_free()\n");
++        ep_dbg_cprintf(Dbg, 10, "gdp_gcl_create(): success!\n");
  	_gdp_req_free(req);
  	*pgclh = gclh;
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: end\n");
++        ep_stat_print(estat, "gdp_gcl_create() estat is", stdout);
  	return estat;
  
  fail1:
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: fail1\n");
- 	if (gclh != NULL)
- 		_gdp_gcl_freehandle(gclh);
- 	if (req != NULL)
- 		_gdp_req_free(req);
- 
- fail0:
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_create: fail2\n");
- 	if (ep_dbg_test(Dbg, 8))
- 	{
- 		char ebuf[100];
-diff --git a/gdp/gdp_gcl.c b/gdp/gdp_gcl.c
-index 7d87a4b..7de509b 100644
---- a/gdp/gdp_gcl.c
-+++ b/gdp/gdp_gcl.c
-@@ -133,6 +133,7 @@ _gdp_gcl_newhandle(gcl_name_t gcl_name, gdp_gcl_t **pgclh)
- 	EP_STAT estat = EP_STAT_OK;
- 	gdp_gcl_t *gclh;
- 
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_newhandle: start\n");
- 	// allocate the memory to hold the gcl_handle
- 	gclh = ep_mem_zalloc(sizeof *gclh);
- 	if (gclh == NULL)
-@@ -145,9 +146,11 @@ _gdp_gcl_newhandle(gcl_name_t gcl_name, gdp_gcl_t **pgclh)
- 
- 	// success
- 	*pgclh = gclh;
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_newhandle: end\n");
- 	return estat;
- 
- fail1:
-+        ep_dbg_cprintf(Dbg, 20, "gdp_gcl_newhandle: fail\n");
- 	estat = ep_stat_from_errno(errno);
+@@ -266,6 +381,7 @@ fail0:
+ 				ep_stat_tostr(estat, ebuf, sizeof ebuf));
+ 	}
+ 	*pgclh = NULL;
++        ep_stat_print(estat, "gdp_gcl_create() estat is", stdout);
  	return estat;
  }
-diff --git a/gdpd/Makefile b/gdpd/Makefile
-index e5143d0..9e72744 100644
---- a/gdpd/Makefile
-+++ b/gdpd/Makefile
-@@ -11,6 +11,7 @@ JANSSONROOT=    ${HOME}/src/jansson-2.6
- #LIBJANSSON=	-L${JANSSONROOT} -ljansson
- #EVENT2ROOT=	${HOME}/src
- #INCEVENT2=	-I${EVENT2ROOT}
-+INCEVENT2=	-I/usr/local/include
- LIBEVENT2=	-levent -levent_pthreads -pthread
- INCCRYPTO=
- LIBCRYPTO=	-lcrypto
-@@ -19,7 +20,7 @@ LDFLAGS=	${LIBGDP} ${LIBEP} ${LIBJANSSON} ${LIBEVENT2} ${LIBCRYPTO}
- PG=
- O=		-O
- WALL=		-Wall
--STD=
-+STD=	-DEP_OSCF_USE_PTHREADS=0
- COPTS=		${PG} -g ${WALL} $O ${STD}
- CFLAGS=		${COPTS} ${INCS}
  
