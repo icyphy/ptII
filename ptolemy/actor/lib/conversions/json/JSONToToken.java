@@ -147,6 +147,10 @@ public class JSONToToken extends Converter {
      */
     protected Token _parseJSON(String input) throws IllegalActionException {
         try {
+            input = input.trim();
+            if (input.length() == 0 || input.equals("nil")) {
+                return Token.NIL;
+            }
             if (input.charAt(0) == '{') {
                 return _scanJSONObject(new JSONObject(input));
             } else {
