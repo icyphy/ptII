@@ -45,6 +45,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.BaseType.NilType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -120,6 +121,9 @@ public class TokenToJSON extends Converter {
      */
     public Token constructJSONString(Token input) throws IllegalActionException {
         try {
+            if (input.getType().equals(BaseType.NIL)) {
+                return new StringToken("");
+            }
             if (input instanceof ArrayToken) {
                 return new StringToken(_scanArrayToken((ArrayToken) input)
                         .toString());
