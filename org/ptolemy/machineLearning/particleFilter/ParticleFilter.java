@@ -552,6 +552,12 @@ public class ParticleFilter extends TypedCompositeActor {
     }
 
     @Override
+    public void initialize() throws IllegalActionException {
+        super.initialize(); 
+        _scope = new VariableScope(); 
+        _parseTreeEvaluator = new ParseTreeEvaluator();
+    }
+    @Override
     public void wrapup() throws IllegalActionException {
         _firstIteration = true;
         super.wrapup();
@@ -768,8 +774,6 @@ public class ParticleFilter extends TypedCompositeActor {
 
         _tokenMap = new HashMap<String, Token>();
 
-        _parseTreeEvaluator = new ParseTreeEvaluator();
-        _scope = new VariableScope();
 
         new DEDirector(this, "DEDirector").setPersistent(false);
         //((Parameter)this.getAttribute("_isOpaque")).setExpression("true");
