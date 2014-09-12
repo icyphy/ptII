@@ -113,7 +113,7 @@ public class ParticleFilterRange extends ParticleFilter {
         // TODO Auto-generated constructor stub
     }
 
-    public TypedIOPort rangeMeasurement;
+    public TypedIOPort z_m;
     public Parameter z;
     public Parameter x_update;
     public Parameter y_update;
@@ -142,12 +142,13 @@ public class ParticleFilterRange extends ParticleFilter {
         }
 
         // The input port for range measurements.
-        rangeMeasurement = new TypedIOPort(this, "rangeMeasurement", true, false);
-        rangeMeasurement.setTypeEquals(BaseType.DOUBLE);
-        showName = (SingletonParameter) rangeMeasurement
+        z_m = new TypedIOPort(this, "z_m", true, false);
+        z_m.setTypeEquals(BaseType.DOUBLE);
+        showName = (SingletonParameter) z_m
                 .getAttribute("_showName");
+        z_m.setDisplayName("rangeMeasurement");
         if (showName == null) {
-            showName = new SingletonParameter(rangeMeasurement, "_showName");
+            showName = new SingletonParameter(z_m, "_showName");
             showName.setToken("true");
         } else {
             showName.setToken("true");
