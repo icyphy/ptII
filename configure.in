@@ -3996,9 +3996,9 @@ else
 
     case "`uname -s`" in    	
         CYGWIN_*)
-            AC_PATH_PROGS(PTCCJNI, mingw32-gcc i686-pc-mingw32-gcc,)
+            AC_PATH_PROGS(PTCCJNI, mingw32-gcc i686-pc-mingw32-gcc x86_64-w64-mingw32-gcc.exe,)
 	    if test "${PTCCJNI:-none}" = "none"; then
-                AC_MSG_WARN([Failed to find mingw32-gcc or i686-pc-mingw32-gcc.
+                AC_MSG_WARN([Failed to find mingw32-gcc, i686-pc-mingw32-gcc or x86_64-w64-mingw32-gcc.exe.
     Under Windows, Mingw or VisualStudio are required to create shared
     libraries that work with Java.
     Cygwin gcc will compile the dll, but it will not run.  To install
@@ -4442,9 +4442,25 @@ changequote([, ])dnl
 
             AC_MSG_CHECKING([for gcc])
 	    case "`uname -s`" in    	
-	        CYGWIN_*) AC_PATH_PROG(PTMATLAB_CC, mingw32-gcc)
+	        CYGWIN_*) MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
+		        # We test for MATLAB_LIBDIR here to determine 32-bit vs. 64-bit.
+			# We set MATLAB_LIBDIR again below.
+			# FIXME: Running a 32-bit JVM requires a 32-bit Matlab etc.  We could check that here.
+			if test  -d "${MATLAB_LIBDIR}"; then
+			    # 32-bit
+			    AC_PATH_PROGS(PTMATLAB_CC, mingw32-gcc i686-pc-mingw32-gcc)
+			    progs="mingw32-gcc i686-pc-mingw32-gcc"
+                        else 
+			    MATLAB_LIBDIR=${MATLAB_DIR}/bin/win64
+			    if test  ! -d "${MATLAB_LIBDIR}"; then
+			        $AC_MSG_WARN([Failed to find ${MATLAB_DIR}/bin/win32 and ${MATLAB_LIBDIR}?])
+                            fi
+			    # 64-bit
+			    AC_PATH_PROGS(PTMATLAB_CC, x86_64-w64-mingw32-gcc)
+			    progs="x86_64-w64-mingw32-gcc"
+			fi	
 		         if test "${PTMATLAB_CC:-none}" = "none"; then
-			     AC_MSG_WARN([Failed to find mingw32-gcc.
+			     AC_MSG_WARN([Failed to find $progs
     Under Windows, Mingw or VisualStudio are required to compile the
     Ptolemy/Matlab dll.
     Cygwin gcc will compile the dll, but it will not run.  To install
@@ -4480,9 +4496,13 @@ changequote([, ])dnl
 	    CC="$OLDCC"
 
 	    # Extension for matlab .mex files, for example "mexmaci64"
-	    AC_MSG_CHECKING([the extension for Matlab .mex files])
-	    PTMATLAB_MEXEXT=`${MATLAB_DIR}/bin/mexext`
-	    PT_MSG_RESULT($PTMATLAB_MEXEXT) 
+	    case "`uname -s`" in    	
+	        CYGWIN_*)  # Can't run mexext.bat here, so we guess.  This is wrong for 32-bit? We adjust below
+		   PTMATLAB_MEXEXT=mexmaci684;;
+		*) AC_MSG_CHECKING([the extension for Matlab .mex files])
+                   PTMATLAB_MEXEXT=`"${MATLAB_DIR}/bin/mexext"`
+		   PT_MSG_RESULT($PTMATLAB_MEXEXT);;
+            esac 
 
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
@@ -4519,6 +4539,11 @@ changequote([, ])dnl
                         # As of 5/2007, we no longer use MSVC cl for Matlab
 			MATLAB_USE_MSVC="no"
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
+			PTMATLAB_MEXEXT=mexmaci
+			if test ! -d "${MATLAB_LIBDIR}"; then
+				MATLAB_LIBDIR=${MATLAB_DIR}/bin/win64
+				PTMATLAB_MEXEXT=mexmaci64
+			fi	
 			;;
 		SunOS*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/sol2
