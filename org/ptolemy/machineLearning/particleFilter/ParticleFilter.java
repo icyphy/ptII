@@ -60,6 +60,7 @@ import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
@@ -288,6 +289,7 @@ public class ParticleFilter extends TypedCompositeActor {
                             y.setExpression("0.0");
                             y.setVisibility(Settable.EXPERT);
                         }
+                       
                         _particleLabels[i] = stateName;
                         _particleTypes[i] = BaseType.DOUBLE; // preset to be double
 
@@ -583,7 +585,7 @@ public class ParticleFilter extends TypedCompositeActor {
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    private void _checkParameters() throws IllegalActionException {
+    protected void _checkParameters() throws IllegalActionException {
         // Check state variable names.
         ArrayToken stateNames = (ArrayToken) stateVariableNames.getToken();
         int n = stateNames.length();
@@ -714,7 +716,15 @@ public class ParticleFilter extends TypedCompositeActor {
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
         //setClassName("org.ptolemy.machineLearning.ParticleFilter");
         particleOutput.setTypeEquals(RecordType.EMPTY_RECORD);
-
+        SingletonParameter showName = (SingletonParameter) particleOutput
+                .getAttribute("_showName");
+        if (showName == null) {
+            showName = new SingletonParameter(particleOutput, "_showName");
+            showName.setToken("true");
+        } else {
+            showName.setToken("true");
+        }
+        
         seed = new SharedParameter(this, "seed");
         seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
@@ -727,6 +737,14 @@ public class ParticleFilter extends TypedCompositeActor {
 
         stateEstimate = new TypedIOPort(this, "stateEstimate", false, true);
         stateEstimate.setTypeEquals(RecordType.EMPTY_RECORD);
+        showName = (SingletonParameter) stateEstimate
+                .getAttribute("_showName");
+        if (showName == null) {
+            showName = new SingletonParameter(stateEstimate, "_showName");
+            showName.setToken("true");
+        } else {
+            showName.setToken("true");
+        }
 
         prior = new Parameter(this, "prior");
         prior.setExpression("random()*200-100");
@@ -950,7 +968,7 @@ public class ParticleFilter extends TypedCompositeActor {
     private boolean _lowVarianceSampler;
 
     /** Flag indicating whether the contained model is up to date. */
-    private boolean _upToDate;
+    protected boolean _upToDate;
 
     /** List that holds the measurement equation expression objects */
     private List<Expression> _measurementEquations;

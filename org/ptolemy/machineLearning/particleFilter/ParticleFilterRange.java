@@ -32,6 +32,7 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -112,7 +113,7 @@ public class ParticleFilterRange extends ParticleFilter {
         // TODO Auto-generated constructor stub
     }
 
-    public TypedIOPort z_m;
+    public TypedIOPort rangeMeasurement;
     public Parameter z;
     public Parameter x_update;
     public Parameter y_update;
@@ -131,10 +132,26 @@ public class ParticleFilterRange extends ParticleFilter {
 
         observerPosition = new PortParameter(this, "observerPosition");
         observerPosition.setExpression("{0.0,0.0}");
+        SingletonParameter showName = (SingletonParameter) observerPosition.getPort()
+                .getAttribute("_showName");
+        if (showName == null) {
+            showName = new SingletonParameter(observerPosition.getPort(), "_showName");
+            showName.setToken("true");
+        } else {
+            showName.setToken("true");
+        }
 
         // The input port for range measurements.
-        z_m = new TypedIOPort(this, "z_m", true, false);
-        z_m.setTypeEquals(BaseType.DOUBLE);
+        rangeMeasurement = new TypedIOPort(this, "rangeMeasurement", true, false);
+        rangeMeasurement.setTypeEquals(BaseType.DOUBLE);
+        showName = (SingletonParameter) rangeMeasurement
+                .getAttribute("_showName");
+        if (showName == null) {
+            showName = new SingletonParameter(rangeMeasurement, "_showName");
+            showName.setToken("true");
+        } else {
+            showName.setToken("true");
+        }
 
         // The parameter that contains the measurement expression.
         z = new Parameter(this, "z");
@@ -143,6 +160,7 @@ public class ParticleFilterRange extends ParticleFilter {
 
         x_update = new Parameter(this, "x_update");
         x_update.setExpression("x");
+        
 
         y_update = new Parameter(this, "y_update");
         y_update.setExpression("y");
