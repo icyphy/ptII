@@ -154,13 +154,11 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8079">
-        </property>
-        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/BlinkyLight/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, -195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{860.0, -195.0}">
         </property>
     </property>
     <property name="lightIsOn" class="ptolemy.data.expr.Parameter" value="false">
@@ -260,7 +258,7 @@
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8079/room&#10;&#10;This model provides a web service for configuring a light and a sensor in a room.&#10;The sensor will turn the light on and off according to user-defined thresholds.&#10;Thrashing (repeated on/off light behavior) may occur depending on the thresholds&#10;and the proximity of the light to the sensor.  Drag light or sensor to change proximity.&#10;&#10;Please run the model and navigate to that URL &#10;(or run the model and double click on this comment).&#10;&#10;&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/room&#10;&#10;This model provides a web service for configuring a light and a sensor in a room.&#10;The sensor will turn the light on and off according to user-defined thresholds.&#10;Thrashing (repeated on/off light behavior) may occur depending on the thresholds&#10;and the proximity of the light to the sensor.  Drag light or sensor to change proximity.&#10;&#10;Please run the model and navigate to that URL &#10;(or run the model and double click on this comment).&#10;&#10;&#10;&#10;&#10;">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -281,7 +279,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[260.0, -245.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{260.0, -245.0}">
         </property>
     </property>
     <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
@@ -336,13 +334,13 @@
     </property>
     <property name="value" class="ptolemy.data.expr.Parameter" value="port">
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number and link for header comment&#10;Force evaluation on model start">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 20.0]">
-        </property>
-    </property>
     <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, -5.0]">
+        </property>
     </property>
     <port name="init" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>

@@ -4,13 +4,13 @@
 <entity name="OccupancyAlert" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 22, 1491, 1024}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1378, 780}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 914]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1150, 663]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5357942430086565">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{635.4429812811119, 451.3574218750001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{535.5912178512168, 217.12571513758292}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -244,14 +244,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[179.75, 193.75]">
         </property>
     </property>
-    <property name="Annotation23" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8082">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-425.25, -176.25]">
-        </property>
-    </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8082">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/OccupancyAlert">
         </property>
@@ -461,9 +455,9 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;to detect when an elevator is occupied.&#10;&#10;Email will be sent if it is determined that the elevator is stuck&#10;&#10;The web services is available at http://localhost:8082/simulator.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;to detect when an elevator is occupied.&#10;&#10;Email will be sent if it is determined that the elevator is stuck&#10;&#10;The web services is available at http://localhost:8078/simulator.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8082/simulator#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -485,33 +479,58 @@
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-285.0, -365.0]">
         </property>
     </property>
-    <property name="Annotation30" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, -320.0]">
+        </property>
+    </property>
+    <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/simulator#in_browser&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, -300.0]">
+        </property>
+    </property>
+    <property name="Annotation31" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The web services admin page is available at&#10;http://localhost:8082/simulator/admin.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The web services admin page is available at&#10;http://localhost:8078/simulator/admin.&#10;&#10;">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8082/simulator/admin#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, 310.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-305.0, 250.0]">
+    </property>
+    <property name="Annotation23" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1245.0, -395.0]">
         </property>
     </property>
     <class name="SendMailIfTrapped" extends="ptolemy.actor.TypedCompositeActor">
@@ -2001,6 +2020,86 @@
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1280.0, -245.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 55.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 65.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 65.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="link">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;http://localhost:&quot; + port + &quot;/simulator#in_browser&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 125.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
+        <link port="SetVariable.output" relation="relation4"/>
+        <link port="SetVariable2.input" relation="relation3"/>
+        <link port="Expression.output" relation="relation3"/>
+        <link port="Expression.trigger" relation="relation4"/>
     </entity>
     <relation name="relation39" class="ptolemy.actor.TypedIORelation">
     </relation>

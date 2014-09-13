@@ -5,9 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8071">
-        </property>
-        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
@@ -151,7 +149,7 @@ Michael Wetter (LBNL)</text></svg></configure>
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8071/start&#10;&#10;or double click on this comment.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service that &#10;takes setpoints, runs a simulation model &#10;of a simple HVAC system, and estimates &#10;the cost of the setpoints.&#10;&#10;To access the web service, run the model, &#10;then point your browser to:&#10;&#10;   http://localhost:8078/start&#10;&#10;or double click on this comment.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 285.0]">
         </property>

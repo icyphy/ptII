@@ -40,7 +40,6 @@ import java.util.List;
 import org.eclipse.jetty.util.resource.Resource;
 
 import ptolemy.actor.AbstractInitializableAttribute;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -95,10 +94,6 @@ public class WebServer extends AbstractInitializableAttribute {
         preferredPort.setTypeEquals(BaseType.INT);
         preferredPort.setExpression(Integer
                 .toString(WebServerUtilities.DEFAULT_PORT_NUMBER));
-        
-        dynamicPortSelection = new Parameter(this, "dynamicPortSelection");
-        dynamicPortSelection.setTypeEquals(BaseType.BOOLEAN);
-        dynamicPortSelection.setExpression(Boolean.toString(false));
 
         applicationPath = new StringParameter(this, "applicationPath");
         applicationPath.setExpression("/");
@@ -163,6 +158,8 @@ public class WebServer extends AbstractInitializableAttribute {
         // Don't save deployed port in MoML.  Otherwise, Ptolemy will ask you to 
         // save the model upon exiting every time a new deployed port is chosen
         deployedPort.setPersistent(false);
+        
+        _dynamicPortSelection = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -206,12 +203,6 @@ public class WebServer extends AbstractInitializableAttribute {
      *  preferredPort if dynamic port selection is enabled.
      */
     public Parameter deployedPort;
-    
-    /** A parameter specifying whether to allow dynamic port selection.   
-     *  If true, the WebServer will try different ports (starting with the 
-     *  one specified by port, if given) until a free one is found.
-     */
-    public Parameter dynamicPortSelection;
     
     /** The preferred port number for the server to listen to. This is a integer 
      *  that defaults to 8078.
@@ -313,13 +304,12 @@ public class WebServer extends AbstractInitializableAttribute {
         // In the future, changes could be propagated immediately to the
         // web server.
 
-        if (attribute == dynamicPortSelection) {
-          
-            // Disable data entry to port parameter under dynamic port selection
-            if (((BooleanToken)dynamicPortSelection.getToken()).booleanValue()){
-                preferredPort.setVisibility(Settable.NOT_EDITABLE);
+        if (attribute == preferredPort) {
+            if (preferredPort == null || 
+                    preferredPort.getExpression().isEmpty()) {
+                _dynamicPortSelection = true;
             } else {
-                preferredPort.setVisibility(Settable.FULL);
+                _dynamicPortSelection = false;
             }
         } else {
             super.attributeChanged(attribute);
@@ -337,6 +327,7 @@ public class WebServer extends AbstractInitializableAttribute {
         WebServer newObject = (WebServer) super.clone(workspace);
         // _appInfo is set in initialize()
         newObject._appInfo = null;
+        newObject._dynamicPortSelection = false;
         newObject._serverManager = WebServerManager.getInstance();
 
         return newObject;
@@ -375,6 +366,9 @@ public class WebServer extends AbstractInitializableAttribute {
         
         if (preferredPort != null && !preferredPort.getExpression().isEmpty()) {
            preferredPortValue = Integer.parseInt(preferredPort.getExpression());
+           _dynamicPortSelection = false;
+        } else {
+            _dynamicPortSelection = true;
         }
 
         // Get the web server manager to register this application with
@@ -539,11 +533,10 @@ public class WebServer extends AbstractInitializableAttribute {
         try {
             int actualPort = 
             _serverManager.register(_appInfo, preferredPortValue, 
-               ((BooleanToken) dynamicPortSelection.getToken()).booleanValue());
+               _dynamicPortSelection);
             if (actualPort != -1) {
                 
                 deployedPort.setExpression(Integer.toString(actualPort));
-                //((IntToken) deployedPort.getToken()).intValue();
                 deployedPort.validate();
             }
         } catch (Exception e) {
@@ -592,6 +585,9 @@ public class WebServer extends AbstractInitializableAttribute {
     /** Info about the web application defined by the model.
      */
     private WebApplicationInfo _appInfo;
+    
+    /** A flag indicating if dynamic port allocation is enabled. */
+    private boolean _dynamicPortSelection;
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;

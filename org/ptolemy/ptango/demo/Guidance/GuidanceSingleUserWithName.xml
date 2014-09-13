@@ -11,7 +11,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8073/guidance&#10;&#10;The user POSTs a name and location, and the service shows&#10;a named marker on a map of the UC Berkeley DOP Center.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/guidance&#10;&#10;The user POSTs a name and location, and the service shows&#10;a named marker on a map of the UC Berkeley DOP Center.&#10;&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -36,9 +36,7 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8073">
-        </property>
-        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
@@ -61,7 +59,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 210.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 0, 1263, 684}, maximized=false}">
@@ -149,9 +147,9 @@
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number and link for header comment&#10;Force evaluation on model start">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 20.0]">
         </property>
     </property>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
@@ -297,7 +295,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 120.0]">
             </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -311,7 +309,7 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 120.0]">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

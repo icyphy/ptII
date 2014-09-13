@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8076">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/SensorAndrew/pages">
         </property>
@@ -18,9 +18,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 839]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5633961352528757">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-204.1347656249999, 519.2480468750003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-503.891959798995, 158.9978015075376}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -31,11 +31,11 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and displays a web page&#10;with an animated map of Scaife Hall at Carnegie Mellon &#10;using Sensor Andrew data:&#10;http://localhost:8076/scaife">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and displays a web page&#10;with an animated map of Scaife Hall at Carnegie Mellon &#10;using Sensor Andrew data:&#10;http://localhost:8078/scaife&#10;&#10;Please run the model and point your browser to the URL, &#10;or run the model and double-click on this comment.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-790.0, -210.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8076/scaife#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -91,7 +91,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 160.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -101,7 +101,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In order to keep the connection alive and responsive,&#10;this model will send the defaultResponse if&#10;maximumResponseTime (in seconds) has elapsed&#10;since the last HTTP Get request. If a post arrives&#10;in that time interval, then it will send the contents&#10;of the post instead.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-615.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-615.0, 135.0]">
         </property>
     </property>
     <property name="XMPPGateway" class="org.ptolemy.ptango.lib.xmpp.XMPPGateway">
@@ -155,21 +155,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The Sensor Andrew password must be stored in $HOME/.ptSensorAndrewPassword.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-910.0, -90.0]">
-        </property>
-    </property>
-    <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8076">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, -125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-910.0, -50.0]">
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running the model connects to the Sensor Andrew gateway and subscribes to feeds for six sensors in Scaife Hall.&#10;The model creates a temperature map web page with a diagram of Scaife Hall showing the temperature in each room.&#10;The diagram is updated as Sensor Andrew publishes new temperatures. &#10;&#10;The model will throw an exception if it cannot connect to Sensor Andrew.  Even if the connection is successful,&#10;one or more sensors may be off.  If off, typically one temperature is received from each sensor, but no new data will be arrive.&#10;In this case, the map will display the first temperature, but display &quot;Off&quot; after a timeout period specified by maximumResponseTime.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-910.0, -55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-910.0, -15.0]">
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -194,7 +186,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 180.0]">
         </property>
     </property>
     <property name="defaultMaximumResponseTime" class="ptolemy.data.expr.Parameter" value="30.0">
@@ -213,7 +205,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 140.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -236,6 +228,59 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-895.0, 1240.0]">
         </property>
     </property>
+    <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -35.0]">
+        </property>
+    </property>
+    <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/scaife#in_browser&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -15.0]">
+        </property>
+    </property>
+    <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -115.0]">
+        </property>
+    </property>
+    <port name="init" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        </property>
+    </port>
     <class name="WaitForReading" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, -180.0]">
         </property>
@@ -973,6 +1018,86 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 685.0]">
         </property>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 40.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 55.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 65.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 65.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="link">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;http://localhost:&quot; + port + &quot;/scaife#in_browser&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 125.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
+        <link port="SetVariable.output" relation="relation4"/>
+        <link port="SetVariable2.input" relation="relation3"/>
+        <link port="Expression.output" relation="relation3"/>
+        <link port="Expression.trigger" relation="relation4"/>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>

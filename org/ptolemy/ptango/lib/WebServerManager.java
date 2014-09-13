@@ -160,32 +160,39 @@ public final class WebServerManager {
         // uses a default port
         WebServerUtilities server = null;
 
-        // If dynamic port selection is enabled, can reuse any server currently
-        // hosting models for this Ptolemy instance. Check preferred port first.
+        // If dynamic port selection is enabled, first try to reuse any server 
+        // currently hosting models for this Ptolemy instance.
         // TODO:  Server sharing could be prohibited in the future if desired
         // for security reasons, depending on the application
         // Otherwise, retrieve any server at the specified port
         // Create a new server if no suitable server is found
       
-        for (WebServerUtilities theServer : _servers) {
-            if (theServer.getPortNumber() == portNumber) {
-                server = theServer;
-                break;
-            }
-            
-            if (dynamicPortSelection && !_servers.isEmpty()) {
+        if (dynamicPortSelection) {
+            if (!_servers.isEmpty()) {
                 for (WebServerUtilities reuseServer : _servers) {
                     server = reuseServer;
                     break;
                 }
             }
+            
+            if (server == null) {
+                server = new WebServerUtilities();
+                server.setDynamicPortSelection(dynamicPortSelection);
+            }
+        } else {
+            for (WebServerUtilities theServer : _servers) {
+                if (theServer.getPortNumber() == portNumber) {
+                    server = theServer;
+                    break;
+                }
+            }
+            
+            if (server == null) {
+                server = new WebServerUtilities(portNumber);
+                server.setDynamicPortSelection(dynamicPortSelection);
+            }
         }
 
-        if (server == null) {
-            server = new WebServerUtilities(portNumber);
-            server.setDynamicPortSelection(dynamicPortSelection);
-        }
-        
         // Register this application.  This will check for URL conflicts,
         // create handlers for this app (context and resource), and start the
         // server if not already started

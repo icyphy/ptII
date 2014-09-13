@@ -36,9 +36,7 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8074">
-        </property>
-        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
@@ -68,9 +66,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1142, 610]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000001">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.04522613065325, 22.160097361809107}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{415.701947236181, 27.392273869346695}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HTMLModelExporter creates a web page &#10;from the specified model.  &#10;Make sure directoryToExportTo is set to &#10;$TMPDIR&#10;so that the WebServer can find the image&#10;generated from the model, while searching its&#10;temporaryFileLocation which is also set to $TMPDIR">
@@ -600,9 +598,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number and link for header comment&#10;Force evaluation on model start">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, -250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, -265.0]">
         </property>
     </property>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">

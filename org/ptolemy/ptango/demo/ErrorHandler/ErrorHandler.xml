@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{482.5, 252.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8075/errorhandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/errorhandler.&#10;Run the model and navigate to that location&#10;(or double click on this comment).">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -46,9 +46,7 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8075">
-        </property>
-        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/">
         </property>
@@ -56,7 +54,7 @@
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 45.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -97,7 +95,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 185.0]">
         </property>
     </property>
     <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/errorhandler#in_browser&quot;">
@@ -116,11 +114,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 205.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port number and link for header comment&#10;Force evaluation on model start">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 110.0]">
         </property>
@@ -242,7 +240,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 50.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-297, 149, 1457, 615}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-255, 149, 1378, 615}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1229, 497]">
             </property>
@@ -277,7 +275,7 @@
                 </property>
             </entity>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:$port/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -352,7 +350,7 @@
                 </property>
             </entity>
             <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:$port/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -446,7 +444,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 170.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-317, 149, 1595, 631}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-187, 144, 1378, 631}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1367, 514]">
             </property>
@@ -475,7 +473,7 @@
                 </property>
             </port>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:$port/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -546,7 +544,7 @@
                 </property>
             </entity>
             <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8078/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:$port/errorhandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -685,7 +683,7 @@
         </property>
     </entity>
     <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 255.0]">
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
