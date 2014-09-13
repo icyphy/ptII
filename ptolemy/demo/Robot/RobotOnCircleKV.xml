@@ -194,7 +194,7 @@
         </property>
         <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
         </property>
-        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[0,0]&quot;">
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-11.474337861210529,-31.87119948743448]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[357.5, 433.471923828125]">
         </property>
@@ -517,30 +517,6 @@
             </property>
         </port>
     </entity>
-    <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="team0,team1,team2,team3,intruder">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 384, 869, 647}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[869, 603]">
-        </property>
-        <property name="persistence" class="ptolemy.data.expr.Parameter" value="1000">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[962.5, 278.471923828125]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>XYScope</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Intruder" class="org.terraswarm.kernel.AccessorOne">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
         </property>
@@ -818,6 +794,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[472.5, 433.471923828125]">
         </property>
     </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 266, 554, 570}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 526]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[955.0, 155.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Robot Position</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-100.0" max="100.0"/>
+<yRange min="-100.0" max="100.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -846,63 +844,43 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.result&quot;,x=622.5,y=123.471923828125}, tail={id=&quot;InstanceOfJSONtoXY.JSON&quot;,x=742.5,y=123.471923828125}, points={} } }">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY.x&quot;,x=742.5,y=123.471923828125}, points={897.5,248.471923828125,897.5,113.471923828125} } }">
-        </property>
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY.y&quot;,x=742.5,y=123.471923828125}, points={882.5,268.471923828125,882.5,133.471923828125} } }">
-        </property>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.result&quot;,x=622.5,y=193.471923828125}, tail={id=&quot;InstanceOfJSONtoXY2.JSON&quot;,x=737.5,y=193.471923828125}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY2.x&quot;,x=737.5,y=193.471923828125}, points={852.5,253.471923828125,852.5,183.471923828125} } }">
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY2.y&quot;,x=737.5,y=193.471923828125}, points={837.5,273.471923828125,837.5,203.471923828125} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.result&quot;,x=622.5,y=268.471923828125}, tail={id=&quot;InstanceOfJSONtoXY3.JSON&quot;,x=737.5,y=268.471923828125}, points={} } }">
         </property>
     </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY3.x&quot;,x=737.5,y=268.471923828125}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY3.y&quot;,x=737.5,y=268.471923828125}, points={} } }">
-        </property>
-    </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.result&quot;,x=622.5,y=353.471923828125}, tail={id=&quot;InstanceOfJSONtoXY4.JSON&quot;,x=737.5,y=353.471923828125}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY4.x&quot;,x=737.5,y=353.471923828125}, points={852.5,263.471923828125,852.5,343.471923828125} } }">
-        </property>
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY4.y&quot;,x=737.5,y=353.471923828125}, points={882.5,283.471923828125,882.5,363.471923828125} } }">
         </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Intruder.result&quot;,x=622.5,y=423.471923828125}, tail={id=&quot;InstanceOfJSONtoXY5.JSON&quot;,x=737.5,y=423.471923828125}, points={} } }">
         </property>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY5.x&quot;,x=737.5,y=423.471923828125}, points={867.5,268.471923828125,867.5,413.471923828125} } }">
-        </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=962.5,y=278.471923828125,index=5}, tail={id=&quot;InstanceOfJSONtoXY5.y&quot;,x=737.5,y=423.471923828125}, points={897.5,288.471923828125,897.5,433.471923828125} } }">
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="KeyValueStore.key" relation="relation"/>
     <link port="KeyValueStore.value" relation="relation5"/>
@@ -919,34 +897,34 @@
     <link port="Team2.result" relation="relation11"/>
     <link port="Team3.remove" relation="relation8"/>
     <link port="Team3.result" relation="relation15"/>
-    <link port="XYScope.inputX" relation="relation7"/>
-    <link port="XYScope.inputX" relation="relation9"/>
-    <link port="XYScope.inputX" relation="relation13"/>
-    <link port="XYScope.inputX" relation="relation16"/>
-    <link port="XYScope.inputX" relation="relation19"/>
-    <link port="XYScope.inputY" relation="relation12"/>
-    <link port="XYScope.inputY" relation="relation10"/>
-    <link port="XYScope.inputY" relation="relation14"/>
-    <link port="XYScope.inputY" relation="relation17"/>
-    <link port="XYScope.inputY" relation="relation20"/>
     <link port="Intruder.remove" relation="relation8"/>
     <link port="Intruder.result" relation="relation18"/>
     <link port="InstanceOfJSONtoXY.x" relation="relation7"/>
     <link port="InstanceOfJSONtoXY.JSON" relation="relation2"/>
-    <link port="InstanceOfJSONtoXY.y" relation="relation12"/>
+    <link port="InstanceOfJSONtoXY.y" relation="relation14"/>
     <link port="InstanceOfJSONtoXY2.x" relation="relation9"/>
     <link port="InstanceOfJSONtoXY2.JSON" relation="relation4"/>
-    <link port="InstanceOfJSONtoXY2.y" relation="relation10"/>
-    <link port="InstanceOfJSONtoXY3.x" relation="relation13"/>
+    <link port="InstanceOfJSONtoXY2.y" relation="relation16"/>
+    <link port="InstanceOfJSONtoXY3.x" relation="relation10"/>
     <link port="InstanceOfJSONtoXY3.JSON" relation="relation11"/>
-    <link port="InstanceOfJSONtoXY3.y" relation="relation14"/>
-    <link port="InstanceOfJSONtoXY4.x" relation="relation16"/>
+    <link port="InstanceOfJSONtoXY3.y" relation="relation17"/>
+    <link port="InstanceOfJSONtoXY4.x" relation="relation12"/>
     <link port="InstanceOfJSONtoXY4.JSON" relation="relation15"/>
-    <link port="InstanceOfJSONtoXY4.y" relation="relation17"/>
-    <link port="InstanceOfJSONtoXY5.x" relation="relation19"/>
+    <link port="InstanceOfJSONtoXY4.y" relation="relation19"/>
+    <link port="InstanceOfJSONtoXY5.x" relation="relation13"/>
     <link port="InstanceOfJSONtoXY5.JSON" relation="relation18"/>
     <link port="InstanceOfJSONtoXY5.y" relation="relation20"/>
     <link port="Robot.robotPosition" relation="relation3"/>
     <link port="Const2.output" relation="relation8"/>
     <link port="Const2.trigger" relation="relation6"/>
+    <link port="XYPlotter.inputX" relation="relation7"/>
+    <link port="XYPlotter.inputX" relation="relation9"/>
+    <link port="XYPlotter.inputX" relation="relation10"/>
+    <link port="XYPlotter.inputX" relation="relation12"/>
+    <link port="XYPlotter.inputX" relation="relation13"/>
+    <link port="XYPlotter.inputY" relation="relation14"/>
+    <link port="XYPlotter.inputY" relation="relation16"/>
+    <link port="XYPlotter.inputY" relation="relation17"/>
+    <link port="XYPlotter.inputY" relation="relation19"/>
+    <link port="XYPlotter.inputY" relation="relation20"/>
 </entity>
