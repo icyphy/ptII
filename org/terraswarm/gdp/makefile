@@ -182,6 +182,8 @@ $(GDP_SRC):
 	cd src; git clone https://$(USER)@repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
 
 patch_gdp:
+
+patch_gdp:
 	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."
 	cd src/gdp; patch -p1 < ../../gdp.patch
 	cd src/gdp; $(MAKE)
