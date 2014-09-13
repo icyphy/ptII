@@ -87,6 +87,7 @@ public class WriterTest {
 
         // Was:	gdp_gcl_t *gclh;
 	PointerByReference gclh = new PointerByReference();
+        System.out.println("new gclh: " + gclh);
         gdp_gcl_t gclhReally = new gdp_gcl_t(gclh.getValue());
         
 
@@ -140,8 +141,8 @@ public class WriterTest {
             // Was: estat = gdp_gcl_create(NULL, &gclh);
             // gdp.h declared: extern EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t **);
             estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
-
             System.err.println("Handle created: " + estat);
+            System.out.println("2 gclh: " + gclh);
 	} else {
             System.err.println("About to parse " + xname);
             Gdp10Library.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
@@ -301,45 +302,30 @@ public class WriterTest {
         }
     }
 
-    // From ep_stat.h by Eric Allman.  
-    // See LIBEP_LICENSE. (FIXME)
-    public static final int EP_STAT_SEV_OK      = 0;	// everything OK (also 1, 2, and 3)
-    public static final int EP_STAT_SEV_WARN	= 4;	// warning or temp error, may work later
-    public static final int EP_STAT_SEV_ERROR	= 5;	// normal error
-    public static final int EP_STAT_SEV_SEVERE	= 6;	// severe error, should back out
-    public static final int EP_STAT_SEV_ABORT	= 7;	// internal error
-
-    public static final int _EP_STAT_SEVBITS =	3;
-    public static final int _EP_STAT_REGBITS = 11;
-    public static final int _EP_STAT_MODBITS =	8;
-    public static final int _EP_STAT_DETBITS = 42;
-    public static final int _EP_STAT_MODSHIFT =	_EP_STAT_DETBITS;
-    public static final int _EP_STAT_REGSHIFT =	(_EP_STAT_MODSHIFT + _EP_STAT_MODBITS);
-    public static final int _EP_STAT_SEVSHIFT =	(_EP_STAT_REGSHIFT + _EP_STAT_REGBITS);
-
     /** Return true if the status code is ok.
+     *  Based on ep_stat.h, Copyright Eric Allman, See ep_license.htm
      *  @param estat The status code.
      *  @return true if the code is less than EP_STAT_SEV_WARN
      */
     public static boolean EP_STAT_ISOK(EP_STAT estat) {
         long code = estat.code.longValue();
         //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
-        long EP_STAT_SEVERITY = (code >> _EP_STAT_SEVSHIFT) & ((1l << _EP_STAT_SEVBITS) - 1);
+        long EP_STAT_SEVERITY = (code >> Gdp10Library._EP_STAT_SEVSHIFT) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1);
 
         //System.out.println("EP_STAT_ISOK(): code: " + code + ", EP_STAT_SEVERITY: " + EP_STAT_SEVERITY 
         //        + ", EP_STAT_SEV_WARN: " + EP_STAT_SEV_WARN 
         //        + "EP_STAT_SEVERITY < EP_STAT_SEV_WARN: " + (EP_STAT_SEVERITY < EP_STAT_SEV_WARN));
-        return EP_STAT_SEVERITY < EP_STAT_SEV_WARN;
+        return EP_STAT_SEVERITY < Gdp10Library.EP_STAT_SEV_WARN;
     }
     
     public static EP_STAT EP_STAT_NEW(int s, int r, int m, int d) {
-        long code = ((((s) & ((1l << _EP_STAT_SEVBITS) - 1)) << _EP_STAT_SEVSHIFT) | 
-                (((r) & ((1l << _EP_STAT_REGBITS) - 1)) << _EP_STAT_REGSHIFT) | 
-                (((m) & ((1l << _EP_STAT_MODBITS) - 1)) << _EP_STAT_MODSHIFT) |
-                (((d) & ((1l << _EP_STAT_DETBITS) - 1))));
+        long code = ((((s) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT) | 
+                (((r) & ((1l << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT) | 
+                (((m) & ((1l << Gdp10Library._EP_STAT_MODBITS) - 1)) << Gdp10Library._EP_STAT_MODSHIFT) |
+                (((d) & ((1l << Gdp10Library._EP_STAT_DETBITS) - 1))));
         return new EP_STAT( new NativeLong(code));
     }                    
 
     // #define EP_STAT_OK		EP_STAT_NEW(EP_STAT_SEV_OK, 0, 0, 0)
-    public static EP_STAT EP_STAT_OK = EP_STAT_NEW(EP_STAT_SEV_OK, 0, 0, 0);
+    public static EP_STAT EP_STAT_OK = EP_STAT_NEW(Gdp10Library.EP_STAT_SEV_OK, 0, 0, 0);
 }

@@ -360,7 +360,7 @@ public interface Gdp10Library extends Library {
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int _EP_STAT_REGSHIFT = (int)(42 + 8);
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-	public static final int EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);
+		public static final long /* Fixed by makefile*/ EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);
 	/**
 	 * define<br>
 	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((204) & ((1UL << 42) - 1)))<br>

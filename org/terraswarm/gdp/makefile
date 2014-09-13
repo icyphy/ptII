@@ -134,6 +134,7 @@ jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
 	    -e 's@\(.*tmPtr1.*\)@// \1@' \
 	    -e 's#\(.*@Deprecated.*\)#// \1#' \
 	    -e 's@\(.*(Pointer)1.*\)@// \1@' \
+	    -e 's@public static final int EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);@public static final long /* Fixed by makefile, was int, Coverity warned about bad shift. */ EP_STAT_MAX_DETAIL = (long)((1 << 42) - 1);@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done
