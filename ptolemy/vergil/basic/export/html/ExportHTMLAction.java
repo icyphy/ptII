@@ -925,10 +925,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         printWriter
                         .println("<li>For a domain overview, "
                                 + "<a href=\"../../../doc/\">click here</a>.</li>");
-                    } else {
-                        printWriter
-                        .println("<li>For a chapter overview, "
-                                + "<a href=\"../index.html\">click here</a>.</li>");
                     }
                 }
                 printWriter.println("</ul>\n" + "</div> <!-- inlineImg -->\n");
