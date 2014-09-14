@@ -391,7 +391,7 @@ public class PtidesPreemptiveEDFDirector
 
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the super class.
      */
     protected String _generateInitializeHardwareCode()
             throws IllegalActionException {

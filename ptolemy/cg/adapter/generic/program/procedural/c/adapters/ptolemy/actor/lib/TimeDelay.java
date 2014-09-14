@@ -71,7 +71,8 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
     /**
      * Generate the fire code of a Time Delay.
      * @return The generated code.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown by the super class
+     * or while getting a token.
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {

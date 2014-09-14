@@ -114,7 +114,9 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
 
     /** Generate the initialize code. Declare the variable state.
      *  @return The initialize code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the superclass
+     *  or while getting the width of the input or while processing
+     *  code.
      */
     @Override
     public String generateInitializeCode() throws IllegalActionException {

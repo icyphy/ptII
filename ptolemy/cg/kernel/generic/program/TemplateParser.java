@@ -196,7 +196,7 @@ public class TemplateParser {
      * @param refType The given type of the variable.
      * @return The variable expression that evaluates to a result of
      *  equivalent value with the cast type.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while processing code.
      */
     public String generateTypeConvertMethod(String expression, String castType,
             String refType) throws IllegalActionException {

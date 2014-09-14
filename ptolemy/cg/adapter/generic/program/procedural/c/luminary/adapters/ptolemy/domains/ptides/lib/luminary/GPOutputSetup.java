@@ -52,8 +52,10 @@ public class GPOutputSetup extends ActuatorSetup {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPOutputDevice actor.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public GPOutputSetup(ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
             throws IllegalActionException, NameDuplicationException {

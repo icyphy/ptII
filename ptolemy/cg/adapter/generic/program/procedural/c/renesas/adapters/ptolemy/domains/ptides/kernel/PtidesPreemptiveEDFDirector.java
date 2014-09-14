@@ -78,11 +78,10 @@ public class PtidesPreemptiveEDFDirector
 
     /** Generate the assembly file associated for this PtidyOS program.
      *  @return The generated assembly file code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by generateInterruptVectorTableCode().
      */
     @Override
-    public Map<String, String> generateAdditionalCodeFiles()
-            throws IllegalActionException {
+    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
         Map<String, String> list = new HashMap();
         list.put("InterruptVectorTable.c", generateInterruptVectorTableCode());
         return list;

@@ -245,8 +245,7 @@ public class DEReceiver extends Receiver {
 
     /** Each receiver is associated with a component of some executive director.
      *  @return The executive director if the component associated with this receiver.
-     *  @exception IllegalActionException
-     *
+     *  @exception IllegalActionException If thrown while getting the adapter.
      */
     protected DEDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {

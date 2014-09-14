@@ -47,8 +47,10 @@ public class SensorHandler extends InputDevice {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.GPInputHandler actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.GPInputHandler actor.
-     *  @exception IllegalActionException
-     * @exception NameDuplicationException
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public SensorHandler(ptolemy.domains.ptides.lib.SensorHandler actor)
             throws IllegalActionException, NameDuplicationException {

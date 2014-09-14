@@ -158,7 +158,7 @@ public class SyntacticGraph extends CompositeEntity {
     /** Build the syntactic graph from the given model.
      *  Model is constructed by going through the total set of
      *  steps necessary to establish a representative graph:
-     *
+     *  <pre>
      *      -- add entities to graph,
      *      -- make graph bijective,
      *      -- remove feedback loops,
@@ -166,15 +166,13 @@ public class SyntacticGraph extends CompositeEntity {
      *      -- insert permutation operators,
      *      -- add layout information to display
      *         generated graph.
-     *
+     *  </pre>
      * @param model Model to represent with graph.
      * @return whether graph was successively produced.
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+     * @exception IllegalActionException If thrown while adding a node, making Bijective, removing feedback, setting the structure, inserting permutations or laying out the graph
+     * @exception NameDuplicationException If thrown while adding a node, making Bijective, removing feedback, setting the structure, inserting permutations or laying out the graph
      */
-    public boolean build(CompositeEntity model) throws IllegalActionException,
-            NameDuplicationException {
-
+    public boolean build(CompositeEntity model)  throws IllegalActionException, NameDuplicationException {
         _representedModel = model;
 
         List<ComponentEntity> ents = model.entityList();
@@ -211,12 +209,11 @@ public class SyntacticGraph extends CompositeEntity {
      *  Beginning of an alternative. Not currently used.
      *
      *  @param entity Entity to add to the graph.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while creating a new SyntacticNode or adding an entity.
+     *  @exception NameDuplicationException If thrown while creating a new SyntacticNode or adding an entity.
      */
-    public void addNode2(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
-
+    public void addNode2(Entity entity) 
+        throws IllegalActionException, NameDuplicationException {
         int repcount = _representors.size();
         SyntacticNode node = new SyntacticNode(this, "rep_" + repcount);
         node.representEntity(entity);
@@ -227,8 +224,8 @@ public class SyntacticGraph extends CompositeEntity {
     /** Add entity to the syntactic graph wrapping with syntactic node.
      *
      *  @param entity Entity to add to the graph.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while creating a new SyntacticNode or adding an entity.
+     *  @exception NameDuplicationException If thrown while creating a new SyntacticNode or adding an entity.
      */
     public void addNode(Entity entity) throws IllegalActionException,
             NameDuplicationException {
@@ -425,11 +422,14 @@ public class SyntacticGraph extends CompositeEntity {
     /** Make SyntacticGraph bijective by adding pure nodes.
      *  Pure nodes are added to mediate multiply connected nodes.
      *
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while creating a
+     *  SyntacticNode, setting a Mediator, removing a connection or
+     *  adding a connection.
+     *  @exception NameDuplicationException If thrown while creating a
+     *  SyntacticNode, setting a Mediator, removing a connection or
+     *  adding a connection.
      */
-    public void makeBijective() throws IllegalActionException,
-            NameDuplicationException {
+    public void makeBijective() throws IllegalActionException, NameDuplicationException {
         if (_nodes == null) {
             System.out.print("Node-list _nodes.\n");
         }

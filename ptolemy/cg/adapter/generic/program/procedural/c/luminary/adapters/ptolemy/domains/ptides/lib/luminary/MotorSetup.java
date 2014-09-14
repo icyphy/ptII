@@ -44,8 +44,10 @@ public class MotorSetup extends ActuatorSetup {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.MotorOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.MotorOutputDevice actor.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public MotorSetup(ptolemy.domains.ptides.lib.luminary.MotorSetup actor)
             throws IllegalActionException, NameDuplicationException {

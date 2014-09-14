@@ -63,6 +63,8 @@ abstract public class Profile {
     /** Return the list of firings in the graph.
      *  @return A list with for each actor the information
      *  necessary to interface the generated code.
+     *  @exception IllegalActionException If there is a problem
+     *  accessing components in the model.
      */
     abstract public List<FiringFunction> firings()
             throws IllegalActionException;
@@ -86,7 +88,11 @@ abstract public class Profile {
      */
     static public class Junction {
         /** Construct a Junction.
-         *  @param putActor The
+         *  @param putActor The actor to add to the junction.
+         *  @param putActorPort The port of the put actor.
+         *  @param getActor The get actor that is to be added to the junction.
+         *  @param getActorPort The port of the get actor.
+         *  @param numTokens The number of tokens.
          */
         public Junction(String putActor, String putActorPort, String getActor,
                 String getActorPort, int numTokens) {
@@ -94,16 +100,24 @@ abstract public class Profile {
             numInitialTokens = numTokens;
         }
 
+        /** Get the put actor name.
+         *  @return the actor name.
+         */
         public String getPutActorName() {
             return _putActor;
         }
 
+        /** The number of initial tokens. */
         public int numInitialTokens = 0;
-        private String _putActor = null;
 
+        private String _putActor = null;
     }
 
+    /** The Firing Function. */
     static public class FiringFunction {
+        /** Create a firing function.
+         *  @param index  The firing index.
+         */
         public FiringFunction(int index) {
             firingIndex = index;
             ports = new LinkedList();
@@ -114,14 +128,22 @@ abstract public class Profile {
             previousIterationFirings = new LinkedList();
         }
 
+        /** The ports. */
         public List<FiringFunctionPort> ports;
 
+        /** The next firing functions. */
         public List<Integer> nextFiringFunctions;
+
+        /** The previous firing functions. */
         public List<Integer> previousFiringFunctions;
 
+        /** The next iteration firings. */
         public List<Integer> nextIterationFirings;
+
+        /** The previous iteration firings. */
         public List<Integer> previousIterationFirings;
 
+        /** The firing index. */
         public int firingIndex;
     }
 
@@ -129,7 +151,11 @@ abstract public class Profile {
      * A class for actors in a graph information.
      */
     static public class ProfileActor {
-
+        /** Create a Profile Actor.
+         *  @param name The name of the actor.
+         *  @param original True if this actor is original?
+         *  @exception IllegalActionException Not thrown in this base clasee.
+         */   
         public ProfileActor(String name, boolean original)
                 throws IllegalActionException {
             _name = name;
@@ -151,6 +177,9 @@ abstract public class Profile {
             return _name;
         }
 
+        /** Get the profile.
+         *  @return the profile.   
+         */
         public Profile getProfile() throws IllegalActionException {
             try {
                 if (_profile != null) {
@@ -176,13 +205,21 @@ abstract public class Profile {
             return _profile;
         }
 
+        /** The profile. */
         Profile _profile = null;
 
         private String _name;
         private boolean _isOriginal = true;
     }
 
+    /** A firing function port. */
     static public class FiringFunctionPort {
+        /** Create a firing function port.
+         *  @param portName The name of the port.
+         *  @param externalPort The external port.
+         *  @param portRate The rate of the port.
+         *  @param isInputPort True if this is an input port.
+         */   
         public FiringFunctionPort(String portName, String externalPort,
                 int portRate, boolean isInputPort) {
             name = portName;
@@ -191,14 +228,20 @@ abstract public class Profile {
             isInput = isInputPort;
         }
 
-        public String name; //name of the external port
+        /** The name of the external port. */
+        public String name;
+
+        /** The name of the external port? */
         public String externalPortName;
+
+        /** The rate. */
         public int rate;
+
+        /** True if this is an input port. */
         public boolean isInput;
     }
 
-    /** A class contains the port information to
-     * interface with modular code.
+    /** The port information to interface with modular code.
      */
     static public class Port {
 

@@ -47,8 +47,10 @@ public class SpeakerOutputDevice extends OutputDevice {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.SpeakerOutputDevice actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice actor.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public SpeakerOutputDevice(
             ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor)

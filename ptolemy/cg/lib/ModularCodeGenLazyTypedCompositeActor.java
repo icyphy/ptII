@@ -505,6 +505,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  code is not being generated and Pub/Subs are not being
      *  created, then set the <i>recompileThisLevel</i> parameter
      *  to true.  Otherwise, do nothing.
+     *  @exception IllegalActionException If thrown while setting token.
      */
     protected void _setRecompileFlag() throws IllegalActionException {
         if (_configureDone && !_populating && !_generatingCode

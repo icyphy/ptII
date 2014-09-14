@@ -68,12 +68,11 @@ public class SDFModularScheduler extends SDFScheduler {
      * @param vectorizationFactor The vectorization factor
      * @return A map from each actor to its fractional
      *  firing.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while solving the balance equations.
      */
     @SuppressWarnings("unused")
     public Map getFiringVector(CompositeActor container, int vectorizationFactor)
             throws IllegalActionException {
-
         if (vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
                     "The supplied vectorizationFactor must be "

@@ -200,7 +200,8 @@ public final class Workspace implements Nameable {
      *  directory.  This is accomplished
      *  by calling the description method with an argument for full detail.
      *  @return A description of the workspace.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  description of subcomponents.
      */
     @Override
     public synchronized String description() throws IllegalActionException {
@@ -218,7 +219,8 @@ public final class Workspace implements Nameable {
      *  are requested, then the items in the directory are also described.
      *  @param detail The level of detail.
      *  @return A description of the workspace.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  description of subcomponents.
      */
     public synchronized String description(int detail)
             throws IllegalActionException {
@@ -807,7 +809,8 @@ public final class Workspace implements Nameable {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the workspace.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  description of subcomponents.
      */
     protected synchronized String _description(int detail, int indent,
             int bracket) throws IllegalActionException {

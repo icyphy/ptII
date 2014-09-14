@@ -846,8 +846,10 @@ public class IOPort extends ComponentPort {
      *  on the workspace, so the caller should be.
      *  @return The inside receivers, or an empty receiver array if there
      *   are none.
-     * @exception IllegalActionException
-     * @exception InvalidStateException
+     * @exception IllegalActionException If thrown while getting the
+     * deep receivers of the relation or while getting the inside
+     * width.
+     * @exception InvalidStateException Not thrown in this base class
      */
     public Receiver[][] deepGetReceivers() throws InvalidStateException,
             IllegalActionException {
@@ -1710,7 +1712,9 @@ public class IOPort extends ComponentPort {
      *  This method is read-synchronized on the workspace.
      *  @return The receivers for output data, or an empty array if there
      *   are none.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while getting the
+     *  width of this port, getting the deep receives of a relation or getting the
+     *  width of a relation.
      */
     public Receiver[][] getRemoteReceivers() throws IllegalActionException {
         try {
@@ -1880,7 +1884,7 @@ public class IOPort extends ComponentPort {
      *  @see #numberOfSinks()
      *  @see #numberOfSources()
      *  @return The width of the port.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while calling _getWidth()
      */
     public int getWidth() throws IllegalActionException {
         boolean createReceivers = true;
@@ -1938,7 +1942,8 @@ public class IOPort extends ComponentPort {
      *  This method will trigger the width inference algorithm if necessary.
      *
      *  @return The width of the inside of the port.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  width of the relations or while creating receivers.
      */
     public int getWidthInside() throws IllegalActionException {
         try {
@@ -3930,7 +3935,8 @@ public class IOPort extends ComponentPort {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  description of subcomponents.
      */
     @Override
     protected String _description(int detail, int indent, int bracket)
@@ -4119,7 +4125,9 @@ public class IOPort extends ComponentPort {
      *  @param except The relation to exclude.
      *  @return The sums of the width of the relations linked on the inside,
      *  except for the specified port.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while checking if a
+     *  relation needs width inference, while getting the width of the
+     *  relation, while checking if the width or a relation is fixed.
      */
     protected int _getInsideWidth(IORelation except)
             throws IllegalActionException {
@@ -4176,7 +4184,9 @@ public class IOPort extends ComponentPort {
      *  @param except The relation to exclude.
      *  @return The sums of the width of the relations linked on the outside,
      *  except for the specified port.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while checking if a
+     *  relation needs width inference, while getting the width of the
+     *  relation, while checking if the width or a relation is fixed.
      */
     protected int _getOutsideWidth(IORelation except)
             throws IllegalActionException {

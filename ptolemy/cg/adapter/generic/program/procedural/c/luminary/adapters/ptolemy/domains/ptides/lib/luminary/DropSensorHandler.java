@@ -44,8 +44,10 @@ public class DropSensorHandler extends GPInputHandler {
     /** Construct an adapter with the given
      *  ptolemy.domains.ptides.lib.DropSensorHandler actor.
      *  @param actor The given ptolemy.domains.ptides.lib.targets.luminary.DropSensorHandler actor.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public DropSensorHandler(
             ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor)
