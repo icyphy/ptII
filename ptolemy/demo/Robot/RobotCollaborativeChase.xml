@@ -1,0 +1,1266 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RobotCollaborativeChase" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-165.0, -400.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1398, 878}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1164, 768]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6556818181818183">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.99999999999994, 34.60105137023379}">
+    </property>
+    <property name="ID" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -420.0}">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set ID to be &lt;your team ID&gt; ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, -430.0}">
+        </property>
+    </property>
+    <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://ptango.eecs.berkeley.edu:8077/keyvalue&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, -390.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use information from other teams to pursue the intruder">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[35.0, 65.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="CollaborativeRangeParticleFilter">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <class name="KVReadRange" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, -380.0]">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team0&quot;">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1220.0, -365.0}">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1225.0, -180.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1910.0, -315.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1910.0, -250.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="rangeToIntruder" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1635.0, -250.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="position" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1780.0, -190.0}">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Team" class="org.terraswarm.kernel.AccessorOne">
+            <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+            </property>
+            <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
+            </property>
+            <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+                <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To retrieve the value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/get?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To remove a value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/delete?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To list all keys (a JSON array of strings), use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/list&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;p&gt;&#10;A Ptolemy II model that provides such a key-value store service is provided&#10;at &lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&lt;/a&gt;.&#10;A demo client that uses this accessor is provided at&#10;&lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
+                </property>
+                <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+                </property>
+                <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+                </property>
+                <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="key (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+                </property>
+                <property name="remove (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, then remove the key from the store; otherwise, retrieve the value for the key.">
+                </property>
+                <property name="value (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
+                </property>
+                <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
+                </property>
+            </property>
+            <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
+            </property>
+            <property name="key" class="ptolemy.actor.parameters.PortParameter" value="key">
+            </property>
+            <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
+            </property>
+            <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1340.0, -190.0}">
+            </property>
+            <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="key" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="value" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="result" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
+            </port>
+        </entity>
+        <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1495.0, -190.0}">
+            </property>
+        </entity>
+        <entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1665.0, -190.0}">
+            </property>
+        </entity>
+        <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1795.0, -255.0}">
+            </property>
+        </entity>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce = readURL(url);&#10;    		url = store + '/get?id=' + theKey;&#10;    		var intruderPosition = JSON.parse(readURL(url));&#10;		&#10;		var intruderX = intruderPosition[0];&#10;		var intruderY = intruderPosition[1];&#10;                var c = get(currentPosition);&#10;		var robotPosition = JSON.parse(c);&#10;		var robotX = robotPosition[0];&#10;		var robotY = robotPosition[1];&#10;&#10;		var result = Math.sqrt((intruderX - robotX)*(intruderX - robotX) + (intruderY - robotY)*(intruderY - robotY)) + Math.random();&#10;		send(result, rangeMeasurement);&#10;&#10;}&#10;	// &#10;  ">
+            </property>
+            <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.eecs.berkeley.edu/~pd/IntruderRangeEstimate.xml /">
+            </property>
+            <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+                <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor uses the current position of the robot and the intruder position stored in &#10;a key value store to compute the distance between robot and intruder.&#10;	&#10;  ">
+                </property>
+                <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Patricia Derler">
+                </property>
+                <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+                </property>
+                <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="key (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+                </property>
+                <property name="currentPosition (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The robots current position as a JSON string.">
+                </property>
+                <property name="rangeMeasurement (port)" class="ptolemy.kernel.util.StringAttribute" value="Distance between robot and intruder.">
+                </property>
+            </property>
+            <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
+            </property>
+            <property name="key" class="ptolemy.actor.parameters.PortParameter" value="&quot;intruder&quot;">
+            </property>
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[50.26717715443574,-2.2815490980251973]&quot;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1505.0, -250.0}">
+            </property>
+            <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="key" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="currentPosition" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="rangeMeasurement" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=1225.0,y=-180.0}, tail={id=&quot;Team.remove&quot;,x=1340.0,y=-190.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=1495.0,y=-190.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=1665.0,y=-190.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;x._location&quot;,x=1910.0,y=-315.0}, tail={id=&quot;ArrayToElements.output&quot;,x=1795.0,y=-255.0,index=2}, points={1890.0,-315.0,1890.0,-255.0} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;y._location&quot;,x=1910.0,y=-250.0}, tail={id=&quot;ArrayToElements.output&quot;,x=1795.0,y=-255.0,index=2}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{1410.0, -190.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team.result&quot;,x=1340.0,y=-190.0}, tail={id=&quot;relation6.vertex1&quot;,x=1410.0,y=-190.0}, points={} },{ head={id=&quot;JSONToToken.input&quot;,x=1495.0,y=-190.0}, tail={id=&quot;relation6.vertex1&quot;,x=1410.0,y=-190.0}, points={} },{ head={id=&quot;RangeSensor.currentPosition&quot;,x=1505.0,y=-250.0}, tail={id=&quot;relation6.vertex1&quot;,x=1410.0,y=-190.0}, points={1410.0,-240.0} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;rangeToIntruder._location&quot;,x=1635.0,y=-250.0}, tail={id=&quot;RangeSensor.rangeMeasurement&quot;,x=1505.0,y=-250.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{1760.0, -190.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RemoveNilTokens.output&quot;,x=1665.0,y=-190.0}, tail={id=&quot;relation7.vertex1&quot;,x=1760.0,y=-190.0}, points={} },{ head={id=&quot;position._location&quot;,x=1780.0,y=-190.0}, tail={id=&quot;relation7.vertex1&quot;,x=1760.0,y=-190.0}, points={} },{ head={id=&quot;ArrayToElements.input&quot;,x=1795.0,y=-255.0}, tail={id=&quot;relation7.vertex1&quot;,x=1760.0,y=-190.0}, points={1760.0,-255.0} } }">
+            </property>
+        </relation>
+        <link port="trigger" relation="relation"/>
+        <link port="x" relation="relation3"/>
+        <link port="y" relation="relation5"/>
+        <link port="rangeToIntruder" relation="relation2"/>
+        <link port="position" relation="relation7"/>
+        <link port="Team.remove" relation="relation"/>
+        <link port="Team.result" relation="relation6"/>
+        <link port="JSONToToken.input" relation="relation6"/>
+        <link port="JSONToToken.output" relation="relation12"/>
+        <link port="RemoveNilTokens.input" relation="relation12"/>
+        <link port="RemoveNilTokens.output" relation="relation7"/>
+        <link port="ArrayToElements.input" relation="relation7"/>
+        <link port="ArrayToElements.output" relation="relation3"/>
+        <link port="ArrayToElements.output" relation="relation5"/>
+        <link port="RangeSensor.currentPosition" relation="relation6"/>
+        <link port="RangeSensor.rangeMeasurement" relation="relation2"/>
+    </class>
+    <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        </property>
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To retrieve the value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/get?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To remove a value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/delete?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To list all keys (a JSON array of strings), use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/list&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;p&gt;&#10;A Ptolemy II model that provides such a key-value store service is provided&#10;at &lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&lt;/a&gt;.&#10;A demo client that uses this accessor is provided at&#10;&lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="key (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+            </property>
+            <property name="remove (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, then remove the key from the store; otherwise, retrieve the value for the key.">
+            </property>
+            <property name="value (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
+            </property>
+            <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
+            </property>
+        </property>
+        <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
+        </property>
+        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="&quot;team0&quot;">
+        </property>
+        <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
+        </property>
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[9.997751420554804,12.079036839868419]&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{985.0, 40.0}">
+        </property>
+        <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="key" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="result" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;team&quot;+ID">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{805.0, -10.0}">
+        </property>
+    </entity>
+    <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{770.0, 60.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1115.0, 50.0}">
+        </property>
+    </entity>
+    <entity name="Robot" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 60.0}">
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{50.0 + (-1)^ID,ID*10.0 + (2.0-ID)^ID}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, -130.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1086, 600}, maximized=true}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 440]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8434886499402628">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{120.5, 118.49533020538243}">
+        </property>
+        <property name="R" class="ptolemy.data.expr.Parameter" value="(10.0+ID*2)*(-1)^ID">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -130.0}">
+            </property>
+        </property>
+        <property name="f" class="ptolemy.data.expr.Parameter" value="0.01">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, -130.0}">
+            </property>
+        </property>
+        <property name="speedLimit" class="ptolemy.data.expr.Parameter" value="5.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-210.0, -130.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Move towards the last known position of the intruder at maximum speed">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-225.0, -75.0]">
+                <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="control">
+                </property>
+                <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+                </property>
+            </property>
+        </property>
+        <port name="robotPosition" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 300.0]">
+            </property>
+        </port>
+        <port name="intruderPosition" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-285.0, 40.0}">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(double,2)">
+            </property>
+        </port>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 65.0}">
+            </property>
+        </entity>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="initialPosition">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 0.0}">
+            </property>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 65.0}">
+            </property>
+        </entity>
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 65.0}">
+            </property>
+        </entity>
+        <entity name="control" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in - currentPosition)*sqrt(speedLimit)/sqrt((in(0)-currentPosition(0))^2+(in(1)-currentPosition(1))^2)">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 50.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="currentPosition" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=415.0,y=0.0}, tail={id=&quot;Merge.input&quot;,x=500.0,y=65.0,index=2}, points={465.0,0.0,465.0,60.0} } }">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=500.0,y=65.0,index=2}, tail={id=&quot;TimeDelay.output&quot;,x=415.0,y=65.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=310.0,y=65.0}, tail={id=&quot;TimeDelay.input&quot;,x=415.0,y=65.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;intruderPosition._location&quot;,x=-285.0,y=40.0}, tail={id=&quot;control.in&quot;,x=50.0,y=50.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{-195.0, 170.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, tail={id=&quot;control.currentPosition&quot;,x=50.0,y=50.0}, points={-195.0,60.0} },{ head={id=&quot;Merge.output&quot;,x=500.0,y=65.0}, tail={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, points={535.0,65.0,535.0,170.0} },{ head={id=&quot;AddSubtract.plus&quot;,x=310.0,y=65.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, points={265.0,55.0,265.0,170.0} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.plus&quot;,x=310.0,y=65.0,index=2}, tail={id=&quot;control.output&quot;,x=50.0,y=50.0}, points={} } }">
+            </property>
+        </relation>
+        <link port="robotPosition" relation="relation2"/>
+        <link port="intruderPosition" relation="relation6"/>
+        <link port="AddSubtract.plus" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation2"/>
+        <link port="AddSubtract.output" relation="relation5"/>
+        <link port="SingleEvent.output" relation="relation3"/>
+        <link port="Merge.input" relation="relation3"/>
+        <link port="Merge.input" relation="relation4"/>
+        <link port="Merge.output" relation="relation2"/>
+        <link port="TimeDelay.input" relation="relation5"/>
+        <link port="TimeDelay.output" relation="relation4"/>
+        <link port="control.output" relation="relation"/>
+        <link port="control.in" relation="relation6"/>
+        <link port="control.currentPosition" relation="relation2"/>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{735.0, -160.0}">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{in.x, in.y}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 60.0}">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{765.0, -80.0}">
+        </property>
+    </entity>
+    <entity name="Team0" class="KVReadRange">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, -280.0}">
+        </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[9.997751420554804,12.079036839868419]&quot;">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Team1" class="KVReadRange">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, -65.0}">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team1&quot;">
+        </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[0,0]&quot;">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Team2" class="KVReadRange">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 50.0}">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team2&quot;">
+        </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[8.406227634233893,86.48882429441258]&quot;">
+            </property>
+        </entity>
+    </entity>
+    <entity name="Team3" class="KVReadRange">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 240.0}">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team3&quot;">
+        </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[22.434494358242624,11.57084194356841]&quot;">
+            </property>
+        </entity>
+    </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="team0,team1,team2,team3,intruder">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={660, 73, 758, 538}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 494]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, -50.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-8.001932220666299E-7" max="51.0"/>
+<yRange min="0.0" max="86.48882429441258"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Intruder" class="KVReadRange">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, -170.0}">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;intruder&quot;">
+        </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-8.001932220666299E-7,15.000000000000137]&quot;">
+            </property>
+        </entity>
+    </entity>
+    <entity name="ParticleVisualization" class="ptolemy.actor.lib.gui.XYScope">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="particles,self,intruder">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 22, 489, 618}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[489, 574]">
+        </property>
+        <property name="persistence" class="ptolemy.data.expr.Parameter" value="500">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{945.0, -70.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYScope2</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-11.157644911015252" max="51.0"/>
+<yRange min="-11.670959953465356" max="30.710899589639133"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="CollaborativeRangeParticleFilter" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="bootstrap" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="lowVarianceSampler" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="particleCount" class="ptolemy.data.expr.Parameter" value="2000">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[5.0,0.0;0.0,5.0])">
+        </property>
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200-100,random()*200-100}">
+        </property>
+        <property name="t" class="ptolemy.data.expr.Parameter" value="19.0">
+        </property>
+        <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[10.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 50.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-9.276221370876943">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="23.98723392814023">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="locations" class="ptolemy.actor.parameters.PortParameter" value="{{0.0,0.0},{0.0,0.0},{0.0,0.0},{0.0,0.0}}">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range1" class="ptolemy.data.expr.Parameter" value="sqrt((locations(1)(0)-x)^2+(locations(1)(1)-y)^2)">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range0" class="ptolemy.data.expr.Parameter" value="sqrt((locations(0)(0)-x)^2+(locations(0)(1)-y)^2)">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range2" class="ptolemy.data.expr.Parameter" value="sqrt((locations(2)(0)-x)^2+(locations(2)(1)-y)^2)">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range3" class="ptolemy.data.expr.Parameter" value="sqrt((locations(3)(0)-x)^2+(locations(3)(1)-y)^2)">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="x_update" class="ptolemy.data.expr.Parameter" value="x">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range0_m" class="ptolemy.data.expr.Parameter" value="11.0295100462967">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range1_m" class="ptolemy.data.expr.Parameter" value="15.2403992171648">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range2_m" class="ptolemy.data.expr.Parameter" value="72.6680164453955">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <property name="range3_m" class="ptolemy.data.expr.Parameter" value="23.4565750797657">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
+        <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 70.0}">
+            </property>
+        </port>
+        <port name="stateEstimate" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, -15.0}">
+            </property>
+        </port>
+        <port name="locations" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, -25.0}">
+            </property>
+        </port>
+        <port name="range0_m" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="range0"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 315.0}">
+            </property>
+        </port>
+        <port name="range1_m" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="range1"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 315.0}">
+            </property>
+        </port>
+        <port name="range2_m" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="range2"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 235.0}">
+            </property>
+        </port>
+        <port name="range3_m" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="range3"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, 315.0}">
+            </property>
+        </port>
+        <entity name="x_update" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="y_update" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range0_m_equation" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((locations(0)(0)-x)^2+(locations(0)(1)-y)^2)">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range0_m_covariance" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="setrange0_m" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="range0_m">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range1_m_equation" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((locations(1)(0)-x)^2+(locations(1)(1)-y)^2)">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range1_m_covariance" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="setrange1_m" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="range1_m">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range2_m_equation" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((locations(2)(0)-x)^2+(locations(2)(1)-y)^2)">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range2_m_covariance" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="setrange2_m" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="range2_m">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range3_m_equation" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((locations(3)(0)-x)^2+(locations(3)(1)-y)^2)">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="range3_m_covariance" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="setrange3_m" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="range3_m">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+    </entity>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 180.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(double,2)">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{715.0, 60.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TokenToJSON.input&quot;,x=770.0,y=60.0}, tail={id=&quot;relation3.vertex1&quot;,x=715.0,y=60.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=805.0,y=-10.0}, tail={id=&quot;relation3.vertex1&quot;,x=715.0,y=60.0}, points={715.0,-10.0} },{ head={id=&quot;ArrayToElements.input&quot;,x=765.0,y=-80.0}, tail={id=&quot;relation3.vertex1&quot;,x=715.0,y=60.0}, points={715.0,-80.0} },{ head={id=&quot;Robot.robotPosition&quot;,x=655.0,y=60.0}, tail={id=&quot;relation3.vertex1&quot;,x=715.0,y=60.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.key&quot;,x=985.0,y=40.0}, tail={id=&quot;Const.output&quot;,x=805.0,y=-10.0}, points={870.0,30.0,870.0,-10.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=985.0,y=40.0}, tail={id=&quot;DiscreteClock.trigger&quot;,x=1115.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-210.0, 325.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.trigger&quot;,x=-135.0,y=-65.0}, tail={id=&quot;relation4.vertex1&quot;,x=-210.0,y=325.0}, points={-210.0,-65.0} },{ head={id=&quot;Team2.trigger&quot;,x=-135.0,y=50.0}, tail={id=&quot;relation4.vertex1&quot;,x=-210.0,y=325.0}, points={-210.0,50.0} },{ head={id=&quot;Team0.trigger&quot;,x=-135.0,y=-280.0}, tail={id=&quot;relation4.vertex1&quot;,x=-210.0,y=325.0}, points={-210.0,-280.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=1115.0,y=50.0}, tail={id=&quot;relation4.vertex1&quot;,x=-210.0,y=325.0}, points={1185.0,50.0,1185.0,325.0} },{ head={id=&quot;Team3.trigger&quot;,x=-135.0,y=240.0}, tail={id=&quot;relation4.vertex1&quot;,x=-210.0,y=325.0}, points={-210.0,240.0} },{ head={id=&quot;Intruder.trigger&quot;,x=-135.0,y=-170.0}, tail={id=&quot;relation4.vertex1&quot;,x=-210.0,y=325.0}, points={-210.0,-170.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.x&quot;,x=-135.0,y=-280.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=170.0,y=-50.0,index=5}, points={110.0,-290.0,110.0,-80.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.y&quot;,x=-135.0,y=-280.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=170.0,y=-50.0,index=5}, points={95.0,-280.0,95.0,-60.0} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.x&quot;,x=-135.0,y=-65.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=170.0,y=-50.0,index=5}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.y&quot;,x=-135.0,y=-65.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=170.0,y=-50.0,index=5}, points={20.0,-65.0,20.0,-55.0} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.x&quot;,x=-135.0,y=50.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=170.0,y=-50.0,index=5}, points={5.0,40.0,5.0,-70.0} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.y&quot;,x=-135.0,y=50.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=170.0,y=-50.0,index=5}, points={50.0,50.0,50.0,-50.0} } }">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.x&quot;,x=-135.0,y=240.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=170.0,y=-50.0,index=5}, points={35.0,230.0,35.0,-65.0} } }">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.y&quot;,x=-135.0,y=240.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=170.0,y=-50.0,index=5}, points={65.0,240.0,65.0,-45.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Robot.intruderPosition&quot;,x=655.0,y=60.0}, tail={id=&quot;Expression.output&quot;,x=560.0,y=60.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=170.0,y=-50.0,index=5}, tail={id=&quot;Intruder.x&quot;,x=-135.0,y=-170.0}, points={50.0,-60.0,50.0,-180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=170.0,y=-50.0,index=5}, tail={id=&quot;Intruder.y&quot;,x=-135.0,y=-170.0}, points={-25.0,-40.0,-25.0,-170.0} } }">
+        </property>
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=765.0,y=-80.0,index=2}, tail={id=&quot;ParticleVisualization.inputX&quot;,x=945.0,y=-70.0,index=2}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.y&quot;,x=735.0,y=-160.0}, tail={id=&quot;ParticleVisualization.inputY&quot;,x=945.0,y=-70.0,index=2}, points={885.0,-130.0,885.0,-65.0} } }">
+        </property>
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.x&quot;,x=735.0,y=-160.0}, tail={id=&quot;ParticleVisualization.inputX&quot;,x=945.0,y=-70.0,index=2}, points={900.0,-150.0,900.0,-85.0} } }">
+        </property>
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=765.0,y=-80.0,index=2}, tail={id=&quot;ParticleVisualization.inputY&quot;,x=945.0,y=-70.0,index=2}, points={870.0,-75.0,870.0,-60.0} } }">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.rangeToIntruder&quot;,x=-135.0,y=-280.0}, tail={id=&quot;CollaborativeRangeParticleFilter.range0_m&quot;,x=345.0,y=50.0}, points={270.0,-270.0,270.0,30.0} } }">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.rangeToIntruder&quot;,x=-135.0,y=-65.0}, tail={id=&quot;CollaborativeRangeParticleFilter.range1_m&quot;,x=345.0,y=50.0}, points={-10.0,-55.0,-10.0,-115.0,255.0,-115.0,255.0,40.0} } }">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.rangeToIntruder&quot;,x=-135.0,y=50.0}, tail={id=&quot;CollaborativeRangeParticleFilter.range2_m&quot;,x=345.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.rangeToIntruder&quot;,x=-135.0,y=240.0}, tail={id=&quot;CollaborativeRangeParticleFilter.range3_m&quot;,x=345.0,y=50.0}, points={95.0,250.0,95.0,130.0,255.0,130.0,255.0,70.0} } }">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.position&quot;,x=-135.0,y=-280.0}, tail={id=&quot;ElementsToArray.input&quot;,x=160.0,y=180.0,index=4}, points={-135.0,-210.0,80.0,-210.0,80.0,165.0} } }">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.position&quot;,x=-135.0,y=-65.0}, tail={id=&quot;ElementsToArray.input&quot;,x=160.0,y=180.0,index=4}, points={-135.0,0.0,-25.0,0.0,-25.0,170.0} } }">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.position&quot;,x=-135.0,y=50.0}, tail={id=&quot;ElementsToArray.input&quot;,x=160.0,y=180.0,index=4}, points={-135.0,175.0} } }">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.position&quot;,x=-135.0,y=240.0}, tail={id=&quot;ElementsToArray.input&quot;,x=160.0,y=180.0,index=4}, points={-135.0,305.0,110.0,305.0,110.0,180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CollaborativeRangeParticleFilter.locations&quot;,x=345.0,y=50.0}, tail={id=&quot;ElementsToArray.output&quot;,x=160.0,y=180.0}, points={345.0,180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.in&quot;,x=560.0,y=60.0}, tail={id=&quot;CollaborativeRangeParticleFilter.stateEstimate&quot;,x=345.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.input&quot;,x=735.0,y=-160.0}, tail={id=&quot;CollaborativeRangeParticleFilter.particleOutput&quot;,x=345.0,y=50.0}, points={505.0,-140.0,505.0,40.0} } }">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=985.0,y=40.0}, tail={id=&quot;TokenToJSON.output&quot;,x=770.0,y=60.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="KeyValueStore.key" relation="relation"/>
+    <link port="KeyValueStore.value" relation="relation23"/>
+    <link port="KeyValueStore.result" relation="relation6"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Const.trigger" relation="relation3"/>
+    <link port="TokenToJSON.input" relation="relation3"/>
+    <link port="TokenToJSON.output" relation="relation23"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="DiscreteClock.trigger" relation="relation6"/>
+    <link port="Robot.robotPosition" relation="relation3"/>
+    <link port="Robot.intruderPosition" relation="relation2"/>
+    <link port="RecordDisassembler.input" relation="relation26"/>
+    <link port="RecordDisassembler.x" relation="relation32"/>
+    <link port="RecordDisassembler.y" relation="relation33"/>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="Expression.in" relation="relation27"/>
+    <link port="ArrayToElements.input" relation="relation3"/>
+    <link port="ArrayToElements.output" relation="relation31"/>
+    <link port="ArrayToElements.output" relation="relation35"/>
+    <link port="Team0.trigger" relation="relation4"/>
+    <link port="Team0.x" relation="relation5"/>
+    <link port="Team0.y" relation="relation7"/>
+    <link port="Team0.rangeToIntruder" relation="relation16"/>
+    <link port="Team0.position" relation="relation20"/>
+    <link port="Team1.trigger" relation="relation4"/>
+    <link port="Team1.x" relation="relation8"/>
+    <link port="Team1.y" relation="relation9"/>
+    <link port="Team1.rangeToIntruder" relation="relation17"/>
+    <link port="Team1.position" relation="relation21"/>
+    <link port="Team2.trigger" relation="relation4"/>
+    <link port="Team2.x" relation="relation10"/>
+    <link port="Team2.y" relation="relation11"/>
+    <link port="Team2.rangeToIntruder" relation="relation18"/>
+    <link port="Team2.position" relation="relation22"/>
+    <link port="Team3.trigger" relation="relation4"/>
+    <link port="Team3.x" relation="relation12"/>
+    <link port="Team3.y" relation="relation13"/>
+    <link port="Team3.rangeToIntruder" relation="relation19"/>
+    <link port="Team3.position" relation="relation24"/>
+    <link port="XYPlotter.inputX" relation="relation5"/>
+    <link port="XYPlotter.inputX" relation="relation8"/>
+    <link port="XYPlotter.inputX" relation="relation10"/>
+    <link port="XYPlotter.inputX" relation="relation12"/>
+    <link port="XYPlotter.inputX" relation="relation14"/>
+    <link port="XYPlotter.inputY" relation="relation7"/>
+    <link port="XYPlotter.inputY" relation="relation9"/>
+    <link port="XYPlotter.inputY" relation="relation11"/>
+    <link port="XYPlotter.inputY" relation="relation13"/>
+    <link port="XYPlotter.inputY" relation="relation15"/>
+    <link port="Intruder.trigger" relation="relation4"/>
+    <link port="Intruder.x" relation="relation14"/>
+    <link port="Intruder.y" relation="relation15"/>
+    <link port="ParticleVisualization.inputX" relation="relation32"/>
+    <link port="ParticleVisualization.inputX" relation="relation31"/>
+    <link port="ParticleVisualization.inputY" relation="relation33"/>
+    <link port="ParticleVisualization.inputY" relation="relation35"/>
+    <link port="CollaborativeRangeParticleFilter.particleOutput" relation="relation26"/>
+    <link port="CollaborativeRangeParticleFilter.stateEstimate" relation="relation27"/>
+    <link port="CollaborativeRangeParticleFilter.locations" relation="relation25"/>
+    <link port="CollaborativeRangeParticleFilter.range0_m" relation="relation16"/>
+    <link port="CollaborativeRangeParticleFilter.range1_m" relation="relation17"/>
+    <link port="CollaborativeRangeParticleFilter.range2_m" relation="relation18"/>
+    <link port="CollaborativeRangeParticleFilter.range3_m" relation="relation19"/>
+    <link port="ElementsToArray.input" relation="relation20"/>
+    <link port="ElementsToArray.input" relation="relation21"/>
+    <link port="ElementsToArray.input" relation="relation22"/>
+    <link port="ElementsToArray.input" relation="relation24"/>
+    <link port="ElementsToArray.output" relation="relation25"/>
+</entity>
