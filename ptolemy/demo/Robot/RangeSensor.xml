@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="renderHTML.xsl"?>
+<!DOCTYPE entity PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
+    "http://terraswarm.org/accessors/Accessor_1.dtd">
+<class name="RangeSensor" extends="org.terraswarm.kernel.JavaScript">
+  <version>0.1</version>
+  <author>Ilge Akkaya</author>
+  <input
+    name="storeLocation"
+    value="http://localhost:8077/keyvalue"
+    type="string"/>
+  <input
+    name="intruderKey"
+    type="string"
+    value="intruder"
+    description="The key that stores the intruder position as a JSON string."/>
+<input
+name="currentPosition"
+type="string"
+description="The key that stores the seeker position as a JSON string."/>
+<input
+name="noiseSigma"
+value="2.0"
+type="number"/>
+  <output
+    name="rangeMeasurement"
+    type="number"
+    description="Distance between robot and intruder."/>    
+  <documentation type="text/html">
+    <![CDATA[
+This accessor uses the current position of the robot and the intruder position stored in 
+a key value store to compute the distance between robot and intruder.
+	]]>
+  </documentation>
+  <script type="text/javascript">
+    // <![CDATA[
+        
+        function fire() {
+        var sigma = get(noiseSigma);
+        var store = get(storeLocation);
+        var intruder = get(intruderKey);
+        var url = store + '/get?id=' + intruder;
+        var intruderPosition = JSON.parse(readURL(url));
+		
+        var intruderX = intruderPosition[0];
+        var intruderY = intruderPosition[1];
+        var robotPosition = JSON.parse(get(currentPosition));
+        var robotX = robotPosition[0];
+        var robotY = robotPosition[1];
+        // Approximate a Gaussian.
+        var gaussianEstimate = ((Math.random()-0.5)*2.0)+((Math.random()-0.5)*2.0)+((Math.random()-0.5)*2.0);
+        var noiseSample = gaussianEstimate*Math.sqrt(sigma);
+        
+		var result = Math.sqrt((intruderX - robotX)*(intruderX - robotX) + (intruderY - robotY)*(intruderY - robotY)) + noiseSample;
+		send(result, rangeMeasurement);
+        
+        }
+	// ]]>
+  </script>
+</class>
