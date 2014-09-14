@@ -152,17 +152,17 @@ public class ReaderTest {
 	if (numrecs < 0) {
             numrecs = 0;
         }
+        //System.out.println("ReaderTest.java: gclh: " + gclh);
 	if (subscribe) {
-
             // Was: estat = gdp_gcl_subscribe(gclh, firstrec, numrecs, NULL, NULL, NULL); 
-            PointerByReference gclhByReference = new PointerByReference();
-            estat = Gdp10Library.INSTANCE.gdp_gcl_subscribe(gclhByReference, firstrec, numrecs, null, null, null);
-            gclh = gclhByReference.getValue();
+            //PointerByReference gclhByReference = new PointerByReference(gclh);
+            estat = Gdp10Library.INSTANCE.gdp_gcl_subscribe(gclh, firstrec, numrecs, null, null, null);
+            //gclh = gclhByReference.getValue();
 	} else {
             // Was: estat = gdp_gcl_multiread(gclh, firstrec, numrecs, NULL, NULL);
-            PointerByReference gclhByReference = new PointerByReference();
-            estat = Gdp10Library.INSTANCE.gdp_gcl_multiread(gclhByReference, firstrec, numrecs, null, null);
-            gclh = gclhByReference.getValue();
+            //PointerByReference gclhByReference = new PointerByReference();
+            estat = Gdp10Library.INSTANCE.gdp_gcl_multiread(gclh, firstrec, numrecs, null, null);
+            //gclh = gclhByReference.getValue();
         }
 
 	// Was: if (!EP_STAT_ISOK(estat)) {
