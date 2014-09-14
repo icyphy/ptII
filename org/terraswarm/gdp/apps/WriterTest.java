@@ -68,6 +68,19 @@ import ptolemy.util.StringUtilities;
     @Pt.AcceptedRating Red (cxh)
 */
 public class WriterTest {
+    /** Write to the GCL.
+     *  <p>Usage:<code>
+     *  DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest elvis</code></p>
+     *  
+     *  <p>The arguments below are optional:</p>
+     *
+     *  <p><code>-D <i>debuggingSpecification</i></code>, where an example of <i>debuggingSpecifiction</i> is,
+     *  <code>gdp.api=100</code>.  See the gdp .c files for debugging specifications</p>.
+     *
+     *  <p><code>-a</code> FIXME: what does this do?</p>
+     *
+     *  <p><code><i>gcl_name</i></code> The name of the gcl.  This string is used with ReaderTest</p>
+     */
     public static void main(String [] argv) throws Throwable {
         // See
         // https://twall.github.io/jna/4.1.0/overview-summary.html#crash-protection
@@ -80,7 +93,8 @@ public class WriterTest {
         // protection; if not, the value of Native.isProtected() will
         // remain false."
         Native.setProtected(true);
-        // Will be false on the Mac.
+
+        // On the Mac, isProtected() will probably return false.
         _debug("Native.isProtected(): " + Native.isProtected());
 
         // Was:	gdp_gcl_t *gclh;
@@ -113,15 +127,16 @@ public class WriterTest {
             }
         }
 
-        // _debug("WriterTest: argv.length: " + argv.length + ", argc: " + argc);
+         _debug("WriterTest: argv.length: " + argv.length + ", argc: " + argc);
 
         if (argc > 0) {
-            xname = argv[argv.length-argc];
+            xname = argv[argv.length - 1];
             argc--;
         } 
 	if (argc != 0 || (append && xname == null)) {
             System.err.println("Usage: WriterTest [-D dbgspec] [-a] [<gcl_name>]\n"
                     + "  (name is required for -a)");
+            _debug("argc: " + argc + ", append: " + append + ", xname: " + (xname == null ? "null" : xname));
             System.exit(64 /* EX_USAGE from /usr/includes/sysexits.h */);
 	}
 
@@ -275,6 +290,6 @@ public class WriterTest {
      *  @param the message
      */   
     private static void _debug(String message) {
-        //System.out.println(message);
+        System.out.println(message);
     }
 }

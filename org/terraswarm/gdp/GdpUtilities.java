@@ -64,6 +64,17 @@ import ptolemy.util.StringUtilities;
 */
 public class GdpUtilities {
 
+    /** Create a new status for GDP
+     * Based on:
+     * #define GDP_STAT_NEW(sev, det)		EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_UCB, GDP_MODULE, det)
+     * @param sev The severity
+     * @param det FIXME
+     * @return the status.
+     */
+    public static EP_STAT GDP_STAT_NEW(int sev, int det) {
+	return EP_STAT_NEW(/* EP_STAT_SEV_ ## */ sev, EP_REGISTRY_UCB, GDP_MODULE, det);
+    }
+
     /** Return true if the status code is ok.
      *  Based on ep_stat.h, Copyright Eric Allman, See ep_license.htm
      *  @param estat The status code.
@@ -88,6 +99,19 @@ public class GdpUtilities {
      *  @param d the detail.
      *  @return the status code.
      */
+    public static EP_STAT EP_STAT_INTERNAL(int sev, int mod, int code) {
+        //#define _EP_STAT_INTERNAL(sev, mod, code)                     \
+	//	EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_EPLIB, mod, code)
+        return EP_STAT_NEW(sev, EP_REGISTRY_EPLIB, mod, code);
+    }
+    /** Create a new status code.
+     *  Based on ep_stat.h, Copyright Eric Allman, See ep_license.htm
+     *  @param s The severity
+     *  @param r the registry
+     *  @param m the module
+     *  @param d the detail.
+     *  @return the status code.
+     */
     public static EP_STAT EP_STAT_NEW(int s, int r, int m, int d) {
         // We use the same parameter names as are in the original C
         // code for ease of maintenance.
@@ -98,15 +122,12 @@ public class GdpUtilities {
         return new EP_STAT( new NativeLong(code));
     }                    
 
-    /** The ok status code. */
-    public static EP_STAT EP_STAT_OK = EP_STAT_NEW(Gdp10Library.EP_STAT_SEV_OK, 0, 0, 0);
-
     /** Print the datum to standard out.  This is a port of
      *  gdp_datum_print from gdp/gdp_datum.c by Eric Allman.
      *  @param datum The datum to be printed.
      */   
     public static void gdp_datum_print(/*gdp_datum*/PointerByReference datum) {
-        // FIXME: deal with the underscore.  There already is a gdp_datum_print in Gdp10Library.java
+
         Pointer d = null;
         NativeSizeT length = new NativeSizeT();
         length.setValue(-1);
@@ -138,19 +159,75 @@ public class GdpUtilities {
             d = Gdp10Library.INSTANCE.gdp_buf_getptr(dbuf, new NativeSizeT(length.longValue()));
         }
         //Gdp10Library.INSTANCE.gdp_buf_getts(dbuf, new NativeSizeT(length.longValue()));
-        //if (datum.ts.tv_sec != Long.MIN_VALUE) {
-        System.out.print(", timestamp ");
-        System.out.print("FIXME");
-        //ep_time_print(&datum->ts, fp, true);
-        //} else {
-        //System.out.print(", no timestamp ");
-        //}
+        EP_TIME_SPEC ts = new EP_TIME_SPEC();
+        Gdp10Library.INSTANCE.gdp_datum_getts(datum, ts);
+
+        if (ts.tv_sec != Long.MIN_VALUE) {
+            // Was: ep_time_print(&datum->ts, fp, true);
+
+            //final int TBUF_SIZE = 128;
+            //ByteBuffer tbuf = ByteBuffer.allocate(TBUF_SIZE);
+            //Gdp10Library.INSTANCE.ep_time_format(ts, tbuf, new NativeSizeT(TBUF_SIZE), (byte)1 /*human*/);
+            //System.out.println("ts: " + ts + "tbuf: " + tbuf);
+
+            System.out.println("tv_sec: " + ts.tv_sec + ", tv_nsec: " + ts.tv_nsec + " +/- " + ts.tv_accuracy);
+        } else {
+            System.out.print(", no timestamp ");
+        }
+
         if (length.longValue() > 0) {
             // gdp_api.c has
             //fprintf(fp, "\n	 %s%.*s%s", EpChar->lquote, l, d, EpChar->rquote);
-            System.out.print("\n  \"" + length + d + "\"");
-        } else {
-            System.out.println("");
+            System.out.print("\n  \"" + d.getString(0) + "\"");
+
         }
+        System.out.println("");
+    }
+
+    /** Vendor registry for EP, see ep_registry.h */
+    public static final int  EP_REGISTRY_EPLIB = 0x100;
+
+    /** Vendor registry for UCB, see ep_registry.h */
+    public static final int  EP_REGISTRY_UCB = 0x103;
+
+    /** End of file. */
+    public static final EP_STAT EP_STAT_END_OF_FILE;
+
+    /** Corresponds to errno codes in C. */
+    public static final int EP_STAT_MOD_ERRNO  = 0x0FE;
+
+    /**  Basic multi-use errors. */
+    public static final int EP_STAT_MOD_GENERIC = 0;
+
+    /** The ok status code. */
+    public static final EP_STAT EP_STAT_OK = EP_STAT_NEW(Gdp10Library.EP_STAT_SEV_OK, 0, 0, 0);
+
+    /** Normal error. */
+    public static final int EP_STAT_SEV_ERROR = 5;
+
+    /** Warning or temp error, may work later. */
+    public static final int EP_STAT_SEV_WARN = 4;
+
+    /** Returned data. */
+    public static final int GDP_EVENT_DATA = 1;
+
+    /** End of subscription. */
+    public static final int GDP_EVENT_EOS = 2;
+
+    /** Not Found (404). From gdp_stat.h */
+    public static final int GDP_COAP_NOTFOUND =	404;
+
+    /** From gdp_stat.h */
+    public static final int GDP_MODULE = 1;
+
+    /** FIXME: What is a NAK NOTFOUND? */
+    public static final EP_STAT GDP_STAT_NAK_NOTFOUND;
+
+    static {
+        // Define these in a static block so that we can alphabetize
+        // the declarations and avoid a forward reference.
+        EP_STAT_END_OF_FILE = EP_STAT_INTERNAL(EP_STAT_SEV_WARN, EP_STAT_MOD_GENERIC, 3);
+        GDP_STAT_NAK_NOTFOUND = GDP_STAT_NEW(EP_STAT_SEV_ERROR, GDP_COAP_NOTFOUND);
     }
 }
+

@@ -52,6 +52,7 @@ PTPACKAGE = 	apps
 PTCLASSALLJARS =
 
 JSRCS = \
+	ReaderTest.java \
 	WriterTest.java
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -74,7 +75,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-run: WriterTest.class
-	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest elvis
+runReaderTest: ReaderTest.class
+	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest -s -D gdp.proto=100 elvis
+
+runWriterTest: WriterTest.class
+	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest -D gdp.api=100 elvis
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

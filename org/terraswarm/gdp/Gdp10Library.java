@@ -48,48 +48,48 @@ public interface Gdp10Library extends Library {
 	public static final int EP_REGISTRY_SENDMAIL = (int)0x102;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((4) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((4) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((4) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((4) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_NOTACCEPTABLE = (int)406;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((203) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((203) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((203) & ((1UL << 42) - 1)))
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((203) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((403) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((403) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((403) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((403) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((5) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((5) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((5) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((5) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
 	public static final int EP_OSCF_64BITPTR = (int)0;
 	/** <i>native declaration : src/gdp/ep/ep.h</i> */
 	public static final int EP_LIB_USEPTHREADS = (int)0x00000001;
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-	public static final int _EP_STAT_MODSHIFT = (int)42;
+	public static final int _EP_STAT_MODSHIFT = (int)10;
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-	public static final int _EP_STAT_DETBITS = (int)42;
+	public static final int _EP_STAT_DETBITS = (int)10;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((18) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((18) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((18) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((18) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_MOD_GENERIC = (int)0;
@@ -103,136 +103,144 @@ public interface Gdp10Library extends Library {
 	public static final int EP_OSCF_HAS_STRING_H = (int)1;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_FORBIDDEN = (int)403;
+	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
+	public static final int EP_THR_MUTEX_NORMAL = (int)0;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((11) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((11) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((11) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((11) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((7) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((12) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((7) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((12) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((7) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((12) & ((1UL << 42) - 1)))
+	 * ((((7) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((12) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((17) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((17) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((17) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((17) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
 	public static final int EP_OSCF_HAS_INTTYPES_H = (int)1;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((3) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((3) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((3) & ((1UL << 42) - 1)))
+	 * ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((3) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_registry.h</i> */
 	public static final int EP_REGISTRY_EPLIB = (int)0x100;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((205) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((205) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((205) & ((1UL << 42) - 1)))
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((205) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((502) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((502) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((502) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((502) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((7) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((7) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((7) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))
+	 * ((((7) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((505) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((505) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((505) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((505) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_VALID = (int)203;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((413) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((413) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((413) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((413) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((8) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((8) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((8) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((8) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((9) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((9) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((9) & ((1UL << 42) - 1)))
+	 * ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((9) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_SEV_ERROR = (int)(5);
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_NOTIMPL = (int)501;
+	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
+	public static final int EP_THR_MUTEX_ERRORCHECK = (int)1;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((406) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((406) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((406) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((406) & ((1UL << 10) - 1)))
+	 */
+	/** <i>native declaration : src/gdp/gdp/gdp.h</i> */
+	public static final String PRIgdp_rid = (String)"u";
+	/**
+	 * define<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((201) & ((1UL << 10) - 1)))<br>
+	 * SKIPPED:<br>
+	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((201) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((201) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((13) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((201) & ((1UL << 42) - 1)))
-	 */
-	/**
-	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((13) & ((1UL << 42) - 1)))<br>
-	 * SKIPPED:<br>
-	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((13) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((13) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_PROXYNOTSUP = (int)505;
+	/** <i>native declaration : src/gdp/gdp/gdp.h</i> */
+	public static final int GDP_EVENT_EOS = (int)2;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((200) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((200) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((200) & ((1UL << 42) - 1)))
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((200) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((2) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((2) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((2) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((2) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_NOTFOUND = (int)404;
@@ -245,37 +253,37 @@ public interface Gdp10Library extends Library {
 	 * Conversion Error : null<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h</i><br>
-	 * = { { 0, 0, 0, 0, 0, 0, { 0, 0 } } }
+	 * = { 0x32AAABA7, { 0 } }
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((402) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((402) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((402) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((402) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_SEV_ABORT = (int)(7);
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((7) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((7) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((7) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((7) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((1) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((1) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((1) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((1) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((412) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((412) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((412) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((412) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_registry.h</i> */
 	public static final int EP_REGISTRY_UCB = (int)0x103;
@@ -289,17 +297,17 @@ public interface Gdp10Library extends Library {
 	public static final int GDP_COAP_SUCCESS = (int)200;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((501) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((501) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((501) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((501) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((2) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((2) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((2) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((2) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_GWTIMEOUT = (int)504;
@@ -307,10 +315,10 @@ public interface Gdp10Library extends Library {
 	public static final int GDP_EVENT_DATA = (int)1;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((202) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((202) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((202) & ((1UL << 42) - 1)))
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((202) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_MAX_MODULES = (int)((1 << 8) - 1);
@@ -322,10 +330,10 @@ public interface Gdp10Library extends Library {
 	public static final int EP_STAT_SEV_SEVERE = (int)(6);
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((503) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((503) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((503) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((503) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
 	public static final int EP_OSCF_HAS_STDINT_H = (int)1;
@@ -341,62 +349,64 @@ public interface Gdp10Library extends Library {
 	public static final int GDP_COAP_UNAUTH = (int)401;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))
 	 */
+	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
+	public static final int EP_THR_MUTEX_RECURSIVE = (int)2;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_DELETED = (int)202;
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_CONTENT = (int)205;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))
+	 * ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-	public static final int _EP_STAT_REGSHIFT = (int)(42 + 8);
+	public static final int _EP_STAT_REGSHIFT = (int)(10 + 8);
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-		public static final long /* Fixed by makefile*/ EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);
+	public static final int EP_STAT_MAX_DETAIL = (int)((1 << 10) - 1);
 	/**
 	 * define<br>
-	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((204) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((204) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((0) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((204) & ((1UL << 42) - 1)))
+	 * ((((0) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((204) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((0) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((0) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_INTERNAL = (int)500;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((504) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((504) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((504) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((504) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((404) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((404) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((404) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((404) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((10) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((10) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((10) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((10) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_BADOPT = (int)402;
@@ -404,10 +414,10 @@ public interface Gdp10Library extends Library {
 	public static final int GDP_COAP_SVCUNAVAIL = (int)503;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((400) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((400) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((400) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((400) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_MODULE = (int)1;
@@ -418,68 +428,74 @@ public interface Gdp10Library extends Library {
 	 * Conversion Error : null<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h</i><br>
-	 * = { { 0, 0, 0, 0, 0, (void*)0, 0, 0 } }
+	 * = { 0x3CB0B1BB, { 0 } }
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_MAX_REGISTRIES = (int)((1 << 11) - 1);
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_UNSUPMEDIA = (int)415;
+	/** <i>native declaration : src/gdp/gdp/gdp.h</i> */
+	public static final String PRIgdp_recno = (String)"q";
 	/**
 	 * define<br>
-	 * Conversion Error : ((((7) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((15) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((7) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((15) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((7) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((15) & ((1UL << 42) - 1)))
+	 * ((((7) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((15) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((415) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((415) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((415) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((415) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int _EP_STAT_REGBITS = (int)11;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((4) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((4) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((4) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((4) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
 	 * Conversion Error : null<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h</i><br>
-	 * = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } }
+	 * = { 0x2DA8B3B4, { 0 } }
 	 */
 	/** <i>native declaration : src/gdp/gdp/gdp_stat.h</i> */
 	public static final int GDP_COAP_METHNOTALLOWED = (int)405;
+	/** <i>native declaration : src/gdp/ep/ep_thr.h</i> */
+	public static final int EP_THR_MUTEX_DEFAULT = (int)1;
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
 	public static final int EP_STAT_SEV_WARN = (int)(4);
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((19) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((19) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((19) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((19) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_conf.h</i> */
 	public static final int EP_OSCF_USE_PTHREADS = (int)1;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((500) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((500) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((500) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((500) & ((1UL << 10) - 1)))
 	 */
+	/** <i>native declaration : src/gdp/ep/ep_time.h</i> */
+	public static final long EP_TIME_NOTIME = (long)(-9223372036854775807L - 1);
 	/**
 	 * define<br>
-	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((1) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((1) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/ep/ep_statcodes.h:0</i><br>
-	 * ((((6) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (42 + 8)) | (((0) & ((1UL << 8) - 1)) << 42) | ((1) & ((1UL << 42) - 1)))
+	 * ((((6) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x100) & ((1UL << 11) - 1)) << (10 + 8)) | (((0) & ((1UL << 8) - 1)) << 10) | ((1) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep.h</i> */
 	public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.
@@ -487,49 +503,49 @@ public interface Gdp10Library extends Library {
 	public static final int EP_OSCF_HAS_SYS_TYPES_H = (int)1;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((6) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((6) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((6) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((6) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((401) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((401) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((401) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((401) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((14) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((14) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((14) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((14) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-	public static final int _EP_STAT_SEVSHIFT = (int)((42 + 8) + 11);
+	public static final int _EP_STAT_SEVSHIFT = (int)((10 + 8) + 11);
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((16) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((16) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((16) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((16) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_registry.h</i> */
 	public static final int EP_REGISTRY_GENERIC = (int)0x000;
 	/**
 	 * define<br>
-	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((405) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((405) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((5) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((405) & ((1UL << 42) - 1)))
+	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((405) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * define<br>
-	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((3) & ((1UL << 42) - 1)))<br>
+	 * Conversion Error : ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((3) & ((1UL << 10) - 1)))<br>
 	 * SKIPPED:<br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:0</i><br>
-	 * ((((4) & ((1UL << 3) - 1)) << ((42 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (42 + 8)) | (((1) & ((1UL << 8) - 1)) << 42) | ((3) & ((1UL << 42) - 1)))
+	 * ((((4) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((3) & ((1UL << 10) - 1)))
 	 */
 	/**
 	 * status handling function<br>
@@ -662,39 +678,28 @@ public interface Gdp10Library extends Library {
 	 * print a status<br>
 	 * Original signature : <code>void ep_stat_print(EP_STAT, const char*, FILE*, null)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:43</i><br>
-	 * @deprecated use the safer methods {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, com.sun.jna.ptr.PointerByReference, java.lang.Object)} and {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, com.sun.jna.ptr.PointerByReference, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} and {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} instead
 	 */
 // 	@Deprecated 
-	void ep_stat_print(ByValue c, Pointer defmsg, Pointer fp, Object... varArgs1);
+	void ep_stat_print(ByValue c, Pointer defmsg, Gdp10Library.FILE fp, Object... varArgs1);
 	/**
 	 * print a status<br>
 	 * Original signature : <code>void ep_stat_print(EP_STAT, const char*, FILE*, null)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:43</i>
 	 */
-	void ep_stat_print(ByValue c, String defmsg, PointerByReference fp, Object... varArgs1);
-	/**
-	 * print a status<br>
-	 * Original signature : <code>void ep_stat_print(EP_STAT, const char*, FILE*, null)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_stat.h:43</i>
-	 */
-	void ep_stat_print(ByValue c, Pointer defmsg, PointerByReference fp, Object... varArgs1);
+	void ep_stat_print(ByValue c, String defmsg, Gdp10Library.FILE fp, Object... varArgs1);
 	/**
 	 * Original signature : <code>void ep_stat_vprint(EP_STAT, const char*, FILE*, va_list)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:45</i><br>
-	 * @deprecated use the safer methods {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, com.sun.jna.ptr.PointerByReference, java.lang.Object)} and {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, com.sun.jna.ptr.PointerByReference, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} and {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} instead
 	 */
 // 	@Deprecated 
-	void ep_stat_vprint(ByValue c, Pointer defmsg, Pointer fp, Object... av);
+	void ep_stat_vprint(ByValue c, Pointer defmsg, Gdp10Library.FILE fp, Object... av);
 	/**
 	 * Original signature : <code>void ep_stat_vprint(EP_STAT, const char*, FILE*, va_list)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:45</i>
 	 */
-	void ep_stat_vprint(ByValue c, String defmsg, PointerByReference fp, Object... av);
-	/**
-	 * Original signature : <code>void ep_stat_vprint(EP_STAT, const char*, FILE*, va_list)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_stat.h:45</i>
-	 */
-	void ep_stat_vprint(ByValue c, Pointer defmsg, PointerByReference fp, Object... av);
+	void ep_stat_vprint(ByValue c, String defmsg, Gdp10Library.FILE fp, Object... av);
 	/**
 	 * print and abort (never returns)<br>
 	 * Original signature : <code>void ep_stat_abort(EP_STAT)</code><br>
@@ -810,7 +815,7 @@ public interface Gdp10Library extends Library {
 	 * @deprecated use the safer methods {@link #ep_fopensmem(com.sun.jna.Pointer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, java.lang.String)} and {@link #ep_fopensmem(com.sun.jna.Pointer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
-	PointerByReference ep_fopensmem(Pointer buf, NativeSizeT bufsz, Pointer mode);
+	Gdp10Library.FILE ep_fopensmem(Pointer buf, NativeSizeT bufsz, Pointer mode);
 	/**
 	 * open a static memory buffer<br>
 	 * Original signature : <code>FILE* ep_fopensmem(void*, size_t, const char*)</code><br>
@@ -818,18 +823,7 @@ public interface Gdp10Library extends Library {
 	 * @param bufsz size of buffer<br>
 	 * <i>native declaration : src/gdp/ep/ep.h:47</i>
 	 */
-	PointerByReference ep_fopensmem(Pointer buf, NativeSizeT bufsz, String mode);
-	/**
-	 * unlocked version of fread<br>
-	 * Original signature : <code>size_t ep_fread_unlocked(void*, size_t, size_t, FILE*)</code><br>
-	 * @param buf buffer area<br>
-	 * @param sz size of one item<br>
-	 * @param n number of items<br>
-	 * <i>native declaration : src/gdp/ep/ep.h:55</i><br>
-	 * @deprecated use the safer method {@link #ep_fread_unlocked(com.sun.jna.Pointer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.ptr.PointerByReference)} instead
-	 */
-// 	@Deprecated 
-	NativeSizeT ep_fread_unlocked(Pointer buf, NativeSizeT sz, NativeSizeT n, Pointer fp);
+	Gdp10Library.FILE ep_fopensmem(Pointer buf, NativeSizeT bufsz, String mode);
 	/**
 	 * unlocked version of fread<br>
 	 * Original signature : <code>size_t ep_fread_unlocked(void*, size_t, size_t, FILE*)</code><br>
@@ -838,18 +832,7 @@ public interface Gdp10Library extends Library {
 	 * @param n number of items<br>
 	 * <i>native declaration : src/gdp/ep/ep.h:55</i>
 	 */
-	NativeSizeT ep_fread_unlocked(Pointer buf, NativeSizeT sz, NativeSizeT n, PointerByReference fp);
-	/**
-	 * unlocked version of fwrite<br>
-	 * Original signature : <code>size_t ep_fwrite_unlocked(void*, size_t, size_t, FILE*)</code><br>
-	 * @param buf buffer area<br>
-	 * @param sz size of one item<br>
-	 * @param n number of items<br>
-	 * <i>native declaration : src/gdp/ep/ep.h:63</i><br>
-	 * @deprecated use the safer method {@link #ep_fwrite_unlocked(com.sun.jna.Pointer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.ptr.PointerByReference)} instead
-	 */
-// 	@Deprecated 
-	NativeSizeT ep_fwrite_unlocked(Pointer buf, NativeSizeT sz, NativeSizeT n, Pointer fp);
+	NativeSizeT ep_fread_unlocked(Pointer buf, NativeSizeT sz, NativeSizeT n, Gdp10Library.FILE fp);
 	/**
 	 * unlocked version of fwrite<br>
 	 * Original signature : <code>size_t ep_fwrite_unlocked(void*, size_t, size_t, FILE*)</code><br>
@@ -858,7 +841,7 @@ public interface Gdp10Library extends Library {
 	 * @param n number of items<br>
 	 * <i>native declaration : src/gdp/ep/ep.h:63</i>
 	 */
-	NativeSizeT ep_fwrite_unlocked(Pointer buf, NativeSizeT sz, NativeSizeT n, PointerByReference fp);
+	NativeSizeT ep_fwrite_unlocked(Pointer buf, NativeSizeT sz, NativeSizeT n, Gdp10Library.FILE fp);
 	/**
 	 * return current time<br>
 	 * Original signature : <code>EP_STAT ep_time_now(EP_TIME_SPEC*)</code><br>
@@ -894,17 +877,9 @@ public interface Gdp10Library extends Library {
 	/**
 	 * format a time string to a file<br>
 	 * Original signature : <code>void ep_time_print(const EP_TIME_SPEC*, FILE*, bool)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_time.h:32</i><br>
-	 * @deprecated use the safer method {@link #ep_time_print(org.terraswarm.gdp.EP_TIME_SPEC, com.sun.jna.ptr.PointerByReference, byte)} instead
-	 */
-// 	@Deprecated 
-	void ep_time_print(EP_TIME_SPEC tv, Pointer fp, byte human);
-	/**
-	 * format a time string to a file<br>
-	 * Original signature : <code>void ep_time_print(const EP_TIME_SPEC*, FILE*, bool)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_time.h:32</i>
 	 */
-	void ep_time_print(EP_TIME_SPEC tv, PointerByReference fp, byte human);
+	void ep_time_print(EP_TIME_SPEC tv, Gdp10Library.FILE fp, byte human);
 	/**
 	 * parse a time string<br>
 	 * Original signature : <code>EP_STAT ep_time_parse(const char*, EP_TIME_SPEC*)</code><br>
@@ -927,89 +902,208 @@ public interface Gdp10Library extends Library {
 	ByValue ep_time_nanosleep(long int64_t1);
 	/**
 	 * Original signature : <code>int ep_thr_mutex_init(EP_THR_MUTEX*, int)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:41</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_mutex_init(com.sun.jna.ptr.PointerByReference, int)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_mutex_init(Pointer mtx, int type);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_init(EP_THR_MUTEX*, int)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:41</i>
 	 */
-	int ep_thr_mutex_init(Pointer mtx, int type);
+	int ep_thr_mutex_init(PointerByReference mtx, int type);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_destroy(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:43</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_mutex_destroy(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_mutex_destroy(Pointer mtx);
 	/**
 	 * Original signature : <code>int ep_thr_mutex_destroy(EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:43</i>
 	 */
-	int ep_thr_mutex_destroy(Pointer mtx);
+	int ep_thr_mutex_destroy(PointerByReference mtx);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_lock(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:45</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_mutex_lock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_mutex_lock(Pointer mtx);
 	/**
 	 * Original signature : <code>int ep_thr_mutex_lock(EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:45</i>
 	 */
-	int ep_thr_mutex_lock(Pointer mtx);
+	int ep_thr_mutex_lock(PointerByReference mtx);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_trylock(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:47</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_mutex_trylock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_mutex_trylock(Pointer mtx);
 	/**
 	 * Original signature : <code>int ep_thr_mutex_trylock(EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:47</i>
 	 */
-	int ep_thr_mutex_trylock(Pointer mtx);
+	int ep_thr_mutex_trylock(PointerByReference mtx);
+	/**
+	 * Original signature : <code>int ep_thr_mutex_unlock(EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:49</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_mutex_unlock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_mutex_unlock(Pointer mtx);
 	/**
 	 * Original signature : <code>int ep_thr_mutex_unlock(EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:49</i>
 	 */
-	int ep_thr_mutex_unlock(Pointer mtx);
+	int ep_thr_mutex_unlock(PointerByReference mtx);
+	/**
+	 * Original signature : <code>int ep_thr_cond_init(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:52</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_cond_init(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_cond_init(Pointer cv);
 	/**
 	 * Original signature : <code>int ep_thr_cond_init(EP_THR_COND*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:52</i>
 	 */
-	int ep_thr_cond_init(Pointer cv);
+	int ep_thr_cond_init(PointerByReference cv);
+	/**
+	 * Original signature : <code>int ep_thr_cond_destroy(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:54</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_cond_destroy(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_cond_destroy(Pointer cv);
 	/**
 	 * Original signature : <code>int ep_thr_cond_destroy(EP_THR_COND*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:54</i>
 	 */
-	int ep_thr_cond_destroy(Pointer cv);
+	int ep_thr_cond_destroy(PointerByReference cv);
+	/**
+	 * Original signature : <code>int ep_thr_cond_signal(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:56</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_cond_signal(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_cond_signal(Pointer cv);
 	/**
 	 * Original signature : <code>int ep_thr_cond_signal(EP_THR_COND*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:56</i>
 	 */
-	int ep_thr_cond_signal(Pointer cv);
+	int ep_thr_cond_signal(PointerByReference cv);
+	/**
+	 * Original signature : <code>int ep_thr_cond_wait(EP_THR_COND*, EP_THR_MUTEX*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:58</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_cond_wait(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_cond_wait(Pointer cv, Pointer mtx);
 	/**
 	 * Original signature : <code>int ep_thr_cond_wait(EP_THR_COND*, EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:58</i>
 	 */
-	int ep_thr_cond_wait(Pointer cv, Pointer mtx);
+	int ep_thr_cond_wait(PointerByReference cv, PointerByReference mtx);
+	/**
+	 * Original signature : <code>int ep_thr_cond_broadcast(EP_THR_COND*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:60</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_cond_broadcast(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_cond_broadcast(Pointer cv);
 	/**
 	 * Original signature : <code>int ep_thr_cond_broadcast(EP_THR_COND*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:60</i>
 	 */
-	int ep_thr_cond_broadcast(Pointer cv);
+	int ep_thr_cond_broadcast(PointerByReference cv);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_init(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:63</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_init(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_init(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_init(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:63</i>
 	 */
-	int ep_thr_rwlock_init(Pointer rwl);
+	int ep_thr_rwlock_init(PointerByReference rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_destroy(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:65</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_destroy(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_destroy(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_destroy(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:65</i>
 	 */
-	int ep_thr_rwlock_destroy(Pointer rwl);
+	int ep_thr_rwlock_destroy(PointerByReference rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_rdlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:67</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_rdlock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_rdlock(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_rdlock(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:67</i>
 	 */
-	int ep_thr_rwlock_rdlock(Pointer rwl);
+	int ep_thr_rwlock_rdlock(PointerByReference rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_tryrdlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:69</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_tryrdlock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_tryrdlock(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_tryrdlock(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:69</i>
 	 */
-	int ep_thr_rwlock_tryrdlock(Pointer rwl);
+	int ep_thr_rwlock_tryrdlock(PointerByReference rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_wrlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:71</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_wrlock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_wrlock(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_wrlock(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:71</i>
 	 */
-	int ep_thr_rwlock_wrlock(Pointer rwl);
+	int ep_thr_rwlock_wrlock(PointerByReference rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_trywrlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:73</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_trywrlock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_trywrlock(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_trywrlock(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:73</i>
 	 */
-	int ep_thr_rwlock_trywrlock(Pointer rwl);
+	int ep_thr_rwlock_trywrlock(PointerByReference rwl);
+	/**
+	 * Original signature : <code>int ep_thr_rwlock_unlock(EP_THR_RWLOCK*)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_thr.h:75</i><br>
+	 * @deprecated use the safer method {@link #ep_thr_rwlock_unlock(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int ep_thr_rwlock_unlock(Pointer rwl);
 	/**
 	 * Original signature : <code>int ep_thr_rwlock_unlock(EP_THR_RWLOCK*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_thr.h:75</i>
 	 */
-	int ep_thr_rwlock_unlock(Pointer rwl);
+	int ep_thr_rwlock_unlock(PointerByReference rwl);
 	/**
 	 * Original signature : <code>gdp_buf_t* gdp_buf_new()</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:2</i>
@@ -1042,7 +1136,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * Original signature : <code>void gdp_buf_setlock(gdp_buf_t*, EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:8</i><br>
-	 * @deprecated use the safer method {@link #gdp_buf_setlock(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer)} instead
+	 * @deprecated use the safer method {@link #gdp_buf_setlock(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
 	void gdp_buf_setlock(Pointer buf, Pointer m);
@@ -1050,7 +1144,7 @@ public interface Gdp10Library extends Library {
 	 * Original signature : <code>void gdp_buf_setlock(gdp_buf_t*, EP_THR_MUTEX*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:8</i>
 	 */
-	void gdp_buf_setlock(PointerByReference buf, Pointer m);
+	void gdp_buf_setlock(PointerByReference buf, PointerByReference m);
 	/**
 	 * Original signature : <code>size_t gdp_buf_getlength(gdp_buf_t*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:10</i><br>
@@ -1155,15 +1249,87 @@ public interface Gdp10Library extends Library {
 	/**
 	 * Original signature : <code>void gdp_buf_dump(gdp_buf_t*, FILE*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:26</i><br>
-	 * @deprecated use the safer method {@link #gdp_buf_dump(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)} instead
+	 * @deprecated use the safer method {@link #gdp_buf_dump(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.Gdp10Library.FILE)} instead
 	 */
 // 	@Deprecated 
-	void gdp_buf_dump(Pointer buf, Pointer fp);
+	void gdp_buf_dump(Pointer buf, Gdp10Library.FILE fp);
 	/**
 	 * Original signature : <code>void gdp_buf_dump(gdp_buf_t*, FILE*)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:26</i>
 	 */
-	void gdp_buf_dump(PointerByReference buf, PointerByReference fp);
+	void gdp_buf_dump(PointerByReference buf, Gdp10Library.FILE fp);
+	/**
+	 * Original signature : <code>uint32_t gdp_buf_get_uint32(gdp_buf_t*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:28</i><br>
+	 * @deprecated use the safer method {@link #gdp_buf_get_uint32(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	int gdp_buf_get_uint32(Pointer buf);
+	/**
+	 * Original signature : <code>uint32_t gdp_buf_get_uint32(gdp_buf_t*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:28</i>
+	 */
+	int gdp_buf_get_uint32(PointerByReference buf);
+	/**
+	 * Original signature : <code>void gdp_buf_put_uint32(gdp_buf_t*, const uint32_t)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:30</i><br>
+	 * @deprecated use the safer method {@link #gdp_buf_put_uint32(com.sun.jna.ptr.PointerByReference, int)} instead
+	 */
+// 	@Deprecated 
+	void gdp_buf_put_uint32(Pointer buf, int v);
+	/**
+	 * Original signature : <code>void gdp_buf_put_uint32(gdp_buf_t*, const uint32_t)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:30</i>
+	 */
+	void gdp_buf_put_uint32(PointerByReference buf, int v);
+	/**
+	 * Original signature : <code>uint64_t gdp_buf_get_uint64(gdp_buf_t*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:32</i><br>
+	 * @deprecated use the safer method {@link #gdp_buf_get_uint64(com.sun.jna.ptr.PointerByReference)} instead
+	 */
+// 	@Deprecated 
+	long gdp_buf_get_uint64(Pointer buf);
+	/**
+	 * Original signature : <code>uint64_t gdp_buf_get_uint64(gdp_buf_t*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:32</i>
+	 */
+	long gdp_buf_get_uint64(PointerByReference buf);
+	/**
+	 * Original signature : <code>void gdp_buf_put_uint64(gdp_buf_t*, const uint64_t)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:34</i><br>
+	 * @deprecated use the safer method {@link #gdp_buf_put_uint64(com.sun.jna.ptr.PointerByReference, long)} instead
+	 */
+// 	@Deprecated 
+	void gdp_buf_put_uint64(Pointer buf, long v);
+	/**
+	 * Original signature : <code>void gdp_buf_put_uint64(gdp_buf_t*, const uint64_t)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:34</i>
+	 */
+	void gdp_buf_put_uint64(PointerByReference buf, long v);
+	/**
+	 * Original signature : <code>void gdp_buf_get_timespec(gdp_buf_t*, EP_TIME_SPEC*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:36</i><br>
+	 * @deprecated use the safer method {@link #gdp_buf_get_timespec(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.EP_TIME_SPEC)} instead
+	 */
+// 	@Deprecated 
+	void gdp_buf_get_timespec(Pointer buf, EP_TIME_SPEC ts);
+	/**
+	 * Original signature : <code>void gdp_buf_get_timespec(gdp_buf_t*, EP_TIME_SPEC*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:36</i>
+	 */
+	void gdp_buf_get_timespec(PointerByReference buf, EP_TIME_SPEC ts);
+	/**
+	 * Original signature : <code>void gdp_buf_put_timespec(gdp_buf_t*, EP_TIME_SPEC*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:38</i><br>
+	 * @deprecated use the safer method {@link #gdp_buf_put_timespec(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.EP_TIME_SPEC)} instead
+	 */
+// 	@Deprecated 
+	void gdp_buf_put_timespec(Pointer buf, EP_TIME_SPEC ts);
+	/**
+	 * Original signature : <code>void gdp_buf_put_timespec(gdp_buf_t*, EP_TIME_SPEC*)</code><br>
+	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:38</i>
+	 */
+	void gdp_buf_put_timespec(PointerByReference buf, EP_TIME_SPEC ts);
 	/**
 	 * Original signature : <code>void _gdp_stat_init()</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_stat.h:1</i>
@@ -1329,27 +1495,49 @@ public interface Gdp10Library extends Library {
 	 */
 	ByValue gdp_gcl_read(PointerByReference gclh, long recno, PointerByReference datum);
 	/**
-	 * Original signature : <code>EP_STAT gdp_gcl_subscribe(gdp_gcl_t*, gdp_recno_t, gdp_recno_t, gdp_gcl_sub_cbfunc_t, void*)</code><br>
+	 * Original signature : <code>EP_STAT gdp_gcl_subscribe(gdp_gcl_t*, gdp_recno_t, int32_t, EP_TIME_SPEC*, gdp_gcl_sub_cbfunc_t, void*)</code><br>
 	 * @param gclh readable GCL handle<br>
 	 * @param start first record to retrieve<br>
-	 * @param stop last record to retrieve<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:137</i><br>
-	 * @deprecated use the safer method {@link #gdp_gcl_subscribe(com.sun.jna.ptr.PointerByReference, long, long, org.terraswarm.gdp.Gdp10Library.gdp_gcl_sub_cbfunc_t, com.sun.jna.Pointer)} instead
+	 * @param numrecs number of records to retrieve<br>
+	 * @param timeout timeout<br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:138</i><br>
+	 * @deprecated use the safer method {@link #gdp_gcl_subscribe(com.sun.jna.ptr.PointerByReference, long, int, org.terraswarm.gdp.EP_TIME_SPEC, org.terraswarm.gdp.Gdp10Library.gdp_gcl_sub_cbfunc_t, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
-	ByValue gdp_gcl_subscribe(Pointer gclh, long start, long stop, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
+	ByValue gdp_gcl_subscribe(Pointer gclh, long start, int numrecs, EP_TIME_SPEC timeout, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
 	/**
-	 * Original signature : <code>EP_STAT gdp_gcl_subscribe(gdp_gcl_t*, gdp_recno_t, gdp_recno_t, gdp_gcl_sub_cbfunc_t, void*)</code><br>
+	 * Original signature : <code>EP_STAT gdp_gcl_subscribe(gdp_gcl_t*, gdp_recno_t, int32_t, EP_TIME_SPEC*, gdp_gcl_sub_cbfunc_t, void*)</code><br>
 	 * @param gclh readable GCL handle<br>
 	 * @param start first record to retrieve<br>
-	 * @param stop last record to retrieve<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:137</i>
+	 * @param numrecs number of records to retrieve<br>
+	 * @param timeout timeout<br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:138</i>
 	 */
-	ByValue gdp_gcl_subscribe(PointerByReference gclh, long start, long stop, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
+	ByValue gdp_gcl_subscribe(PointerByReference gclh, long start, int numrecs, EP_TIME_SPEC timeout, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
+	/**
+	 * read multiple records (no subscriptions)<br>
+	 * Original signature : <code>EP_STAT gdp_gcl_multiread(gdp_gcl_t*, gdp_recno_t, int32_t, gdp_gcl_sub_cbfunc_t, void*)</code><br>
+	 * @param gclh readable GCL handle<br>
+	 * @param start first record to retrieve<br>
+	 * @param numrecs number of records to retrieve<br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:146</i><br>
+	 * @deprecated use the safer method {@link #gdp_gcl_multiread(com.sun.jna.ptr.PointerByReference, long, int, org.terraswarm.gdp.Gdp10Library.gdp_gcl_sub_cbfunc_t, com.sun.jna.Pointer)} instead
+	 */
+// 	@Deprecated 
+	ByValue gdp_gcl_multiread(Pointer gclh, long start, int numrecs, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
+	/**
+	 * read multiple records (no subscriptions)<br>
+	 * Original signature : <code>EP_STAT gdp_gcl_multiread(gdp_gcl_t*, gdp_recno_t, int32_t, gdp_gcl_sub_cbfunc_t, void*)</code><br>
+	 * @param gclh readable GCL handle<br>
+	 * @param start first record to retrieve<br>
+	 * @param numrecs number of records to retrieve<br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:146</i>
+	 */
+	ByValue gdp_gcl_multiread(PointerByReference gclh, long start, int numrecs, Gdp10Library.gdp_gcl_sub_cbfunc_t cbfunc, Pointer cbarg);
 	/**
 	 * XXX: should this be in a more generic "getstat" function?<br>
 	 * Original signature : <code>gcl_name_t* gdp_gcl_getname(const gdp_gcl_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:142</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:151</i><br>
 	 * @deprecated use the safer method {@link #gdp_gcl_getname(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 // 	@Deprecated 
@@ -1357,13 +1545,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * XXX: should this be in a more generic "getstat" function?<br>
 	 * Original signature : <code>gcl_name_t* gdp_gcl_getname(const gdp_gcl_t*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:142</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:151</i>
 	 */
 	Pointer gdp_gcl_getname(PointerByReference gclh);
 	/**
 	 * check to see if a GCL name is valid<br>
 	 * Original signature : <code>bool gdp_gcl_name_is_zero(const gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:147</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:156</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_name_is_zero(java.nio.ByteBuffer)} and {@link #gdp_gcl_name_is_zero(com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1371,7 +1559,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * check to see if a GCL name is valid<br>
 	 * Original signature : <code>bool gdp_gcl_name_is_zero(const gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:147</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:156</i>
 	 */
 	byte gdp_gcl_name_is_zero(ByteBuffer gcl_name_t1);
 	/**
@@ -1380,24 +1568,24 @@ public interface Gdp10Library extends Library {
 	 * @param gclh GCL handle to print<br>
 	 * @param fp file to print it to<br>
 	 * @param detail not used at this time<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:155</i><br>
-	 * @deprecated use the safer method {@link #gdp_gcl_print(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference, int, int)} instead
+	 * <i>native declaration : src/gdp/gdp/gdp.h:164</i><br>
+	 * @deprecated use the safer method {@link #gdp_gcl_print(com.sun.jna.ptr.PointerByReference, org.terraswarm.gdp.Gdp10Library.FILE, int, int)} instead
 	 */
 // 	@Deprecated 
-	void gdp_gcl_print(Pointer gclh, Pointer fp, int detail, int indent);
+	void gdp_gcl_print(Pointer gclh, Gdp10Library.FILE fp, int detail, int indent);
 	/**
 	 * print a GCL (for debugging)<br>
 	 * Original signature : <code>void gdp_gcl_print(const gdp_gcl_t*, FILE*, int, int)</code><br>
 	 * @param gclh GCL handle to print<br>
 	 * @param fp file to print it to<br>
 	 * @param detail not used at this time<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:155</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:164</i>
 	 */
-	void gdp_gcl_print(PointerByReference gclh, PointerByReference fp, int detail, int indent);
+	void gdp_gcl_print(PointerByReference gclh, Gdp10Library.FILE fp, int detail, int indent);
 	/**
 	 * make a printable GCL name from a binary version<br>
 	 * Original signature : <code>char* gdp_gcl_printable_name(const gcl_name_t, gcl_pname_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:160</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:169</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_printable_name(java.nio.ByteBuffer, java.nio.ByteBuffer)} and {@link #gdp_gcl_printable_name(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1405,13 +1593,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * make a printable GCL name from a binary version<br>
 	 * Original signature : <code>char* gdp_gcl_printable_name(const gcl_name_t, gcl_pname_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:160</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:169</i>
 	 */
 	Pointer gdp_gcl_printable_name(ByteBuffer internal, ByteBuffer external);
 	/**
 	 * make a binary GCL name from a printable version<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_internal_name(const gcl_pname_t, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:165</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:174</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_internal_name(java.nio.ByteBuffer, java.nio.ByteBuffer)} and {@link #gdp_gcl_internal_name(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1419,13 +1607,13 @@ public interface Gdp10Library extends Library {
 	/**
 	 * make a binary GCL name from a printable version<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_internal_name(const gcl_pname_t, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:165</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:174</i>
 	 */
 	ByValue gdp_gcl_internal_name(ByteBuffer external, ByteBuffer internal);
 	/**
 	 * parse a (possibly human-friendly) GCL name<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_parse_name(const char*, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:170</i><br>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:179</i><br>
 	 * @deprecated use the safer methods {@link #gdp_gcl_parse_name(java.lang.String, java.nio.ByteBuffer)} and {@link #gdp_gcl_parse_name(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1433,71 +1621,62 @@ public interface Gdp10Library extends Library {
 	/**
 	 * parse a (possibly human-friendly) GCL name<br>
 	 * Original signature : <code>EP_STAT gdp_gcl_parse_name(const char*, gcl_name_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:170</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:179</i>
 	 */
 	ByValue gdp_gcl_parse_name(String ext, ByteBuffer internal);
 	/**
 	 * allocate a new message<br>
 	 * Original signature : <code>void** gdp_datum_new()</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:175</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:184</i>
 	 */
 	PointerByReference gdp_datum_new();
 	/**
 	 * free a message<br>
 	 * Original signature : <code>void gdp_datum_free(void**)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:180</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:189</i>
 	 */
 	void gdp_datum_free(PointerByReference voidPtrPtr1);
 	/**
 	 * print a message (for debugging)<br>
 	 * Original signature : <code>void gdp_datum_print(const void**, FILE*)</code><br>
 	 * @param datum message to print<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:186</i><br>
-	 * @deprecated use the safer method {@link #gdp_datum_print(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference)} instead
+	 * <i>native declaration : src/gdp/gdp/gdp.h:195</i>
 	 */
-// 	@Deprecated 
-	void gdp_datum_print(PointerByReference datum, Pointer fp);
-	/**
-	 * print a message (for debugging)<br>
-	 * Original signature : <code>void gdp_datum_print(const void**, FILE*)</code><br>
-	 * @param datum message to print<br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:186</i>
-	 */
-	void gdp_datum_print(PointerByReference datum, PointerByReference fp);
+	void gdp_datum_print(PointerByReference datum, Gdp10Library.FILE fp);
 	/**
 	 * get the record number from a datum<br>
 	 * Original signature : <code>gdp_recno_t gdp_datum_getrecno(const void**)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:191</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:200</i>
 	 */
 	long gdp_datum_getrecno(PointerByReference datum);
 	/**
 	 * set a record number in a datum<br>
 	 * Original signature : <code>void gdp_datum_setrecno(void**, gdp_recno_t)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:196</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:205</i>
 	 */
 	void gdp_datum_setrecno(PointerByReference datum, long recno);
 	/**
 	 * get the timestamp from a datum<br>
 	 * Original signature : <code>void gdp_datum_getts(const void**, EP_TIME_SPEC*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:201</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:210</i>
 	 */
 	void gdp_datum_getts(PointerByReference datum, EP_TIME_SPEC ts);
 	/**
 	 * set the timestamp in a datum<br>
 	 * Original signature : <code>void gdp_datum_setts(void**, EP_TIME_SPEC*)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:206</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:215</i>
 	 */
 	void gdp_datum_setts(PointerByReference datum, EP_TIME_SPEC ts);
 	/**
 	 * get the data length from a datum<br>
 	 * Original signature : <code>size_t gdp_datum_getdlen(const void**)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:211</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:220</i>
 	 */
 	NativeSizeT gdp_datum_getdlen(PointerByReference datum);
 	/**
 	 * get the data buffer from a datum<br>
 	 * Original signature : <code>gdp_buf_t* gdp_datum_getbuf(const void**)</code><br>
-	 * <i>native declaration : src/gdp/gdp/gdp.h:216</i>
+	 * <i>native declaration : src/gdp/gdp/gdp.h:225</i>
 	 */
 	PointerByReference gdp_datum_getbuf(PointerByReference datum);
 	/**
@@ -1515,22 +1694,14 @@ public interface Gdp10Library extends Library {
 	/**
 	 * setting/fetching debug output file<br>
 	 * Original signature : <code>void ep_dbg_setfile(FILE*)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_dbg.h:30</i><br>
-	 * @deprecated use the safer method {@link #ep_dbg_setfile(com.sun.jna.ptr.PointerByReference)} instead
-	 */
-// 	@Deprecated 
-	void ep_dbg_setfile(Pointer fp);
-	/**
-	 * setting/fetching debug output file<br>
-	 * Original signature : <code>void ep_dbg_setfile(FILE*)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_dbg.h:30</i>
 	 */
-	void ep_dbg_setfile(PointerByReference fp);
+	void ep_dbg_setfile(Gdp10Library.FILE fp);
 	/**
 	 * Original signature : <code>FILE* ep_dbg_getfile()</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_dbg.h:32</i>
 	 */
-	PointerByReference ep_dbg_getfile();
+	Gdp10Library.FILE ep_dbg_getfile();
 	/**
 	 * setting debug flags<br>
 	 * Original signature : <code>void ep_dbg_set(const char*)</code><br>
@@ -1558,21 +1729,23 @@ public interface Gdp10Library extends Library {
 	 */
 	void ep_dbg_setto(String pat, int lev);
 	/**
-	 * Original signature : <code>int ep_dbg_printf(const char*, null)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_dbg.h:41</i><br>
+	 * printing debug output (uses stddbg)<br>
+	 * Original signature : <code>void ep_dbg_printf(const char*, null)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_dbg.h:44</i><br>
 	 * @deprecated use the safer methods {@link #ep_dbg_printf(java.lang.String, java.lang.Object)} and {@link #ep_dbg_printf(com.sun.jna.Pointer, java.lang.Object)} instead
 	 */
 // 	@Deprecated 
-	int ep_dbg_printf(Pointer fmt, Object... varArgs1);
+	void ep_dbg_printf(Pointer fmt, Object... varArgs1);
 	/**
-	 * Original signature : <code>int ep_dbg_printf(const char*, null)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_dbg.h:41</i>
+	 * printing debug output (uses stddbg)<br>
+	 * Original signature : <code>void ep_dbg_printf(const char*, null)</code><br>
+	 * <i>native declaration : src/gdp/ep/ep_dbg.h:44</i>
 	 */
-	int ep_dbg_printf(String fmt, Object... varArgs1);
+	void ep_dbg_printf(String fmt, Object... varArgs1);
 	/**
 	 * crackarg parsing<br>
 	 * Original signature : <code>EP_STAT epCavDebug(const char*, void*)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_dbg.h:46</i><br>
+	 * <i>native declaration : src/gdp/ep/ep_dbg.h:49</i><br>
 	 * @deprecated use the safer methods {@link #epCavDebug(java.lang.String, com.sun.jna.Pointer)} and {@link #epCavDebug(com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
 	 */
 // 	@Deprecated 
@@ -1580,7 +1753,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * crackarg parsing<br>
 	 * Original signature : <code>EP_STAT epCavDebug(const char*, void*)</code><br>
-	 * <i>native declaration : src/gdp/ep/ep_dbg.h:46</i>
+	 * <i>native declaration : src/gdp/ep/ep_dbg.h:49</i>
 	 */
 	ByValue epCavDebug(String vp, Pointer rp);
 	/** current generation */
@@ -1601,6 +1774,14 @@ public interface Gdp10Library extends Library {
 			super();
 		}
 	};
+	public static class EP_THR_COND extends PointerType {
+		public EP_THR_COND(Pointer address) {
+			super(address);
+		}
+		public EP_THR_COND() {
+			super();
+		}
+	};
 	public static class gdp_buf_t extends PointerType {
 		public gdp_buf_t(Pointer address) {
 			super(address);
@@ -1617,11 +1798,27 @@ public interface Gdp10Library extends Library {
 			super();
 		}
 	};
+	public static class EP_THR_RWLOCK extends PointerType {
+		public EP_THR_RWLOCK(Pointer address) {
+			super(address);
+		}
+		public EP_THR_RWLOCK() {
+			super();
+		}
+	};
 	public static class EP_STAT_HANDLE extends PointerType {
 		public EP_STAT_HANDLE(Pointer address) {
 			super(address);
 		}
 		public EP_STAT_HANDLE() {
+			super();
+		}
+	};
+	public static class EP_THR_MUTEX extends PointerType {
+		public EP_THR_MUTEX(Pointer address) {
+			super(address);
+		}
+		public EP_THR_MUTEX() {
 			super();
 		}
 	};
