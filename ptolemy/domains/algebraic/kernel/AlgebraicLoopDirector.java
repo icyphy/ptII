@@ -358,7 +358,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method, then identify all the break variables
      *  (where an input port has a defaultValue set) and adjust the I/O
-     *  dependencies so that the super
+     *  dependencies.
      *  @exception IllegalActionException If the superclass throws it.
      */
     @Override
