@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CommunicationAnomalyDetectionCompositeCommunicationAspect" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CommunicationAnomalyDetectionCQM" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 1398, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1398, 874}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1164, 768]">
     </property>
@@ -342,7 +342,7 @@
                 <property name="inputPort" class="ptolemy.data.expr.StringParameter" value="in">
                 </property>
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {ServiceChannel}">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: ServiceChannel">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1285,13 +1285,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 80.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 22, 1390, 878}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1161, 768]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0956633193209697">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{524.2525934304915, 333.0908203125}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{544.7880988209105, 331.2654420555739}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The communication channel model as a Composite QM. &#10;Communication delay evolves according to a Hidden Markov&#10;Model with Rician emission probabilities. &#10;&#10;The modal model generates a latency value, drawn from the&#10;corresponding rician distribution at each state, which is&#10;consequently used as the &quot;delay&quot; value that is used to&#10;delay the particular packet by the produced delay amount.&#10;&#10;The &quot;label&quot; of each data point indicates which communication&#10;state was used for the transmission of the packet, and for&#10;this particular three state communication scheme, takes an &#10;integer value in {0,1,2}. For this particular setting:&#10;Label 0 : Low Latency service link ( WiFi)&#10;Label 1 : Higher Latency service link (GSM)&#10;Label 2 : Anomalous link with high latency &#10;&#10;Note that this model  allows packets to be received in arbitrary&#10;order by the receiver.&#10;&#10;">
@@ -1306,7 +1306,7 @@
             </property>
         </entity>
         <entity name="out" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 470.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 470.0]">
             </property>
             <property name="Parameter" class="ptolemy.data.expr.Parameter" value="">
             </property>
@@ -1332,8 +1332,6 @@
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1823,7 +1821,7 @@
             </property>
             <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 470.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 470.0]">
             </property>
         </entity>
         <entity name="UpdateLabels" class="ptolemy.actor.lib.RecordUpdater">
@@ -1929,8 +1927,6 @@
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.input&quot;,x=590.0,y=470.0}, tail={id=&quot;UpdateCompositeCommunicationAspectToken.output&quot;,x=425.0,y=450.0}, points={} } }">
-            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out.input&quot;,x=665.0,y=470.0}, tail={id=&quot;TimeDelay.output&quot;,x=590.0,y=470.0}, points={} } }">
