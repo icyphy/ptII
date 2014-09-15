@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -1116,21 +1117,14 @@ public class Manager extends NamedObj implements Runnable {
         // OK, then we need to initialize this actor.  However, we
         // don't need to initialize any actors contained by this
         // actor.
-        List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
-
-        for (Actor otherActor : list) {
-            NamedObj otherActorContainer = otherActor.getContainer();
-
-            while (otherActorContainer != null) {
-                // If otherActor is contained by actor, then remove it.
-                if (otherActorContainer == actor) {
-                    _actorsToInitialize.remove(otherActor);
-                    otherActorContainer = null;
-                } else {
-                    otherActorContainer = otherActorContainer.getContainer();
-                }
-            }
-        }
+    	if (actor instanceof CompositeEntity) {
+    		List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
+    		for (Actor otherActor : list) {
+    			if (((CompositeEntity)actor).deepContains((NamedObj)otherActor)) {
+        			_actorsToInitialize.remove(otherActor);    				
+    			}
+    		}
+    	}
 
         // Lastly, add this actor to the actors to initialize.
         _actorsToInitialize.add(actor);
