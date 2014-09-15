@@ -189,8 +189,6 @@ public class ImportAccessorAction extends AbstractAction {
     		}
     		buffer.append("</group>\n");
 
-    		// TODO set location
-
     		MoMLChangeRequest request = new MoMLChangeRequest(this,
     				context, buffer.toString()) {
     			@Override
