@@ -62,9 +62,18 @@ public class LoggerListener implements DebugListener {
         _logger = Logger.getLogger(name);
         _logger.setLevel(level);
         if (directory != null) {
+            if (!directory.exists()) {
+            	// Attempt to create the directory.
+            	try {
+            		directory.mkdir();
+            	} catch (SecurityException ex) {
+            		throw new IllegalActionException("Failed to create directory for log file: "
+                            + directory.getPath());
+            	}
+            }
             if (!directory.isDirectory()) {
                 throw new IllegalActionException(
-                        "Directory for log file does not exist: "
+                        "Cannot create directory for log file. There is a file in the way: "
                                 + directory.getPath());
             }
             if (!directory.canWrite()) {
