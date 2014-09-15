@@ -61,8 +61,11 @@ JSRCS = \
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-all: suball
-install: subinstall
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass 
+install: jclass jars
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
@@ -136,6 +139,7 @@ jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
 	    -e 's#\(.*@Deprecated.*\)#// \1#' \
 	    -e 's@\(.*(Pointer)1.*\)@// \1@' \
 	    -e 's@public static final int EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);@public static final long /* Fixed by makefile, was int, Coverity warned about bad shift. */ EP_STAT_MAX_DETAIL = (long)((1 << 42) - 1);@' \
+	    -e 's@public static final int _EP_STAT_SEVSHIFT = (int)((10 + 8) + 11);@public static final int _EP_STAT_SEVSHIFT = (int)((42 + 8) + 11); // Fixed by makefile, see http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done

@@ -81,7 +81,6 @@ public class ReaderTest {
      */
     public static EP_STAT do_read(Pointer gclh, long /*gdp_recno_t*/ firstrec) {
         // Was: EP_STAT do_read(gdp_gcl_t *gclh, gdp_recno_t firstrec)
-
 	EP_STAT estat;
 	long /*gdp_recno_t*/ recno = firstrec;
 	// Was: gdp_datum_t *datum = gdp_datum_new();

@@ -523,7 +523,7 @@ public interface Gdp10Library extends Library {
 	 * ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((14) & ((1UL << 10) - 1)))
 	 */
 	/** <i>native declaration : src/gdp/ep/ep_stat.h</i> */
-	public static final int _EP_STAT_SEVSHIFT = (int)((10 + 8) + 11);
+	public static final int _EP_STAT_SEVSHIFT = (int)((42 + 8) + 11); // Fixed by makefile, see http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit
 	/**
 	 * define<br>
 	 * Conversion Error : ((((5) & ((1UL << 3) - 1)) << ((10 + 8) + 11)) | (((0x103) & ((1UL << 11) - 1)) << (10 + 8)) | (((1) & ((1UL << 8) - 1)) << 10) | ((16) & ((1UL << 10) - 1)))<br>

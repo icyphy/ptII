@@ -39,7 +39,11 @@ import com.sun.jna.ptr.PointerByReference;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import org.ptolemy.fmi.NativeSizeT;
 
@@ -82,12 +86,30 @@ public class GdpUtilities {
      */
     public static boolean EP_STAT_ISOK(EP_STAT estat) {
         long code = estat.code.longValue();
-        //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
-        long EP_STAT_SEVERITY = (code >> Gdp10Library._EP_STAT_SEVSHIFT) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1);
 
-        //_debug("EP_STAT_ISOK(): code: " + code + ", EP_STAT_SEVERITY: " + EP_STAT_SEVERITY 
-        //        + ", EP_STAT_SEV_WARN: " + EP_STAT_SEV_WARN 
-        //        + "EP_STAT_SEVERITY < EP_STAT_SEV_WARN: " + (EP_STAT_SEVERITY < EP_STAT_SEV_WARN));
+        // For a discussion about unsigned longs, see
+        // See http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit
+        
+        //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
+        long EP_STAT_SEVERITY = (code >>> Gdp10Library._EP_STAT_SEVSHIFT) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1);
+        //BigInteger big = BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT).and(
+        //        BigInteger.valueOf(((1l << Gdp10Library._EP_STAT_SEVBITS) - 1l)));
+//         System.out.println("EP_STAT_ISOK(): code: " + code + " " + Long.toHexString(code)
+//                 + ", (code >> Gdp10Library._EP_STAT_SEVSHIFT): " + (code >> Gdp10Library._EP_STAT_SEVSHIFT) + " " + Long.toHexString((code >> Gdp10Library._EP_STAT_SEVSHIFT))
+//                 + ", (code >>> Gdp10Library._EP_STAT_SEVSHIFT): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> Gdp10Library._EP_STAT_SEVSHIFT))
+//                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT + 1): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+1)))
+//                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT +2): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+2)))
+
+//                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT +3): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+3)))
+
+//                 + ", ((1l << Gdp10Library._EP_STAT_SEVBITS)): " + ((1l << Gdp10Library._EP_STAT_SEVBITS))
+//                 + ", ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1): " + ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)
+//                 //+ ", BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT): " + BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT)
+//                 //+ ", BigInteger.valueOf(((1l << Gdp10Library._EP_STAT_SEVBITS) - 1l)): " + BigInteger.valueOf(((1l << Gdp10Library._EP_STAT_SEVBITS) - 1l))
+//                 + ", EP_STAT_SEVERITY: " + EP_STAT_SEVERITY + " " + Long.toHexString(EP_STAT_SEV_WARN)
+//                 //+ ", EP_STAT_SEVERITY as big: " + big
+//                 + ", EP_STAT_SEV_WARN: " + EP_STAT_SEV_WARN + " " + Long.toHexString(EP_STAT_SEV_WARN)
+//                 + "EP_STAT_SEVERITY < EP_STAT_SEV_WARN: " + (EP_STAT_SEVERITY < EP_STAT_SEV_WARN));
         return EP_STAT_SEVERITY < Gdp10Library.EP_STAT_SEV_WARN;
     }
     
@@ -170,16 +192,25 @@ public class GdpUtilities {
             //Gdp10Library.INSTANCE.ep_time_format(ts, tbuf, new NativeSizeT(TBUF_SIZE), (byte)1 /*human*/);
             //System.out.println("ts: " + ts + "tbuf: " + tbuf);
 
-            System.out.println("tv_sec: " + ts.tv_sec + ", tv_nsec: " + ts.tv_nsec + " +/- " + ts.tv_accuracy);
+            Date myDate = new Date(ts.tv_sec*1000);
+            // The format is from ep/ep_time.c, converted to Java.
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.'" + ts.tv_nsec +"Z'");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            System.out.println(" timestamp " + dateFormat.format(myDate));
         } else {
-            System.out.print(", no timestamp ");
+            System.out.print(" no timestamp ");
         }
 
         if (length.longValue() > 0) {
             // gdp_api.c has
             //fprintf(fp, "\n	 %s%.*s%s", EpChar->lquote, l, d, EpChar->rquote);
-            System.out.print("\n  \"" + d.getString(0) + "\"");
-
+            byte [] bytes = d.getByteArray(0, length.intValue());
+            System.out.print("\n  \"" + /*d.getString(0)*/ new String(bytes) + "\"");
+            if (d.getString(0).length() != length.intValue()) {
+                // Check for garbage being printed.  Could be a bug here
+                System.out.print(" (Warning, the length of \"" + d.getString(0) + "\" is "
+                        + d.getString(0).length() + ", which is not the same as " + length);
+            }
         }
         System.out.println("");
     }
