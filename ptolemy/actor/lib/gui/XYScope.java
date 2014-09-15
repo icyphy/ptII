@@ -148,6 +148,7 @@ public class XYScope extends XYPlotter {
     @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
+        plot.repaint();
         Thread.yield();
         return result;
     }
