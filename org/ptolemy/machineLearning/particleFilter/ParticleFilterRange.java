@@ -166,8 +166,13 @@ public class ParticleFilterRange extends ParticleFilter {
         y_update = new Parameter(this, "y_update");
         y_update.setExpression("y");
 
-        measurementCovariance.setExpression("[5.0]");
-        prior.setExpression("{random()*20-10,random()*20-10}");
+        measurementCovariance.setExpression("[2.0]");
+        prior.setExpression("{random()*200-100,random()*200-100}");
+        
+        processNoise
+        .setExpression("multivariateGaussian({0.0,0.0},[3.0,0.0;0.0,3.0])");
+        
+        particleCount.setExpression("2000");
 
         bootstrap.setVisibility(Settable.EXPERT);
         lowVarianceSampler.setVisibility(Settable.EXPERT);
