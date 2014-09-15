@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 58, 929, 382}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 58, 929, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 272]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3752479454423945">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.04600013041534, 82.43719103984499}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.0460001304153, 174.05703342358902}">
     </property>
     <property name="ID" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -59,9 +59,9 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A robot that moves in a circle.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-30.0, 45.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Robot">
             </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
         </property>
     </property>
