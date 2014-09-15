@@ -3,7 +3,9 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Optimization" class="ptolemy.moml.EntityLibrary">
   <input source="compositeOptimizer.xml"/>
+  <input source="trajectoryOptimizer.xml"/> 
 </entity>
+
 
      
 
