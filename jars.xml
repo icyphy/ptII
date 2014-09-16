@@ -732,6 +732,12 @@
 	<include name="ptolemy/actor/lib/javasound/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jopio/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -4024,14 +4030,32 @@
 	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+        
         <include name="org/ptolemy/ptango/demo/*/*.gif"/>
         <include name="org/ptolemy/ptango/demo/*/*.png"/>
+        <include name="org/ptolemy/ptango/demo/*/*.txt"/>
         <include name="org/ptolemy/ptango/demo/*/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/*/files/*.html"/>
-        <include name="org/ptolemy/ptango/demo/*/pages/*.html"/>
+        <include name="org/ptolemy/ptango/demo/*/*.xsl"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.cfg"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.css"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.csv"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.ddy"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.epw"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.jpg"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.js"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.htm"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.html"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.idf"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.gif"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.osm"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.pdf"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.png"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.skp"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.stat"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.svg"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.txt"/>
+        <include name="org/ptolemy/ptango/demo/*/*/*.xsl"/>
         <include name="org/ptolemy/ptango/demo/files/*.gif"/>
-	<include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
-	<include name="org/ptolemy/ptango/demo/WebServerDE/img/*.gif"/>
       </fileset>
     </jar>
 
@@ -5743,6 +5767,14 @@
         <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.png"/>
        </fileset>
     </jar>
+    
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/Chat.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
+       </fileset>
+    </jar>
 
     <jar defaultexcludes="yes"
          destfile="${basedir}/org/ptolemy/ptango/demo/Cookies/Cookies.jar"
@@ -5764,6 +5796,14 @@
         <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.js"/>
         <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.jpg"/>
         <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.html"/>
+       </fileset>
+    </jar>
+    
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Exception/Exception.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Exception/*.xml"/>
        </fileset>
     </jar>
 

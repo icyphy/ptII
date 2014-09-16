@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/javascript
+ME =		ptolemy/actor/lib/js
 
 DIRS = 		demo doc test
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	mail
+PTPACKAGE = 	js
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -65,7 +65,12 @@ MISC_FILES =	doc test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR) \
+	JavaScript$ParameterProxy.class \
+	JavaScript$PortProxy.class \
+	JavaScript$PtolemyFunctionObject.class \
+	JavaScript$PtolemyJavaScript.class \
+	JavaScript$PtolemyJavaScript$1.class \
+	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
