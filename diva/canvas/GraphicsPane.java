@@ -50,32 +50,32 @@ import diva.canvas.event.EventLayer;
  *
  * Typical uses of each of these layers include:
  *
- * <dt>
+ * <dl>
  * <dt>Foreground event layer</dt>
  * <dd>Grid or object snapping, stroke filtering,
  * event monitoring and debugging, event grab, etc.
  * By default, this layer is not enabled. If you
  * enable it, but still want events to go through to
- * the underlying figure layers, use setConsuming(false).
+ * the underlying figure layers, use setConsuming(false).</dd>
  *
  * <dt>Overlay</dt>
  * <dd>An overlay layer for drag-selection outlining and so
  * on. By default, this layer is an instance of OverlayLayer
- * and is set visible.
+ * and is set visible.</dd>
  *
  * <dt>Foreground graphics</dt>
  * <dd>The main application graphics. By default, this layer
- * is an instance of FigureLayer and is set enabled and visible.
+ * is an instance of FigureLayer and is set enabled and visible.</dd>
  *
  * <dt>Background graphics
  * <dd>Auxiliary, non-interactive graphics. By default,
  * this layer is an instance of FigureLayer but is set
- * not visible and not enabled..
+ * not visible and not enabled.</dd>
  *
  *  <dt>Background Event</dt>
  * <dd>"Last chance" event handling layer,
  * for things such as drag-selection rectangle, panning/zooming, etc.
- * By default, this layer is enabled.
+ * By default, this layer is enabled.</dd>
  *
  * </dl>
  *

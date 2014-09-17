@@ -190,7 +190,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * according to its type. If the event represents a mouse click, drag,
      * or release, call the protected method <b>processLayerEvent</b>;
      * if it represents a mouse movement, call the protected method
-     * </b>processLayerMotionEvent</b>. Currently other events types
+     * <b>processLayerMotionEvent</b>. Currently other events types
      * are not handled.
      */
     @Override

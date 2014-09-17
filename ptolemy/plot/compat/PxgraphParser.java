@@ -52,348 +52,353 @@ import ptolemy.plot.PlotBox;
 //// PxgraphParser
 
 /**
- This class provides backwards compatibility with an older plotting
- program, pxgraph.  It provides two methods, one for parsing command-line
- arguments, and one for reading binary data from a file. In pxgraph,
- the binary files have no format information; all format information
- is provided by command line arguments.
- <p>
- Below we describe the <code>pxgraph</code> arguments.  The
- text is based on the <code>xgraph</code> Unix man page written
- by David Harrison (University of California).
- To see the command line options, you can type
- <code>pxgraph -help</code>.
- <p>
- The <code>pxgraph</code> program draws a graph on a display given data
- read from either data files or from standard input if one of the
- arguments is a dash. It can display up to 64 independent
- data sets using different colors and/or line styles for each
- set. It annotates the graph with a title, axis labels,
- grid lines or tick marks, grid labels, and a legend. There
- are options to control the appearance of most components of
- the graph.
- <p>
- The input format is similar to <code>graph(<i>1G</i>)</code> but differs
- slightly. The data consists of a number of <I>data</I> <I>sets</I>. Data
- sets are separated by a blank line. A new data set is also
- assumed at the start of each input file. A data set consists
- of an ordered list of points of the form <code><i>directive</i>
- X Y</code>.
+This class provides backwards compatibility with an older plotting
+program, pxgraph.  It provides two methods, one for parsing command-line
+arguments, and one for reading binary data from a file. In pxgraph,
+the binary files have no format information; all format information
+is provided by command line arguments.
 
- The directive is either <code>draw</code> or <code>move</code> and can
- be omitted (Note that with binary data files, you must have a directive,
- the above statement only applies to ascii format data files). If the
- directive is <code>draw</code>, a line will be drawn
- between the previous point and the current point (if a line
- graph is chosen). Specifying a <code>move</code> directive tells
- xgraph not to draw a line between the points. If the directive
- is omitted, <code>draw</code> is assumed for all points in a data
- set except the first point where <code>move</code> is assumed. The
- <code>move</code> directive is used most often to allow discontinuous
- data in a data set.
+<p>Below we describe the <code>pxgraph</code> arguments.  The text is
+  based on the <code>xgraph</code> Unix man page written by David
+  Harrison (University of California).  To see the command line
+  options, you can type
+  <code>pxgraph -help</code>.</p>
 
- After <code>pxgraph</code> has read the data, it will create a new window
- to graphically display the data.
+<p>The <code>pxgraph</code> program draws a graph on a display given
+  data read from either data files or from standard input if one of
+  the arguments is a dash. It can display up to 64 independent data
+  sets using different colors and/or line styles for each set. It
+  annotates the graph with a title, axis labels, grid lines or tick
+  marks, grid labels, and a legend. There are options to control the
+  appearance of most components of the graph.</p>
 
- Once the window has been opened, all of the data sets will
- be displayed graphically (subject to the options explained
- below) with a legend in the upper right corner of the
- screen. To zoom in on a portion of the graph, depress a
- mouse button in the window and sweep out a region. <code>pxgraph</code>
- will then the window will be redrawn with just that portion of
- the graph. <code>pxgraph</code> also presents four control buttons in
- the lower left corner of each window: <code>Exit</code>,
- <code>Print</code>, <code>HTML</code> and <code>About</code>.
- <p>The <code>Exit</code> button will exit the process.  You can also
- type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
- to exit.
- <p>The <code>Print</code> button brings up a print dialog window.
- <p>The <code>About</code> button brings up a message about
- <code>pxgraph</code>.
- <p>The <code>HTML</code> button prints an HTML file to stdout that
- can be used to display the file with applet <code>Plot</code> classes
- (Experimental).
- <p>
- <code>pxgraph</code> accepts a large number of command line options.
- A list of these options is given below.
- <p>
+<p>The input format is similar to <code>graph(<i>1G</i>)</code> but differs
+  slightly. The data consists of a number of <I>data</I> <I>sets</I>. Data
+  sets are separated by a blank line. A new data set is also
+  assumed at the start of each input file. A data set consists
+  of an ordered list of points of the form <code><i>directive</i>
+    X Y</code>.</p>
 
- <dl>
- <dt><code>=<i>W</i>x<i>H</i>+<i>X</i>+<i>Y</i></code>
- <dd>Specifies the initial size and location of the pxgraph
- window.
+<p>The directive is either <code>draw</code> or <code>move</code> and can
+  be omitted (Note that with binary data files, you must have a directive,
+  the above statement only applies to ascii format data files). If the
+  directive is <code>draw</code>, a line will be drawn
+  between the previous point and the current point (if a line
+  graph is chosen). Specifying a <code>move</code> directive tells
+  xgraph not to draw a line between the points. If the directive
+  is omitted, <code>draw</code> is assumed for all points in a data
+  set except the first point where <code>move</code> is assumed. The
+  <code>move</code> directive is used most often to allow discontinuous
+  data in a data set.</p>
 
- <dt> <code>-<i>&lt;digit&gt; &lt;name&gt;</i></code>
- <dd> These options specify the data
- set name for the corresponding data set. The digit
- should be in the range 0 to 63. This name will be
- used in the legend.
+<p>After <code>pxgraph</code> has read the data, it will create a new window
+  to graphically display the data.</p>
 
- <dt><code>-bar</code>
- <dd>Specifies that vertical bars should be drawn from the
- data points to a base point which can be specified with
- <code>-brb</code>.
- Usually, the <code>-nl</code> flag is used with this option.
- The point itself is located at the center of the bar.
+<p> Once the window has been opened, all of the data sets will
+  be displayed graphically (subject to the options explained
+  below) with a legend in the upper right corner of the
+  screen. To zoom in on a portion of the graph, depress a
+  mouse button in the window and sweep out a region. <code>pxgraph</code>
+  will then the window will be redrawn with just that portion of
+  the graph. <code>pxgraph</code> also presents four control buttons in
+  the lower left corner of each window: <code>Exit</code>,
+  <code>Print</code>, <code>HTML</code> and <code>About</code>.</p>
 
- <dt><code>-bb</code>
- <dd>Draw a bounding box around the data region. This is
- very useful if you prefer to see tick marks rather than
- grid lines (see <code>-tk</code>).
- <b>Ignored in the Java version because the plotting area is a different
- color than the border where the axes are labeled.</b>
+<p>The <code>Exit</code> button will exit the process.  You can also
+  type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
+  to exit.</p>
 
- <dt><code>-bd</code> <code><i>&lt;color&gt;</i></code>
- <dd>This specifies the border color of the <code>pxgraph</code> window.
- <b>Unsupported in the Java version.</b>
+<p>The <code>Print</code> button brings up a print dialog window.</p>
 
- <dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
- <dd>Background color of the area where the labels and legend are rendered.
- <b>In the Java version, this argument takes hexadecimal color values
- (<code>fffff</code>), not color names.</b>  Note that the background
- of the data plotting region is always white because the dataset colors
- were designed for a white background.
+<p>The <code>About</code> button brings up a message about</p>
+<code>pxgraph</code>.</p>
 
- <dt><a name="bigendianFlag"><code>-bigendian</code></a>
- <dd>Data files are in big-endian, or network binary format.
- See the <code>-binary</code> command line argument documentation
- below for details about the format.
- If you are on a little-endian machine, such as a machine
- with an Intel x86 chip, and you would like to read a binary
- format file, created on a big-endian machine, such as a Sun SPARC,
- use the <code>-bigendian</code> flag.
+<p>The <code>HTML</code> button prints an HTML file to stdout that
+  can be used to display the file with applet <code>Plot</code> classes
+  (Experimental).</p>
 
- <dt><a name="binaryFlag"><code>-binary</code></a>
- <dd>Data files are in a binary format.
- The endian-ism of the data depends on which of the two
- subformats below are chosen.
- The <code>-binary</code>
- argument is the primary difference between <code>xgraph</code>
- and <code>pxgraph</code>.  The
- <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
- makes extensive use of <code>-binary</code>.
- <br>There are two binary formats, both of which use 4 byte floats.
- <ol>
- <li>If the first byte of the data file is not a <code>d</code>, then
- we assume that the file contains 4 byte floats in big-endian ordering
- with no plot commands.
- <li>If the first byte of the data file is a <code>d</code>, then
- we assume that the plot commands are encoded as single characters,
- and the numeric data is a 4 byte float encoded in the
- native endian format of the machine that the java interpreter is
- running on.
- <br>The commands are encoded as follows:
- <dl>
- <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
- <dd> Draw a X, Y point
- <dt> <code>e</code>
- <dd> End of dataset
- <dt> <code>n <I>&lt;dataset name&gt;</I>&#92n</code>
- <dd> New dataset name, ends in <code>&#92n</code>
- <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
- <dd> Move to a X, Y point.
- </dl>
- </ol>
- <br>To view a binary plot file under unix, we can use the
- <code>od</code> command.  Note that the first character is a <code>d</code>
- followed by eight bytes of data consisting of two floats of four bytes.
- <pre>
- cxh@carson 324% od -c data/integrator1.plt
- 0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
- 0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
- </pre>
- For further information about endian-ism, see the
- <code>-bigendian</code> and <code>-littleendian</code> command
- line argument documentation.
+<p><code>pxgraph</code> accepts a large number of command line options.
+  A list of these options is given below.</p>
 
- <dt><code>-brb</code> <code><i>&lt;base&gt;</i></code>
- <dd>This specifies the base for a bar graph. By default,
- the base is zero.
- <b>Unsupported in the Java version.</b>
+<dl>
+  <dt><code>=<i>W</i>x<i>H</i>+<i>X</i>+<i>Y</i></code></dt>
+  <dd>Specifies the initial size and location of the pxgraph
+    window.</dd>
 
- <dt><code>-brw</code> <code><i>&lt;width&gt;</i></code>
- <dd>This specifies the width of bars in a bar graph. The
- amount is specified in the user units. By default,
- a bar one pixel wide is drawn.
+  <dt> <code>-<i>&lt;digit&gt; &lt;name&gt;</i></code></dt>
+  <dd> These options specify the data
+    set name for the corresponding data set. The digit
+    should be in the range 0 to 63. This name will be
+    used in the legend.</dd>
 
- <dt><code>-bw</code> <code><i>&lt;size&gt;</i></code>
- <dd>Border width (in pixels) of the <code>pxgraph</code> window.
- <b>Unsupported in the Java version.</b>
+  <dt><code>-bar</code></dt>
+  <dd>Specifies that vertical bars should be drawn from the
+    data points to a base point which can be specified with
+    <code>-brb</code>.
+    Usually, the <code>-nl</code> flag is used with this option.
+    The point itself is located at the center of the bar.</dd>
 
- <dt><code>-db</code>
- <dd>Causes xgraph to run in synchronous mode and prints out
- the values of all known defaults.
+  <dt><code>-bb</code></dt>
+  <dd>Draw a bounding box around the data region. This is
+    very useful if you prefer to see tick marks rather than
+    grid lines (see <code>-tk</code>).
+    <b>Ignored in the Java version because the plotting area is a different
+      color than the border where the axes are labeled.</b></dd>
 
- <dt><code>-fg</code> <code><i>&lt;color&gt;</i></code>
- <dd>Foreground color. This color is used to draw all text
- and the normal grid lines in the window.
- <b>In the Java version, this argument takes hexadecimal color values
- (<code>fffff</code>), not color names.</b>
+  <dt><code>-bd</code> <code><i>&lt;color&gt;</i></code></dt>
+  <dd>This specifies the border color of the <code>pxgraph</code> window.
+    <b>Unsupported in the Java version.</b></dd>
 
- <dt><code>-gw</code> <dd>
- Width, in pixels, of normal grid lines.
- <b>Unsupported in the Java version.</b>
+  <dt><code>-bg</code> <code><i>&lt;color&gt;</i></code></dt>
+  <dd>Background color of the area where the labels and legend are rendered.
+    <b>In the Java version, this argument takes hexadecimal color values
+      (<code>fffff</code>), not color names.</b>  Note that the background
+    of the data plotting region is always white because the dataset colors
+    were designed for a white background.</dd>
 
- <dt><code>-gs</code> <dd>
- Line style pattern of normal grid lines.
+  <dt><a name="bigendianFlag"><code>-bigendian</code></a></dt>
+  <dd>Data files are in big-endian, or network binary format.
+    See the <code>-binary</code> command line argument documentation
+    below for details about the format.
+    If you are on a little-endian machine, such as a machine
+    with an Intel x86 chip, and you would like to read a binary
+    format file, created on a big-endian machine, such as a Sun SPARC,
+    use the <code>-bigendian</code> flag.</dd>
 
- <dt><code>-impulses</code> <dd>
- Draw a line from any plotted point down to the x axis.
- (This argument is not present in the X11 <code>pxgraph</code>,
- but it is similar to <code>-nl -bar</code>).
+  <dt><a name="binaryFlag"><code>-binary</code></a></dt>
+  <dd>Data files are in a binary format.
+    The endian-ism of the data depends on which of the two
+    subformats below are chosen.
+    The <code>-binary</code>
+    argument is the primary difference between <code>xgraph</code>
+    and <code>pxgraph</code>.  The
+    <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
+    makes extensive use of <code>-binary</code>.
+    <br>There are two binary formats, both of which use 4 byte floats.
+    <ol>
+      <li>If the first byte of the data file is not a <code>d</code>, then
+	we assume that the file contains 4 byte floats in big-endian ordering
+	with no plot commands.
+      <li>If the first byte of the data file is a <code>d</code>, then
+	we assume that the plot commands are encoded as single characters,
+	and the numeric data is a 4 byte float encoded in the
+	native endian format of the machine that the java interpreter is
+	running on.
+	<br>The commands are encoded as follows:
+	<dl>
+	  <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code></dt>
+	  <dd> Draw a X, Y point</dd>
+	  <dt> <code>e</code></dt>
+	  <dd> End of dataset</dd>
+	  <dt> <code>n <I>&lt;dataset name&gt;</I>&#92;</code></dt>
+	  <dd> New dataset name, ends in <code>&#92;</code></dd>
+	  <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code></dt>
+	  <dd> Move to a X, Y point.</dd>
+	</dl>
+      </li>
+    </ol>
+    <br/>To view a binary plot file under unix, we can use the
+    <code>od</code> command.  Note that the first character is a <code>d</code>
+    followed by eight bytes of data consisting of two floats of four bytes.
+    <pre>
+      cxh@carson 324% od -c data/integrator1.plt
+      0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
+      0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
+    </pre>
+    <br/>For further information about endian-ism, see the
+    <code>-bigendian</code> and <code>-littleendian</code> command
+    line argument documentation.
+  </dd>
 
- <dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code>
- <dd>Label font. All axis labels and grid labels are drawn
- using this font.
- <b>Note that the Java version does not use X11 style font specification.</b>
- In the Java version, fonts may be specified as
- <menu>
- <li><code><i>fontname</i></code>, where
- <code><i>fontname</i></code> is one of <code>helvetica</code>,
- <code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
- <code>DialogInput</code>, <code>ZapfDingbats</code>.
+  <dt><code>-brb</code> <code><i>&lt;base&gt;</i></code></dt>
+  <dd>This specifies the base for a bar graph. By default,
+    the base is zero.
+    <b>Unsupported in the Java version.</b></dd>
 
- <li><code><i>fontname</i>-<i>style</i></code>, where
- <code><i>style</i></code> is one of
- <code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
- i.e. <code>helvetica-ITALIC</code>
- <li><code><i>fontname</i>-<i>size</i></code>, or
- <li><code><i>fontname</i>-<i>style</i>-<i>size</i></code>, where
- <code><i>size</i></code> is an integer font size in points.
- </menu>
- The default is <code>helvetica-PLAIN-12</code>.
+  <dt><code>-brw</code> <code><i>&lt;width&gt;</i></code></dt>
+  <dd>This specifies the width of bars in a bar graph. The
+    amount is specified in the user units. By default,
+    a bar one pixel wide is drawn.</dd>
 
- <dt><a name="littleendian"><code>-littleendian</code></a>
- <dd>Data files are in little-endian, or x86 binary format.
- See the <code>-binary</code> command line argument documentation
- above for details about the format.
- If you are on a big-endian machine, such as a Sun Sparc,
- and you would like to read a binary
- format file created on a little-endian machine, such as Intel x86
- machine, then use the <code>-littleendian</code> flag.
+  <dt><code>-bw</code> <code><i>&lt;size&gt;</i></code></dt>
+  <dd>Border width (in pixels) of the <code>pxgraph</code> window.
+    <b>Unsupported in the Java version.</b></dd>
 
- <dt><code>-lnx</code> <dd>
- Specifies a logarithmic X axis. Grid labels represent
- powers of ten.  If <code>-lnx</code> is present, then
- x values must be greater than zero.
+  <dt><code>-db</code></dt>
+  <dd>Causes xgraph to run in synchronous mode and prints out
+    the values of all known defaults.</dd>
 
- <dt><code>-lny</code> <dd>
- Specifies a logarithmic Y axis. Grid labels represent
- powers of ten.   If <code>-lny</code> is present, then
- y values must be greater than zero.
+  <dt><code>-fg</code> <code><i>&lt;color&gt;</i></code></dt>
+  <dd>Foreground color. This color is used to draw all text
+    and the normal grid lines in the window.
+    <b>In the Java version, this argument takes hexadecimal color values
+      (<code>fffff</code>), not color names.</b></dd>
 
- <dt><code>-lw</code> <code><i>width</i></code> <dd>
- Specifies the width of the data lines in pixels. The
- default is zero.
- <b>Unsupported in the Java version.</b>
+  <dt><code>-gw</code></dt>
+  <dd> Width, in pixels, of normal grid lines.
+    <b>Unsupported in the Java version.</b></dd>
 
- <dt><code>-lx</code> <code><i>&lt;xl,xh&gt;</i></code> <dd>
- This option limits the range of the X axis to the
- specified interval. This (along with <code>-ly</code>) can be used
- to zoom in on a particularly interesting portion of a
- larger graph.
+  <dt><code>-gs</code></dt>
+  <dd> Line style pattern of normal grid lines.</dd>
 
- <dt><code>-ly</code> <code><i>&lt;yl,yh&gt;</i></code> <dd>
- This option limits the range of the Y axis to the
- specified interval.
+  <dt><code>-impulses</code></dt>
+  <dd>Draw a line from any plotted point down to the x axis.
+    (This argument is not present in the X11 <code>pxgraph</code>,
+    but it is similar to <code>-nl -bar</code>).</dd>
 
- <dt><code>-m</code> <dd>
- Mark each data point with a distinctive marker. There
- are eight distinctive markers used by xgraph. These
- markers are assigned uniquely to each different line
- style on black and white machines and varies with each
- color on color machines.
+  <dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code></dt>
+  <dd>Label font. All axis labels and grid labels are drawn
+    using this font.
+    <b>Note that the Java version does not use X11 style font specification.</b>
+    In the Java version, fonts may be specified as
+    <menu>
+      <li><code><i>fontname</i></code>, where
+	<code><i>fontname</i></code> is one of <code>helvetica</code>,
+	<code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
+	<code>DialogInput</code>, <code>ZapfDingbats</code>.
 
- <dt><code>-M</code>
- <dd>Similar to <code>-m</code> but markers are assigned uniquely to each
- eight consecutive data sets (this corresponds to each
- different line style on color machines).
+      <li><code><i>fontname</i>-<i>style</i></code>, where
+	<code><i>style</i></code> is one of
+	<code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
+	i.e. <code>helvetica-ITALIC</code>
+      <li><code><i>fontname</i>-<i>size</i></code>, or
+      <li><code><i>fontname</i>-<i>style</i>-<i>size</i></code>, where
+	<code><i>size</i></code> is an integer font size in points.
+    </menu>
+    The default is <code>helvetica-PLAIN-12</code>.
+  </dd>
 
- <dt><code>-nl</code>
- <dd>Turn off drawing lines. When used with <code>-m</code>,
- <code>-M</code>, <code>-p</code>, or <code>-P</code> this can be used
- to produce scatter plots. When used with -bar, it can be used to
- produce standard bar graphs.
+  <dt><a name="littleendian"><code>-littleendian</code></a></dt>
+  <dd>Data files are in little-endian, or x86 binary format.
+    See the <code>-binary</code> command line argument documentation
+    above for details about the format.
+    If you are on a big-endian machine, such as a Sun Sparc,
+    and you would like to read a binary
+    format file created on a little-endian machine, such as Intel x86
+    machine, then use the <code>-littleendian</code> flag.</dd>
 
- <dt><code>-o</code> <code><i>output filename</i></code>
- <dd>The name of the file to place the print output in.  Currently
- defaults to <code>/tmp/t.ps</code>.  See also the
- <code>-print</code> option.
+  <dt><code>-lnx</code></dt>
+  <dd>Specifies a logarithmic X axis. Grid labels represent
+    powers of ten.  If <code>-lnx</code> is present, then
+    x values must be greater than zero.</dd>
 
- <dt><code>-p</code>
- <dd>Marks each data point with a small marker (pixel
- sized). This is usually used with the -nl option for
- scatter plots.
+  <dt><code>-lny</code></dt>
+  <dd>Specifies a logarithmic Y axis. Grid labels represent
+    powers of ten.   If <code>-lny</code> is present, then
+    y values must be greater than zero.</dd>
 
- <dt><code>-P</code>
- <dd>Similar to <code>-p</code> but marks each pixel with a large dot.
+  <dt><code>-lw</code> <code><i>width</i></code></dt>
+  <dd>Specifies the width of the data lines in pixels. The
+    default is zero.
+    <b>Unsupported in the Java version.</b></dd>
 
- <dt><code>-print</code>
- <dd>Bring up the print dialog immediately upon startup.  Unfortunately,
- there is no way to automatically print in JDK1.1, the user must hit
- the <code>Ok</code> button.  See also the <code>-o</code> option.
+  <dt><code>-lx</code> <code><i>&lt;xl,xh&gt;</i></code></dt>
+  <dd>This option limits the range of the X axis to the
+    specified interval. This (along with <code>-ly</code>) can be used
+    to zoom in on a particularly interesting portion of a
+    larger graph.</dd>
 
- <dt><code>-rv</code>
- <dd>Reverse video. On black and white displays, this will
- invert the foreground and background colors. The
- behaviour on color displays is undefined.
+  <dt><code>-ly</code> <code><i>&lt;yl,yh&gt;</i></code></dt>
+  <dd>This option limits the range of the Y axis to the
+    specified interval.</dd>
 
- <dt><code>-t</code> <code><i>&lt;string&gt;</i></code>
- <dd>Title of the plot. This string is centered at the top
- of the graph.
+  <dt><code>-m</code></dt>
+  <dd>Mark each data point with a distinctive marker. There
+    are eight distinctive markers used by xgraph. These
+    markers are assigned uniquely to each different line
+    style on black and white machines and varies with each
+    color on color machines.</dd>
 
- <dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code>
- <dd>Title font. This is the name of the font to use for
- the graph title.  See the <code>-lf</code> description above
- for how to specify fonts.
- The default is <code>helvetica-BOLD-14</code>
+  <dt><code>-M</code></dt>
+  <dd>Similar to <code>-m</code> but markers are assigned uniquely to each
+    eight consecutive data sets (this corresponds to each
+    different line style on color machines).</dd>
 
- <dt><code>-tk</code>
- <dd>This option causes <code>pxgraph</code> to draw tick marks rather
- than full grid lines. The <code>-bb</code> option is also useful
- when viewing graphs with tick marks only.
+  <dt><code>-nl</code></dt>
+  <dd>Turn off drawing lines. When used with <code>-m</code>,
+    <code>-M</code>, <code>-p</code>, or <code>-P</code> this can be used
+    to produce scatter plots. When used with -bar, it can be used to
+    produce standard bar graphs.</dd>
 
- <dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code>
- <dd>This is the unit name for the X axis. Its default is "X".
+  <dt><code>-o</code> <code><i>output filename</i></code></dt>
+  <dd>The name of the file to place the print output in.  Currently
+    defaults to <code>/tmp/t.ps</code>.  See also the
+    <code>-print</code> option.</dd>
 
- <dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code>
- <dd>This is the unit name for the Y axis. Its default is "Y".
+  <dt><code>-p</code></dt>
+  <dd>Marks each data point with a small marker (pixel
+    sized). This is usually used with the -nl option for
+    scatter plots.</dd>
 
- <dt><code>-zg</code> <code><i>&lt;color&gt;</i></code>
- <dd>This is the color used to draw the zero grid line.
- <b>Unsupported in the Java version.</b>
+  <dt><code>-P</code></dt>
+  <dd>Similar to <code>-p</code> but marks each pixel with a large dot.</dd>
 
- <dt><code>-zw</code> <code><i>&lt;width&gt;</i></code>
- <dd>This is the width of the zero grid line in pixels.
- <b>Unsupported in the Java version.</b>
- </dl>
+  <dt><code>-print</code></dt>
+  <dd>Bring up the print dialog immediately upon startup.  Unfortunately,
+    there is no way to automatically print in JDK1.1, the user must hit
+    the <code>Ok</code> button.  See also the <code>-o</code> option.</dd>
 
- <h2><a name="pxgraphScriptCompatibilityIssues">Compatibility Issues</a></h2>
- Various compatibility issues are documented above in <b>bold</b>.
- Below are some other issues:
- <ol>
- <li>The original <code>xgraph</code> program allowed many formatting
- directives inside the file.  This version only supports
- <code>draw</code> and <code>move</code>.
- <li>To read from standard input, specify a dash on the command line.
- Note that mixing reading from standard in and from files is not
- well supported.
- <li>This original <code>xgraph</code> program allowed blank lines
- to separate datasets.  This version does not.  Instead, use the
- <code>move <i>X</i> <i>Y</i></code> directive.
- <li>This version does not support X resources.
- <li>The Java version of <code>pxgraph</code> takes longer to start up
- than the X11 version.  This is an inherent problem with standalone
- Java applications.  One guess is that most of the startup time comes
- from paging in the shared libraries.
+  <dt><code>-rv</code></dt>
+  <dd>Reverse video. On black and white displays, this will
+    invert the foreground and background colors. The
+    behaviour on color displays is undefined.</dd>
 
- </ol>
+  <dt><code>-t</code> <code><i>&lt;string&gt;</i></code></dt>
+  <dd>Title of the plot. This string is centered at the top
+    of the graph.</dd>
 
- <p>
- For further information about this tool, see the
- <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot">Java Plot Website</a>.
+  <dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code></dt>
+  <dd>Title font. This is the name of the font to use for
+    the graph title.  See the <code>-lf</code> description above
+    for how to specify fonts.
+    The default is <code>helvetica-BOLD-14</code></dd>
 
- @author Edward A. Lee and Christopher Hylands
+  <dt><code>-tk</code></dt>
+  <dd>This option causes <code>pxgraph</code> to draw tick marks rather
+    than full grid lines. The <code>-bb</code> option is also useful
+    when viewing graphs with tick marks only.</dd>
+
+  <dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code></dt>
+  <dd>This is the unit name for the X axis. Its default is "X".</dd>
+
+  <dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code></dt>
+  <dd>This is the unit name for the Y axis. Its default is "Y".</dd>
+
+  <dt><code>-zg</code> <code><i>&lt;color&gt;</i></code></dt>
+  <dd>This is the color used to draw the zero grid line.
+    <b>Unsupported in the Java version.</b></dd>
+
+  <dt><code>-zw</code> <code><i>&lt;width&gt;</i></code></dt>
+  <dd>This is the width of the zero grid line in pixels.
+    <b>Unsupported in the Java version.</b></dd>
+</dl>
+
+<h2><a name="pxgraphScriptCompatibilityIssues">Compatibility Issues</a></h2>
+<p>Various compatibility issues are documented above in <b>bold</b>.
+  Below are some other issues:</p>
+<ol>
+  <li>The original <code>xgraph</code> program allowed many formatting
+    directives inside the file.  This version only supports
+    <code>draw</code> and <code>move</code>.</li>
+  <li>To read from standard input, specify a dash on the command line.
+    Note that mixing reading from standard in and from files is not
+    well supported.</li>
+  <li>This original <code>xgraph</code> program allowed blank lines
+    to separate datasets.  This version does not.  Instead, use the
+    <code>move <i>X</i> <i>Y</i></code> directive.</li>
+  <li>This version does not support X resources.
+  <li>The Java version of <code>pxgraph</code> takes longer to start up
+    than the X11 version.  This is an inherent problem with standalone
+    Java applications.  One guess is that most of the startup time comes
+    from paging in the shared libraries.</li>
+</ol>
+
+<p>
+  For further information about this tool, see the
+  <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot">Java Plot Website</a>.</p>
+
+@author Edward A. Lee and Christopher Hylands
+
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating red (eal)

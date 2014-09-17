@@ -51,13 +51,13 @@ import diva.canvas.toolbox.LabelFigure;
  * the straight line drawn between the two end points of the
  * connector. The default displacement is 20 (not for any good reason,
  * but is has to be something...).
- * </ul>
+ * </ol>
  *
- * <P>Currently, only the first is supported.
+ * <p>Currently, only the first is supported.</p>
  *
  * <p> The connector uses an instance of PaintedPath to draw itself,
  * so see that class for a more detailed description of the paint- and
- * stroke-related methods.
+ * stroke-related methods.</p>
  *
  * @version $Id$
  * @author  Edward Lee
