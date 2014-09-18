@@ -265,8 +265,9 @@ ExceptionSubscriber {
      *  value of the input. Otherwise, the response is recorded,
      *  and the next get or post request received will be given the response.
      *  For convenience, this is a multiport, and a response can be
-     *  provided on input channel. If multiple responses are provided,
-     *  the last one will prevail.
+     *  provided on any input channel. If multiple responses are provided
+     *  simultaneously, the last one (on the highest numbered channel)
+     *  will prevail.
      */
     public TypedIOPort response;
 
