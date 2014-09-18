@@ -38,6 +38,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.export.web.IconLink;
 
 ///////////////////////////////////////////////////////////////////
 //// LiveLink
@@ -77,6 +78,7 @@ import ptolemy.util.MessageHandler;
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0
+ @see IconLink
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
