@@ -28,6 +28,7 @@
 
 package ptolemy.vergil.basic.export.web;
 
+import ptolemy.actor.gui.LiveLink;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -35,9 +36,12 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// IconLink
 /**
- * Attribute specifying a URI to link to from an icon.
+ * Attribute specifying a URI to link to from an icon when a model
+ * is exported to a web page.
  * Using the <i>linkTarget</i> parameter, you can control how the
  * link is displayed.
+ * In contrast, {@link LiveLink} provides a link to a model
+ * in Vergil (instead of in an exported web page).
  * <p>
  * To use this, drag it onto an icon in your model. Then double
  * click on that icon to set the URL to link to. The <i>linkTarget</i>
