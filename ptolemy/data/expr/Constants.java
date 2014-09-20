@@ -251,6 +251,7 @@ public class Constants {
         _types.put("string", new StringToken(""));
         _types.put("unknown", new UnknownToken());
         _types.put("unsignedByte", new UnsignedByteToken(0));
+        _types.put("record", RecordToken.EMPTY_RECORD);
 
         ptolemy.data.Token nil = ptolemy.data.Token.NIL;
         _types.put("niltype", nil);

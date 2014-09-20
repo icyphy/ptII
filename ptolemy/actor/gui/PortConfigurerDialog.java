@@ -1888,6 +1888,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         typeList.add("arrayType(int)");
         typeList.add("arrayType(int,5)");
         typeList.add("{x=double, y=double}");
+        typeList.add("record");
 
         Collections.sort(typeList);
 

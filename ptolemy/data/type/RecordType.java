@@ -62,13 +62,19 @@ import ptolemy.util.StringUtilities;
  object be a record type without specifying what the fields
  are, use
  <pre>
- typeable.setTypeAtMost(new RecordType(new String[0], new Type[0]));
+ typeable.setTypeAtMost(BaseType.RECORD);
  </pre>
  Note, however, that by itself this type constraint will
  not be useful because it does not, by itself, prevent the
  type from resolving to unknown (the unknown type is at the
  bottom of the type lattice, and hence satisfies this type
- constraint).
+ constraint). To force a port to resolve to the empty record
+ type, you can state
+ <pre>
+ typeable.setTypeEquals(BaseType.RECORD);
+ </pre>
+ Equivalently, in a port configurer dialog, you can set the type
+ of a port to record, which references an empty record.
 
  @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer; contributors: J. S. Senecal, Marten Lohstroh
  @version $Id$
