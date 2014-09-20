@@ -141,8 +141,8 @@ public final class WebServerManager {
      * model in appInfo is already associated with a server.  If not, assign
      * the web application to the server, checking for conflicts with
      * existing applications, creating new handlers where appropriate and
-     * pausing and restarting the server if necessary.  Returns true if the
-     * application was successfully registered; false otherwise.
+     * pausing and restarting the server if necessary.  Returns the port number if the
+     * application was successfully registered, and -1 otherwise.
      *
      * @param appInfo Information about the registered web application
      * @param portNumber The desired port number to host this web application on
