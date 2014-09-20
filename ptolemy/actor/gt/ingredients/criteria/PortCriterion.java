@@ -40,7 +40,6 @@ import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
-import ptolemy.data.expr.Constants;
 import ptolemy.data.type.Type;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentEntity;
@@ -562,6 +561,7 @@ public class PortCriterion extends Criterion {
      */
     private PtolemyExpressionString _portType;
 
+    /* No longer used.
     static {
         ChoiceCriterionElement portTypes = (ChoiceCriterionElement) _ELEMENTS[1];
         portTypes.addChoices(Constants.types().keySet());
@@ -570,4 +570,5 @@ public class PortCriterion extends Criterion {
         portTypes.addChoice("[double]");
         portTypes.addChoice("{x=double, y=double}");
     }
+    */
 }
