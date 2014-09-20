@@ -38,6 +38,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.jetty.util.resource.Resource;
+import org.ptolemy.ptango.lib.HttpActor;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.expr.FileParameter;
@@ -46,6 +47,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -409,9 +411,10 @@ public class WebServer extends AbstractInitializableAttribute {
             throw new IllegalActionException(this,
                     "Container is required to be a CompositeEntity.");
         }
-        List<Entity> entities = ((CompositeEntity) container)
+        @SuppressWarnings("unchecked")
+		List<Entity<Port>> entities = ((CompositeEntity) container)
                 .allAtomicEntityList();
-        for (Entity entity : entities) {
+        for (Entity<Port> entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
                 // Tell the HttpService that this is its WebServer,
@@ -425,7 +428,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
                 // Add this path to the list of servlet paths
                 URI path = service.getRelativePath();
-
+                
                 try {
                     _appInfo.addServletInfo(path, service.getServlet());
                 } catch (Exception e) {
@@ -532,10 +535,9 @@ public class WebServer extends AbstractInitializableAttribute {
 
         try {
             int actualPort = 
-            _serverManager.register(_appInfo, preferredPortValue, 
-               _dynamicPortSelection);
+            		_serverManager.register(_appInfo, preferredPortValue, 
+            		_dynamicPortSelection);
             if (actualPort != -1) {
-                
                 deployedPort.setExpression(Integer.toString(actualPort));
                 deployedPort.validate();
             }
