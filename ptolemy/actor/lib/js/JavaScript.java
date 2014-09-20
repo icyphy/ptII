@@ -151,6 +151,12 @@ import ptolemy.util.MessageHandler;
    all input ports, but often this will not be the type your
    script produces.
    <p>
+   You may also need to set the type of input ports. In particular,
+   if the input comes from an output port whose output is undefined,
+   such as JSONToToken or HttpRequestHandler, then you may want to
+   enable backward type inference, and specify here the type of input
+   that your script requires.
+   <p>
    The context in which your functions run provide the following methods:
    <ul>
    <li> alert(string): pop up a dialog with the specified message.

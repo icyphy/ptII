@@ -38,6 +38,7 @@ import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -68,15 +69,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** An abstract base class for
- *  actors that handle an HTTP request by producing output
+/** An actor that handles an HTTP request by producing output
  *  and waiting for an input that provides a response.
- *  Concrete subclasses of this actor requires that the model that contains
- *  it includes an instance of {@link WebServer}, which discovers this actor and
- *  delegates HTTP requests to a servlet that subclasses of this actor create.
+ *  This actor requires that the model that contains
+ *  it include an instance of {@link WebServer}, which discovers this actor and
+ *  delegates HTTP requests to a servlet that this actor creates.
  *  It also requires that the model containing this actor provide
- *  exactly one input to either the {@link #response} or {@link #setCookies}
- *  input port (or both) in response to every output request,
+ *  exactly one input to at least one of the input ports in response to
+ *  every output request,
  *  and that such responses are delivered in the same order as
  *  the requests they are responding to.
  *  <p>
@@ -84,7 +84,8 @@ import ptolemy.kernel.util.Workspace;
  *  be delegated to this actor. If the base URL for the web server
  *  is "http://localhost:8080", say, then request of the form
  *  "http://localhost:8080/<i>path</i>" will be delegated to this
- *  actor.
+ *  actor. It is an error if two instances of this actor to have the
+ *  same <i>path</i> in a model?
  *  <p>
  *  When this actor receives an HTTP request from the WebServer, it
  *  issues a request for the director to fire it at the greater of
@@ -93,8 +94,7 @@ import ptolemy.kernel.util.Workspace;
  *  When the actor fires, it produces on its output ports the details
  *  of the request, time stamped by the elapsed time since the model
  *  started executing. It expects to be in a model that will send
- *  it data to either the {@link #response} or {@link #setCookies}
- *  input port (or both) with the response to HTTP request.
+ *  it data to input ports with the response to HTTP request.
  *  If that response does not arrive within <i>timeout</i>
  *  (default 30000) milliseconds, then this actor will a issue
  *  timeout response and will discard the response when it eventually
@@ -122,7 +122,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-public abstract class HttpRequestHandler extends TypedAtomicActor 
+public class HttpRequestHandler extends TypedAtomicActor 
 		implements HttpService, ExceptionSubscriber {
 
     /** Create an instance of the actor.
@@ -138,29 +138,33 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
         path = new StringParameter(this, "path");
         path.setExpression("/*");
 
-        // Ports
+        ///////////////// Input Ports
         response = new TypedIOPort(this, "response", true, false);
         response.setTypeEquals(BaseType.STRING);
         new Parameter(response, "_showName").setExpression("true");
 
-        uri = new TypedIOPort(this, "getRequestURI", false, true);
+        setCookies = new TypedIOPort(this, "setCookies", true, false);
+        new Parameter(setCookies, "_showName").setExpression("true");
+        setCookies.setTypeAtMost(BaseType.RECORD);
+
+        ///////////////// Output Ports
+        method = new TypedIOPort(this, "method", false, true);
+        method.setTypeEquals(BaseType.STRING);
+        new Parameter(method, "_showName").setExpression("true");
+
+        uri = new TypedIOPort(this, "uri", false, true);
         uri.setTypeEquals(BaseType.STRING);
         new Parameter(uri, "_showName").setExpression("true");
 
-        // NOTE: The type will be inferred from how this output is used.
-        parameters = new TypedIOPort(this, "getParameters", false, true);
+        parameters = new TypedIOPort(this, "parameters", false, true);
         new Parameter(parameters, "_showName").setExpression("true");
+        parameters.setTypeAtMost(BaseType.RECORD);
 
-        cookies = new TypedIOPort(this, "getCookies", false, true);
+        cookies = new TypedIOPort(this, "cookies", false, true);
         new Parameter(cookies, "_showName").setExpression("true");
+        cookies.setTypeAtMost(BaseType.RECORD);
 
-        setCookies = new TypedIOPort(this, "setCookies", true, false);
-        new Parameter(setCookies, "_showName").setExpression("true");
-        // For now, only allow RecordTokens.  In future, expand to other types
-        // of tokens such as StringTokens representing JSON data.
-        setCookies.setTypeAtMost(BaseType.RECORD);
-
-        // Parameters
+        ////////////////// Parameters
         timeout = new Parameter(this, "timeout");
         timeout.setExpression("30000L");
         timeout.setTypeEquals(BaseType.LONG);
@@ -184,6 +188,12 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
      */
     public TypedIOPort cookies;
 
+    /** An output port that sends a string indicating the method of
+     *  the HTTP request, including at least the possibilities "GET"
+     *  and "POST".
+     */
+    public TypedIOPort method;
+
     /** An output port that sends parameters included in a get request.
      *  These are values appended to the URL in the form
      *  of ...?name=value. The output will be a record with
@@ -193,12 +203,6 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
      *  be a string.
      */
     public TypedIOPort parameters;
-
-    /** An output port that sends the relative URI of a get request,
-     *  which must match the pattern given by the <i>path</i> parameter.
-     *  This has type string.
-     */
-    public TypedIOPort uri;
 
     /** The relative URL of HTTP requests that this actor handles.
      *  This is a string that defaults to "/*", meaning that all
@@ -211,7 +215,8 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
      *  <i>path</i> = "/foo/*", if there is one, and finally
      *  to an actor with <i>path</i> = "/*", if the first two
      *  don't exist.  If two actors specify the same path,
-     *  then it is undefined which one gets the request.
+     *  then an exception will be thrown by the
+     *  {@link WebServer}.
      */
     public StringParameter path;
 
@@ -245,6 +250,12 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
      *  will issue a generic timeout response to the HTTP request.
      */
     public Parameter timeout;
+
+    /** An output port that sends the relative URI of a get request,
+     *  which must match the pattern given by the <i>path</i> parameter.
+     *  This has type string.
+     */
+    public TypedIOPort uri;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -350,6 +361,22 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
     public URI getRelativePath() {
         return _URIpath;
     }
+    
+    /** Create and return an HttpServlet that is used to handle requests that
+     *  arrive at the path given by the <i>path</i> parameter.
+     *  This method is required by the HttpService interface.
+     *  @return An HttpServlet to handle requests.
+     */
+    @Override
+    public HttpServlet getServlet() {
+        if (_debugging) {
+            _debug("*** Creating new servlet.");
+        }
+        // The relative path for the servlet is calculated in attributeChanged()
+        // since the path might not be a valid URI and could throw an exception
+        // The getServlet() method does not throw an exception
+        return new ActorServlet();
+    }
 
     /** If there are input tokens on the {@link #response} or
      *  {@link #setCookies} ports, then queue a response to be
@@ -445,34 +472,43 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
             // Remove the request from the head of the queue so that
             // each request is handled no more than once.
             if (_debugging) {
+            	_debug("Sending request method: " + _request.method);
             	_debug("Sending request URI: " + _request.requestURI);
-            	_debug("Sending request parameters: "
-            			+ _request.parameters);
+            	_debug("Sending request parameters: " + _request.parameters);
             }
-            uri.send(0, new StringToken(_request.requestURI));
-            // Send parameters, but handle type errors locally.
-            try {
-            	parameters.send(0, _request.parameters);
-            } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-            	// Parameters provided do not match the required type.
-            	// Construct an appropriate response.
-            	_respondWithBadRequestMessage(_request.parameters,
-            			parameters.getType(), "parameters");
+            if (!parameters.sinkPortList().isEmpty()) {
+            	// Send parameters, but handle type errors locally.
+            	try {
+            		parameters.send(0, _request.parameters);
+            	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
+            		// Parameters provided do not match the required type.
+            		// Construct an appropriate response.
+            		_respondWithBadRequestMessage(_request.parameters,
+            				parameters.getType(), "parameters");
+            		return;
+            	}
             }
             if (_request.cookies != null && _request.cookies.length() > 0) {
             	if (_debugging) {
             		_debug("Sending cookies to getCookies port: "
             				+ _request.cookies);
             	}
-            	try {
-            		cookies.send(0, _request.cookies);
-            	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
-            		// Parameters provided do not match the required type.
-            		// Construct an appropriate response.
-            		_respondWithBadRequestMessage(_request.parameters,
-            				parameters.getType(), "cookies");
-            	}
+                if (!cookies.sinkPortList().isEmpty()) {
+                	try {
+                		cookies.send(0, _request.cookies);
+                	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                		// Parameters provided do not match the required type.
+                		// Construct an appropriate response.
+                		_respondWithBadRequestMessage(_request.cookies,
+                				cookies.getType(), "cookies");
+                		return;
+                	}
+                }
             }
+            // Send the following only if the above succeeded.
+            // Otherwise, we will send two responses to this one request.
+            method.send(0, new StringToken(_request.method));
+            uri.send(0, new StringToken(_request.requestURI));
         }
         if (_debugging) {
             _debug("Ending fire.");
@@ -523,7 +559,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Handle an HTTP get or post request by creating a web page as the HTTP
+    /** Handle an HTTP request by creating a web page as the HTTP
      *  response.
      *  See <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html">http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html</a>.
      *  @param request The HTTP request.
@@ -535,7 +571,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
      *  response
      */
     protected void _handleRequest(HttpServletRequest request,
-            HttpServletResponse response, int type)
+            HttpServletResponse response, String type)
             throws ServletException, IOException {
         // The following codeblock is synchronized on the enclosing
         // actor. This lock _is_ released while waiting for the response,
@@ -544,7 +580,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
             _request = new HttpRequestItems();
 
             _request.requestURI = request.getRequestURI();
-            _request.requestType = type;
+            _request.method = type;
 
             response.setContentType("text/html");
 
@@ -556,7 +592,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
             // flushing
 
             if (_debugging) {
-                _debug("**** Handling a " + ((type == 0) ? "get" : "post")
+                _debug("**** Handling a " + type
                         + " request to URI " + _request.requestURI);
             }
 
@@ -747,7 +783,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
 
     /** Read the parameters from the HttpServletRequest, construct
      *  a record token containing the parameters, and return that record.
-     *  @param request  The HttpServletRequest to read paramters from.  The
+     *  @param request  The HttpServletRequest to read parameters from.  The
      *   HttpServletRequest can be of any type - i.e. both GET and POST
      *   requests are allowed to have parameters.
      *  @return A record of parameters.
@@ -943,7 +979,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
         _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
         String ajax = "";
-        if (_request.requestType == 0) {
+        if (_request.method.equals("GET")) {
             ajax = "jQuery.get(\""
                     + _request.requestURI
                     + "\")\n"
@@ -956,7 +992,7 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
                     "result = \"<div>\" + data + \"</div>\";"
                     + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
                     + "\n });";
-        } else if (_request.requestType == 1) {
+        } else if (_request.method.equals("POST")) {
             StringBuffer parameters = new StringBuffer("{");
             if (_request.parameters != null) {
                 for (String label : _request.parameters.labelSet()) {
@@ -1064,6 +1100,66 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** A servlet providing implementations of get and post.
+     *  The way this servlet works is that when a get or post
+     *  HTTP request is received, it records the properties of
+     *  the request (the URI and parameters) and requests a
+     *  firing of the enclosing actor at model time equal to
+     *  the time elapsed since the start of execution of the model.
+     *  The thread making the get or post request then suspends,
+     *  giving the model a chance to execute. When the model has
+     *  determined what the response to the request should be,
+     *  it notifies this servlet thread, which then completes
+     *  the handling of the request, sending back the response
+     *  that has been provided by the enclosing actor.
+     *
+     *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
+     */
+    @SuppressWarnings("serial")
+    protected class ActorServlet extends HttpServlet {
+
+        /** Handle an HTTP get request by creating a web page as the HTTP
+         *  response.
+         *  NOTE: This method is synchronized, and the lock is _not_ released
+         *  while waiting for the response. This strategy helps prevent a pending
+         *  get request from overlapping with a pending put request. The second
+         *  request will be postponed until the first has been completely handled.
+         *
+         *  @param request The HTTP get request.
+         *  @param response The HTTP response to write to.
+         *  @exception ServletException  If there is a problem reading from the
+         *  servlet request or other servlet problem
+         *  @exception IOException  If there is a problem writing to the servlet
+         *  response
+         */
+        @Override
+        protected synchronized void doGet(HttpServletRequest request,
+                HttpServletResponse response) throws ServletException,
+                IOException {
+            _handleRequest(request, response, "GET");
+        }
+
+        /** Handle an HTTP post request by creating a web page as the HTTP
+         *  response.
+         *  NOTE: This method is synchronized, and the lock is _not_ released
+         *  while waiting for the response. This strategy helps prevent a pending
+         *  get request from overlapping with a pending put request. The second
+         *  request will be postponed until the first has been completely handled.
+         *  @param request The HTTP get request.
+         *  @param response The HTTP response to write to.
+         *  @exception ServletException  If there is a problem reading from the
+         *  servlet request or other servlet problem
+         *  @exception IOException  If there is a problem writing to the servlet
+         *  response
+         */
+        @Override
+        protected synchronized void doPost(HttpServletRequest request,
+                HttpServletResponse response) throws ServletException,
+                IOException {
+            _handleRequest(request, response, "POST");
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     //// HttpRequestItems
 
@@ -1077,8 +1173,8 @@ public abstract class HttpRequestHandler extends TypedAtomicActor
         /** Parameters received in a get or post. */
         public RecordToken parameters;
 
-        /** The type of request. 0 for get, 1 for put. */
-        public int requestType;
+        /** The type of request (the method). */
+        public String method;
 
         /** The URI issued in the get request. */
         public String requestURI;
