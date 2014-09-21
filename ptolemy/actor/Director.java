@@ -724,9 +724,8 @@ public class Director extends Attribute implements Executable {
     /** Return the stop time parameter value, if it has been set,
      *  and otherwise, return a time with value Double.POSITIVE_INFINITY.
      *  @return the stop time parameter value.
-     * @exception IllegalActionException
      */
-    public final Time getModelStopTime() throws IllegalActionException {
+    public final Time getModelStopTime() {
         if (_stopTime != null) {
             return _stopTime;
         }
@@ -1598,8 +1597,7 @@ public class Director extends Attribute implements Executable {
      *  any sub-threads.  Derived classes should not synchronize this
      *  method because it should execute as soon as possible.
      *  If the container is not an instance of CompositeActor, then
-     *  this method does nothing.
-     *  <p>
+     *  this method does nothing.</p>
      */
     @Override
     public void terminate() {
@@ -1758,7 +1756,8 @@ public class Director extends Attribute implements Executable {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  description of subcomponents.
      */
     @Override
     protected String _description(int detail, int indent, int bracket)
@@ -1833,7 +1832,8 @@ public class Director extends Attribute implements Executable {
      *  is returned at this point.
      *  @param actor The actor to be scheduled.
      *  @return The aspect.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  enable token or the decorator.
      */
     public ActorExecutionAspect getExecutionAspect(NamedObj actor)
             throws IllegalActionException {
