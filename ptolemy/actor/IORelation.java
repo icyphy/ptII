@@ -228,11 +228,11 @@ public class IORelation extends ComponentRelation {
      *  @param except The port to exclude, or null to not
      *   exclude any ports.
      *  @return The receivers associated with this relation.
-     * @exception IllegalActionException
-     * @exception InvalidStateException
+     * @exception IllegalActionException If throwen while determining the cascade.
+     * @exception InvalidStateException 
      */
     public Receiver[][] deepReceivers(IOPort except)
-            throws InvalidStateException, IllegalActionException {
+            throws /*InvalidStateException,*/ IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -303,7 +303,9 @@ public class IORelation extends ComponentRelation {
      *  of zero, then return one.
      *
      *  @return The width, which is at least zero.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  user width, determining if the width inference is needed or if
+     *  thrown by inferWidths().
      *  @see #setWidth(int)
      */
     public int getWidth() throws IllegalActionException {
@@ -755,7 +757,8 @@ public class IORelation extends ComponentRelation {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  description of subcomponents.
      */
     @Override
     protected String _description(int detail, int indent, int bracket)

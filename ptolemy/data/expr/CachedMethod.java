@@ -1171,6 +1171,8 @@ public class CachedMethod {
          *  classes will override this method to provide different
          *  types of argument conversions.
          *  @param input The token to be converted
+         *  @return The object that can be used to invoke a method
+         *  through the reflection method.
          *  @exception IllegalActionException Always thrown in this
          *  base class.
          */

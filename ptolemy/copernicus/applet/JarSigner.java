@@ -169,7 +169,7 @@ public class JarSigner {
      *  cd $PTII
      *  make ptKeystore
      *  make jnlp_list
-     *  <pre>
+     *  </pre>
      *  @param alias The alias of the certificate.  This is the string used when the key is created.
      *  @param storePassword  The password of the key store.
      *  @param keyPassword  The password of the key store.

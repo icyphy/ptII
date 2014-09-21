@@ -40,15 +40,15 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  * Class containing information and methods for properties for web content,
  * for example, an HTML attribute that is part of an HTML element, as in the
- * "href" attribute of <a href="http://www.w3schools.com">This is a link</a>
+ * "href" attribute of &lt;a href="http://www.w3schools.com"&gt;This is a link&lt;/a&gt;
  *
  * The _elementName is used as the name of the attribute, e.g. "href" in
- * <a href="http://www.w3schools.com">This is a link</a>.  An object is not
+ * &lt;a href="http://www.w3schools.com"&gt;This is a link&lt;/a&gt;.  An object is not
  * allowed to have two attributes with the same _elementName, since it is
  * assumed that these attributes will belong to the same web element.  For
  * example, an HTML tag with two href elements should not be allowed, since
  * it is unclear what behavior occurs (first takes precedence?  second?  both?)
- * <a href="http://site1.com" href="http://site2.com">This is a link</a>
+ * &lt;a href="http://site1.com" href="http://site2.com"&gt;This is a link&lt;/a&gt;
  *
  * @author Elizabeth Latronico
  * @version $Id$
