@@ -78,7 +78,7 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-KRUFT = .cpp *.c *.choices
+KRUFT = .cpp *.c *.choices _jnaerator.macros.cpp _jnaerator.rawParsed.cpp _jnaerator.normalizedParsed.cpp
 
 
 JNAERATOR_JAR = jnaerator-0.12-20140626.234513-58-shaded.jar
