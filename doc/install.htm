@@ -606,12 +606,13 @@ then click <code>Next</code>
         <li> Devel Category
 	<ul>
 	 <li> autoconf - requires gawk and m4 from the Interpreters Category
-	 <li> binutils, gcc, gettext, libintl libintl1, libtool, libtool-devel
-	  - The matlab interface requires gcc and Matlab.  You may find
+	 <li> binutils, gcc-core, gcc-g++ <!--, gettext-devel, libintl libintl1, libtool, libtool-devel -->
+	   make, wget
+	  - The matlab interface requires gcc, mingw64-x86_64-gcc-core, mingw64-x86-gcc-g++, mingw64x86_64-runtime and Matlab.  You may find
 	  it easier to install all of the Devel category
 	 <li> subversion
 	</ul>
-        <li> Text Category: less
+        <li> Text Category: less <i>Probably already selected by default</i>
         </ul>
       </ol>
 
@@ -635,7 +636,10 @@ name of the directory where Ptolemy II is installed.
   in both the <code>Environment Variables</code> panel and when running
   Cygwin bash.  In Cygwin bash, <b>don't</b> use <code>pwd</code>
   to set your PTII variable.
-  <p>Under Windows XP, you set the environment variable via
+  <p>Under Windows 8, you set the environment variable via
+the Control Panel, then search for <code>env</code>
+and click on <code>Edit environment variables for your account</code>.
+<p>Under older versions of Windows, you set the environment variable via
 the Environment tab of the System control panel
 (<code>Start Menu </code> -&gt; <code>Settings</code> -&gt;
 <code>Control Panels</code> -&gt; <code>System</code> -&gt;
@@ -646,7 +650,7 @@ the Environment tab of the System control panel
   <code>C:\</code> such as <code>C:\Cygwin</code>, then try
   using backslashes, though installing Cygwin in such a manner
   is not recommended.
-  <p>Vista users should set PTII in the Environment Tab using
+  <p>Windows 8 users should set PTII in the Environment Tab using
   forward slashes.
   <p><b>Note that when setting PTII from Cygwin bash, you should use
   forward slashes</b>.
@@ -695,7 +699,7 @@ is by typing <code>pwd</code>
 
  <p>An example PTII value in the Environment Tab would be:
 <pre>
-c:\users\yourname\ptII
+c:/Users/yourname/ptII
 </pre>
 
  <p>An example PTII value inside Cygwin bash would be:
