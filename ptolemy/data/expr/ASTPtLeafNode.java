@@ -63,6 +63,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     /** Return the name that this node refers to.  This may be a
      *  literal value, such as "5", or a reference to another object,
      *  such as the name of a variable in scope.
+     *  @return The name to which this node refers.
      */
     public String getName() {
         return _name;

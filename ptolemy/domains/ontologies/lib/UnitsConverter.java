@@ -111,9 +111,9 @@ public class UnitsConverter extends Transformer {
     public StringAttribute dimensionConcept;
 
     /** The conversion label string that will be displayed on the actor icon.
-     *  It is of the form "inputUnits -> outputUnits"
+     *  It is of the form "inputUnits -&gt; outputUnits"
      *  For example, if the actor converts kilometers to miles, its icon label
-     *  would be: "km -> mi"
+     *  would be: "km -&gt; mi"
      *  This label will change when the user changes the unit conversion. */
     public StringAttribute conversionLabel;
 

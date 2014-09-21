@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  concept in P is a tuple of the form &lt;C(L1), C(L2)&gt;.  To decide the
  *  relationship between two concepts in p1 and p2 in P, it is determined by
  *  the relationships of the individual concepts in their tuples. So:
- *  p1 >= p2 iff C1(L1) >= C2(L1) and C1(L2) >= C2(L2)
+ *  p1 &ge; p2 iff C1(L1) &ge; C2(L1) and C1(L2) &ge; C2(L2)
  *
  *  @author Charles Shelton
  *  @version $Id$

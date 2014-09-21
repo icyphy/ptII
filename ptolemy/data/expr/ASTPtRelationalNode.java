@@ -65,6 +65,7 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
     }
 
     /** Return the lexical token representing the operation of this node.
+     *  @return the token that represents the operation of this node.
      */
     public Token getOperator() {
         return _lexicalToken;

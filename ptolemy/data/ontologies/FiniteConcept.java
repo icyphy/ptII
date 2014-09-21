@@ -80,7 +80,7 @@ public class FiniteConcept extends Concept implements Flowable {
 
     /** Return the finite concepts that cover this one.
      *  If this concept is x, then we mean here the set of concepts y such
-     *  that x <= y and x <= z < y implies that z = x.
+     *  that x &le; y and x &le; z &lt; y implies that z = x.
      *  @return A set of concepts that cover this one.
      */
     public Set<FiniteConcept> getCoverSetAbove() {
@@ -89,7 +89,7 @@ public class FiniteConcept extends Concept implements Flowable {
 
     /** Return the finite concepts that are covered by this one.
      *  If this concept is x, then we mean here the set of concepts y such
-     *  that y <= x and y < z <= x implies that z = x.
+     *  that y &le; x and y &lt; z &le; x implies that z = x.
      *  @return A set of concepts that are covered by this one.
      */
     public Set<FiniteConcept> getCoverSetBelow() {

@@ -256,7 +256,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
 
     /** Return the value of {@link #includeOpaqueContents}.
      *  decorate objects across opaque hierarchy boundaries.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If there is a problem
+     *  getting the boolean valu from the includeOpaqueContents token.
      */
     @Override
     public boolean isGlobalDecorator() throws IllegalActionException {

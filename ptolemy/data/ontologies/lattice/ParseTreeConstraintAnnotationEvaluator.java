@@ -91,11 +91,11 @@ public class ParseTreeConstraintAnnotationEvaluator extends
     /**
      * Visit the relational node when parsing a user-defined manual constraint
      * doe the LatticeOntologySolver.  It should be an operator that is either
-     * '==', '>=', or '<='.
+     * '==', '&ge;', or '&le;'.
      *
      * @param node The relational node to be visited
      * @exception IllegalActionException If the operator is not supported (should be
-     * one of '==', '>=', or '<=')
+     * one of '==', '&ge;', or '&le;')
      */
     @Override
     public void visitRelationalNode(ASTPtRelationalNode node)

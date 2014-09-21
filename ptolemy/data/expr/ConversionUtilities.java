@@ -126,6 +126,7 @@ public class ConversionUtilities {
      * extracted and re-encapsulated in a token.  If no other
      * conversion is possible, then this method will simply return an
      * ObjectToken wrapping the object.
+     * @param object The object thta is a Java type to be converted.
      * @exception IllegalActionException If the selected conversion fails.
      * @return A new token.
      */
@@ -252,6 +253,8 @@ public class ConversionUtilities {
     /** Convert a java class, representing a Java type, to a
      *  corresponding instance of a ptolemy type object, as consistent
      *  with the convertJavaTypeToToken method.
+     *  @param tokenClass the java class to be converted.
+     *  @return The corresponding Ptolemy type object.
      *  @exception IllegalActionException If the token class is not
      *  recognized, or creating the type fails.
      */
@@ -352,6 +355,7 @@ public class ConversionUtilities {
      * Java numeric encapsulating object, e.g. java.lang.Double, if
      * necessary.  If no conversion is possible, then this method
      * throws an exception.
+     * @param token The token to be converted.
      * @exception IllegalActionException If the selected conversion fails.
      * @return An object that is not a ptolemy.data.Token or an array
      * of ptolemy.data.Token.
@@ -491,6 +495,7 @@ public class ConversionUtilities {
      * that, generally speaking the reverse is not true, since ptolemy
      * types represent more information about data types than do java
      * types.
+     *  @param type the given type.
      *  @exception IllegalActionException If the token class is not
      *  recognized, or creating the type fails.
      */

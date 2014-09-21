@@ -80,6 +80,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
     }
 
     /** Return the name of the method invoked by this node.
+     *  @return the name of the method invoked by this node.    
      */
     public String getMethodName() {
         return _methodName;

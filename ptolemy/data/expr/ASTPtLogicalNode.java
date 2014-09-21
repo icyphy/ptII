@@ -61,6 +61,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
     }
 
     /** Return the operator for child nodes of this node.
+     *  @return the operator for child nodes of this node.
      */
     public Token getOperator() {
         return _lexicalToken;
@@ -90,12 +91,16 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
 
     /** Return true if the node represents the logical AND of its
      *  children.
+     *  @return true if the node represents the logical AND of its
+     *  children.
      */
     public boolean isLogicalAnd() {
         return _lexicalToken.kind == PtParserConstants.COND_AND;
     }
 
     /** Return true if the node represents the logical OR of its
+     *  children.
+     *  @Return true if the node represents the logical OR of its
      *  children.
      */
     public boolean isLogicalOr() {

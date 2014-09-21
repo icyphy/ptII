@@ -374,7 +374,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  as a string.
      *  @param constraintExpressionString The string that specifies a single constraint
      *   expression for an actor element.
-     *  @return The string '<=', '>=', or '==' depending on the specified constraint
+     *  @return The string '&le;', '&ge;', or '==' depending on the specified constraint
      *   direction, false otherwise.
      */
     public static List<String> getConstraintDirAndRHSStrings(

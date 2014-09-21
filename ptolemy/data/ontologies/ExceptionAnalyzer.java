@@ -119,10 +119,10 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
      *  
      *  others:  Delegate to parent class
      *  
-     *  @exception IllegalActionException If there is a problem writing to 
-     *   the log file
+     * @param policy The policy
+     * @param exception The exception that occurred
+     * @return true if the solver completed successfully.
      */
-    
     @Override
     public boolean exceptionOccurred(String policy, Throwable exception) {
         NamedObj toplevel;

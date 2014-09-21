@@ -70,6 +70,7 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
 
     /** Return the list of field names for this record construct.
      *  The order of the list is not meaningful.
+     *  @return the list of field names for this record construct.
      */
     public List getFieldNames() {
         return _fieldNames;

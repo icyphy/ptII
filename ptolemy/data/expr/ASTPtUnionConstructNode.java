@@ -76,6 +76,7 @@ public class ASTPtUnionConstructNode extends ASTPtRootNode {
 
     /** Return the list of label names for this union construct.
      *  The order of the list is not meaningful.
+     *  @return The list of label names.
      */
     public List getLabelNames() {
         return _labelNames;

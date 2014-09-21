@@ -99,7 +99,7 @@ import ptolemy.kernel.util.Workspace;
  then postfire() of this actor will return false, requesting
  a halt to execution of the model.  The outputs from the
  contained actor are collected into arrays that are
- produced on the outputs of this actor.
+ produced on the outputs of this actor.</p>
  <p>
  A special variable named "iterationCount" can be used in
  any expression setting the value of a parameter of this actor
@@ -107,18 +107,18 @@ import ptolemy.kernel.util.Workspace;
  starts at 1 during the first iteration of the contained
  actor(s) and is incremented by 1 on each firing. If the
  inside actors consume one token on each firing, then
- its final value will be the size of the input array(s).
+ its final value will be the size of the input array(s).</p>
  <p>
  This actor is properly viewed as a "higher-order component" in
  that its contained actor is a parameter that specifies how to
  operate on input arrays.  It is inspired by the higher-order
  functions of functional languages, but unlike those, the
  contained actor need not be functional. That is, it can have
- state.
+ state.</p?
  <p>
  Note that you cannot place class definitions inside this
  actor. There should be no need to because class instances
- inside it can be instances of classes defined outside of it.
+ inside it can be instances of classes defined outside of it.</p>
  <p>
  This actor (and many of the other higher-order components)
  has its intellectual roots in the higher-order functions
@@ -130,22 +130,20 @@ import ptolemy.kernel.util.Workspace;
  Alternative approaches are found dataflow visual programming
  since the beginning (Sutherland in the 1960s, Prograph and
  Labview in the 1980s), and in time-based visual languages
- (Simulink in the 1990s).
+ (Simulink in the 1990s).</p>
  <p>
  There are a number of known bugs or limitations in this
- implementation:
+ implementation:</p>
  <ul>
- <li>
- FIXME: When you drop in an actor, and then another actor,
+ <li> FIXME: When you drop in an actor, and then another actor,
  and then select "undo," the second actor is deleted without
  the first one being re-created. Thus, undo is only a partial
  undo.  The fix to this is extremely complicated. Probably the
  only viable mechanism is to use UndoStackAttribute.getUndoInfo()
  to get the undo stack and then to manipulate the contents
- of that stack directly.
- <li>
- FIXME: There should be an option to reset between
- firings of the inside actor.
+ of that stack directly.</li>
+ <li> FIXME: There should be an option to reset between
+ firings of the inside actor.</li>
  <li> FIXME: If you drop a new actor onto an
  IterateOverArray in a subclass, it will replace the
  version inherited from the prototype. This is not right,
@@ -156,21 +154,21 @@ import ptolemy.kernel.util.Workspace;
  to not perfectly mirror the hierarchy of the prototype.
  Another is for this class to somehow refuse to accept
  the new object in a subclass. But it is not obvious how
- to do this.
+ to do this.</li>
  <li>
  FIXME: If an instance of IterateOverArray in a derived class has
  overridden values of parameters, those are lost if contained
  entity of the instance in the base class is replaced and
- then an undo is requested.
+ then an undo is requested.</li>
  </ul>
- <p><b>References</b>
- <p><ol>
+ <h2>References</h2>
+><ol>
  <li> E. A. Lee and T. M. Parks, "Dataflow Process Networks,"
- Proceedings of the IEEE, 83(5): 773-801, May, 1995.
+ Proceedings of the IEEE, 83(5): 773-801, May, 1995.</li>
  <li> H. J. Reekie,
 <a href="http://ptolemy.eecs.berkeley.edu/~johnr/papers/thesis.html#in_browser">Realtime Signal Processing: Dataflow, Visual,
  and Functional Programming</a>," Ph.D. Thesis,
- University of Technology, Sydney, Sydney, Australia, 1995.
+ University of Technology, Sydney, Sydney, Australia, 1995.</li>
  </ol>
 
  @author Edward A. Lee, Steve Neuendorffer

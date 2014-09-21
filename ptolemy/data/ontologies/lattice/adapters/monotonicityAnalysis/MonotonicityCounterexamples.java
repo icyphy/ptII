@@ -39,7 +39,7 @@ import ptolemy.util.MultiHashMap;
 /** Representation of a set of counterexamples to monotonicity.
  *
  *  Each counterexample is of the form of a pair of elements (x1,x2)
- *  where x1 <= x2, but f(x1) \not <= f(x2), for the non-monotonic function
+ *  where x1 &le; x2, but f(x1) \not &le; f(x2), for the non-monotonic function
  *  f under consideration.
  *
  *  @author Ben Lickly
@@ -101,8 +101,8 @@ public class MonotonicityCounterexamples {
     ////                         public methods                    ////
 
     /** Add a pair of concepts as a counterexample to this set.
-     *  This means that x1 <= x2, but for the (non-monotonic) function in
-     *  question, f(x1) \not <= f(x2).
+     *  This means that x1 &le; x2, but for the (non-monotonic) function in
+     *  question, f(x1) \not &le; f(x2).
      *
      *  @param x1 The lesser concept.
      *  @param x2 The greater concept.
@@ -143,8 +143,8 @@ public class MonotonicityCounterexamples {
 
     /** Return a set of all the counterexamples.
      *  For each pair in the set returned, (x1, x2),
-     *  we have x1 <= x2, but on the function under consideration
-     *  f(x1) \not <= f(x2)
+     *  we have x1 &le; x2, but on the function under consideration
+     *  f(x1) \not &le; f(x2)
      *
      *  @return A set of pairs of counterexamples.
      */
@@ -241,8 +241,8 @@ public class MonotonicityCounterexamples {
     ////                         inner classes                     ////
 
     /** Encapsulate counterexample pairs.
-     *  These are pairs of the form (x1, x2) where x1 <= x2, but
-     *  f(x1) \not <= f(x2) for the function under consideration.
+     *  These are pairs of the form (x1, x2) where x1 &le; x2, but
+     *  f(x1) \not &le; f(x2) for the function under consideration.
      *  Thus, these pairs prove as counterexamples to the
      *  monotonicity of f.
      */

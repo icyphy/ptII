@@ -221,7 +221,7 @@ public class Copernicus {
 
     /** Possibly create the generated code and run it.
      *        What actually happens depends on the values of the <i>compile</i>
-     *  and <i>run</i> parameters in <i>generatorAttribute<i>
+     *  and <i>run</i> parameters in <i>generatorAttribute</i>
      *  @param generatorAttribute The GeneratorAttribute that contains
      *  the parameters that determine the commands to create and run
      *  the generated code.

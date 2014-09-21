@@ -99,7 +99,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
 
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.  Note that ontologies are only partial orders, so
-     *  !(a < b) does not imply (a >= b).
+     *  !(a &lt; b) does not imply (a &ge; b).
      *
      *  @param rightArgument The token on greater than side of the inequality.
      *  @return BooleanToken.TRUE, if this token is less than the

@@ -169,7 +169,8 @@ public class IOPort extends ComponentPort {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the superclass
+     *  or while initializing 
      */
     public IOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);

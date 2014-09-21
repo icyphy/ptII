@@ -45,9 +45,9 @@ import ptolemy.kernel.util.InvalidStateException;
  instance of this class is returned by the scheduler of a model to
  represent order of actor firings in the model.  A schedule consists of
  a list of schedule elements and the number of times the schedule
- should repeat (called the <i>iteration count</i>). <p>
+ should repeat (called the <i>iteration count</i>).
 
- Each element of
+ <p>Each element of
  the schedule is represented by an instance of the ScheduleElement
  class.  Each element may correspond to a number of firings of a single
  actor (represented by the Firing class) or an entire sub-schedule
@@ -55,24 +55,24 @@ import ptolemy.kernel.util.InvalidStateException;
  This nesting allows this concise representation of looped schedules.
  The nesting can be arbitrarily deep, but must be a tree where the
  leaf nodes represent actor firings.  It is up to the scheduler to
- enforce this requirement. <p>
+ enforce this requirement. </p>
 
- The add() and remove() methods are used to add or
+ <p>The add() and remove() methods are used to add or
  remove schedule elements. Only elements of type ScheduleElement (Schedule
  or Firing) may be added to the schedule list. Otherwise an exception will
- occur. <p>
+ occur. </p>
 
- The iteration count is set by the
+ <p>The iteration count is set by the
  setIterationCount() method. If this method is not invoked, a default value
- of one will be used. <p>
+ of one will be used. </p>
 
- As an example, suppose that we have an SDF graph containing actors
- A, B, C, and D, with the firing order ABCBCBCDD.
+ <p>As an example, suppose that we have an SDF graph containing actors
+ A, B, C, and D, with the firing order ABCBCBCDD.</p>
 
- This firing order can be represented by a simple looped schedule.  The
- code to create this schedule appears below.
+ <p>This firing order can be represented by a simple looped schedule.  The
+ code to create this schedule appears below.</p>
 
- <p>
+
  <pre>
  Schedule S = new Schedule();
  Firing S1 = new Firing();
@@ -92,14 +92,12 @@ import ptolemy.kernel.util.InvalidStateException;
  S3.setIterationCount(2);
  S3.setActor(D);
  </pre>
- <p>
-
- Note that this implementation is not synchronized. It is therefore not safe
+ <p> Note that this implementation is not synchronized. It is therefore not safe
  for a thread to make modifications to the schedule structure while
- multiple threads are concurrently accessing the schedule.
+ multiple threads are concurrently accessing the schedule.</p>
  <h1>References</h1>
- S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
- Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
+ <p>S. S. Bhattacharyya, P K. Murthy, and E. A. Lee,
+ Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.</p>
 
  @author Brian K. Vogel, Steve Neuendorffer
  @version $Id$

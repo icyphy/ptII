@@ -593,10 +593,10 @@ public class LatticeOntologySolver extends OntologySolver {
         /** Represents that there is no constraint between the two sides. */
         NONE,
 
-        /** Represents that the sink must be >= the source. */
+        /** Represents that the sink must be &ge; the source. */
         SINK_GE_SOURCE,
 
-        /** Represents that the source must be >= the sink. */
+        /** Represents that the source must be &ge; the sink. */
         SOURCE_GE_SINK
     }
 

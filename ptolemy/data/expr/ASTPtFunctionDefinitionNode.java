@@ -104,12 +104,15 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
     /** Return the type of the arguments, or null if type inference
      *  has not occurred yet.
+     *  @return the type of the arguments, or null if type inference
+     *  has not occurred yet.
      */
     public Type[] getArgumentTypes() {
         return _argTypes;
     }
 
     /** Return the parse tree of the expression for this function.
+     *  @return the parse tree of the expression for this function.    
      */
     public ASTPtRootNode getExpressionTree() {
         // The first children are the arguments.

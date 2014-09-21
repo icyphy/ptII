@@ -60,12 +60,15 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
     }
 
     /** Return the token that represents the operation of this node.
+     *  @return the token that represents the operation of this node.   
      */
     public Token getOperator() {
         return _lexicalToken;
     }
 
     /** Return true if this node represents the bitwise negation of its
+     *  child.
+     *  @return true if this node represents the bitwise negation of its
      *  child.
      */
     public boolean isBitwiseNot() {
@@ -80,6 +83,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
      *  @param renaming A map from String to String that gives a
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
+     *  @return True if this node is congruent.
      */
     @Override
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
@@ -96,6 +100,8 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
 
     /** Return true if this node represents the additive inverse of its
      *  child.
+     *  @return true if this node represents the additive inverse of its
+     *  child.
      */
     public boolean isMinus() {
         return _isMinus;
@@ -103,6 +109,8 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
 
     /** Return true if this node represents the boolean negation of its
      *  child.
+     *  @param true if this node represents the boolean negation of
+     *  its child.
      */
     public boolean isNot() {
         return _isNot;

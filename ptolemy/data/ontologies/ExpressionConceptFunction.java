@@ -51,8 +51,8 @@ import ptolemy.kernel.util.NamedObj;
  *  <BR>
  *  <code>f(arg1, arg2) =
  *  <BR>&nbsp;&nbsp; arg1 == Unknown || arg2 == Unknown ? Unknown :
- *  <BR>&nbsp;&nbsp;&nbsp;&nbsp; arg1 == Position && arg2 == Time ? Velocity :
- *  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arg1 == Velocity && arg2 == Time ? Acceleration :
+ *  <BR>&nbsp;&nbsp;&nbsp;&nbsp; arg1 == Position &amp;&amp; arg2 == Time ? Velocity :
+ *  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arg1 == Velocity &amp;&amp; arg2 == Time ? Acceleration :
  *  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Conflict
  *  </code>
  *  <p>This expression function specifies that the output of the function is <em>Unknown</em>

@@ -1274,7 +1274,7 @@ public class Manager extends NamedObj implements Runnable {
      *
      *  <p> Note that in general, it is best to get that director
      *  and call finish() and stopFire() on the director than
-     *  it is to call Manager.stop().<p>
+     *  it is to call Manager.stop().</p>
      *
      *  <p> The reason that it is better to call Director.finish()
      *  is that if Manager.stop() is called inside a RunCompositeActor

@@ -161,8 +161,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     /** Set an inequality constraint between the two specified objects, such that
      *  the concept value of the greater term is greater than or equal to the
      *  concept value of the lesser term.
-     *  @param greater The model object on the LHS of the >= inequality
-     *  @param lesser The model object on the RHS of the >= inequality
+     *  @param greater The model object on the LHS of the &ge; inequality
+     *  @param lesser The model object on the RHS of the &ge; inequality
      */
     public void setAtLeast(Object greater, Object lesser) {
         if (greater != null && lesser != null) {
@@ -174,8 +174,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     /** Set an inequality constraint between the two specified objects, such that
      *  the concept value of the greater term is greater than or equal to the
      *  concept value of the lesser term.
-     *  @param lesser The model object on the RHS of the >= inequality
-     *  @param greater The model object on the LHS of the >= inequality
+     *  @param lesser The model object on the RHS of the &ge; inequality
+     *  @param greater The model object on the LHS of the &ge; inequality
      */
     public void setAtMost(Object lesser, Object greater) {
         setAtLeast(greater, lesser);
