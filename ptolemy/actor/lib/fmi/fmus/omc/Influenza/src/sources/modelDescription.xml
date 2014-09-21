@@ -4,8 +4,8 @@
   modelName="Influenza"
   guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
   description=""
-  generationTool="OpenModelica Compiler 1.9.1+dev (r21841) (Bootstrapping version)"
-  generationDateAndTime="2014-08-25T09:03:24Z"
+  generationTool="OpenModelica Compiler 1.9.1+dev (r22153) (Bootstrapping version)"
+  generationDateAndTime="2014-09-05T09:49:20Z"
   variableNamingConvention="structured"
   numberOfEventIndicators="0">
   <ModelExchange
