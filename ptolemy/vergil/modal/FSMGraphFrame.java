@@ -287,11 +287,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         return new BasicGraphPane(_controller, graphModel, entity);
     }
 
-    /** Export the model into the writer with the given name. If
-     *  {@link ptolemy.vergil.modal#_exportSelectedObjectsOnly} is set
-     *  to true, then only the selected named objects are exported;
-     *  otherwise, the whole model is exported with its exportMoML()
-     *  method.
+    /** Export the model into the writer with the given name.
      *
      *  @param writer The writer.
      *  @param model The model to export.

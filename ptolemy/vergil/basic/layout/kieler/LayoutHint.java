@@ -119,7 +119,7 @@ import diva.canvas.connector.ManhattanConnector;
  * Some of the standard code for example for value listeners is copied from
  * {@link Location}.</p>
  *
- * @author Hauke Fuhrmann, <kieler@informatik.uni-kiel.de>
+ * @author Hauke Fuhrmann, (kieler@informatik.uni-kiel.de)
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (haf)
  * @Pt.AcceptedRating Red (haf)
