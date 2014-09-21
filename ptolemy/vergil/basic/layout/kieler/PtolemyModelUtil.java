@@ -161,7 +161,7 @@ public final class PtolemyModelUtil {
      * either directly or indirectly.
      *
      * @param relations Set of relations
-     * @return a Set of relation groups as given by List<Relation> objects by Ptolemy
+     * @return a Set of relation groups as given by List &lt;Relation&gt; objects by Ptolemy
      */
     protected static Set<List<Relation>> _getRelationGroups(
             Set<Relation> relations) {

@@ -110,7 +110,7 @@ is provided by command line arguments.
 
 <p>The <code>Print</code> button brings up a print dialog window.</p>
 
-<p>The <code>About</code> button brings up a message about</p>
+<p>The <code>About</code> button brings up a message about
 <code>pxgraph</code>.</p>
 
 <p>The <code>HTML</code> button prints an HTML file to stdout that

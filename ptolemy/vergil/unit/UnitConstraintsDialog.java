@@ -73,7 +73,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      * to specify changes in the equations.
      * <p>
      * This dialog is is not modal. In particular, changes can be undone by
-     * clicking Edit->Undo, and the help screen can be manipulated while this
+     * clicking Edit-&gt;Undo, and the help screen can be manipulated while this
      * dialog exists. The dialog is placed relative to the owner.
      *
      * @param tableau The object that, per the user, appears to be
