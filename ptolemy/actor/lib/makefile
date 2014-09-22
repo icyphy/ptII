@@ -317,6 +317,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DateElementsIcon.xml \
 	DBIcon.xml \
 	Dice.gif \
+	DictionaryIcon.xml \
 	DifferentialIcon.xml \
 	DiscardIcon.xml \
 	DiscreteRandomSourceIcon.xml \
