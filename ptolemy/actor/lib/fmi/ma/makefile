@@ -94,21 +94,39 @@ CXX=c++
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
+all: main
+	@echo "Invoke 'make run' to run a demo."
+
 # Build the master algorithm executable.
 main: $(OBJECTS)
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
+FMUS = \
+	../fmus/inc20RC1pt/inc20RC1pt.fmu \
+	../fmus/scale20RC1pt/scale20RC1pt.fmu \
+	../fmus/output20RC1pt/output20RC1pt.fmu
+
 # Run the master algorithm executable on two fmus.
-run: main
-	./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1pt/scale20RC1pt.fmu ../fmus/output20RC1pt/output20RC1pt.fmu -t15 -h1 -l logAll
+run: main $(FMUS)
+	./main $(FMUS) -t15 -h1 -l logAll
+
+../fmus/inc20RC1pt/inc20RC1pt.fmu:
+	(cd ../fmus/inc20RC1pt; $(MAKE))
+../fmus/scale20RC1pt/scale20RC1pt.fmu:
+	(cd ../fmus/scale20RC1pt; $(MAKE))
+../fmus/output20RC1pt/output20RC1pt.fmu:
+	(cd ../fmus/output20RC1pt; $(MAKE))
+
+clean_fmus:
+	rm -f $(FMUS)
 
 # Debug the master algorithm with two fmus using gdb.
 debug: main
-	gdb --args ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1pt/scale20RC1pt.fmu ../fmus/output20RC1pt/output20RC1pt.fmu -t15 -h1 -l logAll
+	gdb --args ./main $(FMUS) -t15 -h1 -l logAll
 
 # Use valgrind to look for memory leaks.
 valgrind: main
-	valgrind --leak-check=full --show-leak-kinds=all ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1pt/scale20RC1pt.fmu ../fmus/output20RC1pt/output20RC1pt.fmu -t15 -h1 -l logAll
+	valgrind --leak-check=full --show-leak-kinds=all ./main $(FMUS) -t15 -h1 -l logAll
 
 # Run the master algorithm and plot the output.
 plot: run
