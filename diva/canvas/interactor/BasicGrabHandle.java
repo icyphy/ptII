@@ -25,9 +25,11 @@
  */
 package diva.canvas.interactor;
 
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.toolbox.BasicRectangle;
@@ -61,6 +63,23 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
     public BasicGrabHandle(Site s) {
         // Can't reference variable until superclass is called...
         super(0, 0, 0, 0, java.awt.Color.blue);
+        Figure figure = s.getFigure();
+        // If the figure is small, create smaller grab handles.
+        if (figure != null) {
+            // The figure may already include grab handles, so we really want the bounds
+            // of the shape.
+            Shape shape = figure.getShape();
+            if (shape != null) {
+        	Rectangle2D bounds = shape.getBounds();
+        	// To get standardized sizes, iterate until grab handles are small enough.
+        	// If the bounds are zero, then give up and use standard size.
+        	if (bounds.getWidth() > 0.0 && bounds.getHeight() > 0.0) {
+        	    while (bounds.getWidth() < _size * 4.0 || bounds.getHeight() < _size * 4.0) {
+        		_size = _size * 0.25f;
+        	    }
+        	}
+            }
+        }
         setSize(_size);
         _site = s;
     }
