@@ -1,6 +1,6 @@
 /* The conditions table for configuring an SCR Model.
 
-   Copyright (c) 2000-2014 The Regents of the University of California.
+   Copyright (c) 2014 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -68,6 +68,7 @@ public class ConditionsTableModel extends AbstractTableModel {
 
     }
 
+    /** Add a column. */
     public void addColumn() {
         for (int i = 0; i < getRowCount() - 1; i++) {
             _tableContent.add(i * (getColumnCount()) + (getColumnCount() - 1),
@@ -78,11 +79,19 @@ public class ConditionsTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
+    /** Check that all modes are unique. -- by definition
+     * Check that all values are unique.
+     * Check that pairwise OR of events in a row is always false.
+     * --- check coverage: AND of all events in a row is true
+     */
     public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),
                 getColumnCount(), _model);
     }
 
+    /** Delete a column. 
+     *  @param index The column to be deleted.
+     */
     public void deleteColumn(int index) {
         if (index > 0 && index < getColumnCount()) {
             for (int i = getRowCount() - 1; i >= 0; i--) {
@@ -141,6 +150,10 @@ public class ConditionsTableModel extends AbstractTableModel {
         _tableContent.remove(contentIndex + 1);
     }
 
+    /** Save the model. 
+     *  @exception IllegalActionException  If thrown while saving the model.
+     *  @exception NameDuplicationException  If thrown while saving the model.
+     */
     public void saveModel() throws NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {
             StringBuffer expression = new StringBuffer();

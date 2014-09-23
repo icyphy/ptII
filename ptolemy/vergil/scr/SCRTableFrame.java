@@ -67,7 +67,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
 /**
-The frame for configuring an SCR Model
+The frame for configuring an SCR Model.
+
 @author Patricia Derler
 @version $Id$
 @since Ptolemy II 10.0

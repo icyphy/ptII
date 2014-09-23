@@ -114,7 +114,7 @@ import ptolemy.kernel.util.Workspace;
  operate on input arrays.  It is inspired by the higher-order
  functions of functional languages, but unlike those, the
  contained actor need not be functional. That is, it can have
- state.</p?
+ state.</p>
  <p>
  Note that you cannot place class definitions inside this
  actor. There should be no need to because class instances

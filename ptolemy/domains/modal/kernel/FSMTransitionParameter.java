@@ -79,6 +79,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     }
 
     /** Add value listener. Nothing to do.
+     *  @param listener Ignored in this base class. 
+     *  @see #removeValueListener(ValueListener)
      */
     @Override
     public void addValueListener(ValueListener listener) {
@@ -121,6 +123,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     }
 
     /** Get visibility. Nothing to do.
+     *  @return Always return NOT_EDITABLE.
+     *  @see #setVisibility(Visibility)
      */
     @Override
     public Visibility getVisibility() {
@@ -195,6 +199,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 
     /** Remove value listener. Nothing to do.
      *  @param listener Ignored.
+     *  @see #addValueListener(ValueListener)
      */
     @Override
     public void removeValueListener(ValueListener listener) {
@@ -226,6 +231,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 
     /** Set visibility. Nothing to do.
      *  @param visibility Ignored.
+     *  @see #getVisibility()
      */
     @Override
     public void setVisibility(Visibility visibility) {

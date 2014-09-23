@@ -1,6 +1,6 @@
 /* Helper functions for SCR Tables.
 
- Copyright (c) 2000-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -109,6 +109,12 @@ public class SCRTableHelper {
         return null;
     }
 
+    /** Return the content index.
+     *  @param rowIndex the index of the row.
+     *  @param columnIndex the index of the column.
+     *  @param columnCount The number of columns.
+     *  @return the content index.
+     */   
     public static int getContentIndex(int rowIndex, int columnIndex,
             int columnCount) {
         return (columnIndex - 1) + (columnCount - 1) * rowIndex;
@@ -118,6 +124,10 @@ public class SCRTableHelper {
      * Check that all values are unique.
      * Check that pairwise OR of events in a row is always false.
      * --- check coverage: AND of all events in a row is true
+     * @param _tableContent The table content.
+     * @param rowCount the number of rows.
+     * @param columnCount the number of columns.
+     * @param model the model to be checked.
      */
     public static void checkDisjointness(List<String> _tableContent,
             int rowCount, int columnCount, FSMActor model)
@@ -174,6 +184,11 @@ public class SCRTableHelper {
         }
     }
 
+    /** Return the self transition.
+     *  @param state The state.
+     *  @param parameter the parameter.
+     *  @return the self transition.   
+     */   
     public static Transition getSelfTransition(State state, Parameter parameter) {
         for (Object relation : state.incomingPort.linkedRelationList()) {
             if (state.outgoingPort.linkedRelationList().contains(relation)) {

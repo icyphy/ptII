@@ -1,6 +1,6 @@
 /* The mode transition table for configuring an SCR Model.
 
- Copyright (c) 2000-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,12 +52,16 @@ The mode transition table for configuring an SCR Model.
 @SuppressWarnings("serial")
 public class ModeTransitionTableModel extends AbstractTableModel {
 
+    /** Construct the mode transition table for configuring an SCR Model.
+     *  @param model The model.
+     */   
     public ModeTransitionTableModel(FSMActor model) {
         _model = model;
         _tableContentIsInvalid = true;
         _initializeTableContent();
     }
 
+    /** Add a row. */
     public void addRow() {
         if (_tableContent == null) {
             _tableContent = new ArrayList<String>();
@@ -71,6 +75,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
+    /** Delete a row. */
     public void deleteRow(int selectedRow) {
         System.out.println(selectedRow);
         _tableContent.remove(selectedRow * 3);
@@ -80,11 +85,18 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
+    /** Get the column count.
+     *  @return  In this base class, always return 3.
+     */
     @Override
     public int getColumnCount() {
         return 3;
     }
 
+    /** Get the column name.
+     *  @param column The column number.
+     *  @return the name of the column.
+     */   
     @Override
     public String getColumnName(int column) {
         switch (column) {
@@ -100,12 +112,20 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 
     }
 
-    @Override
+    /** Return the row count.
+     *  @return the row count   
+     */
+       @Override
     public int getRowCount() {
         _initializeTableContent();
         return _tableContent.size() / getColumnCount();
     }
 
+    /** Get the value at a particular cell.
+     *  @param arg0 The row.
+     *  @param arg1 The column.
+     *  @return the value at that cell.
+     */
     @Override
     public Object getValueAt(int arg0, int arg1) {
         _initializeTableContent();
@@ -117,11 +137,22 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         }
     }
 
+    /** Return true, indicating that the cell is editable.
+     *  @param rowIndex The rowIndex, which is ignored in this base
+     *  class.
+     *  @param columnIndex The columnIndex, which is ignored in this base
+     *  class.
+     *  @return Always return true.
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
 
+    /** Save the model. 
+     *  @exception IllegalActionException  If thrown while saving the model.
+     *  @exception NameDuplicationException  If thrown while saving the model.
+     */
     public void saveModel() throws IllegalActionException,
     NameDuplicationException {
         Set<State> states = new HashSet<State>();
@@ -173,11 +204,19 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         }
     }
 
+    /** Set that value of a cell.
+     *  @param value The value to be set.
+     *  @param row The index of the row.
+     *  @param column The index of the column.
+     */
     @Override
-    public void setValueAt(Object value, int row, int col) {
-        _tableContent.set(row * 3 + col, value);
-        fireTableCellUpdated(row, col);
+    public void setValueAt(Object value, int row, int column) {
+        _tableContent.set(row * 3 + column, value);
+        fireTableCellUpdated(row, column);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private void _initializeTableContent() {
         if (_tableContent == null || _tableContentIsInvalid) {
@@ -195,8 +234,10 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     private ArrayList _tableContent;
     private boolean _tableContentIsInvalid;
     private FSMActor _model;
-
 }

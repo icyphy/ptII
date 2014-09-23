@@ -1,6 +1,6 @@
 /* The event table for configuring an SCR Model.
 
-   Copyright (c) 2000-2014 The Regents of the University of California.
+   Copyright (c) 2014 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -64,7 +64,12 @@ public class EventTableModel extends AbstractTableModel {
 
     }
 
-    public void checkDisjointness() throws IllegalActionException {
+    /** Check that all modes are unique. -- by definition
+     * Check that all values are unique.
+     * Check that pairwise OR of events in a row is always false.
+     * --- check coverage: AND of all events in a row is true
+     */
+   public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),
                 getColumnCount(), _model);
     }
@@ -92,11 +97,21 @@ public class EventTableModel extends AbstractTableModel {
         _tableContent.remove(contentIndex + 1);
     }
 
+    /** Return true, indicating that the cell is editable.
+     *  @param rowIndex The rowIndex, which is ignored in this base
+     *  class.
+     *  @param columnIndex The columnIndex.
+     *  @return return true if columnIndex is greater than 0.
+     */
+
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return (columnIndex > 0);
     }
 
+    /** Return the row count.
+     *  @return the row count   
+     */
     @Override
     public int getRowCount() {
         if (_rowCount == -1) {
@@ -105,6 +120,7 @@ public class EventTableModel extends AbstractTableModel {
         return _rowCount;
     }
 
+    /** Add a column. */
     public void addColumn() {
         for (int i = 0; i < getRowCount() - 1; i++) {
             _tableContent.add(i * (getColumnCount()) + (getColumnCount() - 1),
@@ -115,6 +131,9 @@ public class EventTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
+    /** Delete a column. 
+     *  @param index The column to be deleted.
+     */
     public void deleteColumn(int index) {
         if (index > 0 && index < getColumnCount()) {
             for (int i = getRowCount() - 1; i >= 0; i--) {
@@ -126,11 +145,18 @@ public class EventTableModel extends AbstractTableModel {
         }
     }
 
+    /** Get the column count.
+     *  @return The columnt count.
+     */
     @Override
     public int getColumnCount() {
         return _columnCount;
     }
 
+    /** Save the model. 
+     *  @exception IllegalActionException  If thrown while saving the model.
+     *  @exception NameDuplicationException  If thrown while saving the model.
+     */
     public void saveModel() throws IllegalActionException,
     NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {

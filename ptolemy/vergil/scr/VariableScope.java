@@ -52,8 +52,9 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class VariableScope extends ModelScope {
 
-    private FSMActor _model;
-
+    /** Construct a VariableScope for a model.
+     *  @param model The model.
+     */
     public VariableScope(FSMActor model) {
         _model = model;
     }
@@ -61,6 +62,8 @@ public class VariableScope extends ModelScope {
     /** Look up and return the attribute with the specified name in the
      *  scope. Return null if such an attribute does not exist.
      *  @return The attribute with the specified name in the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
      */
     @Override
     public Token get(String name) throws IllegalActionException {
@@ -82,6 +85,8 @@ public class VariableScope extends ModelScope {
      *  specified name in the scope. Return null if such an
      *  attribute does not exist.
      *  @return The attribute with the specified name in the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
      */
     @Override
     public Type getType(String name) throws IllegalActionException {
@@ -108,6 +113,7 @@ public class VariableScope extends ModelScope {
     /** Look up and return the type term for the specified name
      *  in the scope. Return null if the name is not defined in this
      *  scope, or is a constant type.
+     *  @param name The name of the variable to be looked up.
      *  @return The InequalityTerm associated with the given name in
      *  the scope.
      *  @exception IllegalActionException If a value in the scope
@@ -143,4 +149,10 @@ public class VariableScope extends ModelScope {
     public Set identifierSet() {
         return getAllScopedVariableNames(null, _model);
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private FSMActor _model;
 }
