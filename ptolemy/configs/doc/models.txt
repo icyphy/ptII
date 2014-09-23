@@ -83,6 +83,8 @@ $CLASSPATH/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml
+$CLASSPATH/ptolemy/actor/lib/mail/demo/ExceptionEmailer/ExceptionEmailer.xml
+$CLASSPATH/ptolemy/actor/lib/mail/demo/SendMail/SendMail.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml
