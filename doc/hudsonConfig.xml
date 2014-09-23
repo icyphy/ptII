@@ -334,6 +334,7 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=protobuf -DartifactId=protobuf -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/protobuf-java-2.4.1.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=g4ltl -DartifactId=g4ltl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/g4ltl.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=socketio -DartifactId=socketio -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/socketio.jar
+mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=oscP5 -DartifactId=oscP5 -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/oscP5.jar
 </command>
           </hudson.tasks.Shell>
           <maven-builder>
