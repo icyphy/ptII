@@ -11,10 +11,14 @@ $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/P
 $CLASSPATH/org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml
 $CLASSPATH/org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml
 $CLASSPATH/org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight.xml
+$CLASSPATH/org/ptolemy/ptango/demo/ChatClient/ChatClient.xml
+$CLASSPATH/org/ptolemy/ptango/demo/ChatClient2/ChatClient2.xml
+$CLASSPATH/org/ptolemy/ptango/demo/ChatServer/ChatServer.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Cookies/Cookies.xml
 $CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/DOPpresence.xml
 $CLASSPATH/org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.xml
 $CLASSPATH/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml
+$CLASSPATH/org/ptolemy/ptango/demo/Exception/Exception.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Guidance/Guidance.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.xml
 $CLASSPATH/org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.xml
