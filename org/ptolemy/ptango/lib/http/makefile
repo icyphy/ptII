@@ -1,10 +1,10 @@
-# Makefile for Ptango - Internet of Things - Actors
+# Makefile for Ptango - Internet of Things - Actors for http
 #
 # @Authors: Christopher Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
-# @Copyright (c) 2012-2014 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/ptolemy/ptango/lib
+ME =		org/ptolemy/ptango/lib/http
 
-# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found by configure.
-DIRS =		http img $(PTXMPP_DIR)
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)
 
@@ -44,35 +43,27 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	lib
-PTCLASSALLJAR = lib.jar
+PTPACKAGE = 	http
+PTCLASSALLJAR = http.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	http/http.jar \
-	img/img.jar
+		img/img.jar
 
-# Java Sources, keep these alphabetical,
+# Java Sources, keep these alphabetical
 JSRCS = \
-	HTMLModelExporter.java \
-	HttpActor.java \
-	HttpGet.java \
 	HttpPost.java \
 	HttpPut.java \
 	HttpRequest.java \
+	HttpRequestHandler.java \
 	HttpResponse.java \
 	HttpService.java \
-	RecordToQueryString.java \
-	WebServer.java \
+	HttpSink.java \
 	WebApplicationInfo.java \
+	WebServer.java \
 	WebServerManager.java \
 	WebServerUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ptango.xml \
-	HTMLModelExporterIcon.xml \
-	HttpActorIcon.xml \
-	HttpGetIcon.xml \
-	HttpPostIcon.xml \
 	WebServerIcon.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
@@ -85,19 +76,13 @@ MISC_FILES = img
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(DIRS) \
-	manifest.tmp \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
-	'HTMLModelExporter$$1.class' \
-	'HttpActor$$ActorServlet.class' \
 	'HttpRequest$$Method.class' \
-	'HttpActor$$HttpRequestItems.class' \
-	'HttpActor$$HttpResponseItems.class' \
+	'HttpRequestHandler$$ActorServlet.class' \
+	'HttpRequestHandler$$HttpRequestItems.class' \
+	'HttpRequestHandler$$HttpResponseItems.class' \
 	'HttpResponse$$ErrorSource.class' \
-	'WebServer$$1.class' \
-	'WebServer$$RunnableServer.class' \
-	'HttpActor$$HttpRequest.class' \
-	'HttpActor$$HttpResponse.class' \
 	'WebServerUtilities$$1.class' \
 	'WebServerUtilities$$RunnableServer.class'
 
