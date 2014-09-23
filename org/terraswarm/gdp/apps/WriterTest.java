@@ -60,6 +60,8 @@ import com.sun.jna.ptr.PointerByReference;
     @Pt.AcceptedRating Red (cxh)
 */
 public class WriterTest {
+    // This code follows the naming conventions of the original .c file.
+
     /** Write to the GCL.
      *  <p>Usage:<code>
      *  DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest elvis</code></p>
@@ -72,6 +74,7 @@ public class WriterTest {
      *  <p><code>-a</code> FIXME: what does this do?</p>
      *
      *  <p><code><i>gcl_name</i></code> The name of the gcl.  This string is used with ReaderTest</p>
+     *  @param argv The command line arguments, documented above.
      */
     public static void main(String [] argv) throws Throwable {
         // See

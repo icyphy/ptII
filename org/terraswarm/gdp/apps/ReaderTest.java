@@ -61,10 +61,11 @@ import com.sun.jna.ptr.PointerByReference;
     @Pt.AcceptedRating Red (cxh)
 */
 public class ReaderTest {
+    // This code follows the naming conventions of the original .c file.
 
     /** Read a gcl
      *  @param gclh The handle to the GCL
-     *  @param the record number of the first record.
+     *  @param firstrec the record number of the first record.
      *  @return the status.
      */
     public static EP_STAT do_read(Pointer gclh, long /*gdp_recno_t*/ firstrec) {
@@ -192,18 +193,18 @@ public class ReaderTest {
      *  <p>The arguments below are optional:</p>
      *
      *  <dl>
-     *  <dt><code>-D <i>debuggingSpecification</i></code></td>
+     *  <dt><code>-D <i>debuggingSpecification</i></code></dt>
      *  <dd>, where an example of <i>debuggingSpecifiction</i> is,
      *  <code>gdp.api=100</code>.  See the gdp .c files for debugging specifications</dd>.
      *
      *  <dt><code>-f <i>firstRecordNumber</i></code></dt>
-     *  <dd>FIXME: what does this do?</ddp>
+     *  <dd>FIXME: what does this do?</dd>
      *
      *  <dt><code>-m</code>
      *  <dd>Multiread FIXME: what does this do?</dd>
      *
      *  <dt><code>-n <i>numberOfRecords</i></code></dt>
-     *  <dd>FIXME: what does this do?</ddp>
+     *  <dd>FIXME: what does this do?</dp>
      *
      *  <dt><code>-s</code>
      *  <dd>Subscribe FIXME: what does this do?</dd>
