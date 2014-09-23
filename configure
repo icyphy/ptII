@@ -9645,6 +9645,9 @@ PTOSCP5_JAR=
 # Set to osc if oscp5.jar is found and used in $PTII/org/ptolemy/makefile
 PTOSCP5_DIR=
 
+# Set to org.ptolemy.osc and used int $PTII/doc/makefile if oscp5 is found
+PTOSCP5_PACKAGES=
+
 # We only need to look for Jsoup if $PTOSCP5_USER_DIR is present
 PTOSCP5_USER_DIR="$PTII/org/ptolemy/osc"
 
@@ -9671,6 +9674,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTO
 $as_echo "$PTOSCP5_JAR" >&6; }; fi
 	updateClasspath "$PTOSCP5_JAR"
 	PTOSCP5_DIR=osc
+	PTOSCP5_PACKAGES=org.ptolemy.osc
     fi
 fi
 
