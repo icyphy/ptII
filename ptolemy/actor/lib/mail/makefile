@@ -52,6 +52,7 @@ JSRCS = \
 	SendMail.java
 
 OTHER_FILES_TO_BE_JARED = \
+	exceptionEmail.xml \
 	mail.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -65,6 +66,8 @@ MISC_FILES =	test
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
+	'ExceptionEmailer$$1.class' \
+	'ExceptionEmailer$$SMTPAuthenticator.class' \
 	'SendMail$$1.class' \
 	'SendMail$$SMTPAuthenticator.class'
 

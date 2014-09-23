@@ -121,6 +121,7 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$FindInLibraryAction.class' \
 	'BasicGraphFrame$$FolderFileFilter.class' \
 	'BasicGraphFrame$$HierarchyTreeCellRenderer.class' \
+	'BasicGraphFrame$$HierarchyTreeMouseAdapter.class' \
 	'BasicGraphFrame$$HierarchyTreeSelectionListener.class' \
 	'BasicGraphFrame$$IconVisibleLocation.class' \
 	'BasicGraphFrame$$DeletionListener.class' \

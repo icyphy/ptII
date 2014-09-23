@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Java Mail demos
+# Makefile for Ptolemy II Mail demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/mail/demo
+ME =		ptolemy/actor/lib/jai/demo/ExceptionEmailer
 
-DIRS =		ExceptionEmailer SendMail
-
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+# Root of the Java directory
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,38 +41,47 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	ExceptionEmailer
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	ExceptionEmailer/ExceptionEmailer.jar \
-	SendMail/SendMail.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	ExceptionEmailer.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+
+
+
+#_vergil:
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" ExceptionEmailer.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ExceptionEmailer.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

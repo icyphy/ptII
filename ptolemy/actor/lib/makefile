@@ -361,6 +361,7 @@ OTHER_FILES_TO_BE_JARED = \
 	communications.xml \
 	datastores.xml \
 	esoteric.xml \
+	exception.xml \
 	executioncontrol.xml \
 	filtering.xml \
 	flowcontrol.xml \

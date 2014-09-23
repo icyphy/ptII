@@ -76,6 +76,7 @@ OTHER_FILES_TO_BE_JARED = \
 	copyright.htm \
 	demos.htm \
 	docs.htm \
+	pt_cover_online.png \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm \
 	whatsNew.htm \

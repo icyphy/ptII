@@ -52,7 +52,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ExceptionAnalysis.xml
+	ExceptionAnalysis.xml \
+	ExceptionAnalysisUsingManager.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

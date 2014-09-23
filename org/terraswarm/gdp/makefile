@@ -59,6 +59,9 @@ JSRCS = \
 	Gdp10Library.java \
 	GdpUtilities.java
 
+OTHER_FILES_TO_BE_JARED = \
+	gdp.patch
+
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 JCLASS = $(JSRCS:%.java=%.class)
@@ -69,12 +72,33 @@ install: jclass jars
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = src
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS)
+	$(DIRS) \
+	'EP_DBG$$ByReference.class' \
+	'EP_DBG$$ByValue.class' \
+	'EP_STAT$$ByReference.class' \
+	'EP_STAT$$ByValue.class' \
+	'EP_TIME_SPEC$$ByReference.class' \
+	'EP_TIME_SPEC$$ByValue.class' \
+	'Gdp10Library$$EP_STAT2.class' \
+	'Gdp10Library$$EP_STAT_HANDLE.class' \
+	'Gdp10Library$$EP_STAT_HANDLER_FUNCP.class' \
+	'Gdp10Library$$EP_STAT_callback.class' \
+	'Gdp10Library$$EP_THR_COND.class' \
+	'Gdp10Library$$EP_THR_MUTEX.class' \
+	'Gdp10Library$$EP_THR_RWLOCK.class' \
+	'Gdp10Library$$FILE.class' \
+	'Gdp10Library$$gdp_buf_t.class' \
+	'Gdp10Library$$gdp_event_t.class' \
+	'Gdp10Library$$gdp_gcl_sub_cbfunc_t.class' \
+	'Gdp10Library$$gdp_gcl_t.class' \
+	'Gdp10Library$$gdp_iomode_t.class' \
+	'ep_stat_to_string$$ByReference.class' \
+	'ep_stat_to_string$$ByValue.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

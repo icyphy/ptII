@@ -71,6 +71,7 @@ JSRCS = \
 	ExpressionConceptFunctionDefinitionAttribute.java \
 	ExpressionConceptFunctionParseTreeEvaluator.java \
 	ExpressionConceptFunctionParseTreeTypeInference.java \
+	ExceptionAnalyzer.java \
 	FiniteConcept.java \
 	FlatScalarTokenInfiniteConcept.java \
 	FlatScalarTokenRepresentativeConcept.java \
@@ -95,6 +96,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	conceptFunctionLibrary.xml \
+	exceptionAnalysis.xml \
 	ontologyLibrary.xml \
 	ontologySolverLibrary.xml \
 	ontologyAnalysisLibrary.xml
