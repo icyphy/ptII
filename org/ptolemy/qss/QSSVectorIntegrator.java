@@ -1,7 +1,7 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 1995-2014 The Regents of the University of California.
+Copyright (c) 2014 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -57,7 +57,14 @@ A quantized-state vector integrator.
 @Pt.AcceptedRating Red (cxh)
  */
 public class QSSVectorIntegrator extends TypedAtomicActor {
-
+    /** Construct a quantized-state vector integrator.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public QSSVectorIntegrator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -77,6 +84,9 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
     
     /** Quantum. */
     public Parameter quantum;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     /** If it is time to produce a quantized output, produce it.
      *  Otherwise, indicate that the output is absent.
