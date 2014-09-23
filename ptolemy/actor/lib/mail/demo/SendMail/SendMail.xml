@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SendMail" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -18,13 +18,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 24, 1018, 585}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 24, 1039, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[805, 475]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[805, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0394028535577">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.3577877932034, 250.3911138667192}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.3577877932034, 273.96234028402273}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the SendMail actor to send email to a list of recipients given&#10;in a comma-separated values file. The output of the CSVReader is a record,&#10;where the field names are given by the first line of the CSV file. The StringReplace&#10;actor is used to customize a standard message by replacing the word &quot;Colleague&quot;&#10;with the value of the &quot;First Name&quot; field of the record.&#10;&#10;This model does not actually send mail. If you wish to modify it to send mail,&#10;change the CSV file, set the SMTP host and user names in the SendMail actor, and&#10;change the reallySendMail parameter of the SendMail actor to true. Note that the&#10;SendMail actor will only work with SMTP servers using TLS, which ensures that&#10;passwords are encrypted.">
@@ -46,26 +46,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 365.0]">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
-        <property name="to" class="ptolemy.actor.parameters.PortParameter" value="nobody@nowhere.org">
+        <property name="to" class="ptolemy.actor.parameters.PortParameter" value="tycho@ptolemy.org">
         </property>
         <property name="subject" class="ptolemy.actor.parameters.PortParameter" value="How to actually send email">
         </property>
-        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="">
+        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="&#10;Dear Tycho,&#10;&#10;If you really want to send email using this Ptolemy II model,&#10;you have to change the reallySendMail parameter in the&#10;SendMail actor to true. Please do not use this to send spam.&#10;&#10;With best regards,&#10;The Ptolemy Pteam">
         </property>
-        <property name="SMTPHostName" class="ptolemy.data.expr.StringParameter" value="gateway.nowhere.org">
+        <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="SMTPUserName" class="ptolemy.data.expr.StringParameter" value="nobody">
+        <property name="reallySendMail" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 307.5]">
         </property>
     </entity>
     <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Contacts.txt">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Contacts.txt">
         </property>
         <property name="separator" class="ptolemy.data.expr.StringParameter" value="comma">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 342.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 345.0}">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
@@ -90,7 +92,7 @@
     <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
         <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="Colleague">
         </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="Colleague">
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="Tycho">
         </property>
         <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&#10;Dear Colleague,&#10;&#10;If you really want to send email using this Ptolemy II model,&#10;you have to change the reallySendMail parameter in the&#10;SendMail actor to true. Please do not use this to send spam.&#10;&#10;With best regards,&#10;The Ptolemy Pteam">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
