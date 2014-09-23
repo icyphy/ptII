@@ -4004,29 +4004,15 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="lib/javax.servlet-api-license.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="lib/smack-license.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="lib/jetty-all-license.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/lib/http/*.class"/>
+        <include name="org/ptolemy/ptango/lib/http/*.xml"/>
         <include name="org/ptolemy/ptango/lib/img/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/xmpp/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/xmpp/img/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/lib/xmpp/*.xml"/>
       </fileset>
     </jar>
