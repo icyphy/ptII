@@ -118,6 +118,7 @@
     <pathelement location="lib/ptcolt.jar" />
     <pathelement location="lib/ptjacl.jar" />
     <pathelement location="lib/mapss.jar" />
+    <pathelement location="lib/oscP5.jar" />
     <pathelement location="lib/socketio.jar" />
     <pathelement location="lib/sootclasses.jar" />
     <pathelement location="lib/jasminclasses.jar" />

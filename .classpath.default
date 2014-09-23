@@ -20,6 +20,7 @@
 	<classpathentry kind="lib" path="lib/ptcolt.jar"/>
 	<classpathentry kind="lib" path="lib/ptjacl.jar"/>
 	<classpathentry kind="lib" path="lib/mapss.jar"/>
+	<classpathentry kind="lib" path="lib/oscP5.jar"/>
 	<classpathentry kind="lib" path="lib/sootclasses.jar"/>
 	<classpathentry kind="lib" path="lib/jasminclasses.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
