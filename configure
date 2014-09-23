@@ -645,6 +645,9 @@ PTSVG_DIR
 PTPSDF_DIR
 PTPDFRENDERER_JAR
 PTPDFRENDERER_DIR
+PTOSCP5_PACKAGES
+PTOSCP5_DIR
+PTOSCP5_JAR
 PTOPENCV_PACKAGES
 PTOPENCV_INCLUDE_DIR
 PTOPENCV_DIR
@@ -964,6 +967,7 @@ with_jython
 with_kieler_jar
 with_guava_jar
 with_javacv
+with_oscp5
 with_rxtx
 with_lejos
 with_javacc
@@ -1702,6 +1706,8 @@ Optional Packages:
                               defaults to \$PTII/lib/guava.jar
   --with-javacv=JAR       use the javaCV JAR,
                           defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar
+  --with-oscp5=JAR       use oscP5.jar from JAR,
+                          defaults to \$PTII/lib/oscP5.jar
   --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
                           defaults to $RXTX_JAR_DEFAULT
   --with-lejos=DIR       use Java lejos from DIR,
@@ -9628,6 +9634,57 @@ fi
 
 
 #--------------------------------------------------------------------
+#       oscP5 Open Sound Control/processing.org interface
+#	http://www.sojamo.de/libraries/oscP5/
+#       oscP5 is used by actors in org/ptolemy/osc
+#--------------------------------------------------------------------
+
+# lib/oscp5.jar
+PTOSCP5_JAR=
+
+# Set to osc if oscp5.jar is found and used in $PTII/org/ptolemy/makefile
+PTOSCP5_DIR=
+
+# We only need to look for Jsoup if $PTOSCP5_USER_DIR is present
+PTOSCP5_USER_DIR="$PTII/org/ptolemy/osc"
+
+if test ! -d "$PTOSCP5_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTOSCP5_USER_DIR is not present,
+    so we need not find the Open Sound Control/Processing.org interface." >&5
+$as_echo "$PTOSCP5_USER_DIR is not present,
+    so we need not find the Open Sound Control/Processing.org interface." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Open Sound Control/Processing.org interface (oscP5). " >&5
+$as_echo_n "checking for Open Sound Control/Processing.org interface (oscP5). ... " >&6; }
+
+# Check whether --with-oscp5 was given.
+if test "${with_oscp5+set}" = set; then :
+  withval=$with_oscp5; PTOSCP5_JAR=$withval
+else
+  PTOSCP5_JAR=$PTII/lib/oscP5.jar
+fi
+
+
+    if test  -f "$PTOSCP5_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTOSCP5_JAR" >&5
+$as_echo "$PTOSCP5_JAR" >&6; }; fi
+	updateClasspath "$PTOSCP5_JAR"
+	PTOSCP5_DIR=osc
+    fi
+fi
+
+if test -z "$PTOSCP5_DIR"; then
+    updateExcludes "org/ptolemy/osc"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Open Sound Control/Processing.org (oscP5) interface necessary
+    to compile org/ptolemy/osc.
+    Typically, the oscp5.jar file is found at $PTII/lib/oscP5.jar." >&5
+$as_echo "$as_me: WARNING: Failed to find the Open Sound Control/Processing.org (oscP5) interface necessary
+    to compile org/ptolemy/osc.
+    Typically, the oscp5.jar file is found at $PTII/lib/oscP5.jar." >&2;}
+fi
+
+#--------------------------------------------------------------------
 #       RXTX is the Serial Port interface that replaces
 #       Sun's commapi.
 #	See if there was a command-line option for rxtx is
@@ -13697,6 +13754,15 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Ptolemy II packages that use OpenCV
 # PTOPENCV_PACKAGES is used in ptII/doc/makefile
+
+
+# Open Sound Control/Processing.org jar file used by org.ptolemy.js
+
+
+# Set to osc if oscp5.jar is found
+
+
+# Set to org.ptolemy.osc and used int $PTII/doc/makefile if oscp5 is found
 
 
 # Set to pdf and used in ptolemy/vergil/makefile if
