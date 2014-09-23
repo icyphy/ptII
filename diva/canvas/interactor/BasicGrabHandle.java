@@ -26,6 +26,7 @@
 package diva.canvas.interactor;
 
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -64,23 +65,15 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
         // Can't reference variable until superclass is called...
         super(0, 0, 0, 0, java.awt.Color.blue);
         Figure figure = s.getFigure();
-        // If the figure is small, create smaller grab handles.
+        // Set the size of the grab handles to be independent of the zoom factor.
         if (figure != null) {
-            // The figure may already include grab handles, so we really want the bounds
-            // of the shape.
-            Shape shape = figure.getShape();
-            if (shape != null) {
-        	Rectangle2D bounds = shape.getBounds();
-        	// To get standardized sizes, iterate until grab handles are small enough.
-        	// If the bounds are zero, then give up and use standard size.
-        	if (bounds.getWidth() > 0.0 && bounds.getHeight() > 0.0) {
-        	    while (bounds.getWidth() < _size * 4.0 || bounds.getHeight() < _size * 4.0) {
-        		_size = _size * 0.25f;
-        	    }
-        	}
-            }
+            AffineTransform transform = figure.getTransformContext().getScreenTransform();
+            // Assume the zoom factor in the x axis is the same as the y axis.
+            double scaleX = transform.getScaleX();
+            setSize(4.0f / (float)scaleX); 
+        } else {
+            setSize(_size);
         }
-        setSize(_size);
         _site = s;
     }
 
