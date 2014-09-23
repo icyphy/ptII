@@ -734,12 +734,6 @@
 	<include name="ptolemy/actor/lib/javasound/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jopio/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
