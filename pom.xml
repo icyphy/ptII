@@ -623,6 +623,12 @@ See $PTII/doc/coding/maven.htm
       <version>1.7.3</version>
     </dependency>
 
+    <dependency> 
+      <groupId>oscP5</groupId>
+      <artifactId>oscP5</artifactId>
+      <version>ptII</version>
+    </dependency>
+
     <dependency> <!-- $PTII/lib/protobuf.jar -->
       <groupId>protobuf</groupId>
       <artifactId>protobuf</artifactId>
