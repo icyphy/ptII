@@ -36,7 +36,7 @@ DIRS =		demo test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(PTOSCP5_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -50,11 +50,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
-JSRCS = \ 
+JSRCS = \
 	OscReceiver.java \
 	OscSender.java 
 
-OTHER_FILES_TO_BE_JARED = \ 
+OTHER_FILES_TO_BE_JARED = \
 	OscSenderIcon.xml \
 	OscReceiverIcon.xml
 
@@ -62,12 +62,11 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = doc
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \ 
-	doc \ 
+OPTIONAL_FILES = \
 	test
 
 KRUFT =

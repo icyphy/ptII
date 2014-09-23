@@ -11,7 +11,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[72.5, 52.5]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -20,9 +20,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8963487738419623">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{237.33268482490283, 174.50000000000017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -30,7 +30,7 @@
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, 330.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[72.5, 232.5]">
         </property>
     </entity>
     <entity name="OscSender" class="org.ptolemy.osc.OscSender">
@@ -38,7 +38,7 @@
         </property>
         <property name="localPort" class="ptolemy.data.expr.Parameter" value="2224">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 330.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[357.5, 232.5]">
         </property>
         <port name="tagPrefix" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -59,7 +59,7 @@
     <entity name="OscReceiver" class="org.ptolemy.osc.OscReceiver">
         <property name="port" class="ptolemy.data.expr.Parameter" value="2225">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 330.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[462.5, 232.5]">
         </property>
         <port name="tag" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -74,7 +74,7 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[227.5, 157.5]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -82,14 +82,14 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[607.5, 227.5]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[227.5, 242.5]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -103,7 +103,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-30.0, 330.0}">
+        <vertex name="vertex1" value="[152.5, 232.5]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=-30.0,y=330.0}, tail={id=&quot;Ramp2.trigger&quot;,x=45.0,y=340.0}, points={} },{ head={id=&quot;Ramp.trigger&quot;,x=45.0,y=255.0}, tail={id=&quot;relation6.vertex1&quot;,x=-30.0,y=330.0}, points={-30.0,245.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=-110.0,y=330.0}, tail={id=&quot;relation6.vertex1&quot;,x=-30.0,y=330.0}, points={} } }">
         </property>

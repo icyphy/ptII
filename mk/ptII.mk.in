@@ -328,6 +328,15 @@ KIELER_JAR =	@KIELER_JAR@
 # Jar files for Open Computer Vision (OpenCV), used in ptolemy.actor.lib.opencv/makefile
 OPENCV_JAR =	@OPENCV_JAR@
 
+# Open Sound Control/Processing.org jar file used by org.ptolemy.js
+PTOSCP5_JAR =	@PTOSCP5_JAR@
+
+# Set to osc if oscp5.jar is found
+PTOSCP5_DIR = 	@PTOSCP5_DIR@
+
+# Set to org.ptolemy.osc and used int $PTII/doc/makefile if oscp5 is found
+PTOSCP5_PACKAGES = 	@PTOSCP5_PACKAGES@
+
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
 # Used in ptolemy/matlab/makefile

@@ -148,6 +148,9 @@ public class GenerateCopyrights {
                 "net.jimblackler.Utils.YieldAdapterIterator",
                 "net/jimblackler/Utils/jimblacklerUtils-license.htm");
 
+        _addIfPresent(copyrightsMap, "oscP5.OscP5",
+                "lib/oscP5-license.htm");
+
         _addIfPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
                 "lib/org.apache.oltu.oauth2-license.htm");
 

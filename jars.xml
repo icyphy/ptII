@@ -32,6 +32,7 @@
     <include name="org/ptolemy/faultModels/faultModels.jar" />
     <include name="org/ptolemy/machineLearning/machineLearning.jar" />
     <include name="org/ptolemy/optimization.jar" />
+    <include name="org/ptolemy/osc.jar" />
     <include name="org/ptolemy/ptango/ptango.jar" />
     <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
@@ -338,6 +339,7 @@
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
     <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
     <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
+    <include name="ptolemy/demo/Robot/Robot.jar" />
     <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
     <include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.jar" />
     <include name="ptolemy/domains/algebraic/demo/RLC/RLC.jar" />
@@ -3991,6 +3993,17 @@
       </fileset>
     </jar>
 
+    <!-- org/ptolemy/osc/osc.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/osc/osc.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/osc/*.class"/>
+	<include name="org/ptolemy/osc/*.xml"/>
+	<include name="org/ptolemy/osc/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- org/ptolemy/ptango/ptango.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
@@ -6651,6 +6664,14 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/ProbabilisticModels/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/Robot/Robot.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/Robot/*.xml"/>
        </fileset>
     </jar>
 
