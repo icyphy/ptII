@@ -1,9 +1,9 @@
-# Makefile for Ptolemy model that executes a suite of other Ptolemy II models.
+# Makefile for Ptolemy models of a Simulateld robot intruder detection system
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69925 2014-08-29 21:16:31Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2014 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,44 +29,59 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/demo
+ME =		ptolemy/demo/Robot
 
-DIRS = 		AirManagementSystem ElectricPowerSystem ExecDemos FuelSystem ProbabilisticModels Robot doc test
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	Robot
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml and util/ classes
-PTAUXALLJARS = \
-	AirManagementSystem/AirManagementSystem.jar \
-	ElectricPowerSystem/ElectricPowerSystem.jar \
-	ExecDemos/ExecDemos.jar \
-	FuelSystem/FuelSystem.jar \
-	ProbabilisticModels/ProbabilisticModels.jar \
-	Robot/Robot.jar \
-	doc/doc.jar
 
-PTAUXALLJAR = $(PTPACKAGE).jar
+EXAMPLE_MODELS = \
+	KeyValueStoreServer.xml \
+	RandomWalkIntruder.xml \
+	RangeSensor.xml \
+	RobotChase.xml \
+	RobotCollaborativeChase.xml \
+	RobotInLine.xml \
+	RobotMonitor.xml \
+	RobotOnCircle.xml \
+	RobotOnCircleKV.xml \
+	RobotPFChase.xml \
+	SmartChase.xml \
+	SmartChaseWithSmartIntruder.xml \
+	SmartIntruder.xml \
+	SmartIntruder7Teams.xml
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	$(EXAMPLE_MODELS) \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
+
+EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+
+#	$(EXAMPLE_MODEL_HTML) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
-OPTIONAL_FILES = \
+OPTIONAL_FILES =
 
 # Files to remove with 'make clean'
 KRUFT = \
@@ -74,6 +89,14 @@ KRUFT = \
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
+
+jnlps:
+	cd $(ROOT); \
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		echo "Creating applet for $(ME)/$$x" ; \
+		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
+	done
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
