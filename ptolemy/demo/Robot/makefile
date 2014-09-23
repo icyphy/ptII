@@ -48,7 +48,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 EXAMPLE_MODELS = \
 	KeyValueStoreServer.xml \
 	RandomWalkIntruder.xml \
-	RangeSensor.xml \
 	RobotChase.xml \
 	RobotCollaborativeChase.xml \
 	RobotInLine.xml \
@@ -63,6 +62,7 @@ EXAMPLE_MODELS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
+	RangeSensor.xml \
 	acks.htm \
 	body.htm \
 	buttons.htm \
