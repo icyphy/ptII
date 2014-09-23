@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/ptango/lib/http
 
-DIRS =
+DIRS =		img
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
