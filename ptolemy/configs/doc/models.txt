@@ -189,7 +189,6 @@ $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml
 $CLASSPATH/ptolemy/demo/Robot/KeyValueStoreServer.xml
 $CLASSPATH/ptolemy/demo/Robot/RandomWalkIntruder.xml
-$CLASSPATH/ptolemy/demo/Robot/RangeSensor.xml
 $CLASSPATH/ptolemy/demo/Robot/RobotChase.xml
 $CLASSPATH/ptolemy/demo/Robot/RobotCollaborativeChase.xml
 $CLASSPATH/ptolemy/demo/Robot/RobotInLine.xml
