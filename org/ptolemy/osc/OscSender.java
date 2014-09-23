@@ -1,8 +1,7 @@
 
-/* A Generic actor that generates OSC Messages via the provided
- * input ports.
+/* A Generic actor that generates OSC Messages via the provided input ports.
 
-Copyright (c) 1998-2013 The Regents of the University of California.
+Copyright (c) 2013 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -54,21 +53,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
-<p> An actor that generates and sends OSC Messages. Add input ports to this actor
-and name the ports to match the desired tag name. Any token received via an input 
-port will have a tag equal to the name. A tag prefix common to all ports
-can be defined by the help of the <i>tagPrefix</i> PortParameter. If specified, this
-prefix will be prepended to all the tags, defined by the port names. 
+ <p> An actor that generates and sends OSC Messages. Add input ports
+ to this actor and name the ports to match the desired tag name. Any
+ token received via an input port will have a tag equal to the name. A
+ tag prefix common to all ports can be defined by the help of the
+ <i>tagPrefix</i> PortParameter. If specified, this prefix will be
+ prepended to all the tags, defined by the port names.
 
-<p> Tokens that are received simultaneously at multiple input ports, i.e., that have
-the same time stamp, will be bundled into a single OSCBundle object and will be sent
-out as a single OSC message. 
+<p> Tokens that are received simultaneously at multiple input ports,
+i.e., that have the same time stamp, will be bundled into a single
+OSCBundle object and will be sent out as a single OSC message. </p>
 
-
-@see org.ptolemy.osc.OscReceiver
+ @see org.ptolemy.osc.OscReceiver
 
  @author Ilge Akkaya
  @version $Id$
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */
@@ -154,7 +154,7 @@ public class OscSender extends TypedAtomicActor {
         }
         // collect tokens and generate OSC Messages
 
-        HashMap<String, Object> tokensToBeTransmitted = new HashMap<>();
+        HashMap<String, Object> tokensToBeTransmitted = new HashMap<String,Object>();
         for(TypedIOPort port : this.inputPortList()) { 
             if (!(port instanceof ParameterPort) && 
                     port.isInput() && port.hasToken(0)) {

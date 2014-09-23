@@ -1,7 +1,6 @@
-
 /* An Input-agnostic OSC message receiver and decoder. 
 
-Copyright (c) 1998-2013 The Regents of the University of California.
+Copyright (c) 2014 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -51,20 +50,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
-<p> Receive Open Sound Control (OSC) Messages by listening to the specified port and
-send each message to the corresponding output by name matching. This implies that
-the user will have to manually add output ports to the receiver, according to the
-messages they would like to listen for. Type of each port is determined by the first
-token that is received at that port. Allowed types are int, double, float and string. If
-input type is not specified by OSC, or if the defined type does not match any of the allowed
-types, tokens will still be produced as ObjectTokens.
+<p> Receive Open Sound Control (OSC) Messages by listening to the
+specified port and send each message to the corresponding output by
+name matching. This implies that the user will have to manually add
+output ports to the receiver, according to the messages they would
+like to listen for. Type of each port is determined by the first token
+that is received at that port. Allowed types are int, double, float
+and string. If input type is not specified by OSC, or if the defined
+type does not match any of the allowed types, tokens will still be
+produced as ObjectTokens.
 
 <p> See:
-http://opensoundcontrol.org/ for the full OSC Specification
+<a href="http://opensoundcontrol.org#in_browser">http://opensoundcontrol.org/</a>
+for the full OSC Specification.
 
-@see org.ptolemy.osc.OscSender
+ @see org.ptolemy.osc.OscSender
  @author Ilge Akkaya
- @version  
+ @version $Id$
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */
@@ -87,7 +90,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
         port.setTypeEquals(BaseType.INT);
         port.setExpression("9000");
 
-        _receivedTokens = new ConcurrentHashMap<>(); 
+        _receivedTokens = new ConcurrentHashMap<String, List<Object>>(); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -221,7 +224,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                     if (_receivedTokens.containsKey(identifier)) {
                         tokenList = _receivedTokens.get(identifier);
                     } else {
-                        tokenList = new LinkedList<>();
+                        tokenList = new LinkedList<Object>();
                     }
                     for (int i = 0; i < message.length; i++) {
                         Object b = message[i];
