@@ -29,7 +29,7 @@ package org.ptolemy.osc;
  
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentHashMap; 
 
 import oscP5.OscEventListener;
 import oscP5.OscMessage;
@@ -110,12 +110,15 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
             throws IllegalActionException {
         if (attribute == port) {
             int portValue = ((IntToken) port.getToken()).intValue();
-            if (portValue != _port) {
-                _constructOscReceiver(portValue);
-            } 
+            _port = portValue;
         } else { 
             super.attributeChanged(attribute);
         }
+    }
+    
+    public void initialize() throws IllegalActionException {
+        super.initialize(); 
+        _constructOscReceiver(_port);
     }
 
     public void fire() throws IllegalActionException {
@@ -201,13 +204,18 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
         } 
     }
 
-    public void oscStatus( OscStatus s) {
-
+    public void oscStatus( OscStatus s) { 
+        //TODO(ilgea): Add OSC Connection Error Handling
+    }
+    
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        oscP5.stop();
     }
     private void _constructOscReceiver(int port) throws IllegalActionException {
 
-         oscP5 = new OscP5(this, port); 
-        _port = port; // set port if successful
+         oscP5 = new OscP5(this, port);  
+        _port = port; // set port if succ essful
 
 
     }
@@ -244,7 +252,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                 }
             } 
         }
-    }
+    } 
 
     private OscP5 oscP5;  
 

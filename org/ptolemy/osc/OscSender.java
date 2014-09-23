@@ -29,20 +29,25 @@ COPYRIGHTENDKEY
 package org.ptolemy.osc;
 
 import java.util.HashMap;
-
-import netP5.NetAddress;
 import oscP5.OscBundle;
 import oscP5.OscMessage;
 import oscP5.OscP5;
+import netP5.NetListener;
+import netP5.NetMessage;
+import netP5.NetStatus;
+
+import netP5.NetAddress;
+
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -53,22 +58,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
- <p> An actor that generates and sends OSC Messages. Add input ports
- to this actor and name the ports to match the desired tag name. Any
- token received via an input port will have a tag equal to the name. A
- tag prefix common to all ports can be defined by the help of the
- <i>tagPrefix</i> PortParameter. If specified, this prefix will be
- prepended to all the tags, defined by the port names.
+<p> An actor that generates and sends OSC Messages. Add input ports to this actor
+and name the ports to match the desired tag name. Any token received via an input 
+port will have a tag equal to the name. A tag prefix common to all ports
+can be defined by the help of the <i>tagPrefix</i> PortParameter. If specified, this
+prefix will be prepended to all the tags, defined by the port names. 
 
-<p> Tokens that are received simultaneously at multiple input ports,
-i.e., that have the same time stamp, will be bundled into a single
-OSCBundle object and will be sent out as a single OSC message. </p>
+<p> Tokens that are received simultaneously at multiple input ports, i.e., that have
+the same time stamp, will be bundled into a single OSCBundle object and will be sent
+out as a single OSC message. 
 
- @see org.ptolemy.osc.OscReceiver
+
+@see org.ptolemy.osc.OscReceiver
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */
@@ -98,7 +102,6 @@ public class OscSender extends TypedAtomicActor {
         localPort = new Parameter(this, "localPort");
         localPort.setTypeEquals(BaseType.INT);
         localPort.setExpression("56999");  
-        _constructOscReceiver(56999);
         
         tagPrefix = new PortParameter(this,"tagPrefix");
         tagPrefix.setTypeEquals(BaseType.STRING);
@@ -137,13 +140,15 @@ public class OscSender extends TypedAtomicActor {
         } else if (attribute == remoteHost) {
             _host = (((StringToken) remoteHost.getToken()).stringValue());
         } else if (attribute == localPort) {
-            int p = (((IntToken) localPort.getToken()).intValue());
-            if (p!=_localPort) {
-                _constructOscReceiver(p); 
-            }
+            _localPort = (((IntToken) localPort.getToken()).intValue()); 
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _constructOscReceiver(_localPort);
     }
 
     public void fire() throws IllegalActionException {
@@ -176,14 +181,19 @@ public class OscSender extends TypedAtomicActor {
         _sendOscPackets(tokensToBeTransmitted); 
 
     }
+    
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        oscP5.stop();
+    }
+    
+    
 
     OscP5 oscP5;
     NetAddress myRemoteLocation;
 
     private void _constructOscReceiver(int port) throws IllegalActionException { 
-        oscP5 = new OscP5(this, port);
-        _localPort = port; // set port if successful
-
+        oscP5 = new OscP5(this, port);// set port if successful 
     }
 
     private void _sendOscPackets(HashMap<String, Object> tokenMap) throws IllegalActionException {
@@ -228,6 +238,6 @@ public class OscSender extends TypedAtomicActor {
     }  
     private int _remotePort = 9999;
     private int _localPort = 56999;
-    private String _host = "";
+    private String _host = ""; 
 
 }
