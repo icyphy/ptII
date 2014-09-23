@@ -543,6 +543,11 @@ The Ptiny pack is required.
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/optimization/optimization.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/optimization"/>
 
+            <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/osc/osc.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/osc"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/oscP5.jarr"
+                  targetdir="$INSTALL_PATH/lib"/>
+
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/ptango/ptango.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/ptango/demo/demo.jar"
