@@ -226,7 +226,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/kiosk.pdf">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/icons/kiosk.pdf">
                 </property>
                 <property name="scale" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
@@ -413,7 +413,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/police.pdf">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/icons/police.pdf">
                 </property>
                 <property name="scale" class="ptolemy.data.expr.Parameter" value="70.0">
                 </property>
@@ -659,7 +659,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
             </property>
             <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/notify.pdf">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/icons/notify.pdf">
                 </property>
                 <property name="scale" class="ptolemy.data.expr.Parameter" value="65">
                 </property>
@@ -971,7 +971,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/door.pdf">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/icons/door.pdf">
                 </property>
                 <property name="scale" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
