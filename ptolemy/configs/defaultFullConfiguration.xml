@@ -181,8 +181,8 @@
             <input source="ptolemy/domains/domains.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
 
-		<!-- Exception managment -->
-			<input source="ptolemy/actor/lib/exception.xml"/>
+	    <!-- Exception managment -->
+	    <input source="ptolemy/actor/lib/exception.xml"/>
 
 	    <!-- Don't add the FMUImport actor here, instead we do File - Import - Import FMU -->
             <!-- input source="ptolemy/actor/lib/fmi/fmi.xml"/ -->
@@ -203,14 +203,10 @@
             <input source="ptolemy/domains/metroII/metroII.xml"/>
 	    <!-- jxta is not shipping in 4.0 -->
             <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"-->
-
 	    <input source="ptolemy/domains/openmodelica/lib/openmodelicaentities.xml"/>
-	    
-	    <!-- Optimization actors -->
-        <input source="org/ptolemy/optimization/optimization.xml"/>
-        
-        <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
-
+            <input source="org/ptolemy/optimization/optimization.xml"/>
+            <input source="org/ptolemy/osc/osc.xml"/>
+            <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
 

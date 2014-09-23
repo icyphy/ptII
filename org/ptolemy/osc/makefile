@@ -56,7 +56,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	OscSenderIcon.xml \
-	OscReceiverIcon.xml
+	OscReceiverIcon.xml \
+	osc.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

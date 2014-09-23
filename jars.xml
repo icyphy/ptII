@@ -1804,9 +1804,8 @@
 	 destfile="${basedir}/ptolemy/actor/lib/mail/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/mail/demo/ExceptionEmailer/*.xml"/>
 	<include name="ptolemy/actor/lib/mail/demo/SendMail/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/mail/demo/SendMail/*.xml"/>
       </fileset>
     </jar>
@@ -2313,6 +2312,7 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/*.xml"/>
+	<include name="ptolemy/domains/algebraic/demo/RLC/*.pdf"/>
 	<include name="ptolemy/domains/algebraic/demo/RLC/*.xml"/>
       </fileset>
     </jar>

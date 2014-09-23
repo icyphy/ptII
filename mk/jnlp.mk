@@ -489,6 +489,8 @@ FULL_10_0_JARS = \
 	org/ptolemy/faultModels/faultModels.jar \
 	org/ptolemy/machineLearning/machineLearning.jar \
 	org/ptolemy/optimization/optimization.jar \
+	org/ptolemy/osc/osc.jar \
+	$(PTOSCP5_JAR) \
 	$(METROII_JARS) \
 	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \
