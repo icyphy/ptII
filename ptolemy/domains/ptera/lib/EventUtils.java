@@ -29,7 +29,6 @@ package ptolemy.domains.ptera.lib;
 
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;

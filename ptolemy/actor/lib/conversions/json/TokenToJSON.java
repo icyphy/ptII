@@ -45,7 +45,6 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.BaseType.NilType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

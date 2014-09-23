@@ -30,13 +30,12 @@ package org.ptolemy.osc;
  
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap; 
+import java.util.concurrent.ConcurrentHashMap;
 
 import oscP5.OscEventListener;
 import oscP5.OscMessage;
 import oscP5.OscP5;
 import oscP5.OscStatus;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;

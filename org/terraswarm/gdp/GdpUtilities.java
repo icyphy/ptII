@@ -29,30 +29,15 @@
 package org.terraswarm.gdp;
 
 
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 import org.ptolemy.fmi.NativeSizeT;
 
-import org.terraswarm.gdp.EP_STAT;
-import org.terraswarm.gdp.Gdp10Library;
-import org.terraswarm.gdp.Gdp10Library.gdp_gcl_t;
-import org.terraswarm.gdp.ep_stat_to_string;
-
-import ptolemy.util.StringUtilities;
+import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 /** Useful utilities for working with the Global Data Plane.
 

@@ -37,8 +37,8 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -53,8 +53,8 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import javax.swing.text.html.StyleSheet;
 
 import ptolemy.gui.Top;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;

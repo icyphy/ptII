@@ -45,7 +45,6 @@ import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.lib.Const;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;

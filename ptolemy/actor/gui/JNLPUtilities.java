@@ -31,8 +31,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;

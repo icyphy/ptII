@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.lib.ExceptionSubscriber;
 import ptolemy.actor.lib.ExceptionManagerModel;
+import ptolemy.actor.lib.ExceptionSubscriber;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.kernel.Port;

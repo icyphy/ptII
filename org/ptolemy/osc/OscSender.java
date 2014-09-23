@@ -30,22 +30,20 @@ COPYRIGHTENDKEY
 package org.ptolemy.osc;
 
 import java.util.HashMap;
+
+import netP5.NetAddress;
 import oscP5.OscBundle;
 import oscP5.OscMessage;
 import oscP5.OscP5;
-
-import netP5.NetAddress;
-
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

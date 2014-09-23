@@ -29,27 +29,19 @@
 package org.terraswarm.gdp.apps;
 
 
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 
 import org.ptolemy.fmi.NativeSizeT;
-
 import org.terraswarm.gdp.EP_STAT;
 import org.terraswarm.gdp.Gdp10Library;
-import org.terraswarm.gdp.Gdp10Library.gdp_gcl_t;
 import org.terraswarm.gdp.GdpUtilities;
-import org.terraswarm.gdp.ep_stat_to_string;
 
-import ptolemy.util.StringUtilities;
+import com.sun.jna.Memory;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 /** Create a GCL.
     
