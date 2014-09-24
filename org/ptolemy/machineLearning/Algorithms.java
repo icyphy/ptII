@@ -28,6 +28,8 @@ the copyright link on the splash page or see copyright.htm.
  */
 package org.ptolemy.machineLearning;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 /**
  * Algorithms class.
  *
@@ -38,9 +40,48 @@ package org.ptolemy.machineLearning;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class Algorithms {
-
-    private Algorithms() {
-        // TODO Auto-generated constructor stub
+ 
+    
+    /** Return the probability mass function P(x=k) ~ Poisson(mean) 
+     * value at k, for the Poisson distribution with parameter mean
+     *  @param k The value at which the probability mass function will be computed
+     *  @param mean The mean (lambda) of the poisson distribution 
+     *  @return The PMF value at k.
+     * @throws IllegalActionException 
+     *  @exception Exception If k < 0
+     */
+    public static double poissonPmf(int k, double mean) throws IllegalActionException {
+        // p(x=k) = (exp(-mean)*mean^k)/(k!)
+        // log p  = -mean + k*log(mean) - log(k!)
+        // compute the log and then take exponential, to avoid numerical errors
+        if ( k < 0) {
+            throw new IllegalActionException("Poisson distribution is only defined over nonnegative integer values!");
+        }
+        double logFactorial = 0.0;
+        for (int i=1; i <= k ; i++) {
+            logFactorial += Math.log(i);
+        }
+        double logTerm = -mean + k*Math.log(mean) - logFactorial;
+        return Math.exp(logTerm);
+    }
+    
+    /** Return the probability mass function P(x=k) ~ Poisson(mean) 
+     * value at k, for the poisson distribution with parameter mean
+     *  @param k The value at which the probability mass function will be computed
+     *  @param mean The mean (lambda) of the poisson distribution 
+     *  @return The PMF value at k.
+     * @throws IllegalActionException 
+     *  @exception Exception If k < 0
+     */
+    public static double poissonPmf(int k, double mean, double logFactorial) throws IllegalActionException{
+        // p(x=k) = (exp(-mean)*mean^k)/(k!)
+        // log p  = -mean + k*log(mean) - log(k!)
+        // compute the log and then take exponential, to avoid numerical errors
+        if ( k < 0) {
+            throw new IllegalActionException("Poisson distribution is only defined over nonnegative integer values!");
+        } 
+        double logTerm = -mean + k*Math.log(mean) - logFactorial;
+        return Math.exp(logTerm);
     }
 
     /**
@@ -48,12 +89,21 @@ public class Algorithms {
      * key is found is returned.
      * @param A The search array
      * @param key Key to be searched
-     * @return the found key.
+     * @return the found key index.
      */
     public static int _binaryIntervalSearch(double[] A, double key) {
         return _binaryIntervalSearch(A, key, 0, A.length - 1);
     }
 
+    /** 
+     * Do a binary interval search for the key in array A. The bin index in which
+     * key is found is returned.
+     * @param A A The search array
+     * @param key Key to be searched
+     * @param imin minimum array index to look for key
+     * @param imax maximum array index to look for key
+     * @return the found key index, or value of KEY_NOT_FOUND for not found. 
+     */ 
     public static int _binaryIntervalSearch(double[] A, double key, int imin,
             int imax) {
         if (imax < imin) {
@@ -61,7 +111,7 @@ public class Algorithms {
         } else {
             int imid = imin + ((imax - imin) / 2);
             if (imid >= A.length - 1) {
-                return -1;
+                return KEY_NOT_FOUND;
             } else if (A[imid] <= key && A[imid + 1] > key) {
                 return imid;
             } else if (A[imid] > key) {
@@ -72,6 +122,7 @@ public class Algorithms {
                 return imid;
             }
         }
-    }
+    } 
 
+    private static final int KEY_NOT_FOUND = -1;
 }
