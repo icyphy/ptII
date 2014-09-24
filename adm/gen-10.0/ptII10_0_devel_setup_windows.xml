@@ -545,7 +545,7 @@ The Ptiny pack is required.
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/osc/osc.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/osc"/>
-            <file src="../dists/ptII10.0.devel/jar_dist/lib/oscP5.jarr"
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/oscP5.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/ptango/ptango.jar"
@@ -600,7 +600,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/org/ptolemy/faultModels"/>
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineImprovisation/machineImprovisation.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/machineImprovisation"/>
-            <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineImprovisation/demo.jar"
+            <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineImprovisation/demo/demo.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/machineImprovisation/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineLearning/machineLearning.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/machineLearning"/>
