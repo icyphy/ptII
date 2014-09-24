@@ -1026,7 +1026,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 ##########
 
 
-update_ftp: update_ptii_ftp untar
+update_ftp: update_ptii_ftp untar update_ftp_book
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
@@ -1035,6 +1035,14 @@ untar:
 	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh moog "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
+	ssh moog "cd $(PTII_FTP)/ptII$(VERSION); ln -s ../jnlp-$(VERSION)/signed ."
+
+update_ftp_book: PtolemyII_DigitalV1_02.pdf
+	scp PtolemyII_DigitalV1_02.pdf moog:$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/
+
+PtolemyII_DigitalV1_02.pdf:
+	wget http://ptolemy.eecs.berkeley.edu/books/Systems/PtolemyII_DigitalV1_02.pdf
+
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip moog:$(PTII_FTP)
@@ -3161,11 +3169,15 @@ coverity:
 PTBUILDRELEASE=tmp/build/ptII$(VERSION)
 build_release: $(PTBUILDRELEASE)
 
-ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out clean_ptrelease_doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit clean_ptrelease_doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out clean_ptrelease_scpDemos.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
 ptbuildrelease2: $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
+ptbuildrelease3: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+
 ptbuildrelease4: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+
+ptbuildrelease5: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
 $(PTBUILDRELEASE):
 	@echo "#"
@@ -3204,6 +3216,9 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit:
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./updateDemos >& doit)
+
+clean_ptrelease_doit:
+	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit
 
 $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out:
 	@echo "#"
