@@ -1,6 +1,7 @@
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
+$CLASSPATH/org/ptolemy/machineImprovisation/demo/JazzImprovisation/JazzImprovisation.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml
