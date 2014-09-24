@@ -242,31 +242,31 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /* The user-provided initial guess of the transition probability matrix*/
+    /** The user-provided initial guess of the transition probability matrix*/
     public Parameter A0;
 
-    /* The user-provided threshold on the minimum desired improvement on likelihood per iteration*/
+    /** The user-provided threshold on the minimum desired improvement on likelihood per iteration*/
     public Parameter likelihoodThreshold;
 
-    /* The user-provided maximum number of allowed iterations of the Alpha-Beta Recursion*/
+    /** The user-provided maximum number of allowed iterations of the Alpha-Beta Recursion*/
     public Parameter maxIterations;
 
-    /* Number of states of the HMM*/
+    /** Number of states of the HMM*/
     public Parameter nStates;
 
-    /* Boolean that determines whether or not to randomize input guess vectors */
+    /** Boolean that determines whether or not to randomize input guess vectors */
     public Parameter randomizeGuessVectors;
 
-    /* The user-provided initial guess on the prior probability distribution*/
+    /** The user-provided initial guess on the prior probability distribution*/
     public Parameter priorDistribution;
 
-    /* The input port that provides the sample observations*/
+    /** The input port that provides the sample observations*/
     public TypedIOPort input;
 
-    /* The vector estimate for the prior distribution on the set of states*/
+    /** The vector estimate for the prior distribution on the set of states*/
     public TypedIOPort priorEstimates;
 
-    /* The transition matrix estimate obtained by iterating over the observation set*/
+    /** The transition matrix estimate obtained by iterating over the observation set*/
     public TypedIOPort transitionMatrix;
 
     ///////////////////////////////////////////////////////////////////
@@ -303,6 +303,11 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         }
     }
 
+    /**
+     * Expectation-Maximization
+     * @return
+     * @throws IllegalActionException
+     */
     protected boolean _EMParameterEstimation() throws IllegalActionException {
 
         boolean success = false;
@@ -351,10 +356,16 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     protected abstract void _updateEstimates();
 
-    /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
+    /** Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
      * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
-     * continuous distribution types */
+     * continuous distribution types
+     * @param y input observation stream
+     * @param A transition probability matrix guess
+     * @param prior prior state distribution guess
+     * @param nCategories number of categories in the multinomial distribution, where applies
+     * @return
+     */ 
     protected HashMap HMMAlphaBetaRecursion(double[] y, double[][] A,
             double[] prior, int nCategories)
 
