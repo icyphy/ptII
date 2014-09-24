@@ -135,12 +135,24 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /**
+     * Mean parameter array for the Gaussian distribution
+     */
     public TypedIOPort mean;
 
+    /**
+     * Standard deviation parameter array for the Gaussian distribution
+     */
     public TypedIOPort standardDeviation;
 
+    /**
+     * The initial guess mean parameter array for the Gaussian distribution
+     */
     public Parameter meanVectorGuess;
 
+    /**
+     * The initial guess standard deviation parameter array for the Gaussian distribution
+     */
     public Parameter standardDeviationGuess;
 
     ///////////////////////////////////////////////////////////////////

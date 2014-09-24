@@ -113,8 +113,14 @@ public class HMMExponentialEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /**
+     * Rate parameter of the exponential distribution
+     */
     public TypedIOPort lambda;
 
+    /**
+     * Rate parameter guess for the exponential distribution
+     */
     public Parameter lambdaGuess;
 
     ///////////////////////////////////////////////////////////////////

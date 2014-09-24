@@ -92,6 +92,10 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /*
+     * An array that defines a probability mass, defining the multinomial
+     * observation probabilities 
+     */
     public PortParameter observationProbabilities;
 
     ///////////////////////////////////////////////////////////////////
@@ -151,6 +155,7 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
         }
 
         output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
+        likelihood.send( 0, new DoubleToken(_likelihood));
     }
 
     @Override

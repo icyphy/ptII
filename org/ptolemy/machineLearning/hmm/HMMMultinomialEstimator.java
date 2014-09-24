@@ -142,8 +142,16 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /*
+     * An output that defines a probability mass estimate of the multinomial
+     * observation probabilities 
+     */
     public TypedIOPort emissionEstimates;
 
+    /*
+     * An input guess array that defines a probability mass, defining the multinomial
+     * observation probabilities 
+     */
     public Parameter observationProbabilities;
 
     public Parameter nCategories;

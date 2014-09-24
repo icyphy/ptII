@@ -303,7 +303,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         }
     }
 
-    protected boolean _EMParameterEstimation() {
+    protected boolean _EMParameterEstimation() throws IllegalActionException {
 
         boolean success = false;
         _initializeEMParameters();
@@ -329,6 +329,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         return success;
     }
 
+    // the function that computes the emission probability. Implemented by the child class.
     protected abstract double emissionProbability(double y, int hiddenState);
 
     protected void _initializeArrays() throws IllegalActionException {
@@ -346,7 +347,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     protected abstract void _iterateEM();
 
-    protected abstract boolean _checkForConvergence(int i);
+    protected abstract boolean _checkForConvergence(int i) throws IllegalActionException;
 
     protected abstract void _updateEstimates();
 

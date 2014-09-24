@@ -91,6 +91,9 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /**
+     * Rate parameter of the exponential distribution
+     */
     public PortParameter lambda;
 
     ///////////////////////////////////////////////////////////////////
@@ -145,6 +148,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
         }
 
         output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
+        likelihood.send( 0, new DoubleToken(_likelihood));
     }
 
     @Override

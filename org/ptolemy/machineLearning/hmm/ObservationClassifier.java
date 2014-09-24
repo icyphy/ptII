@@ -114,6 +114,9 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
+        
+        likelihood = new TypedIOPort(this, "likelihood", false, true);
+        likelihood.setTypeEquals(BaseType.DOUBLE);
 
         //_nStates = ((ArrayToken) meanToken).length();
         _nStates = ((ArrayToken) prior.getToken()).length();
@@ -125,13 +128,30 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /**
+     * An array that defines priors on initial states
+     */
     public PortParameter prior;
 
+    /**
+     * The transition probability matrix of the hidden markov chain
+     */
     public PortParameter transitionMatrix;
 
+    /**
+     * An array of state labels assigned to input symbols
+     */
     public TypedIOPort output;
 
+    /**
+     * An array of input symbols to be classified
+     */
     public TypedIOPort input;
+    
+    /**
+     * Likelihood of the input stream given the parameterized HMM
+     */
+    public TypedIOPort likelihood;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -171,10 +191,18 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
     }
 
+    /**
+     * Alpha-beta recursion
+     * @param y input sequence
+     * @param prior prior guess vectors
+     * @param A transition probability matrix
+     * @return
+     */
+
     protected final int[] classifyHMM(double[] y, double[] prior, double[][] A) {
         int nStates = prior.length;
         double[][] alphas = new double[y.length][nStates];
-        double[][] gamma = new double[y.length][nStates];
+        double[][] gamma = new double[y.length][nStates]; 
         // do this with org.apache.commons.math3.distribution
         //later NormalDistribution gaussian = ...
 
@@ -229,9 +257,29 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
             }
             clusterAssignments[t] = maxState;
         }
+        
+        double logLikelihood = 0.0;
+        for (int t = 0; t < _observations.length - 1; t++) {
+            logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
+            logLikelihood += A[clusterAssignments[t]][clusterAssignments[t + 1]];
+        }
+        // add the emission probability at final time value
+        logLikelihood += emissionProbability(y[_observations.length - 1],
+                clusterAssignments[_observations.length - 1]);
+        
+        _likelihood = logLikelihood;
+        
         return clusterAssignments;
     }
 
+    /**
+     * Classify the incoming symbols into hidden states 
+     * @param y input array
+     * @param mu mean array containing current mean estimates for hidden states
+     * @param sigma mean array containing current standard deviation estimates for hidden states
+     * @param prior prior distribution estimates
+     * @return labels of assigned states
+     */
     public static final int[] gaussianClassifyMM(int startAt, double[] y,
             double[] mu, double[] sigma, double[] prior) {
         int nStates = mu.length;
@@ -251,7 +299,14 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
         return clusterAssignments;
     }
-
+    
+    /**
+     * Compute the value of the Gaussian distribution
+     * @param x value at which the Gaussian will be evaluated
+     * @param mu Sean
+     * @param sigma Standard Deviation
+     * @return the value of the Gaussian density
+     */
     private static final double gaussian(double x, double mu, double sigma) {
 
         return 1.0 / (Math.sqrt(2 * Math.PI) * sigma)
@@ -260,10 +315,17 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+    /*
+     * Abstract class defining the emission probability computation of the
+     * latent variable.
+     */
     protected abstract double emissionProbability(double y, int hiddenState);
 
     /* length of the observation array to be classified */
     protected int _classificationLength;
+    
+    /* sequence likelihood assigned to current input */
+    protected double _likelihood;
 
     /* observation array */
     protected double[] _observations;

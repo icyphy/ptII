@@ -99,8 +99,13 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /**
+     * Mean parameter array for the Gaussian distribution
+     */
     public PortParameter mean;
-
+    /**
+     * Standard deviation parameter array for the Gaussian distribution
+     */
     public PortParameter standardDeviation;
 
     ///////////////////////////////////////////////////////////////////
@@ -162,7 +167,8 @@ public class HMMGaussianClassifier extends ObservationClassifier {
                 _outTokenArray[i] = new IntToken(classifyStates[i]);
             }
 
-            output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
+            output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray)); 
+            likelihood.send( 0, new DoubleToken(_likelihood));
         }
     }
 
