@@ -43,12 +43,12 @@
 	  <li><a href="#probabilistic">Probabilistic Models</a></li>
 	  <li><a href="#ptango">Ptango (Internet of Things)</a></li>
 	  <!--
-	  <li><a href="#robot">Robot (Simulated robot intruder detection)</a></li>
-	  -->
+	      <li><a href="#robot">Robot (Simulated robot intruder detection)</a></li>
+	      -->
 	</ul>
       </li>
-      <li><a href="mocs">Models of Computation</a></li>
-      <li><a href="actorDemos">Actor Demonstrations</a></li>
+      <li><a href="#mocs">Models of Computation</a></li>
+      <li><a href="#actorDemos">Actor Demonstrations</a></li>
       <li><a href="#other">Other Key New Capabilities</a></li>
       <li><a href="#libraries">New and Enhanced Actor Libraries</a></li>
       <li><a href="#features">Additional features</a></li>
@@ -142,7 +142,6 @@
       -->
 
     <h4><a name="ams">Air Management Systems</a></h4>
-    <ul><!-- Please keep the demos alphabetical -->
     <ul>
       <li><a href="../../demo/AirManagementSystem/AMS_AMSSim.xml">AMS Modelica</a></li>
       <li><a href="../../demo/AirManagementSystem/AirManagementSystem.xml">Air Management System</a></li>
@@ -261,24 +260,24 @@
     </ul>
 
     <!-- Skip Robot for now.
-    <h4><a name="robot">Robot (Simulated robot intruder detection)</a></h4>
-    <ul>
-      <li><a href="../../demo/Robot/KeyValueStoreServer.xml">Key Value Store Server</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RandomWalkIntruder.xml">Random Walk Intruder</a> (New in Ptolemy II 10.0)</li>
-      
-      <li><a href="../../demo/Robot/RobotChase.xml">Robot Chase</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RobotCollaborativeChase.xml">Robot Collaborative Chase</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RobotInLine.xml">Robot In Line</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RobotMonitor.xml">Robot Monitor</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RobotOnCircle.xml">Robot On Circle</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RobotOnCircleKV.xml">Robot On Circle Key Value</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/RobotPFChase.xml">Robot Particle Filter Chase</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/SmartChase.xml">Smart Chase</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/SmartChaseWithSmartIntruder.xml">Smart Chase With Smart Intruder</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/SmartIntruder.xml">Smart Intruder</a> (New in Ptolemy II 10.0)</li>
-      <li><a href="../../demo/Robot/SmartIntruder7Teams.xml">Smart Intruder 7 Teams</a> (New in Ptolemy II 10.0)</li>
-    </ul>
-    -->
+	 <h4><a name="robot">Robot (Simulated robot intruder detection)</a></h4>
+	 <ul>
+	   <li><a href="../../demo/Robot/KeyValueStoreServer.xml">Key Value Store Server</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RandomWalkIntruder.xml">Random Walk Intruder</a> (New in Ptolemy II 10.0)</li>
+	   
+	   <li><a href="../../demo/Robot/RobotChase.xml">Robot Chase</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RobotCollaborativeChase.xml">Robot Collaborative Chase</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RobotInLine.xml">Robot In Line</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RobotMonitor.xml">Robot Monitor</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RobotOnCircle.xml">Robot On Circle</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RobotOnCircleKV.xml">Robot On Circle Key Value</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/RobotPFChase.xml">Robot Particle Filter Chase</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/SmartChase.xml">Smart Chase</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/SmartChaseWithSmartIntruder.xml">Smart Chase With Smart Intruder</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/SmartIntruder.xml">Smart Intruder</a> (New in Ptolemy II 10.0)</li>
+	   <li><a href="../../demo/Robot/SmartIntruder7Teams.xml">Smart Intruder 7 Teams</a> (New in Ptolemy II 10.0)</li>
+	 </ul>
+	 -->
     See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 
@@ -392,9 +391,7 @@
 
     <h2><a name="other" id="other">Other Key New Capabilities</a></h2>
     <ul>
-      <li class="c1">
-
-	<h3>Features</h3>
+      <li>Features
 	<!--
             grep "Only in .*ptII10.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
           -->
@@ -414,17 +411,15 @@
 	    </ul>
 	  </li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.fmi.FMUImport">FMUImport</a> Limited Support for importing Functional Mockup Units</li>
-	  <li><a href="ptdoc:ptolemy.domains.sysml.kernel.SysMLSequentialDirector">SysML Domain</a> (<em>prototype</em>)</li>
 	</ul>
       </li>
-      <li>Build Infrastructure</li>
-      <li class="c1">
-	<ul>
-	  <li>The build infrastructure now supports <code>ant</code>. Eclipse and ant are preferred over make because make is slower. To build using ant, see <a href="../../../doc/coding/ant.htm"><code>$PTII/doc/coding/ant.htm</code></a></li>
-	  <li>The tests can be run using junit from within ant.</li>
-	  <li><code>$PTII/pt-modules</code>: Support for building OSGi modules of a subset of Ptolemy II: Hallvard Trætteberg</li>
-	  <li>The copyright file is now automatically generated from the licenses of the third party classes that are in the classpath.</li>
-	</ul>
+      <li>Build Infrastructure<
+				 <ul>
+				   <li>The build infrastructure now supports <code>ant</code>. Eclipse and ant are preferred over make because make is slower. To build using ant, see <a href="../../../doc/coding/ant.htm"><code>$PTII/doc/coding/ant.htm</code></a></li>
+				   <li>The tests can be run using junit from within ant.</li>
+				   <li><code>$PTII/pt-modules</code>: Support for building OSGi modules of a subset of Ptolemy II: Hallvard Trætteberg</li>
+				   <li>The copyright file is now automatically generated from the licenses of the third party classes that are in the classpath.</li>
+				 </ul>
       </li>
     </ul>
 
@@ -515,7 +510,7 @@
     <h3>JavaScript</h3>
     <p>The JavaScript actor executes a script that can read inputs and parameters, perform calculates and write outputs.</p>
     <ul>
-      <li><a href="ptdoc:ptolemy.actor.lib.JavaScript">JavaScript</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.js.JavaScript">JavaScript</a></li>
       <li><a href="#JavaScriptDemos">JavaScript demos</a></li>
     </ul>
 
@@ -560,8 +555,8 @@
 	  <li><a href="ptdoc:ptolemy.actor.gui.Console">Console</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.gui.Editable">Editable</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.gui.ExecutionAspectPlotterEditorFactory">ExecutionAspectPlotterEditorFactory</a></li>
-	  <li><a href="ptdoc:ptolemy.actor.gui.jnlp.BCVTBApplication">BCVTBApplication</a></li>
-	  <li><a href="ptdoc:ptolemy.actor.gui.jnlp.PtinyKeplerApplication">PtinyKeplerApplication</a></li>
+	  <li><a href="../../../doc/codeDoc/ptolemy/actor/gui/jnlp/BCVTBApplication.html#in_browser">BCVTBApplication</a></li>
+	  <li><a href="../../../doc/codeDoc/ptolemy/actor/gui/jnlp/PtinyKeplerApplication.html#in_browser"PtinyKeplerApplication</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.gui.LiveLink">LiveLink</a></li>
 	</ul>
       </li>
@@ -583,7 +578,6 @@
 	  <li><a href="ptdoc:ptolemy.actor.lib.gui.TextFieldContainerJavaSE">TextFieldContainerJavaSE</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.gui.UsesInvokeAndWait">UsesInvokeAndWait</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.hoc.ExecuteCompositeActor">ExecuteCompositeActor</a></li>
-	  <li><a href="ptdoc:ptolemy.actor.lib.hoc.test.IterateOverArrayCloneTest">IterateOverArrayCloneTest</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.image.ImageDisplayInterface">ImageDisplayInterface</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.image.ImageDisplayJavaSE">ImageDisplayJavaSE</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.io.CSVReader">CSVReader</a></li>
@@ -615,7 +609,6 @@
 	  <li><a href="ptdoc:ptolemy.data.expr.ConstraintMonitor">ConstraintMonitor</a></li>
 	  <li><a href="ptdoc:ptolemy.data.expr.StringConstantParameter">StringConstantParameter</a></li>
 	  <li><a href="ptdoc:ptolemy.data.PartiallyOrderedToken">PartiallyOrderedToken</a></li>
-	  <li><a href="ptdoc:ptolemy.data.test.TokenUtilitiesTest">TokenUtilitiesTest</a></li>
 	  <li><a href="ptdoc:ptolemy.data.TupleToken">TupleToken</a></li>
 	  <li><a href="ptdoc:ptolemy.data.type.AssociativeType">AssociativeType</a></li>
 	  <li><a href="ptdoc:ptolemy.data.type.TupleType">TupleType</a></li>
@@ -705,14 +698,13 @@
 
     <h2><a name="worksinprogress" id="worksinprogress">Works in Progress</a></h2>
     <ul>
-      <li><a href="ptdoc:ptolemy.date.DateToken">DateToken</a>: Patricia Derler
+      <li><a href="../../../doc/codeDoc/ptolemy/data/DateToken.html">DateToken</a>: Patricia Derler
 	<ul>
 	  <li><a href="ptdoc:ptolemy.actor.lib.CurrentDate">CurrentDate</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.DateConstructor">DateConstructor</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.DateElements">DateElements</a></li>
 	  <li><a href="ptdoc:ptolemy.domains.de.lib.DateToEvent">DateToEvent</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.conversions.LongToDate">LongToDate</a></li>
-	  <li><a href="ptdoc:ptolemy.actor.lib.conversions.ModifyDate">ModifyDate</a></li>
 	  <li><a href="ptdoc:ptolemy.actor.lib.conversions.StringToDate">StringToDate</a></li>
 	</ul>
       </li>
@@ -734,7 +726,7 @@
 
       <li>The FMI++ library is a C++ utility package that offers high-level access and simulation functionalities on top of the FMI for Model Exchange specification. This includes for example automated numerical integration, advanced event handling or simulation rollbacks. 
 	<br/>FMI++ is present in the release as a prototype of what could be done. FMI++ was created by Austrian Institute of Technology GmbH.
-	<br/>See <a href="ptdoc:ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">FMUModelExchange.</a></li>
+	<br/>See <a href="../../../doc/codeDoc/ptolemy/actor/lib/fmi/fmipp/FMUModelExchange.html">FMUModelExchange.</a></li>
 
       <!-- Use in_browser because vergil has problems with the html generated by javadoc -->
       <li><a href="../../../doc/codeDoc/ptolemy/domains/scr/kernel/package-summary.html#in_browser"><code>$PTII/ptolemy/domains/scr</code></a> - The Software Cost Reduction model of computation: Patricia Derler</li>
