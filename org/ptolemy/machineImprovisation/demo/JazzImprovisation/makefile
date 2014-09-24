@@ -1,6 +1,6 @@
 # Makefile for Machine Improvisation Factor Oracle Execution demo
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2013-2014 The Regents of the University of California.
@@ -29,9 +29,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/machineImprovisation/demo/FactorOracleExecution
+ME =		org/ptolemy/machineImprovisation/demo/JazzImprovisation
 
-DIRS =	FactorOracleExecution
+DIRS =	JazzImprovisation
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	FactorOracleExecution
+PTPACKAGE = 	JazzImprovisation
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include these jars in PTAUXALLJAR
@@ -49,7 +49,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTAUXALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	FactorOracleExecution.xml
+	JazzImprovisation.xml \
+	noteSequence.csv \
+	chordSequence.csv 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

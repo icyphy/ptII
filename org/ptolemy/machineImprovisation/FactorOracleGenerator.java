@@ -30,39 +30,44 @@ package org.ptolemy.machineImprovisation;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition; 
+import ptolemy.domains.modal.modal.ModalPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.modal.modal.ModalTableauFactory;
 
 /** A Factor Oracle (FO) builder from an input sequence. Given an input
  * of type String, recognizes a set of alphabet by recognizing the
  * distinct characters in the symbol and builds a factor oracle data
  * structure.
- *
+ * 
  * <p>In the future, this actor will be replaced by an on-line algorithm
  * which adds to the data structure as more symbols are received at
  * the input and the string requirement will be replaced by a music
  * sequence specification.</p>
- *
+ * 
  * <p>This actor builds a factor oracle data structure that represents
  * a finite acyclic automaton that contains at least all the suffixes of
  * a given input sequence.</p>
 
  @author Ilge Akkaya
  @version  $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating non
  */
 public class FactorOracleGenerator extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -77,30 +82,32 @@ public class FactorOracleGenerator extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        pitchSequence = new TypedIOPort(this, "input", true, false);
-        pitchSequence.setTypeEquals(BaseType.INT);
+        noteSequence = new TypedIOPort(this, "noteSequence", true, false);
+        noteSequence.setTypeEquals(BaseType.OBJECT);
 
-        durationSequence = new TypedIOPort(this, "durations", true, false);
-        durationSequence.setTypeEquals(BaseType.INT);
-
-        repetitionProbability = new Parameter(this, "repetitionFactor");
+        repetitionProbability = new PortParameter(this, "repetitionFactor");
         repetitionProbability.setTypeEquals(BaseType.DOUBLE);
         repetitionProbability.setExpression("0.9");
 
-        isPitchOracle = new Parameter(this, "isPitchOracle");
-        isPitchOracle.setTypeEquals(BaseType.BOOLEAN);
-        isPitchOracle.setExpression("TRUE");
+        usePitchSpecs = new Parameter(this, "usePitchSpecs");
+        usePitchSpecs.setTypeEquals(BaseType.BOOLEAN);
+        usePitchSpecs.setExpression("true");
 
         _adjacencyList = new HashMap<Integer, List<Integer>>();
-        _adjacencyListSymbols = new HashMap<Integer, List<Character>>();
 
-        _FOindex = 0;
+        pitchMoML = new TypedIOPort(this, "pitchMoML", false, true);
+        pitchMoML.setTypeEquals(BaseType.STRING);
+
+        durationMoML = new TypedIOPort(this, "durationMoML", false, true);
+        durationMoML.setTypeEquals(BaseType.STRING);
+
         _pitchSequence = new LinkedList();
-        _durationSequence = new LinkedList();
+        _durationSequence = new LinkedList(); 
+        _durationOracles = new LinkedList<FactorOracle>();
+        _pitchLicks = new LinkedList<List>();
 
     }
 
-    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == repetitionProbability) {
@@ -111,136 +118,139 @@ public class FactorOracleGenerator extends TypedAtomicActor {
                         "Repetition factor must be in range [0.0,1.0].");
             }
             _repetitionFactor = token;
-
+        } else if (attribute == usePitchSpecs) {
+            boolean usePitch = ((BooleanToken) usePitchSpecs.getToken())
+                    .booleanValue();
+            _usePitch = usePitch;
+        } else {
+            super.attributeChanged(attribute);
         }
-        super.attributeChanged(attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public TypedIOPort pitchSequence;
+    public TypedIOPort noteSequence;
 
-    public TypedIOPort durationSequence;
+    public PortParameter repetitionProbability;
 
-    public Parameter repetitionProbability;
+    public Parameter usePitchSpecs;
 
-    public Parameter isPitchOracle;
+    public TypedIOPort pitchMoML;
+
+    public TypedIOPort durationMoML;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    // When fired,
-
-    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
 
-        if (durationSequence.hasToken(0)) {
-            int incomingDuration = ((IntToken) durationSequence.get(0))
-                    .intValue();
-            _durationSequence.add(incomingDuration);
-        }
+        repetitionProbability.update();
 
-        // pitch sequence triggers the generation, if any
-        if (pitchSequence.hasToken(0)) {
+        if (noteSequence.hasToken(0)) {
+            Note incomingNote = (Note) ((ObjectToken) noteSequence.get(0))
+                    .getValue();
 
-            int incomingNote = ((IntToken) pitchSequence.get(0)).intValue();
+            double currentNoteDuration = incomingNote.getDuration();
+            String currentNoteName = incomingNote.getName();
+            // add new note to the list 
 
-            //if (_pitchSequence != null && _pitchSequence.size() > 0) {
-            int m = _pitchSequence.size();
-            int n = _durationSequence.size();
-            ((BooleanToken) (isPitchOracle.getToken())).booleanValue();
-
-            if (incomingNote <= 36 && m > 0 && n > 0) {
+            //FIXME: Termination = "T" note received notes received
+            // if we receive a termination note, construct the oracle
+            if (currentNoteName.equals("T")) {
                 try {
-                    // pitch oracle
-                    String appendPitch = "P";
-                    String fullName = "FO_" + appendPitch + _FOindex;
-                    _constructNewFactorOracle(fullName, true);
-
-                    // duration oracle
-                    appendPitch = "D";
-                    fullName = "FO_" + appendPitch + _FOindex;
-                    _constructNewFactorOracle(fullName, false);
-
-                } catch (NameDuplicationException e) {
-                    System.err
-                            .println("NameDuplicationException at FactorOracleGenerator");
-                }
-            } else if (incomingNote >= 5000) {
-                // long notes and a duration of 5s trigger FO generation
-                try {
-                    if (m > 1) {
-
-                        String appendPitch = "D";
-                        String fullName = "FO_" + appendPitch + _FOindex;
-                        _constructNewFactorOracle(fullName, false);
+                    if (_pitchLicks.isEmpty() || _pitchLicks.get(0).isEmpty()) {
+                        if (!_pitchSequence.isEmpty()) {
+                            LinkedList s = new LinkedList();
+                            for (int i = 0; i < _pitchSequence.size(); i++) {
+                                s.add(_pitchSequence.get(i));
+                            }
+                            _pitchLicks.add(s);
+                            _pitchSequence.clear();
+                        }
+                    }
+                    if (!_pitchLicks.isEmpty()) {
+                        _constructNewFactorOracle();
+                        this.reset();
                     }
                 } catch (NameDuplicationException e) {
-                    System.err
-                            .println("NameDuplicationException at FactorOracleGenerator");
+                       System.err.println("Name duplication Exception!");
                 }
-
             } else {
+                if (currentNoteName.equals("R")) {
+                    _durationSequence.add(-currentNoteDuration);
+                } else {
+                    _durationSequence.add(currentNoteDuration);
+                }
+                if (!incomingNote.isRest()) {
+                    _pitchSequence.add(currentNoteName);
+                } 
+                // identify licks
+                // enforcing at least four notes in a lick for now. because notes by themselves as licks
+                // are infeasible.
+                if ((currentNoteDuration >= 2.0 || incomingNote.isRest())
+                        && _pitchSequence.size() >= 4) {
+                    // long notes and a duration of 2 beats trigger new FO generation
 
-                _pitchSequence.add(incomingNote); //.toString();
-
+                    // add the new FO sequence to the list of lists
+                    List subSequence = new LinkedList();
+                    for (int i = 0; i < _pitchSequence.size(); i++) {
+                        subSequence.add(_pitchSequence.get(i));
+                    }
+                    if (!subSequence.isEmpty()) {
+                        _pitchLicks.add(subSequence);
+                        // no notion of licks for the durations
+                        _pitchSequence.clear();
+                    }
+                }
             }
-            //}
-
         }
+        if (!_durationMoMLString.equals("")) {
+            //_actorAsString = _completeDurationOracle.exportMoML(); 
+            durationMoML.send(0, new StringToken(_durationMoMLString));
+            _durationMoMLString = "";
+        }
+
+        if (!_pitchMoMLString.equals("")) {
+            //_actorAsString = _completeDurationOracle.exportMoML(); 
+            pitchMoML.send(0, new StringToken(_pitchMoMLString));
+            _pitchMoMLString = "";
+        }
+
     }
 
-    private void _constructNewFactorOracle(String fullName, boolean isPitch)
-            throws NameDuplicationException, IllegalActionException {
-        // TODO: need a naming convention
-        FactorOracle fo;
-        Double horizontal;
-        if (isPitch) {
-            fo = new FactorOracle((CompositeEntity) this.getContainer(),
-                    fullName, _pitchSequence.toArray(), _repetitionFactor,
-                    isPitch);
-            horizontal = 200.0;
-        } else {
-            fo = new FactorOracle((CompositeEntity) this.getContainer(),
-                    fullName, _durationSequence.toArray(), _repetitionFactor,
-                    isPitch);
-            horizontal = 250.0;
+    public void reset() {
+        _durationOracles.clear();
+        _pitchSequence.clear();
+        _durationSequence.clear();  
+    }
+    
+    public void wrapup() throws IllegalActionException {
+       
+        try{
+            if (_completeDurationOracle != null) {
+                _completeDurationOracle.setContainer(null);
+                _completeDurationOracle = null;
+            }
+
+            if (_completePitchOracle != null) {
+                _completePitchOracle.setContainer(null);
+                _completePitchOracle = null;
+            }
+        }catch(NameDuplicationException e){
+            
         }
 
-        Double vertical = _FOindex * 100.0 + 300.0;
-        String changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{"
-                + horizontal.toString()
-                + ","
-                + vertical.toString()
-                + "}\"></property>";
-        MoMLChangeRequest change = new MoMLChangeRequest(this, fo,
-                changeExpression);
-        requestChange(change);
+    }
 
-        //Display d = new Display((CompositeEntity)this.getContainer(),"Display_"+_FOindex);
-        //horizontal += 100.0;
-        //changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{"
-        //        + (horizontal).toString() + "," + vertical.toString() + "}\"></property>";
-        //change = new MoMLChangeRequest(this, d, changeExpression);
-        //requestChange(change);
-        //TypedIORelation r = new TypedIORelation(this._workspace);
-        //r.setName("Relation_"+_inputSequence);
-        //r.setContainer((CompositeEntity)this.getContainer());
-
-        //fo.getPort("output").link(r);
-        //d.getPort("input").link(r);
-
-        // empty the factor oracle
-        if (isPitch) {
-            _pitchSequence.clear();
-        } else {
-            _durationSequence.clear();
-            _FOindex++;
-        }
-
+    private void _constructNewFactorOracle() throws NameDuplicationException,
+            IllegalActionException { 
+        _addPitchFO(_pitchLicks);
+        _addDurationFO(_durationSequence);
+        _pitchLicks.clear();
+        _durationSequence.clear();
     }
 
     protected List<Integer> _getTransitionsFrom(Integer node) {
@@ -248,24 +258,162 @@ public class FactorOracleGenerator extends TypedAtomicActor {
         return _transitions;
     }
 
-    /* Find the (unique) path that produces a given prefix and ret durn the node index which terminates the
-     * desired string sequence. Return null if no such path is found. Implements depth-first search on the
-     * adjacency list
-     *
-     * */
+    private void _addPitchFO(final List<List> _pitchSequences) {
+        try {
+            
+            _completePitchOracle = new FactorOracleTop(this.workspace());
+            _completePitchOracle.setName(uniqueName("PitchOracle"));
+            new ModalTableauFactory(
+                    _completePitchOracle, "_tableauFactory");
+
+            List<State> stateList = new LinkedList<State>();
+            for (int i = 0; i < _pitchSequences.size(); i++) {
+                String foName = ("Lick" + i);
+                State s = new State(_completePitchOracle.getController(),
+                        (foName));
+                // set the first added FO to be the initial state.
+                if (i == 0) {
+                    s.isInitialState.setExpression("true");
+                    (_completePitchOracle.getController()).initialStateName
+                            .setExpression(foName);
+                }
+                // this will be the refinement of the state
+                String refinementName = "m" + (foName);
+                // refinements of the Lick states are contained by the OracleModel(ModalModel)
+                OracleModel fo = new OracleModel(
+                        (CompositeEntity) _completePitchOracle,
+                        refinementName,
+                        ((List) _pitchSequences.get(i)).toArray(),
+                        _repetitionFactor,  
+                        true,
+                        _usePitch);
+                new ModalTableauFactory(fo,"_tableauFactory");
+                fo.getController().initialStateName.setExpression("S0"); 
+                s.refinementName.setExpression(refinementName);
+                stateList.add(s);
+                //set state location
+                Double vertical = i * 150.0 + 300.0;
+                Double horizontal = 100.0;
+                Location l = (Location) s.getAttribute("_location");
+                if (l == null) {
+                    l = new Location(s, "_location");
+                }
+                l.setExpression("{" + horizontal.toString() + ","
+                        + vertical.toString() + "}");
+            }
+
+            //construct the transitions between factor oracles
+            for (int i = 0; i < stateList.size() - 1; i++) {
+                String relationName = "relation_" + i;
+                Transition t = new Transition(
+                        _completePitchOracle.getController(), relationName);
+                (t.exitAngle).setExpression("0.0");
+ 
+                t.guardExpression.setExpression("probability("
+                        + _repetitionFactor + ")" + "& ( startLick )");
+                t.history.setExpression("true"); 
+                ((State) stateList.get(i)).outgoingPort.link(t);
+                ((State) stateList.get(i + 1)).incomingPort.link(t);
+            }
+
+            double creativityProbability = (1.0 - _repetitionFactor)
+                    / (stateList.size() - 1);
+            // do not construct additional connections for the corner case
+            if (Math.abs(creativityProbability) > 1E-6) {
+                for (int i = 0; i < stateList.size(); i++) {
+                    for (int j = 0; j < stateList.size(); j++) {
+                        if (i == stateList.size() - 1) {
+                            creativityProbability = 1.0 / (stateList.size() - 1);
+                        }
+                        if (i != j && i != j - 1) {
+                            String relationName = "relation_" + i + "_" + j;
+                            Transition t = new Transition(
+                                    _completePitchOracle.getController(),
+                                    relationName);
+                            (t.exitAngle).setExpression("0.7");
+                            (t.guardExpression).setExpression("probability("
+                                    + creativityProbability + ")"
+                                    + "&startLick");
+                            t.history.setExpression("true");
+
+                            ((State) stateList.get(i)).outgoingPort.link(t);
+                            ((State) stateList.get(j)).incomingPort.link(t);
+
+                        }
+                    }
+                }
+            }
+
+            // add new port to the modal model
+            ModalPort p = (ModalPort) _completePitchOracle.newPort("input");
+            p.setInput(true);
+            p.createReceivers();
+            ModalPort o = (ModalPort) _completePitchOracle.newPort("output");
+            o.setOutput(true);
+            o.createReceivers();
+            _pitchMoMLString = _completePitchOracle.exportMoML();
+
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+ 
+
+    private void _addDurationFO(final List<List> _durationSequences)
+            throws NameDuplicationException, IllegalActionException {
+        _completeDurationOracle = new FactorOracleTop(this.workspace(), 
+                ((List) _durationSequences).toArray(), 
+                _repetitionFactor, 
+                false,
+                false);
+        _completeDurationOracle.setName(uniqueName("DurationOracle"));
+        new ModalTableauFactory(_completeDurationOracle, "_tableauFactory"); 
+        
+ 
+        String sName = "S0";
+        State s = null;
+        if (_completeDurationOracle.getController().getEntity(sName) == null) {
+             s = new State(_completeDurationOracle.getController(),sName);
+        } else {
+            s = (State) _completeDurationOracle.getController().getEntity(sName);
+        }
+        s.isInitialState.setExpression("true");
+        (_completeDurationOracle.getController()).initialStateName
+        .setExpression(sName);
+         
+        
+        
+        //create input/output ports
+        TypedIOPort output = (TypedIOPort) _completeDurationOracle
+                .newPort("output");
+        output.setTypeEquals(BaseType.DOUBLE);
+        (output).setOutput(true);
+
+        output.propagateExistence();
+        TypedIOPort input = (TypedIOPort) _completeDurationOracle
+                .newPort("input");
+        (input).setInput(true);
+        input.createReceivers();
+        input.propagateExistence();
+        input.propagateValue();
+        _durationMoMLString = _completeDurationOracle.exportMoML();
+    }
 
     private List _pitchSequence;
+    
     /* The adjacency list given on the Factor Oracle graph structure */
     private HashMap _adjacencyList;
 
-    /* The symbol map given on the Factor Oracle graph structure */
-    private HashMap _adjacencyListSymbols;
-
     /* The repetition factor that determines the probability of moving along the original sequence in the FO */
     private double _repetitionFactor;
-
-    private int _FOindex = 0;
-
-    private List _durationSequence;
-
+    private List _durationSequence; 
+    /** Stores all the pitch FOs that have been generated so far **/
+    private List<List> _pitchLicks;
+    /** Stores all duration FOs that have been generated so far **/
+    private List<FactorOracle> _durationOracles;
+    private FactorOracleTop _completeDurationOracle;
+    private FactorOracleTop _completePitchOracle;
+    private boolean _usePitch;
+    private String _durationMoMLString = "";
+    private String _pitchMoMLString = "";
 }

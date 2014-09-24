@@ -26,39 +26,69 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
- */
+*/
 package org.ptolemy.machineImprovisation;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.HashSet; 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.List; 
 import java.util.Set;
 
+import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.DoubleToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Function;
+import ptolemy.data.FunctionToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
+import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 /**
- * Build a factor oracle data structure that represents a finite acyclic
+ * Build a factor oracle (FO) data structure that represents a finite acyclic
  * automaton that contains at least all the suffixes of a given input
- * sequence.
+ * sequence. The actor accepts a <i>name</i> for the Factor oracle, an
+ * Object array, representing the input <i> trainingSequence </i> on which
+ * the suffix tree will be built, and a <i>repetitionFactor</i> that is a
+ * double in range [0.0,1.0], which is a measure of the probability of
+ * the training sequence to be repeated at each transition. The output Factor
+ * Oracle will be a probabilistic automaton that can generate at least all the
+ * suffixes of the training string. If the <i> validatePitch </i> Parameter
+ * is set to true, the factor oracle interprets the input string as a sequence
+ * of notes and adds a check to the transitions to validate the note against
+ * a specification. 
+ * 
+ <p> As an example, if a transition that would generate a "C4" upon firing, the 
+ guard expression would look like: <i> validatePitch("C4") && probability(p) </i>,
+ where p is a double in range [0.0,1.0]. This transition would be taken 
+ (i) if the probability() transition evaluates to true AND (ii) if
+ * validatePitch() returns true.
  *
+ <p>
+ <b>References</b>
+ <p>[1]
+ C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching." 
+ <i>SOFSEM’99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
+ 
  @author Ilge Akkaya
  @version  $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating 
  */
-public class FactorOracle extends FSMActor {
+public class FactorOracle extends ModalController {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -69,238 +99,136 @@ public class FactorOracle extends FSMActor {
      *   actor with this name.
      */
     public FactorOracle(CompositeEntity container, String name,
-            Object[] trainingSequence, double repetitionFactor,
-            boolean interpretAsNotes) throws NameDuplicationException,
-            IllegalActionException {
-        super(container, name);
-
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.STRING);
-
-        if (repetitionFactor > 1.0 || repetitionFactor < 0.0) {
-            throw new IllegalActionException(this,
-                    "Repetition factor must be in range [0.0,1.0].");
-        }
-        _repetitionFactor = repetitionFactor;
-
-        _adjacencyList = new HashMap<Integer, List<Integer>>();
-        _adjacencyListSymbols = new HashMap<Integer, List<Integer>>();
-        _longestRepeatedSuffixes = new LinkedList<String>();
-
-        _suffixLinks = new HashMap();
-        _alphabet = new HashSet();
-        _sequenceLength = 0;
-
-        _inputSequence = trainingSequence;
-        _sequenceLength = _inputSequence.length;
-        _interpretAsNotes = interpretAsNotes;
-
-        _learnFactorOracle();
-        _buildFactorOracle();
-
-    }
-
-    public FactorOracle(CompositeEntity container, String name)
+            Object[] trainingSequence, double repetitionFactor)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name);
+        this(container, name, trainingSequence, repetitionFactor, false, false);
     }
+    
+    public FactorOracle(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException { 
+        this(container, name, null, 1.0 ); 
+    }
+    
+     
+   public FactorOracle(CompositeEntity container, String name,
+           Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols) 
+                   throws IllegalActionException, NameDuplicationException {
+       super(container, name);
+       setClassName("org.ptolemy.machineImprovisation.FactorOracle"); 
+
+       if (repetitionFactor > 1.0 || repetitionFactor < 0.0) {
+           throw new IllegalActionException(this,
+                   "Repetition factor must be in range [0.0,1.0].");
+       }
+       
+       _adjacencyList = new HashMap<Integer, List<Integer>>();
+       _adjacencyListSymbols = new HashMap<Integer, List<Integer>>();
+
+       _suffixLinks = new HashMap();
+       _alphabet = new HashSet();
+       _sequenceLength = 0;
+
+       _repetitionFactor = repetitionFactor;
+       _inputSequence = trainingSequence;
+       if (_inputSequence != null) {
+           _sequenceLength = _inputSequence.length;
+       } else{
+           _sequenceLength = 0;
+       }
+       _symbolic = symbolicOutput;
+
+       
+       _validatePitch = validateSymbols;
+
+       _learnFactorOracle();
+       _buildFactorOracle();
+       
+    // this is for the inner class that checks validity of pitch in the current chord progression
+       validatePitch = new Parameter(this, "validatePitch");
+       validatePitch.setToken(new ChordFunctionToken());
+       validatePitch.setVisibility(Settable.EXPERT);
+       validatePitch.setPersistent(false);
+       
+       
+   }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public TypedIOPort inputSequence;
-
-    public TypedIOPort output;
-
-    /* The repetition probability P(moving along the original sequence rather than taking a jump along
+    /* The repetition probability P(moving along the original sequence rather than taking a jump along 
      * a suffix link)*/
     public Parameter repetitionFactor;
 
+    /* Boolean that when set to true, enables the transitions to have a condition that validates each
+     * pitch against a specification. 
+     * */
+    public Parameter validatePitch;
+
+    public TypedIOPort currentChord;
+
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+
+        List<Initializable> oldInitializables = _initializables;
+        _initializables = null;
+        FactorOracle newObject = (FactorOracle) super.clone(workspace);
+        _initializables = oldInitializables;
+        // If the next line is uncommented, the InitializationBug.xml fails.
+        // newObject._initializables = null;
+ 
+        try {
+            newObject.validatePitch
+                    .setToken(newObject.new ChordFunctionToken());
+        } catch (IllegalActionException e) {
+            // Should not occur, because it didn't occur in the object being cloned.
+            throw new CloneNotSupportedException(e.getMessage());
+        } 
+        return newObject;
+    }
+   
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     private void _buildFactorOracle() throws NameDuplicationException,
             IllegalActionException {
 
-        // create factor oracle transitions including the suffix links.
-        //TODO: attach symbols to the transitions that produce
-        //symbols. Mark the others as nondeterministic for now, until a probability value is associated with these
-        // which should be asap.
-
-        // probability of adding a variation to the output by taking a forward jump in the oracle
-
-        String outputExpression = "A";
-        String exitAngle = "0.0";
-
-        HashMap _stateList = new HashMap();
-        for (int i = 0; i <= _adjacencyList.size(); i++) {
-
-            State s = new State(this, "S" + i);
-            Double horizontal = i * 150.0;
-            Double vertical = i * 0.0; //alternate above&below: (1-(i%2))*50.0;
-            // change default state location
-            String changeExpression = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{"
-                    + horizontal.toString()
-                    + ","
-                    + vertical.toString()
-                    + "}\"></property>";
-            MoMLChangeRequest change = new MoMLChangeRequest(this, s,
-                    changeExpression);
-            requestChange(change);
-            _stateList.put(i, s);
-
-        }
-
-        // set initial and final states
-        ((State) _stateList.get(0)).isInitialState.setToken("true");
-        ((State) _stateList.get(0)).isInitialState.setPersistent(true);
-        ((State) _stateList.get(_sequenceLength)).isFinalState.setToken("true");
-        ((State) _stateList.get(_sequenceLength)).isFinalState
-                .setPersistent(true);
-
-        for (int i = 0; i < _adjacencyList.size(); i++) {
-
-            List destinations = (List) _adjacencyList.get(i);
-            int _nTrans = destinations.size();
-            // divide probability amongst all transitions from this state
-            // if there is a suffix from this state to another, the destination will be >=0 ( -1 is reserved
-            // for bottom)
-            int hasSuffix = (Integer) _suffixLinks.get(i);
-            int suffixCount = hasSuffix >= 0 ? 1 : 0;
-
-            for (int k = 0; k < _nTrans; k++) {
-                // the destination node for this transition
-                int j = (Integer) destinations.get(k);
-
-                DoubleToken _probability;
-                if (i == j - 1) {
-                    // for the original string, probability will be repetitionfactor - enabledVariations*_improvisationFactor
-
-                    _probability = new DoubleToken(_repetitionFactor);
-                    exitAngle = "0.0";
-
-                } else {
-                    // divide the improvisation probability amongst the other transitions
-                    int numberOfBranches = _nTrans - (1 - suffixCount);
-                    _probability = new DoubleToken((1 - _repetitionFactor)
-                            / numberOfBranches * 1.0);
-                    // testing sth
-                    //_probability = new DoubleToken();
-                    exitAngle = "-0.7";
-
-                }
-
-                String transitionProbabilityExpression = "probability("
-                        + _probability + ")";
-
-                String relationName = "relation_" + i + j; //this will be unique. i:source state, j:destination state
-                // label the original string transitions with the repetition factor
-
-                String outputChar = " ";
-                // get the symbol to be produced, when this transition is taken
-                if (_interpretAsNotes == true) {
-                    outputChar = _translateKeyToLetterNote((Integer) ((List) (_adjacencyListSymbols
-                            .get(i))).get(k));
-                } else {
-                    outputChar = ((List) (_adjacencyListSymbols.get(i))).get(k)
-                            .toString();
-                }
-                // set the output expression for this transition
-                if (outputChar != null) {
-                    outputExpression = "output = \"" + outputChar + "\"";
-                } else {
-                    outputExpression = "";
-                }
-
-                Transition t = new Transition(this, relationName);
-                (t.exitAngle).setExpression(exitAngle);
-                (t.outputActions).setExpression(outputExpression);
-                (t.guardExpression)
-                        .setExpression(transitionProbabilityExpression);
-                ((State) _stateList.get(i)).outgoingPort.link(t);
-                ((State) _stateList.get(j)).incomingPort.link(t);
+        // create factor oracle transitions including the suffix links.  
+        _stateList = new HashMap();
+        if (_adjacencyList.size() > 0 ) {
+            for (int i = 0; i <= _adjacencyList.size(); i++) {
+                _createNewState(i, _sequenceLength); //add state to the FO
             }
-        }
-        exitAngle = "-0.6";
-        for (int i = 0; i < _suffixLinks.size(); i++) {
-            int destination = (Integer) _suffixLinks.get(i);
-            String relationName = "relation" + i + destination;
-            if (destination >= 0) {
-
-                Transition t = new Transition(this, relationName);
-                (t.exitAngle).setExpression(exitAngle);
-                (t.defaultTransition).setExpression("true");
-                ((State) _stateList.get(i)).outgoingPort.link(t);
-                ((State) _stateList.get(destination)).incomingPort.link(t);
-            }
-        }
+            _setTransitions();
+        } 
     }
 
-    /*
-     * The function that builds the factor oracle data structure
-     */
-    private String _translateKeyToLetterNote(int keyIndex) {
-        if (keyIndex < 21 || keyIndex > 108) {
-            return null;
-        } else {
-            int note = keyIndex % 12;
-            String noteName = "";
-            switch (note) {
-            case 0:
-                noteName = "C";
-                break;
-            case 1:
-                noteName = "C#";
-                break;
-            case 2:
-                noteName = "D";
-                break;
-            case 3:
-                noteName = "D#";
-                break;
-            case 4:
-                noteName = "E";
-                break;
-            case 5:
-                noteName = "F";
-                break;
-            case 6:
-                noteName = "F#";
-                break;
-            case 7:
-                noteName = "G";
-                break;
-            case 8:
-                noteName = "G#";
-                break;
-            case 9:
-                noteName = "A";
-                break;
-            case 10:
-                noteName = "A#";
-                break;
-            case 11:
-                noteName = "B";
-                break;
-            default:
-                break;
-            }
-            // 0 : C
-            // 1 : C#
-            // 2 : D
-            // 3 : D#
-            // 4 : E
-            // 5 : F
-            // 6 : F#
-            // 7 : G
-            // 8 : G#
-            // 9 : A
-            // 10: A#
-            // 11: B
-            int octave = (keyIndex - (keyIndex % 12)) / 12 - 1;
-            noteName = noteName.concat(octave + "");
-            return noteName;
-        }
+    private void _createNewState(final int i, final int sequenceLength) 
+            throws IllegalActionException, NameDuplicationException {
+        final Double horizontal = i * HORIZONTAL_SPACING_PIXELS;
+        final Double vertical   = i * VERTICAL_SPACING_PIXELS; 
+                try {
+                    String name = (STATE_PREFIX + i);
+                    State s = new State(FactorOracle.this, name); 
+                    // set location
+                    Location stateLocation = (Location) s
+                            .getAttribute("_location");
+                    if (stateLocation == null) {
+                        stateLocation = new Location(s, "_location");
+                    }
+                    stateLocation.setExpression("{" + horizontal.toString()
+                            + "," + vertical.toString() + "}");
+
+                    if (i == 0) { 
+                        s.isInitialState.setExpression("true");
+                        this.initialStateName.setExpression(s.getName()); 
+                    }  
+                    _stateList.put(i, s); 
+
+                } catch(IllegalActionException e) {
+                    throw new IllegalActionException(this);
+                } catch(NameDuplicationException e) {
+                    throw new NameDuplicationException(this,"Element with name already exists in Factor Oracle");
+                }
     }
 
     private void _learnFactorOracle() {
@@ -330,7 +258,7 @@ public class FactorOracle extends FSMActor {
             Object wiSon = _inputSequence[i - 1];
             while (l != -1
                     && ((List) _adjacencyListSymbols.get(l)).contains(wiSon) == false) {
-                List prevList = _getTransitionsFrom(l);
+                List prevList = (List<Integer>) _getTransitionsFrom(l);
                 prevList.add(i);
                 List prevSymbols = (List<Character>) _adjacencyListSymbols
                         .get(l);
@@ -349,28 +277,125 @@ public class FactorOracle extends FSMActor {
                 _suffixLinks.put(i, wiSonValue);
             }
         }
-    }
+    } 
 
-    @Override
-    public boolean postfire() throws IllegalActionException {
+    private void _setTransitions() { 
+        
+        try { 
+            String exitAngle;
+            String outputExpression; 
+            
+            for (int i = 0; i < _adjacencyList.size(); i++) {
+                List destinations = (List) _adjacencyList.get(i);
+                int nTransitions = destinations.size();
+                // divide probability amongst all transitions from this state
+                // if there is a suffix from this state to another, the destination will be >=0 ( -1 is reserved
+                // for bottom)
+                int hasSuffix = (Integer) _suffixLinks.get(i);
+                int suffixCount = hasSuffix >= 0 ? 1 : 0;
+                double precisionFactor = 1E12;
 
-        _longestRepeatedSuffixes.clear();
-        _suffixLinks.clear();
-        _adjacencyList.clear();
-        _adjacencyListSymbols.clear();
+                for (int k = 0; k < nTransitions; k++) {
+                    // the destination node for this transition
+                    int j = (Integer) destinations.get(k);
 
-        return super.postfire();
-    }
+                    double _probability;
+                    if (i == j - 1) { 
+                        // if this is the ONLY transition enabled from this state, then the probability to the next has to be 1.
+                        if (destinations.size() == 1 && suffixCount == 0) {
+                            _probability = 1.0;
+                        } else {
+                            _probability = _repetitionFactor;
+                        }
+                        exitAngle = STRAIGHT_EXIT_ANGLE; 
+                    } else {
+                        // divide the improvisation probability amongst the other transitions
+                        int numberOfBranches = nTransitions - (1 - suffixCount);
+                        _probability = (1.0 - _repetitionFactor)
+                                / numberOfBranches;
+                        // lose the higher digits to avoid overflow probability
+                        _probability = (Math.round(_probability
+                                * precisionFactor - 1))
+                                / precisionFactor;
+                        exitAngle = SKIP_EXIT_ANGLE;
+                    }
+                    //FIXME
+                    if (_probability > 0.0) {
+                        String transitionProbabilityExpression = "probability("
+                                + _probability + ")";
+    
+                        String relationName = "relation_" + i + j; //this will be unique. i:source state, j:destination state
+                        // label the original string transitions with the repetition factor
+    
+                        String outputChar = " ";
+                        // get the symbol to be produced, when this transition is taken
+                        outputChar = ((List) (_adjacencyListSymbols.get(i)))
+                                    .get(k).toString(); 
+    
+                        
+                        // if chord progression specification exists, a check will be added in conjunction with the guard expression
+                        String pitchValidationExpression = "validatePitch(\""
+                                + outputChar + "\", input)";
+                        // set the output expression for this transition
+                        
+                            if (outputChar != null) {
+                                if (_symbolic) {
+                                    outputExpression = "output = \""
+                                            + outputChar.toString() + "\"";
+                                } else {
+                                    outputExpression = "output = "
+                                            + outputChar.toString();
+                                }
+                            } else {
+                                outputExpression = "";
+                            } 
+    
+                        Transition t = new Transition(FactorOracle.this,
+                                relationName);
+                        (t.exitAngle).setExpression(exitAngle);
+                        (t.outputActions).setExpression(outputExpression);
+                        if (_validatePitch) {
+                            (t.guardExpression).setExpression(transitionProbabilityExpression
+                                                + "&" + pitchValidationExpression);
+                        } else {
+                            (t.guardExpression).setExpression(transitionProbabilityExpression);
+                        }
+                        ((State) _stateList.get(i)).outgoingPort.link(t);
+                        ((State) _stateList.get(j)).incomingPort.link(t);
+                    }
+                }
+            }
+            exitAngle = SUFFIX_EXIT_ANGLE;
+            for (int i = 0; i < _suffixLinks.size(); i++) {
+                int destination = (Integer) _suffixLinks.get(i);
+                String relationName = "relation" + i + destination;
+                if (destination >= 0) {
+                    Transition t = new Transition(FactorOracle.this,
+                            relationName);
+                    (t.exitAngle).setExpression(exitAngle);
+                    (t.defaultTransition).setExpression("true");
+                    (t.guardExpression).setExpression("input_isPresent");
+                    //(t.immediate).setExpression("true");
+                    ((State) _stateList.get(i)).outgoingPort.link(t);
+                    ((State) _stateList.get(destination)).incomingPort.link(t);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Exception while trying to set transitions :"
+                    + e);
+        } 
+    } 
 
     protected List<Integer> _getTransitionsFrom(Integer node) {
         List<Integer> _transitions = (List<Integer>) _adjacencyList.get(node);
         return _transitions;
     }
 
-    /* Find the (unique) path that produces a given prefix and return the node index which terminates the
+    /* Find the (unique) path that produces a given prefix and return the node index which terminates the 
      * desired string sequence. Return null if no such path is found. Implements depth-first search on the
      * adjacency list
-     *
+     * 
      * */
 
     private Object[] _inputSequence;
@@ -380,15 +405,119 @@ public class FactorOracle extends FSMActor {
     /* The symbol map given on the Factor Oracle graph structure */
     private HashMap _adjacencyListSymbols;
 
-    private List _longestRepeatedSuffixes;
-
     private HashMap _suffixLinks;
 
     private Set _alphabet;
-
-    private boolean _interpretAsNotes;
-
+    /**
+     * Interpret as pitches 
+     */
+    private boolean _symbolic; 
+    
+    /** Input string sequence length
+     */
     private int _sequenceLength;
-
+    /**
+     * Repetition probability of the original string
+     */
     private double _repetitionFactor;
+    /**
+     * List of states in the FO
+     */
+    private HashMap _stateList;
+    
+    /*
+     * Boolean that when set, adds a validation check to each transition
+     */
+    private boolean _validatePitch = false;
+    /**
+     * Vertical spacing of states in the Factor Oracle in pixels
+     */
+    private static final double VERTICAL_SPACING_PIXELS = 0.0;
+    /**
+     * Horizontal spacing of states in the Factor Oracle in pixels
+     */
+    private static final double HORIZONTAL_SPACING_PIXELS = 150.0;
+    
+    private static final String STATE_PREFIX = "S";
+
+    private static final String SUFFIX_EXIT_ANGLE = "-0.6";
+    
+    private static final String SKIP_EXIT_ANGLE = "0.7";
+    
+    private static final String STRAIGHT_EXIT_ANGLE = "0.0";
+    
+    private static Type[] _CHORD_FUNCTION_ARG_TYPE = { BaseType.STRING,
+            BaseType.STRING };
+ 
+
+    protected class ChordFunctionToken extends FunctionToken {
+        public ChordFunctionToken() {
+            super(new ChordFunction(), new FunctionType(
+                    _CHORD_FUNCTION_ARG_TYPE, BaseType.BOOLEAN));
+        }
+    }
+
+    /** A function that evaluates to true if the "pitch" that would be produced
+     * as a result of taking this transition satisfies chord specifications. In
+     * the current application, the specifications are given by 
+     * {@link org.ptolemy.machineImprovsation.ChordSpecifications.getChordPitches(String, boolean)} */
+    protected class ChordFunction implements Function {
+        @Override
+        public Token apply(Token[] arguments) throws IllegalActionException {
+
+            if (arguments[0] instanceof StringToken
+                    && arguments[1] instanceof StringToken) {
+                String noteToTest = ((StringToken) arguments[0]).stringValue();
+                String pureNote = noteToTest.substring(0,
+                        noteToTest.length() - 1);
+                String chordName = ((StringToken) arguments[1]).stringValue();
+                List chordTones = MusicSpecs.getChordPitches(
+                        chordName, true);
+
+                System.out.println("Chord: " + chordName + " Tones:"
+                        + chordTones.toString() + " Note being tested: "
+                        + noteToTest); 
+                List avoidNotes = new LinkedList(); // implement this
+
+                //chordTones.addAll(pentatonicScale);
+                chordTones.remove(avoidNotes);
+
+                if (chordTones.contains(pureNote)) {
+                    System.out.println("Accepted Note: " + noteToTest);
+                    //okay to play
+                    return BooleanToken.TRUE;
+                }
+
+            }
+
+            return BooleanToken.FALSE;
+        }
+
+        /** The implementation of the probability function as a token. */
+
+        @Override
+        public int getNumberOfArguments() {
+            // TODO Auto-generated method stub
+            return 2;
+        }
+
+        @Override
+        public boolean isCongruent(Function function) {
+            // TODO Auto-generated method stub
+            return function instanceof ChordFunction;
+        }
+
+        public String toString() {
+            return "function(t:string, s:string) boolean";
+        }
+
+        protected class ChordFunctionToken extends FunctionToken {
+            public ChordFunctionToken() {
+                super(new ChordFunction(), new FunctionType(
+                        _CHORD_FUNCTION_ARG_TYPE, BaseType.BOOLEAN));
+            }
+        }
+
+    }
+
 }

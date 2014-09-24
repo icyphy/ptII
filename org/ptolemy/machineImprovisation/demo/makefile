@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II actor.lib.net Datagram demo 
+# Makefile for Ptolemy II org.machineImprovisation demos
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -50,7 +50,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	FactorOracleExecution/FactorOracleExecution.jar
+	JazzImprovisation/JazzImprovisation.jar
 
 # Keep this list alphabetized.
 JSRCS = 
@@ -77,7 +77,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil FactorOracleExecution.xml
+	vergil JazzImprovisation.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,9 +1,10 @@
-# Makefile org sources from outside of Ptolemy
+# Makefile for Machine Improvisation Actor Library
+#
+# @Authors: Ilge Akkaya, based on a file by Christopher Brooks
 #
 # @Version: $Id$
-# @Author: Ilge Akkaya
 #
-# @Copyright (c) 2007-2013 The Regents of the University of California.
+# @Copyright (c) 2001-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,47 +28,58 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../..
+# This directory contains polymorphic higher order component actors.
 
-DIRS = demo
+ME =		org/ptolemy/machineImprovisation
 
-# $(ME) is used in ptdir.mk
-ME = org/ptolemy/machineImprovisation
+DIRS = 		demo
+
+# Root of the Java directory
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
-# True source directory
-VPATH =	$(ROOT)/$(ME)
-
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = machineImprovisation
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	machineImprovisation
+PTCLASSJAR =	$(PTPACKAGE).jar
 
+# Keep this list alphabetized.
 JSRCS = \
+	Chord.java \
+	ChordFollower.java \
+	ChordParser.java \ 
 	FactorOracle.java \
-	FactorOracleGenerator.java
-
+	FactorOracleGenerator.java \
+	HierarchicalFactorOracle.java \
+	MidiKeyToNote.java \
+	MusicSpecifications.java \
+	Note.java \
+	OracleModel.java
+	
 OTHER_FILES_TO_BE_JARED = \
-	FactorOracleGeneratorIcon.xml
+	ChordFollowerIcon.xml \
+	FactorOracleGeneratorIcon.xml 
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo
+	demo \
+	'FactorOracle$ChordFunction.class' \
+	'FactorOracle$ChordFunction$ChordFunctionToken.class' \
+	'FactorOracle$ChordFunctionToken.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -76,3 +88,4 @@ install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
