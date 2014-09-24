@@ -194,7 +194,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+    <entity name="Default" class="ptolemy.actor.lib.Default">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 270.0]">
         </property>
     </entity>

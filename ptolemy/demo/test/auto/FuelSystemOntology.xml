@@ -919,7 +919,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+                <entity name="Default" class="ptolemy.actor.lib.Default">
                     <port name="preferred" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
@@ -1033,7 +1033,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+                <entity name="Default" class="ptolemy.actor.lib.Default">
                     <port name="preferred" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
@@ -1446,7 +1446,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+                <entity name="Default" class="ptolemy.actor.lib.Default">
                     <port name="preferred" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
@@ -1560,7 +1560,7 @@
                         </property>
                     </port>
                 </entity>
-                <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+                <entity name="Default" class="ptolemy.actor.lib.Default">
                     <port name="preferred" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">

@@ -1,6 +1,6 @@
-/* A default operator for the SR domain.
+/* A Synchronous default operator.
 
- Copyright (c) 2004-2013 The Regents of the University of California.
+ Copyright (c) 2004-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.sr.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// Default
 
 /**
- A default operator for the SR domain.
+ A Synchronous default operator.
 
  <p>When the <i>preferred</i> input has a token, then the output is equal
  to that token. If the <i>preferred</i> input is absent, then the output is
@@ -57,14 +57,17 @@ import ptolemy.kernel.util.StringAttribute;
  clock; however, without considerable care, its use in SIGNAL results
  in nondeterminism.
 
+ <p>This actor is typically used in the SR domain, but
+ may also be used inside the Continuous domain.</p>
+
  <p>P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, "LUSTRE: A
  Declarative Language for Programming Synchronous Systems,"
  Conference Record of the 14th Annual ACM Symp. on Principles of
- Programming Languages, Munich, Germany, January, 1987.
+ Programming Languages, Munich, Germany, January, 1987.</p>
 
  <p>A. Benveniste and P. Le Guernic, "Hybrid Dynamical Systems Theory
  and the SIGNAL Language," IEEE Tr. on Automatic Control, Vol. 35,
- No. 5, pp. 525-546, May 1990.
+ No. 5, pp. 525-546, May 1990.</p>
 
  @author Edward A. Lee
  @version $Id$

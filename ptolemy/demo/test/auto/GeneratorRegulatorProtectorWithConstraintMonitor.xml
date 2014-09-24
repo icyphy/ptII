@@ -536,7 +536,7 @@
                     </property>
                 </property>
             </entity>
-            <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+            <entity name="Default" class="ptolemy.actor.lib.Default">
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
                     </property>

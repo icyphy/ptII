@@ -194,7 +194,7 @@
         </property>
         <property name="outputImpedance" class="ptolemy.data.expr.Parameter" value="generatorOutputImpedance">
         </property>
-        <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default" class="ptolemy.actor.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
             </property>
         </entity>

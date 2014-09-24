@@ -325,6 +325,9 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.domains.gr.lib.ViewScreen",
                 "ptolemy.domains.gr.lib.ViewScreen3D");
 
+        _classChanges.put("ptolemy.domains.sr.lib.Default",
+                "ptolemy.actor.lib.Default");
+
         _classChanges.put("ptolemy.domains.sr.lib.Latch",
                 "ptolemy.domains.sr.lib.Current");
 

@@ -58,7 +58,6 @@ JSRCS = \
 	BinaryNonStrictLogicGate.java \
 	Combine.java \
 	Current.java \
-	Default.java \
 	EnabledComposite.java \
 	InstantaneousDialogGenerator.java \
 	NonStrictDelay.java \
@@ -77,7 +76,6 @@ OTHER_FILES_TO_BE_JARED = \
 	AbsentIcon.xml \
 	CombineIcon.xml \
 	CurrentIcon.xml \
-	DefaultIcon.xml \
 	PreIcon.xml \
 	NonStrictAndIcon.xml \
 	NonStrictNandIcon.xml \

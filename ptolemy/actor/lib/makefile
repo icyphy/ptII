@@ -166,6 +166,7 @@ JSRCS = \
 	CurrentTime.java \
 	DateConstructor.java \
 	DateElements.java \
+	Default.java \
 	DelayStart.java \
 	Differential.java \
 	DoubleReader.java \
@@ -316,6 +317,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DateConstructorIcon.xml \
 	DateElementsIcon.xml \
 	DBIcon.xml \
+	Default.xml \
 	Dice.gif \
 	DictionaryIcon.xml \
 	DifferentialIcon.xml \

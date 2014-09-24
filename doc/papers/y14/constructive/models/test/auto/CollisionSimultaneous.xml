@@ -589,11 +589,11 @@
         <property name="m2" class="ptolemy.data.expr.Parameter" value="mRight">
         </property>
     </entity>
-    <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+    <entity name="Default" class="ptolemy.actor.lib.Default">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 240.0]">
         </property>
     </entity>
-    <entity name="Default2" class="ptolemy.domains.sr.lib.Default">
+    <entity name="Default2" class="ptolemy.actor.lib.Default">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 365.0]">
         </property>
     </entity>

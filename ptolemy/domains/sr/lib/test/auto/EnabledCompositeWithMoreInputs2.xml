@@ -82,7 +82,7 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default" class="ptolemy.actor.lib.Default">
             <property name="DefaultIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}, maximized=false}">
                 </property>
@@ -126,7 +126,7 @@
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
-        <entity name="Default2" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default2" class="ptolemy.actor.lib.Default">
             <property name="DefaultIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}, maximized=false}">
                 </property>

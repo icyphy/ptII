@@ -7,6 +7,7 @@
       <group>
   <doc>Actors that alter sequences.</doc>
   <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop"/>
+  <entity name="Default" class="ptolemy.actor.lib.Default"/>
   <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat"/>
   <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>

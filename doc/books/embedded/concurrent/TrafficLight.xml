@@ -723,7 +723,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 120.0]">
             </property>
         </entity>
-        <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default" class="ptolemy.actor.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 120.0]">
             </property>
         </entity>
@@ -752,7 +752,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 205.0]">
             </property>
         </entity>
-        <entity name="Default2" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default2" class="ptolemy.actor.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 205.0]">
             </property>
         </entity>
@@ -781,7 +781,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 310.0]">
             </property>
         </entity>
-        <entity name="Default3" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default3" class="ptolemy.actor.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 310.0]">
             </property>
         </entity>
@@ -810,7 +810,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 405.0]">
             </property>
         </entity>
-        <entity name="Default4" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default4" class="ptolemy.actor.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 405.0]">
             </property>
         </entity>

@@ -443,7 +443,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
         </property>
     </entity>
-    <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+    <entity name="Default" class="ptolemy.actor.lib.Default">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 210.0]">
         </property>
     </entity>

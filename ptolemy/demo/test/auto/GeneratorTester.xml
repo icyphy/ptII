@@ -122,7 +122,7 @@
     <entity name="Generator" class="ptolemy.demo.ElectricPowerSystem.Generator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 260.0}">
         </property>
-        <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+        <entity name="Default" class="ptolemy.actor.lib.Default">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
             </property>
         </entity>

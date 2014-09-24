@@ -237,7 +237,7 @@
                     </property>
                 </property>
             </entity>
-            <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+            <entity name="Default" class="ptolemy.actor.lib.Default">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 270.0]">
                 </property>
                 <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">

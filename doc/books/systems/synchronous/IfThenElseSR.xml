@@ -88,7 +88,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 165.0]">
         </property>
     </entity>
-    <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+    <entity name="Default" class="ptolemy.actor.lib.Default">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 70.0]">
         </property>
     </entity>

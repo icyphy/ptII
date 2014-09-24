@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemErrorHandling" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -11,18 +11,16 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -150.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1069, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1095, 884}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 631]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[861, 774]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1674217327723">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.6198666557593, 91.8786633876003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.7613378394961, 153.12473924247357}">
     </property>
     <property name="transferRate" class="ptolemy.data.expr.Parameter" value="2.2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -587,7 +585,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 235.0]">
                     </property>
                 </entity>
-                <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+                <entity name="Default" class="ptolemy.actor.lib.Default">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 185.0]">
                     </property>
                 </entity>
@@ -693,7 +691,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 255.0]">
                     </property>
                 </entity>
-                <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+                <entity name="Default" class="ptolemy.actor.lib.Default">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 200.0]">
                     </property>
                 </entity>
@@ -956,6 +954,16 @@
             </property>
             <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="14.0">
             </property>
+            <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-4.999999999999449E-5">
+            </property>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </relation>
+                </entity>
+            </entity>
         </entity>
         <entity name="TT" class="Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 375.0]">
@@ -964,10 +972,30 @@
             </property>
             <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="10.00005">
+            </property>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </relation>
+                </entity>
+            </entity>
         </entity>
         <entity name="LFT" class="Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 160.0]">
             </property>
+            <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="-5.000000000000001E-5">
+            </property>
+            <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                    </relation>
+                </entity>
+            </entity>
         </entity>
         <entity name="LMT_inConst" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="0">
@@ -1257,6 +1285,8 @@
                     </property>
                     <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6476190209615305">
                     </property>
+                    <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                 </relation>
                 <link port="takeOff.incomingPort" relation="relation"/>
                 <link port="takeOff.outgoingPort" relation="relation2"/>
@@ -1302,13 +1332,13 @@
                     </property>
                 </port>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
-                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-                    </property>
                     <property name="value" class="ptolemy.data.expr.Parameter" value="takeoffConsumption">
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                         </property>
                         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                         </property>
+                    </property>
+                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
                     </property>
                     <doc>Create a constant sequence.</doc>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -1375,13 +1405,13 @@
                     </property>
                 </port>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
-                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-                    </property>
                     <property name="value" class="ptolemy.data.expr.Parameter" value="flightConsumption">
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                         </property>
                         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                         </property>
+                    </property>
+                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
                     </property>
                     <doc>Create a constant sequence.</doc>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -2154,6 +2184,8 @@
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.049921724646339">
                         </property>
+                        <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
                     </relation>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="TT_error &lt;= 0.0">
@@ -2435,6 +2467,8 @@
                                 </property>
                                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.715730504662183">
                                 </property>
+                                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                                </property>
                             </relation>
                             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="LMT_level &lt;= 0.0">
@@ -2450,6 +2484,8 @@
                                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                                 </property>
                                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6548394242221978">
+                                </property>
+                                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
                             </relation>
                             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -3891,6 +3927,8 @@
                                 </property>
                                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6603880254067611">
                                 </property>
+                                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
+                                </property>
                             </relation>
                             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
                                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="LFT_level &lt;= 0.0 ||&#10;LMT_level &lt;= 0.0">
@@ -3898,6 +3936,8 @@
                                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                                 </property>
                                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.8070942846758264">
+                                </property>
+                                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
                             </relation>
                             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -4133,8 +4173,6 @@
                         </entity>
                         <entity name="error_emptyMT" class="ptolemy.domains.modal.modal.Refinement">
                             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-                                </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -500.0]">
                                 </property>
                             </property>
@@ -4547,7 +4585,7 @@
         <link relation1="relation19" relation2="relation10"/>
     </entity>
     <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-        <property name="selector" class="ptolemy.data.expr.Parameter" value="sensorWorking">
+        <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="sensorWorking">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -4557,6 +4595,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -20.0]">
         </property>
+        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
