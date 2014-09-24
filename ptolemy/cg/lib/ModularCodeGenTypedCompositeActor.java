@@ -283,6 +283,10 @@ ModularCodeGenLazyTypedCompositeActor {
                 _generateCode();
             }
             String className = CodeGeneratorAdapter.generateName(this);
+            if (_codeGenerator == null) {
+                // This is needed for exporting to HTML.
+                _createCodeGenerator();
+            }
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             // FIXME: generateInSubdirectory fix
             if (((BooleanToken) _codeGenerator.generateInSubdirectory
