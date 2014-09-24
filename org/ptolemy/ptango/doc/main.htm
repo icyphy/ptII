@@ -90,7 +90,7 @@ data are missing, possible reactions are:</p>
   <li>Use the last value read.  For example, if temperature is being read every minute,
     then missing 4 minutes of data might be acceptable.
   <li>Stall execution of the model until the data appears or a timeout period expires.  
-  <li>Produce a <a href="../../../../doc/expression.pdf#in_browser" target="_top">Nil token</a>, indicating that there is missing data.  Operations on Ptolemy II
+  <li>Produce a <a href="../../../../doc/expressions.pdf#in_browser" target="_top">Nil token</a>, indicating that there is missing data.  Operations on Ptolemy II
     tokens are defined to handle nil tokens, for example adding a number to a nil token
     produces a nil token.  However, an actor could be defined that would average data that
     possibly included nil tokens and produced an average and a confidence interval.
