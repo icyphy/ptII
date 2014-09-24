@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="JazzImprovisation2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JazzImprovisation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 50, 1365, 850}, maximized=false}">
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-4543.006849315068, -1615.9999999999995}">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5000">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -117,69 +117,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-5210.0, -1930.0}">
         </property>
     </property>
-    <class name="NotesToStaff" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4150.0, -1715.0]">
-        </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4920.0, -1185.0}">
-            </property>
-        </port>
-        <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-4395.0, -1175.0]">
-            </property>
-        </port>
-        <port name="y" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-4395.0, -1270.0]">
-            </property>
-        </port>
-        <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4885.0, -1205.0}">
-            </property>
-            <port name="frequency" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="duration" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4710.0, -1175.0}">
-            </property>
-        </entity>
-        <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4610.0, -1175.0}">
-            </property>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler2.duration&quot;,x=-4885.0,y=-1205.0}, tail={id=&quot;AbsoluteValue.input&quot;,x=-4710.0,y=-1175.0}, points={} } }">
-            </property>
-        </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AbsoluteValue.output&quot;,x=-4710.0,y=-1175.0}, tail={id=&quot;Accumulator.input&quot;,x=-4610.0,y=-1175.0}, points={} } }">
-            </property>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=-4920.0,y=-1185.0}, tail={id=&quot;RecordDisassembler2.input&quot;,x=-4885.0,y=-1205.0}, points={} } }">
-            </property>
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="port" relation="relation"/>
-        <link port="x" relation="relation4"/>
-        <link port="y" relation="relation3"/>
-        <link port="RecordDisassembler2.input" relation="relation"/>
-        <link port="RecordDisassembler2.frequency" relation="relation3"/>
-        <link port="RecordDisassembler2.duration" relation="relation2"/>
-        <link port="AbsoluteValue.input" relation="relation2"/>
-        <link port="AbsoluteValue.output" relation="relation7"/>
-        <link port="Accumulator.input" relation="relation7"/>
-        <link port="Accumulator.output" relation="relation4"/>
-    </class>
     <entity name="FactorOracleGenerator" class="org.ptolemy.machineImprovisation.FactorOracleGenerator">
         <property name="repetitionFactor" class="ptolemy.actor.parameters.PortParameter" value="replicationProbability">
         </property>
@@ -424,9 +361,9 @@ Then delete this annotation.</text>
         <link port="runClock.stop" relation="stopRelation"/>
     </entity>
     <entity name="ReadTrainingMelody" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5042.5, -1555.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5045.0, -1635.0]">
         </property>
-        <property name="bars" class="ptolemy.data.expr.Parameter" value="47.0">
+        <property name="bars" class="ptolemy.data.expr.Parameter" value="47.25">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1396,49 +1333,170 @@ Then delete this annotation.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-4462.5, -1530.0}">
         </property>
     </entity>
-    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="training, improvisation">
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1113, 42, 320, 843}, maximized=false}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 563, 1011, 325}, maximized=false}">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1011, 281]">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Improvised Sequence">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4630.0, -1340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4475.0, -1695.0]">
         </property>
-        <configure>
+    </entity>
+    <entity name="Plots" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4535.0, -1315.0]">
+        </property>
+        <port name="original" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4750.0, -1260.0}">
+            </property>
+        </port>
+        <port name="impro" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4850.0, -1175.0}">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+        <class name="NotesToStaff" extends="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4825.0, -1345.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-4920.0, -1185.0}">
+                </property>
+            </port>
+            <port name="x" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-4395.0, -1175.0]">
+                </property>
+            </port>
+            <port name="y" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-4395.0, -1270.0]">
+                </property>
+            </port>
+            <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-4885.0, -1205.0}">
+                </property>
+                <port name="frequency" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="duration" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-4710.0, -1175.0}">
+                </property>
+            </entity>
+            <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-4610.0, -1175.0}">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler2.duration&quot;,x=-4885.0,y=-1205.0}, tail={id=&quot;AbsoluteValue.input&quot;,x=-4710.0,y=-1175.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AbsoluteValue.output&quot;,x=-4710.0,y=-1175.0}, tail={id=&quot;Accumulator.input&quot;,x=-4610.0,y=-1175.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=-4920.0,y=-1185.0}, tail={id=&quot;RecordDisassembler2.input&quot;,x=-4885.0,y=-1205.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="x" relation="relation4"/>
+            <link port="y" relation="relation3"/>
+            <link port="RecordDisassembler2.input" relation="relation"/>
+            <link port="RecordDisassembler2.frequency" relation="relation3"/>
+            <link port="RecordDisassembler2.duration" relation="relation2"/>
+            <link port="AbsoluteValue.input" relation="relation2"/>
+            <link port="AbsoluteValue.output" relation="relation7"/>
+            <link port="Accumulator.input" relation="relation7"/>
+            <link port="Accumulator.output" relation="relation4"/>
+        </class>
+        <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="training, improvisation">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 563, 1011, 325}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1011, 281]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4520.0, -1175.0}">
+            </property>
+            <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Music Envelope</title>
 <xLabel>beat</xLabel>
 <yLabel>note</yLabel>
-<xRange min="0.5" max="48.0"/>
+<xRange min="2.0" max="48.0"/>
 <yRange min="-1.0" max="81.0"/>
 <default connected="no" marks="dots"/>
 </plot>?>
-        </configure>
-    </entity>
-    <entity name="NoteToMidiKey" class="org.ptolemy.machineImprovisation.NoteToMidiKey">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-4705.0, -1280.0}">
-        </property>
-    </entity>
-    <entity name="NoteToTuple2" class="NotesToStaff">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4825.0, -1345.0]">
-        </property>
-    </entity>
-    <entity name="NoteToTuple1" class="NotesToStaff">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-4825.0, -1290.0}">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1119, 27, 302, 855}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Improvised Sequence">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4435.0, -1585.0]">
-        </property>
+            </configure>
+        </entity>
+        <entity name="NoteToMidiKey" class="org.ptolemy.machineImprovisation.NoteToMidiKey">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4665.0, -1165.0}">
+            </property>
+        </entity>
+        <entity name="NoteToTuple2" class="NotesToStaff">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4660.0, -1260.0}">
+            </property>
+        </entity>
+        <entity name="NoteToTuple1" class="NotesToStaff">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-4780.0, -1175.0}">
+            </property>
+        </entity>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple2.x&quot;,x=-4660.0,y=-1260.0}, points={-4565.0,-1190.0,-4565.0,-1270.0} } }">
+            </property>
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple2.y&quot;,x=-4660.0,y=-1260.0}, points={-4595.0,-1170.0,-4595.0,-1250.0} } }">
+            </property>
+        </relation>
+        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple1.x&quot;,x=-4780.0,y=-1175.0}, points={-4580.0,-1185.0,-4580.0,-1225.0,-4715.0,-1225.0,-4715.0,-1185.0} } }">
+            </property>
+        </relation>
+        <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToMidiKey.midiKey&quot;,x=-4665.0,y=-1165.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteToMidiKey.letterNote&quot;,x=-4665.0,y=-1165.0}, tail={id=&quot;NoteToTuple1.y&quot;,x=-4780.0,y=-1175.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteToTuple2.port&quot;,x=-4660.0,y=-1260.0}, tail={id=&quot;original._location&quot;,x=-4750.0,y=-1260.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation7_6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteToTuple1.port&quot;,x=-4780.0,y=-1175.0}, tail={id=&quot;impro._location&quot;,x=-4850.0,y=-1175.0}, points={} } }">
+            </property>
+        </relation>
+        <link port="original" relation="relation2"/>
+        <link port="impro" relation="relation7_6"/>
+        <link port="XYPlotter.inputX" relation="relation9"/>
+        <link port="XYPlotter.inputX" relation="relation17"/>
+        <link port="XYPlotter.inputY" relation="relation16"/>
+        <link port="XYPlotter.inputY" relation="relation19"/>
+        <link port="NoteToMidiKey.letterNote" relation="relation18"/>
+        <link port="NoteToMidiKey.midiKey" relation="relation19"/>
+        <link port="NoteToTuple2.port" relation="relation2"/>
+        <link port="NoteToTuple2.x" relation="relation9"/>
+        <link port="NoteToTuple2.y" relation="relation16"/>
+        <link port="NoteToTuple1.port" relation="relation7_6"/>
+        <link port="NoteToTuple1.x" relation="relation17"/>
+        <link port="NoteToTuple1.y" relation="relation18"/>
     </entity>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -1478,25 +1536,15 @@ Then delete this annotation.</text>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-4535.0, -1585.0]">
+        <vertex name="vertex1" value="[-4535.0, -1545.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2_0" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="FactorOracleGenerator.noteSequence" relation="relation25"/>
     <link port="FactorOracleGenerator.pitchMoML" relation="relation8"/>
@@ -1517,7 +1565,7 @@ Then delete this annotation.</text>
     <link port="ReadTrainingMelody.notes" relation="relation25"/>
     <link port="ReadTrainingMelody.chords" relation="relation34_10"/>
     <link port="ReadTrainingMelody.start" relation="relation14"/>
-    <link port="ReadTrainingMelody.training" relation="relation2"/>
+    <link port="ReadTrainingMelody.training" relation="relation2_0"/>
     <link port="MobilePitchOracle.input" relation="relation"/>
     <link port="MobilePitchOracle.modelString" relation="relation8"/>
     <link port="MobilePitchOracle.output" relation="relation11"/>
@@ -1531,17 +1579,7 @@ Then delete this annotation.</text>
     <link port="MicrostepDelay2.input" relation="relation5"/>
     <link port="MicrostepDelay2.output" relation="relation15"/>
     <link port="SetVariable.input" relation="relation10"/>
-    <link port="XYPlotter.inputX" relation="relation9"/>
-    <link port="XYPlotter.inputX" relation="relation17"/>
-    <link port="XYPlotter.inputY" relation="relation16"/>
-    <link port="XYPlotter.inputY" relation="relation19"/>
-    <link port="NoteToMidiKey.letterNote" relation="relation18"/>
-    <link port="NoteToMidiKey.midiKey" relation="relation19"/>
-    <link port="NoteToTuple2.port" relation="relation2"/>
-    <link port="NoteToTuple2.x" relation="relation9"/>
-    <link port="NoteToTuple2.y" relation="relation16"/>
-    <link port="NoteToTuple1.port" relation="relation7"/>
-    <link port="NoteToTuple1.x" relation="relation17"/>
-    <link port="NoteToTuple1.y" relation="relation18"/>
     <link port="Display.input" relation="relation7"/>
+    <link port="Plots.original" relation="relation2_0"/>
+    <link port="Plots.impro" relation="relation7"/>
 </entity>
