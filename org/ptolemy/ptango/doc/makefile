@@ -51,6 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	acks.htm \
 	body.htm \
+	buttons.htm \
 	index.htm \
 	main.htm \
 	toc.htm \

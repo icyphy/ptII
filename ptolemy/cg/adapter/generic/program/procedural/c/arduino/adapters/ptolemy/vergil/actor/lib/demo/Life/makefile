@@ -65,8 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ModalLEDs.xml
 
 EXTRA_SRCS =	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
-	Life.htm
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

@@ -291,6 +291,7 @@ public class ExportModelJUnitTest {
                 "KarplusStrong.xml", // "Audio Device Unavailable"
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "MapReduceDDF.xml", // Hangs.
+                "ModularCG.xml", // cg model fails to run while exporting.
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "PublisherTest", // gt
