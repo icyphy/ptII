@@ -777,7 +777,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             printWriter.println("<meta charset=utf-8>");
 
             // Define the path to the SSI files on the ptolemy site.
-            String ssiRoot = "http://ptolemy.org/";
+            // ssiRoot always has a trailing slash.
+            final String ssiRoot = "http://ptolemy.org/";
 
             // Reference required script files.
             // If the model contains an instance of CopyJavaScriptFiles, then
@@ -893,9 +894,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                     && model.getName().equals("_Controller")))) {
                 String linkToHelp = "<a href=\""
                         + ssiRoot
-                        + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
+                        + "ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
                         + ssiRoot
-                        + "/image/question.png\" alt=\"What is Web Start\"></a> (<i>Java Plug-in Required</i>)";
+                        + "image/question.png\" alt=\"What is Web Start\"></a> (<i>Java Plug-in Required</i>)";
 
                 printWriter
                 .println("<div id=\"inlineImg\">" // Defined in UCB.css
