@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/machineImprovisation/demo
 
-DIRS =	FactorOracleExecution
+DIRS =	JazzImprovisation
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..

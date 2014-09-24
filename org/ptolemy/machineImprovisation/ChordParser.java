@@ -88,10 +88,11 @@ public class ChordParser extends TypedAtomicActor {
         endChord = new TypedIOPort(this, "endChord", true, false);
         endChord.setTypeEquals(BaseType.INT);
         
-        _orderedChords = new HashMap<>(); 
-        _notes = new LinkedList<>();
-        _durations = new LinkedList<>();
-        _timestamps = new LinkedList<>();
+        _durations = new LinkedList<Double>();
+
+        _notes = new LinkedList<String>();
+        _orderedChords = new HashMap<Integer, Chord>(); 
+        _timestamps = new LinkedList<Integer>();
  
         _terminateChord = false;
         _terminateLength = 0;
@@ -171,21 +172,14 @@ public class ChordParser extends TypedAtomicActor {
             _terminateChord = false;
             _terminateLength = 0; 
         }
-         
-             
-
     }  
-     
-    private HashMap<Integer, Chord> _orderedChords; 
 
-    private List<String> _notes;
+    // FIXME: what are these?
     private List<Double> _durations;
+    private HashMap<Integer, Chord> _orderedChords; 
+    private List<String> _notes;
     private List<Integer> _timestamps;
     private boolean _terminateChord; 
     private int _terminateLength;   
     private int _chordLength;
-    
-
- 
-
 }

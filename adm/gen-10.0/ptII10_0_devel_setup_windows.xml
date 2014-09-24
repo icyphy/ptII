@@ -598,6 +598,10 @@ The Ptiny pack is required.
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/faultModels/faultModels.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/faultModels"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineImprovisation/machineImprovisation.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/machineImprovisation"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineImprovisation/demo.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/machineImprovisation/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineLearning/machineLearning.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/machineLearning"/>
             <file src="../dists/ptII10.0.devel/jar_dist/com/cureos/cureos.jar"

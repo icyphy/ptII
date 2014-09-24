@@ -273,7 +273,7 @@ private String _getChordForBeat( double beat) {
     String chordName = null;
     boolean found = false;
     while (a.hasNext()) { 
-        double start = (double)a.next();
+        double start = ((Double)a.next()).doubleValue();
         Chord c = ((Chord)_allChords.get(start));
         double dur = c.getDuration();
         if (start <= beat && start+dur > beat) {

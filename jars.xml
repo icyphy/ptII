@@ -30,6 +30,8 @@
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
     <include name="org/ptolemy/faultModels/faultModels.jar" />
+    <include name="org/ptolemy/machineImprovisation/machineImprovisation.jar" />
+    <include name="org/ptolemy/machineImprovisation/demo/demo.jar" />
     <include name="org/ptolemy/machineLearning/machineLearning.jar" />
     <include name="org/ptolemy/optimization.jar" />
     <include name="org/ptolemy/osc.jar" />
@@ -3934,44 +3936,43 @@
       </fileset>
     </jar>
 
+    <!-- org/ptolemy/machineImprovisation/machineImprovisation.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/machineImprovisation/machineImprovisation.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineImprovisation/*.class"/>
+      </fileset>
+    </jar>
+
+
+    <!-- org/ptolemy/machineImprovisation/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/machineImprovisation/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineImprovisation/demo/*/*.csv"/>
+	<include name="org/ptolemy/machineImprovisation/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+
     <!-- org/ptolemy/machineLearning/machineLearning.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/ptolemy/machineLearning/machineLearning.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/machineLearning.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hmm/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hmm/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hmmAOM/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hmmAOM/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hsmm/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hsmm/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/particleFilter/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/particleFilter/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/hmm/demo/*/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/particleFilter/demo/*/*.xml"/>
       </fileset>
     </jar>

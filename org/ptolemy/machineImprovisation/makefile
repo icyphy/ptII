@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2013 The Regents of the University of California.
+# @Copyright (c) 2013-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -52,15 +52,17 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	Chord.java \
 	ChordFollower.java \
-	ChordParser.java \ 
+	ChordParser.java \
 	FactorOracle.java \
 	FactorOracleGenerator.java \
-	HierarchicalFactorOracle.java \
+	FactorOracleTop.java \
 	MidiKeyToNote.java \
-	MusicSpecifications.java \
+	MusicSpecs.java \
 	Note.java \
+	NoteParser.java \
+	NoteToMidiKey.java \
 	OracleModel.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	ChordFollowerIcon.xml \
 	FactorOracleGeneratorIcon.xml 

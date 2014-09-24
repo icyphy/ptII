@@ -487,6 +487,8 @@ METROII_JARS = \
 FULL_10_0_JARS = \
 	com/cureos/cureos.jar \
 	org/ptolemy/faultModels/faultModels.jar \
+	org/ptolemy/machineImprovisation/machineImprovisation.jar \
+	org/ptolemy/machineImprovisation/demo/demo.jar \
 	org/ptolemy/machineLearning/machineLearning.jar \
 	org/ptolemy/optimization/optimization.jar \
 	org/ptolemy/osc/osc.jar \

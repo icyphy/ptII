@@ -102,10 +102,10 @@ public class NoteParser extends TypedAtomicActor {
         endTraining = new TypedIOPort(this, "endTraining", true, false);
         endTraining.setTypeEquals(BaseType.INT);
         
+        _durations = new LinkedList<Double>();
         _orderedNotes = new HashMap<Integer,Note>(); 
-        _notes = new LinkedList<>();
-        _durations = new LinkedList<>();
-        _timestamps = new LinkedList<>();
+        _notes = new LinkedList<Double>();
+        _timestamps = new LinkedList<Integer>();
  
         _terminate = false;
         _terminateLength = 0;
@@ -209,15 +209,12 @@ public class NoteParser extends TypedAtomicActor {
         }  
     }  
      
+    private List<Double> _durations;
     private HashMap<Integer, Note> _orderedNotes; 
     private List<Double> _notes;
-    private List<Double> _durations;
     private List<Integer> _timestamps;
     private boolean _terminate; 
     private int _terminateLength; 
     private double _replicationProbability = 0.8;
     private double _nBeats = 0.0;
-
- 
-
 }
