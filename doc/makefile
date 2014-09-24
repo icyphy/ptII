@@ -715,6 +715,7 @@ mainVergil.htm: main.htm
 	    -e 's@#in_browser#in_browser@#in_browser@' \
 	    -e 's@(<a href="../ptolemy/domains/\([^/]*\)/doc/toc.htm" target="toc">@(<a href="../ptolemy/configs/doc/completeDemos.htm#\1">@' \
 	    -e 's@<a href="../ptolemy/domains/\([^/]*\)/doc/body.htm" target="body">@<a href="../ptolemy/domains/\1/doc/main.htm">@' \
+	    -e 's@<a href="../ptolemy/domains/\([^/]*\)/doc/index.htm" target="_top">@<a href="../ptolemy/domains/\1/doc/main.htm">@' \
 		main.htm > $@
 
 mainVergilPtiny.htm: mainVergil.htm

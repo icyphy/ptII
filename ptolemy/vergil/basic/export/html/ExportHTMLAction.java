@@ -118,7 +118,7 @@ import diva.graph.GraphController;
  * <p>The following JVM properties affect the output:</p>
  * <dl>
  * <dt>        -Dptolemy.ptII.exportHTML.usePtWebsite=true</dt>
- * <dd> Include Ptolemy Website (<a href="http://ptolemy.org">http://ptolemy.org</a>)
+ * <dd> Include Ptolemy Website (<a href="http://ptolemy.org#in_browser" target="_top">http://ptolemy.org</a>)
  * specific Side Includes (SSI) and use JavaScript libraries from the
  * Ptolemy website.</dd>
  * <dt> -Dptolemy.ptII.exportHTML.linkToJNLP=true</dt>
@@ -129,7 +129,7 @@ import diva.graph.GraphController;
  * {@link ptolemy.vergil.basic.export.ExportModel} can be called with these
  * properties set to create Ptolemy website specific web pages.</p>
  *
- * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
+ * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport#in_browser" target="_top">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
  * for detailed instructions about how to create web pages on the
  * Ptolemy website for models.</p>
  *

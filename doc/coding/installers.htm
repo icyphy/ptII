@@ -18,13 +18,13 @@
     <ul>
       <li> <a href="http://java-source.net/open-source/installer-generators" target="_top">java-source.net - List of Open Source Installers written in Java</a></li>
       <li> <a href="http://javatoolbox.com/categories/deployment-installation" target="_top">javatoolbox - Java deployment and installation tools</a></li>
-      <li> <a href="http://www.excelsior-usa.com/articles/java-to-exe.html" target="_top">Excelsior-usa: Java to exe</a></li>
+      <li> <a href="http://www.excelsior-usa.com/articles/java-to-exe.html#in_browser" target="_top">Excelsior-usa: Java to exe</a></li>
     </ul>
 
     <h2>Free Installers</h2>
     <dl>
-      <dt><a href="http://www.izforge.com/izpack/" target="_top">izPack</a>
-	<dd> <a href="http://www.velocityreviews.com/forums/t302544-free-java-installer-with-capability-to-bundle-jvm.html" target="_top">velocityreviews.com</a> says:
+      <dt><a href="http://www.izforge.com/izpack/#in_browser" target="_top">izPack</a>
+	<dd> <a href="http://www.velocityreviews.com/forums/t302544-free-java-installer-with-capability-to-bundle-jvm.html#in_browser" target="_top">velocityreviews.com</a> says:
 	  <blockquote>
 	    The IzPack native launcher will first check for a JRE on the target
 	    system. If one is found, then it will launch the installer. If no JRE
@@ -43,9 +43,9 @@
 	      a custom JRE that includes packages like Java3D etc.  For us to use
 	      this, we would need to create a JRE setup script.</li>
 	  </ul>
-	  <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>
+	  <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher#in_browser" target="_top">Notes about IzPack Launcher and possible alternatives</a>
 	</dd>
-      <dt><a href="http://launch4j.sourceforge.net/" target="_top">launch4j</a></dt>
+      <dt><a href="http://launch4j.sourceforge.net/#in_browser" target="_top">launch4j</a></dt>
       <dd>Can include a JRE, but really only for one application?
 	We need to add multiple apps to the Start Menu.</dd>
 
@@ -53,23 +53,23 @@
 
     <h2>Commercial installers</h2>
     <ul>
-      <li> <a href="http://www.advancedinstaller.com/java.html" target="_top">Advanced Installer</a></li>
+      <li> <a href="http://www.advancedinstaller.com/java.html#in_browser" target="_top">Advanced Installer</a></li>
       <li> <a href="http://www.denova.com" target="_top">Denova JExpress</a></li>
-      <li> <a href="http://www.dobysoft.com/products/nativej/features.html" target="_top">Dobysoft NativeJ</a> $49.95/$89.95</li>
-      <li> <a href="http://www.ej-technologies.com/products/install4j/features.html" target="_top">Install4J</a>  edu pricing: $199/$349</li>
+      <li> <a href="http://www.dobysoft.com/products/nativej/features.html#in_browser" target="_top">Dobysoft NativeJ</a> $49.95/$89.95</li>
+      <li> <a href="http://www.ej-technologies.com/products/install4j/features.html#in_browser" target="_top">Install4J</a>  edu pricing: $199/$349</li>
 
     </ul>
 
     <h2>Ptolemy installers</h2>
     To install Ptolemy under Windows, we require an optional custom JRE.
     <p>The way we do this is based on
-      <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>.
+      <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher#in_browser" target="_top">Notes about IzPack Launcher and possible alternatives</a>.
       <ol>
 	<li>We create an 
-	  <a href="http://www.izforge.com/izpack/" target="_top">izPack</a>
+	  <a href="http://www.izforge.com/izpack/#in_browser" target="_top">izPack</a>
 	  installer that installs Ptolemy II
 	<li>We use 
-	  <a href="http://launch4j.sourceforge.net/" target="_top">launch4j</a>
+	  <a href="http://launch4j.sourceforge.net/#in_browser" target="_top">launch4j</a>
 	  to invoke the izPack installer.  The launch4j installer includes
 	  an optional JRE.
       </ol>
@@ -88,9 +88,9 @@
 	<li>IzPack should be easier to use with a custom JRE.
 	  The IzPack native launcher will allow me to invoke the JRE installer,
 	  but I want to use a JRE that is in the current directory.
-	  <a href="http://www.izforge.com/izpack/wiki/native_launcher_and_alternatives">the IzPack wiki</a> (see also
-	  <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher">Notes about IzPack Launcher and possible alternatives</a>) describe
-	  using <a href="http://launch4j.sourceforge.net/" target="_top">Launch4j</a>.
+	  <a href="http://www.izforge.com/izpack/wiki/native_launcher_and_alternatives#in_browser" target="_top">the IzPack wiki</a> (see also
+	  <a href="http://openfacts.berlios.de/index-en.phtml?title=IzPack/Launcher#in_browser" target="_top">Notes about IzPack Launcher and possible alternatives</a>) describe
+	  using <a href="http://launch4j.sourceforge.net/#in_browser" target="_top">Launch4j</a>.
 	  <br>I ended up using Launch4j to create a .exe that invokes
 	  the jar file created by IzPack.  I also used Launch4j to create
 	  my .exe files that are added to the Start menu.</li>
@@ -120,18 +120,18 @@
 	  faster to copy one file around at installer build time than
 	  it is to copy lots of files.</li>
 
-	<li> The <a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a> should state clearly how to build.  Yah, I know, if you don't
+	<li> The <a href="http://www.izforge.com/izpack/developers#in_browser" target="_top">IzPack Developer's page</a> should state clearly how to build.  Yah, I know, if you don't
 	  know svn, you probably can't devel, but I find quick instructions useful.
 	  The instructions should point to an online copy of the most recent 
 	  Eclipse instructions.  I found the TeX docs, but is there
 	  an online version of the manual?
 	  
 	  <br>There should also be a link to 
-	  <a href="http://www.izforge.com/izpack/wiki/building_native_launcher">How to build the native launcher</a></li>
+	  <a href="http://www.izforge.com/izpack/wiki/building_native_launcher#in_browser" target="_top">How to build the native launcher</a></li>
       </ul>
 
       <h3>Building IzPack</h3> 
-      <a href="http://www.izforge.com/izpack/developers">IzPack Developer's page</a>
+      <a href="http://www.izforge.com/izpack/developers#in_browser" target="_top">IzPack Developer's page</a>
       <ol>
 	<li> Download from the trunk
 	  <pre>
@@ -201,7 +201,7 @@
 	    </dd>
 	    <dt>Problems with the uninstaller
 	      <dd>The Uninstaller was failing for me, see
-		<a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html">The Unistaller.jar is not working</a>
+		<a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html#in_browser" target="_top">The Unistaller.jar is not working</a>
 		<p>I had a problem with <code>OsVersion</code> missing when I ran</p>
 		<pre>
 		  java -version uninstaller.jar
@@ -212,7 +212,7 @@
 		  cd 3.9.0-M1/src
 		  ant
 		</pre>
-		<p>I also had to edit <code>build.xml</code> so that we included izpack/util/os/*.class as per <a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html">The Unistaller.jar is not working</a></p>n
+		<p>I also had to edit <code>build.xml</code> so that we included izpack/util/os/*.class as per <a href="http://lists.berlios.de/pipermail/izpack-users/2006-September/002637.html#in_browser" target="_top">The Unistaller.jar is not working</a></p>n
 
 		<p>It turns out that part of the install process updates <code>uninstaller.jar</code>.  So, I had to copy the <code>uninstaller.jar</code> file
 		  over to the installed version of IzPack - copying <code>uninstaller.jar</code>

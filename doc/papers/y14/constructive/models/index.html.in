@@ -24,7 +24,7 @@ To update, you could
   <!-- Do not include a body open tag here, the ssi does it -->
   <h1>Models for Constructive Models of Descrete and Continuous Physical Phenomena</h1>
 <p>This page contains links to the models described in
-<p>Edward A. Lee, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-15.pdf">Constructive Models of Discrete and Continuous Physical Phenomena,</a>" EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2014-15, February 8, 2014.</p>
+<p>Edward A. Lee, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-15.pdf#in_browser" target="_top">Constructive Models of Discrete and Continuous Physical Phenomena,</a>" EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2014-15, February 8, 2014.</p>
 <p>The models are in HTML and Java Web Start format.</p>
 
   <ul>
