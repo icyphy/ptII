@@ -879,12 +879,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             boolean linkToJNLP = Boolean.valueOf(StringUtilities
                     .getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
-            // System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " name: " + model.getContainer().getName() + model.getContainer().getContainer());
-
+            //System.out.println("ExportHTMLAction: model: " + model + " model name: " + model.getName() + " " + model.getContainer() + " isClassDef: " + ((ptolemy.kernel.InstantiableNamedObj)model).isClassDefinition());
+            //if (model.getContainer() != null) {
+            //    System.out.println("ExportHTMLAction: name: " + model.getContainer().getName() + model.getContainer().getContainer());
+            //}
             if (linkToJNLP
-                    && (model.getContainer() == null || /* Ptera */model
-                            .getContainer().getContainer() == null
-                            && model.getName().equals("_Controller"))) {
+                    && ((model.getContainer() == null 
+                                    && model instanceof CompositeEntity
+                                    // Don't include links to the .xml of class definitions 
+                                    && !((CompositeEntity)model).isClassDefinition())
+                            || (model.getContainer() != null 
+                                    && /* Ptera */model.getContainer().getContainer() == null
+                                    && model.getName().equals("_Controller")))) {
                 String linkToHelp = "<a href=\""
                         + ssiRoot
                         + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
