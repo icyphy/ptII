@@ -32,7 +32,7 @@
 ME =		doc/books
 
 # Sub directories to run make in.
-DIRS =		actors embedded systems
+DIRS =		embedded systems
 
 # Root of Ptolemy II directory
 ROOT =		../..
