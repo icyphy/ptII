@@ -250,7 +250,8 @@ JDOCCHECKFLAGS = $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCSOURCEFLAGS)
 
 # Flags to pass to javadoc.
 # Don't use -private, it generates too many warnings with JavaDoc 1.8.
-JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET) $(JDOCSTYLESHEET)
+# Use -package so that we generate docs for ptolemy/domains/modal/modal/ClassComparator.java, which is package protected.
+JDOCFLAGS = 	-author -package -version $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET) $(JDOCSTYLESHEET)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		@JAR@
