@@ -100,10 +100,9 @@ public class GdpUtilities {
     
     /** Create a new status code.
      *  Based on ep_stat.h, Copyright Eric Allman, See ep_license.htm
-     *  @param s The severity
-     *  @param r the registry
-     *  @param m the module
-     *  @param d the detail.
+     *  @param sev The severity
+     *  @param mod the module
+     *  @param code the detail.
      *  @return the status code.
      */
     public static EP_STAT EP_STAT_INTERNAL(int sev, int mod, int code) {

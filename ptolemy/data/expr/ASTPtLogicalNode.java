@@ -100,7 +100,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
 
     /** Return true if the node represents the logical OR of its
      *  children.
-     *  @Return true if the node represents the logical OR of its
+     *  @return true if the node represents the logical OR of its
      *  children.
      */
     public boolean isLogicalOr() {

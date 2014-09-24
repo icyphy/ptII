@@ -109,7 +109,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
 
     /** Return true if this node represents the boolean negation of its
      *  child.
-     *  @param true if this node represents the boolean negation of
+     *  @return true if this node represents the boolean negation of
      *  its child.
      */
     public boolean isNot() {

@@ -82,7 +82,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
     }
 
     /** Return true if this operation represents a boolean XOR operation.
-     * @param return true if this operation represents a boolean XOR operation.
+     *  @return true if this operation represents a boolean XOR operation.
      */
     public boolean isBitwiseXor() {
         return _lexicalToken.kind == PtParserConstants.XOR;

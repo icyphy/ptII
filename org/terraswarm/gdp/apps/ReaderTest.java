@@ -129,7 +129,10 @@ public class ReaderTest {
      * "This routine handles calls that return multiple values via the
      * event interface.  They might include subscriptions."
      *  @param gclh The handle to the GCL
-     *  @param the record number of the first record.
+     *  @param firstrec The record number of the first record.
+     *  @param numrecs The number of records
+     *  @param subscribe True if this is a subscription, false if it
+     *  is a multiread.
      *  @return the status.
      */
     static EP_STAT do_subscribe(Pointer gclh,
