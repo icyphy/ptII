@@ -253,6 +253,12 @@ public class DocManager extends HandlerBase {
         _configuration = configuration;
         try {
             parse(null, url.openStream());
+            if (_className != null) {
+                _targetClass = Class.forName(_className);
+            } else {
+                System.err.println("DocManager: while reading " + url 
+                        + ", _className was null?");
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             _exception = "Error reading URL: " + url.toExternalForm()
