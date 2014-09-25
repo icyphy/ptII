@@ -1513,17 +1513,31 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         return _findCopiedLibrary(container, "../" + path, copier);
     }
 
-    /** Return true if the model is in the domains demo directory.
+    /** Return true if the model is in the domains demo directory
+     *  and ../../../doc exists and is a directory and
+     *  either ../../doc/index.htm or index.html exist
      *  @param model The model to be checked
-     *  @return true if it is in the domains directory
+     *  @return true if it is in the domains directory and doc exists.
      */
     private static boolean _isInDomains(NamedObj model) {
         try {
             URIAttribute modelURI = (URIAttribute) model.getAttribute("_uri",
                     URIAttribute.class);
             if (modelURI != null) {
-                if (modelURI.getURI().toString().contains("/domains")) {
-                    return true;
+                String modelURIString = modelURI.getURI().toString();
+                if (modelURIString.contains("/domains")) {
+                    try {
+                        File modelFile = new File(modelURI.getURI());
+                        File docDirectory = new File(modelFile, "../../../doc/");
+                        if (docDirectory.exists() 
+                                && docDirectory.isDirectory()
+                                && (new File(docDirectory, "index.htm").exists()
+                                        || new File(docDirectory, "index.html").exists())) {
+                            return true;
+                        }
+                    } catch (Throwable throwable) {
+                        return false;
+                    }
                 }
             }
         } catch (IllegalActionException ex) {
