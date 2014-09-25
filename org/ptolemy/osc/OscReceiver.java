@@ -31,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap; 
 
+import org.ptolemy.machineLearning.hmm.HMMGaussianEstimator;
+
 import oscP5.OscEventListener;
 import oscP5.OscMessage;
 import oscP5.OscP5;
@@ -48,6 +50,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
 <p> Receive Open Sound Control (OSC) Messages by listening to the
@@ -92,6 +95,15 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
         _receivedTokens = new ConcurrentHashMap<String, List<Object>>(); 
     }
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OscReceiver newObject = (OscReceiver) super
+                .clone(workspace);
+        newObject._receivedTokens = new ConcurrentHashMap<String, List<Object>>();  
+        newObject.oscP5 = null;
+        return newObject;
+    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

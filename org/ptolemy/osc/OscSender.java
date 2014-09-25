@@ -29,13 +29,12 @@ COPYRIGHTENDKEY
 package org.ptolemy.osc;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 import oscP5.OscBundle;
 import oscP5.OscMessage;
 import oscP5.OscP5;
-import netP5.NetListener;
-import netP5.NetMessage;
-import netP5.NetStatus;
-
 import netP5.NetAddress;
 
 
@@ -55,6 +54,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 
 /**
@@ -107,6 +107,14 @@ public class OscSender extends TypedAtomicActor {
         tagPrefix.setTypeEquals(BaseType.STRING);
         tagPrefix.setExpression("\"\"");
     }
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        OscSender newObject = (OscSender) super
+                .clone(workspace);
+        newObject.oscP5 = null; 
+        return newObject;
+    } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  //// 
@@ -230,8 +238,9 @@ public class OscSender extends TypedAtomicActor {
                 		"Currently this OSC Client  Integer, String and Double types");
             }
             bundle.add(m);
+            m.print();
         }
-
+ 
         oscP5.send(bundle, myRemoteLocation); 
         
         tokenMap.clear();
