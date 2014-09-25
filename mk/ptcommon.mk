@@ -269,7 +269,7 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	rm -f doc/codeDoc/*.html; \
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(AUXCLASSPATH)" \
 	   "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
-		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS) -stylesheetfile ; \
+		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
 	fi
 
 # Generate index.xml from all the Java classes in a lib directory
