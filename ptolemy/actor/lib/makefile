@@ -317,7 +317,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DateConstructorIcon.xml \
 	DateElementsIcon.xml \
 	DBIcon.xml \
-	Default.xml \
+	DefaultIcon.xml \
 	Dice.gif \
 	DictionaryIcon.xml \
 	DifferentialIcon.xml \
