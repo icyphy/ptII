@@ -37,7 +37,9 @@ ROOT =		../../..
 JSRCS = Algorithms.java
 
 # $(ME) is used in ptdir.mk
-ME =		org.ptolemy.machineLearning
+ME =		org/ptolemy/machineLearning
+
+CLASSPATH =	$(ROOT)
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
