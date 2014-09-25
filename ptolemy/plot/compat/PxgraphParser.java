@@ -373,7 +373,7 @@ is provided by command line arguments.
     <b>Unsupported in the Java version.</b></dd>
 </dl>
 
-<h2><a name="pxgraphScriptCompatibilityIssues">Compatibility Issues</a></h2>
+<b><a name="pxgraphScriptCompatibilityIssues">Compatibility Issues</a></b>
 <p>Various compatibility issues are documented above in <b>bold</b>.
   Below are some other issues:</p>
 <ol>

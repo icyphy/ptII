@@ -161,8 +161,8 @@ import ptolemy.kernel.util.Workspace;
  entity of the instance in the base class is replaced and
  then an undo is requested.</li>
  </ul>
- <h2>References</h2>
-><ol>
+ <b>References</b>
+ <ol>
  <li> E. A. Lee and T. M. Parks, "Dataflow Process Networks,"
  Proceedings of the IEEE, 83(5): 773-801, May, 1995.</li>
  <li> H. J. Reekie,

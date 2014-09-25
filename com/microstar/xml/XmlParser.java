@@ -492,7 +492,7 @@ public class XmlParser {
     /**
      * Skip a comment.
      * <pre>
-     * [18] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* "-->"
+     * [18] Comment ::= '&lt;!--' ((Char - '-') | ('-' (Char - '-')))* "--&gt;"
      * </pre>
      * <p>(The <code>&lt;!--</code> has already been read.)
      */
@@ -1008,7 +1008,7 @@ public class XmlParser {
 
     /**
      * Parse an end tag.
-     * [36] ETag ::= '</' Name S? '>'
+     * [36] ETag ::= '&lt;/' Name S? '&gt;'
      * *NOTE: parseContent() chains to here.
      */
     void parseETag() throws java.lang.Exception {
@@ -1110,9 +1110,9 @@ public class XmlParser {
 
     /**
      * Parse an element type declaration.
-     * [40] elementdecl ::= '<!ELEMENT' S %Name S (%S S)? %contentspec S? '>'
+     * [40] elementdecl ::= '&lt;!ELEMENT' S %Name S (%S S)? %contentspec S? '&gt;'
      *                      [VC: Unique Element Declaration]
-     * *NOTE: the '<!ELEMENT' has already been read.
+     * *NOTE: the '&lt;!ELEMENT' has already been read.
      */
     void parseElementdecl() throws java.lang.Exception {
         String name;
@@ -1308,8 +1308,8 @@ public class XmlParser {
 
     /**
      * Parse an attribute list declaration.
-     * [52] AttlistDecl ::= '<!ATTLIST' S %Name S? %AttDef+ S? '>'
-     * *NOTE: the '<!ATTLIST' has already been read.
+     * [52] AttlistDecl ::= '&lt;!ATTLIST' S %Name S? %AttDef+ S? '&gt;'
+     * *NOTE: the '&lt;!ATTLIST' has already been read.
      */
     void parseAttlistDecl() throws java.lang.Exception {
         String elementName;
@@ -1461,13 +1461,13 @@ public class XmlParser {
     /**
      * Parse a conditional section.
      * [63] conditionalSect ::= includeSect || ignoreSect
-     * [64] includeSect ::= '<![' %'INCLUDE' '[' (%markupdecl*)* ']]>'
-     * [65] ignoreSect ::= '<![' %'IGNORE' '[' ignoreSectContents* ']]>'
-     * [66] ignoreSectContents ::= ((SkipLit | Comment | PI) -(Char* ']]>'))
-     *                           | ('<![' ignoreSectContents* ']]>')
-     *                           | (Char - (']' | [<'"]))
-     *                           | ('<!' (Char - ('-' | '[')))
-     * *NOTE: the '<![' has already been read.
+     * [64] includeSect ::= '&lt;![' %'INCLUDE' '[' (%markupdecl*)* ']]&gt;'
+     * [65] ignoreSect ::= '&lt;![' %'IGNORE' '[' ignoreSectContents* ']]&gt;'
+     * [66] ignoreSectContents ::= ((SkipLit | Comment | PI) -(Char* ']]&gt;'))
+     *                           | ('&lt;![' ignoreSectContents* ']]&gt;')
+     *                           | (Char - (']' | [&lt;'"]))
+     *                           | ('&lt;!' (Char - ('-' | '[')))
+     * *NOTE: the '&lt;![' has already been read.
      * *TODO: verify that I am handling ignoreSectContents right.
      */
     void parseConditionalSect() throws java.lang.Exception {
@@ -1699,14 +1699,14 @@ public class XmlParser {
 
     /**
      * Parse an entity declaration.
-     * [71] EntityDecl ::= '<!ENTITY' S %Name S %EntityDef S? '>'
-     *                   | '<!ENTITY' S '%' S %Name S %EntityDef S? '>'
+     * [71] EntityDecl ::= '&lt;!ENTITY' S %Name S %EntityDef S? '&gt;'
+     *                   | '&lt;!ENTITY' S '%' S %Name S %EntityDef S? '&gt;'
      * [72] EntityDef ::= EntityValue | ExternalDef
      * [73] ExternalDef ::= ExternalID %NDataDecl?
      * [74] ExternalID ::= 'SYSTEM' S SystemLiteral
      *                   | 'PUBLIC' S PubidLiteral S SystemLiteral
      * [75] NDataDecl ::= S %'NDATA' S %Name
-     * *NOTE: the '<!ENTITY' has already been read.
+     * *NOTE: the '&lt;!ENTITY' has already been read.
      */
     void parseEntityDecl() throws java.lang.Exception {
         char c;
@@ -1770,8 +1770,8 @@ public class XmlParser {
 
     /**
      * Parse a notation declaration.
-     * [81] NotationDecl ::= '<!NOTATION' S %Name S %ExternalID S? '>'
-     * *NOTE: the '<!NOTATION' has already been read.
+     * [81] NotationDecl ::= '&lt;!NOTATION' S %Name S %ExternalID S? '&gt;'
+     * *NOTE: the '&lt;!NOTATION' has already been read.
      */
     void parseNotationDecl() throws java.lang.Exception {
         String nname;
@@ -2053,8 +2053,8 @@ public class XmlParser {
 
     /**
      * Read a literal.
-     * [10] AttValue ::= '"' ([^<&"] | Reference)* '"'
-     *                 | "'" ([^<&'] | Reference)* "'"
+     * [10] AttValue ::= '"' ([^&lt;&"] | Reference)* '"'
+     *                 | "'" ([^&lt;&'] | Reference)* "'"
      * [11] SystemLiteral ::= '"' URLchar* '"' | "'" (URLchar - "'")* "'"
      * [13] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
      * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"'
@@ -3396,7 +3396,7 @@ public class XmlParser {
     /**
      * Check for a four-byte signature.
      * <p>Utility routine for detectEncoding().
-     * <p>Always looks for some part of "<?XML" in a specific encoding.
+     * <p>Always looks for some part of "&lt;?XML" in a specific encoding.
      * @param sig The first four bytes read.
      * @param b1 The first byte of the signature
      * @param b2 The second byte of the signature
@@ -3469,13 +3469,13 @@ public class XmlParser {
      * <p>The method saves the following global variables onto a stack
      * using a fixed-length array:
      * <ol>
-     * <li>sourceType
-     * <li>externalEntity
-     * <li>readBuffer
-     * <li>readBufferPos
-     * <li>readBufferLength
-     * <li>line
-     * <li>encoding
+     * <li>sourceType</li>
+     * <li>externalEntity</li>
+     * <li>readBuffer</li>
+     * <li>readBufferPos</li>
+     * <li>readBufferLength</li>
+     * <li>line</li>
+     * <li>encoding</li>
      * </ol>
      * @param ename The name of the entity (if any) causing the new input.
      * @see #popInput
