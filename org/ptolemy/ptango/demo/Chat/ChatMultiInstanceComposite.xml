@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0000000000001, 122.49999999999983}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Chat">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 40.0]">
         </property>
@@ -186,7 +186,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 420.0]">
                 </property>
-                <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/org/ptolemy/ptango/demo/Chat/ChatServer.xml">
+                <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat/ChatServer.xml">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -559,7 +559,7 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 430.0]">
                 </property>
-                <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/org/ptolemy/ptango/demo/Chat/ChatServer.xml">
+                <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat/ChatServer.xml">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

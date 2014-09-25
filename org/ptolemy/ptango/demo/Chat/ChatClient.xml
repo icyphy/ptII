@@ -59,7 +59,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 390.0}">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/org/ptolemy/ptango/demo/Chat/ChatServer.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat/ChatServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
