@@ -463,6 +463,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/optimize/demo"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/taskpt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/demo"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/taskpt/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/doc"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/tester/tester.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tester"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/domains/tdl/tdl.jar"

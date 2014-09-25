@@ -189,6 +189,7 @@
     <include name="ptolemy/domains/sr/sr.jar" />
     <include name="ptolemy/domains/taskpt/taskpt.jar" />
     <include name="ptolemy/domains/taskpt/demo/demo.jar" />
+    <include name="ptolemy/domains/taskpt/doc/doc.jar" />
     <include name="ptolemy/domains/tdl/demo/demo.jar" />
     <include name="ptolemy/domains/tdl/tdl.jar" />
     <include name="ptolemy/domains/tester/tester.jar" />
@@ -2845,6 +2846,15 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/taskpt/demo/SharedMemory/*.xml"/>
 	<include name="ptolemy/domains/taskpt/demo/Task/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/taskpt/doc/doc.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/doc/doc.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/taskpt/doc/*.htm"/>
       </fileset>
     </jar>
 

@@ -594,6 +594,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sdf/optimize/demo/demo.jar \
 	ptolemy/domains/taskpt/taskpt.jar \
 	ptolemy/domains/taskpt/demo/demo.jar \
+	ptolemy/domains/taskpt/doc/doc.jar \
 	ptolemy/domains/tdl/tdl.jar \
 	ptolemy/domains/tdl/demo/demo.jar \
 	ptolemy/domains/tester/tester.jar \
