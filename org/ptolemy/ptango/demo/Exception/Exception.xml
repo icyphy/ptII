@@ -4,7 +4,7 @@
 <entity name="Exception" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 162, 1073, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 255, 1073, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 524]">
     </property>
@@ -25,7 +25,7 @@
         </property>
     </property>
     <property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
-        <property name="policy" class="ptolemy.data.expr.StringParameter" value="restart">
+        <property name="policy" class="ptolemy.data.expr.StringParameter" value="continue">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
@@ -39,7 +39,7 @@
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 160, 646, 420}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 263, 646, 420}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 230.0}">
@@ -64,7 +64,7 @@
     <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
         <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="__xxxx__">
         </property>
-        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="3">
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="10 + a">
         </property>
         <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;    var result = eval.call(this, '__xxxx__');&#10;    if (result == null) {&#10;      result = &quot;null&quot;;&#10;    }&#10;    send(result, output, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -91,7 +91,7 @@
         </property>
         <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="&quot;">
         </property>
-        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="3">
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="10 + a">
         </property>
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>

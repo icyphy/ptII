@@ -8,20 +8,20 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[784, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4659090909090908">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.0, 159.19087633236435}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.75, 62.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.&#10;This model catches exceptions and restarts the model.&#10;However, the user is not informed of the exception, so this isn't very useful.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.75, 32.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 65.0}">
         </property>
     </property>
     <property name="ExceptionManager" class="ptolemy.actor.lib.ExceptionManager">
@@ -29,7 +29,7 @@
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.75, 87.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 25.0}">
         </property>
         <configure>
             <entity name="" class="ptolemy.actor.lib.ExceptionManagerModel">
@@ -50,7 +50,7 @@
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={217, 160, 664, 492}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.75, 147.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 245.0}">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -64,7 +64,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.75, 197.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 295.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -91,7 +91,7 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.75, 137.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 235.0}">
         </property>
     </entity>
     <entity name="EscapeQuotes" class="ptolemy.actor.lib.string.StringReplace">
@@ -104,7 +104,7 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.75, 137.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 235.0}">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
@@ -116,7 +116,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.75, 112.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 165.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -127,18 +127,24 @@
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=65.0,y=100.0}, tail={id=&quot;SampleDelay.output&quot;,x=360.0,y=150.0}, points={0.0,90.0,0.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=65.0,y=245.0}, tail={id=&quot;SampleDelay.output&quot;,x=355.0,y=295.0}, points={0.0,235.0,0.0,295.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=65.0,y=100.0}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=225.0,y=90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=65.0,y=245.0}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=225.0,y=235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringReplace.replacement&quot;,x=375.0,y=235.0}, tail={id=&quot;EscapeQuotes.output&quot;,x=225.0,y=235.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringReplace.output&quot;,x=375.0,y=235.0}, tail={id=&quot;JavaScript.scriptIn&quot;,x=455.0,y=165.0}, points={455.0,235.0} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=355.0,y=295.0}, tail={id=&quot;JavaScript.output&quot;,x=455.0,y=165.0}, points={520.0,295.0,520.0,165.0} } }">
+        </property>
     </relation>
     <link port="InteractiveShell.input" relation="relation3"/>
     <link port="InteractiveShell.output" relation="relation5"/>
