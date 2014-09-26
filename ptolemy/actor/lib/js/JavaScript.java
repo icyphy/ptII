@@ -98,6 +98,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -146,12 +147,13 @@ import ptolemy.util.MessageHandler;
    </ul>
    <p>
    Usually, you will need to explicitly specify the types
-   of the output ports. By default, the type of an output
-   port will be greater than or equal to the  inferred  types of
-   all input ports, but often this will not be the type your
-   script produces.
+   of the output ports. Alternatively, you can enable backward
+   type inference on the enclosing model, and the types of output
+   ports will be inferred by how the data are used.
    <p>
-   You may also need to set the type of input ports. In particular,
+   You may also need to set the type of input ports. Usually, forward
+   type inference will work, and the type of the input port will be based
+   on the source of data. However,
    if the input comes from an output port whose output is undefined,
    such as JSONToToken or HttpRequestHandler, then you may want to
    enable backward type inference, and specify here the type of input
@@ -720,6 +722,21 @@ public class JavaScript extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return null, becuase the default type constraints, where output
+     *  types are greater than or equal to all input types, make no sense
+     *  for this actor. Output types need to be set explicitly or inferred
+     *  from backward type inference, and input types need to be set explicitly
+     *  or inferred from forward type inference.
+     *  @return Null.
+     */
+    @Override
+    protected Set<Inequality> _defaultTypeConstraints() {
+	return null;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
     /** Compiled JavaScript. */
@@ -1261,6 +1278,10 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
 
+            if (portWrapper == null) {
+                throw new InternalErrorException(JavaScript.this, null,
+                	"Send failed. Port argument is null.");
+            }
             Object unwrappedPort = portWrapper.unwrap();
             // The port reference will be a PortProxy in restricted mode, and a port otherwise.
             if (unwrappedPort instanceof PortProxy) {
@@ -1593,7 +1614,7 @@ public class JavaScript extends TypedAtomicActor {
             return ""; //FIXME Return empty string to suppress 'null' output. Is this the right thing to do?
         }
 
-        /** Create a Ptolemy Token from and object sent by JavaScript.
+        /** Create a Ptolemy Token from an object sent by JavaScript.
          *  @exception IllegalActionException If constructing a Ptolemy Token fails.
          */
         private Token _createToken(Object data) throws IllegalActionException {
@@ -1624,7 +1645,13 @@ public class JavaScript extends TypedAtomicActor {
                 for (int i = 0; i < length; i++) {
                     result[i] = _createToken(array.get(i));
                 }
-                return new ArrayToken(result);
+                if (result.length > 0) {
+                    return new ArrayToken(result);                    
+                } else {
+                    // Need to return an empty array. But of what element type?
+                    // FIXME: For now, return an empty array of strings.
+                    return new ArrayToken(BaseType.STRING);
+                }
             } else if (data instanceof NativeObject) {
                 // If the object has a non-empty key set, then construct
                 // a record. Otherwise, just return an ObjectToken.
