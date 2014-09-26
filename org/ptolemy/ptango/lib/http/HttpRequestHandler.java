@@ -28,6 +28,7 @@
 
 package org.ptolemy.ptango.lib.http;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -73,6 +74,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 /** An actor that handles an HTTP request by producing output
  *  and waiting for an input that provides a response.
@@ -204,6 +206,10 @@ public class HttpRequestHandler extends TypedAtomicActor
         new Parameter(parameters, "_showName").setExpression("true");
         parameters.setTypeAtMost(BaseType.RECORD);
 
+        body = new TypedIOPort(this, "body", false, true);
+        new Parameter(body, "_showName").setExpression("true");
+        body.setTypeEquals(BaseType.STRING);
+
         requestor = new TypedIOPort(this, "requestor", false, true);
         new Parameter(requestor, "_showName").setExpression("true");
         requestor.setTypeEquals(BaseType.STRING);
@@ -225,6 +231,12 @@ public class HttpRequestHandler extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** An output that sends the body of the request, or an empty string
+     *  if there isn't one. At this time, only a string body is supported,
+     *  so the type of this port is string.
+     */
+    public TypedIOPort body;
 
     /** An output that sends the cookies specified by the
      *  {@link #requestedCookies} parameter, with values
@@ -647,6 +659,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                     }
                 }
             }
+            // Send the body of the request.
+            body.send(0, new StringToken(_pendingRequest.body));
             // Send the following only if the above succeeded.
             // Otherwise, we will send two responses to this one request.
             method.send(0, new StringToken(_pendingRequest.method));
@@ -739,13 +753,6 @@ public class HttpRequestHandler extends TypedAtomicActor
             _newRequest.requestURI = request.getRequestURI();
             _newRequest.method = type;
 
-            // Set up a buffer for the output so we can set the length of
-            // the response, thereby enabling persistent connections
-            // http://docstore.mik.ua/orelly/java-ent/servlet/ch05_03.htm
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            PrintWriter writer = new PrintWriter(bytes, true);// true forces
-            // flushing
-
             if (_debugging) {
                 _debug("**** Handling a " + type
                         + " request to URI " + _newRequest.requestURI);
@@ -766,6 +773,9 @@ public class HttpRequestHandler extends TypedAtomicActor
                 // Note that each parameter name may have more than one value,
                 // hence the array of strings.
                 _newRequest.parameters = _readParameters(request);
+                
+                // Read the body of the request. This may be an empty string.
+                _newRequest.body = _readBody(request);
 
                 // Figure out what time to request a firing for.
                 long elapsedRealTime = System.currentTimeMillis()
@@ -789,8 +799,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                 getDirector().fireAt(HttpRequestHandler.this, timeOfRequest);
             } catch (IllegalActionException e) {
                 _newRequest = null;
-                _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
-                        e.getMessage(), bytes, writer);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
                 return;
             }
             //////////////////////////////////////////////////////
@@ -828,7 +837,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                     HttpRequestHandler.this.wait(timeoutValue);
                     if (_response == null
                 	    && System.currentTimeMillis() - startTime >= timeoutValue) {
-                	// A timeout has occured, and there is still no _reponse.
+                	// A timeout has occurred, and there is still no _reponse.
                 	// This means that the second firing never occurred, so no
                 	// response data have been provided.
                         if (_debugging) {
@@ -846,15 +855,6 @@ public class HttpRequestHandler extends TypedAtomicActor
                         // its response data are not sent.
                         _pendingRequest = null;
 
-                        // Close the PrintWriter
-                        // Close the ByteArrayOutputStream to avoid a
-                        // warning, though this is not necessary since
-                        // ByteArrayOutputStream's close() method has no
-                        // effect
-                        // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-                        writer.close();
-                        bytes.close();
-
                         return;
                     }
                 } catch (InterruptedException e) {
@@ -869,15 +869,6 @@ public class HttpRequestHandler extends TypedAtomicActor
                     _pendingRequest = null;
                     _response = null;
 
-                    // Close the PrintWriter
-                    // Close the ByteArrayOutputStream to avoid a
-                    // warning, though this is not necessary since
-                    // ByteArrayOutputStream's close() method has no
-                    // effect
-                    // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-                    writer.close();
-                    bytes.close();
-                    
                     return;
                 }
             }
@@ -908,6 +899,12 @@ public class HttpRequestHandler extends TypedAtomicActor
                         + _response.response);
             }
 
+            // Set up a buffer for the output so we can set the length of
+            // the response, thereby enabling persistent connections
+            // http://docstore.mik.ua/orelly/java-ent/servlet/ch05_03.htm
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            PrintWriter writer = new PrintWriter(bytes, true); // true forces flushing.
+
             // Set the content length (enables persistent
             // connections) and send the buffer
             // Use print rather than println to prevent an extra \n on the response.
@@ -929,6 +926,26 @@ public class HttpRequestHandler extends TypedAtomicActor
             // Indicate response has been handled.
             _response = null;
         }
+    }
+
+
+    /** Read the body information from the HttpServletRequest, which at this time
+     *  is constrained to be a string.
+     *  @param request  The HttpServletRequest to read header information from.
+     *  @return A string containing the body.
+     *  @exception IllegalActionException If construction of the record token fails.
+     *  @throws IOException 
+     */
+    protected String _readBody(HttpServletRequest request)
+            throws IllegalActionException, IOException {
+	BufferedReader reader = request.getReader();
+	StringBuffer result = new StringBuffer();
+	String line = reader.readLine();
+	while (line != null) {
+	    result.append(line);
+	    result.append(StringUtilities.LINE_SEPARATOR);
+	}
+        return result.toString();
     }
 
     /** Read the Cookies from the HttpServletRequest, construct
@@ -1089,41 +1106,6 @@ public class HttpRequestHandler extends TypedAtomicActor
                 response.addCookie(cookie);
             }
         }
-    }
-
-    /** Write an error message to the given HttpServletResponse.
-     *  @param response The HttpServletResponse to write the message to.
-     *  @param responseCode The HTTP response code for the message.  Should be
-     *   one of HttpServletResponse.X
-     *  @param message The error message to write.
-     *  @exception IOException If the write fails.
-     */
-    protected void _writeError(HttpServletResponse response,
-            int responseCode, String message, ByteArrayOutputStream bytes,
-            PrintWriter writer) throws IOException {
-
-        response.setContentType("text/html");
-        response.setStatus(responseCode);
-
-        writer.println("<!DOCTYPE html>");
-        writer.println("<html>");
-        writer.println("<body>");
-        writer.println("<h1> Error </h1>");
-        writer.println(message);
-        writer.println("</body>");
-        writer.println("</html>");
-
-        response.setContentLength(bytes.size());
-        bytes.writeTo(response.getOutputStream());
-
-        // Close the PrintWriter
-        // Close the ByteArrayOutputStream to avoid a
-        // warning, though this is not necessary since
-        // ByteArrayOutputStream's close() method has no
-        // effect
-        // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-        writer.close();
-        bytes.close();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -1397,6 +1379,9 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  HTTP request.
      */
     protected static class HttpRequestItems {
+	/** The body of the request. Only strings are supported for now. */
+	public String body;
+	
         /** Cookies associated with the request. */
         public RecordToken cookies;
 
