@@ -414,10 +414,9 @@ public class WebServerUtilities {
         servletHandler.setContextPath(appInfo.getApplicationPath().toString());
 
         for (URI servletPath : appInfo.getServletInfo().keySet()) {
-            servletHandler
-                    .addServlet(
-                            new ServletHolder(appInfo.getServletInfo().get(
-                                    servletPath)), servletPath.toString());
+            servletHandler.addServlet(
+        	    new ServletHolder(appInfo.getServletInfo().get(
+        		    servletPath)), servletPath.toString());
         }
 
         ((ContextHandlerCollection) _server.getHandler())
