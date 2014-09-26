@@ -7,10 +7,10 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 45.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 193, 1274, 761}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 135, 1274, 761}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1040, 651]">
     </property>
@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{403.62318840579707, 257.7888870018116}">
     </property>
     <entity name="Dictionary2" class="ptolemy.actor.lib.Dictionary">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 260.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -27,56 +27,77 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 270.0}">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 165}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 170.0}">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[179.375, 211.45751953125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 280.0}">
         </property>
     </entity>
     <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 170.0}">
         </property>
     </entity>
     <entity name="Sequence3" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{{1,2}, {1,2}, {1,2,3}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 110.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{&quot;2&quot;}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 340.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[415.0, 235.0]">
+        <vertex name="vertex1" value="{440.0, 270.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=500.0,y=270.0}, tail={id=&quot;relation4.vertex1&quot;,x=440.0,y=270.0}, points={} },{ head={id=&quot;Dictionary2.resultArray&quot;,x=360.0,y=260.0}, tail={id=&quot;relation4.vertex1&quot;,x=440.0,y=270.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.writeKey&quot;,x=360.0,y=260.0}, tail={id=&quot;Sequence.output&quot;,x=200.0,y=280.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{125.0, 190.0}">
+        <vertex name="vertex1" value="{150.0, 170.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sequence2.enable&quot;,x=200.0,y=170.0}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=170.0}, points={} },{ head={id=&quot;DiscreteClock.output&quot;,x=70.0,y=170.0}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=170.0}, points={} },{ head={id=&quot;Sequence.enable&quot;,x=200.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=170.0}, points={150.0,280.0} },{ head={id=&quot;Sequence3.enable&quot;,x=200.0,y=110.0}, tail={id=&quot;relation3.vertex1&quot;,x=150.0,y=170.0}, points={150.0,110.0} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.value&quot;,x=360.0,y=260.0}, tail={id=&quot;Sequence2.output&quot;,x=200.0,y=170.0}, points={250.0,270.0,250.0,170.0} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.readKeyArray&quot;,x=360.0,y=260.0}, tail={id=&quot;Sequence3.output&quot;,x=200.0,y=110.0}, points={265.0,250.0,265.0,110.0} } }">
+        </property>
     </relation>
-    <link port="Dictionary2.value" relation="relation"/>
-    <link port="Dictionary2.writeKey" relation="relation2"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Dictionary2.readKeyArray" relation="relation5"/>
     <link port="Dictionary2.resultArray" relation="relation4"/>
+    <link port="Dictionary2.value" relation="relation"/>
+    <link port="Dictionary2.writeKey" relation="relation2"/>
+    <link port="Dictionary2.notFound" relation="relation6"/>
     <link port="Test.input" relation="relation4"/>
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="Sequence.enable" relation="relation3"/>
@@ -85,4 +106,5 @@
     <link port="Sequence2.output" relation="relation"/>
     <link port="Sequence3.enable" relation="relation3"/>
     <link port="Sequence3.output" relation="relation5"/>
+    <link port="Test2.input" relation="relation6"/>
 </entity>

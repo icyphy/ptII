@@ -31,6 +31,7 @@ package ptolemy.actor.lib;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -118,11 +119,15 @@ public class Dictionary extends TypedAtomicActor {
         writeKey.setTypeEquals(BaseType.STRING);
         new SingletonParameter(writeKey, "_showName").setExpression("true");
 
+        notFound = new TypedIOPort(this, "notFound", false, true);
+        new SingletonParameter(notFound, "_showName").setExpression("true");
+
         // Set the type constraints.
         keys.setTypeAtLeast(ArrayType.arrayOf(writeKey));
         readKeyArray.setTypeAtLeast(ArrayType.arrayOf(readKey));
         result.setTypeSameAs(value);
         resultArray.setTypeAtLeast(ArrayType.arrayOf(value));
+        notFound.setTypeEquals(new ArrayType(BaseType.STRING));
 
         _store = new HashMap<String, Token>();
 
@@ -146,6 +151,8 @@ public class Dictionary extends TypedAtomicActor {
     /** Upon receiving any token at the triggerKeys port, this actor
      *  will produce on this output an array containing all the keys
      *  of entries in the dictionary. The order is arbitrary.
+     *  If there are no entries in the dictionary, then send an
+     *  empty array.
      *  The type is array of string.
      */
     public TypedIOPort keys;
@@ -190,6 +197,13 @@ public class Dictionary extends TypedAtomicActor {
      */
     public FileParameter loggingDirectory;
 
+    /** An output listing one or more keys that were
+     *  requested but not found in the dictionary.
+     *  The output is produced only if a key is not
+     *  found. The output type is an array of strings.
+     */
+    public TypedIOPort notFound;
+
     /** An input that provides a key for a value to be read from the
      *  dictionary.  If the dictionary does not contain any value
      *  corresponding to this key, then the output will be a nil
@@ -209,12 +223,19 @@ public class Dictionary extends TypedAtomicActor {
     public TypedIOPort readKeyArray;
 
     /** An output providing the result of a single reading of the
-     *  dictionary via the readKey input port.
+     *  dictionary via the readKey input port. If the specified key
+     *  is not found, this port will produce a nil token, and an
+     *  array of length one with the key will be produced on the
+     *  {@link #notFound} output port.
      */
     public TypedIOPort result;
 
     /** An output providing the result of a multiple reading of the
-     *  dictionary via the readKeyArray input port.
+     *  dictionary via the readKeyArray input port. For any of the
+     *  keys in the {@link #readKeyArray} input is not in the dictionary,
+     *  there will be a nil token in the result array in the position
+     *  of the missing key. The missing keys will be produced on the
+     *  notFound output.
      */
     public TypedIOPort resultArray;
 
@@ -335,7 +356,12 @@ public class Dictionary extends TypedAtomicActor {
                     _debug("Retrieved key, value: " + theKey + ", " + theResult);
                 }
             } else {
+        	// Sending nil on the output enables use of this actor in SDF, since
+        	// every input will trigger an output.
                 result.send(0, Token.NIL);
+                StringToken[] theKeys = new StringToken[1];
+                theKeys[0] = theKey;
+                notFound.send(0, new ArrayToken(theKeys));
                 if (_debugging) {
                     _debug("Requested key with no value: " + theKey);
                 }
@@ -344,15 +370,31 @@ public class Dictionary extends TypedAtomicActor {
         if (readKeyArray.getWidth() > 0 && readKeyArray.hasToken(0)) {
             ArrayToken theKeys = (ArrayToken) readKeyArray.get(0);
             Token[] theResult = new Token[theKeys.length()];
+            ArrayList<StringToken> keysNotFound = new ArrayList<StringToken>();
             int i = 0;
             for (Token theKey : theKeys.arrayValue()) {
-                theResult[i] = _store.get(((StringToken) theKey).stringValue());
+        	String theKeyAsString = ((StringToken) theKey).stringValue();
+                theResult[i] = _store.get(theKeyAsString);
                 if (theResult[i] == null) {
                     theResult[i] = Token.NIL;
+                    keysNotFound.add(new StringToken(theKeyAsString));
                 }
                 i++;
             }
-            resultArray.send(0, new ArrayToken(value.getType(), theResult));
+            ArrayToken resultToken = new ArrayToken(value.getType(), theResult);
+            if (_debugging) {
+                _debug("Retrieved keys, values: " + theKeys + ", " + resultToken);
+            }
+            resultArray.send(0, resultToken);
+            if (keysNotFound.size() > 0) {
+        	ArrayToken notFoundToken = new ArrayToken(
+        		BaseType.STRING,
+        		keysNotFound.toArray(new StringToken[keysNotFound.size()]));
+        	notFound.send(0, notFoundToken);
+                if (_debugging) {
+                    _debug("Keys with no value: " + notFoundToken);
+                }
+            }
         }
         if (triggerKeys.getWidth() > 0 && triggerKeys.hasToken(0)) {
             // Must consume the trigger, or DE will fire me again.
@@ -363,7 +405,12 @@ public class Dictionary extends TypedAtomicActor {
                 result[i] = new StringToken(label);
                 i++;
             }
-            keys.send(0, new ArrayToken(result));
+            if (result.length > 0) {
+        	keys.send(0, new ArrayToken(result));
+            } else {
+        	// Send an empty array.
+        	keys.send(0, new ArrayToken(BaseType.STRING));
+            }
         }
     }
 

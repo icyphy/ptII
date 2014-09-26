@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 45.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 193, 934, 634}, maximized=false}">
@@ -19,23 +19,23 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="Dictionary2" class="ptolemy.actor.lib.Dictionary">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 265.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;foo&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 185.0}">
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 285.0}">
         </property>
     </entity>
     <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 120.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -43,21 +43,29 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 255.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.value&quot;,x=215.0,y=265.0}, tail={id=&quot;SingleEvent.output&quot;,x=55.0,y=185.0}, points={105.0,275.0,105.0,185.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.writeKey&quot;,x=215.0,y=265.0}, tail={id=&quot;SingleEvent2.output&quot;,x=50.0,y=285.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.readKey&quot;,x=215.0,y=265.0}, tail={id=&quot;SingleEvent3.output&quot;,x=50.0,y=120.0}, points={120.0,245.0,120.0,120.0} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.result&quot;,x=215.0,y=265.0}, tail={id=&quot;Test.input&quot;,x=345.0,y=255.0}, points={} } }">
+        </property>
     </relation>
-    <link port="Dictionary2.value" relation="relation"/>
-    <link port="Dictionary2.writeKey" relation="relation2"/>
     <link port="Dictionary2.readKey" relation="relation3"/>
     <link port="Dictionary2.result" relation="relation4"/>
+    <link port="Dictionary2.value" relation="relation"/>
+    <link port="Dictionary2.writeKey" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="SingleEvent2.output" relation="relation2"/>
     <link port="SingleEvent3.output" relation="relation3"/>

@@ -7,33 +7,33 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 45.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 22, 1483, 920}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1249, 810]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.2714408478945862">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.734375, 193.28131778399919}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.26901735270377, 183.15558634735672}">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{365, 45}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 30.0}">
         </property>
     </property>
     <entity name="Dictionary2" class="ptolemy.actor.lib.Dictionary">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 265.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;foo&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 185.0}">
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 285.0}">
         </property>
     </entity>
     <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
@@ -41,7 +41,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 120.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -49,21 +49,29 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 255.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.value&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent.output&quot;,x=55.0,y=185.0}, points={105.0,275.0,105.0,185.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.writeKey&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent2.output&quot;,x=50.0,y=285.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.readKey&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent3.output&quot;,x=50.0,y=120.0}, points={120.0,245.0,120.0,120.0} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.result&quot;,x=260.0,y=265.0}, tail={id=&quot;Test.input&quot;,x=455.0,y=255.0}, points={} } }">
+        </property>
     </relation>
-    <link port="Dictionary2.value" relation="relation"/>
-    <link port="Dictionary2.writeKey" relation="relation2"/>
     <link port="Dictionary2.readKey" relation="relation3"/>
     <link port="Dictionary2.result" relation="relation4"/>
+    <link port="Dictionary2.value" relation="relation"/>
+    <link port="Dictionary2.writeKey" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="SingleEvent2.output" relation="relation2"/>
     <link port="SingleEvent3.output" relation="relation3"/>
