@@ -32,7 +32,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,10 +51,14 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.CatchExceptionAttribute;
 import ptolemy.actor.lib.ExceptionSubscriber;
 import ptolemy.actor.lib.MicrostepDelay;
+import ptolemy.actor.lib.RecordDisassembler;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.io.FileReader;
+import ptolemy.actor.lib.js.JavaScript;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -114,8 +120,29 @@ import ptolemy.kernel.util.Workspace;
  *  {@link FileReader} actor to read the response from a local
  *  file and a {@link MicrostepDelay} downstream in a feedback
  *  loop connected back to the response input.
+ *  <p>
+ *  Some of the output ports ({@link #parameters} and {@link #headers})
+ *  produce records and constrain their output type to be less than
+ *  or equal to an empty record. This does not, however, provide
+ *  enough information for type inference. If the downstream model
+ *  that receives these records <i>requires</i> particular fields
+ *  in the record, then putting a {@link RecordDisassembler} actor downstream
+ *  to extract the field, and enabling backward type inference at the top
+ *  level of the model will result in a constraint on this port that the
+ *  record contain the specified field.  A malformed URL that does
+ *  not contain the specified record fields will result in a response
+ *  400 Bad Request, meaning "the request could not be understood
+ *  by the server due to malformed syntax.
+ *  The client SHOULD NOT repeat the request without modifications."
+ *  If the downstream model does not require
+ *  any particular fields, but will rather examine any fields that
+ *  are provided, for example in a {@link JavaScript} actor, then
+ *  you can declare the output ports of this actor to be of type "record",
+ *  or you can declare the input port of the downstream actor to be
+ *  of type "record" and enable backward type inference. In this case,
+ *  any fields that are provided will be passed downstream as a record.
  *
- *  @author Elizabeth Latronico and Edward A. Lee
+ *  @author Elizabeth Latronico, Edward A. Lee, and Marten Lohstroh
  *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ltrnc)
@@ -139,9 +166,23 @@ public class HttpRequestHandler extends TypedAtomicActor
         path.setExpression("/*");
 
         ///////////////// Input Ports
-        response = new TypedIOPort(this, "response", true, false);
-        response.setTypeEquals(BaseType.STRING);
-        new Parameter(response, "_showName").setExpression("true");
+        responseBody = new TypedIOPort(this, "responseBody", true, false);
+        responseBody.setTypeEquals(BaseType.STRING);
+        new Parameter(responseBody, "_showName").setExpression("true");
+
+        responseCode = new TypedIOPort(this, "responseCode", true, false);
+        responseCode.setTypeEquals(BaseType.INT);
+        new Parameter(responseCode, "_showName").setExpression("true");
+        
+        responseContentType = new PortParameter(this, "responseContentType");
+        responseContentType.setTypeEquals(BaseType.STRING);
+        responseContentType.setStringMode(true);
+        responseContentType.setExpression("text/html");
+        new Parameter(responseContentType.getPort(), "_showName").setExpression("true");
+
+        responseHeaders = new PortParameter(this, "responseHeaders");
+        responseHeaders.setTypeEquals(BaseType.RECORD);
+        new Parameter(responseHeaders.getPort(), "_showName").setExpression("true");
 
         setCookies = new TypedIOPort(this, "setCookies", true, false);
         new Parameter(setCookies, "_showName").setExpression("true");
@@ -156,9 +197,17 @@ public class HttpRequestHandler extends TypedAtomicActor
         uri.setTypeEquals(BaseType.STRING);
         new Parameter(uri, "_showName").setExpression("true");
 
+        headers = new TypedIOPort(this, "headers", false, true);
+        new Parameter(headers, "_showName").setExpression("true");
+        headers.setTypeAtMost(BaseType.RECORD);
+
         parameters = new TypedIOPort(this, "parameters", false, true);
         new Parameter(parameters, "_showName").setExpression("true");
         parameters.setTypeAtMost(BaseType.RECORD);
+
+        requestor = new TypedIOPort(this, "requestor", false, true);
+        new Parameter(requestor, "_showName").setExpression("true");
+        requestor.setTypeEquals(BaseType.STRING);
 
         cookies = new TypedIOPort(this, "cookies", false, true);
         new Parameter(cookies, "_showName").setExpression("true");
@@ -188,19 +237,41 @@ public class HttpRequestHandler extends TypedAtomicActor
      */
     public TypedIOPort cookies;
 
+    /** The header information of an HTTP request as a record.
+     *  Standard message header field names are given at
+     *  {@link http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers}
+     *  (see also {@link http://en.wikipedia.org/wiki/List_of_HTTP_header_fields}).
+     *  Common header fields include
+     *  <ul>
+     *  <li> "Accept", which designates what Content-Type
+     *  for responses are acceptable, and might have value, for example, "text/html".
+     *  <li> "Content-Type", which designates the content type of the body of the request
+     *  (for POST and PUT requests that include a body).
+     *  <li> "Date", the date and time that the request was sent, in HTTP-date format.
+     *  <li> "Host", the domain name (and port) of the server to which the request is sent.
+     *  <li> "User-Agent", a string identifying the originator of the request (see
+     *  {@link en.wikipedia.org/wiki/User_agent}).
+     *  </ul>
+     *  See the class comments for type constraints
+     *  on output ports that produce records. 
+     */
+    public TypedIOPort headers;
+
     /** An output port that sends a string indicating the method of
      *  the HTTP request, including at least the possibilities "GET"
      *  and "POST".
      */
     public TypedIOPort method;
 
-    /** An output port that sends parameters included in a get request.
+    /** An output port that sends a record detailing any
+     *  parameters included in an HTTP request.
      *  These are values appended to the URL in the form
      *  of ...?name=value. The output will be a record with
      *  one field for each name. If the request assigns multiple
      *  values to the same name, then the field value of the record
      *  will be an array of strings. Otherwise, it will simply
-     *  be a string.
+     *  be a string. See the class comments for type constraints
+     *  on output ports that produce records.
      */
     public TypedIOPort parameters;
 
@@ -225,19 +296,59 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  port. This is an array of strings that defaults to an empty array.
      */
     public Parameter requestedCookies;
+    
+    /** Output port that produces the name or IP address of the
+     *  client or the last proxy that sent the request.
+     *  This is a string.
+     */
+    public TypedIOPort requestor;
 
     /** An input port on which to provide the
-     *  response to issue to an HTTP request. When this input port
+     *  response body to issue to an HTTP request. When this input port
      *  receives an event, if there is a pending request from
      *  a web server, then that pending request responds with the
-     *  value of the input. Otherwise, the response is recorded,
-     *  and the next request received will be given the response.
+     *  value of the input. Otherwise, the response is discarded.
      */
-    public TypedIOPort response;
+    public TypedIOPort responseBody;
+
+    /** An input port on which to provide the
+     *  response code to issue to an HTTP request. When this input port
+     *  receives an event, if there is a pending request from
+     *  a web server, then that pending request will receive
+     *  the specified code as a response. If there is no code
+     *  provided, but a response has been provided on the
+     *  {@link #responseBody} input port, then the response code
+     *  will be 200 (OK). Standard response codes are described at
+     *  {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}.
+     *  This port has type int.
+     */
+    public TypedIOPort responseCode;
+
+    /** The content type of the response.
+     *  This is a string with default value "text/html",
+     *  which specifies that the content type of the response is text in HTML format.
+     *  Valid alternatives include "text/plain", "text/csv", "text/xml", "application/javascript",
+     *  "application/json", and many others.
+     *  Standard content types are described at
+     *  {@link http://en.wikipedia.org/wiki/Internet_media_type}.
+     */
+    public PortParameter responseContentType;
+
+    /** The header data to include in the response.
+     *  This is a record containing any number of fields.
+     *  The string value of each field will be the value of the header.
+     *  By default, it contains an empty record, which means that the only header
+     *  information provided in the response will be Content-Type as given by
+     *  {@link #responseContentType}.
+     *  Standard message header field names are given at
+     *  {@link http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers}
+     *  (see also {@link http://en.wikipedia.org/wiki/List_of_HTTP_header_fields}).
+     */
+    public PortParameter responseHeaders;
 
     /** An input on which to provide new cookies and/or new cookie values.
-     *  These will be set in the HttpResponse received on the {@link #response}
-     *  input in the same firing, or if there is no token on the response
+     *  These will be set in the response when data is received on the {@link #responseBody}
+     *  input in the same firing, or if there is no token on the responseBody
      *  input, will be treated as cookies accompanying an empty string response.
      *  This has type record.
      */
@@ -248,6 +359,8 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  the input ports. This is a long that defaults to 30,000.
      *  If this time expires before an input is received, then this actor
      *  will issue a generic timeout response to the HTTP request.
+     *  If this actor later receives a response, and there is no pending
+     *  request, it will discard that response.
      */
     public Parameter timeout;
 
@@ -323,14 +436,12 @@ public class HttpRequestHandler extends TypedAtomicActor
     /** Generate an HTTP response for the client if an exception occurs.  No
      *  response will be received on the input port in the event of an
      *  exception.
-     *
      *  @param policy The exception handling policy of the exception handler;
      *   see {@link CatchExceptionAttribute}
      *  @param exception  The exception that occurred
      *  @return True since a response is always sent to the client, and there
      *    there are no operations that throw exceptions
      */
-
     @Override
     public synchronized boolean exceptionOccurred(String policy, 
             Throwable exception) {
@@ -347,7 +458,6 @@ public class HttpRequestHandler extends TypedAtomicActor
                 _respondWithServerErrorMessage();
             }
         }
-
         return true;
     }
 
@@ -378,10 +488,9 @@ public class HttpRequestHandler extends TypedAtomicActor
         return new ActorServlet();
     }
 
-    /** If there are input tokens on the {@link #response} or
-     *  {@link #setCookies} ports, then queue a response to be
-     *  sent by the servelet for a corresponding request.
-     *  If the servlet has received
+    /** If there are input tokens on the {@link #responseBody},
+     *  {@link #setCookies}, or {@link #responseCode} ports and there is a pending
+     *  request, then send a response. Otherwise, if the servlet has received
      *  an HTTP request, then also produce on the output ports
      *  the details of the request.
      *  If there is an HTTP request, but the current superdense time
@@ -420,17 +529,32 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
         }
 
-        for (int i = 0; i < response.getWidth(); i++) {
-            if (response.hasToken(i)) {
-                responseData.response = ((StringToken) response.get(i))
-                        .stringValue();
-                responseFound = true;
-                if (_debugging) {
-                    _debug("Received response on the response input port: "
-                            + responseData.response);
-                }
+        // Handle the response data.
+        if (responseBody.hasToken(0)) {
+            responseData.response = ((StringToken) responseBody.get(0)).stringValue();
+            responseFound = true;
+            if (_debugging) {
+        	_debug("Received response on the response input port: "
+        		+ responseData.response);
             }
         }
+        // Handle the code input.
+        if (responseCode.getWidth() > 0 && responseCode.hasToken(0)) {
+            responseData.statusCode = ((IntToken) responseCode.get(0)).intValue();
+            responseFound = true;
+            if (_debugging) {
+        	_debug("Received response code: "
+        		+ responseData.statusCode);
+            }
+        }
+        // Handle the responseContentType input.
+        responseContentType.update();
+        responseData.contentType = ((StringToken) responseContentType.getToken()).stringValue();
+        
+        // Handle the responseHeaders input.
+        responseHeaders.update();
+        responseData.headers = (RecordToken)responseHeaders.getToken();
+        
         if (responseFound) {
             if (_request == null) {
                 // There is no pending request, so ignore the response.
@@ -469,40 +593,63 @@ public class HttpRequestHandler extends TypedAtomicActor
                 _lastOutputTime = currentTime;
             }
 
-            // Remove the request from the head of the queue so that
-            // each request is handled no more than once.
             if (_debugging) {
             	_debug("Sending request method: " + _request.method);
             	_debug("Sending request URI: " + _request.requestURI);
-            	_debug("Sending request parameters: " + _request.parameters);
+            }
+            // Produce header output.
+            if (_request.headers != null && _request.headers.length() > 0) {
+                if (!headers.sinkPortList().isEmpty()) {
+                    if (_debugging) {
+                	_debug("Sending request header: " + _request.headers);
+                    }
+                    try {
+                	headers.send(0, _request.headers);
+                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                	// Parameters provided do not match the required type.
+                	// Construct an appropriate response.
+                	_respondWithBadRequestMessage(_request.headers,
+                		headers.getType(), "header");
+                	return;
+                    }
+                }
+            }
+            // Produce requestor output.
+            if (_request.requestor != null && _request.requestor.length() > 0) {
+        	if (_debugging) {
+        	    _debug("Sending requestor identification: " + _request.requestor);
+        	}
+        	requestor.send(0, new StringToken(_request.requestor));
             }
             if (!parameters.sinkPortList().isEmpty()) {
+                if (_debugging) {
+                	_debug("Sending request parameters: " + _request.parameters);
+                }
             	// Send parameters, but handle type errors locally.
             	try {
-            		parameters.send(0, _request.parameters);
+            	    parameters.send(0, _request.parameters);
             	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
-            		// Parameters provided do not match the required type.
-            		// Construct an appropriate response.
-            		_respondWithBadRequestMessage(_request.parameters,
-            				parameters.getType(), "parameters");
-            		return;
+            	    // Parameters provided do not match the required type.
+            	    // Construct an appropriate response.
+            	    _respondWithBadRequestMessage(_request.parameters,
+            		    parameters.getType(), "parameters");
+            	    return;
             	}
             }
             if (_request.cookies != null && _request.cookies.length() > 0) {
-            	if (_debugging) {
-            		_debug("Sending cookies to getCookies port: "
-            				+ _request.cookies);
-            	}
                 if (!cookies.sinkPortList().isEmpty()) {
-                	try {
-                		cookies.send(0, _request.cookies);
-                	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                		// Parameters provided do not match the required type.
-                		// Construct an appropriate response.
-                		_respondWithBadRequestMessage(_request.cookies,
-                				cookies.getType(), "cookies");
-                		return;
-                	}
+                    if (_debugging) {
+                	_debug("Sending request cookies: " + _request.cookies);
+                    }
+                    try {
+                	cookies.send(0, _request.cookies);
+                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                	// Parameters provided do not match the required type.
+                	// Construct an appropriate response.
+                	_respondWithBadRequestMessage(_request.cookies,
+                		cookies.getType(), "cookies");
+                	return;
+                    }
                 }
             }
             // Send the following only if the above succeeded.
@@ -573,16 +720,20 @@ public class HttpRequestHandler extends TypedAtomicActor
     protected void _handleRequest(HttpServletRequest request,
             HttpServletResponse response, String type)
             throws ServletException, IOException {
-        // The following codeblock is synchronized on the enclosing
+        // The following code block is synchronized on the enclosing
         // actor. This lock _is_ released while waiting for the response,
         // allowing the fire method to execute its own synchronized blocks.
         synchronized (HttpRequestHandler.this) {
+            // FIXME: What if there is already a pending _request?
+            // This will simply overwrite it. For now, print a warning to standard error.
+            if (_request != null) {
+        	System.err.println(getFullName()
+        		+ ": WARNING. Discarding HTTP request to which there has been no response.");
+            }
             _request = new HttpRequestItems();
 
             _request.requestURI = request.getRequestURI();
             _request.method = type;
-
-            response.setContentType("text/html");
 
             // Set up a buffer for the output so we can set the length of
             // the response, thereby enabling persistent connections
@@ -599,6 +750,12 @@ public class HttpRequestHandler extends TypedAtomicActor
             try {
                 // Read cookies from the request and store.
                 _request.cookies = _readCookies(request);
+
+                // Read header information from the request and store.
+                _request.headers = _readHeaders(request);
+                
+                // Get the name or IP address of the requestor.
+                _request.requestor = request.getRemoteHost();
 
                 // Get the parameters that have been either posted or included
                 // as assignments in a get using the URL syntax ...?name=value.
@@ -633,7 +790,7 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
             //////////////////////////////////////////////////////
             // Wait for a response.
-            // We are assuming every request gets exactly one response in FIFO order.
+            // We are assuming every request gets exactly one response.
             while (_response == null) {
                 if (_debugging) {
                     _debug("**** Waiting for a response");
@@ -650,6 +807,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                     } catch (IllegalActionException e) {
                         // Ignore and use default of 30 seconds.
                     }
+                    // FIXME: What if while waiting, another request comes in?
+                    // _request will get overwritten.
                     HttpRequestHandler.this.wait(timeoutValue);
                     if (System.currentTimeMillis() - startTime >= timeoutValue) {
                         if (_debugging) {
@@ -660,6 +819,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                         // connections) and send the buffer
                         writer.println("Request timed out");
                         response.setContentLength(bytes.size());
+                        response.setContentType("text/plain");
                         bytes.writeTo(response.getOutputStream());
 
                         // Indicate that there is no longer a pending request or response.
@@ -686,6 +846,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                     // Set the content length (enables persistent
                     // connections) and send the buffer
                     writer.println("Get request thread interrupted");
+                    response.setContentType("text/plain");
                     response.setContentLength(bytes.size());
                     bytes.writeTo(response.getOutputStream());
 
@@ -707,6 +868,19 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
 
             response.setStatus(_response.statusCode);
+            response.setContentType(_response.contentType);
+            
+            // Write all the headers to the response.
+            if (_response.headers != null) {
+        	for (String name : _response.headers.labelSet()) {
+        	    Token token = _response.headers.get(name);
+        	    if (token instanceof StringToken) {
+        		response.addHeader(name, ((StringToken)token).stringValue());
+        	    } else if (token != null) {
+        		response.addHeader(name, token.toString());
+        	    }
+        	}
+            }
 
             // Write all cookies to the response, if there are some new
             // cookies to write
@@ -777,6 +951,42 @@ public class HttpRequestHandler extends TypedAtomicActor
                     map.put(label, new StringToken(cookie.getValue()));
                 }
             }
+        }
+        return new RecordToken(map);
+    }
+
+    /** Read the header information from the HttpServletRequest, construct
+     *  a record token with one field for each header name. If a header name
+     *  has just one value, the field value will be a string. Otherwise,
+     *  it will be an array of strings.
+     *  @param request  The HttpServletRequest to read header information from.
+     *  @return A record of header fields.
+     *  @exception IllegalActionException If construction of the record token fails.
+     */
+    protected RecordToken _readHeaders(HttpServletRequest request)
+            throws IllegalActionException {
+        LinkedHashMap<String, Token> map = new LinkedHashMap<String, Token>();
+	Enumeration<String> names = request.getHeaderNames();
+	while (names.hasMoreElements()) {
+	    String name = names.nextElement();
+	    LinkedList<StringToken> valueList = new LinkedList<StringToken>();
+	    Enumeration<String> values = request.getHeaders(name);
+	    while (values.hasMoreElements()) {
+		valueList.add(new StringToken(values.nextElement()));
+	    }
+	    if (valueList.isEmpty()) {
+		// Do not include empty headers.
+		continue;
+	    }
+	    if (valueList.size() == 1) {
+		map.put(name, valueList.get(0));
+	    } else {
+		map.put(name, new ArrayToken(valueList.toArray(new StringToken[valueList.size()])));
+	    }
+	}
+        if (map.isEmpty()) {
+            // Return an empty record.
+            return RecordToken.EMPTY_RECORD;
         }
         return new RecordToken(map);
     }
@@ -924,7 +1134,7 @@ public class HttpRequestHandler extends TypedAtomicActor
     }
 
     /** Issue a response to the current request indicating malformed syntax.
-     *  According to: www.w3.org/Protocols/rfc2616/rfc2616-sec10.html,
+     *  According to: {@link www.w3.org/Protocols/rfc2616/rfc2616-sec10.html},
      *  the correct response is
      *  10.4.1 400 Bad Request, "The request could not be understood
      *  by the server due to malformed syntax.
@@ -959,7 +1169,7 @@ public class HttpRequestHandler extends TypedAtomicActor
 
     /** Issue a response indicating a server error and the intent to retry.
      *  The Javascript on the response page will invoke the
-     *
+     *  FIXME: Incomplete... What does this do?
      *  @param timeout The time to wait, in seconds
      */
     private void _respondWithRetryMessage(int timeout) {
@@ -1170,11 +1380,17 @@ public class HttpRequestHandler extends TypedAtomicActor
         /** Cookies associated with the request. */
         public RecordToken cookies;
 
+        /** Header fields associated with the request. */
+        public RecordToken headers;
+
         /** Parameters received in a get or post. */
         public RecordToken parameters;
 
         /** The type of request (the method). */
         public String method;
+        
+        /** The name or IP address of the originator of the request (or proxy). */
+        public String requestor;
 
         /** The URI issued in the get request. */
         public String requestURI;
@@ -1187,6 +1403,9 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  HTTP response.
      */
     protected static class HttpResponseItems {
+	/** The content type of the response. This defaults to "text/html". */
+	public String contentType;
+	
         /** All cookies from the setCookies port plus the Cookies from the
          *  HttpRequest.  Values provided on the setCookies port override values
          *  from the HttpRequest for cookies with the same name.  (I.e., the model
@@ -1202,6 +1421,9 @@ public class HttpRequestHandler extends TypedAtomicActor
          *  HttpServletResponse, but it would be inefficient.
          */
         public boolean hasNewCookies;
+        
+        /** Headers to include in the response, if any. */
+        public RecordToken headers;
 
         /** The text of the response. */
         public String response;
