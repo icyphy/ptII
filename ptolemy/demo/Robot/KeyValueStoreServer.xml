@@ -11,22 +11,16 @@
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, -35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1046, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 764]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.025060407317915">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8563620230700976">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{579.3802532327576, 636.216796875}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8077/keyvalue that stores key-value pairs.&#10;&#10;To get a help screen (HTML):&#10;   http://localhost:8077/keyvalue/help&#10;To store a value, use&#10;   http://localhost:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;To retrieve the value, use&#10;   http://localhost:8077/keyvalue/get?id=MY_ID&#10;To remove a value, use&#10;   http://localhost:8077/keyvalue/delete?id=MY_ID&#10;To list all keys (a JSON array of strings), use&#10;   http://localhost:8077/keyvalue/list&#10;&#10;You may also store a value by sending a UDP (datagram) packet to&#10;localhost:8076. If the packet is formatted as above,&#10;set?id=MY_ID&amp;value=MY_VALUE, then it will store the value indexed by the&#10;specified ID. Otherwise, the packet will be stored as a string indexed by the&#10;IP address of the sender. You can retrieve the string using &quot;get&quot; as above,&#10;where MY_ID is replaced with the IP address.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 360.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{439.25990550397876, 373.76562499999994}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -41,20 +35,29 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 55.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Include decorations"/>
         </property>
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="4.4">
+            <display name="Object spacing"/>
+        </property>
+        <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-1.0">
+            <display name="Aspect ratio"/>
+        </property>
+        <property name="interactionMode" class="ptolemy.data.expr.ChoiceParameter" value="Cycles">
+            <display name="Interaction mode"/>
+        </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: enable restart!!!">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Enable restart here to automatically&#10;recover from server crashes.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 35.0]">
         </property>
     </property>
     <property name="WebServer2" class="org.ptolemy.ptango.lib.http.WebServer">
@@ -66,31 +69,46 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, -20.0]">
         </property>
     </property>
-    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 375.0]">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
         </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-    </entity>
-    <entity name="HttpActor5" class="org.ptolemy.ptango.lib.HttpActor">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/help">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8077/keyvalue that stores key-value pairs.&#10;Run this model and click on this message to get documentation, or&#10;point your browser to http://localhost:8077/keyvalue/help.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{745.0, 955.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, -65.0]">
         </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8077/keyvalue/help#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 50}">
+            </property>
         </property>
-    </entity>
-    <entity name="MicrostepDelay5" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{875.0, 945.0}">
+    </property>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 800.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;html&gt;&lt;body&gt;&lt;h1&gt;Key-Value Store Service&lt;/h1&gt;&lt;p&gt;&#10;This server and provides a key-value store service.&#10;You can store data indexed by a key and retrieve it as follows:&#10;&lt;/p&gt;&#10;&lt;ul&gt;&lt;li&gt; To get a help screen (HTML):&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/help&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To retrieve the value, use&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/get?id=MY_ID&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To remove a value, use&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/delete?id=MY_ID&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To list all keys (a JSON array of strings), use&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/list&#10;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&#10;You may also store a value by sending a UDP (datagram) packet to&#10;localhost:8076. If the packet is formatted as above,&#10;set?id=MY_ID&amp;value=MY_VALUE, then it will store the value indexed by the&#10;specified ID. Otherwise, the packet will be stored as a string indexed by the&#10;IP address of the sender. You can retrieve the string using &quot;get&quot; as above,&#10;where MY_ID is replaced with the IP address.&#10;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;html&gt;&lt;body&gt;&lt;h1&gt;Key-Value Store Service&lt;/h1&gt;&lt;p&gt;&#10;This server and provides a key-value store service.&#10;You can store data indexed by a key and retrieve it from a browser as follows:&#10;&lt;/p&gt;&#10;&lt;ul&gt;&lt;li&gt; To get a help screen (HTML):&lt;pre&gt;&#10;   http://localhost:8077/keyvalue/help&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&lt;pre&gt;&#10;   http://localhost:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To retrieve the value, use&lt;pre&gt;&#10;   http://localhost:8077/keyvalue/get?id=MY_ID&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To remove a value, use&lt;pre&gt;&#10;   http://localhost:8077/keyvalue/delete?id=MY_ID&#10;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To list all keys (a JSON array of strings), use&lt;pre&gt;&#10;   http://localhost:8077/keyvalue/list&#10;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&#10;Technically, an application should issue the &quot;set&quot; command using an&#10;HTTP POST, not an HTTP GET, but this server will accept either.&#10;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -107,11 +125,12 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{895.0, 815.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 180.0}">
         </property>
     </entity>
     <entity name="ConstructLookup" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var methodValue = get(mehod).toUpper();&#10;  alert(methodValue);&#10;  send('OK', response);&#10;}">
+        <display name="ConstructLookup&#10;."/>
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var uriValue = get(uri);&#10;  var parametersValue = get(parameters);&#10;  if (uriValue.indexOf('/keyvalue/get') == 0) {&#10;    // Request is get.&#10;    if (parametersValue.id) {&#10;      send(parametersValue.id, readKey);&#10;    } else {&#10;      send('&lt;html&gt;Error (400): Bad Request. Got parameters: ' + JSON.stringify(parametersValue) + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;    }&#10;  } else if(uriValue.indexOf('/keyvalue/set') == 0) {&#10;    // Request is set.&#10;    if (parametersValue.id &amp;&amp; parametersValue.value) {&#10;      send(parametersValue.id, writeKey);&#10;      send(parametersValue.value, value);&#10;      send('&lt;html&gt;' + parametersValue.id + ' set to: ' + parametersValue.value + '&lt;/html&gt;', response);&#10;    } else {&#10;      send('&lt;html&gt;Error (400): Bad Request. Got parameters: ' + JSON.stringify(parametersValue) + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;    }&#10;  } else if(uriValue.indexOf('/keyvalue/delete') == 0) {&#10;    // Request is delete.&#10;    if (parametersValue.id) {&#10;      send(parametersValue.id, writeKey);&#10;      send('&lt;html&gt;' + parametersValue.id + ' deleted from store&lt;/html&gt;', response);&#10;    } else {&#10;      send('&lt;html&gt;Error (400): Bad Request. Got parameters: ' + JSON.stringify(parametersValue) + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;    }&#10;  } else {&#10;      // Request is not recognized.&#10;      send('&lt;html&gt;Error (400): Bad Request. Got URI: ' + uriValue + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -135,15 +154,39 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 530.0}">
         </property>
-        <port name="method" class="ptolemy.actor.TypedIOPort">
+        <port name="uri" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="uri" class="ptolemy.actor.TypedIOPort">
+        <port name="readKey" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="record">
+            </property>
+        </port>
+        <port name="parameters" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="record">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="writeKey" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -152,49 +195,251 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="code" class="ptolemy.actor.TypedIOPort">
+        <port name="responseCode" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="parameters" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
     <entity name="HttpRequestHandler" class="org.ptolemy.ptango.lib.http.HttpRequestHandler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 485.0}">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/*">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 530.0}">
         </property>
     </entity>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    <entity name="Dictionary" class="ptolemy.actor.lib.Dictionary">
+        <property name="file" class="ptolemy.data.expr.FileParameter" value="KeyValueStoreData.txt">
+        </property>
+        <property name="updateFile" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="loggingDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/logs">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 510.0}">
+        </property>
+    </entity>
+    <entity name="HttpRequestHandler2" class="org.ptolemy.ptango.lib.http.HttpRequestHandler">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/help">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 200.0}">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 295.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="HttpRequestHandler3" class="org.ptolemy.ptango.lib.http.HttpRequestHandler">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/list">
+        </property>
+        <property name="responseContentType" class="ptolemy.actor.parameters.PortParameter" value="application/json">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 415.0}">
+        </property>
+    </entity>
+    <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{660.0, 440.0}">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 345.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="discardEvents" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{670.0, 625.0}">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 755.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+        <property name="discardEvents" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 705.0}">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Not Found (404)">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 445.0}">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="404">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{785.0, 530.0}">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.uri&quot;,x=320.0,y=530.0}, tail={id=&quot;HttpRequestHandler.uri&quot;,x=105.0,y=530.0}, points={205.0,520.0,205.0,510.0} } }">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.parameters&quot;,x=320.0,y=530.0}, tail={id=&quot;HttpRequestHandler.parameters&quot;,x=105.0,y=530.0}, points={} } }">
         </property>
-        <vertex name="vertex1" value="[420.0, 375.0]">
-        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.headers&quot;,x=320.0,y=530.0}, tail={id=&quot;HttpRequestHandler.headers&quot;,x=105.0,y=530.0}, points={200.0,530.0,200.0,520.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=590.0,y=180.0}, tail={id=&quot;HttpRequestHandler2.uri&quot;,x=100.0,y=200.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=590.0,y=180.0}, tail={id=&quot;MicrostepDelay2.input&quot;,x=225.0,y=295.0}, points={850.0,180.0,850.0,295.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary.triggerKeys&quot;,x=540.0,y=510.0}, tail={id=&quot;HttpRequestHandler3.uri&quot;,x=335.0,y=415.0}, points={540.0,585.0,445.0,585.0,445.0,395.0} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary.keys&quot;,x=540.0,y=510.0}, tail={id=&quot;TokenToJSON.input&quot;,x=660.0,y=440.0}, points={620.0,490.0,620.0,440.0} } }">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TokenToJSON.output&quot;,x=660.0,y=440.0}, tail={id=&quot;MicrostepDelay3.input&quot;,x=505.0,y=345.0}, points={730.0,440.0,730.0,345.0} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.readKey&quot;,x=320.0,y=530.0}, tail={id=&quot;Dictionary.readKey&quot;,x=540.0,y=510.0}, points={435.0,510.0,435.0,490.0} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.value&quot;,x=320.0,y=530.0}, tail={id=&quot;Dictionary.value&quot;,x=540.0,y=510.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.writeKey&quot;,x=320.0,y=530.0}, tail={id=&quot;Dictionary.writeKey&quot;,x=540.0,y=510.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=505.0,y=800.0}, tail={id=&quot;Merge.output&quot;,x=670.0,y=625.0}, points={730.0,800.0,730.0,625.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler2.responseBody&quot;,x=100.0,y=200.0}, tail={id=&quot;MicrostepDelay2.output&quot;,x=225.0,y=295.0}, points={-25.0,180.0,-25.0,295.0} } }">
+        </property>
     </relation>
-    <link port="MicrostepDelay2.input" relation="relation9"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=505.0,y=800.0}, tail={id=&quot;HttpRequestHandler.responseBody&quot;,x=105.0,y=530.0}, points={-25.0,800.0,-25.0,510.0} } }">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler3.responseBody&quot;,x=335.0,y=415.0}, tail={id=&quot;MicrostepDelay3.output&quot;,x=505.0,y=345.0}, points={205.0,395.0,205.0,345.0} } }">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler.responseCode&quot;,x=105.0,y=530.0}, tail={id=&quot;MicrostepDelay4.output&quot;,x=290.0,y=755.0}, points={-20.0,520.0,-20.0,755.0} } }">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.responseCode&quot;,x=320.0,y=530.0}, tail={id=&quot;Merge2.input&quot;,x=510.0,y=705.0,index=2}, points={435.0,550.0,435.0,700.0} } }">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay4.input&quot;,x=290.0,y=755.0}, tail={id=&quot;Merge2.output&quot;,x=510.0,y=705.0}, points={620.0,755.0,620.0,705.0} } }">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=670.0,y=625.0,index=3}, tail={id=&quot;ConstructLookup.response&quot;,x=320.0,y=530.0}, points={440.0,615.0,440.0,540.0} } }">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=670.0,y=625.0,index=3}, tail={id=&quot;StringConst2.output&quot;,x=820.0,y=445.0}, points={620.0,620.0,620.0,655.0,895.0,655.0,895.0,445.0} } }">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=670.0,y=625.0,index=3}, tail={id=&quot;Dictionary.result&quot;,x=540.0,y=510.0}, points={630.0,625.0,630.0,500.0} } }">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{730.0, 530.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation23.vertex1&quot;,x=730.0,y=530.0}, tail={id=&quot;Const.trigger&quot;,x=785.0,y=530.0}, points={} },{ head={id=&quot;StringConst2.trigger&quot;,x=820.0,y=445.0}, tail={id=&quot;relation23.vertex1&quot;,x=730.0,y=530.0}, points={730.0,445.0} },{ head={id=&quot;Dictionary.notFound&quot;,x=540.0,y=510.0}, tail={id=&quot;relation23.vertex1&quot;,x=730.0,y=530.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=510.0,y=705.0,index=2}, tail={id=&quot;Const.output&quot;,x=785.0,y=530.0}, points={445.0,705.0,445.0,660.0,890.0,660.0,890.0,530.0} } }">
+        </property>
+    </relation>
+    <link port="MicrostepDelay.input" relation="relation17"/>
+    <link port="MicrostepDelay.output" relation="relation6"/>
+    <link port="StringConst.output" relation="relation5"/>
+    <link port="StringConst.trigger" relation="relation4"/>
+    <link port="ConstructLookup.uri" relation="relation3"/>
+    <link port="ConstructLookup.readKey" relation="relation"/>
+    <link port="ConstructLookup.headers" relation="relation15"/>
+    <link port="ConstructLookup.parameters" relation="relation9"/>
+    <link port="ConstructLookup.value" relation="relation10"/>
+    <link port="ConstructLookup.writeKey" relation="relation11"/>
+    <link port="ConstructLookup.response" relation="relation16"/>
+    <link port="ConstructLookup.responseCode" relation="relation21"/>
+    <link port="HttpRequestHandler.responseBody" relation="relation6"/>
+    <link port="HttpRequestHandler.responseCode" relation="relation19"/>
+    <link port="HttpRequestHandler.uri" relation="relation3"/>
+    <link port="HttpRequestHandler.headers" relation="relation15"/>
+    <link port="HttpRequestHandler.parameters" relation="relation9"/>
+    <link port="Dictionary.keys" relation="relation8"/>
+    <link port="Dictionary.readKey" relation="relation"/>
+    <link port="Dictionary.result" relation="relation22"/>
+    <link port="Dictionary.triggerKeys" relation="relation7"/>
+    <link port="Dictionary.value" relation="relation10"/>
+    <link port="Dictionary.writeKey" relation="relation11"/>
+    <link port="Dictionary.notFound" relation="relation23"/>
+    <link port="HttpRequestHandler2.responseBody" relation="relation2"/>
+    <link port="HttpRequestHandler2.uri" relation="relation4"/>
+    <link port="MicrostepDelay2.input" relation="relation5"/>
     <link port="MicrostepDelay2.output" relation="relation2"/>
-    <link port="HttpActor5.response" relation="relation17"/>
-    <link port="HttpActor5.getRequestURI" relation="relation16"/>
-    <link port="MicrostepDelay5.input" relation="relation18"/>
-    <link port="MicrostepDelay5.output" relation="relation17"/>
-    <link port="StringConst.output" relation="relation18"/>
-    <link port="StringConst.trigger" relation="relation16"/>
-    <link port="ConstructLookup.method" relation="relation"/>
-    <link port="ConstructLookup.response" relation="relation9"/>
-    <link port="HttpRequestHandler.response" relation="relation2"/>
-    <link port="HttpRequestHandler.method" relation="relation"/>
+    <link port="HttpRequestHandler3.responseBody" relation="relation13"/>
+    <link port="HttpRequestHandler3.uri" relation="relation7"/>
+    <link port="TokenToJSON.input" relation="relation8"/>
+    <link port="TokenToJSON.output" relation="relation12"/>
+    <link port="MicrostepDelay3.input" relation="relation12"/>
+    <link port="MicrostepDelay3.output" relation="relation13"/>
+    <link port="Merge.input" relation="relation16"/>
+    <link port="Merge.input" relation="relation14"/>
+    <link port="Merge.input" relation="relation22"/>
+    <link port="Merge.output" relation="relation17"/>
+    <link port="MicrostepDelay4.input" relation="relation18"/>
+    <link port="MicrostepDelay4.output" relation="relation19"/>
+    <link port="Merge2.input" relation="relation21"/>
+    <link port="Merge2.input" relation="relation20"/>
+    <link port="Merge2.output" relation="relation18"/>
+    <link port="StringConst2.output" relation="relation14"/>
+    <link port="StringConst2.trigger" relation="relation23"/>
+    <link port="Const.output" relation="relation20"/>
+    <link port="Const.trigger" relation="relation23"/>
 </entity>
