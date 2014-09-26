@@ -2851,7 +2851,7 @@
 
     <!-- ptolemy/domains/taskpt/doc/doc.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/doc/doc.jar"
+	 destfile="${basedir}/ptolemy/domains/taskpt/doc/doc.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/taskpt/doc/*.htm"/>
