@@ -52,7 +52,6 @@ import ptolemy.actor.lib.CatchExceptionAttribute;
 import ptolemy.actor.lib.ExceptionSubscriber;
 import ptolemy.actor.lib.MicrostepDelay;
 import ptolemy.actor.lib.RecordDisassembler;
-import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.io.FileReader;
 import ptolemy.actor.lib.js.JavaScript;
 import ptolemy.actor.parameters.PortParameter;
@@ -83,8 +82,9 @@ import ptolemy.kernel.util.Workspace;
  *  It also requires that the model containing this actor provide
  *  exactly one input to at least one of the input ports in response to
  *  every output request,
- *  and that such responses are delivered in the same order as
- *  the requests they are responding to.
+ *  and that such responses are delivered to its input in the very
+ *  next microstep, or at least before any other request is made
+ *  by the WebServer.
  *  <p>
  *  The <i>path</i> parameter specifies which HTTP requests will
  *  be delegated to this actor. If the base URL for the web server
@@ -112,8 +112,7 @@ import ptolemy.kernel.util.Workspace;
  *  loop. The requests appear on the outputs of this actor,
  *  and the responses appear on the inputs. Each such feedback
  *  loop is required to include an instance of {@link MicrostepDelay}
- *  (or {@link TimeDelay}, if you wish to model response times) in order
- *  to break the causality loop that the feedback loop would
+ *  in order to break the causality loop that the feedback loop would
  *  otherwise incur.
  *  The downstream model should be used to construct a response.
  *  For example, to simply serve a web page, put a
@@ -417,7 +416,8 @@ public class HttpRequestHandler extends TypedAtomicActor
         newObject._initializeRealTime = 0L;
         newObject._URIpath = null;
 
-        newObject._request = null;
+        newObject._pendingRequest = null;
+        newObject._newRequest = null;
         newObject._response = null;
 
         newObject.setCookies.setTypeAtMost(BaseType.RECORD);
@@ -433,8 +433,9 @@ public class HttpRequestHandler extends TypedAtomicActor
         return true;
     }
 
-    /** Generate an HTTP response for the client if an exception occurs.  No
-     *  response will be received on the input port in the event of an
+    /** Generate an HTTP response for the client if an exception occurs in
+     *  the model and there is a {@link CatchExceptionAttribute} in the model.
+     *  No response will be received on the input port in the event of such an
      *  exception.
      *  @param policy The exception handling policy of the exception handler;
      *   see {@link CatchExceptionAttribute}
@@ -445,18 +446,19 @@ public class HttpRequestHandler extends TypedAtomicActor
     @Override
     public synchronized boolean exceptionOccurred(String policy, 
             Throwable exception) {
-
         // If there is a pending request,
         // For "restart" policy, generate an error page with retry
         // For other policies, generate a Server Error error page
         // These method calls notifyAll() so that the response will be sent
         // by the servlet thread
-        if (_request != null) {
+        if (_pendingRequest != null) {
             if (policy.equals(CatchExceptionAttribute.RESTART)) {
                 _respondWithRetryMessage(10);
             } else {
                 _respondWithServerErrorMessage();
             }
+            // Request is no longer pending.
+            _pendingRequest = null;
         }
         return true;
     }
@@ -493,17 +495,7 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  request, then send a response. Otherwise, if the servlet has received
      *  an HTTP request, then also produce on the output ports
      *  the details of the request.
-     *  If there is an HTTP request, but the current superdense time
-     *  matches the time of the previously produced output,
-     *  then request a refiring at the current time (next microstep)
-     *  so that the outputs are produced at the next microstep.
-     *  This actor is designed to normally be fired twice at each superdense
-     *  time, first to produce outputs corresponding to an HTTP
-     *  request, and next to send back the response to that request.
-     *  This strategy avoids creating signals with multiple values
-     *  at the same superdense time instant.
-     *  @exception IllegalActionException If sending the
-     *   outputs fails.
+     *  @exception IllegalActionException If sending the outputs fails.
      */
     @Override
     public synchronized void fire() throws IllegalActionException {
@@ -556,7 +548,7 @@ public class HttpRequestHandler extends TypedAtomicActor
         responseData.headers = (RecordToken)responseHeaders.getToken();
         
         if (responseFound) {
-            if (_request == null) {
+            if (_pendingRequest == null) {
                 // There is no pending request, so ignore the response.
                 if (_debugging) {
                     _debug("Discarding the response because there is no pending request.");
@@ -564,15 +556,18 @@ public class HttpRequestHandler extends TypedAtomicActor
             } else {
                 _response = responseData;
                 // Indicate that the request has been handled.
-                _request = null;
+                _pendingRequest = null;
                 // Notify the servlet thread.
                 notifyAll();
             }
         }
 
-        // If there is a pending request, produce outputs for that request,
+        // If there is a new request, produce outputs for that request,
         // including any cookies from that request.
-        if (_request != null) {
+        if (_newRequest != null) {
+            // Indicate that this request is now pending.
+            _pendingRequest = _newRequest;
+            _newRequest = null;
 
             // To avoid the risk of producing two outputs at the same superdense time,
             // check the time of the last output.
@@ -594,59 +589,59 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
 
             if (_debugging) {
-            	_debug("Sending request method: " + _request.method);
-            	_debug("Sending request URI: " + _request.requestURI);
+            	_debug("Sending request method: " + _pendingRequest.method);
+            	_debug("Sending request URI: " + _pendingRequest.requestURI);
             }
             // Produce header output.
-            if (_request.headers != null && _request.headers.length() > 0) {
+            if (_pendingRequest.headers != null && _pendingRequest.headers.length() > 0) {
                 if (!headers.sinkPortList().isEmpty()) {
                     if (_debugging) {
-                	_debug("Sending request header: " + _request.headers);
+                	_debug("Sending request header: " + _pendingRequest.headers);
                     }
                     try {
-                	headers.send(0, _request.headers);
+                	headers.send(0, _pendingRequest.headers);
                     } catch (TypedIOPort.RunTimeTypeCheckException ex) {
                 	// Parameters provided do not match the required type.
                 	// Construct an appropriate response.
-                	_respondWithBadRequestMessage(_request.headers,
+                	_respondWithBadRequestMessage(_pendingRequest.headers,
                 		headers.getType(), "header");
                 	return;
                     }
                 }
             }
             // Produce requestor output.
-            if (_request.requestor != null && _request.requestor.length() > 0) {
+            if (_pendingRequest.requestor != null && _pendingRequest.requestor.length() > 0) {
         	if (_debugging) {
-        	    _debug("Sending requestor identification: " + _request.requestor);
+        	    _debug("Sending requestor identification: " + _pendingRequest.requestor);
         	}
-        	requestor.send(0, new StringToken(_request.requestor));
+        	requestor.send(0, new StringToken(_pendingRequest.requestor));
             }
             if (!parameters.sinkPortList().isEmpty()) {
                 if (_debugging) {
-                	_debug("Sending request parameters: " + _request.parameters);
+                	_debug("Sending request parameters: " + _pendingRequest.parameters);
                 }
             	// Send parameters, but handle type errors locally.
             	try {
-            	    parameters.send(0, _request.parameters);
+            	    parameters.send(0, _pendingRequest.parameters);
             	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
             	    // Parameters provided do not match the required type.
             	    // Construct an appropriate response.
-            	    _respondWithBadRequestMessage(_request.parameters,
+            	    _respondWithBadRequestMessage(_pendingRequest.parameters,
             		    parameters.getType(), "parameters");
             	    return;
             	}
             }
-            if (_request.cookies != null && _request.cookies.length() > 0) {
+            if (_pendingRequest.cookies != null && _pendingRequest.cookies.length() > 0) {
                 if (!cookies.sinkPortList().isEmpty()) {
                     if (_debugging) {
-                	_debug("Sending request cookies: " + _request.cookies);
+                	_debug("Sending request cookies: " + _pendingRequest.cookies);
                     }
                     try {
-                	cookies.send(0, _request.cookies);
+                	cookies.send(0, _pendingRequest.cookies);
                     } catch (TypedIOPort.RunTimeTypeCheckException ex) {
                 	// Parameters provided do not match the required type.
                 	// Construct an appropriate response.
-                	_respondWithBadRequestMessage(_request.cookies,
+                	_respondWithBadRequestMessage(_pendingRequest.cookies,
                 		cookies.getType(), "cookies");
                 	return;
                     }
@@ -654,8 +649,8 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
             // Send the following only if the above succeeded.
             // Otherwise, we will send two responses to this one request.
-            method.send(0, new StringToken(_request.method));
-            uri.send(0, new StringToken(_request.requestURI));
+            method.send(0, new StringToken(_pendingRequest.method));
+            uri.send(0, new StringToken(_pendingRequest.requestURI));
         }
         if (_debugging) {
             _debug("Ending fire.");
@@ -670,7 +665,8 @@ public class HttpRequestHandler extends TypedAtomicActor
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _request = null;
+        _pendingRequest = null;
+        _newRequest = null;
         _response = null;
         _initializeModelTime = getDirector().getModelTime();
         // Subtract a tenth of a second.  As this actor is initialized
@@ -706,8 +702,15 @@ public class HttpRequestHandler extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Handle an HTTP request by creating a web page as the HTTP
-     *  response.
+    /** Handle an HTTP request by recording the request data, requesting
+     *  a firing of this actor at the current time, waiting for a response
+     *  to be created, and then sending the response. Normally, the actor
+     *  will fire once to produce the request data on its output ports,
+     *  then fire again to receive the response data on its input ports.
+     *  Upon that second firing, the thread in which this method is invoked
+     *  will be notified, and this method will retrieve the response data
+     *  that were provided at the input ports and send the response to the
+     *  requestor.
      *  See <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html">http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html</a>.
      *  @param request The HTTP request.
      *  @param response The HTTP response to write to.
@@ -724,16 +727,17 @@ public class HttpRequestHandler extends TypedAtomicActor
         // actor. This lock _is_ released while waiting for the response,
         // allowing the fire method to execute its own synchronized blocks.
         synchronized (HttpRequestHandler.this) {
-            // FIXME: What if there is already a pending _request?
+            // FIXME: What if there is already a _newRequest that has not been handled?
+            // Is this possible?
             // This will simply overwrite it. For now, print a warning to standard error.
-            if (_request != null) {
+            if (_newRequest != null) {
         	System.err.println(getFullName()
-        		+ ": WARNING. Discarding HTTP request to which there has been no response.");
+        		+ ": WARNING. Discarding HTTP request that has not yet been handled.");
             }
-            _request = new HttpRequestItems();
+            _newRequest = new HttpRequestItems();
 
-            _request.requestURI = request.getRequestURI();
-            _request.method = type;
+            _newRequest.requestURI = request.getRequestURI();
+            _newRequest.method = type;
 
             // Set up a buffer for the output so we can set the length of
             // the response, thereby enabling persistent connections
@@ -744,24 +748,24 @@ public class HttpRequestHandler extends TypedAtomicActor
 
             if (_debugging) {
                 _debug("**** Handling a " + type
-                        + " request to URI " + _request.requestURI);
+                        + " request to URI " + _newRequest.requestURI);
             }
 
             try {
                 // Read cookies from the request and store.
-                _request.cookies = _readCookies(request);
+                _newRequest.cookies = _readCookies(request);
 
                 // Read header information from the request and store.
-                _request.headers = _readHeaders(request);
+                _newRequest.headers = _readHeaders(request);
                 
                 // Get the name or IP address of the requestor.
-                _request.requestor = request.getRemoteHost();
+                _newRequest.requestor = request.getRemoteHost();
 
                 // Get the parameters that have been either posted or included
                 // as assignments in a get using the URL syntax ...?name=value.
                 // Note that each parameter name may have more than one value,
                 // hence the array of strings.
-                _request.parameters = _readParameters(request);
+                _newRequest.parameters = _readParameters(request);
 
                 // Figure out what time to request a firing for.
                 long elapsedRealTime = System.currentTimeMillis()
@@ -775,6 +779,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                     _debug("**** Request firing at time " + timeOfRequest);
                 }
 
+                // Request a firing of this actor (to produce output data).
                 // Note that fireAt() will modify the requested firing time
                 // if it is in the past.
                 // Note that past firing times might not be modified
@@ -783,7 +788,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                 // but a past time for the top-level model).
                 getDirector().fireAt(HttpRequestHandler.this, timeOfRequest);
             } catch (IllegalActionException e) {
-                _request = null;
+                _newRequest = null;
                 _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
                         e.getMessage(), bytes, writer);
                 return;
@@ -791,6 +796,17 @@ public class HttpRequestHandler extends TypedAtomicActor
             //////////////////////////////////////////////////////
             // Wait for a response.
             // We are assuming every request gets exactly one response.
+            // Normally, the actor will have fired twice now, first in
+            // response to our firing request, and then again in response
+            // to input data. The first firing will have sent the
+            // _newRequest data to the output ports, moved the
+            // data to _pendingRequest, and set _newRequest to null.
+            // The second firing could conceivable have another _newRequest,
+            // if this method is called again during the wait() call below,
+            // in which case the second firing will have input data for
+            // a response to the request in _pendingRequest, and new
+            // request data in _newRequest, which it will send to its
+            // output ports.
             while (_response == null) {
                 if (_debugging) {
                     _debug("**** Waiting for a response");
@@ -807,24 +823,28 @@ public class HttpRequestHandler extends TypedAtomicActor
                     } catch (IllegalActionException e) {
                         // Ignore and use default of 30 seconds.
                     }
-                    // FIXME: What if while waiting, another request comes in?
-                    // _request will get overwritten.
+                    // Wait for notification that a _response has been
+                    // constructed.
                     HttpRequestHandler.this.wait(timeoutValue);
-                    if (System.currentTimeMillis() - startTime >= timeoutValue) {
+                    if (_response == null
+                	    && System.currentTimeMillis() - startTime >= timeoutValue) {
+                	// A timeout has occured, and there is still no _reponse.
+                	// This means that the second firing never occurred, so no
+                	// response data have been provided.
                         if (_debugging) {
                             _debug("**** Request timed out.");
                         }
 
                         // Set the content length (enables persistent
                         // connections) and send the buffer
-                        writer.println("Request timed out");
-                        response.setContentLength(bytes.size());
-                        response.setContentType("text/plain");
-                        bytes.writeTo(response.getOutputStream());
+                        response.sendError(
+                        	HttpServletResponse.SC_REQUEST_TIMEOUT,
+                        	"Request Timeout (408)");
 
-                        // Indicate that there is no longer a pending request or response.
-                        _request = null;
-                        _response = null;
+                        // Indicate that there is no longer a pending request.
+                        // This ensures that if the second firing later occurs,
+                        // its response data are not sent.
+                        _pendingRequest = null;
 
                         // Close the PrintWriter
                         // Close the ByteArrayOutputStream to avoid a
@@ -834,7 +854,6 @@ public class HttpRequestHandler extends TypedAtomicActor
                         // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
                         writer.close();
                         bytes.close();
-                        response.setStatus(HttpServletResponse.SC_REQUEST_TIMEOUT);
 
                         return;
                     }
@@ -842,16 +861,12 @@ public class HttpRequestHandler extends TypedAtomicActor
                     if (_debugging) {
                         _debug("*** Request thread interrupted.");
                     }
-
-                    // Set the content length (enables persistent
-                    // connections) and send the buffer
-                    writer.println("Get request thread interrupted");
-                    response.setContentType("text/plain");
-                    response.setContentLength(bytes.size());
-                    bytes.writeTo(response.getOutputStream());
+                    response.sendError(
+                	    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                	    "Get request thread interrupted (Internal Server Error, 500)");
 
                     // Indicate that there is no longer a pending request or response.
-                    _request = null;
+                    _pendingRequest = null;
                     _response = null;
 
                     // Close the PrintWriter
@@ -862,11 +877,12 @@ public class HttpRequestHandler extends TypedAtomicActor
                     // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
                     writer.close();
                     bytes.close();
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    
                     return;
                 }
             }
 
+            // At this point, we are assured that _response is not null.
             response.setStatus(_response.statusCode);
             response.setContentType(_response.contentType);
             
@@ -1168,12 +1184,12 @@ public class HttpRequestHandler extends TypedAtomicActor
     }
 
     /** Issue a response indicating a server error and the intent to retry.
-     *  The Javascript on the response page will invoke the
-     *  FIXME: Incomplete... What does this do?
+     *  This creates a response page that includes
+     *  Javascript that will invoke the retry.
+     *  FIXME: This only supports GET and POST requests currently.
      *  @param timeout The time to wait, in seconds
      */
     private void _respondWithRetryMessage(int timeout) {
-
         int timeoutValue = timeout;
 
         if (timeoutValue < 1) {
@@ -1189,9 +1205,9 @@ public class HttpRequestHandler extends TypedAtomicActor
         _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
         String ajax = "";
-        if (_request.method.equals("GET")) {
+        if (_pendingRequest.method.equals("GET")) {
             ajax = "jQuery.get(\""
-                    + _request.requestURI
+                    + _pendingRequest.requestURI
                     + "\")\n"
                     + ".done(function(data) { \n "
                     +
@@ -1202,14 +1218,14 @@ public class HttpRequestHandler extends TypedAtomicActor
                     "result = \"<div>\" + data + \"</div>\";"
                     + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
                     + "\n });";
-        } else if (_request.method.equals("POST")) {
+        } else if (_pendingRequest.method.equals("POST")) {
             StringBuffer parameters = new StringBuffer("{");
-            if (_request.parameters != null) {
-                for (String label : _request.parameters.labelSet()) {
+            if (_pendingRequest.parameters != null) {
+                for (String label : _pendingRequest.parameters.labelSet()) {
                     // TODO:  Test if this works for strings
                     // I believe these require quotation marks around them
                     parameters.append(label + ": "
-                            + _request.parameters.get(label).toString() + ",");
+                            + _pendingRequest.parameters.get(label).toString() + ",");
                 }
 
                 // Erase the last , and add }
@@ -1217,7 +1233,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                     parameters.deleteCharAt(parameters.length() - 1);
                     parameters.append('}');
                     ajax = "jQuery.post(\""
-                            + _request.requestURI
+                            + _pendingRequest.requestURI
                             + "\", "
                             + parameters.toString()
                             + ")\n"
@@ -1227,7 +1243,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                             + "\n });";
                 } else {
                     ajax = "jQuery.post(\""
-                            + _request.requestURI
+                            + _pendingRequest.requestURI
                             + "\")\n"
                             + ".done(function(data) { \n "
                             + "result = \"<div>\" + data + \"</div>\";"
@@ -1261,7 +1277,6 @@ public class HttpRequestHandler extends TypedAtomicActor
         _response.response = message.toString();
 
         notifyAll();
-
     }
 
     /** Issue a response indicating a server error (i.e., a problem running the
@@ -1295,8 +1310,13 @@ public class HttpRequestHandler extends TypedAtomicActor
     /** Microstep of the last output. */
     private int _lastMicrostep;
 
-    /** The pending request. */
-    private HttpRequestItems _request;
+    /** The pending request, for which outputs have not yet been generated. */
+    private HttpRequestItems _newRequest;
+
+    /** The pending request, for which a response has not yet been issued,
+     *  but outputs have been generated to trigger the response.
+     */
+    private HttpRequestItems _pendingRequest;
 
     /** The pending response. */
     private HttpResponseItems _response;
