@@ -28,9 +28,8 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.osc;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap; 
+import java.util.Map;
 
 import oscP5.OscBundle;
 import oscP5.OscMessage;
@@ -204,17 +203,8 @@ public class OscSender extends TypedAtomicActor {
         oscP5 = new OscP5(this, port);// set port if successful 
     }
 
-    private void _sendOscPackets(HashMap<String, Object> tokenMap) throws IllegalActionException {
-        /* start oscP5, listening for incoming messages at port 12000 */
-
-        /* myRemoteLocation is a NetAddress. a NetAddress takes 2 parameters,
-         * an ip address and a port number. myRemoteLocation is used as parameter in
-         * oscP5.send() when sending OSC packets to another computer, device, 
-         * application. usage see below. for testing purposes the listening port
-         * and the port of the remote location address are the same, hence you will
-         * send messages back to this sketch.
-         */ 
-
+    private void _sendOscPackets(HashMap<String, Object> tokenMap) throws IllegalActionException { 
+        
         myRemoteLocation = new NetAddress(_host, _remotePort);
 
         // initialize an OSC bundle
@@ -224,9 +214,12 @@ public class OscSender extends TypedAtomicActor {
             prefix = "/"+prefix;
         }
 
-        for ( String label : tokenMap.keySet()) {  
-            OscMessage m = new OscMessage(prefix+"/"+label);
-            Object o = tokenMap.get(label);
+        for ( Map.Entry<String, Object> entry : tokenMap.entrySet()) {  
+            
+            String label = entry.getKey();
+            Object o = entry.getValue();
+            OscMessage m = new OscMessage(prefix+"/"+label); 
+            
             if (o instanceof Double) {
                 m.add((Double)o);
             } else if (o instanceof Integer) {
@@ -237,8 +230,7 @@ public class OscSender extends TypedAtomicActor {
                 throw new IllegalActionException("Invalid OSC input. " +
                 		"Currently this OSC Client  Integer, String and Double types");
             }
-            bundle.add(m);
-            m.print();
+            bundle.add(m); 
         }
  
         oscP5.send(bundle, myRemoteLocation); 
