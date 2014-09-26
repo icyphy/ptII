@@ -30,11 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.aspect;
 
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionAttributes;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -121,7 +122,8 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
      * @return True if execution target can have execution time.
      */
     public boolean canSimulateExecutionFor(NamedObj target) {
-        return !(target instanceof State);
+        return (target instanceof CompositeActor ||
+                target instanceof AtomicActor);
     }
 
     ///////////////////////////////////////////////////////////////////
