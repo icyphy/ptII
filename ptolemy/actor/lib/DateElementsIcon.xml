@@ -13,9 +13,9 @@
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -1.0]">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="110.0">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
