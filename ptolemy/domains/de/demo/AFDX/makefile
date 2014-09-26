@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy aspect oriented demos
+# Makefile for Ptolemy II aspect AFDX demo.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/qm/demo
+ME =		ptolemy/actor/lib/qm/demo/AFDX
 
-DIRS =	  CanBus CarTrackingAttackModeling CompositeQM DE
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,24 +43,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	CanBus/CanBus.jar \
-	CarTrackingAttackModeling/CarTrackingAttackModeling.jar \
-	CompositeQM/CompositeQM.jar \
-	DE/DE.jar \
-
-
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE =	AFDX
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = 
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	AFDX.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -78,7 +72,8 @@ all: jclass
 
 install: jclass jars
 
-demo: subdemo
+demo:
+	vergil AFDX.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

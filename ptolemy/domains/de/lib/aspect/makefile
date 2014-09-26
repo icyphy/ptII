@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy aspect oriented demos
+# Makefile for the Discrete Event domain actor library
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 1998-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/qm/demo
+ME =		ptolemy/domains/de/lib/aspect
 
-DIRS =	  CanBus CarTrackingAttackModeling CompositeQM DE
+DIRS = 		
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+# Root of the Java directory
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,43 +42,45 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	aspect
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	CanBus/CanBus.jar \
-	CarTrackingAttackModeling/CarTrackingAttackModeling.jar \
-	CompositeQM/CompositeQM.jar \
-	DE/DE.jar \
+JSRCS = \
+	AFDXESs.java \
+	AFDXSwitch.java \
+	AFDXVlink.java \
+	BasicSwitch.java \
+	Bus.java \
+	CrossbarSwitch.java \
+	TTESwitch.java
 
+OTHER_FILES_TO_BE_JARED = \
+	AFDXESsIcon.xml \
+	AFDXSwitchIcon.xml \
+	BasicSwitchIcon.xml \
+	BusIcon.xml \
+	CrossbarSwitchIcon.xml \
+	TTESwitchIcon.xml
 
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
-JSRCS =
-
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	 $(DIRS) \
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+
 all: jclass
-	@echo "To run the demos, run 'make demo'"
+install: jclass $(PTCLASSJAR)
 
-install: jclass jars
-
-demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

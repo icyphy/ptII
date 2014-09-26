@@ -1,0 +1,666 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CrossbarSwitch" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={363, 174, 817, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 262.0}">
+    </property> 
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
+        </property>
+    </property>
+    <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Topology:&#10;-----------------&#10;  A(1)             B(2)&#10;    |                  |&#10;Switch --- Switch2&#10;    |                  |&#10;  C(3)             D(4)&#10;   ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 15.0]">
+        </property>
+    </property>
+    <entity name="A" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 165.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 114, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 65}">
+            </property>
+        </property>
+        <port name="source" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 120.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 240.0]">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch">
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch2, CrossbarSwitch">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="port4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch2, CrossbarSwitch">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 120.0]">
+            </property>
+        </entity>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={647, 59, 500, 344}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 250}">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<default connected="no" stems="yes"/>
+</plot>?>
+            </configure>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="source" relation="relation"/>
+        <link port="port2" relation="relation3"/>
+        <link port="port" relation="relation2"/>
+        <link port="port4" relation="relation4"/>
+        <link port="DiscreteClock.output" relation="relation"/>
+        <link port="TimedPlotter.input" relation="relation2"/>
+        <link port="TimedPlotter.input" relation="relation3"/>
+        <link port="TimedPlotter.input" relation="relation4"/>
+    </entity>
+    <entity name="B" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 210.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 145, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch, CrossbarSwitch2">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="source" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 130.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch, CrossbarSwitch2">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="port4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch2">
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CrossbarSwitch2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 403, 500, 344}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 255.0}">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="4.0" max="4.0"/>
+<default connected="no" stems="yes"/>
+</plot>?>
+            </configure>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="source" relation="relation3"/>
+        <link port="port3" relation="relation2"/>
+        <link port="port4" relation="relation4"/>
+        <link port="DiscreteClock.output" relation="relation3"/>
+        <link port="TimedPlotter.input" relation="relation"/>
+        <link port="TimedPlotter.input" relation="relation2"/>
+        <link port="TimedPlotter.input" relation="relation4"/>
+    </entity>
+    <entity name="CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.CrossbarSwitch">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 45.0]">
+        </property>
+        <property name="1" class="ptolemy.data.expr.Parameter" value="A">
+        </property>
+        <property name="0" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+        </property>
+        <property name="2" class="ptolemy.data.expr.Parameter" value="C">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </entity>
+    <entity name="CrossbarSwitch2" class="ptolemy.domains.de.lib.aspect.CrossbarSwitch">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 120.0]">
+        </property>
+        <property name="1" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+        </property>
+        <property name="0" class="ptolemy.data.expr.Parameter" value="B">
+        </property>
+        <property name="2" class="ptolemy.data.expr.Parameter" value="D">
+        </property>
+    </entity>
+    <entity name="C" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 350.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 145, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
+            </property>
+        </property>
+        <port name="source" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 125.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch2, CrossbarSwitch">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch2, CrossbarSwitch">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{3}">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={140, 58, 500, 344}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 245}">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="1.0" max="4.0"/>
+<default connected="no" stems="yes"/>
+</plot>?>
+            </configure>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="source" relation="relation"/>
+        <link port="port" relation="relation2"/>
+        <link port="port2" relation="relation3"/>
+        <link port="port3" relation="relation4"/>
+        <link port="DiscreteClock.output" relation="relation"/>
+        <link port="TimedPlotter.input" relation="relation2"/>
+        <link port="TimedPlotter.input" relation="relation3"/>
+        <link port="TimedPlotter.input" relation="relation4"/>
+    </entity>
+    <entity name="D" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 395.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 196, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch, CrossbarSwitch2">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch2">
+            </property>
+        </port>
+        <port name="source" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[575.5078125, 120.83984375]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+        <port name="port5" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
+            </property>
+            <property name="qm" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM: CrossbarSwitch, CrossbarSwitch2">
+            </property>
+            <property name="qm2" class="ptolemy.data.expr.Parameter" value="CrossbarSwitch2">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{4}">
+            </property>
+            <doc>Create periodic timed events.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300, 120}">
+            </property>
+        </entity>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={648, 406, 500, 344}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 245.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<default connected="no" stems="yes"/>
+</plot>?>
+            </configure>
+        </entity>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port3" relation="relation2"/>
+        <link port="source" relation="relation4"/>
+        <link port="port5" relation="relation3"/>
+        <link port="DiscreteClock.output" relation="relation4"/>
+        <link port="TimedPlotter.input" relation="relation"/>
+        <link port="TimedPlotter.input" relation="relation2"/>
+        <link port="TimedPlotter.input" relation="relation3"/>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[523.4375, 311.875]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[60.0, 270.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="A.source" relation="relation3"/>
+    <link port="B.source" relation="relation4"/>
+    <link port="B.port4" relation="relation2"/>
+    <link port="C.port" relation="relation3"/>
+    <link port="C.port2" relation="relation2"/>
+    <link port="C.port3" relation="relation4"/>
+    <link port="D.source" relation="relation2"/>
+</entity>

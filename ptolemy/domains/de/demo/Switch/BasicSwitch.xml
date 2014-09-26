@@ -1,0 +1,469 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BasicSwitch" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 80.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={335, 22, 945, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0422830150463955">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.6279296875, 338.1053534728078}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Topology:&#10;&#10;D1                                                        C1 &#10;     \                                                     /&#10;      (port 0)                               (port 1)  &#10;           S1 (port 1) ---- (port 0) S2 &#10;      (port 2)                               (port 2)  &#10;     /                                                     \&#10;C2                                                         D2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 50.0]">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 60.0]">
+        </property>
+    </property>
+    <entity name="D1" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 255.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="period" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 558, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 230.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 137, 433, 216}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[433, 172]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 310.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.6202" max="0.8101"/>
+<yRange min="0.6202" max="0.8101"/>
+<default connected="no" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="S1" class="ptolemy.domains.de.lib.aspect.BasicSwitch">
+        <property name="inputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="outputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.0001">
+        </property>
+        <property name="switchFabricDelay" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="S2" class="ptolemy.domains.de.lib.aspect.BasicSwitch">
+        <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        </property>
+        <property name="inputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="outputBufferDelay" class="ptolemy.data.expr.Parameter" value="0.0001">
+        </property>
+        <property name="switchFabricDelay" class="ptolemy.data.expr.Parameter" value="0.4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="C1" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 255.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {S1, S2}">
+            </property>
+        </port>
+    </entity>
+    <entity name="C2" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 355.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {S2, S1}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 558, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 390.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="D2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 355.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="period" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S1">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_BasicSwitch2" class="ptolemy.domains.de.lib.aspect.BasicSwitch$BasicSwitchAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="S2">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="portIn" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="portOut" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="CommunicationAspectMonitor" class="ptolemy.actor.gui.CommunicationAspectMonitor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 170.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[345.0, 255.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[345.0, 355.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="D1.output" relation="relation2"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="C1.output" relation="relation"/>
+    <link port="C1.trigger" relation="relation2"/>
+    <link port="C2.output" relation="relation4"/>
+    <link port="C2.trigger" relation="relation3"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="D2.output" relation="relation3"/>
+</entity>

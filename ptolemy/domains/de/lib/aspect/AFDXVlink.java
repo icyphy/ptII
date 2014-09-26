@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.aspect;
+package ptolemy.domains.de.lib.aspect;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IntermediateReceiver;

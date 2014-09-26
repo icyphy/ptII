@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.aspect;
+package ptolemy.domains.de.lib.aspect;
 
 import java.util.HashMap;
 import java.util.TreeSet;

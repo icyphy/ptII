@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="QuantityManager2BussesOrderReversed" class="ptolemy.actor.TypedCompositeActor">
+<entity name="QuantityManager2Busses" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 80.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 70.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 132, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={446, 22, 834, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -18,10 +18,10 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="Bus" class="ptolemy.actor.lib.aspect.Bus">
+    <entity name="Bus" class="ptolemy.domains.de.lib.aspect.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 340.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -29,13 +29,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 160.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -44,8 +44,8 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -58,13 +58,13 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 160.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -73,8 +73,8 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -86,17 +86,17 @@
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2, 1.2, 2.2, 3.2, 4.2, 5.2, 6.2, 7.2, 8.2, 9.2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 230.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -105,8 +105,8 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -119,13 +119,13 @@
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 230.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -134,8 +134,8 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -146,14 +146,14 @@
             </property>
         </port>
     </entity>
-    <entity name="Bus2" class="ptolemy.actor.lib.aspect.Bus">
+    <entity name="Bus2" class="ptolemy.domains.de.lib.aspect.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 340.0}">
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 160.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 145, 813, 510}, maximized=false}">
         </property>
@@ -187,7 +187,7 @@
         <link port="DiscreteClock.output" relation="relation"/>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -205,16 +205,16 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
-            <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus2">
+            <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="foo" class="ptolemy.data.expr.Parameter" value="Bus">
+            <property name="foo" class="ptolemy.data.expr.Parameter" value="Bus2">
             </property>
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus2, Bus}">
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus, Bus2}">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -223,8 +223,8 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -257,7 +257,7 @@
         <link port="Scale.output" relation="relation"/>
     </entity>
     <entity name="CompositeActor3" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 230.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 145, 813, 510}, maximized=false}">
         </property>
@@ -287,7 +287,7 @@
         <link port="DiscreteClock.output" relation="relation"/>
     </entity>
     <entity name="CompositeActor4" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 230.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -303,22 +303,22 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
-                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
-                </property>
-                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -346,32 +346,32 @@
         <link port="Scale.input" relation="relation"/>
         <link port="Scale.output" relation="relation2"/>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Test.input" relation="relation"/>
-    <link port="CurrentTime.output" relation="relation"/>
-    <link port="CurrentTime.trigger" relation="relation5"/>
-    <link port="Test2.input" relation="relation2"/>
-    <link port="CurrentTime2.output" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation4"/>
+    <link port="Test2.input" relation="relation5"/>
+    <link port="CurrentTime2.output" relation="relation5"/>
     <link port="CurrentTime2.trigger" relation="relation6"/>
-    <link port="CompositeActor.port" relation="relation3"/>
-    <link port="CompositeActor2.port" relation="relation3"/>
-    <link port="CompositeActor2.port2" relation="relation5"/>
-    <link port="CompositeActor3.port" relation="relation4"/>
-    <link port="CompositeActor4.port" relation="relation4"/>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor2.port" relation="relation"/>
+    <link port="CompositeActor2.port2" relation="relation4"/>
+    <link port="CompositeActor3.port" relation="relation2"/>
+    <link port="CompositeActor4.port" relation="relation2"/>
     <link port="CompositeActor4.port2" relation="relation6"/>
 </entity>

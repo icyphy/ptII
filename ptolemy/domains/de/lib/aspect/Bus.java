@@ -28,7 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.aspect;
+//package ptolemy.actor.lib.aspect;
+package ptolemy.domains.de.lib.aspect;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -41,6 +42,7 @@ import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.aspect.AtomicCommunicationAspect;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
@@ -51,7 +53,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.lib.Server;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratorAttributes;

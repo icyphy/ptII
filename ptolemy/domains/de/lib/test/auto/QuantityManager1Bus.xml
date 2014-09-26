@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="QuantityManager1BusServiceTimeBiggerThanTokenSendPeriod" class="ptolemy.actor.TypedCompositeActor">
+<entity name="QuantityManager1Bus" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 43, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 132, 834, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -53,7 +53,7 @@
         <link port="DiscreteClock.output" relation="relation"/>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 150.0}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 50}">
@@ -73,9 +73,7 @@
             </property>
             <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
-            </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -84,6 +82,8 @@
                 </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -96,17 +96,17 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 200}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 210.0}">
             </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation2"/>
-        <link port="port2" relation="relation"/>
-        <link port="Scale.input" relation="relation2"/>
-        <link port="Scale.output" relation="relation"/>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation2"/>
     </entity>
     <entity name="CompositeActor3" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 220.0]">
@@ -151,9 +151,7 @@
             </property>
             <property name="QuantityManager" class="ptolemy.data.expr.Parameter" value="Bus">
             </property>
-            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
-            </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -162,6 +160,8 @@
                 </property>
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -186,14 +186,14 @@
         <link port="Scale.input" relation="relation"/>
         <link port="Scale.output" relation="relation2"/>
     </entity>
-    <entity name="Bus" class="ptolemy.actor.lib.aspect.Bus">
-        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="1.1">
+    <entity name="Bus" class="ptolemy.domains.de.lib.aspect.Bus">
+        <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 330.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.1, 3.3, 5.5, 7.7, 9.9}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -206,7 +206,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.2, 4.4, 6.6, 8.8}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2, 1.2, 2.2, 3.2, 4.2, 5.2, 6.2, 7.2, 8.2, 9.2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -226,32 +226,24 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{325.0, 150.0}">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{325.0, 220.0}">
-        </vertex>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="CompositeActor.port" relation="relation"/>
     <link port="CompositeActor2.port" relation="relation"/>
-    <link port="CompositeActor2.port2" relation="relation7"/>
+    <link port="CompositeActor2.port2" relation="relation3"/>
     <link port="CompositeActor3.port" relation="relation2"/>
     <link port="CompositeActor4.port" relation="relation2"/>
-    <link port="CompositeActor4.port2" relation="relation3"/>
+    <link port="CompositeActor4.port2" relation="relation6"/>
     <link port="Test.input" relation="relation5"/>
     <link port="CurrentTime.output" relation="relation5"/>
-    <link port="CurrentTime.trigger" relation="relation7"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
     <link port="Test2.input" relation="relation4"/>
     <link port="CurrentTime2.output" relation="relation4"/>
-    <link port="CurrentTime2.trigger" relation="relation3"/>
+    <link port="CurrentTime2.trigger" relation="relation6"/>
 </entity>

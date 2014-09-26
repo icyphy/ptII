@@ -312,7 +312,7 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -322,7 +322,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -335,7 +335,7 @@
             </port>
             <port name="period" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -345,7 +345,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -358,7 +358,7 @@
             </port>
             <port name="start" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -368,7 +368,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -381,7 +381,7 @@
             </port>
             <port name="stop" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -391,7 +391,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -412,7 +412,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -422,7 +422,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -435,7 +435,7 @@
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -445,7 +445,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -466,7 +466,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -476,7 +476,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -489,7 +489,7 @@
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -499,7 +499,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -597,7 +597,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -607,7 +607,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -640,7 +640,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -650,7 +650,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -667,7 +667,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -677,7 +677,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -698,7 +698,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus, Bus2}">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -708,7 +708,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -901,7 +901,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -911,7 +911,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -934,7 +934,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -944,7 +944,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -961,7 +961,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -971,7 +971,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1008,7 +1008,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="QM = {Bus}">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
@@ -1018,7 +1018,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1198,7 +1198,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1208,7 +1208,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1221,7 +1221,7 @@
         </port>
         <port name="period" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1231,7 +1231,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1244,7 +1244,7 @@
         </port>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1254,7 +1254,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1267,7 +1267,7 @@
         </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1277,7 +1277,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1301,7 +1301,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1311,7 +1311,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1341,7 +1341,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1351,7 +1351,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1371,7 +1371,7 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1381,7 +1381,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1395,7 +1395,7 @@
         <port name="minus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1405,7 +1405,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1425,7 +1425,7 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1435,7 +1435,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1449,7 +1449,7 @@
         <port name="minus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1459,7 +1459,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1503,7 +1503,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1513,7 +1513,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1535,7 +1535,7 @@
             </property>
             <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1545,7 +1545,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1583,7 +1583,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1593,7 +1593,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1608,7 +1608,7 @@
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1618,7 +1618,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1636,7 +1636,7 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1646,7 +1646,7 @@
                     <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                 </property>
-                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+                <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                     <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                     </property>
                     <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1689,7 +1689,7 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1699,7 +1699,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1732,7 +1732,7 @@
             <property name="input"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
-            <property name="DecoratorAttributesFor_Bus" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1742,7 +1742,7 @@
                 <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </property>
-            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.actor.lib.aspect.Bus$BusAttributes">
+            <property name="DecoratorAttributesFor_Bus2" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus2">
                 </property>
                 <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
@@ -1759,7 +1759,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Bus" class="ptolemy.actor.lib.aspect.Bus">
+    <entity name="Bus" class="ptolemy.domains.de.lib.aspect.Bus">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -1767,7 +1767,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 130.0]">
         </property>
     </entity>
-    <entity name="Bus2" class="ptolemy.actor.lib.aspect.Bus">
+    <entity name="Bus2" class="ptolemy.domains.de.lib.aspect.Bus">
         <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,1.0,0.0,1.0}">
         </property>
         <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="1.0">

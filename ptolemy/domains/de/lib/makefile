@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/de/lib
 
-DIRS = 		test #demo
+DIRS = 		aspect test #demo
 
 # Root of the Java directory
 ROOT =		../../../..

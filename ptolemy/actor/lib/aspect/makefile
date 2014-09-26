@@ -48,17 +48,12 @@ PTPACKAGE =     aspect
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	AFDXESsIcon.xml \
-	AFDXSwitchIcon.xml \
 	aspect.xml \
-	BasicSwitchIcon.xml \
-	BusIcon.xml \
 	CanBusIcon.xml \
 	CommunicationRequestPortIcon.xml \
 	CommunicationResponsePortIcon.xml \
 	CompositeCommunicationAspectIcon.xml \
 	CompositeExecutionAspectIcon.xml \
-	CrossbarSwitchIcon.xml \
 	DynamicCoreAssignmentSchedulerIcon.xml \
 	EDFSchedulerIcon.xml \
 	ExecutionRequestPortIcon.xml \
@@ -66,24 +61,17 @@ OTHER_FILES_TO_BE_JARED = \
 	FCFSSchedulerIcon.xml \
 	FixedPrioritySchedulerIcon.xml \
 	ExecutionRequestPortIcon.xml \
-	ExecutionResponsePortIcon.xml \
-	TTESwitchIcon.xml
+	ExecutionResponsePortIcon.xml
 
 JSRCS = \
-	AFDXESs.java \
-	AFDXSwitch.java \
-	AFDXVlink.java \
 	AtomicCommunicationAspect.java \
 	AtomicExecutionAspect.java \
-	BasicSwitch.java \
-	Bus.java \
 	CanBus.java \
 	CanBusPriority.java \
 	CommunicationRequestPort.java \
 	CommunicationResponsePort.java \
 	CompositeCommunicationAspect.java \
 	CompositeExecutionAspect.java \
-	CrossbarSwitch.java \
 	DynamicCoreAssignmentScheduler.java \
 	EDFScheduler.java \
 	ExecutionRequestPort.java \
@@ -91,8 +79,7 @@ JSRCS = \
 	ExecutionTimeAttributes.java \
 	FCFSScheduler.java \
 	FixedPriorityScheduler.java \
-	PriorityResourceAttributes.java \
-	TTESwitch.java
+	PriorityResourceAttributes.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -105,10 +92,6 @@ MISC_FILES = test doc-files
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	'AFDXESs$$AFDXESsAttributes.class' \
-	'AFDXSwitch$$AfdxSwitchAttributes.class' \
-	'BasicSwitch$$BasicSwitchAttributes.class' \
-	'Bus$$BusAttributes.class' \
 	'CanBus$$CanBusAttributes.class' \
 	'CompositeCommunicationAspect$$CompositeCommunicationAspectAttributes.class' \
 	'CompositeExecutionAspect$$CompositeExecutionAspectAttributes.class'

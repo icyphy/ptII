@@ -7,17 +7,17 @@
       <group>
   <doc>Communication and Execution Aspects</doc>
 
-<entity name="AFDX_ESs" class="ptolemy.actor.lib.aspect.AFDXESs">
+<entity name="AFDX_ESs" class="ptolemy.domains.de.lib.aspect.AFDXESs">
    <doc>A communication aspect that manages all AFDX End-Systems.</doc>
   </entity>
   
-  <entity name="AFDX_SW" class="ptolemy.actor.lib.aspect.AFDXSwitch"> 
+  <entity name="AFDX_SW" class="ptolemy.domains.de.lib.aspect.AFDXSwitch"> 
   </entity>
   
-  <entity name="Bus" class="ptolemy.actor.lib.aspect.Bus"> 
+  <entity name="Bus" class="ptolemy.domains.de.lib.aspect.Bus"> 
   </entity>
   
-  <entity name="BasicSwitch" class="ptolemy.actor.lib.aspect.BasicSwitch"> 
+  <entity name="BasicSwitch" class="ptolemy.domains.de.lib.aspect.BasicSwitch"> 
   </entity>
   
   <entity name="CanBus" class="ptolemy.actor.lib.aspect.CanBus">
@@ -60,11 +60,11 @@
 
   
  
-  <entity name="CrossbarSwitch" class="ptolemy.actor.lib.aspect.CrossbarSwitch"/> 
+  <entity name="CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.CrossbarSwitch"/> 
   <entity name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.DynamicCoreAssignmentScheduler"> </entity>
   <entity name="EDFScheduler" class="ptolemy.actor.lib.aspect.EDFScheduler"> </entity>
   <entity name="FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler"/>
-  <entity name="TTESwitch" class="ptolemy.actor.lib.aspect.TTESwitch"/>  
+  <entity name="TTESwitch" class="ptolemy.domains.de.lib.aspect.TTESwitch"/>  
    
 
   

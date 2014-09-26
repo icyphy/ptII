@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.actor.lib.aspect;
+package ptolemy.domains.de.lib.aspect;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +40,7 @@ import ptolemy.actor.CommunicationAspectListener.EventType;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.aspect.AtomicCommunicationAspect;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
