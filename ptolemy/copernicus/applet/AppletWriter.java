@@ -863,6 +863,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/actor/lib/jai/jai.jar");
             atomicMap.put("ptolemy.actor.lib.jmf",
                     "ptolemy/actor/lib/jmf/jmf.jar");
+            atomicMap.put("ptolemy.cg",
+                    "ptolemy/cg/cg.jar");
             atomicMap.put("ptolemy.domains.scr",
                     "ptolemy/domains/scr/scr.jar");
             atomicMap.put("ptolemy.vergil.basic.export.html.jsoup",
@@ -987,6 +989,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 Map<String,String> componentMap = new HashMap<String,String>();
                 componentMap.put("org.ptolemy.machineLearning.particleFilter", 
                     "org/ptolemy/machineLearning/particleFilter/particleFilter.jar");
+                componentMap.put("ptolemy.cg",
+                        "ptolemy/cg/cg.jar");
                 componentMap.put("ptolemy.domains.scr",
                         "ptolemy/domains/scr/scr.jar");
                 componentMap.put("ptolemy.domains.pthales.lib.PthalesCompositeActor",
@@ -1666,6 +1670,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // colt requires multiple jar files
             auxiliaryClassMap.put("colt jar needs ptcolt", "lib/ptcolt.jar");
         }
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/cg/cg.jar")) {
+            auxiliaryClassMap.put("cg needs de",
+                    "ptolemy/domains/de/de.jar");
+            auxiliaryClassMap.put("cg needs modal",
+                    "ptolemy/domains/modal/modal.jar");
+            auxiliaryClassMap.put("cg needs ptides",
+                    "ptolemy/domains/ptides/ptides.jar");
+            auxiliaryClassMap.put("cg needs sdf",
+                    "ptolemy/domains/sdf/sdf.jar");
+        }
+
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/codegen/codegen.jar")) {
             auxiliaryClassMap.put("codegen jar needs embeddedJava",
