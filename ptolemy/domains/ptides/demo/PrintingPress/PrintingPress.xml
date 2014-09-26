@@ -12039,6 +12039,8 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.004420425872916E-8">
             </property>
+            <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 160.0]">
