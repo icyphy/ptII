@@ -1,10 +1,10 @@
-# Makefile for the Discrete Event domain actor library
+# Makefile for the Discrete Event domain aspect-oriented library
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
-# @Copyright (c) 1998-2014 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/lib/aspect
 DIRS = 		
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -74,9 +74,12 @@ MISC_FILES =	 $(DIRS) \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'AFDXESs$$AFDXESsAttributes.class' \
+	'AFDXSwitch$$AfdxSwitchAttributes.class' \
+	'BasicSwitch$$BasicSwitchAttributes.class' \
+	'Bus$$BusAttributes.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass $(PTCLASSJAR)

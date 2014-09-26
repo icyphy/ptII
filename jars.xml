@@ -1299,6 +1299,8 @@
 	<include name="ptolemy/domains/de/kernel/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/de/lib/aspect/*.class"/>
+	<include name="ptolemy/domains/de/lib/aspect/*.xml"/>
 	<include name="ptolemy/domains/de/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -4253,14 +4255,10 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/de/lib/aspect/*.class"/>
+	<include name="ptolemy/domains/de/lib/aspect/*.xml"/>
 	<include name="ptolemy/domains/de/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/lib/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/lib/*.xml"/>
       </fileset>
     </jar>

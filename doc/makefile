@@ -835,6 +835,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/ddf/lib/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
+			../ptolemy/domains/de/lib/aspect/*.java \
 			../ptolemy/domains/giotto/kernel/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/psdf/kernel/*.java \

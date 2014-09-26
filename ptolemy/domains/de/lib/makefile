@@ -45,7 +45,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR = 	$(PTPACKAGE).jar
+#PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		aspect/aspect.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AverageOverTime.java \
@@ -114,7 +120,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 
 # Get the rest of the rules
