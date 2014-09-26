@@ -166,7 +166,7 @@
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
                             </property>
                         </property>
-                        <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute" value="BaseModel.xml">
+                        <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute" value="$CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/BaseModel.xml">
                             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                                 </property>

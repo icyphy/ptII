@@ -4,13 +4,13 @@
 <entity name="DOPpresence" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 0, 1317, 780}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 22, 1426, 897}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1089, 663]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1192, 787]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{544.5, 331.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{596.0, 393.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -136,7 +136,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[925.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 465.0]">
         </property>
     </property>
     <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/dop#in_browser&quot;">
@@ -155,7 +155,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[925.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 485.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -186,7 +186,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 390.0]">
         </property>
     </property>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
@@ -1076,7 +1076,7 @@
         <link port="Const2.trigger" relation="relation3"/>
     </entity>
     <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 530.0]">
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">

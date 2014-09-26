@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2011-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -46,12 +46,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 EXAMPLE_MODELS = \
-	FaultModels.xml \
 	ChannelFaultModel.xml \
 	GaussianMixtureModel.xml \
 	GMMConvergenceAnalysis.xml \
 	HiddenMarkovModel.xml \
 	HiddenMarkovModelAnalysis.xml \
+	ProbabilisticModels.xml \
 	TwoStateMarkovChain.xml
 
 OTHER_FILES_TO_BE_JARED = \

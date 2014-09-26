@@ -2,26 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PowerMonitoringSeries" class="ptolemy.domains.ptera.kernel.PteraModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 295.0}">
     </property>
     <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
     </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
-        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-        </property>
         <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 19, 1451, 860}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 109, 1288, 728}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 720]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1054, 617]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2504851070659">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.7871398925781, 286.8882746909982}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{527.0, 308.5}">
         </property>
         <property name="URI" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -39,7 +37,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 75.0]">
             </property>
         </property>
         <property name="building" class="ptolemy.data.expr.StringParameter" value="">
@@ -58,7 +56,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 35.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 55.0]">
             </property>
         </property>
         <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7643769650755, 0.0, 0.2356230349245, 0.25}">
@@ -77,7 +75,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 75.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
             </property>
         </property>
         <property name="power" class="ptolemy.data.expr.Parameter" value="0">
@@ -96,7 +94,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 25.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 45.0]">
             </property>
         </property>
         <property name="count" class="ptolemy.data.expr.Parameter" value="0">
@@ -115,7 +113,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 85.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 105.0]">
             </property>
         </property>
         <property name="readSeries" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
@@ -134,7 +132,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 45.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 65.0]">
             </property>
         </property>
         <property name="averagePower" class="ptolemy.data.expr.Parameter" value="0">
@@ -153,7 +151,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 5.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 25.0]">
             </property>
         </property>
         <property name="mailConfigurationFile" class="ptolemy.data.expr.StringParameter" value="">
@@ -172,13 +170,13 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 15.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptera model serves as a sub workflow model for reading power consumptions from a URI for a building.&#10;From the initial state, we could configure to either transit into the ReadOnlineData process that reads power &#10;comsumptions from the URI, or ReadOfflineData process that reads from a file. If there is an IO reading &#10;exception, the ExceptionHandler process is activated, otherwise, the power consumption is then stored in an &#10;array of recent readings by the Shift state. The Shift process also computes the avarage of recent power &#10;consumptions. If the moving avarage is higher than some certain power consumption threshold, the process &#10;Count is activated that counts the number of times that average power consumptions higher are higher than &#10;the threshold. If the number of times that average power consumptions are higher than the threshold exceeds &#10;a certain value, the EmailAlert process is activated that sends emails to registered email addresses configured &#10;using the file pointed by mailConfigurationFile.&#10;&#10;Author: Dai Bui">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 375.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 395.0]">
             </property>
         </property>
         <property name="powerAlertThreshhold" class="ptolemy.data.expr.Parameter" value="500">
@@ -197,7 +195,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 65.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 85.0]">
             </property>
         </property>
         <property name="useOnlineData" class="ptolemy.data.expr.Parameter" value="false">
@@ -216,7 +214,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 95.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 115.0]">
             </property>
         </property>
         <property name="file" class="ptolemy.data.expr.FileParameter" value="">
@@ -235,7 +233,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 135.0]">
             </property>
         </property>
         <entity name="ChangeIconColor" class="ptolemy.domains.ptera.kernel.Event">
@@ -251,7 +249,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 245.0]">
             </property>
         </entity>
         <entity name="EmailAlert" class="ptolemy.domains.ptera.kernel.Event">
@@ -267,7 +265,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[975.0, 145.0]">
             </property>
         </entity>
         <entity name="Display" class="ptolemy.domains.ptera.kernel.Event">
@@ -283,7 +281,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 315.0]">
             </property>
         </entity>
         <entity name="ExceptionHandler" class="ptolemy.domains.ptera.kernel.Event">
@@ -293,7 +291,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 245.0]">
             </property>
         </entity>
         <entity name="Count" class="ptolemy.domains.ptera.kernel.Event">
@@ -309,7 +307,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 135.0]">
             </property>
         </entity>
         <entity name="Shift" class="ptolemy.domains.ptera.kernel.Event">
@@ -325,7 +323,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 215.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 235.0]">
             </property>
         </entity>
         <entity name="ReadOnlineData" class="ptolemy.domains.ptera.kernel.Event">
@@ -335,7 +333,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 155.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 175.0]">
             </property>
         </entity>
         <entity name="ReadOfflineData" class="ptolemy.domains.ptera.kernel.Event">
@@ -345,7 +343,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 300.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 320.0]">
             </property>
         </entity>
         <entity name="Start" class="ptolemy.domains.ptera.kernel.Event">
@@ -355,7 +353,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 220.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 240.0]">
             </property>
         </entity>
         <relation name="relation4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">

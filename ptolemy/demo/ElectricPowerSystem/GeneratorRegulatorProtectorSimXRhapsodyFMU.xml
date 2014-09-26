@@ -4,20 +4,20 @@
 <entity name="GeneratorRegulatorProtectorSimXRhapsodyFMU" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 26, 1295, 763}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-43, 386, 1097, 601}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1061, 653]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[863, 491]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1277710304906354">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{467.96337890625006, 257.2572378055127}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{431.5, 245.5}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At time 5, turn&#10;on a load.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-20.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-25.0, 75.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -27,13 +27,13 @@
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Two FMU, one from SimX, one from Rhapsody">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +41,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a supervisory controller generated from a Rhapsody&#10;StateCharts diagram as an FMU, and a physical plant exported as an FMU&#10;from SimulationX.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 55.0]">
         </property>
     </property>
     <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="120.0">
@@ -60,11 +60,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 180.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtectorSimXRhapsodyFMU">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorSimXRhapsodyFMU">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
@@ -99,7 +99,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 200.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -107,7 +107,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Notice the voltage spike when the load is disconnected.&#10;Also notice that the PID controller tries to take the drive&#10;negative. How does the Modelica generator model respond&#10;to this?">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 405.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -117,13 +117,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model&#10;runs only&#10;on Windows&#10;32 bit.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorFMUProtector">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 410.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -144,7 +144,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorFMUProtector/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 420}">
@@ -154,7 +154,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorProtectorTuLiP">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 435.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorTuLiP.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -175,15 +175,46 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorTuLiP/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorTuLiP/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
             </property>
         </property>
     </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the Overview.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 465.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Overview.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
+            </property>
+        </property>
+    </property>
     <class name="InitialPlusDelay" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 100.0]">
         </property>
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -289,7 +320,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 335.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -307,7 +338,7 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 265.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -321,7 +352,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 380.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -332,7 +363,7 @@
         </port>
     </entity>
     <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 265.0]">
         </property>
         <property name="proportionalGain" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
@@ -340,19 +371,19 @@
         </property>
     </entity>
     <entity name="GeneratorContactorLoadSimXFMU" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoadSimXFMU">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 265.0]">
         </property>
         <property name="voltageSamplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
     </entity>
     <entity name="InstanceOfInitialPlusDelay" class="InitialPlusDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 275.0]">
         </property>
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
     </entity>
     <entity name="InstanceOfInitialPlusDelay2" class="InitialPlusDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 150.0]">
         </property>
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -364,13 +395,13 @@
     <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 265.0]">
         </property>
     </entity>
     <entity name="onOffSupervisor" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\ptolemy\demo\ElectricPowerSystem\onOffSupervisorSimX.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/onOffSupervisorSimX.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 275.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -397,11 +428,11 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[590.0, 220.0]">
+        <vertex name="vertex1" value="[600.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[450.0, 105.0]">
+        <vertex name="vertex1" value="[460.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -411,7 +442,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[175.0, 275.0]">
+        <vertex name="vertex1" value="[185.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

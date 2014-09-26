@@ -9,25 +9,33 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 22, 720, 818}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 22, 848, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 708]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[614, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7920918222252556">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.47021484374994, 427.5000143612132}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulation of a three-state Hidden Markov Model with Gaussian emissions.&#10;The Observation Sequence plot displays the generated samples that are drawn from a&#10;Gaussian distribution. The mean and standard deviation of the observed variable&#10;depends on the hidden state. The initial probability distribution over the hidden states&#10;is specified by immediate transitions from an init state to the three hidden states.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 400.0]">
         </property>
     </property>
     <entity name="Switch" class="ptolemy.actor.lib.Switch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 215.0]">
         </property>
     </entity>
     <entity name="Histogram" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -43,7 +51,7 @@
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 225.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -64,7 +72,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[623, 385]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 310.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 340.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -82,7 +90,7 @@
     <entity name="HMM" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 330.0]">
         </property>
         <port name="p" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -590,7 +598,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{105.0, 240.0}">
+        <vertex name="vertex1" value="[115.0, 270.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -608,7 +616,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[110.0, 310.0]">
+        <vertex name="vertex1" value="[120.0, 340.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=105.0,y=310.0}, tail={id=&quot;.Scale.input&quot;,x=155.0,y=310.0}, points={} } }">
         </property>

@@ -4,20 +4,20 @@
 <entity name="TemperatureSimulation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1191, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1314, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[963, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1080, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{481.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{540.0, 262.0}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 50.0]">
         </property>
         <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation">
         </property>
@@ -44,7 +44,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[175.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[125.0, 20.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -74,7 +74,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes a model that requires&#10;EnergyPlus.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 485.0]">
         </property>
     </property>
     <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
@@ -93,7 +93,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 175.0]">
         </property>
     </property>
     <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/eplus#in_browser&quot;">
@@ -112,13 +112,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 195.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 95.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -228,7 +228,7 @@
         </port>
     </entity>
     <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 250.0]">
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">

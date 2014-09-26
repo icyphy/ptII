@@ -7,16 +7,16 @@
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1345, 760}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1051, 646}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1111, 650]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 536]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2689865934185873">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.81072964449544, 251.1697247706422}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 268.0}">
     </property>
     <property name="faultStartTime" class="ptolemy.data.expr.Parameter" value="50.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -34,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 60.0]">
         </property>
     </property>
     <property name="faultStopTime" class="ptolemy.data.expr.Parameter" value="70.0">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 85.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -61,7 +61,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate the&#10;driver of the&#10;leading car.&#10;Output is the &#10;driver's&#10;desired speed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -69,7 +69,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a car&#10;that matches&#10;the desired speed&#10;using feedback&#10;control with a&#10;specified time&#10;constant.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 245.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -77,7 +77,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a wireless&#10;network that corrupts&#10;the data when the fault&#10;input is true.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.8312072753906, 138.74664306640625]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -85,7 +85,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate faults.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 360.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -93,13 +93,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a car&#10;that attempts&#10;to detect faults&#10;in communication&#10;and adapt its&#10;behavior.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[697.5, 177.5]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple adaptive cruise control system,&#10;illustrating model-integrated control strategies. A leading&#10;car model produces information that is observed with possible&#10;flaws by a following car. If the following car detects flaws, it&#10;uses a conservative strategy. Otherwise, it tracks the leading&#10;car closely.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[337.5, 2.5]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -119,7 +119,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[2.5, 477.5]">
         </property>
     </property>
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
@@ -129,7 +129,7 @@
         </property>
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[67.5, 407.5]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
         </property>
@@ -143,11 +143,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates an ontology&#10;that distinguishes dimensions.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.5, 437.5]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 215.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 409]">
         </property>
@@ -361,7 +361,7 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 480.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -388,16 +388,16 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 317.5]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 150.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 185.0]">
         </property>
         <port name="time" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -425,11 +425,11 @@
         </property>
         <property name="microstep" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[437.5, 237.5]">
         </property>
     </entity>
     <entity name="FollowingCar" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[687.5, 297.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 33, 1119, 634}, maximized=false}">
         </property>
@@ -1242,7 +1242,7 @@
         <link port="ModalModel.fault" relation="relation3"/>
     </entity>
     <entity name="DriverSimulator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[57.5, 182.5]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Driver simulator">
@@ -1653,7 +1653,7 @@
     <entity name="NetworkModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.8312072753906, 258.74664306640625]">
         </property>
         <port name="packetIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -1953,7 +1953,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{245.0, 280.0}">
+        <vertex name="vertex1" value="[302.5, 232.5]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>

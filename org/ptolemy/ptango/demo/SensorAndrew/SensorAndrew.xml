@@ -9,31 +9,31 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/SensorAndrew/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-335.0, -170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[27.5, -300.0]">
         </property>
         <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/SensorAndrew">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1067, 956}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1046, 949}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 839]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 839]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5120000000000001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-503.891959798995, 158.9978015075376}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{168.19531249999966, 419.49999999999994}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-860.0, -180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-497.5, -310.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and displays a web page&#10;with an animated map of Scaife Hall at Carnegie Mellon &#10;using Sensor Andrew data:&#10;http://localhost:8078/scaife&#10;&#10;Please run the model and point your browser to the URL, &#10;or run the model and double-click on this comment.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-790.0, -210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-427.5, -340.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -58,7 +58,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses &quot;long polling&quot; so that an HTTP GET receives the latest temperature reading for the specified room as a response. &#10;This model currently only supports one client at a time.  Future work could extend it to multiple clients; &#10;see $PTII\org\ptolemy\ptango\demo\Chat\ChatServer.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-905.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-542.5, 430.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -66,13 +66,13 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /scaife&#10;Returns a web page with the Scaife Hall temperature map&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-525.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-162.5, 250.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If a GET request is pending &#10;in the queue, then send the&#10;formatted post as a reply.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-675.0, 780.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-312.5, 650.0]">
         </property>
     </property>
     <property name="maximumResponseTime" class="ptolemy.data.expr.Parameter" value="30.0">
@@ -91,7 +91,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-537.5, 30.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -101,7 +101,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In order to keep the connection alive and responsive,&#10;this model will send the defaultResponse if&#10;maximumResponseTime (in seconds) has elapsed&#10;since the last HTTP Get request. If a post arrives&#10;in that time interval, then it will send the contents&#10;of the post instead.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-615.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-252.5, 5.0]">
         </property>
     </property>
     <property name="XMPPGateway" class="org.ptolemy.ptango.lib.xmpp.XMPPGateway">
@@ -111,43 +111,43 @@
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.ptSensorAndrewPassword.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, -170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[137.5, -300.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Room 208">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-885.0, 720.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-522.5, 590.0]">
         </property>
     </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Room 212">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-335.0, 725.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[27.5, 595.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Room 214">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[126.0, 721.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[488.5, 591.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Room 219">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-890.0, 990.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-527.5, 860.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Room 220">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-425.0, 985.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-62.5, 855.0]">
         </property>
     </property>
     <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Room 222">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 985.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[397.5, 855.0]">
         </property>
     </property>
     <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -155,19 +155,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The Sensor Andrew password must be stored in $HOME/.ptSensorAndrewPassword.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-910.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-547.5, -180.0]">
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running the model connects to the Sensor Andrew gateway and subscribes to feeds for six sensors in Scaife Hall.&#10;The model creates a temperature map web page with a diagram of Scaife Hall showing the temperature in each room.&#10;The diagram is updated as Sensor Andrew publishes new temperatures. &#10;&#10;The model will throw an exception if it cannot connect to Sensor Andrew.  Even if the connection is successful,&#10;one or more sensors may be off.  If off, typically one temperature is received from each sensor, but no new data will be arrive.&#10;In this case, the map will display the first temperature, but display &quot;Off&quot; after a timeout period specified by maximumResponseTime.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-910.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-547.5, -145.0]">
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /scaife/room#&#10;Returns temperature data for the specified room number (for example, http://localhost:8076/room208)&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-905.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-542.5, 380.0]">
         </property>
     </property>
     <property name="theDefaultResponse" class="ptolemy.data.expr.Parameter" value="0">
@@ -186,7 +186,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-537.5, 50.0]">
         </property>
     </property>
     <property name="defaultMaximumResponseTime" class="ptolemy.data.expr.Parameter" value="30.0">
@@ -205,19 +205,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-900.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-537.5, 10.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Initialize timeout for the default response to 1 second, so that the first data points are returned quickly&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-475.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-112.5, 135.0]">
         </property>
     </property>
     <property name="Annotation17" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After first data point, change the default response timeout to 30 seconds, so page will show &quot;Off&quot; if no new sensor values received&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.0, 675.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-97.5, 545.0]">
         </property>
     </property>
     <property name="Annotation18" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -225,7 +225,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-895.0, 1240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-532.5, 1110.0]">
         </property>
     </property>
     <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
@@ -246,7 +246,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[317.5, -165.0]">
         </property>
     </property>
     <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/scaife#in_browser&quot;">
@@ -265,24 +265,24 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[317.5, -145.0]">
         </property>
     </property>
     <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[312.5, -245.0]">
         </property>
     </property>
     <port name="init" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[382.5, 70.0]">
         </property>
     </port>
     <class name="WaitForReading" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, -180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.5, -310.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model queues a get request&#10;(at most one) and when a sensor reading &#10;arrives, if there is a pending get request,&#10;then it responds with the reading.&#10;&#10;To avoid a get request timeout, a default value &#10;is sent after the maximumResponseTime.">
@@ -641,7 +641,7 @@
         <link port="Const.trigger" relation="relation5"/>
     </class>
     <class name="SensorAndrewDataExtractorClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[377.5, -310.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={348, 145, 928, 617}, maximized=false}">
         </property>
@@ -729,11 +729,11 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-780.0, 785.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-417.5, 655.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-870.0, 845.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-507.5, 715.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -741,23 +741,23 @@
     <entity name="XMPPSource" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="679a64b8d78ab1d599fd55b73b8e5cbe_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-875.0, 905.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-512.5, 775.0]">
         </property>
     </entity>
     <entity name="ExtractTemperatureReading" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, 905.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-287.5, 775.0]">
         </property>
         <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
         </property>
     </entity>
     <entity name="WaitForReading1" class="WaitForReading">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-475.0, 755.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-112.5, 625.0]">
         </property>
         <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="0">
         </property>
     </entity>
     <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-765.0, 905.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-402.5, 775.0]">
         </property>
     </entity>
     <entity name="HttpActor2" class="org.ptolemy.ptango.lib.HttpActor">
@@ -765,18 +765,18 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-860.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-497.5, 305.0]">
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/index.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-705.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-342.5, 285.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-615.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-252.5, 245.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -786,11 +786,11 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, 795.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[137.5, 665.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, 850.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.5, 720.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -798,23 +798,23 @@
     <entity name="XMPPSource2" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="f51a3e3ae15bd09ab36345ce832b398f_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 910.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[52.5, 780.0]">
         </property>
     </entity>
     <entity name="ExtractTemperatureReading2" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 910.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[267.5, 780.0]">
         </property>
         <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
         </property>
     </entity>
     <entity name="WaitForReading2" class="WaitForReading">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 765.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[312.5, 635.0]">
         </property>
         <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="$theDefaultResponse">
         </property>
     </entity>
     <entity name="StringToXML2" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, 910.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[167.5, 780.0]">
         </property>
     </entity>
     <entity name="HttpActor4" class="org.ptolemy.ptango.lib.HttpActor">
@@ -822,11 +822,11 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[236.0, 791.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[598.5, 661.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[146.0, 846.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[508.5, 716.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -834,23 +834,23 @@
     <entity name="XMPPSource3" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="b1f7eee1ccecf0af4f7434cac974f072_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[151.0, 906.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[513.5, 776.0]">
         </property>
     </entity>
     <entity name="ExtractTemperatureReading3" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[366.0, 906.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[728.5, 776.0]">
         </property>
         <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
         </property>
     </entity>
     <entity name="WaitForReading3" class="WaitForReading">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[411.0, 761.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[773.5, 631.0]">
         </property>
         <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="0">
         </property>
     </entity>
     <entity name="StringToXML3" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[266.0, 906.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[628.5, 776.0]">
         </property>
     </entity>
     <entity name="HttpActor5" class="org.ptolemy.ptango.lib.HttpActor">
@@ -858,11 +858,11 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-780.0, 1065.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-417.5, 935.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay5" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-870.0, 1120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-507.5, 990.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -870,23 +870,23 @@
     <entity name="XMPPSource4" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="7495920b39d01f774e0782cf65031532_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-865.0, 1180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-502.5, 1050.0]">
         </property>
     </entity>
     <entity name="ExtractTemperatureReading4" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, 1180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-287.5, 1050.0]">
         </property>
         <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
         </property>
     </entity>
     <entity name="WaitForReading4" class="WaitForReading">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-605.0, 1035.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-242.5, 905.0]">
         </property>
         <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="$theDefaultResponse">
         </property>
     </entity>
     <entity name="StringToXML4" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-750.0, 1180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-387.5, 1050.0]">
         </property>
     </entity>
     <entity name="HttpActor6" class="org.ptolemy.ptango.lib.HttpActor">
@@ -894,11 +894,11 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, 1055.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.5, 925.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay6" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-405.0, 1110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-42.5, 980.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -906,23 +906,23 @@
     <entity name="XMPPSource5" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="b0b0b76749275629cbe9d9c7bf8847f9_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-400.0, 1170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-37.5, 1040.0]">
         </property>
     </entity>
     <entity name="ExtractTemperatureReading5" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-185.0, 1170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[177.5, 1040.0]">
         </property>
         <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
         </property>
     </entity>
     <entity name="WaitForReading5" class="WaitForReading">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 1025.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.5, 895.0]">
         </property>
         <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="$theDefaultResponse">
         </property>
     </entity>
     <entity name="StringToXML5" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 1170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[77.5, 1040.0]">
         </property>
     </entity>
     <entity name="HttpActor7" class="org.ptolemy.ptango.lib.HttpActor">
@@ -930,11 +930,11 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 1055.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[507.5, 925.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay7" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 1110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[417.5, 980.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -942,23 +942,23 @@
     <entity name="XMPPSource6" class="org.ptolemy.ptango.lib.xmpp.XMPPSource">
         <property name="nodeId" class="ptolemy.data.expr.StringParameter" value="a5ed2cdcc39a52b0aa94e724a0adbc79_data">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 1170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[422.5, 1040.0]">
         </property>
     </entity>
     <entity name="ExtractTemperatureReading6" class="SensorAndrewDataExtractorClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 1170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[637.5, 1040.0]">
         </property>
         <property name="name" class="ptolemy.data.expr.Parameter" value="&quot;Thermometer Digital&quot;">
         </property>
     </entity>
     <entity name="WaitForReading6" class="WaitForReading">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 1025.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[682.5, 895.0]">
         </property>
         <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="0">
         </property>
     </entity>
     <entity name="StringToXML6" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 1170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[537.5, 1040.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -971,7 +971,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-755.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-392.5, 145.0]">
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -985,11 +985,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-227.5, 145.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-870.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-507.5, 145.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -1002,7 +1002,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-795.0, 685.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-432.5, 555.0]">
         </property>
     </entity>
     <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
@@ -1016,11 +1016,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 685.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-227.5, 555.0]">
         </property>
     </entity>
     <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[347.5, -90.0]">
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 55.0]">
@@ -1182,7 +1182,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation43" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-900.0, 775.0]">
+        <vertex name="vertex1" value="[-542.5, 635.0]">
         </vertex>
     </relation>
     <link port="HttpActor.response" relation="relation43"/>

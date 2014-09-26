@@ -4,13 +4,13 @@
 <entity name="GeneratorRegulatorProtectorPtides" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 22, 978, 733}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 978, 733}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[744, 623]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.073130097139556">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.9902218549679, 261.794727814503}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0, 311.5}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -78,7 +78,7 @@
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtectorWithProcessor">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
@@ -123,7 +123,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 515.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -142,7 +142,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithProcessor/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
@@ -155,6 +155,37 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two alternative execution platforms. Select between &#10;them using the useTwoProcessors parameter.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 125.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the Overview.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 540.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Overview.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
+            </property>
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -1076,8 +1107,6 @@
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1142,6 +1171,26 @@
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 90.0]">
                         </property>
+                        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                            </property>
+                            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                            </property>
+                            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                            </property>
+                        </property>
+                        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                            </property>
+                            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                            </property>
+                            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="on" class="ptolemy.domains.modal.kernel.State">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1149,6 +1198,26 @@
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 90.0]">
+                        </property>
+                        <property name="DecoratorAttributesFor_2Processors" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="2Processors">
+                            </property>
+                            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                            </property>
+                            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                            </property>
+                        </property>
+                        <property name="DecoratorAttributesFor_1Processor" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="1Processor">
+                            </property>
+                            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                            </property>
+                            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
+                            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                            </property>
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -1287,6 +1356,18 @@
                     </property>
                 </property>
                 <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
+                </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </property>
                 <port name="voltage" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>

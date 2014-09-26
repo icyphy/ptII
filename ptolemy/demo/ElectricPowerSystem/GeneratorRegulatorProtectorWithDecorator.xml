@@ -2,24 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GeneratorRegulatorProtectorWithDecorator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 137, 1085, 702}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[851, 592]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060988824120285">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{398.3283970956584, 281.45408665314886}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{425.5, 296.0}">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Generator Regulator with Cost Monitor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 15.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 45.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates a simple decorator, a cost monitor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 45.0]">
         </property>
     </property>
     <property name="overVoltageThreshold" class="ptolemy.data.expr.Parameter" value="119.0">
@@ -46,7 +46,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -54,11 +54,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Cost attribute here is a ConstraintMonitor, a decorator that decorates&#10;each actor in the model with a cost and keeps track of the sum of the costs,&#10;checking it against a constraint.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{20.0, 360.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 370.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
-        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="/Users/eal/Projects/iCyPhy/icyphywww/models/GeneratorRegulatorProtectorWithBus">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus">
             <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
@@ -82,9 +82,9 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Previous model: GeneratorRegulatorProtectorWithSpecificationAsAspect">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 475.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -103,7 +103,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithSpecificationAsAspect/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
@@ -119,15 +119,15 @@
             <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 355.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next model: GeneratorRegulatorProtectorWithBus">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 500.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -146,10 +146,41 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://icyphy.org/models/GeneratorRegulatorProtectorWithBus/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{475, 400}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the Overview.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 530.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Overview.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
             </property>
         </property>
     </property>
@@ -160,7 +191,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 412]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 305.0]">
         </property>
         <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
@@ -182,7 +213,7 @@
         </configure>
     </entity>
     <entity name="GeneratorContactorLoad" class="ptolemy.demo.ElectricPowerSystem.GeneratorContactorLoad">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 220.0]">
         </property>
         <property name="loadImpedance" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -202,7 +233,7 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 230.0]">
         </property>
         <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
@@ -222,7 +253,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 335.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -241,7 +272,7 @@
     <entity name="Supervisor" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 230.0]">
         </property>
         <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
@@ -383,7 +414,7 @@
         <link port="_Controller.contactor" relation="contactorRelation"/>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 230.0]">
         </property>
         <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
@@ -393,7 +424,7 @@
         </property>
     </entity>
     <entity name="Controller" class="ptolemy.demo.ElectricPowerSystem.Controller">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 220.0]">
         </property>
         <property name="DecoratorAttributesFor_ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor$ConstraintMonitorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Cost">
@@ -410,11 +441,11 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[500.0, 210.0]">
+        <vertex name="vertex1" value="[500.0, 220.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[330.0, 85.0]">
+        <vertex name="vertex1" value="[330.0, 95.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

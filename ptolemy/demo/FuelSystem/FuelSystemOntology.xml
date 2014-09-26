@@ -2,25 +2,25 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemOntology" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1528, 80, 1107, 600}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 72, 1007, 697}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 490]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[773, 587]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9384480146633">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.3046715561224, 220.8554687499999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.5, 293.5}">
     </property>
     <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,7 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 80.0]">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
         </property>
@@ -46,13 +46,13 @@
         </property>
     </property>
     <property name="FuelDimensionSystemSolver" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/demo/FuelSystem/FuelDimensionSystemSolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/FuelSystem/FuelDimensionSystemSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
         <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 45.0]">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
         </property>
@@ -75,7 +75,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 40.0]">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
         </property>
@@ -98,7 +98,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 60.0]">
         </property>
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,1.0,0.6,1.0}">
         </property>
@@ -117,7 +117,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 315.0]">
         </property>
     </property>
     <property name="FuelDimensionSystemSolver::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="tank1OutFlow &gt;= Flow">
@@ -132,7 +132,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 335.0]">
         </property>
     </property>
     <property name="FuelDimensionSystemSolver::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="capacity &gt;= Level">
@@ -147,15 +147,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 355.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="center" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of a domain-specific ontology&#10;to ensure correct composition of components. In particular, this&#10;ontology that a fuel level is not misinterpreted as a fuel flow,&#10;and vice versa.&#10;&#10;Above are three annotations on the model that provide the initial&#10;constraints. A solver infers from these constraints whether signals&#10;are levels, flows, or neither, throughout the model. The results of&#10;the infererence are shown as annotations on the ports (and also&#10;as color-coded highlights). To see the ontology definition,&#10;look inside the solver.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 350.0]">
+        <property name="center" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 380.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -165,7 +165,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="[see Leung, Mandl, Lee, Latronico, Shelton, &#10;Tripakis, &amp; Lickly, &quot;Scalable Semantic &#10;Annotation using Lattice-based &#10;Ontologies,&quot; MODELS 2009.]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 305.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -175,7 +175,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the solver and Open Actor&#10;to see the ontology definition and the&#10;default actor constraints.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 30.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -215,7 +215,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[531.5, 248.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[601.5, 283.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -240,7 +240,7 @@
     <entity name="FuelMover" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 225.0]">
         </property>
         <property name="moveRate" class="ptolemy.data.expr.Parameter" value="8">
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -537,7 +537,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 135.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -561,7 +561,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 145.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -576,7 +576,7 @@
         </port>
     </entity>
     <entity name="Tank1" class="ptolemy.demo.FuelSystem.ModalTank">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 135.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -1103,7 +1103,7 @@
         </entity>
     </entity>
     <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 200.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -1630,25 +1630,25 @@
         </entity>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[466.5, 228.0]">
+        <vertex name="vertex1" value="[536.5, 263.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[456.5, 218.0]">
+        <vertex name="vertex1" value="[526.5, 253.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[446.5, 208.0]">
+        <vertex name="vertex1" value="[560.0, 240.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-58.5, 218.0]">
+        <vertex name="vertex1" value="[85.0, 260.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[296.5, 143.0]">
+        <vertex name="vertex1" value="[421.5, 173.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

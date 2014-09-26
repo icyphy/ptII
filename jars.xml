@@ -6617,9 +6617,14 @@
          destfile="${basedir}/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/demo/ElectricPowerSystem/*.fmu"/>
+        <include name="ptolemy/demo/ElectricPowerSystem/*.mo"/>
         <include name="ptolemy/demo/ElectricPowerSystem/*.pdf"/>
+        <include name="ptolemy/demo/ElectricPowerSystem/*.txt"/>
         <include name="ptolemy/demo/ElectricPowerSystem/*.xml"/>
         <include name="ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorMetro/*.xml"/>
+        <include name="ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorMetro/*.csv"/>
+        <include name="ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorMetro/*.txt"/>
        </fileset>
     </jar>
 

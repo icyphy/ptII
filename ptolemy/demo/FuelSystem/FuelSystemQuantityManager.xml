@@ -11,7 +11,7 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[38.40087890625, 7.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[78.40087890625, 42.25]">
         </property>
     </property>
     <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -30,7 +30,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 22, 871, 734}, maximized=false}">
@@ -39,12 +39,12 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.6630067567568, 275.335620777027}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{318.5, 312.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use aspect-oriented modeling to describe contention for resouces on a network.&#10;This contention has an effect on timing, captured by the model.&#10;&#10;This model draws fuel at a constant rate from Tank1. When the level in Tank1&#10;gets below 1/4 of its capacity, the model begins transferring fuel from Tank2&#10;to Tank1 (while it continues to draw fuel from Tank1 at a constant rate).&#10;&#10;The FuelMover receives inputs through a network component, the Bus. The Bus &#10;has a parameter for the service time, i.e. the time it takes to transfer a message&#10;on the network. This service time has an influence on the behavior of the model&#10;as messages get delayed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 390.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -54,7 +54,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="[see Balarin, Hsieh, Lavagno, Passerone, &#10;Sangiovanni-Vincentelli &amp; Watanabe, &#10;&quot;Metropolis: an Integrated Electronic System &#10;Design Environment.&quot; Computer 36(4) 2003.]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 160.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -62,7 +62,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Patricia Derler and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 550.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 585.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -72,7 +72,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 271]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[323.40087890625, 72.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[363.40087890625, 107.25]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -103,7 +103,7 @@
     <entity name="FuelMover" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.40087890625, 77.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[108.40087890625, 112.25]">
         </property>
         <property name="moveRate" class="ptolemy.data.expr.Parameter" value="8">
         </property>
@@ -362,7 +362,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[23.40087890625, 177.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[63.40087890625, 212.25]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -389,7 +389,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[24.5, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[64.5, 330.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -411,7 +411,7 @@
         </port>
     </entity>
     <entity name="Tank" class="ptolemy.demo.FuelSystem.ModalTank">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[158.40087890625, 177.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[198.40087890625, 212.25]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
         </property>
@@ -605,7 +605,7 @@
         </entity>
     </entity>
     <entity name="Tank2" class="ptolemy.demo.FuelSystem.ModalTank">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 340.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="capacity">
         </property>
@@ -793,7 +793,7 @@
     <entity name="Bus" class="ptolemy.domains.de.lib.aspect.Bus">
         <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[268.40087890625, 17.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[308.40087890625, 52.25]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -857,7 +857,7 @@
         </property>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[208.40087890625, 127.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[248.40087890625, 162.25]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -877,11 +877,11 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.0, 340.0]">
+        <vertex name="vertex1" value="[340.0, 375.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[278.40087890625, 87.25]">
+        <vertex name="vertex1" value="[318.40087890625, 122.25]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
@@ -889,7 +889,7 @@
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[103.40087890625, 212.25]">
+        <vertex name="vertex1" value="[143.40087890625, 247.25]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -899,7 +899,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[168.40087890625, 67.25]">
+        <vertex name="vertex1" value="[208.40087890625, 102.25]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
@@ -907,19 +907,19 @@
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-10.0, 310.0]">
+        <vertex name="vertex1" value="[30.0, 345.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[60.0, 230.0]">
+        <vertex name="vertex1" value="[100.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[290.0, 295.0]">
+        <vertex name="vertex1" value="[330.0, 330.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[250.0, 230.0]">
+        <vertex name="vertex1" value="[290.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">

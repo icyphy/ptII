@@ -20,13 +20,13 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 132, 934, 635}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 207, 934, 635}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{477.0, 266.03515625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
         </property>
         <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
             <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="HMM_in">
@@ -64,7 +64,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 35.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
             </property>
         </property>
         <property name="m" class="ptolemy.data.expr.Parameter" value="{0, 2.0}">
@@ -83,7 +83,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 60.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
             </property>
         </property>
         <property name="pi" class="ptolemy.data.expr.Parameter" value="{0.2,0.8}">
@@ -102,7 +102,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 85.0]">
             </property>
         </property>
         <property name="s" class="ptolemy.data.expr.Parameter" value="{1.0,1.0}">
@@ -121,19 +121,27 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 60.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 465.0]">
             </property>
         </property>
         <port name="p" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 280.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 285.0]">
             </property>
         </port>
         <port name="state" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 320.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 325.0]">
             </property>
         </port>
         <entity name="X0" class="ptolemy.domains.modal.kernel.State">
@@ -145,7 +153,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 195.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 200.0]">
             </property>
         </entity>
         <entity name="X1" class="ptolemy.domains.modal.kernel.State">
@@ -155,7 +163,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 190.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 195.0]">
             </property>
         </entity>
         <entity name="init" class="ptolemy.domains.modal.kernel.State">
@@ -165,7 +173,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 310.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 315.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">

@@ -17,7 +17,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/HiddenMarkovModel.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -44,7 +44,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/GaussianMixtureModel.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -71,7 +71,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/HiddenMarkovModelAnalysis.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -98,7 +98,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 200.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/GMMConvergenceAnalysis.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -125,7 +125,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 80.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/FaultModels/TwoStateMarkovChain.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

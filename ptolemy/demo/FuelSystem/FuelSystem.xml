@@ -13,7 +13,7 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 35.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 804, 634}, maximized=false}">
@@ -27,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a fuel tank that can exhibit chattering behavior.&#10;In this model, the tank stops input flow when the tank become full&#10;and stops output flow when it becomes empty.&#10;&#10;The top-level of this model tests the tank in a scenario where the&#10;tank has a constant input flow of 1.0, and the output flow is&#10;0.0 from time 0 to 3, and then becomes 2.0 from time 3 to 8.&#10;At time 8 the output flow is changed to 0.0 again&#10;and the sequence of values for the output flow is repeated.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 215.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,7 +37,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the Tank icon and&#10;select Open Actor to see how the&#10;tank is modeled.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 15.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Patricia Derler and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 370.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -55,7 +55,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[769, 296]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 95.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -79,7 +79,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 90.0]">
         </property>
     </entity>
     <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
@@ -89,11 +89,11 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 2}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 175.0]">
         </property>
     </entity>
     <entity name="Tank" class="ptolemy.demo.FuelSystem.ExpressionsTank">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 100.0]">
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
@@ -101,25 +101,25 @@
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[350.0, 175.0]">
+        <vertex name="vertex1" value="[370.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[125.0, 175.0]">
+        <vertex name="vertex1" value="[145.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[325.0, 100.0]">
+        <vertex name="vertex1" value="[345.0, 100.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[325.0, 155.0]">
+        <vertex name="vertex1" value="[345.0, 155.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

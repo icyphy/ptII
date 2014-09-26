@@ -4,13 +4,13 @@
 <entity name="GMMConvergenceAnalysis" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 22, 720, 818}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 22, 1082, 900}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 708]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[848, 790]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7759690060698994">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000007">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1506.3644491991206, -744.408639879083}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{424.0000000000002, 395.0000000000005}">
     </property>
     <property name="sigma" class="ptolemy.data.expr.Parameter" value="{1.0,1.5}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1260.0, -1000.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[508.0, 25.0]">
         </property>
     </property>
     <property name="mu" class="ptolemy.data.expr.Parameter" value="{-2.0,3.0}">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1525.0, -1000.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[243.0, 25.0]">
         </property>
     </property>
     <property name="priors" class="ptolemy.data.expr.Parameter" value="{0.4,0.6}">
@@ -66,7 +66,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1125.0, -1000.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[643.0, 25.0]">
         </property>
     </property>
     <property name="N" class="ptolemy.data.expr.Parameter" value="1000">
@@ -85,7 +85,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1615.0, -1005.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[153.0, 20.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
@@ -112,7 +112,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1395.0, -1005.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[373.0, 20.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -120,7 +120,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A Gaussian Mixture Model and EM implementation for learning mean and variances of the mixture components. &#10;The EM algorithm is implemented as an SDF model, which is completely run for a number of iterations defined &#10;by the user with the EMiterations parameter. &#10;&#10;The number of samples that are drawn from the mixture model is defined by the Ns parameter. The model is&#10;run for different number of samples and the convergence rate of the EM algorithm as a function of the number&#10;of samples available is demonstrated.&#10;&#10;For more information on the EM algorithm, see:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1760.0, -440.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[8.0, 585.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -132,7 +132,7 @@
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1705.0, -980.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[63.0, 45.0]">
         </property>
     </property>
     <property name="Ns" class="ptolemy.data.expr.Parameter" value="{150,500,800}">
@@ -151,7 +151,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1750.0, -935.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[18.0, 90.0]">
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Gaussian Mixture Model Generation and Expectation&#10;Maximization for Parameter Estimation">
@@ -159,7 +159,7 @@
         </property>
         <property name="center" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1455.0, -805.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[313.0, 220.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -185,7 +185,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Gaussian Mixture Model(GMM) is parameterized by &#10;mu: the mean vector&#10;sigma: the vector containing the standard deviation values&#10;priors: mixture probabilities of the Gaussian densities&#10;&#10;Each Gaussian component in the GMM is specified by the distribution&#10;&#10;X_i ~ N(mu(i), sigma(i))&#10;&#10;where i is the array index common to mu, sigma and priors. &#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1760.0, -625.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[8.0, 400.0]">
         </property>
     </property>
     <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://people.csail.mit.edu/yks/documents/classes/mlbook/pdf/chapter10.pdf">
@@ -195,7 +195,7 @@
         </property>
         <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1610.0, -945.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[348.0, 720.0]">
         </property>
     </property>
     <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="GMM_EM/PlotsAndAnalysis/Mean_Convergence.gif">
@@ -214,11 +214,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1750.0, -905.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[18.0, 120.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 750.0]">
         </property>
     </property>
     <class name="GMM" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1335.0, -875.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[433.0, 150.0]">
         </property>
         <property name="priors" class="ptolemy.data.expr.Parameter" value="priors">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -413,7 +421,7 @@
         <link port="Expression2.in" relation="relation4"/>
     </class>
     <entity name="GMMSamples" class="ptolemy.actor.lib.hoc.RunCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1525.0, -660.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[243.0, 365.0]">
         </property>
         <property name="priors" class="ptolemy.data.expr.Parameter" value="priors">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -544,6 +552,8 @@
         </property>
         <port name="N" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 520.0}">
             </property>
         </port>
@@ -699,7 +709,7 @@
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1695.0, -660.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.0, 365.0]">
         </property>
     </entity>
     <entity name="ChooseN" class="ptolemy.actor.lib.Expression">
@@ -713,14 +723,14 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1610.0, -660.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[158.0, 365.0]">
         </property>
         <port name="i" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="ExpectationMaximization" class="ptolemy.actor.lib.hoc.RunCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1395.0, -680.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[373.0, 345.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
@@ -954,26 +964,36 @@
         </property>
         <port name="mu0" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, 465.0}">
             </property>
         </port>
         <port name="sigma0" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, 495.0}">
             </property>
         </port>
         <port name="pi0" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, 530.0}">
             </property>
         </port>
         <port name="nIterations" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, 565.0}">
             </property>
         </port>
         <port name="X" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, 430.0}">
             </property>
         </port>
@@ -1293,6 +1313,8 @@
             </property>
             <port name="X" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-17160.0, -16810.0}">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
@@ -1302,6 +1324,8 @@
             </port>
             <port name="mu" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-17160.0, -16740.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1309,6 +1333,8 @@
             </port>
             <port name="sigma" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-17160.0, -16700.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1316,6 +1342,8 @@
             </port>
             <port name="pi" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-17160.0, -16775.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1981,14 +2009,14 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1520.0, -740.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[248.0, 285.0]">
         </property>
         <port name="i" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="PlotsAndAnalysis" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1235.0, -680.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[533.0, 345.0]">
         </property>
         <port name="mean" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2175,12 +2203,6 @@
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ExpectationMaximization.nIterations&quot;,x=-1395.0,y=-680.0}, tail={id=&quot;ChooseN3.output&quot;,x=-1520.0,y=-740.0}, points={-1445.0,-670.0,-1445.0,-740.0} } }">
-        </property>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2200,6 +2222,8 @@
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="GMMSamples.N" relation="relation5"/>
     <link port="GMMSamples.X" relation="relation3"/>

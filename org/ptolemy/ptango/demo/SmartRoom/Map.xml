@@ -14,13 +14,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 15, 1287, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1293, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.648074369189907">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{784.320696721311, 361.4999999999997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{784.3206967213109, 381.5594262295079}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -76,7 +76,7 @@
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="None">
             <display name="Show parameters"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 175.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -84,13 +84,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port parameters hold the values &#10;input from the web page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1115.0, 25.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, -10.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set background to white">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{905.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 165.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -98,7 +98,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Marker class &#10;has a custom icon&#10;to show the name&#10;in the circle&#10;&#10;Right click -&gt;&#10;Appearance -&gt;&#10;Edit Custom Icon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 340.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -151,7 +151,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 190.0]">
         </property>
     </property>
     <property name="blocksWide" class="ptolemy.actor.parameters.PortParameter" value="30">
@@ -176,7 +176,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 275.0]">
         </property>
     </property>
     <property name="blockHeight" class="ptolemy.actor.parameters.PortParameter" value="20">
@@ -201,7 +201,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 220.0]">
         </property>
     </property>
     <property name="blockWidth" class="ptolemy.actor.parameters.PortParameter" value="20">
@@ -226,7 +226,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 305.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -259,7 +259,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 130.0]">
         </property>
     </property>
     <property name="lights" class="ptolemy.actor.parameters.PortParameter" value="{{name = &quot;L1&quot;, x = 115.0, y = 143.0}, {name = &quot;L2&quot;, x = 92.0, y = 355.0}, {name = &quot;L3&quot;, x = 302.0, y = 231.999984741211}, {name = &quot;L4&quot;, x = 501.0, y = 101.0000000000001}, {name = &quot;L5&quot;, x = 527.0, y = 355.0}}">
@@ -284,7 +284,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1150.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 65.0]">
         </property>
     </property>
     <property name="sensors" class="ptolemy.actor.parameters.PortParameter" value="{{name = &quot;S1&quot;, value = 276.4607272626583, x = 229.0, y = 63.0000152587891}, {name = &quot;S2&quot;, value = 621.451367547874, x = 238.0, y = 262.9999999999999}, {name = &quot;S3&quot;, value = 214.2019819439534, x = 359.0, y = 418.9999999999999}}">
@@ -309,7 +309,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 95.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -322,49 +322,49 @@
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 185.0]">
         </property>
     </port>
     <port name="blocksWide" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 270.0]">
         </property>
     </port>
     <port name="blockHeight" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 215.0]">
         </property>
     </port>
     <port name="blockWidth" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 300.0]">
         </property>
     </port>
     <port name="result" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 125.0]">
         </property>
     </port>
     <port name="lights" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 60.0]">
         </property>
     </port>
     <port name="sensors" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1130.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 90.0]">
         </property>
     </port>
     <class name="SensorClassDefinition" extends="ptolemy.actor.TypedCompositeActor">

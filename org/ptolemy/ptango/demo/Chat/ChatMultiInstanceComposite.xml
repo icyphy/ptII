@@ -4,30 +4,30 @@
 <entity name="ChatMultiInstanceComposite" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 26, 1108, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 26, 1178, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[880, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[944, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000001">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0000000000001, 122.49999999999983}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{472.0, 262.0}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[727.0, 90.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[787.0, 80.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MultiInstanceComposite Chat &#10;&#10;This model uses a MultiInstanceComposite actor&#10;to implement the chat service.&#10;&#10;It almost works - but - the POSTS are sent&#10;randomly to one of the outputs (since there &#10;are two queues?  Need to copy message?  Or have single queue?)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[207.0, 0.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -37,25 +37,25 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[102.0, 50.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SingleEvent needed as input &#10;to ThreadedComposite&#10;to tell inside DE director &#10;to fire.  Without this, &#10;the inside DE director &#10;does not fire, therefore&#10;events enqueued by HttpActor &#10;are ignored.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-5.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[57.0, 275.0]">
         </property>
     </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="I.e. without SingleEvent, don't see:&#10;========= DE Director director fires at 0.0  with microstep as 0&#10;Queue is empty. Waiting for input events.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-170.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 460.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For each ThreadedComposite, set&#10;timeDelay to UNDEFINED&#10;synchronizeToRealTime to false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[592.0, 180.0]">
         </property>
     </property>
     <property name="clientIDs" class="ptolemy.data.expr.Parameter" value="{&quot;Claudius&quot;, &quot;Ptolemaeus&quot;}">
@@ -74,17 +74,17 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[207.0, 170.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Clients use PN director&#10;Any benefit to using ThreadedComposite here?&#10;(Probably not?)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[535.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[597.0, 310.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[87.0, 210.0]">
         </property>
     </entity>
     <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
@@ -92,7 +92,7 @@
         </property>
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[342.0, 340.0]">
         </property>
     </entity>
     <entity name="ChatClient1" class="ptolemy.actor.lib.hoc.ThreadedComposite">
@@ -111,7 +111,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[527.0, 340.0]">
         </property>
         <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
@@ -484,7 +484,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[527.0, 445.0]">
         </property>
         <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
@@ -867,7 +867,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[527.0, 210.0]">
         </property>
         <port name="start" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
@@ -1620,11 +1620,11 @@
         </entity>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[315.0, 160.0]">
+        <vertex name="vertex1" value="[377.0, 210.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="[365.0, 290.0]">
+        <vertex name="vertex" value="[427.0, 340.0]">
         </vertex>
     </relation>
     <link port="SingleEvent.output" relation="relation5"/>

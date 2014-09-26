@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="AbstractTank" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 60.0]">
     </property>
@@ -22,7 +22,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 60.0]">
         </property>
     </property>
     <property name="initialLevel" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -41,16 +41,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 87, 669, 425}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 87, 690, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[456, 315]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[456, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.8532492897727, 79.6828144728535}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{228.0, 262.0}">
     </property>
     <property name="actualLevel" class="ptolemy.data.expr.Parameter" value="initialLevel">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,7 +68,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 110.0]">
         </property>
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -109,42 +109,42 @@
     </property>
     <port name="desiredInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 170.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="desiredOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 205.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="actualInFlow" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 105.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="level" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 220.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="availableOutFlow" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 70.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="fullIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 185.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -153,12 +153,12 @@
         <property name="input"/>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 240.0]">
         </property>
     </port>
     <port name="emptyIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 145.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -166,7 +166,7 @@
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialLevel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 220.0]">
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -178,11 +178,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 270.0]">
         </property>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[265.0, 130.0]">
+        <vertex name="vertex1" value="[275.0, 220.0]">
         </vertex>
     </relation>
     <link port="level" relation="relation8"/>

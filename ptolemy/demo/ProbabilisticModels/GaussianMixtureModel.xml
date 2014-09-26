@@ -22,7 +22,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, -300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[231.25, 85.5]">
         </property>
     </property>
     <property name="m" class="ptolemy.data.expr.Parameter" value="{1.0,5.0}">
@@ -41,7 +41,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-650.0, -340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[231.25, 45.5]">
         </property>
     </property>
     <property name="sigma" class="ptolemy.data.expr.Parameter" value="{1.0,1.0}">
@@ -60,7 +60,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-650.0, -320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[231.25, 65.5]">
         </property>
     </property>
     <property name="N" class="ptolemy.data.expr.Parameter" value="100">
@@ -79,16 +79,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-715.0, -340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[166.25, 45.5]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 61, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.095431670403066">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-541.8994140625, -111.64124490489135}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -101,18 +101,26 @@
         </property>
         <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-800.0, -295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 90.5]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A mixture distribution of two Gaussians. The mixing probabilities are&#10;determined by the DiscreteRandomSource actor.&#10;&#10;In this demo, the output distribution will be a mixture of two Gaussians&#10;with equal probabilities, having means 1.0 and 5.0 respectively.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-805.0, -110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[76.25, 275.5]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 395.0]">
         </property>
     </property>
     <port name="port_2" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, -200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[631.25, 185.5]">
         </property>
     </port>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -121,7 +129,7 @@
         <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-450.0, -200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[431.25, 185.5]">
         </property>
     </entity>
     <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
@@ -133,7 +141,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-795.0, -190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[86.25, 195.5]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -147,7 +155,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-625.0, -255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[256.25, 130.5]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -164,7 +172,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-620.0, -190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[261.25, 195.5]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -173,23 +181,17 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Gaussian.mean&quot;,x=-450.0,y=-200.0}, tail={id=&quot;Expression.output&quot;,x=-625.0,y=-255.0}, points={-565.0,-200.0,-565.0,-255.0} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Gaussian.standardDeviation&quot;,x=-450.0,y=-200.0}, tail={id=&quot;Expression2.output&quot;,x=-620.0,y=-190.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-670.0, -190.0}">
+        <vertex name="vertex1" value="[211.25, 195.5]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
-        </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteRandomSource.output&quot;,x=-795.0,y=-190.0}, tail={id=&quot;relation4.vertex1&quot;,x=-670.0,y=-190.0}, points={} },{ head={id=&quot;Expression2.in&quot;,x=-620.0,y=-190.0}, tail={id=&quot;relation4.vertex1&quot;,x=-670.0,y=-190.0}, points={} },{ head={id=&quot;Expression.in&quot;,x=-625.0,y=-255.0}, tail={id=&quot;relation4.vertex1&quot;,x=-670.0,y=-190.0}, points={-670.0,-255.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

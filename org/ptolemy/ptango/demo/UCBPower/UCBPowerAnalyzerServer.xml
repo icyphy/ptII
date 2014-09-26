@@ -4,13 +4,13 @@
 <entity name="UCBPowerAnalyzerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 994, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1050, 737}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[766, 627]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[816, 627]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.9921482412061, 109.70634422110552}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.0, 313.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service &#10;available at http://localhost:8078/UCBPower.&#10;&#10;This demo shows how to read data from local files or online, &#10;process the data and export the results to web. &#10;The web page is generated using Ptolemy's HTML Export Feature &#10;(in Ptolemy, File -&gt; Export -&gt; Export to Web) &#10;&#10;Please double click the JSPlotter to see the graph. &#10;&#10;The graph shows power consumption of Cory Hall for one day, &#10;where the elevator's power consumption can be viewed individually. &#10;Data was downloaded from the Simple Measurement and Actuation Profile &#10;(sMAP) project, http://new.openbms.org/plot/&#10;&#10;Please run the model and navigate to that location (or double click on this comment)&#10;(For some reason, this model is slow to open a browser window; please wait...)">
@@ -34,7 +34,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[150.0, -160.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[185.0, 30.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -42,7 +42,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 75.0]">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -54,7 +54,7 @@
         </property>
         <property name="temporaryFileLocation" class="ptolemy.data.expr.FileParameter" value="$TMPDIR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 405.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -62,7 +62,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Brian Wang, Beth Latronico">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 580.0]">
         </property>
     </property>
     <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/UCBPower#in_browser&quot;">
@@ -81,7 +81,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 555.0]">
         </property>
     </property>
     <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
@@ -100,13 +100,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 535.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 455.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -114,7 +114,7 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 455.0]">
         </property>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -128,7 +128,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 375.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -144,7 +144,7 @@
         </property>
         <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 425.0]">
         </property>
         <port name="modelFileOrURL" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -162,11 +162,11 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 375.0]">
         </property>
     </entity>
     <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 390.0]">
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35, 55}">
@@ -224,8 +224,6 @@
             </property>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
@@ -258,7 +256,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[300.0, 185.0]">
+        <vertex name="vertex1" value="[335.0, 375.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>

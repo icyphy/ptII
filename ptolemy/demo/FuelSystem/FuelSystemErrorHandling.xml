@@ -2,27 +2,27 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FuelSystemErrorHandling" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -150.0]">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1069, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1090, 874}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 764]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1674217327723">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.6198666557592, 148.841796875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.0, 382.0}">
     </property>
     <property name="transferRate" class="ptolemy.data.expr.Parameter" value="2.2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
         </property>
     </property>
     <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -59,13 +59,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 110.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates error handling where the sensor from the trim tank (TT) stops&#10;working. Change the sensorWorking parameter to false during execution to cause the failure.&#10;&#10;Model of fuel system in aircraft - normal operation.&#10;--------------------------------------------------------------------------&#10;During takeoff, the engine used an increased amount of fuel, &#10;and no fuel is transfered between the tanks.&#10;At altitude=10, fuel consumption decreases, and fuel is transfered&#10;from the middle tank LMT, to the trim tank TT in the back of the aircraft.&#10;When the feed tank LFT is low on fuel, fuel is transfered from LMT to LFT.&#10;When LFT is low again, then fuel is transfered from TT to LFT.&#10;&#10;Introduce error on TT level sensor&#10;--------------------------------------------------------------------------&#10;By setting the stop time of the SampleClock to less than the simulation time,&#10;an error is introduced, and the TT_level sensor no longer sends a signal.&#10;The fuel transfer controller reacts by stopping all transfers to/from TT. &#10;Normal operation will continue with the remaining tanks.&#10;&#10;Author: Sune Wolff, Aarhus School of Engineering, Denmark">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 335.0]">
         </property>
     </property>
     <property name="sensorWorking" class="ptolemy.data.expr.Parameter" value="true">
@@ -84,7 +84,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, -160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 40.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -94,11 +94,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above FaultGenerator produces&#10;a fault at time 10.0 that causes  the&#10;trim tank level (TT_level) to fail to&#10;arrive at the controller.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, -70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 130.0]">
         </property>
     </property>
     <class name="Tank" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, -145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of a tank whose inputs are desired flow rates (in and out) and&#10;actual output flow rate, and the outputs are the actual input flow rate&#10;and the available output flow rate. The desired, available, and actual&#10;flow rates differ when the tank is full or empty. This architecture facilitates&#10;connecting one tank to another and having them collaborate on the actual flow.&#10;&#10;When the tank becomes full, this model limits the inflow rate to be no greater&#10;than the outflow rate. When the tank becomes empty, this model limits the&#10;outflow rate to be no greater than the inflow rate.&#10;&#10;Look inside the ModalModel to see how the limiting is accomplished.&#10;Effectively, we have three slightly different models when the tank&#10;is full, empty, and neither full nor empty.">
@@ -894,7 +894,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 265.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -909,7 +909,7 @@
         </configure>
     </entity>
     <entity name="Plant" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 170.0]">
         </property>
         <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
@@ -1089,7 +1089,7 @@
         <link port="LMT_inConst.output" relation="relation12"/>
     </entity>
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 275.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -1353,13 +1353,13 @@
                     </property>
                 </port>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
-                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-                    </property>
                     <property name="value" class="ptolemy.data.expr.Parameter" value="takeoffConsumption">
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                         </property>
                         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                         </property>
+                    </property>
+                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
                     </property>
                     <doc>Create a constant sequence.</doc>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -1426,13 +1426,13 @@
                     </property>
                 </port>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
-                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-                    </property>
                     <property name="value" class="ptolemy.data.expr.Parameter" value="flightConsumption">
                         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
                         </property>
                         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
                         </property>
+                    </property>
+                    <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
                     </property>
                     <doc>Create a constant sequence.</doc>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -4598,7 +4598,7 @@
         <link relation1="relation19" relation2="relation10"/>
     </entity>
     <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
-        <property name="selector" class="ptolemy.data.expr.Parameter" value="sensorWorking">
+        <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="sensorWorking">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -4606,13 +4606,25 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 180.0]">
         </property>
+        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 230.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -4631,7 +4643,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 85.0]">
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -4643,79 +4655,79 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 85.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[320.0, 65.0]">
+        <vertex name="vertex1" value="[455.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[165.0, -10.0]">
+        <vertex name="vertex1" value="[300.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[250.0, -70.0]">
+        <vertex name="vertex1" value="[385.0, 130.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[265.0, -85.0]">
+        <vertex name="vertex1" value="[400.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-30.0, 0.0]">
+        <vertex name="vertex1" value="[105.0, 200.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-40.0, -10.0]">
+        <vertex name="vertex1" value="[95.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-50.0, -20.0]">
+        <vertex name="vertex1" value="[85.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-60.0, -30.0]">
+        <vertex name="vertex1" value="[75.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-70.0, -40.0]">
+        <vertex name="vertex1" value="[65.0, 160.0]">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-80.0, -50.0]">
+        <vertex name="vertex1" value="[55.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-90.0, -60.0]">
+        <vertex name="vertex1" value="[45.0, 140.0]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{-30.0, 45.0}">
+        <vertex name="vertex1" value="[105.0, 245.0]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{-40.0, 55.0}">
+        <vertex name="vertex1" value="[95.0, 255.0]">
         </vertex>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-50.0, 65.0]">
+        <vertex name="vertex1" value="[85.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{-60.0, 75.0}">
+        <vertex name="vertex1" value="[75.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{-70.0, 85.0}">
+        <vertex name="vertex1" value="[65.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{-80.0, 95.0}">
+        <vertex name="vertex1" value="[55.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[-90.0, 105.0]">
+        <vertex name="vertex1" value="[45.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

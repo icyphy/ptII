@@ -7,29 +7,29 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={238, 0, 1036, 1007}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={238, 22, 942, 878}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 890]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 768]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2234096387345978">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.13769531249994, 303.18184132205505}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{354.0, 384.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 60.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a simple&#10;chat service with a RESTful interface at URL&#10;http://localhost:8078/chat.&#10;&#10;A chat client is available in the ChatClient model, which&#10;you can access by clicking on this comment.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 30.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="ChatClient.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -54,7 +54,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses &quot;long polling&quot; so that an HTTP GET receives as a response text provided&#10;by the next HTTP POST. Each client has its own URL for GET requests, with the client ID&#10;as a suffix. This model supports only two clients. More clients can be supported by adding&#10;more instances of HttpActor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 190.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -62,25 +62,25 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Handle HTTP GET requests">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 345.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Handle HTTP POST requests">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[121.5, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[141.5, 600.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If a GET request is pending &#10;in the queue, then send the&#10;formatted post as a reply.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 350.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A second chat client is available in the ChatClient2 model, which&#10;you can access by clicking on this comment.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 145.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="ChatClient2.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -118,7 +118,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 275.0]">
         </property>
     </property>
     <property name="defaultResponse" class="ptolemy.data.expr.StringParameter" value="">
@@ -137,7 +137,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 295.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -147,11 +147,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In order to keep the connection alive and responsive,&#10;this model will send the defaultResponse if&#10;maximumResponseTime (in seconds) has elapsed&#10;since the last HTTP Get request. If a post arrives&#10;in that time interval, then it will send the contents&#10;of the post instead.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 250.0]">
         </property>
     </property>
     <class name="WaitForPost" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 115.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model queues a get request&#10;(at most one) and when a post arrives,&#10;if there is a pending get request,&#10;then it responds with the contents&#10;of the post.">
@@ -430,17 +430,17 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[151.5, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[171.5, 535.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 590.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[276.5, 585.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[296.5, 665.0]">
         </property>
         <port name="text" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -454,7 +454,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 645.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 725.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -464,7 +464,7 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[151.5, 585.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[171.5, 665.0]">
         </property>
     </entity>
     <entity name="HttpActor3" class="org.ptolemy.ptango.lib.HttpActor">
@@ -472,7 +472,7 @@
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="60000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 410.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -486,7 +486,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 615.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 695.0]">
         </property>
         <port name="text" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -504,13 +504,13 @@
         </port>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 465.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="InstanceOfWaitForPost" class="WaitForPost">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 380.0]">
         </property>
         <property name="maximumResponseTime" class="ptolemy.data.expr.Parameter" value="maximumResponseTime">
         </property>
@@ -518,7 +518,7 @@
         </property>
     </entity>
     <entity name="InstanceOfWaitForPost2" class="WaitForPost">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 505.0]">
         </property>
         <property name="maximumResponseTime" class="ptolemy.data.expr.Parameter" value="maximumResponseTime">
         </property>
@@ -528,11 +528,11 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[485.0, 615.0]">
+        <vertex name="vertex1" value="[505.0, 695.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[485.0, 645.0]">
+        <vertex name="vertex1" value="[505.0, 725.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -546,7 +546,7 @@
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[485.0, 360.0]">
+        <vertex name="vertex1" value="[505.0, 440.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -560,7 +560,7 @@
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[485.0, 485.0]">
+        <vertex name="vertex1" value="[505.0, 565.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

@@ -91,7 +91,7 @@ BSD sockets.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 520.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -115,13 +115,13 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 295.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 36, 1272, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 36, 1395, 722}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1044, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1161, 612]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0856675927439123">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{426.39392273869345, 225.8297738693467}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{580.5, 306.0}">
     </property>
     <property name="timeStep" class="ptolemy.actor.parameters.SharedParameter" value="2*60">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -159,7 +159,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 270.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">

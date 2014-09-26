@@ -21,7 +21,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 80.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="NEWamsStateSpaceModel.pdf">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/AirManagementSystem/NEWamsStateSpaceModel.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
