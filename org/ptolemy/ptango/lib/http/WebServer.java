@@ -412,8 +412,8 @@ public class WebServer extends AbstractInitializableAttribute {
                     "Container is required to be a CompositeEntity.");
         }
         @SuppressWarnings("unchecked")
-		List<Entity<Port>> entities = ((CompositeEntity) container)
-                .allAtomicEntityList();
+        List<Entity<Port>> entities = ((CompositeEntity) container)
+        	.allAtomicEntityList();
         for (Entity<Port> entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
