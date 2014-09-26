@@ -31,6 +31,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.DamageRegion;
@@ -149,7 +150,11 @@ public class BasicHighlighter extends FigureDecorator {
      */
     @Override
     public FigureDecorator newInstance(Figure f) {
-        return new BasicHighlighter(_paint, _halo, _composite, _stroke);
+	// Make the halo size independent of the zoom factor.
+	AffineTransform transform = f.getTransformContext().getScreenTransform();
+	// Assume zoom factor is the same in X and Y axes.
+	double scaleX = transform.getScaleX();
+        return new BasicHighlighter(_paint, 6.0f/(float)scaleX, _composite, _stroke);
     }
 
     /** Paint the figure. This method first paints the highlight over
