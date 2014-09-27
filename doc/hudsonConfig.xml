@@ -492,14 +492,14 @@ $WORKSPACE/adm/bin/killXServer</command>
       <permission>hudson.model.Run.Delete:cxh</permission>
       <permission>hudson.model.Run.Delete:cxbrooks</permission>
       <permission>hudson.model.Run.Delete:marten</permission>
-      <permission>hudson.model.Item.Build:eal</permission>
-      <permission>hudson.model.Item.Build:cxh</permission>
-      <permission>hudson.model.Item.Build:cxbrooks</permission>
-      <permission>hudson.model.Item.Build:marten</permission>
       <permission>hudson.model.Item.Configure:eal</permission>
       <permission>hudson.model.Item.Configure:cxh</permission>
       <permission>hudson.model.Item.Configure:cxbrooks</permission>
       <permission>hudson.model.Item.Configure:marten</permission>
+      <permission>hudson.model.Item.Delete:eal</permission>
+      <permission>hudson.model.Item.Delete:cxh</permission>
+      <permission>hudson.model.Item.Delete:cxbrooks</permission>
+      <permission>hudson.model.Item.Delete:marten</permission>
       <permission>hudson.model.Run.Update:eal</permission>
       <permission>hudson.model.Run.Update:cxh</permission>
       <permission>hudson.model.Run.Update:cxbrooks</permission>
@@ -513,10 +513,10 @@ $WORKSPACE/adm/bin/killXServer</command>
       <permission>hudson.model.Item.Read:cxh</permission>
       <permission>hudson.model.Item.Read:cxbrooks</permission>
       <permission>hudson.model.Item.Read:marten</permission>
-      <permission>hudson.model.Item.Delete:eal</permission>
-      <permission>hudson.model.Item.Delete:cxh</permission>
-      <permission>hudson.model.Item.Delete:cxbrooks</permission>
-      <permission>hudson.model.Item.Delete:marten</permission>
+      <permission>hudson.model.Item.Build:eal</permission>
+      <permission>hudson.model.Item.Build:cxh</permission>
+      <permission>hudson.model.Item.Build:cxbrooks</permission>
+      <permission>hudson.model.Item.Build:marten</permission>
     </hudson.security.AuthorizationMatrixProperty>
   </properties>
   <cascadingChildrenNames class="java.util.concurrent.CopyOnWriteArraySet"/>
