@@ -181,7 +181,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII/ptolemy/demo/ElectricPowerSystem/Overview/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
