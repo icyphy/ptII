@@ -98,15 +98,30 @@ and/or with unknown gradient.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
- */
+ */ 
 public class CompositeOptimizer extends ReflectComposite {
 
+    /**
+     * Constructs a CompositeOptimizer object.
+     *
+     * @param workspace  a Workspace object
+     * @throws IllegalActionException ...
+     * @throws NameDuplicationException ...
+     */
     public CompositeOptimizer(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
 
+    /**
+     * Constructs a CompositeOptimizer object.
+     *
+     * @param container  a CompositeEntity object
+     * @param name       a String ...
+     * @throws IllegalActionException ...
+     * @throws NameDuplicationException ...
+     */
     public CompositeOptimizer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -388,6 +403,13 @@ public class CompositeOptimizer extends ReflectComposite {
      */
     public class OptimizerDirector extends Director {
 
+        /**
+         * Constructs a CompositeOptimizer$OptimizerDirector object.
+         *
+         * @param workspace  a Workspace object
+         * @throws IllegalActionException ...
+         * @throws NameDuplicationException ...
+         */
         public OptimizerDirector(Workspace workspace)
                 throws IllegalActionException, NameDuplicationException {
             super(workspace);

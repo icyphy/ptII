@@ -101,11 +101,12 @@ actor by Jie Liu.
 public class ParticleFilterRange extends ParticleFilter {
 
     /**
-     * Construct a particle filter with a container and a name.
-     * @param container The container
-     * @param name Actor name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * Constructs a ParticleFilterRange object.
+     *
+     * @param container  a CompositeEntity object
+     * @param name       a String ...
+     * @throws NameDuplicationException ...
+     * @throws IllegalActionException ...
      */
     public ParticleFilterRange(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -114,10 +115,11 @@ public class ParticleFilterRange extends ParticleFilter {
     }
 
     /**
-     * Construct a range particle filter in the given workspace.
-     * @param workspace The workspace
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * Constructs a ParticleFilterRange object.
+     *
+     * @param workspace  a Workspace object
+     * @throws IllegalActionException ...
+     * @throws NameDuplicationException ...
      */
     public ParticleFilterRange(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
