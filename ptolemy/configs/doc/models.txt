@@ -56,6 +56,7 @@ $CLASSPATH/ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMULevelStairs/FMULevelStairs.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX.xml
+$CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationXPIController.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml
