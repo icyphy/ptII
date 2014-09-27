@@ -52,6 +52,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Enumeration;
@@ -433,15 +434,40 @@ public class Query extends JPanel {
             String defaultName, URI base, File startingDirectory,
             boolean allowFiles, boolean allowDirectories, boolean save,
             Color background, Color foreground) {
+        return addFileChooser(name, label, defaultName, base,
+                startingDirectory, allowFiles, allowDirectories, save,
+                background, foreground, null);
+    }
+    
+    /** Create a FileChooser.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
+     *  @param startingDirectory The directory to open the file chooser in.
+     *  @param allowFiles True if regular files may be chosen.
+     *  @param allowDirectories True if directories may be chosen.
+     *  @param save Whether the file is to be saved or opened.
+     *  @param background The background color for the text entry box.
+     *  @param foreground The foreground color for the text entry box.
+     *  @param filter A filename filter, or null to not have one.
+     *  @return The file chooser.
+     */
+    public QueryFileChooser addFileChooser(String name, String label,
+            String defaultName, URI base, File startingDirectory,
+            boolean allowFiles, boolean allowDirectories, boolean save,
+            Color background, Color foreground, FilenameFilter filter) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
         QueryFileChooser fileChooser = new QueryFileChooser(this, name,
                 defaultName, base, startingDirectory, allowFiles,
-                allowDirectories, save, background, foreground);
+                allowDirectories, save, background, foreground, filter);
         _addPair(name, lbl, fileChooser, fileChooser);
         return fileChooser;
     }
+
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.  To control the width of the box, call setTextWidth()
@@ -2171,6 +2197,27 @@ public class Query extends JPanel {
                 URI base, File startingDirectory, boolean allowFiles,
                 boolean allowDirectories, boolean save, Color background,
                 Color foreground) {
+            this(owner, name, defaultName, base, startingDirectory, allowFiles,
+                    allowDirectories, save, background, foreground, null);
+        }
+        
+        /** Construct a query file chooser.
+         * @param owner The query object that owns the file chooser
+         * @param name The name of the query object
+         * @param defaultName The default name that appears in the text field
+         * @param base The base for this query file chooser
+         * @param startingDirectory the directory in which the file query is initially opened
+         * @param allowFiles true if files are allowed to be selected.
+         * @param allowDirectories if directories are allowed to be selected.
+         * @param save Whether the file is to be saved or opened.
+         * @param background The color of the background.
+         * @param foreground The color of the foreground.
+         * @param filter A filter for filenames, or null to not give one.
+         */
+        public QueryFileChooser(Query owner, String name, String defaultName,
+                URI base, File startingDirectory, boolean allowFiles,
+                boolean allowDirectories, boolean save, Color background,
+                Color foreground, FilenameFilter filter) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
             _base = base;
@@ -2211,6 +2258,8 @@ public class Query extends JPanel {
             _entryBox.addFocusListener(new QueryFocusListener(_owner, name));
 
             _name = name;
+            
+            _filter = filter;
         }
 
         /** Create a file browser dialog and get the user input.  If
@@ -2277,8 +2326,20 @@ public class Query extends JPanel {
                 fileDialog.setFile(fileName);
             }
 
+            // Use a system property to determine whether to allow choosing
+            // directories only or both directories and files.
+            // FIXME: This doesn't really do the right thing.
+            // If _allowDirectories is set, then you cannot select files!
+            // Also, this seems like a poor mechanism, since it sets a property
+            // that affects anything running in this JVM!
             if (_allowDirectories) {
                 System.setProperty("apple.awt.fileDialogForDirectories", "true");
+            } else {
+                System.setProperty("apple.awt.fileDialogForDirectories", "false");
+            }
+            
+            if (_filter != null) {
+        	fileDialog.setFilenameFilter(_filter);
             }
 
             fileDialog.show();
@@ -2519,6 +2580,8 @@ public class Query extends JPanel {
         private boolean _allowFiles;
 
         private boolean _allowDirectories;
+        
+        private FilenameFilter _filter;
     }
 
     /** Listener for line entries, for when they lose the focus.
