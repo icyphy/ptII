@@ -2664,7 +2664,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             if (!isOpaque()) {
-                throw new IllegalActionException(this, "Missing director.");
+                // Don't throw an exception here, calling wrapup() on
+                // a composite that is not opaque is not always an error.
+                // Generating WebStart for ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
+                // One possibility is to add the DoNothingDirector.
+                System.out.println("Warning: CompositeActor.wrapup() was called on "
+                        + getFullName() + ", which is not opaque (it does not have a director?).");
             }
 
             // Note that this is assured of firing the local director,
