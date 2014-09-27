@@ -142,18 +142,21 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /*
+    /**
      * An output that defines a probability mass estimate of the multinomial
      * observation probabilities 
      */
     public TypedIOPort emissionEstimates;
 
-    /*
+    /**
      * An input guess array that defines a probability mass, defining the multinomial
      * observation probabilities 
      */
     public Parameter observationProbabilities;
 
+    /** 
+     * Number of categories in the multinomial distribution 
+     */
     public Parameter nCategories;
 
     ///////////////////////////////////////////////////////////////////
@@ -233,12 +236,32 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         return _B[hiddenState][(int) y];
     }
 
-    // emission distributions Bij = P(Yt=j | qt = i)
+    /**
+     *  Emission distributions Bij = P(Yt=j | qt = i)
+     */
     private double[][] _B;
+    /**
+     * Initial guess of Emission distribution matrix
+     */
     private double[][] _B0;
+    
+    /**
+     * Number of categories
+     */
     private int _nCategories;
 
+    /*
+     * Updated transition probability matrix  
+     */
     private double[][] A_new;
+    
+    /** 
+     * Updated emission probability matrix
+     */
     private double[][] B_new;
+    
+    /**
+     * Updated state prior belief
+     */
     private double[] prior_new;
 }

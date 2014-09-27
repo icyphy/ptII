@@ -100,11 +100,11 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     ////                         public variables                  ////
 
     /**
-     * Mean parameter array for the Gaussian distribution
+     * Mean parameter array for the Gaussian distribution.
      */
     public PortParameter mean;
     /**
-     * Standard deviation parameter array for the Gaussian distribution
+     * Standard deviation parameter array for the Gaussian distribution.
      */
     public PortParameter standardDeviation;
 
@@ -183,7 +183,9 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The mean array. */
     private double[] _mu;
 
+    /** Standard deviations array. */
     private double[] _sigma;
 }

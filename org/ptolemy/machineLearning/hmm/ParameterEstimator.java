@@ -1,4 +1,4 @@
-/* Parameter Estimation for Graphical Models.
+/** Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
 All rights reserved.
@@ -242,31 +242,31 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The user-provided initial guess of the transition probability matrix*/
+    /** The user-provided initial guess of the transition probability matrix.*/
     public Parameter A0;
 
-    /** The user-provided threshold on the minimum desired improvement on likelihood per iteration*/
+    /** The user-provided threshold on the minimum desired improvement on likelihood per iteration.*/
     public Parameter likelihoodThreshold;
 
-    /** The user-provided maximum number of allowed iterations of the Alpha-Beta Recursion*/
+    /** The user-provided maximum number of allowed iterations of the Alpha-Beta Recursion.*/
     public Parameter maxIterations;
 
-    /** Number of states of the HMM*/
+    /** Number of states of the HMM.*/
     public Parameter nStates;
 
-    /** Boolean that determines whether or not to randomize input guess vectors */
+    /** Boolean that determines whether or not to randomize input guess vectors. */
     public Parameter randomizeGuessVectors;
 
-    /** The user-provided initial guess on the prior probability distribution*/
+    /** The user-provided initial guess on the prior probability distribution.*/
     public Parameter priorDistribution;
 
-    /** The input port that provides the sample observations*/
+    /** The input port that provides the sample observations.*/
     public TypedIOPort input;
 
-    /** The vector estimate for the prior distribution on the set of states*/
+    /** The vector estimate for the prior distribution on the set of states.*/
     public TypedIOPort priorEstimates;
 
-    /** The transition matrix estimate obtained by iterating over the observation set*/
+    /** The transition matrix estimate obtained by iterating over the observation set.*/
     public TypedIOPort transitionMatrix;
 
     ///////////////////////////////////////////////////////////////////
@@ -304,8 +304,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     }
 
     /**
-     * Expectation-Maximization
-     * @return
+     * Expectation-Maximization, which internally executes a gradient-descent algorithm
+     * for parameter estimation.
+     * @return whether parameter estimation has succeded
      * @throws IllegalActionException
      */
     protected boolean _EMParameterEstimation() throws IllegalActionException {
@@ -334,9 +335,18 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         return success;
     }
 
-    // the function that computes the emission probability. Implemented by the child class.
+    /**
+     * Computes the emission probability. Implemented by the child class.
+     * @param y input observation
+     * @param hiddenState index of hidden state
+     * @return P(Y=y | X=hiddenState)
+     */
     protected abstract double emissionProbability(double y, int hiddenState);
 
+    /**
+     * Initialize arrays to be used in parameter estimation
+     * @throws IllegalActionException
+     */
     protected void _initializeArrays() throws IllegalActionException {
 
         //_observations = new double[_observationLength];
@@ -348,23 +358,38 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         _priors = new double[_nStates];
     }
 
+    /**
+     * Initialize parameters used in ExpectationMaximization here
+     */
     protected abstract void _initializeEMParameters();
 
+    /**
+     * One step EM iteration
+     */
     protected abstract void _iterateEM();
 
+    /**
+     * Check whether the gradient-descent algorithm has converged
+     * @param i Current iteration index
+     * @return boolean indicating whether algorithm has converged
+     * @throws IllegalActionException
+     */
     protected abstract boolean _checkForConvergence(int i) throws IllegalActionException;
 
+    /**
+     * Update parameter estimates
+     */
     protected abstract void _updateEstimates();
 
     /** Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
-     * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
+     * probabilities of input sequences, to ensure numerical stability. Set nCategories to zero for
      * continuous distribution types
      * @param y input observation stream
      * @param A transition probability matrix guess
      * @param prior prior state distribution guess
      * @param nCategories number of categories in the multinomial distribution, where applies
-     * @return
+     * @return a HashMap containing the updated estimates of all model parameters
      */ 
     protected HashMap HMMAlphaBetaRecursion(double[] y, double[][] A,
             double[] prior, int nCategories)
@@ -517,8 +542,15 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         return estimates;
     }
 
+    /**
+     * Currently deprecated version of {@link HMMAlphaBetaRecursion}. Works on non-normalized arrays
+     * @param y input observation stream
+     * @param A transition probability matrix guess
+     * @param prior prior state distribution guess
+     * @return
+     */
     protected HashMap HMMAlphaBetaRecursionNonNormalized(double[] y,
-            double[][] A, double[] prior, int unused) {
+            double[][] A, double[] prior) {
         int nStates = _nStates;
         int nObservations = y.length;
 
@@ -674,36 +706,38 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     }
 
-    /* User-defined initial guess array for the state transition matrix*/
+    /** User-defined initial guess array for the state transition matrix.*/
     protected double[][] _A0;
 
-    /* likelihood value of the observations given the current estimates L(x1,....xT | \theta_p)*/
+    /** likelihood value of the observations given the current estimates L(x1,....xT | \theta_p).*/
     protected double _likelihood;
 
     protected double _likelihoodThreshold;
 
-    /* User-defined number of iterations of the alpha-beta recursion*/
+    /** User-defined number of iterations of the alpha-beta recursion.*/
     protected int _nIterations;
 
-    /* Number of hidden states in the model*/
+    /** Number of hidden states in the model.*/
     protected int _nStates;
 
-    /* Observation array*/
+    /** Observation array.*/
     protected double[] _observations;
 
-    /* Prior distribution on hidden states*/
+    /** Prior distribution on hidden states.*/
     protected double[] _priors;
 
-    /* The prior estimates used in the EM iterations*/
+    /** The prior estimates used in the EM iterations.*/
     protected double[] _priorIn;
 
-    /* randomize the initial guess vectors or not*/
+    /** randomize the initial guess vectors or not.*/
     protected boolean _randomize;
-    /* Initial guess array for the state transition matrix for the Alpha-Beta Recursion*/
-    protected double[][] _transitionMatrix;
+    
+    /** Initial guess array for the state transition matrix for the Alpha-Beta Recursion.*/
+    protected double[][] _transitionMatrix; 
 
+    /** Updated parameter sets, used during Expectation-Maximization. */
     protected HashMap newEstimates;
-
+    /** Fitted model likelihood. */
     protected double likelihood;
 
 }

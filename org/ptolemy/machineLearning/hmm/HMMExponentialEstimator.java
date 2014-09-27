@@ -114,12 +114,12 @@ public class HMMExponentialEstimator extends ParameterEstimator {
     ////                         public variables                  ////
 
     /**
-     * Rate parameter of the exponential distribution
+     * Rate parameter of the exponential distribution.
      */
     public TypedIOPort lambda;
 
     /**
-     * Rate parameter guess for the exponential distribution
+     * Rate parameter guess for the exponential distribution.
      */
     public Parameter lambdaGuess;
 
@@ -248,11 +248,15 @@ public class HMMExponentialEstimator extends ParameterEstimator {
 
     }
 
+    /** Rate parameter array.*/
     private double[] _lambda;
+    /** Initial guess for Rate parameter array.*/
     private double[] _lambda0;
 
-    // EM Specific Parameters
+    /** Updated transition probability matrix estimate. */
     private double[][] A_new;
+    /** Updated distribution mean estimate. */
     private double[] m_new;
+    /** Updated state prior belief.*/
     private double[] prior_new;
 }

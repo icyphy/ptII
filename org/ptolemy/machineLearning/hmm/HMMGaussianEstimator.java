@@ -136,22 +136,22 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     ////                         public variables                  ////
 
     /**
-     * Mean parameter array for the Gaussian distribution
+     * Mean parameter array for the Gaussian distribution.
      */
     public TypedIOPort mean;
 
     /**
-     * Standard deviation parameter array for the Gaussian distribution
+     * Standard deviation parameter array for the Gaussian distribution.
      */
     public TypedIOPort standardDeviation;
 
     /**
-     * The initial guess mean parameter array for the Gaussian distribution
+     * The initial guess mean parameter array for the Gaussian distribution.
      */
     public Parameter meanVectorGuess;
 
     /**
-     * The initial guess standard deviation parameter array for the Gaussian distribution
+     * The initial guess standard deviation parameter array for the Gaussian distribution.
      */
     public Parameter standardDeviationGuess;
 
@@ -289,15 +289,22 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         _priorIn = _priors; // set to the original priors
     }
 
+    /** Mean estimates. */
     private double[] _mu = null;
+    /** Mean guess. */
     private double[] _mu0 = null;
+    /**  Standard deviation estimates. */
     private double[] _sigma = null;
+    /**  Standard deviation guess. */
     private double[] _sigma0 = null;
 
-    // EM Specific Parameters
+    /**  Updated Transition probability matrix estimate. */
     private double[][] A_new = null;
+    /**  Updated mean estimate. */
     private double[] m_new = null;
+    /**  Updated standard deviation estimate. */
     private double[] s_new = null;
+    /** Updated prior belief. */
     private double[] prior_new = null;
 
 }

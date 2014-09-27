@@ -1,4 +1,4 @@
-/* An observation classifier
+/** An observation classifier
 
 Copyright (c) 2013-2014 The Regents of the University of California.
 All rights reserved.
@@ -129,27 +129,27 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /**
-     * An array that defines priors on initial states
+     * An array that defines priors on initial states.
      */
     public PortParameter prior;
 
     /**
-     * The transition probability matrix of the hidden markov chain
+     * The transition probability matrix of the hidden markov chain.
      */
     public PortParameter transitionMatrix;
 
     /**
-     * An array of state labels assigned to input symbols
+     * An array of state labels assigned to input symbols.
      */
     public TypedIOPort output;
 
     /**
-     * An array of input symbols to be classified
+     * An array of input symbols to be classified.
      */
     public TypedIOPort input;
     
     /**
-     * Likelihood of the input stream given the parameterized HMM
+     * Likelihood of the input stream given the parameterized HMM.
      */
     public TypedIOPort likelihood;
 
@@ -196,7 +196,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @param y input sequence
      * @param prior prior guess vectors
      * @param A transition probability matrix
-     * @return
+     * @return An array of assigned labels to observations
      */
 
     protected final int[] classifyHMM(double[] y, double[] prior, double[][] A) {
@@ -280,7 +280,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @param prior prior distribution estimates
      * @return labels of assigned states
      */
-    public static final int[] gaussianClassifyMM(int startAt, double[] y,
+    public static final int[] gaussianClassifyMM(double[] y,
             double[] mu, double[] sigma, double[] prior) {
         int nStates = mu.length;
         // the soft assignments for the observations  given the parameter estimates
@@ -295,8 +295,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                     clusterAssignments[t] = i;
                 }
             }
-        }
-
+        } 
         return clusterAssignments;
     }
     
@@ -315,28 +314,28 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    /*
+    /**
      * Abstract class defining the emission probability computation of the
      * latent variable.
      */
     protected abstract double emissionProbability(double y, int hiddenState);
 
-    /* length of the observation array to be classified */
+    /** length of the observation array to be classified. */
     protected int _classificationLength;
     
-    /* sequence likelihood assigned to current input */
+    /** sequence likelihood assigned to current input. */
     protected double _likelihood;
 
-    /* observation array */
+    /** observation array. */
     protected double[] _observations;
 
-    /* number of hidden states */
+    /** number of hidden states. */
     protected int _nStates;
 
-    /* transition matrix estimate for the markov chain model */
+    /** transition matrix estimate for the markov chain model. */
     protected double[][] _transitionMatrixEstimate;
 
-    /* prior hidden state distribution */
+    /** prior hidden state distribution. */
     protected double[] _priors;
 
 }

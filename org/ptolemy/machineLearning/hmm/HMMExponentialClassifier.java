@@ -92,7 +92,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     ////                         public variables                  ////
 
     /**
-     * Rate parameter of the exponential distribution
+     * Rate parameter of the exponential distribution.
      */
     public PortParameter lambda;
 
@@ -160,5 +160,6 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Distribution rate parameter */
     private double[] _lambda;
 }
