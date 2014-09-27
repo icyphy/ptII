@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import java.util.Collections;
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
-//// A special actor thta acts as a "metronome" in the improvisation process
+//// A special actor that acts as a "metronome" in the improvisation process
 
 /**
  <p>
@@ -59,8 +59,8 @@ import ptolemy.kernel.util.StringAttribute;
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 0.3
- @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Green  
+ @Pt.ProposedRating  
+ @Pt.AcceptedRating  
  */
 public class ChordFollower extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -110,7 +110,7 @@ public class ChordFollower extends TypedAtomicActor {
         resetBeat = new TypedIOPort(this, "resetBeat", true, false);
 
         _allChords = new HashMap<Double,Chord>();
-        _currentBeat = 0.0; 
+        _currentBeatCursor = 0.0; 
         _durations = new LinkedList<Double>(); 
 
     }
@@ -175,14 +175,14 @@ public class ChordFollower extends TypedAtomicActor {
 
         if (resetBeat.isOutsideConnected() && resetBeat.hasToken(0)) {
             if (((BooleanToken)resetBeat.get(0)).booleanValue()) { 
-                _currentBeat = 0.0; 
+                _currentBeatCursor = 0.0; 
             }
         }
 
         if (reset.isOutsideConnected() &&reset.hasToken(0)) {
             if (((BooleanToken)reset.get(0)).booleanValue()) {
                 _allChords.clear();
-                _currentBeat = 0.0;
+                _currentBeatCursor = 0.0;
                 _barProgress = 0.0; 
                 _durations.clear();
             }
@@ -211,7 +211,7 @@ public class ChordFollower extends TypedAtomicActor {
 
         if (trigger.isOutsideConnected() && trigger.hasToken(0)) {
             trigger.get(0); 
-            _currentChord = _getChordForBeat(_currentBeat);
+            _currentChord = _getChordForBeat(_currentBeatCursor);
             if (_currentChord!=null && !_currentChord.equals("NIL")) {
                 nextChord.send(0, new StringToken(_currentChord));
             }
@@ -222,7 +222,7 @@ public class ChordFollower extends TypedAtomicActor {
             // then start lick, because we're probably facing a deadlock
             startLick.send(0, new BooleanToken(true));
         }
- 
+
         if (incomingNote.hasToken(0)) { 
             StringToken note = ((StringToken)incomingNote.get(0));
             if (_durations!= null 
@@ -239,65 +239,77 @@ public class ChordFollower extends TypedAtomicActor {
                 }
                 RecordToken next = new RecordToken(labels, nextTokens); 
                 acceptedTuples.send(0,next);
-                _currentBeat += Math.abs(duration);
-                currentBeat.send(0, new DoubleToken(_currentBeat));
+                _currentBeatCursor += Math.abs(duration);
+                currentBeat.send(0, new DoubleToken(_currentBeatCursor));
                 _durations.remove(0); 
-                
+
             }
         }  
-    if(incomingDuration.hasToken(0)){
-        // record the duration of the next note. 
-        // TODO: also, if the note is too short, repeat it until
-        // bar progress reaches a multiple of 0.5
-        // TODO : add a duration bar to check if things are being cut in the middle
-        double nextDurationValue = ((DoubleToken)incomingDuration.get(0)).doubleValue();
-        if(nextDurationValue != 0){
-            _durations.add(nextDurationValue);
-        }
-        // handling triplets
-        if (Math.abs(nextDurationValue - 0.33) < 0.1){
-            _durations.add(nextDurationValue);
-            _durations.add(nextDurationValue);
+        if (incomingDuration.hasToken(0)) { 
+            // TODO: also, if the note is too short, repeat it until
+            // bar progress reaches a multiple of 0.5 
+            double nextDurationValue = ((DoubleToken)incomingDuration.get(0)).doubleValue();
+            if (nextDurationValue != 0) {
+                _durations.add(nextDurationValue);
+            }
+            // handling triplets
+            if (Math.abs(nextDurationValue - 0.33) < 0.1){
+                _durations.add(nextDurationValue);
+                _durations.add(nextDurationValue);
+            } 
         } 
-    } 
-}
-public void wrapup(){ 
-    _allChords.clear();
-    _currentBeat = 0.0;
-    _barProgress = 0.0; 
-    _durations.clear();
-    _triggersSinceLastOutput = 0;
-}
-private String _getChordForBeat( double beat) {
-    Iterator a = _allChords.keySet().iterator();
-    String chordName = null;
-    boolean found = false;
-    while (a.hasNext()) { 
-        double start = ((Double)a.next()).doubleValue();
-        Chord c = ((Chord)_allChords.get(start));
-        double dur = c.getDuration();
-        if (start <= beat && start+dur > beat) {
-            // found the bin where the current note resides.
-            chordName = c.getName();
-            found = true;
-            break;
+    }
+    public void wrapup(){ 
+        _allChords.clear();
+        _currentBeatCursor = 0.0;
+        _barProgress = 0.0; 
+        _durations.clear();
+        _triggersSinceLastOutput = 0;
+    }
+    private String _getChordForBeat( double beat) {
+        Iterator a = _allChords.keySet().iterator();
+        String chordName = null;
+        boolean found = false;
+        while (a.hasNext()) { 
+            double start = ((Double)a.next()).doubleValue();
+            Chord c = ((Chord)_allChords.get(start));
+            double dur = c.getDuration();
+            if (start <= beat && start+dur > beat) {
+                // found the bin where the current note resides.
+                chordName = c.getName();
+                found = true;
+                break;
+            }
         }
+        if (!found) {
+            return null;
+        }
+        return chordName;  
     }
-    if (!found) {
-        return null;
-    }
-    return chordName;  
-}
 
-/** The beat count of the improvisation progress*/
-private double _currentBeat = 0.0;
-/** the keys are the starting points of chords in the bar, and the values are chord objects */
-private HashMap _allChords;
-/** the cursor progress in the bar so far. incremented when new chords arrive */
-private double _barProgress = 0.0;  
-private List<Double> _durations; 
-private String _currentChord;
-private int _triggersSinceLastOutput; 
+    /** The beat count of the improvisation progress*/
+    private double _currentBeatCursor = 0.0;
+    /** the keys are the starting points of chords in the bar, and the values are chord objects */
+    private HashMap _allChords;
+    /** the cursor progress in the bar so far. incremented when new chords arrive */
+    private double _barProgress = 0.0;  
+    /**
+     * List of received durations, in time stamp order
+     */
+    private List<Double> _durations; 
+    /** 
+     * Current chord according to the beat cursor
+     */
+    private String _currentChord;
+    
+    /** 
+     * Number of triggers sent to the pitch oracle, since 
+     * a note-duration pair was successfully output.
+     */
+    private int _triggersSinceLastOutput; 
 
-private String[] labels = {"frequency","duration"};
+    /** 
+     * Labels of output record tokens 
+     */
+    private String[] labels = {"frequency","duration"};
 }

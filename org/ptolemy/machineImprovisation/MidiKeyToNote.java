@@ -75,12 +75,15 @@ public class MidiKeyToNote extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /**
+     * A note equivalent of the key, represented by a string, consisting of the pitch letter A-G, the ocrave, and (possibly) a trailing symbol
+     */
     public TypedIOPort letterNote;
 
-    public TypedIOPort midiKey;
-
-    public TypedIOPort durations;
-
+    /**
+     * The midi key index
+     */
+    public TypedIOPort midiKey; 
  
     public void fire() throws IllegalActionException {
         super.fire();

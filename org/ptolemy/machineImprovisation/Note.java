@@ -106,13 +106,13 @@ public class Note{
     private String _getNameFromIndex( int noteIndex){
         
         int note = -1; // default is rest
-        if ( noteIndex > 0){
+        if ( noteIndex > 0) {
             note = noteIndex % 12;
         }
         
         String noteName = "";
-        switch(note){
-            case -1: noteName = "R"; break; //rest
+        switch(note) {
+            case -1: noteName = MusicSpecs.REST_SYMBOL; break; //rest
             case 0 : noteName = "C";  break;
             case 1 : noteName = "C#"; break;
             case 2 : noteName = "D";  break;
@@ -125,7 +125,6 @@ public class Note{
             case 9 : noteName = "A";  break;
             case 10: noteName = "A#"; break;
             case 11: noteName = "B";  break;
-            default: break;
        }
         return noteName;
     

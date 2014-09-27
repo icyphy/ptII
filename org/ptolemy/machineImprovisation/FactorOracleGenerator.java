@@ -159,8 +159,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
             //FIXME: Termination = "T" note received notes received
             // if we receive a termination note, construct the oracle
-            if (currentNoteName.equals("T")) {
-                try {
+            if (currentNoteName.equals(MusicSpecs.TERMINATION_NOTE_SYMBOL)) { 
                     if (_pitchLicks.isEmpty() || _pitchLicks.get(0).isEmpty()) {
                         if (!_pitchSequence.isEmpty()) {
                             LinkedList s = new LinkedList();
@@ -172,12 +171,14 @@ public class FactorOracleGenerator extends TypedAtomicActor {
                         }
                     }
                     if (!_pitchLicks.isEmpty()) {
-                        _constructNewFactorOracle();
+                        try {
+                            _constructNewFactorOracle();
+                        } catch (NameDuplicationException e) { 
+                            throw new IllegalActionException(this, 
+                                    "Attempted to create object with duplicate name while creating new Factor Oracle");
+                        }
                         this.reset();
-                    }
-                } catch (NameDuplicationException e) {
-                       System.err.println("Name duplication Exception!");
-                }
+                    } 
             } else {
                 if (currentNoteName.equals("R")) {
                     _durationSequence.add(-currentNoteDuration);
@@ -228,8 +229,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     }
     
     public void wrapup() throws IllegalActionException {
-       
-        try{
+        try {
             if (_completeDurationOracle != null) {
                 _completeDurationOracle.setContainer(null);
                 _completeDurationOracle = null;
@@ -238,9 +238,9 @@ public class FactorOracleGenerator extends TypedAtomicActor {
             if (_completePitchOracle != null) {
                 _completePitchOracle.setContainer(null);
                 _completePitchOracle = null;
-            }
-        }catch(NameDuplicationException e){
-            
+            } 
+        } catch (NameDuplicationException e) { 
+            throw new IllegalActionException(this);
         }
 
     }
@@ -258,9 +258,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
         return _transitions;
     }
 
-    private void _addPitchFO(final List<List> _pitchSequences) {
-        try {
-            
+    private void _addPitchFO(final List<List> _pitchSequences) throws IllegalActionException, NameDuplicationException { 
             _completePitchOracle = new FactorOracleTop(this.workspace());
             _completePitchOracle.setName(uniqueName("PitchOracle"));
             new ModalTableauFactory(
@@ -351,11 +349,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
             ModalPort o = (ModalPort) _completePitchOracle.newPort("output");
             o.setOutput(true);
             o.createReceivers();
-            _pitchMoMLString = _completePitchOracle.exportMoML();
-
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+            _pitchMoMLString = _completePitchOracle.exportMoML(); 
     }
  
 

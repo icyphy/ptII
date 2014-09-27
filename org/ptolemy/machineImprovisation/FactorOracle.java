@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import java.util.HashMap;
@@ -81,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
  <p>[1]
  C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching." 
  <i>SOFSEM’99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
- 
+
  @author Ilge Akkaya
  @version  $Id$
  @since Ptolemy II 10.1
@@ -100,57 +100,59 @@ public class FactorOracle extends ModalController {
      */
     public FactorOracle(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor)
-            throws NameDuplicationException, IllegalActionException {
+                    throws NameDuplicationException, IllegalActionException {
         this(container, name, trainingSequence, repetitionFactor, false, false);
     }
-    
+
     public FactorOracle(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException { 
         this(container, name, null, 1.0 ); 
     }
-    
-     
-   public FactorOracle(CompositeEntity container, String name,
-           Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols) 
-                   throws IllegalActionException, NameDuplicationException {
-       super(container, name);
-       setClassName("org.ptolemy.machineImprovisation.FactorOracle"); 
 
-       if (repetitionFactor > 1.0 || repetitionFactor < 0.0) {
-           throw new IllegalActionException(this,
-                   "Repetition factor must be in range [0.0,1.0].");
-       }
-       
-       _adjacencyList = new HashMap<Integer, List<Integer>>();
-       _adjacencyListSymbols = new HashMap<Integer, List<Integer>>();
 
-       _suffixLinks = new HashMap();
-       _alphabet = new HashSet();
-       _sequenceLength = 0;
+    public FactorOracle(CompositeEntity container, String name,
+            Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols) 
+                    throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        setClassName("org.ptolemy.machineImprovisation.FactorOracle"); 
 
-       _repetitionFactor = repetitionFactor;
-       _inputSequence = trainingSequence;
-       if (_inputSequence != null) {
-           _sequenceLength = _inputSequence.length;
-       } else{
-           _sequenceLength = 0;
-       }
-       _symbolic = symbolicOutput;
+        if (repetitionFactor > 1.0 || repetitionFactor < 0.0) {
+            throw new IllegalActionException(this,
+                    "Repetition factor must be in range [0.0,1.0].");
+        }
 
-       
-       _validatePitch = validateSymbols;
+        _adjacencyList = new HashMap<Integer, List<Integer>>();
+        _adjacencyListSymbols = new HashMap<Integer, List<Integer>>();
 
-       _learnFactorOracle();
-       _buildFactorOracle();
-       
-    // this is for the inner class that checks validity of pitch in the current chord progression
-       validatePitch = new Parameter(this, "validatePitch");
-       validatePitch.setToken(new ChordFunctionToken());
-       validatePitch.setVisibility(Settable.EXPERT);
-       validatePitch.setPersistent(false);
-       
-       
-   }
+        _suffixLinks = new HashMap();
+        _alphabet = new HashSet();
+        _sequenceLength = 0;
+
+        _repetitionFactor = repetitionFactor;
+
+        if (trainingSequence != null) {
+            _inputSequence = trainingSequence;
+            _sequenceLength = _inputSequence.length;
+        } else{
+            _sequenceLength = 0;
+            _inputSequence = new Object[1];
+        }
+        _symbolic = symbolicOutput;
+
+
+        _validatePitch = validateSymbols;
+
+        _learnFactorOracle();
+        _buildFactorOracle();
+
+        // this is for the inner class that checks validity of pitch in the current chord progression
+        validatePitch = new Parameter(this, "validatePitch");
+        validatePitch.setToken(new ChordFunctionToken());
+        validatePitch.setVisibility(Settable.EXPERT);
+        validatePitch.setPersistent(false);
+
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -175,60 +177,60 @@ public class FactorOracle extends ModalController {
         _initializables = oldInitializables;
         // If the next line is uncommented, the InitializationBug.xml fails.
         // newObject._initializables = null;
- 
+
         try {
             newObject.validatePitch
-                    .setToken(newObject.new ChordFunctionToken());
+            .setToken(newObject.new ChordFunctionToken());
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
             throw new CloneNotSupportedException(e.getMessage());
         } 
         return newObject;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     private void _buildFactorOracle() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
 
         // create factor oracle transitions including the suffix links.  
         _stateList = new HashMap();
         if (_adjacencyList.size() > 0 ) {
             for (int i = 0; i <= _adjacencyList.size(); i++) {
-                _createNewState(i, _sequenceLength); //add state to the FO
+                _createNewState(i); //add state to the FO
             }
             _setTransitions();
         } 
     }
 
-    private void _createNewState(final int i, final int sequenceLength) 
+    private void _createNewState(final int i) 
             throws IllegalActionException, NameDuplicationException {
         final Double horizontal = i * HORIZONTAL_SPACING_PIXELS;
         final Double vertical   = i * VERTICAL_SPACING_PIXELS; 
-                try {
-                    String name = (STATE_PREFIX + i);
-                    State s = new State(FactorOracle.this, name); 
-                    // set location
-                    Location stateLocation = (Location) s
-                            .getAttribute("_location");
-                    if (stateLocation == null) {
-                        stateLocation = new Location(s, "_location");
-                    }
-                    stateLocation.setExpression("{" + horizontal.toString()
-                            + "," + vertical.toString() + "}");
+        try {
+            String name = (STATE_PREFIX + i);
+            State s = new State(FactorOracle.this, name); 
+            // set location
+            Location stateLocation = (Location) s
+                    .getAttribute("_location");
+            if (stateLocation == null) {
+                stateLocation = new Location(s, "_location");
+            }
+            stateLocation.setExpression("{" + horizontal.toString()
+                    + "," + vertical.toString() + "}");
 
-                    if (i == 0) { 
-                        s.isInitialState.setExpression("true");
-                        this.initialStateName.setExpression(s.getName()); 
-                    }  
-                    _stateList.put(i, s); 
+            if (i == 0) { 
+                s.isInitialState.setExpression("true");
+                this.initialStateName.setExpression(s.getName()); 
+            }  
+            _stateList.put(i, s); 
 
-                } catch(IllegalActionException e) {
-                    throw new IllegalActionException(this);
-                } catch(NameDuplicationException e) {
-                    throw new NameDuplicationException(this,"Element with name already exists in Factor Oracle");
-                }
+        } catch(IllegalActionException e) {
+            throw new IllegalActionException(this);
+        } catch(NameDuplicationException e) {
+            throw new NameDuplicationException(this,"Element with name already exists in Factor Oracle");
+        }
     }
 
     private void _learnFactorOracle() {
@@ -279,111 +281,105 @@ public class FactorOracle extends ModalController {
         }
     } 
 
-    private void _setTransitions() { 
-        
-        try { 
-            String exitAngle;
-            String outputExpression; 
-            
-            for (int i = 0; i < _adjacencyList.size(); i++) {
-                List destinations = (List) _adjacencyList.get(i);
-                int nTransitions = destinations.size();
-                // divide probability amongst all transitions from this state
-                // if there is a suffix from this state to another, the destination will be >=0 ( -1 is reserved
-                // for bottom)
-                int hasSuffix = (Integer) _suffixLinks.get(i);
-                int suffixCount = hasSuffix >= 0 ? 1 : 0;
-                double precisionFactor = 1E12;
+    private void _setTransitions() throws IllegalActionException, NameDuplicationException { 
 
-                for (int k = 0; k < nTransitions; k++) {
-                    // the destination node for this transition
-                    int j = (Integer) destinations.get(k);
+        String exitAngle;
+        String outputExpression; 
 
-                    double _probability;
-                    if (i == j - 1) { 
-                        // if this is the ONLY transition enabled from this state, then the probability to the next has to be 1.
-                        if (destinations.size() == 1 && suffixCount == 0) {
-                            _probability = 1.0;
-                        } else {
-                            _probability = _repetitionFactor;
-                        }
-                        exitAngle = STRAIGHT_EXIT_ANGLE; 
+        for (int i = 0; i < _adjacencyList.size(); i++) {
+            List destinations = (List) _adjacencyList.get(i);
+            int nTransitions = destinations.size();
+            // divide probability amongst all transitions from this state
+            // if there is a suffix from this state to another, the destination will be >=0 ( -1 is reserved
+            // for bottom)
+            int hasSuffix = (Integer) _suffixLinks.get(i);
+            int suffixCount = hasSuffix >= 0 ? 1 : 0;
+            double precisionFactor = 1E12;
+
+            for (int k = 0; k < nTransitions; k++) {
+                // the destination node for this transition
+                int j = (Integer) destinations.get(k);
+
+                double _probability;
+                if (i == j - 1) { 
+                    // if this is the ONLY transition enabled from this state, then the probability to the next has to be 1.
+                    if (destinations.size() == 1 && suffixCount == 0) {
+                        _probability = 1.0;
                     } else {
-                        // divide the improvisation probability amongst the other transitions
-                        int numberOfBranches = nTransitions - (1 - suffixCount);
-                        _probability = (1.0 - _repetitionFactor)
-                                / numberOfBranches;
-                        // lose the higher digits to avoid overflow probability
-                        _probability = (Math.round(_probability
-                                * precisionFactor - 1))
-                                / precisionFactor;
-                        exitAngle = SKIP_EXIT_ANGLE;
+                        _probability = _repetitionFactor;
                     }
-                    //FIXME
-                    if (_probability > 0.0) {
-                        String transitionProbabilityExpression = "probability("
-                                + _probability + ")";
-    
-                        String relationName = "relation_" + i + j; //this will be unique. i:source state, j:destination state
-                        // label the original string transitions with the repetition factor
-    
-                        String outputChar = " ";
-                        // get the symbol to be produced, when this transition is taken
-                        outputChar = ((List) (_adjacencyListSymbols.get(i)))
-                                    .get(k).toString(); 
-    
-                        
-                        // if chord progression specification exists, a check will be added in conjunction with the guard expression
-                        String pitchValidationExpression = "validatePitch(\""
-                                + outputChar + "\", input)";
-                        // set the output expression for this transition
-                        
-                            if (outputChar != null) {
-                                if (_symbolic) {
-                                    outputExpression = "output = \""
-                                            + outputChar.toString() + "\"";
-                                } else {
-                                    outputExpression = "output = "
-                                            + outputChar.toString();
-                                }
-                            } else {
-                                outputExpression = "";
-                            } 
-    
-                        Transition t = new Transition(FactorOracle.this,
-                                relationName);
-                        (t.exitAngle).setExpression(exitAngle);
-                        (t.outputActions).setExpression(outputExpression);
-                        if (_validatePitch) {
-                            (t.guardExpression).setExpression(transitionProbabilityExpression
-                                                + "&" + pitchValidationExpression);
-                        } else {
-                            (t.guardExpression).setExpression(transitionProbabilityExpression);
-                        }
-                        ((State) _stateList.get(i)).outgoingPort.link(t);
-                        ((State) _stateList.get(j)).incomingPort.link(t);
-                    }
+                    exitAngle = STRAIGHT_EXIT_ANGLE; 
+                } else {
+                    // divide the improvisation probability amongst the other transitions
+                    int numberOfBranches = nTransitions - (1 - suffixCount);
+                    _probability = (1.0 - _repetitionFactor)
+                            / numberOfBranches;
+                    // lose the higher digits to avoid overflow probability
+                    _probability = (Math.round(_probability
+                            * precisionFactor - 1))
+                            / precisionFactor;
+                    exitAngle = SKIP_EXIT_ANGLE;
                 }
-            }
-            exitAngle = SUFFIX_EXIT_ANGLE;
-            for (int i = 0; i < _suffixLinks.size(); i++) {
-                int destination = (Integer) _suffixLinks.get(i);
-                String relationName = "relation" + i + destination;
-                if (destination >= 0) {
+                //FIXME
+                if (_probability > 0.0) {
+                    String transitionProbabilityExpression = "probability("
+                            + _probability + ")";
+
+                    String relationName = "relation_" + i + j; //this will be unique. i:source state, j:destination state
+                    // label the original string transitions with the repetition factor
+
+                    String outputChar = " ";
+                    // get the symbol to be produced, when this transition is taken
+                    outputChar = ((List) (_adjacencyListSymbols.get(i)))
+                            .get(k).toString(); 
+
+
+                    // if chord progression specification exists, a check will be added in conjunction with the guard expression
+                    String pitchValidationExpression = "validatePitch(\""
+                            + outputChar + "\", input)";
+                    // set the output expression for this transition
+
+                    if (outputChar != null) {
+                        if (_symbolic) {
+                            outputExpression = "output = \""
+                                    + outputChar.toString() + "\"";
+                        } else {
+                            outputExpression = "output = "
+                                    + outputChar.toString();
+                        }
+                    } else {
+                        outputExpression = "";
+                    } 
+
                     Transition t = new Transition(FactorOracle.this,
                             relationName);
                     (t.exitAngle).setExpression(exitAngle);
-                    (t.defaultTransition).setExpression("true");
-                    (t.guardExpression).setExpression("input_isPresent");
-                    //(t.immediate).setExpression("true");
+                    (t.outputActions).setExpression(outputExpression);
+                    if (_validatePitch) {
+                        (t.guardExpression).setExpression(transitionProbabilityExpression
+                                + "&" + pitchValidationExpression);
+                    } else {
+                        (t.guardExpression).setExpression(transitionProbabilityExpression);
+                    }
                     ((State) _stateList.get(i)).outgoingPort.link(t);
-                    ((State) _stateList.get(destination)).incomingPort.link(t);
+                    ((State) _stateList.get(j)).incomingPort.link(t);
                 }
             }
-
-        } catch (Exception e) {
-            System.err.println("Exception while trying to set transitions :"
-                    + e);
+        }
+        exitAngle = SUFFIX_EXIT_ANGLE;
+        for (int i = 0; i < _suffixLinks.size(); i++) {
+            int destination = (Integer) _suffixLinks.get(i);
+            String relationName = "relation" + i + destination;
+            if (destination >= 0) {
+                Transition t = new Transition(FactorOracle.this,
+                        relationName);
+                (t.exitAngle).setExpression(exitAngle);
+                (t.defaultTransition).setExpression("true");
+                (t.guardExpression).setExpression("input_isPresent");
+                //(t.immediate).setExpression("true");
+                ((State) _stateList.get(i)).outgoingPort.link(t);
+                ((State) _stateList.get(destination)).incomingPort.link(t);
+            }
         } 
     } 
 
@@ -412,7 +408,7 @@ public class FactorOracle extends ModalController {
      * Interpret as pitches 
      */
     private boolean _symbolic; 
-    
+
     /** Input string sequence length
      */
     private int _sequenceLength;
@@ -424,7 +420,7 @@ public class FactorOracle extends ModalController {
      * List of states in the FO
      */
     private HashMap _stateList;
-    
+
     /*
      * Boolean that when set, adds a validation check to each transition
      */
@@ -437,18 +433,18 @@ public class FactorOracle extends ModalController {
      * Horizontal spacing of states in the Factor Oracle in pixels
      */
     private static final double HORIZONTAL_SPACING_PIXELS = 150.0;
-    
+
     private static final String STATE_PREFIX = "S";
 
     private static final String SUFFIX_EXIT_ANGLE = "-0.6";
-    
+
     private static final String SKIP_EXIT_ANGLE = "0.7";
-    
+
     private static final String STRAIGHT_EXIT_ANGLE = "0.0";
-    
+
     private static Type[] _CHORD_FUNCTION_ARG_TYPE = { BaseType.STRING,
-            BaseType.STRING };
- 
+        BaseType.STRING };
+
 
     protected class ChordFunctionToken extends FunctionToken {
         public ChordFunctionToken() {
@@ -465,6 +461,9 @@ public class FactorOracle extends ModalController {
         @Override
         public Token apply(Token[] arguments) throws IllegalActionException {
 
+            if (arguments==null || arguments.length!=this.getNumberOfArguments()) {
+                throw new IllegalArgumentException("Invalid arguments.");
+            }
             if (arguments[0] instanceof StringToken
                     && arguments[1] instanceof StringToken) {
                 String noteToTest = ((StringToken) arguments[0]).stringValue();
@@ -474,22 +473,18 @@ public class FactorOracle extends ModalController {
                 List chordTones = MusicSpecs.getChordPitches(
                         chordName, true);
 
-                System.out.println("Chord: " + chordName + " Tones:"
-                        + chordTones.toString() + " Note being tested: "
-                        + noteToTest); 
-                List avoidNotes = new LinkedList(); // implement this
-
-                //chordTones.addAll(pentatonicScale);
-                chordTones.remove(avoidNotes);
+                if (chordTones != null) {
+                    System.out.println("Chord: " + chordName + " Tones:"
+                            + chordTones.toString() + " Note being tested: "
+                            + noteToTest);  
+                } 
 
                 if (chordTones.contains(pureNote)) {
                     System.out.println("Accepted Note: " + noteToTest);
                     //okay to play
                     return BooleanToken.TRUE;
-                }
-
-            }
-
+                } 
+            } 
             return BooleanToken.FALSE;
         }
 

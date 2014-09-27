@@ -90,12 +90,12 @@ public class ChordParser extends TypedAtomicActor {
         
         _durations = new LinkedList<Double>();
 
-        _notes = new LinkedList<String>();
+        _chordNames = new LinkedList<String>();
         _orderedChords = new HashMap<Integer, Chord>(); 
         _timestamps = new LinkedList<Integer>();
  
         _terminateChord = false;
-        _terminateLength = 0;
+        _chordLength = 0;
 
     }
 
@@ -120,7 +120,7 @@ public class ChordParser extends TypedAtomicActor {
         
         if (chordName.hasToken(0)) { 
             String chord = ((StringToken) chordName.get(0)).stringValue();
-            _notes.add(chord);
+            _chordNames.add(chord);
         }
         
         if (chordDuration.hasToken(0)) {
@@ -137,49 +137,66 @@ public class ChordParser extends TypedAtomicActor {
         if (endChord.hasToken(0)) {
             _terminateChord = true;
             _chordLength = ((IntToken)endChord.get(0)).intValue();
-            _orderedChords.put(_chordLength+1, new Chord(MusicSpecs.TERMINATION_CHORD,0.0)); 
-            _terminateLength = _chordLength;
+            _orderedChords.put(_chordLength+1, new Chord(MusicSpecs.TERMINATION_CHORD,0.0));  
         } 
         
         
-        if ( _notes.size() == _durations.size() 
-                && _notes.size() == _timestamps.size() 
-                && _notes.size() >= _terminateLength &&
-                _terminateLength > 0) {
+        if ( _chordNames.size() == _durations.size() 
+                && _chordNames.size() == _timestamps.size() 
+                && _chordNames.size() >= _chordLength &&
+                        _chordLength > 0) {
             // sort
             for ( int i = _timestamps.size()-1; i >= 0; i--) {
                 int index = _timestamps.get(i);
-                if ( index < _durations.size() && index < _notes.size()) {
+                if ( index < _durations.size() && index < _chordNames.size()) {
                     double duration = _durations.get(index);
-                    _orderedChords.put(index,new Chord(_notes.get(index),duration)); 
+                    _orderedChords.put(index,new Chord(_chordNames.get(index),duration)); 
                     _timestamps.remove(i); 
                 } 
             }
         } 
-        if (_terminateChord && _orderedChords.keySet().size() >= _terminateLength) { 
+        if (_terminateChord && _orderedChords.keySet().size() >= _chordLength) { 
             // sort hash map before sending out the tokens
             List keysSoFar = new LinkedList();
             keysSoFar.addAll(_orderedChords.keySet());
             Collections.sort(keysSoFar);
             Iterator iter = keysSoFar.iterator();
             while(iter.hasNext()){
-                chords.send(0, new ObjectToken((Chord)_orderedChords.get(iter.next())));
+                chords.send(0, new ObjectToken(_orderedChords.get(iter.next())));
             }
             _orderedChords.clear(); 
-            _notes.clear();
+            _chordNames.clear();
             _durations.clear();
             _timestamps.clear();
             _terminateChord = false;
-            _terminateLength = 0; 
+            _chordLength = 0; 
         }
     }  
 
-    // FIXME: what are these?
+    /** 
+     * A list of chord duration tokens that are received so far.
+     */
     private List<Double> _durations;
-    private HashMap<Integer, Chord> _orderedChords; 
-    private List<String> _notes;
+    /**
+     * An map of indexed chords, labeled by their order in the sequence
+     */
+    private HashMap<Integer, Chord> _orderedChords;
+    /**
+     * A list of chord names that are received so far.
+     */
+    private List<String> _chordNames;
+    /**
+     * List of chord indices, representing the order of appearance of the chord in the music sequence.
+     */
     private List<Integer> _timestamps;
+    
+    /**
+     * Boolean indicating whether the termination symbol for the chord stream has been received.
+     */
     private boolean _terminateChord; 
-    private int _terminateLength;   
+    
+    /**
+     * Total number of chords in the sequence
+     */ 
     private int _chordLength;
 }
