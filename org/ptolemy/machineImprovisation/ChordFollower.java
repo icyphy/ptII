@@ -119,52 +119,52 @@ public class ChordFollower extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /**
-     * Duration of the previous note in runtime
+     * Duration of the previous note in runtime.
      */
     public TypedIOPort incomingDuration;
 
     /**
-     * The accepted duration value to be applied at the next tick
+     * The accepted duration value to be applied at the next tick.
      */
     public TypedIOPort acceptedTuples;
 
     /**
-     * Accepted note in previous tick
+     * Accepted note in previous tick.
      */
     public TypedIOPort incomingNote;
 
     /**
-     * The chord sequence to which the melody should adhere to
+     * The chord sequence to which the melody should adhere to.
      */
     public TypedIOPort chordSequence;
 
     /**
-     * Next chord information provided to the Pitch oracle
+     * Next chord information provided to the Pitch oracle.
      */
     public TypedIOPort nextChord; 
 
     /**
-     * Reset all inputs and begin new melody
+     * Reset all inputs and begin new melody.
      */
     public TypedIOPort reset;
 
     /**
-     * Reset beat only, keep chord information
+     * Reset beat only, keep chord information.
      */
     public TypedIOPort resetBeat;
 
     /*
-     * Current beat count of the improvised melody
+     * Current beat count of the improvised melody.
      */
     public TypedIOPort currentBeat;
 
     /*
-     * Trigger to begin counting        
+     * Trigger to begin counting.
      */
     public TypedIOPort trigger;
 
     /**
-     * Boolean output to decide whether Pitch oracle should switch to a new lick
+     * Boolean output to decide whether Pitch oracle should switch to a new lick.
      */
     public TypedIOPort startLick; 
 
@@ -287,18 +287,18 @@ public class ChordFollower extends TypedAtomicActor {
         return chordName;  
     }
 
-    /** The beat count of the improvisation progress*/
+    /** The beat count of the improvisation progress.*/
     private double _currentBeatCursor = 0.0;
-    /** the keys are the starting points of chords in the bar, and the values are chord objects */
+    /** the keys are the starting points of chords in the bar, and the values are chord objects. */
     private HashMap _allChords;
-    /** the cursor progress in the bar so far. incremented when new chords arrive */
+    /** the cursor progress in the bar so far. incremented when new chords arrive. */
     private double _barProgress = 0.0;  
     /**
-     * List of received durations, in time stamp order
+     * List of received durations, in time stamp order.
      */
     private List<Double> _durations; 
     /** 
-     * Current chord according to the beat cursor
+     * Current chord according to the beat cursor.
      */
     private String _currentChord;
     
@@ -309,7 +309,7 @@ public class ChordFollower extends TypedAtomicActor {
     private int _triggersSinceLastOutput; 
 
     /** 
-     * Labels of output record tokens 
+     * Labels of output record tokens.
      */
     private String[] labels = {"frequency","duration"};
 }

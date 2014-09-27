@@ -44,35 +44,63 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating 
  */
 public class Chord {
+    /**
+     * Construct a chord with a name and a duration.
+     * @param name Chord name
+     * @param duration Chord duration 
+     */
     public Chord(String name, double duration) {
         _name = name;
         _duration = duration;
         _chordTones = new HashSet<Note>();
         this.setChordTones(name);
     }
+    /**
+     * Construct a chord by a set of note objects
+     * @param chordTones a Set of notes that are a part of the specified Chord.
+     */
     public Chord(Set<Note> chordTones) { 
         _chordTones = new HashSet<Note>();
         for (Note n : chordTones) {
             _chordTones.add(n);
         }
     }
+    /**
+     * Construct an empty Chord with no chord tones.
+     */
     public Chord(){
         _chordTones = new HashSet<Note>();
     }
+    /**
+     * Add a note to this chord.
+     * @param n Note to be added 
+     */
     public void addNote(Note n) {
         _chordTones.add(n);
     }
+    /**
+     * Get notes contained by this Chord.
+     * @return the Set of chord tones contained by this chord
+     */
     public Set<Note> getNotes() {
         return this._chordTones;
     }
+    /**
+     * Get the duration of this Chord.
+     * @return duration of chord
+     */
     public double getDuration() {
         return this._duration;
     }
+    /** 
+     * Get name of this Chord.
+     * @return Chord name
+     */
     public String getName() {
         return this._name;
     }
     /** 
-     * Set the notes contained by this chord
+     * Set the notes contained by this chord by a dictionary lookup.
      * @param chord The chord name
      * @throws IllegalActionException 
      */
@@ -91,7 +119,7 @@ public class Chord {
     }
     
     /** 
-     * Set the notes contained by this chord, by name reference
+     * Set the notes contained by this chord, by name reference.
      * @param chord The chord name
      */
     public void setChordTones(String chord){
@@ -103,11 +131,12 @@ public class Chord {
             }
         } 
     }
-    /** The set of notes that define this chord object */
-    private Set<Note> _chordTones;
-    /** Duration of this chord in beats 
+    /** The set of notes that define this chord object. */
+    private final Set<Note> _chordTones;
+    /** Duration of this chord in beats. 
      */
     private double _duration = 0.0;
-    /** Name of chord */
+    
+    /** Name of chord. */
     private String _name;
 }
