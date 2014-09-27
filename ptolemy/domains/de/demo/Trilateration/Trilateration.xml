@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Trilateration" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 275.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
@@ -25,21 +25,21 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 525.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 22, 1040, 692}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 34, 1254, 750}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[806, 582]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1020, 640]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7038532911254">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{134.5625000000001, -112.5615694789082}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{474.75, 314.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This &quot;trilateration&quot; model simulates the computation of the position of a target based on the time of receipt of a transmission received at three detectors. Each detector contains a &#10;local clock that is normally synchronized to the others. The detectors are located at (0,0), (a,0), and (0,b). The key blocks and their functions are:&#10;  1-&quot;Target Signal Generator&quot;. This block generates events that model the time of receipt of the transmitted signal. A fixed number of events are generated along a parabolic path or&#10;     at a fixed point depending on system parameters.&#10;  2-&quot;Target Signal Detectors&quot;. These blocks contain local clocks that are used to generate timestamps upon receipt of the transmitted signal.&#10;  3-&quot;Trilateration&quot;. This block computes the target position (and signal transmission time at the target) based on the timestamps received from each detector and the known locations&#10;     of the detectors.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This &quot;trilateration&quot; model simulates the computation of the position of a target based on the time of receipt of a transmission received at three detectors.&#10;Each detector contains a local clock that is normally synchronized to the others. The detectors are located at (0,0), (a,0), and (0,b). &#10;The key blocks and their functions are:&#10;  1-&quot;Target Signal Generator&quot;. This block generates events that model the time of receipt of the transmitted signal. A fixed number of events are&#10;       generated along a parabolic path or at a fixed point depending on system parameters.&#10;  2-&quot;Target Signal Detectors&quot;. These blocks contain local clocks that are used to generate timestamps upon receipt of the transmitted signal.&#10;  3-&quot;Trilateration&quot;. This block computes the target position (and signal transmission time at the target) based on the timestamps received from&#10;       each detector and the known locations of the detectors.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-430.0, -525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, -50.0]">
         </property>
     </property>
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
@@ -47,24 +47,32 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SYSTEM PARAMETERS:&#10;The main system parameters are defined as:&#10;1) sound: When true the velocity is 300m/s for sound&#10;          when false 3*10^8 m/s for EM waves.&#10;2) MovingTarget: boolean&#10;3) Synchronized: boolean&#10;4) GoodClock: true=&gt; drift of GCD, false =&gt; 10*GCD&#10;              true=&gt; noise of GCOSI, false =&gt; 8*GCOSI&#10;5) PerfectClock: true=&gt; all drifts and noise zero&#10;Note that unsynchronized clocks will drift apart at&#10;the clock drift rate.&#10;&#10;Lesser (and &quot;fixed&quot;) parameters are:&#10;a) goodClockOneSigmaImpairment (GCOSI): &#10;     the noise of the clocks&#10;b) goodClockDrift (GCD): free run clock drift&#10;c) pathPoints: number of points on path&#10;d) a: detector 2 at (a,0) in meters&#10;e) b: detector 3 at (0,b) in meters&#10;f) eventStartTime: absolute time when target &#10;     transmissions begin (to allow clocks to sync)&#10;&#10;Hidden parameters are derived from these.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 240.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The detectors have different drift properties based on whether the clocks are poor, good, or perfect:&#10;Detector 1: zero drift&#10;Detector 2: + the selected drift rate  &#10;Detector 3: - the selected drift rate">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-350.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 580.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The models within the red rectangle constitute the system. The&#10;other models serve only to compute statistics and display &#10;properties and performance.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 185.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: John Eidson">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 665.0]">
         </property>
     </property>
     <entity name="CompositeActor7" class="ptolemy.actor.TypedCompositeActor">
         <display name="Target Signal Generator"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-395.0, -365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 210.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The target signal generator produces a series of events representing the location of the target and the time at which the event is &#10;received at the detectors. The target location is either moving along a parabola y=(3.6b/a^2)(x-a/2)^2  determined by the &#10;&quot;Path Generator&quot; actor or at a fixed location (a,0.9b) as determined by the &quot;Fixed Location&quot; actor.&#10;&#10;For each target location the coordinates X0,Y0 are output to drive the display. In addition the delay of the signal from the &#10;target to each of the detectors is computed based on the velocity parameter representing either sound or electromagnetic &#10;wave propagation velocity. After the appropriate delay the event is sent to the detector.&#10;&#10;The formula for the delay is (delay*velocity)^2 = Di^2 = (X0-Xdetector)^2 +(Y0-Ydetector)^2&#10;&#10;The detectors are assumed to be at: (0,0), (0,b), and (a,0) all dimensions in meters.">
@@ -1364,7 +1372,7 @@
     </entity>
     <entity name="CompositeActor9" class="ptolemy.actor.TypedCompositeActor">
         <display name="Trilateration"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 295.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 132, 936, 603}, maximized=false}">
         </property>
@@ -2616,7 +2624,7 @@ Then delete this annotation.</text>
     </entity>
     <entity name="StatisticsAndPlots" class="ptolemy.actor.TypedCompositeActor">
         <display name="...............Statistics &amp; Plots"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 420.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 97, 1016, 602}, maximized=false}">
         </property>
@@ -4085,7 +4093,7 @@ Then delete this annotation.</text>
     </entity>
     <entity name="SystemParameters" class="ptolemy.actor.TypedCompositeActor">
         <display name="System Parameters"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 535.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 109, 1033, 634}, maximized=false}">
         </property>
@@ -5615,7 +5623,7 @@ Then delete this annotation.</text>
     </entity>
     <entity name="CompositeActor10" class="ptolemy.actor.TypedCompositeActor">
         <display name="..............Target Signal Detector 1 (0,0)"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, -280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 295.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 88, 898, 634}, maximized=false}">
         </property>
@@ -6429,6 +6437,8 @@ Then delete this annotation.</text>
                 </property>
                 <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -7639,6 +7649,8 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             </property>
             <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -7808,7 +7820,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <display name="Target Signal Detector 2 (a,0)"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, -250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 325.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 141, 879, 613}, maximized=false}">
         </property>
@@ -8602,6 +8614,8 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
                 <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -9816,6 +9830,8 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             </property>
             <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -9911,7 +9927,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
         <display name="Target Signal Detector 3 (0,b)"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 355.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 141, 879, 613}, maximized=false}">
         </property>
@@ -10705,6 +10721,8 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
                 <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -11919,6 +11937,8 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             </property>
             <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -12014,7 +12034,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
     </entity>
     <entity name="CompositeActor3" class="ptolemy.actor.TypedCompositeActor">
         <display name="Display Clock Synchronization"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-335.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 535.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -12159,7 +12179,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
     </entity>
     <entity name="CompositeActor4" class="ptolemy.actor.TypedCompositeActor">
         <display name="Event Clock Error Stats"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, -90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 485.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 52, 898, 517}, maximized=false}">
         </property>
@@ -13375,7 +13395,7 @@ and the state machine reset.</text></svg></configure>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-355.0, -210.0]">
+        <vertex name="vertex1" value="[-65.0, 365.0]">
         </vertex>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
@@ -13407,25 +13427,25 @@ and the state machine reset.</text></svg></configure>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-280.0, -355.0]">
+        <vertex name="vertex1" value="[10.0, 220.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-290.0, -365.0]">
+        <vertex name="vertex1" value="[0.0, 210.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[75.0, -280.0]">
+        <vertex name="vertex1" value="[365.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[100.0, -230.0]">
+        <vertex name="vertex1" value="[390.0, 345.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

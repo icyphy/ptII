@@ -13,16 +13,16 @@
         </property>
         <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-150.0, -445.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[82.5, 39.43034362792969]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1397, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1000, 642}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1163, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[766, 532]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4966141695845996">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{182.20282095151714, -219.580078125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{383.0, 266.0}">
     </property>
     <property name="target_pos" class="ptolemy.data.expr.Parameter" value="{x = -12.0, y = 4.0}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-195.0, -400.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[37.5, 84.43034362792969]">
         </property>
     </property>
     <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="400">
@@ -103,7 +103,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Two-robot open loop range-only localization of a stationary target. Robots 1 and 2 start their motion&#10;at coordinates  {x=0,y=0} and {x=0,y=10} respectively and move according to their control&#10;input. The control input is provided such that the robots follow a circular orbit in opposite directions. &#10;The particles generated at each time step, which represent the estimated posterior distribution of the &#10;target location, are plotted.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-205.0, -345.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[27.5, 139.4303436279297]">
         </property>
     </property>
     <property name="robot_position1" class="ptolemy.data.expr.Parameter" value="{x = 1.9921147013145, y = 15.769211610301}">
@@ -122,7 +122,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, -400.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[267.5, 84.43034362792969]">
         </property>
     </property>
     <property name="robot_position2" class="ptolemy.data.expr.Parameter" value="{x = -16.3474674573577, y = -4.4122312484587}">
@@ -141,7 +141,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-195.0, -370.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[37.5, 114.43034362792969]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -149,7 +149,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[37.5, 494.4303436279297]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -167,7 +167,7 @@
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, -55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[317.5, 429.4303436279297]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-15.933606711291043">
         </property>
@@ -251,7 +251,7 @@
         </entity>
     </entity>
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-170.0, -45.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[62.5, 439.4303436279297]">
         </property>
         <property name="A" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -409,7 +409,7 @@
         <link port="DiscreteClock.output" relation="relation2"/>
     </entity>
     <entity name="Controller2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-170.0, -115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[62.5, 369.4303436279297]">
         </property>
         <property name="A" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -579,7 +579,7 @@
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, -210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[312.5, 274.4303436279297]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-14.95822273410332">
         </property>
@@ -657,7 +657,7 @@
         </entity>
     </entity>
     <entity name="Robot2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[197.5, 369.4303436279297]">
         </property>
         <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{x=0.0, y=10.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -920,7 +920,7 @@
         <link port="Merge.output" relation="relation11"/>
     </entity>
     <entity name="Robot" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -45.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[197.5, 439.4303436279297]">
         </property>
         <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{x=0.0, y=0.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1183,7 +1183,7 @@
         <link port="Merge.output" relation="relation9"/>
     </entity>
     <entity name="Plots" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, -115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[437.5, 369.4303436279297]">
         </property>
         <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="400">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

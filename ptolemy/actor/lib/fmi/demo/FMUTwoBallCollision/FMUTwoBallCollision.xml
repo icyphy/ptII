@@ -7,7 +7,7 @@
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[623.5, 135.0]">
         </property>
     </property>
     <property name="diameter" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -26,16 +26,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[143.5, 190.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 31, 1104, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 31, 1123, 802}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[870, 642]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[889, 692]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9457377831125763">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{236.9646620639533, 160.93163154069816}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{444.5, 346.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="collision&#10;indicator">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[708.5, 410.0]">
         </property>
     </property>
     <property name="mLeft" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -63,7 +63,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[143.5, 230.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -71,7 +71,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Masses:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[133.5, 200.0]">
         </property>
     </property>
     <property name="mRight" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -90,7 +90,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[143.5, 250.0]">
         </property>
     </property>
     <property name="e" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -109,7 +109,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[143.5, 170.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -117,7 +117,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="coefficient of restitution">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[133.5, 140.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
@@ -130,15 +130,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model of two balls with the same&#10;mass colliding.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[118.5, 55.0]">
         </property>
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Two-Ball Collision">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[113.5, 20.0]">
         </property>
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[528.5, 60.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-50.0">
         </property>
@@ -148,17 +148,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="input&#10;force">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, -160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[478.5, 15.0]">
         </property>
     </property>
     <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[478.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="300.0">
         </property>
     </property>
     <property name="Line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[498.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -166,7 +166,7 @@
         </property>
     </property>
     <property name="Line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[508.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -174,7 +174,7 @@
         </property>
     </property>
     <property name="Line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[518.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -182,7 +182,7 @@
         </property>
     </property>
     <property name="Line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[528.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -190,7 +190,7 @@
         </property>
     </property>
     <property name="Line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[538.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -198,7 +198,7 @@
         </property>
     </property>
     <property name="Line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[319.9999999999999, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[548.4999999999999, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -206,7 +206,7 @@
         </property>
     </property>
     <property name="Line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[558.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -214,7 +214,7 @@
         </property>
     </property>
     <property name="Line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[568.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -222,7 +222,7 @@
         </property>
     </property>
     <property name="Line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[578.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -230,7 +230,7 @@
         </property>
     </property>
     <property name="Line11" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[588.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -238,7 +238,7 @@
         </property>
     </property>
     <property name="Line12" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[598.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -246,7 +246,7 @@
         </property>
     </property>
     <property name="Line13" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[608.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -254,7 +254,7 @@
         </property>
     </property>
     <property name="Line14" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[618.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -262,7 +262,7 @@
         </property>
     </property>
     <property name="Line15" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[628.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -270,7 +270,7 @@
         </property>
     </property>
     <property name="Line16" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[638.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -278,7 +278,7 @@
         </property>
     </property>
     <property name="Line17" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[648.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -286,7 +286,7 @@
         </property>
     </property>
     <property name="Line18" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[658.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -294,7 +294,7 @@
         </property>
     </property>
     <property name="Line19" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[668.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -302,7 +302,7 @@
         </property>
     </property>
     <property name="Line20" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[678.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -310,7 +310,7 @@
         </property>
     </property>
     <property name="Line21" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[688.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -318,7 +318,7 @@
         </property>
     </property>
     <property name="Line22" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[698.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -326,7 +326,7 @@
         </property>
     </property>
     <property name="Line23" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[708.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -334,7 +334,7 @@
         </property>
     </property>
     <property name="Line24" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[718.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -342,7 +342,7 @@
         </property>
     </property>
     <property name="Line25" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[728.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -350,7 +350,7 @@
         </property>
     </property>
     <property name="Line26" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[738.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -358,7 +358,7 @@
         </property>
     </property>
     <property name="Line27" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[748.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -366,7 +366,7 @@
         </property>
     </property>
     <property name="Line28" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[758.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -374,7 +374,7 @@
         </property>
     </property>
     <property name="Line29" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[768.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -382,7 +382,7 @@
         </property>
     </property>
     <property name="Line30" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[778.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-20.0">
         </property>
@@ -390,7 +390,7 @@
         </property>
     </property>
     <property name="Line31" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, -95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[778.5, 80.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-10.0">
         </property>
@@ -398,7 +398,7 @@
         </property>
     </property>
     <property name="Line32" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[488.5, 70.0]">
         </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="-10.0">
         </property>
@@ -410,11 +410,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="frictionless&#10;   surface">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, -145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[698.5, 30.0]">
         </property>
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, -120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[543.5, 55.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
@@ -424,7 +424,7 @@
         </property>
     </property>
     <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, -120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[638.5, 55.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
@@ -438,13 +438,21 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this case, we force &#10;the impulse to be a &#10;continuous-time signal &#10;(without absent). Note &#10;also that the last indexed &#10;value at superdense&#10;time for the impulse signal &#10;is forced to be zero using &#10;the microstep-delay actor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[28.5, 350.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: David Broman">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[28.5, 645.0]">
         </property>
     </property>
     <entity name="LeftBall" class="doc.papers.y14.constructive.models.BallDynamics">
         <property name="m" class="ptolemy.data.expr.Parameter" value="mLeft">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[278.5, 425.0]">
         </property>
         <property name="v_0" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -460,7 +468,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[207.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.5, 415.0]">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -469,11 +477,11 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[538.5, 405.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[523.5, 535.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -485,7 +493,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[493, 211]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[548.5, 230.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -508,7 +516,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 203]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[688.5, 230.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -534,11 +542,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[173.5, 310.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[518.5, 480.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -548,11 +556,11 @@
         </property>
         <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[643.5, 405.0]">
         </property>
     </entity>
     <entity name="CalculateImpulsiveForce" class="doc.papers.y14.constructive.models.CalculateImpulsiveForce">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[748.5, 290.0]">
         </property>
         <property name="m1" class="ptolemy.data.expr.Parameter" value="mLeft">
         </property>
@@ -560,13 +568,13 @@
         </property>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[53.5, 580.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[203.5, 610.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -581,7 +589,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[293.5, 610.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -596,7 +604,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[293.5, 575.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -604,7 +612,7 @@
     <entity name="ballDynamics" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/ballDynamics.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[418.5, 320.0]">
         </property>
         <property name="x_0" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
@@ -662,41 +670,41 @@
         </port>
     </entity>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[600.0, 360.0]">
+        <vertex name="vertex1" value="[828.5, 535.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[125.0, 240.0]">
+        <vertex name="vertex1" value="[353.5, 415.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[275.0, 135.0]">
+        <vertex name="vertex1" value="[503.5, 310.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[105.0, 105.0]">
+        <vertex name="vertex1" value="[333.5, 280.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[390.0, 105.0]">
+        <vertex name="vertex1" value="[618.5, 280.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[380.0, 155.0]">
+        <vertex name="vertex1" value="[608.5, 330.0]">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[0.0, 135.0]">
+        <vertex name="vertex1" value="[228.5, 310.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -710,7 +718,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[140.0, 305.0]">
+        <vertex name="vertex1" value="[368.5, 480.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

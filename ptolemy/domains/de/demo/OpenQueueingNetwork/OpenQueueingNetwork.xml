@@ -1,35 +1,35 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="OpenQueuingNetwork" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+<entity name="OpenQueueingNetwork" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 74, 1639, 834}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 74, 1121, 648}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1426, 724]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[887, 538]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3238790232722">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{514.72509765625, 276.372475729751}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{443.5, 269.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The theoretical result predicted here is given&#10;on page 58 of Simitci and has value 0.057.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 380.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example shows comes from:&#10;  Storage Network Performance Analytics&#10;  by Heuseyin Simitci, Wiley, 2003.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 405.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,17 +37,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Jim Kleckner">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 485.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example Models a storage system&#10;where jobs arrive at random, are&#10;processed by the CPU, which then&#10;writes to Disk1, after which the CPU&#10;does more processing, writes to&#10;Disk2, and finally performs a third&#10;batch of CPU processing. The incoming&#10;jobs are time stamped with the time of&#10;arrival, and upon final departure, the&#10;model measures the overall latency of&#10;the job. The CPU execution times and&#10;disk processing times are exponential&#10;random variables, and jobs are queued&#10;while those resources are busy.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 235.0]">
         </property>
     </property>
     <class name="ExponentialServer" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 65.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={212, 437, 913, 588}, maximized=false}">
         </property>
@@ -249,7 +249,7 @@
         <link port="Merge.output" relation="relation4"/>
     </class>
     <class name="ModifyID" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 65.0]">
         </property>
         <property name="newID" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -396,7 +396,7 @@
         <link port="RecordDisassembler.arrivalTime" relation="relation20"/>
     </class>
     <entity name="Switch" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 170.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 490, 913, 588}, maximized=false}">
         </property>
@@ -593,19 +593,19 @@
         <link port="RecordDisassembler.id" relation="relation6"/>
     </entity>
     <entity name="CPU" class="ExponentialServer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 170.0]">
         </property>
         <property name="averageServiceTime" class="ptolemy.data.expr.Parameter" value="0.002">
         </property>
     </entity>
     <entity name="Disk1" class="ExponentialServer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 180.0]">
         </property>
         <property name="averageServiceTime" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
     </entity>
     <entity name="Disk2" class="ExponentialServer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 235.0]">
         </property>
         <property name="averageServiceTime" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
@@ -619,7 +619,7 @@
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.005">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[666.8723449707031, 218.61962127685547]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -634,7 +634,7 @@
         </configure>
     </entity>
     <entity name="Average" class="ptolemy.actor.lib.Average">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[666.8723449707031, 313.61962127685547]">
         </property>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
@@ -647,7 +647,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[945.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.3723449707031, 313.61962127685547]">
         </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
@@ -655,12 +655,12 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;transaction&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 175.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 195.0]">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
@@ -673,11 +673,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 110.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 135.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 125.0]">
         </property>
         <port name="id" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -691,7 +691,7 @@
         </port>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 85.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 105.0]">
         </property>
         <port name="arrivalTime" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -701,15 +701,15 @@
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 70.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 95.0]">
         </property>
     </entity>
     <entity name="InstanceOfModifyID" class="ModifyID">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 300.0]">
         </property>
         <property name="newID" class="ptolemy.data.expr.StringParameter" value="done">
         </property>
@@ -717,7 +717,7 @@
         </property>
     </entity>
     <entity name="InstanceOfModifyID2" class="ModifyID">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 365.0]">
         </property>
         <property name="newID" class="ptolemy.data.expr.StringParameter" value="update_log">
         </property>
@@ -729,7 +729,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[735.0, 75.0]">
+        <vertex name="vertex1" value="[621.8723449707031, 248.61962127685547]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -739,7 +739,7 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{85.0, 110.0}">
+        <vertex name="vertex1" value="[115.0, 135.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -751,7 +751,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{470.0, 130.0}">
+        <vertex name="vertex1" value="[500.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

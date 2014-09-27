@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FMUBouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 35, 979, 727}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 35, 711, 599}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 617]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[477, 489]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5362758716145073">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.2148485765033, 199.45019531250003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.5, 244.5}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -26,6 +26,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Functional Mock-up Unit Demonstration&#10;&#10;The BouncingBall actor refers to BouncingBall.fmu, &#10;which contains a very simple co-simulation model&#10;of a bouncing ball.&#10;&#10;BouncingBall.fmu is a zip file that contains&#10;* modelDescription.xml - which describes the ports&#10;   and parameters&#10;* various platform dependent shared libraries&#10;    that implement the functionality&#10;&#10;At runtime, methods in the shared library are called&#10;during each iteration.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 430.0]">
         </property>
     </property>
     <entity name="BouncingBall" class="ptolemy.actor.lib.fmi.FMUImport">

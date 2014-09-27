@@ -6213,6 +6213,7 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/actor/lib/io/demo/FilePortParameter/*.xml"/>
+        <include name="ptolemy/actor/lib/io/demo/FilePortParameter/filePortParameterFiles/*.txt"/>
        </fileset>
     </jar>
 

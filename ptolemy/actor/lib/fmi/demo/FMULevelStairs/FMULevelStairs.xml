@@ -34,12 +34,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="By David Broman, 2013">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: David Broman">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 305.0]">
         </property>
     </property>
     <entity name="TimedPlotter_stairsB" class="ptolemy.actor.lib.gui.TimedPlotter">

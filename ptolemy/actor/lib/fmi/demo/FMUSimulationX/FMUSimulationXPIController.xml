@@ -2,48 +2,48 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FMUSimulationXPIController" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 67, 1109, 664}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 67, 1097, 664}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[875, 554]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[863, 554]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0708810685597945">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.87304687500006, 297.99645953757226}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{431.5, 277.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The SimulationX FMU used here will only work on a 32-bit architecture.&#10;To invoke vergil in a 32-JVM, try:&#10;&#10;java -d32 -classpath $PTII/lib/jna.jar:${PTII} ptolemy.vergil.VergilApplication SimulationXFMU.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SimulationX fails to correctly specify&#10;that the voltage output does not depend&#10;directly on the drive input, so we declare&#10;that here, in a parameter of the voltage&#10;output port.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 290.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the model fails to execute because the FMU does not support rollback,&#10;and the presence of the integrator causes the solver to need to roll back.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 435.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 415.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also FMUSimulationX.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 470.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="FMUSimulationX.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -65,6 +65,14 @@
             </property>
         </property>
     </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 510.0]">
+        </property>
+    </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="110">
         </property>
@@ -75,7 +83,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 180.0]">
         </property>
     </entity>
     <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
@@ -85,7 +93,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 395.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -93,7 +101,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1079, 280]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 260.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -108,7 +116,7 @@
         </configure>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 190.0]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -118,7 +126,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 220.0]">
         </property>
     </entity>
     <entity name="Gen_Ctrl_Load2" class="ptolemy.actor.lib.fmi.FMUImport">
@@ -126,7 +134,7 @@
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 260.0]">
         </property>
         <port name="drive" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -171,27 +179,27 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 290.0]">
         </property>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 290.0]">
         </property>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{490.0, 280.0}">
+        <vertex name="vertex1" value="[490.0, 260.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[40.0, 150.0]">
+        <vertex name="vertex1" value="[40.0, 130.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

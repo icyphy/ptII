@@ -865,6 +865,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/actor/lib/jmf/jmf.jar");
             atomicMap.put("ptolemy.cg",
                     "ptolemy/cg/cg.jar");
+            atomicMap.put("ptolemy.domains.de.lib.aspect",
+                    "ptolemy/domains/de/lib/aspect/aspect.jar");
             atomicMap.put("ptolemy.domains.scr",
                     "ptolemy/domains/scr/scr.jar");
             atomicMap.put("ptolemy.vergil.basic.export.html.jsoup",
@@ -1746,6 +1748,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar");
             auxiliaryClassMap.put("actor/lib/js/js.jar needs lib/socketio.jar",
                     "lib/socketio.jar");
+            auxiliaryClassMap.put("actor/lib/js/js.jar needs ptango.jar",
+                    "org/ptolemy/ptango/ptango.jar");
         }
 
 
@@ -1767,6 +1771,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (jarFilesThatHaveBeenRequired.contains(optimizationJar)) {
             auxiliaryClassMap.put("optimization requires cureos", "com/cureos/cureos.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/domains/de/lib/aspect/aspect.jar")) {
+            auxiliaryClassMap.put("de/lib/aspect requires de.jar", "ptolemy/domains/de/de.jar");
+            auxiliaryClassMap.put("de/lib/aspect requires actor/lib/aspect", "ptolemy/actor/lib/aspect/aspect.jar");
         }
 
         if (jarFilesThatHaveBeenRequired

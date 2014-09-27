@@ -4,18 +4,18 @@
 <entity name="GoogleOAuth" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 57, 1193, 736}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 57, 1095, 612}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[959, 626]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[861, 502]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9200193892389724">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.09765624999994, 393.30680321390935}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.5, 251.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model works through the Google OAuth 2.0 work flow. &#10;It's goal is to retrieve the user's profile data from Google.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model works through the Google OAuth 2.0 work flow. &#10;The goal is to retrieve the user's profile data from Google.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[151.5, 25.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -42,18 +42,19 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-91.99999999999999, 90.00000000000014}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[89.5, 45.00000000000014]">
         </property>
     </property>
-    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/WebServerDE/WebSerberDE.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/demo.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;doc/docConfig.jar&quot;}}"/>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/WebServerDE/WebSerberDE.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/demo.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;doc/docConfig.jar&quot;}}">
+    </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
-        </property>
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/files">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 105.0]">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[696.5, 80.0]">
         </property>
         <property name="resourceLocation2" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img">
         </property>
@@ -76,7 +77,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[616.5, 20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -84,11 +85,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[646.5, 130.0]">
         </property>
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[711.5, 185.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -96,31 +97,31 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Armin Wasicek">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 615.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[31.5, 460.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="1. The JavaScript actor requests authorization by requesting the user to login to Google.&#10;2. The user grants access rights to this app. (You need a Google/Calnet account for this)&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[41.5, 85.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3. Google sends a redirect to the browser which is in this case a port on localhost.&#10;4. The locally started webserver catches the authorization code frem the redirect url's parameters. &#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[41.5, 215.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="5. The Authorization token is used to get an Access token.&#10;6. This is again used to retrieve the user's profile data &#10;     from Google.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[426.5, 270.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/*">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-41.999999999999986, 505.0000000000001}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[134.5, 400.0000000000001]">
         </property>
         <port name="getParameters" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -139,7 +140,7 @@
         </port>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[281.5, 360.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -157,11 +158,11 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[746.5, 365.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[51.5, 300.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -176,7 +177,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[231.5, 310.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -206,7 +207,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[253.5, 164.99999999999986]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -216,7 +217,7 @@
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-76.99999999999999, 255.00000000000014}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[76.5, 165.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
@@ -244,7 +245,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[481.5, 365.0]">
         </property>
         <port name="authCode" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -253,18 +254,16 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
     <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[556.5, 365.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 415.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -277,11 +276,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[636.5, 415.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[696.5, 415.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -289,7 +288,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[305.0, 485.0]">
+        <vertex name="vertex1" value="[411.5, 380.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -303,7 +302,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[570.0, 485.0]">
+        <vertex name="vertex1" value="[591.5, 365.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">

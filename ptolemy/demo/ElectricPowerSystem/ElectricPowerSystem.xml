@@ -4,7 +4,7 @@
 <entity name="ElectricPowerSystem" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameter&quot;,&quot;ptolemy/data/ontologies.jar&quot;},{&quot;ptolemy.kernel.attributes.VersionAttribute&quot;,&quot;ptolemy/domains/de/de.jar&quot;},{&quot;ptolemy.kernel.util.StringAttribute&quot;,&quot;ptolemy/actor/lib/aspect/aspect.jar&quot;}}"/>
+    <!-- include jars needed by all the EPS models in case someone downloads one model and clicks the the next. --> <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameterk&quot;,&quot;ptolemy/data/ontologies/ontologies.jar&quot;},{&quot;ptolemy.kernel.attributes.VersionAttribute&quot;,&quot;ptolemy/domains/de/de.jar&quot;},{&quot;ptolemy.kernel.util.StringAttribute&quot;,&quot;ptolemy/actor/lib/aspect/aspect.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/actor/lib/fmi/fmi.jar&quot;},{&quot;ptolemy.kernel.util.ColorAttribute&quot;,&quot;ptolemy/domains/ptides/ptides.jar&quot;}}"/>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the GeneratorRegulator model.">
         </property>

@@ -7,27 +7,35 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-3635.0, -2345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[117.5, 50.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model solves the optimization problem&#10;&#10;min (x -1.0 )^2 , subject to |x| &lt; 3.0&#10; x&#10;&#10;CompositeOptimizer has two mode. To find the maximum &#10;value of the function subject to constraints instead,&#10;double click on the CompositeOptimizer and pick MAX&#10;as the mode. The maximization problem is not convex, and&#10;one of the maxima will be returned.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-3730.0, -2200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[22.5, 195.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 738, 563}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[504, 453]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2614403834631516">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-3548.2025018239306, -2225.1171875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.0, 226.5}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 385.0]">
+        </property>
     </property>
     <entity name="CompositeOptimizer" class="org.ptolemy.optimization.CompositeOptimizer">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="MIN">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-3555, -2255}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[197.5, 140.0]">
         </property>
         <doc>Optimize the objective function provided in the inside composite, subject to constraints and precision/iteration limits</doc>
         <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
@@ -36,6 +44,21 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
+        <port name="f(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="g(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerComposite">
             <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -144,7 +167,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-3660.0, -2255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[92.5, 140.0]">
         </property>
     </entity>
     <entity name="Optimal Value" class="ptolemy.actor.lib.gui.Display">
@@ -154,7 +177,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Optimal Value">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-3430.0, -2255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[322.5, 140.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

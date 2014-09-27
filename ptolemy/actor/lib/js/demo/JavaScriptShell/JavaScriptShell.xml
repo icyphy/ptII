@@ -15,13 +15,13 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[74.12905883789062, 56.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.972412109375, 45.341796875]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[149.12905883789062, 26.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.972412109375, 80.341796875]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -29,14 +29,22 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[29.129058837890625, 236.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 240.0]">
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={662, 22, 654, 388}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[84.12905883789062, 141.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.972412109375, 165.341796875]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -50,7 +58,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[379.1290588378906, 191.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.972412109375, 215.341796875]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -77,13 +85,13 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[399.1290588378906, 131.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.972412109375, 155.341796875]">
         </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.1290588378906, 131.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.972412109375, 155.341796875]">
         </property>
         <port name="script" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -233,24 +241,28 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[244.12905883789062, 131.4215087890625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.972412109375, 155.341796875]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=65.0,y=100.0}, tail={id=&quot;SampleDelay.output&quot;,x=360.0,y=150.0}, points={0.0,90.0,0.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=90.972412109375,y=165.341796875}, tail={id=&quot;SampleDelay.output&quot;,x=380.972412109375,y=215.341796875}, points={25.972412109375,155.341796875,25.972412109375,215.341796875} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=360.0,y=150.0}, tail={id=&quot;ModalModel.output&quot;,x=480.0,y=90.0}, points={530.0,150.0,530.0,90.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=380.972412109375,y=215.341796875}, tail={id=&quot;ModalModel.output&quot;,x=500.972412109375,y=155.341796875}, points={550.972412109375,215.341796875,550.972412109375,155.341796875} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=65.0,y=100.0}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=225.0,y=90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=90.972412109375,y=165.341796875}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=250.972412109375,y=155.341796875}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringReplace.output&quot;,x=400.972412109375,y=155.341796875}, tail={id=&quot;ModalModel.script&quot;,x=500.972412109375,y=155.341796875}, points={} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringReplace.replacement&quot;,x=400.972412109375,y=155.341796875}, tail={id=&quot;EscapeQuotes.output&quot;,x=250.972412109375,y=155.341796875}, points={} } }">
+        </property>
     </relation>
     <link port="InteractiveShell.input" relation="relation3"/>
     <link port="InteractiveShell.output" relation="relation5"/>

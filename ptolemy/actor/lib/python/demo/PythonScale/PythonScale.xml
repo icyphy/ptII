@@ -11,7 +11,7 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 30, 861, 691}, maximized=false}">
@@ -40,7 +40,7 @@ non-programmers to implement simple actors.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 15.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 15.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -65,12 +65,12 @@ actor.  </text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 415.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{370.80745341614914, 305.5007036102485}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.5, 290.5}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -100,7 +100,7 @@ is displayed.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 235.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -108,7 +108,7 @@ is displayed.</text></svg></configure>
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 530.0]">
         </property>
     </property>
     <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
@@ -120,7 +120,7 @@ is displayed.</text></svg></configure>
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 220.0]">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -139,7 +139,7 @@ is displayed.</text></svg></configure>
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 220.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -151,7 +151,7 @@ is displayed.</text></svg></configure>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 220.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
