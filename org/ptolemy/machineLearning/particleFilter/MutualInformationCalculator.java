@@ -1,4 +1,4 @@
-/* Black-box optimizer class - to be modified
+/* Mutual-information approximation.
 
  Copyright (c) 1998-2014 The Regents of the University of California.
  All rights reserved.
@@ -39,12 +39,11 @@ B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Ro
 @see org.ptolemy.machineLearning.particleFilter.ParticleFilter
 @see com.cureos.numerics
 
-@author Ilge Akkaya
+@author Ilge Akkaya, Shuhei Emoto
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating Red (ilgea)
-
+@Pt.AcceptedRating
  */
 
 import java.util.LinkedList;
@@ -102,8 +101,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
                     y.setExpression("0.0");
                     y.setVisibility(Settable.EXPERT);
                 }
-                _labels[i] = stateName;
-                _types[i] = BaseType.DOUBLE; // preset to be double
+                _labels[i] = stateName; 
             }
             _labels[names.length()] = "weight";
             _types[names.length()] = BaseType.DOUBLE;
@@ -112,8 +110,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         } catch (NameDuplicationException e) {
             // should not happen
             System.err.println("Duplicate field in " + this.getName());
-        }
-        //        _particles = new Particle[0];
+        } 
         _px = new double[0];
         _py = new double[0];
         _weights = new double[0];
@@ -154,10 +151,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
         if (particles.hasToken(0)) {
             ArrayToken incoming = (ArrayToken) particles.get(0);
-            N = incoming.length();
-            //*            LinkedList<Double> particleValue = new LinkedList<Double>();
-            // copy the input particles to a local array ( this is expected to be subsampled)
-            //*            _particles = new Particle[incoming.length()]; // initialize particle array
+            N = incoming.length(); 
 
             if (_px.length == 0) {
                 _px = new double[N];
@@ -166,23 +160,15 @@ public class MutualInformationCalculator extends TypedAtomicActor {
             }
 
             for (int i = 0; i < incoming.length(); i++) {
-                RecordToken token = (RecordToken) incoming.getElement(i);
-                //                Particle p1 = new Particle(2);
+                RecordToken token = (RecordToken) incoming.getElement(i); 
 
                 for (int k = 0; k < _labels.length; k++) {
-                    if (_labels[k].equals("weight")) {
-                        //                       p1.setWeight(((DoubleToken)token.get(_labels[k])).doubleValue());
-                        _weights[i] = ((DoubleToken) token.get(_labels[k]))
-                                .doubleValue(); //p1.getWeight();
-                    } else {
-                        //                        particleValue.add(((DoubleToken)token.get(_labels[k])).doubleValue());
-                    }
-                }
-                //                p1.setValue( particleValue);
+                    if (_labels[k].equals("weight")) { 
+                        _weights[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
+                    } 
+                } 
                 _px[i] = ((DoubleToken) token.get(_labels[0])).doubleValue(); //particleValue.get(0);
-                _py[i] = ((DoubleToken) token.get(_labels[1])).doubleValue(); //particleValue.get(1);
-                //                particleValue.clear();
-                //                _particles[i] = p1;
+                _py[i] = ((DoubleToken) token.get(_labels[1])).doubleValue(); //particleValue.get(1); 
             }
 
             double wsum = 0;
@@ -216,13 +202,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
     }
 
-    //    public boolean postfire() throws IllegalActionException {
-    //        super.postfire();
-    //        _robotLocations.clear();
-    //        return true;
-    //    }
     /**
-     * f(x)
+     * The computed mutual information between particle sets.
      */
     public TypedIOPort output;
     /**
@@ -230,16 +211,36 @@ public class MutualInformationCalculator extends TypedAtomicActor {
      * Other fields will be resolved to state variables.
      */
     public TypedIOPort particles;
+    /**
+     * The locations of the pursue robots that are producing the particle estimate.
+     */
     public TypedIOPort locations;
+    
+    /**
+     * Measurement noise covariance.
+     */
     public Parameter covariance;
+    
+    /**
+     * Time horizon over which the mutual information will be calculated.
+     */
     public Parameter timeHorizon;
+    
+    /**
+     * The index of the robot, over which the mutual information is being optimized.
+     */
     public Parameter optIndex;
 
+    /**
+     * The control input that determines the update in robot position.
+     */
     public TypedIOPort xValue;
 
     // code for computing the mutual information between particle sets and measurements
+    
+    
     private double Hz(double[] x) {
-        // zeroth order approximation of the measurement entropy
+        // zeroth order approximation of the measurement entropy.
         double[][] Sigma = DoubleMatrixMath.identity(_nRobots);
         for (int i = 0; i < Sigma.length; i++) {
             for (int j = 0; j < Sigma[0].length; j++) {
@@ -268,42 +269,24 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         }
         double[][] gaussianMeans = new double[N][_nRobots];
 
-        for (int i = 0; i < N; i++) {
-            // var: process noise
-            //            double[][] var = new double[2][2];
-            //            var[0][0] = 1.0;
-            //            var[1][1] = 1.0;
-            //            Token[] mu = new Token[2];
-            //            mu[0] = new DoubleToken(0.0);
-            //            mu[1] = new DoubleToken(0.0);
+        for (int i = 0; i < N; i++) { 
 
             if (_optIndex < 0) {
-                for (int j = 0; j < _nRobots; j++) {
-                    //                    RecordToken robotJ = _robotLocations.get(j);
-                    //                   robotX = ((DoubleToken)robotJ.get("x")).doubleValue() + x[2*j];
-                    //                   robotY = ((DoubleToken)robotJ.get("y")).doubleValue() + x[2*j+1];
+                for (int j = 0; j < _nRobots; j++) { 
                     gaussianMeans[i][j] = Math.sqrt(Math.pow(
                             _px[i] - robotX[j], 2)
                             + Math.pow(_py[i] - robotY[j], 2));
                 }
             } else {
                 // optimize over single robot
-                for (int j = 0; j < _nRobots; j++) {
-                    //                    RecordToken robotJ = _robotLocations.get(j);
-                    //                    robotX = ((DoubleToken)robotJ.get("x")).doubleValue();
-                    //                    robotY = ((DoubleToken)robotJ.get("y")).doubleValue();
-                    //                    if (j == _optIndex) {
-                    //                        robotX += x[0];
-                    //                        robotY += x[1];
-                    //                    }
+                for (int j = 0; j < _nRobots; j++) { 
                     gaussianMeans[i][j] = Math.sqrt(Math.pow(
                             _px[i] - robotX[j], 2)
                             + Math.pow(_py[i] - robotY[j], 2));
                 }
             }
         }
-        double Hz = 0;
-        //        double logSum = 0;
+        double Hz = 0; 
         // Prepare Inverse and Determinant of Sigma before Integration
         // so that Hz will be calculated faster.
         double[][] invSigma = DoubleMatrixMath.inverse(Sigma);
@@ -321,8 +304,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
                         Sigma, invSigma, detSigma);
                 logSums[k] += _weights[j] * log_kj;
                 if (j != k) {
-                    logSums[j] += _weights[k] * log_kj;
-                    //                logSum += _weights[j] * _mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
+                    logSums[j] += _weights[k] * log_kj; 
                 }
             }
             Hz += _weights[k] * Math.log(logSums[k]);
@@ -330,15 +312,16 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
         return -Hz;
     }
-
-    // compute the multivariate PDF value at x.
-    //private double mvnpdf(double[] x, double[] mu, double[][] Sigma) {
-    //    return mvnpdf(x, mu, Sigma,  DoubleMatrixMath.inverse(Sigma), DoubleMatrixMath.determinant(Sigma));
-    //}
-
-    // compute the multivariate PDF value at x, using Inverse and
-    // Determinant of Sigma in arguments.  If you already have
-    // invSigma and detSigma, you can choose this function.
+ 
+    /**
+     * Compute the multivariate PDF value at x
+     * @param x Value at which the PDF will be calculated
+     * @param mu Mean vector
+     * @param Sigma Covariance matrix
+     * @param invSigma Inverse Covariance Matrix
+     * @param detSigma Determinant of covariance matrix
+     * @return the value of the PDF computed at x
+     */
     private double _mvnpdf(double[] x, double[] mu, double[][] Sigma,
             double[][] invSigma, double detSigma) {
         // int k = x.length;
@@ -353,9 +336,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
         return multiplier * Math.exp(-0.5 * exponent);
 
-    }
-
-    //    private Particle[] _particles;
+    } 
 
     private double[] _weights;
     private double[] _px;

@@ -188,25 +188,26 @@ public class ParticleFilter extends TypedCompositeActor {
     /** A boolean parameter that when set to true, implements the so-called
      * bootstrap particle filter, where particles are resampled at each time step
      * If this parameter is false, particles are resampled only when the effective
-     * sample size drops below 50% of the total number of particles
+     * sample size drops below 50% of the total number of particles.
      */
     public Parameter bootstrap;
 
-    /** Low-variance resampler */
+    /** Low-variance resampler. */
     public Parameter lowVarianceSampler;
 
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
-     * at the moment)
+     * at the moment).
      */
     public Parameter measurementCovariance;
 
     /**
-     * The expression that specifies the PDF for the measurementNoise. use N(m,s) for
-     * a Gaussian distribution with mean m and standard deviation s. unif (x,y) evaluates
-     * to a uniform distribution in range [x,y]
+     * The number of particles used internally for state estimation.
      */
     public Parameter particleCount;
 
+    /**
+     * Number of particles to be output at each iterations.
+     */
     public Parameter outputParticleCount;
 
     /** An expression for the prior distribution from which the samples are drawn.
@@ -218,7 +219,7 @@ public class ParticleFilter extends TypedCompositeActor {
      */
     public Parameter processNoise;
 
-    /** An expression for a prior distribution from which the initial particles are sampled
+    /** An expression for a prior distribution from which the initial particles are sampled.
      */
     public Parameter priorDistribution;
 

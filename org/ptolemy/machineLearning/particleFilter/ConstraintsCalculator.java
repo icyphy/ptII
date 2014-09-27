@@ -143,13 +143,19 @@ public class ConstraintsCalculator extends TypedAtomicActor {
 
     }
 
-    //public boolean postfire() throws IllegalActionException {
-    //    super.postfire();
-    //    _robotLocations.clear();
-    //    return true;
-    //}
+    /**
+     * Minimum distance to the robot team.
+     */
     public TypedIOPort minDistance;
+    
+    /**
+     * Distance to target.
+     */
     public TypedIOPort distToTarget;
+    
+    /**
+     * Current speed.
+     */
     public TypedIOPort speed;
     /**
      * Particles input that accepts an array of record tokens. One field of the record must be labeled as "weight".

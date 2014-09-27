@@ -100,26 +100,56 @@ actor by Jie Liu.
  */
 public class ParticleFilterRange extends ParticleFilter {
 
+    /**
+     * Construct a particle filter with a container and a name.
+     * @param container The container
+     * @param name Actor name
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
+     */
     public ParticleFilterRange(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _init();
-        // TODO Auto-generated constructor stub
+        _init(); 
     }
 
+    /**
+     * Construct a range particle filter in the given workspace.
+     * @param workspace The workspace
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     public ParticleFilterRange(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        // TODO Auto-generated constructor stub
+        super(workspace); 
     }
 
+    /** Incoming measurements */
     public TypedIOPort z_m;
+    
+    /**
+     * Observation expression.
+     */
     public Parameter z;
+    /**
+     * x component update equation.
+     */
     public Parameter x_update;
+    /**
+     * y component update equation.
+     */
     public Parameter y_update;
+    
+    /**
+     * Position of the observer.
+     */
     public PortParameter observerPosition;
 
-    /** Initialize the class. */
+    /** 
+     * Initialize particle filter parameters. 
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     private void _init() throws IllegalActionException,
     NameDuplicationException {
 
