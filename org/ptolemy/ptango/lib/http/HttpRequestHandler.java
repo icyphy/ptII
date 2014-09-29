@@ -1,6 +1,6 @@
 /* An actor that handles an HttpRequest by producing an output and waiting for an input.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,7 +54,6 @@ import ptolemy.actor.lib.ExceptionSubscriber;
 import ptolemy.actor.lib.MicrostepDelay;
 import ptolemy.actor.lib.RecordDisassembler;
 import ptolemy.actor.lib.io.FileReader;
-import ptolemy.actor.lib.js.JavaScript;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
@@ -137,7 +136,7 @@ import ptolemy.util.StringUtilities;
  *  The client SHOULD NOT repeat the request without modifications."
  *  If the downstream model does not require
  *  any particular fields, but will rather examine any fields that
- *  are provided, for example in a {@link JavaScript} actor, then
+ *  are provided, for example in a {@link ptolemy.actor.lib.js.JavaScript} actor, then
  *  you can declare the output ports of this actor to be of type "record",
  *  or you can declare the input port of the downstream actor to be
  *  of type "record" and enable backward type inference. In this case,
