@@ -25,26 +25,8 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.machineLearning.particleFilter;
+package org.ptolemy.machineLearning.particleFilter; 
 
-/**
-Black-box optimizer that uses JCobyla as the solver
-
-<p> Performs mutual information-based optimization using
-
-<b>References</b>
- <p>[1]
-B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot
-  Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
-@see org.ptolemy.machineLearning.particleFilter.ParticleFilter
-@see com.cureos.numerics
-
-@author Ilge Akkaya, Shuhei Emoto
-@version $Id$
-@since Ptolemy II 10.0
-@Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating
- */
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,65 +48,57 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
+/**
+Black-box optimizer that uses JCobyla as the solver
+
+<p> Performs mutual information-based optimization using a zeroth-order Gaussian approximation
+to the entropy expression that is approximated over a subset of particles. See references for 
+further details on the theory.
+
+<b>References</b>
+ <p>[1]
+B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot
+  Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
+@see org.ptolemy.machineLearning.particleFilter.ParticleFilter
+@see com.cureos.numerics
+
+@author Ilge Akkaya, Shuhei Emoto
+@version $Id$
+@since Ptolemy II 10.0
+@Pt.ProposedRating Red (ilgea)
+@Pt.AcceptedRating
+ */
 public class MutualInformationCalculator extends TypedAtomicActor {
 
+    /**
+     * Constructs a MutualInformationCalculator object.
+     *
+     * @param container  a CompositeEntity object
+     * @param name       entity name
+     * @throws IllegalActionException 
+     * @throws NameDuplicationException 
+     */
     public MutualInformationCalculator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
+        _init();
+    }
 
-        optIndex = new Parameter(this, "optIndex");
-        optIndex.setExpression("-1");
-        optIndex.setTypeEquals(BaseType.INT);
-        _optIndex = -1;
-
-        timeHorizon = new Parameter(this, "timeHorizon");
-        timeHorizon.setExpression("1");
-        timeHorizon.setTypeEquals(BaseType.INT);
-        xValue = new TypedIOPort(this, "xValue", true, false);
-        xValue.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-        particles = new TypedIOPort(this, "particles", true, false);
-        ArrayToken names = new ArrayToken("{\"x\",\"y\"}"); //
-        String stateName;
-        _labels = new String[names.length() + 1];
-        _types = new Type[names.length() + 1];
-        try {
-            for (int i = 0; i < names.length(); i++) {
-                stateName = ((StringToken) names.getElement(i)).stringValue();
-                if (this.getAttribute(stateName) == null
-                        && stateName.length() != 0) {
-                    Parameter y = new Parameter(this, stateName);
-                    y.setExpression("0.0");
-                    y.setVisibility(Settable.EXPERT);
-                }
-                _labels[i] = stateName; 
-            }
-            _labels[names.length()] = "weight";
-            _types[names.length()] = BaseType.DOUBLE;
-            particles.setTypeEquals(new ArrayType(new RecordType(_labels,
-                    _types)));
-        } catch (NameDuplicationException e) {
-            // should not happen
-            System.err.println("Duplicate field in " + this.getName());
-        } 
-        _px = new double[0];
-        _py = new double[0];
-        _weights = new double[0];
-
-        // an array of robot locations
-        locations = new TypedIOPort(this, "locations", true, false);
-
-        _robotLocations = new LinkedList<RecordToken>();
-
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.DOUBLE);
-
-        _covariance = 2.0;
-
+    /**
+     * Constructs a MutualInformationCalculator object.
+     *
+     * @param workspace The workspace
+     * @throws IllegalActionException 
+     * @throws NameDuplicationException 
+     */
+    public MutualInformationCalculator(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        _init();
     }
 
     @Override
@@ -215,17 +189,17 @@ public class MutualInformationCalculator extends TypedAtomicActor {
      * The locations of the pursue robots that are producing the particle estimate.
      */
     public TypedIOPort locations;
-    
+
     /**
      * Measurement noise covariance.
      */
     public Parameter covariance;
-    
+
     /**
      * Time horizon over which the mutual information will be calculated.
      */
     public Parameter timeHorizon;
-    
+
     /**
      * The index of the robot, over which the mutual information is being optimized.
      */
@@ -237,8 +211,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     public TypedIOPort xValue;
 
     // code for computing the mutual information between particle sets and measurements
-    
-    
+
+
     private double Hz(double[] x) {
         // zeroth order approximation of the measurement entropy.
         double[][] Sigma = DoubleMatrixMath.identity(_nRobots);
@@ -312,7 +286,54 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
         return -Hz;
     }
- 
+
+    private void _init() throws IllegalActionException, NameDuplicationException {
+        optIndex = new Parameter(this, "optIndex");
+        optIndex.setExpression("-1");
+        optIndex.setTypeEquals(BaseType.INT);
+        _optIndex = -1;
+
+        timeHorizon = new Parameter(this, "timeHorizon");
+        timeHorizon.setExpression("1");
+        timeHorizon.setTypeEquals(BaseType.INT);
+        xValue = new TypedIOPort(this, "xValue", true, false);
+        xValue.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
+        particles = new TypedIOPort(this, "particles", true, false);
+        ArrayToken names = new ArrayToken("{\"x\",\"y\"}"); //
+        String stateName;
+        _labels = new String[names.length() + 1];
+        _types = new Type[names.length() + 1]; 
+        for (int i = 0; i < names.length(); i++) {
+            stateName = ((StringToken) names.getElement(i)).stringValue();
+            if (this.getAttribute(stateName) == null
+                    && stateName.length() != 0) {
+                Parameter y = new Parameter(this, stateName);
+                y.setExpression("0.0");
+                y.setVisibility(Settable.EXPERT);
+            }
+            _labels[i] = stateName; 
+            _types[i] = BaseType.DOUBLE;
+        }
+        _labels[names.length()] = "weight";
+        _types[names.length()] = BaseType.DOUBLE;
+        particles.setTypeEquals(new ArrayType(new RecordType(_labels,
+                _types))); 
+        _px = new double[0];
+        _py = new double[0];
+        _weights = new double[0];
+
+        // an array of robot locations
+        locations = new TypedIOPort(this, "locations", true, false);
+
+        _robotLocations = new LinkedList<RecordToken>();
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.DOUBLE);
+
+        _covariance = 2.0;
+    }
+
     /**
      * Compute the multivariate PDF value at x
      * @param x Value at which the PDF will be calculated
