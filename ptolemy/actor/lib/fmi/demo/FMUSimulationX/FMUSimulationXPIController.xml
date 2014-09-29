@@ -130,7 +130,7 @@
         </property>
     </entity>
     <entity name="Gen_Ctrl_Load2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/ElectricPowerSystem/Gen_Ctrl_Load.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Gen_Ctrl_Load.fmu">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
