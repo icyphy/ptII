@@ -1,5 +1,7 @@
 // define class name and unique id
-//#define FMI2_FUNCTION_PREFIX Linsys_
+#ifdef FMI_FROM_SOURCE
+#define FMI2_FUNCTION_PREFIX Linsys_
+#endif
 #include <fmi2TypesPlatform.h>
 #include <fmi2Functions.h>
 #define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
@@ -20,30 +22,47 @@ using namespace sfmi;
 #define NUMBER_OF_EXTERNALFUNCTIONS 0
 
 // define variable data for model
-#define time (data->Time)
-#define $Px$lB1$rB_ 0 
-#define $Px$lB1$rB (data->real_vars[0]) 
-#define $Px$lB2$rB_ 1 
-#define $Px$lB2$rB (data->real_vars[1]) 
-#define $P$DER$Px$lB1$rB_ 2 
-#define $P$DER$Px$lB1$rB (data->real_vars[2]) 
-#define $P$DER$Px$lB2$rB_ 3 
-#define $P$DER$Px$lB2$rB (data->real_vars[3]) 
-#define $PA$lB1$c1$rB_ 4 
-#define $PA$lB1$c1$rB (data->real_vars[4]) 
-#define $PA$lB1$c2$rB_ 5 
-#define $PA$lB1$c2$rB (data->real_vars[5]) 
-#define $PA$lB2$c1$rB_ 6 
-#define $PA$lB2$c1$rB (data->real_vars[6]) 
-#define $PA$lB2$c2$rB_ 7 
-#define $PA$lB2$c2$rB (data->real_vars[7]) 
+#define timeValue (data->Time)
+#define _x_0__ 0 
+#define _x_0_ (data->real_vars[0]) 
+#define _x_1__ 1 
+#define _x_1_ (data->real_vars[1]) 
+#define _DER_x_0__ 2 
+#define _DER_x_0_ (data->real_vars[2]) 
+#define _DER_x_1__ 3 
+#define _DER_x_1_ (data->real_vars[3]) 
+#define _A_0_0__ 4 
+#define _A_0_0_ (data->real_vars[4]) 
+#define _A_0_1__ 5 
+#define _A_0_1_ (data->real_vars[5]) 
+#define _A_1_0__ 6 
+#define _A_1_0_ (data->real_vars[6]) 
+#define _A_1_1__ 7 
+#define _A_1_1_ (data->real_vars[7]) 
+
+#define PRE_x_0__ 0 
+#define PRE_x_0_ (data->pre_real_vars[0]) 
+#define PRE_x_1__ 1 
+#define PRE_x_1_ (data->pre_real_vars[1]) 
+#define PRE_DER_x_0__ 2 
+#define PRE_DER_x_0_ (data->pre_real_vars[2]) 
+#define PRE_DER_x_1__ 3 
+#define PRE_DER_x_1_ (data->pre_real_vars[3]) 
+#define PRE_A_0_0__ 4 
+#define PRE_A_0_0_ (data->pre_real_vars[4]) 
+#define PRE_A_0_1__ 5 
+#define PRE_A_0_1_ (data->pre_real_vars[5]) 
+#define PRE_A_1_0__ 6 
+#define PRE_A_1_0_ (data->pre_real_vars[6]) 
+#define PRE_A_1_1__ 7 
+#define PRE_A_1_1_ (data->pre_real_vars[7]) 
 
 // define initial state vector as vector of value references
-static const fmi2ValueReference STATES[NUMBER_OF_STATES] = { $Px$lB1$rB_, $Px$lB2$rB_ };
-static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { $P$DER$Px$lB1$rB_, $P$DER$Px$lB2$rB_ };
+static const fmi2ValueReference STATES[NUMBER_OF_STATES] = { _x_0__, _x_1__ };
+static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { _DER_x_0__, _DER_x_1__ };
 
 
-// equation functions
+// dynamic equation functions
 
 
 /*
@@ -53,8 +72,7 @@ static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { $P$DER$P
  */
 static void eqFunction_7(model_data *data)
 {
-    static const int equationIndexes = 7;
-    $P$DER$Px$lB2$rB = (($PA$lB2$c1$rB * $Px$lB1$rB) + ($PA$lB2$c2$rB * $Px$lB2$rB));
+    _DER_x_1_ = ((_A_1_0_ * _x_0_) + (_A_1_1_ * _x_1_));
 }
 /*
  equation index: 8
@@ -63,45 +81,92 @@ static void eqFunction_7(model_data *data)
  */
 static void eqFunction_8(model_data *data)
 {
-    static const int equationIndexes = 8;
-    $P$DER$Px$lB1$rB = (($PA$lB1$c1$rB * $Px$lB1$rB) + ($PA$lB1$c2$rB * $Px$lB2$rB));
+    _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
 }
 
+// Zero crossing functions
+
+
+// Dependency graph for sparse updates
 static void setupEquationGraph(model_data *data)
 {
-    data->link(eqFunction_7,&$P$DER$Px$lB2$rB);
-    data->link(&$PA$lB2$c1$rB,eqFunction_7);
-    data->link(&$Px$lB1$rB,eqFunction_7);
-    data->link(&$PA$lB2$c2$rB,eqFunction_7);
-    data->link(&$Px$lB2$rB,eqFunction_7);
-    data->link(eqFunction_8,&$P$DER$Px$lB1$rB);
-    data->link(&$PA$lB1$c1$rB,eqFunction_8);
-    data->link(&$Px$lB1$rB,eqFunction_8);
-    data->link(&$PA$lB1$c2$rB,eqFunction_8);
-    data->link(&$Px$lB2$rB,eqFunction_8);
+    data->link(eqFunction_7,&_DER_x_1_);
+    data->link(&_A_1_0_,eqFunction_7);
+    data->link(&_x_0_,eqFunction_7);
+    data->link(&_A_1_1_,eqFunction_7);
+    data->link(&_x_1_,eqFunction_7);
+    data->link(eqFunction_8,&_DER_x_0_);
+    data->link(&_A_0_0_,eqFunction_8);
+    data->link(&_x_0_,eqFunction_8);
+    data->link(&_A_0_1_,eqFunction_8);
+    data->link(&_x_1_,eqFunction_8);
+}
+
+// initial condition equations
+
+
+/*
+ equation index: 1
+ type: SIMPLE_ASSIGN
+ x[2] = 2.0
+ */
+static void eqFunction_1(model_data *data)
+{
+    _x_1_ = 2.0;
+}
+/*
+ equation index: 2
+ type: SIMPLE_ASSIGN
+ x[1] = 1.0
+ */
+static void eqFunction_2(model_data *data)
+{
+    _x_0_ = 1.0;
+}
+/*
+ equation index: 3
+ type: SIMPLE_ASSIGN
+ der(x[2]) = A[2,1] * x[1] + A[2,2] * x[2]
+ */
+static void eqFunction_3(model_data *data)
+{
+    _DER_x_1_ = ((_A_1_0_ * _x_0_) + (_A_1_1_ * _x_1_));
+}
+/*
+ equation index: 4
+ type: SIMPLE_ASSIGN
+ der(x[1]) = A[1,1] * x[1] + A[1,2] * x[2]
+ */
+static void eqFunction_4(model_data *data)
+{
+    _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
 }
 
 // Set values for all variables that define a start value
 static void setDefaultStartValues(model_data *comp)
 {
     comp->Time = 0.0;
-    comp->real_vars[$Px$lB1$rB_] = 0;
-    comp->real_vars[$Px$lB2$rB_] = 0;
-    comp->real_vars[$P$DER$Px$lB1$rB_] = 0;
-    comp->real_vars[$P$DER$Px$lB2$rB_] = 0;
-    comp->real_vars[$PA$lB1$c1$rB_] = -0.5;
-    comp->real_vars[$PA$lB1$c2$rB_] = 0.0;
-    comp->real_vars[$PA$lB2$c1$rB_] = 0.0;
-    comp->real_vars[$PA$lB2$c2$rB_] = -1.0;
+    comp->real_vars[_x_0__] = 0;
+    comp->real_vars[_x_1__] = 0;
+    comp->real_vars[_DER_x_0__] = 0;
+    comp->real_vars[_DER_x_1__] = 0;
+    comp->real_vars[_A_0_0__] = -0.5;
+    comp->real_vars[_A_0_1__] = 0.0;
+    comp->real_vars[_A_1_0__] = 0.0;
+    comp->real_vars[_A_1_1__] = -1.0;
 }
 
 
-static void updateAll(model_data* data)
+// Solve for unknowns in the model's initial equations
+static void initialEquations(model_data* data)
 {
-    eqFunction_7(data);
-    eqFunction_8(data);
+    eqFunction_1(data);
+    eqFunction_2(data);
+    eqFunction_3(data);
+    eqFunction_4(data);
 
 }
+
 // model exchange functions
 
 const char* fmi2GetTypesPlatform() { return fmi2TypesPlatform; }
@@ -126,7 +191,7 @@ fmi2Status fmi2ExitInitializationMode(fmi2Component c)
 {
     model_data* data = static_cast<model_data*>(c);
     if (data == NULL) return fmi2Error;
-    data->update();
+    initialEquations(data);
     return fmi2OK;
 }
 
@@ -140,7 +205,7 @@ fmi2Status fmi2Reset(fmi2Component c)
     model_data* data = static_cast<model_data*>(c);
     if (data == NULL) return fmi2Error;
     setDefaultStartValues(data);
-    updateAll(data);
+    initialEquations(data);
     return fmi2OK;
 }
 
@@ -202,8 +267,14 @@ fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c, fmi2Real* nominals
     return fmi2Error;
  }
 
- fmi2Status fmi2NewDiscreteStates(fmi2Component, fmi2EventInfo*)
+ fmi2Status fmi2NewDiscreteStates(fmi2Component, fmi2EventInfo* event_info)
  {
+    event_info->newDiscreteStatesNeeded = fmi2False;
+    event_info->terminateSimulation = fmi2False;
+    event_info->nominalsOfContinuousStatesChanged = fmi2False;
+    event_info->valuesOfContinuousStatesChanged = fmi2False;
+    event_info->nextEventTimeDefined = fmi2False;
+    event_info->nextEventTime = 0.0;
     if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
     return fmi2Error;
  }
@@ -350,10 +421,10 @@ fmi2Instantiate(
   fmi2Boolean loggingOn)
 {
     model_data* data = new model_data(
-        NUMBER_OF_REALS,NUMBER_OF_INTEGERS,NUMBER_OF_STRINGS,NUMBER_OF_BOOLEANS);
+        NUMBER_OF_REALS,NUMBER_OF_INTEGERS,NUMBER_OF_STRINGS,NUMBER_OF_BOOLEANS,NUMBER_OF_EVENT_INDICATORS);
     setupEquationGraph(data);
     setDefaultStartValues(data);
-    updateAll(data);
+    initialEquations(data);
     return static_cast<fmi2Component>(data);
 }
 

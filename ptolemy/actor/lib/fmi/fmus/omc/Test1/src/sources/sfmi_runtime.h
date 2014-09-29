@@ -18,7 +18,8 @@ namespace sfmi
 					int num_reals,
 					int num_ints,
 					int num_strs,
-					int num_bools);
+					int num_bools,
+					int num_events);
 
 			// Link an input variable to its function
 			void link(void* var, void(*func)(model_data*));
@@ -37,6 +38,11 @@ namespace sfmi
 			fmi2Integer* int_vars;
 			fmi2Boolean* bool_vars;
 		    std::string* str_vars;
+			fmi2Real* pre_real_vars;
+			fmi2Integer* pre_int_vars;
+			fmi2Boolean* pre_bool_vars;
+		    std::string* pre_str_vars;
+			fmi2Real* z;
 
 		private:
 		    // Map from variable addresses to addresses of functions that have the variable for input
@@ -47,7 +53,16 @@ namespace sfmi
 			std::set<void*> _modified_vars;
 	};
 
-	double DIVISION_SIM(double,double,const char* divisor,int);
+
+	typedef double modelica_real;
+	typedef bool modelica_boolean;
+
+	#define DIVISION(x,y) (x/y)
+	#define $__start(x) x
+
+	/* Linear system solvers */
+	void GETRF(double*,long,long*);
+	void GETRS(double*,long,long*,double*);
 
 };
 

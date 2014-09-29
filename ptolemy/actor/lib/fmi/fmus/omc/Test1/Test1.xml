@@ -18,13 +18,16 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160, 240}">
+        </property>
+    </entity>
     <entity name="Test" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/omc/test/auto/Test1.fmu">
-
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/omc/Test1/Test1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[306.068115234375, 241.9508056640625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 262.0">
         </property>
         <property name="a" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
@@ -44,7 +47,7 @@
             </property>
         </port>
         <port name="der_x_" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
+            <property name="input"/>
             <display name="der(x)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -58,24 +61,18 @@
             </property>
         </port>
     </entity>
-    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{160, 240}">
+    <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
+        <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="1/PI">
         </property>
-    </entity>
-    <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 330.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <link port="Sinewave.output" relation="relation"/>
     <link port="Test.x" relation="relation"/>
     <link port="Test.der_x_" relation="relation2"/>
-    <link port="Sinewave.output" relation="relation"/>
-    <link port="SequenceScope.input" relation="relation2"/>
+    <link port="Sinewave2.output" relation="relation2"/>
 </entity>

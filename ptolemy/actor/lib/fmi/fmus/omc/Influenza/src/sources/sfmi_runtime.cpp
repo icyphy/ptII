@@ -1,5 +1,6 @@
 #include "sfmi_runtime.h"
 #include <iostream>
+#include <cassert>
 using namespace std;
 using namespace sfmi;
 
@@ -7,12 +8,18 @@ model_data::model_data(
 	int num_reals,
 	int num_ints,
 	int num_strs,
-	int num_bools):
+	int num_bools,
+	int num_events):
 	Time(0),
 	real_vars(new fmi2Real[num_reals]),
 	int_vars(new fmi2Integer[num_ints]),
 	bool_vars(new fmi2Boolean[num_bools]),
-	str_vars(new string[num_strs])
+	str_vars(new string[num_strs]),
+	pre_real_vars(new fmi2Real[num_reals]),
+	pre_int_vars(new fmi2Integer[num_ints]),
+	pre_bool_vars(new fmi2Boolean[num_bools]),
+	pre_str_vars(new string[num_strs]),
+	z(new fmi2Real[num_events])
 {
 }
 
@@ -37,6 +44,11 @@ model_data::~model_data()
 	delete [] int_vars;
 	delete [] bool_vars;
 	delete [] str_vars;
+	delete [] pre_real_vars;
+	delete [] pre_int_vars;
+	delete [] pre_bool_vars;
+	delete [] pre_str_vars;
+	delete [] z;
 }
 
 void model_data::update()
@@ -76,12 +88,30 @@ void model_data::update()
 	}
 }
 
-double sfmi::DIVISION_SIM(double num, double den, const char* den_name, int eq)
+
+// Functions from LAPACK
+extern "C"
 {
-	double result = num/den;
-	if (!isfinite(result))
-	{
-		cerr << "DIVISION BY ZERO! " << den_name << " = 0 in Eqn. " << eq << endl;
-	}
-	return result;
+	int dgetrf_(long*,long*,double*,long*,long*,long*);
+	int dgetrs_(char*,long*,long*,double*,long*,long*,double*,long*,long*);
+};
+
+/**
+ * LAPACK wrappers
+ */
+void sfmi::GETRF(double* A, long size, long* p)
+{
+	long ok = 0;
+	dgetrf_(&size,&size,A,&size,p,&ok);
+	assert(ok==0);
 }
+
+void sfmi::GETRS(double* A, long size, long* p, double* B)
+{
+	long ok = 0;
+	long nrhs = 1;
+	char N = 'N';
+	dgetrs_(&N,&size,&nrhs,A,&size,p,B,&size,&ok);
+	assert(ok==0);
+}
+
