@@ -35,7 +35,7 @@
        that consume a lot of memory.  This will probably not work
        under 32-bit Windows.  See
        http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
-  <property name="java.maxmemory.large" value="3500m" />
+  <property name="java.maxmemory.large" value="4500m" />
 
   <!-- Packages to exclude from targets that call javadoc.
        Unfortunately, <fileset> results in a command line that is too long.
