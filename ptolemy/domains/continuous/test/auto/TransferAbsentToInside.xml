@@ -527,7 +527,7 @@ occurs when two adjacent balls make contact with velocity greater than zero.</te
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 515.0]">
                 </property>
             </port>
-            <entity name="BallDynamics" class="ptolemy.domains.continuous.test.auto.BallDynamics">
+            <entity name="BallDynamics" class="ptolemy.domains.continuous.test.BallDynamics">
                 <property name="x_0" class="ptolemy.data.expr.Parameter" value="x_0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 395.0]">
