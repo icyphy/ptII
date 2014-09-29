@@ -76,7 +76,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" -Xmx1500m $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.machineLearning.particleFilter.test.junit.JUnitTclTest)
 
 test_java: jclass
 
