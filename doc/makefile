@@ -603,6 +603,7 @@ ALLPACKAGES = \
 	ptolemy.domains.dde.lib \
 	ptolemy.domains.ddf.kernel \
 	ptolemy.domains.ddf.lib \
+	ptolemy.domains.de.lib.aspect \
 	ptolemy.domains.dt.kernel \
 	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
