@@ -262,12 +262,14 @@ FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
 
 FMI_Export fmiStatus fmiEnterContinuousTimeMode(fmiComponent c) {
     // Model Exchange
-    return fmiError;
+    printf("helloWorldME.c: fmiEnterContinuousTimeMode() returning fmiOk, it is not implemented yet.\n");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiEnterEventMode(fmiComponent c) {
     // Model Exchange
-    return fmiError;
+    printf("helloWorldME.c: fmiEnterEventMode() returning fmiOk, it is not implemented yet.\n");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],

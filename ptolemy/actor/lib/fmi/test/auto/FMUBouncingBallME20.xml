@@ -1,0 +1,89 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMUBouncingBallME20" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 45}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={185, 136, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <entity name="bouncingBallME" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBallME20.fmu">
+        </property>
+        <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 165.0]">
+        </property>
+        <property name="g" class="ptolemy.data.expr.Parameter" value="9.81">
+        </property>
+        <property name="e" class="ptolemy.data.expr.Parameter" value="0.7">
+        </property>
+        <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <port name="h" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="der_h_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="der(h)"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="v" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+        <port name="der_v_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="der(v)"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+    </entity>
+</entity>

@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.ptolemy.fmi.FMI20EventInfo;
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
@@ -441,6 +442,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
 
         double derivatives[] = null;
+
+        FMI20EventInfo.ByReference fmi20EventInfo = new FMI20EventInfo.ByReference();
+
         if (_fmiModelDescription.modelExchange) {
             /////////////////////////////////////////
             // Model exchange version.
@@ -455,7 +459,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             // Set the time.
             // FIXME: Is it OK to do this even if time has not advanced?
-            _fmiSetTime(currentTime);
+            if (_fmiVersion < 2.0) {
+                // FMI 2.0 p85 says that fmi2SetTime() can only be
+                // called when in EventMode or ContinuousTimeMode.
+                _fmiSetTime(currentTime);
+            }
 
             // NOTE: The FMI standard says that all variable start values
             // (of "ScalarVariable / <type> / start") can be set at this time,
@@ -470,6 +478,28 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // Initialize the FMU if necessary.  Model exchange only.
             if (_firstFire) {
                 _fmiInitialize();
+                
+                if (_fmiVersion >= 2.0) {
+                    // "event iteration"
+                    fmi20EventInfo.newDiscreteStatesNeeded = (byte)1;
+                    fmi20EventInfo.terminateSimulation = (byte)0;
+                    while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)0) && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
+                        // "update discrete states"
+                        int fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(Integer.class, new Object[] {
+                                            _fmiComponent, fmi20EventInfo})).intValue();
+                        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                            throw new IllegalActionException("Failed to set a new discrete state.");
+                        }
+                    }
+                    if (fmi20EventInfo.terminateSimulation == (byte)1) {
+                        double currentTimeValue = currentTime.getDoubleValue();
+                        System.out.println("model requested termination at t=" + currentTimeValue);
+                        getDirector().finish();
+                        return;
+                    }
+
+                    _enterContinuousTimeMode();
+                }
 
                 // Record the state.
                 _recordFMUState();
@@ -623,8 +653,63 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 boolean timeEventOccurred = false;
 
                 // Complete the integrator step.
-                _fmiCompletedIntegratorStep(stateEventOccurred
-                        || timeEventOccurred);
+                if (_fmiVersion < 2.0) {
+                    _fmiCompletedIntegratorStep(stateEventOccurred
+                            || timeEventOccurred);
+                } else {
+                    // True if fmi2SetFMUState() will not be called for times before
+                    // the current time in this simulation.
+                    boolean noSetFMUStatePriorToCurrentPoint = true;
+                    boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
+                    if (/*timeEvent || stateEvent ||*/ stepEvent) {
+                        _enterEventMode();
+                        //if (timeEvent) {
+                        //    nTimeEvents++;
+                        //    if (loggingOn) printf("time event at t=%.16g\n", time);
+                        //}
+                        //if (stateEvent) {
+                        //    nStateEvents++;
+                        //    if (loggingOn) for (i=0; i<nz; i++)
+                        //                       printf("state event %s z[%d] at t=%.16g\n",
+                        //                               (prez[i]>0 && z[i]<0) ? "-\\-" : "-/-", i, time);
+                        //}
+                        if (stepEvent) {
+                            //nStepEvents++;
+                            //if (loggingOn) printf("step event at t=%.16g\n", time);
+                            if (_debugging) {
+                                _debug("step event at t=" + currentTimeValue);
+                            }
+                        }
+                        // "event iteration in one step, ignoring intermediate results"
+                        fmi20EventInfo.newDiscreteStatesNeeded = (byte)1;
+                        fmi20EventInfo.terminateSimulation = (byte)0;
+
+                        while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)0) && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
+                            // "update discrete states"
+                            int fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(Integer.class, new Object[] {
+                                                _fmiComponent, fmi20EventInfo})).intValue();
+                            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                                throw new IllegalActionException("Failed to set a new discrete state.");
+                            }
+                        }
+                        if (fmi20EventInfo.terminateSimulation == (byte)1) {
+                            System.out.println("model requested termination at t=" + currentTimeValue);
+                            getDirector().finish();
+                        }
+
+                        _enterContinuousTimeMode();
+
+                        // "check for change of value of states"
+                        if (_debugging) {
+                            if (fmi20EventInfo.valuesOfContinuousStatesChanged == (byte)1) {
+                                _debug("continuous state values changed at t=" + currentTimeValue);
+                            }
+                            if (fmi20EventInfo.nominalsOfContinuousStatesChanged == (byte)1) {
+                                _debug("nominals of continuous state changed  at t=" + currentTimeValue);
+                            }
+                        }
+                    }
+                }
             } else {
                 // FIXME: Need to do an event update. Zero step size.
             }
@@ -866,7 +951,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _firstFire = true;
         _firstFireInIteration = true;
         _newStates = null;
-
         // Set the parameters of the FMU.
         // Loop through the scalar variables and find a scalar
         // variable that has variability == "parameter" and is not an
@@ -1291,6 +1375,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             + " But the director has not handled it."
                             + " Hence, this director is incompatible with this FMU.");
         }
+
         Director director = getDirector();
         _lastCommitTime = director.getModelTime();
         if (_debugging) {
@@ -1423,6 +1508,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                     + _fmiVersion);
                 } else {
                     // _fmiVersion >= 2.0
+                    _fmiEnterContinuousTimeModeFunction = _fmiModelDescription
+                            .getFmiFunction("fmiEnterContinuousTimeMode");
+                    _fmiEnterEventModeFunction = _fmiModelDescription
+                            .getFmiFunction("fmiEnterEventMode");
                     _fmiEnterInitializationModeFunction = _fmiModelDescription
                             .getFmiFunction("fmiEnterInitializationMode");
                     _fmiExitInitializationModeFunction = _fmiModelDescription
@@ -1430,6 +1519,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // Common with CS(notsure) and ME.
                     _fmiInstantiateFunction = _fmiModelDescription
                             .getFmiFunction("fmiInstantiate");
+                    _fmiNewDiscreteStatesFunction = _fmiModelDescription
+                        .getFmiFunction("fmiNewDiscreteStates");
                 }
                 _fmiSetTimeFunction = _fmiModelDescription
                         .getFmiFunction("fmiSetTime");
@@ -1830,6 +1921,43 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         return false;
     }
 
+
+    /** Invoke the fmi2EnterContinuousTimeMode() function.
+     *  This method is typically invoked by FMI-2.0 model exchange.   
+     *  @exception IllegalActionException If there is a problem
+     *  invoking the fmi2ContinuousTimeMode() function in the fmi.
+     */   
+    protected void _enterContinuousTimeMode() throws IllegalActionException {
+        // Can't call fmi2CompletedIntegratorStep() unless
+        // fmi2EnterContinuousTimeMode() has been called.
+        int fmiFlag = ((Integer) _fmiEnterContinuousTimeModeFunction
+                .invoke(Integer.class, new Object[] { _fmiComponent }))
+            .intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this,
+                    "Failed to enter the continuous time mode of the FMU: "
+                    + _fmiStatusDescription(fmiFlag));
+        }
+    }
+
+    /** Invoke the fmi2EnterEventMode() function.
+     *  This method is typically invoked by FMI-2.0 model exchange.   
+     *  @exception IllegalActionException If there is a problem
+     *  invoking the fmi2EnterEventMode() function in the fmi.
+     */   
+    protected void _enterEventMode() throws IllegalActionException {
+        int fmiFlag = ((Integer) _fmiEnterEventModeFunction
+                .invoke(Integer.class, new Object[] { _fmiComponent }))
+            .intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this,
+                    "Failed to enter the event mode of the FMU: "
+                    + _fmiStatusDescription(fmiFlag));
+        }
+    }
+
     /** Print the debug message to stdout and flush stdout.
      *  This is useful for tracking down segfault problems.
      *  To use this, right click on the FMUImport actor
@@ -1843,8 +1971,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _debug(message);
     }
 
-    /** For model exchange, complete the integrator step, and if the FMU
-     *  indicates that fmiEventUpdate() should be called, call it.
+    /** For model exchange, complete the integrator step. 
+     *  
+     *  <p> Under FMI previous to 2.0, if the FMU indicates that
+     *  fmiEventUpdate() should be called, call it.</p>
      *
      *  <p>Note that in FMI-2.0, the ModelExchange attribute as an element
      *  {@link org.ptolemy.fmi.FMI20ModelExchangeCapabilities#completedIntegratorStepNotNeeded}
@@ -1852,30 +1982,67 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  should be called.  However, if completedIntegratorStepNotNeeded is true,
      *  then fmiCompletedIntegratorStep is not called.</p>
      *
-     *  @param eventOccurred True if a time event or state event has occurred and
-     *   fmiEventUpdate should be called.
+     *  <p>Under FMI-2.0, if the fmi2CompletedIntegrationStep() method
+     *  sets the value of the terminateSimulation parameter to true,
+     *  then {&link ptolemy.actor.Director#finish()} is invoked.</p>
+     *
+     *  @param eventOccuredOrNoSetFMUStatePriorToCurrentPoint For FMI
+     *  &lt; 2.0, true if event update should be called.  for FMI &ge; 2.0,
+     *  True if fmi2SetFMUState() will not be called for times before
+     *  the current time in this simulation.
+     *  @return FMI-2.0 returns true if the call to fmi2CompletedIntegratorStep()
+     *  sets the value of the enterEventMode parameter to true.
      *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
-    protected void _fmiCompletedIntegratorStep(boolean eventOccurred)
+    protected boolean _fmiCompletedIntegratorStep(boolean eventOccuredOrNoSetFMUStatePriorToCurrentPoint)
             throws IllegalActionException {
+        // FIXME: It is possibly a mistake to have one method for both
+        // FMI < 2.0 and >=2.0.
         if (_fmiVersion < 2.0 || !_completedIntegratorStepNotNeeded()) {
 
-            ByteBuffer callEventUpdate = ByteBuffer.allocate(1);
-            int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
+            if (_fmiVersion < 2.0) {
+                ByteBuffer callEventUpdate = ByteBuffer.allocate(1);
+                int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
-                        callEventUpdate })).intValue();
+                                                          callEventUpdate })).intValue();
 
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                throw new IllegalActionException(this,
-                        "Failed to complete integrator step: "
-                                + _fmiStatusDescription(fmiFlag));
-            }
+                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                    throw new IllegalActionException(this,
+                            "Failed to complete integrator step: "
+                            + _fmiStatusDescription(fmiFlag));
+                }
 
-            if (callEventUpdate.get(0) != (byte) 0 || eventOccurred) {
-                throw new IllegalActionException(this,
-                        "FIXME: Not supported yet. Call eventUpdate");
+                if (callEventUpdate.get(0) != (byte) 0 || eventOccuredOrNoSetFMUStatePriorToCurrentPoint) {
+                    // return true; //?
+                    throw new IllegalActionException(this,
+                            "FIXME: Not supported yet. Call eventUpdate");
+                }
+            } else {
+
+                byte noSetFMUStatePriorToCurrentPointByte = (eventOccuredOrNoSetFMUStatePriorToCurrentPoint ? (byte)1 : (byte)0);
+                ByteBuffer enterEventMode = ByteBuffer.allocate(1);
+                ByteBuffer terminateSimulation = ByteBuffer.allocate(1);
+            
+                int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
+                    .invoke(Integer.class, new Object[] { _fmiComponent,
+                                                          noSetFMUStatePriorToCurrentPointByte,
+                                                          enterEventMode, terminateSimulation})).intValue();
+
+                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                    throw new IllegalActionException(this,
+                            "Failed to complete integrator step: "
+                            + _fmiStatusDescription(fmiFlag));
+                }
+
+                if (terminateSimulation.get(0) != (byte) 0) {
+                    getDirector().finish();
+                }
+                if (enterEventMode.get(0) != (byte) 0) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     /** Advance from the last firing time or last commit time to the specified time and
@@ -2262,11 +2429,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             "Failed to exit the initialization mode of the FMU: "
                                     + _fmiStatusDescription(fmiFlag));
                 }
-                if (_fmiModelDescription.numberOfEventIndicators > 0) {
-                    new Exception(
-                            "Warning: FIXME: Need to get the eventInfo etc.")
-                    .printStackTrace();
-                }
+                //if (_fmiModelDescription.numberOfEventIndicators > 0) {
+                //    new Exception(
+                //            "Warning: FIXME: Need to get the eventInfo etc.")
+                //    .printStackTrace();
+                //}
             }
         } else {
             // Co-Simulation
@@ -2867,20 +3034,38 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             throw new IllegalActionException(this,
                     "Model exchange not yet implemented for FMI " + _fmiVersion);
         } else {
-            if (_fmiEnterInitializationModeFunction == null) {
-                missingFunctions.append("_fmiEnterInitializationMode()");
+            if (_fmiEnterContinuousTimeModeFunction == null) {
+                missingFunctions.append("_fmiEnterContinuousTimeMode()");
+            }
+            if (_fmiEnterEventModeFunction == null) {
+                if (missingFunctions.length() > 0) {
+                    missingFunctions.append(", ");
+                }
+                missingFunctions.append("_fmiEnterEventMode()");
             }
             if (_fmiEnterInitializationModeFunction == null) {
                 if (missingFunctions.length() > 0) {
                     missingFunctions.append(", ");
                 }
                 missingFunctions.append("_fmiEnterInitializationMode()");
+            }
+            if (_fmiExitInitializationModeFunction == null) {
+                if (missingFunctions.length() > 0) {
+                    missingFunctions.append(", ");
+                }
+                missingFunctions.append("_fmiExitInitializationMode()");
             }
             if (_fmiInstantiateFunction == null) {
                 if (missingFunctions.length() > 0) {
                     missingFunctions.append(", ");
                 }
                 missingFunctions.append("_fmiInstantiate()");
+            }
+            if (_fmiNewDiscreteStatesFunction == null) {
+                if (missingFunctions.length() > 0) {
+                    missingFunctions.append(", ");
+                }
+                missingFunctions.append("_fmiNewDiscreteStates()");
             }
         }
         if (_fmiModelDescription.numberOfContinuousStates > 0) {
@@ -3337,11 +3522,20 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The fmiDoStep() function. */
     private Function _fmiDoStepFunction;
 
+    /** The fmiEnterContinousTimeMode Function, present only in FMI-2.0. */
+    private Function _fmiEnterContinuousTimeModeFunction;
+
+    /** The fmiEnterEventModeFunction, present only in FMI-2.0. */
+    private Function _fmiEnterEventModeFunction;
+
     /** The fmiEnterInitializationModeFunction, present only in FMI-2.0. */
     private Function _fmiEnterInitializationModeFunction;
 
     /** The fmiExitInitializationModeFunction, present only in FMI-2.0. */
     private Function _fmiExitInitializationModeFunction;
+
+    /** The _fmi2NewDiscreteStates function, present only in FMI-2.0 */
+    private Function _fmiNewDiscreteStatesFunction;
 
     /** The _fmiFreeInstance function, present only in FMI-2.0 */
     private Function _fmiFreeInstanceFunction;
