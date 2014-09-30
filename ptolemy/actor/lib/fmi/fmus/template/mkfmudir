@@ -76,12 +76,12 @@ EOF
 
 mkdir $fmuName/src
 
-cp $fmiTemplateDirectory/model.png $fmuName/src
+#cp $fmiTemplateDirectory/model.png $fmuName/src
 
 mkdir $fmuName/src/binaries
 
 mkdir $fmuName/src/documentation
-cat > $fmuName/src/documentation/_main.htm <<EOF2
+cat > $fmuName/src/documentation/_main.html <<EOF2
 <html>
 <head>
     <title>Documentation for $fmuName.fmu</title>
@@ -142,7 +142,18 @@ EOF3
 
 mkdir $fmuName/src/sources
 
-cp $fmiTemplateDirectory/sources/{build_fmu,build_fmu.bat,fmuTemplate_$fmiVersion.[ch]} $fmuName/src/sources
+cp $fmiTemplateDirectory/sources/{build_fmu,build_fmu.bat,fmu.mk} $fmuName/src/sources
+cp $fmiTemplateDirectory/sources/fmuTemplate_$fmiVersion.c $fmuName/src/sources/fmuTemplate.c
+cp $fmiTemplateDirectory/sources/fmuTemplate_$fmiVersion.h $fmuName/src/sources/fmuTemplate.h
 cp $fmiSourceDirectory/{fmi2FunctionTypes.h,fmi2Functions.h,fmi2TypesPlatform.h} $fmuName/src/sources
+
+cat > $fmuName/src/sources/makefile <<EOF4
+# $Id$
+# The name of the FMU to be built.
+FMU_NAME = $fmuName
+
+# The rules are in a separate file so that we can easily update them.
+include fmu.mk
+EOF4
 
 

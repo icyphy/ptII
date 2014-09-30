@@ -40,10 +40,13 @@ FMUS_PRE_2_0_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
-FMUS_2_0_CS =	bouncingBall20RC1 dq20RC1 heaterFlowResistance inc20RC1 inc20RC1pt \
+FMUS_2_0_CS =	bouncingBall20 bouncingBall20RC1 \
+		dq20 dq20RC1 heaterFlowResistance \
+		inc20 inc20RC1 inc20RC1pt \
 		output20RC1pt scale20RC1pt \
 		scale20RC1 stairsA20RC1F pumpConstantSpeed tankOpen \
-		values20RC1 vanDerPol20RC1
+		values20 values20RC1 \
+		vanDerPol20 vanDerPol20RC1
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
@@ -56,7 +59,7 @@ FMUS_PRE_2_0_ME = heaterFlowResistance pumpConstantSpeed tankOpen
 
 # FMUs that have have fmiVersion >= 2.0
 # New Model Exchange FMUS should be added here.
-FMUS_2_0_ME = helloWorldME2
+FMUS_2_0_ME = bouncingBallME20 dqME20 helloWorldME2 incME20 valuesME20 vanDerPolME20
 
 FMUS_ME =	$(FMUS_1_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
 

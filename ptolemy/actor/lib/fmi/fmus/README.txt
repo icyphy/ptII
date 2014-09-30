@@ -66,6 +66,11 @@ The high level steps are:
 2) The easiest thing to do is to copy the files from an existing fmu and
 change them.  
 
+Also $PTII/ptolemy/actor/lib/fmi/fmus/template/mkfmudir is a script that
+will build a FMI-2.0 Co-Simulation directory.
+
+The remaining steps outline what is done to create an fmu directory by hand.
+
 3) The .c file that defines the fmu-specific methods of your FMU should
 be renamed to match the name of the FMU.  For example
 ptolemy/actor/lib/fmi/fmu/stairsA/ has 

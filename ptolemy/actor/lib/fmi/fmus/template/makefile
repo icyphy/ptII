@@ -78,33 +78,42 @@ all: suball
 install: subinstall jars
 
 # Update the fmus from fmusdk
-FMUSDK=$(HOME)/src/fmi/fmusdk2
+FMUSDK=$(HOME)/src/fmi/fmusdk2/fmu20/src/models
 MODELS=bouncingBall dq inc values vanDerPol
+#MODELS=bouncingBall
 updateFromFmuSdk:
 	set $(MODELS); \
 	for x do \
-		echo "Creating $${x}20";
-		cd $(ROOT)/ptolemy/actor/lib/fmi/fmus/; $(ROOT)/ptolemy/actor/lib/fmi/fmus/template/mkfmudir $${x}20; 
+		echo "Creating $${x}20"; \
+		cd $(ROOT)/ptolemy/actor/lib/fmi/fmus/; ./template/mkfmudir $${x}20; \
 		cp $(FMUSDK)/$$x/_main.html $${x}20/src/documentation; \
-		if [ -f $(FMUSDK)/$${x}/*.PNG ]; then \
-			cp $(FMUSDK)/$${x}/*.PNG $${x}20/src/; \
-		fi; \
-		if [ -f $(FMUSDK)/$${x}/*.png ]; then \
-			cp $(FMUSDK)/$${x}/*.png $${x}20/src/; \
-		fi; \
-		cp $(FMUSDK)/$${x}/$${x}.c $${x}20/src/sources; \
-		cp $(FMUSDK)/$${x}/modelDescription_cs.c $${x}20/src/modelDescription.xml; \
-		echo "Creating $${x}ME20";
-		cd $(ROOT)/ptolemy/actor/lib/fmi/fmus/; $(ROOT)/ptolemy/actor/lib/fmi/fmus/template/mkfmudir $${x}ME20; 
+		cp $(FMUSDK)/$${x}/*.PNG $${x}20/src/; \
+		cp $(FMUSDK)/$${x}/*.png $${x}20/src/; \
+		sed "s/$$x/$${x}20/" < $(FMUSDK)/$${x}/$${x}.c > $${x}20/src/sources/$${x}20.c; \
+		sed "s/$$x/$${x}20/" < $(FMUSDK)/$${x}/modelDescription_cs.xml > $${x}20/src/modelDescription.xml; \
+		echo "Creating $${x}ME20"; \
+		./template/mkfmudir $${x}ME20; \
 		cp $(FMUSDK)/$$x/_main.html $${x}ME20/src/documentation; \
-		if [ -f $(FMUSDK)/$${x}/*.PNG ]; then \
-			cp $(FMUSDK)/$${x}/*.PNG $${x}ME20/src/; \
-		fi; \
-		if [ -f $(FMUSDK)/$${x}/*.png ]; then \
-			cp $(FMUSDK)/$${x}/*.png $${x}ME20/src/; \
-		fi; \
-		cp $(FMUSDK)/$${x}/$${x}.c $${x}ME20/src/sources; \
-		cp $(FMUSDK)/$${x}/modelDescription_me.c $${x}ME20/src/modelDescription.xml; \
+		cp $(FMUSDK)/$${x}/*.PNG $${x}ME20/src/; \
+		cp $(FMUSDK)/$${x}/*.png $${x}ME20/src/; \
+		sed "s/$$x/$${x}ME20/" < $(FMUSDK)/$${x}/$${x}.c > $${x}ME20/src/sources/$${x}ME20.c; \
+		sed "s/$$x/$${x}ME20/" < $(FMUSDK)/$${x}/modelDescription_me.xml > $${x}ME20/src/modelDescription.xml; \
+		sed -e 's/\(INCLUDE = -DFMI_COSIMULATION -I.\)/#\1/' \
+		    -e 's/#\(INCLUDE =  -I.\)/\1/' < $${x}ME20/src/sources/fmu.mk > $${x}ME20/src/sources/fmu.mk.new; \
+		mv $${x}ME20/src/sources/fmu.mk.new $${x}ME20/src/sources/fmu.mk; \
+		sed -e 's/\(include="-DFMI_COSIMULATION -I."\)/#\1/' \
+		    -e 's/#\(include="-I."\)/\1/' < $${x}ME20/src/sources/build_fmu > $${x}ME20/src/sources/build_fmu.new; \
+		mv $${x}ME20/src/sources/build_fmu.new $${x}ME20/src/sources/build_fmu; \
+		sed -e 's@\(cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.\)@cl /LD /wd4090 /nologo ..\%1.c /I ..\.@' < $${x}ME20/src/sources/build_fmu.bat > $${x}ME20/src/sources/build_fmu.bat.new; \
+		mv $${x}ME20/src/sources/build_fmu.bat.new $${x}ME20/src/sources/build_fmu.bat; \
+		cd template; \
+	done;
+
+buildFromFmuSdk:
+	set $(MODELS); \
+	for x do \
+	    (cd ../$${x}20; make); \
+	    (cd ../$${x}ME20; make); \
 	done;
 
 # Get the rest of the rules

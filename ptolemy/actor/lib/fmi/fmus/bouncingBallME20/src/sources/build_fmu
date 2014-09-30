@@ -1,0 +1,57 @@
+#!/bin/sh
+# Build a model exchange or co-simulation fmu
+# Usage: build_fmu fmuBaseName
+
+if [ $# -ne 1 ]; then
+   echo "Usage: $0 fmuBaseName"
+   exit 2
+fi
+
+fmuBaseName=$1
+
+# Error checking
+if [ ! -f $fmuBaseName.c ]; then
+   echo "$0: $fmuBaseName.c does not exist"
+   exit 4
+fi
+
+# For co-simulation:
+#include="-DFMI_COSIMULATION -I."
+
+# For model exchange:
+include="-I."
+
+case "`uname -s`" in
+     CYGWIN*) arch=win
+     	      sharedLibrarySuffix=dll;;
+     Darwin)  arch=darwin
+     	      sharedLibrarySuffix=dylib;;
+     Linux)   arch=linux
+     	      pic=-fPIC
+     	      sharedLibrarySuffix=so;;
+esac     
+
+# Number of bits, default to 64
+bits=64
+case "`uname -m`" in
+     *64)      bits=64;;
+     *32)      bits=32;;
+     *i[3-6]86) bits=32;;
+esac
+
+# Uncomment the next line to force building 32-bit
+#bits=32
+# See also ../Makefile
+
+if [ $arch = linux ]; then
+    if [ $bits = 32 ]; then
+	CBITSFLAGS="-m32 -fvisibility=hidden"
+    else 
+	CBITSFLAGS="-fvisibility=hidden"
+    fi
+fi
+
+set -x
+echo `pwd`; \
+make dirclean; \
+make ARCH=${arch}${bits} CBITSFLAGS="${CBITSFLAGS}" INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $fmuBaseName.fmu

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="valuesME20"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f004}"
+  numberOfEventIndicators="0">
+
+<ModelExchange
+  modelIdentifier="valuesME20"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="x" valueReference="0" description="used as continuous state"
+                  causality="local" variability="continuous" initial="exact">
+    <Real start="1"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(x)" valueReference="1" description="time derivative of x"
+                  causality="local" variability="continuous" initial="calculated">
+    <Real derivative="1"/>
+  </ScalarVariable>
+  <ScalarVariable name="int_in" valueReference="0" description="integer input"
+                  causality="input" variability="discrete">
+    <Integer start="2"/>
+  </ScalarVariable>
+  <ScalarVariable name="int_out" valueReference="1" description="index in string array 'month'"
+                  causality="output" variability="discrete" initial="exact">
+    <Integer start="0"/>
+  </ScalarVariable>
+  <ScalarVariable name="bool_in" valueReference="0" description="boolean input"
+                  causality="input" variability="discrete">
+    <Boolean start="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="bool_out" valueReference="1" description="boolean output"
+                  causality="output" variability="discrete" initial="exact">
+    <Boolean start="false"/>
+  </ScalarVariable>
+  <ScalarVariable name="string_in" valueReference="0" description="string input"
+                  causality="input" variability="discrete">
+    <String start="QTronic"/>
+  </ScalarVariable>
+  <ScalarVariable name="string_out" valueReference="1" description="the string month[int_out]"
+                  causality="output" variability="discrete" initial="exact">
+    <String start="jan"/>
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="4" />
+    <Unknown index="6" />
+    <Unknown index="8" />
+  </Outputs>
+  <Derivatives>
+    <Unknown index="2" />
+  </Derivatives>
+  <InitialUnknowns>
+    <Unknown index="2"/>
+  </InitialUnknowns>
+</ModelStructure>
+
+</fmiModelDescription>
