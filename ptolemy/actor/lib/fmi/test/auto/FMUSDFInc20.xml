@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMUSDFInc20" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 389, 834, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU comes from the version 2.0 of the FMUSDK&#10;It is a counter that is supposed to increment&#10;its output by one every one time unit.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 15}">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 2, 3, 3, 4, 4, 5, 5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 265.0}">
+        </property>
+    </entity>
+    <entity name="inc20" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20.fmu">
+        </property>
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 175.0}">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 551, 670}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[551, 626]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 180.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.5"/>
+<yRange min="1.0" max="5.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{95.0, 175.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, tail={id=&quot;TimedPlotter.input&quot;,x=240.0,y=180.0,index=2}, points={95.0,220.0,195.0,220.0,195.0,180.0} },{ head={id=&quot;Integrator.derivative&quot;,x=140.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=265.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={95.0,265.0} },{ head={id=&quot;inc20.counter&quot;,x=35.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation2"/>
+    <link port="inc20.counter" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+</entity>
