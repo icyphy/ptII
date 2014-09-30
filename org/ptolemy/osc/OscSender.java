@@ -118,21 +118,21 @@ public class OscSender extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  //// 
 
-    /*
+    /**
      * IP Address of the remote host
      */
     public Parameter remoteHost; 
-    /*
-    /*
+    
+    /**
      * Remote port to which the OSC messages will be sent to.
      */
     public Parameter remotePort; 
-    /*
+    /**
      * Local port from which the OSC messages will be sent.
      */
     public Parameter localPort; 
     
-    /*
+    /**
      * OSC prefix tag that will be prepended to each port name
      */
     public PortParameter tagPrefix;

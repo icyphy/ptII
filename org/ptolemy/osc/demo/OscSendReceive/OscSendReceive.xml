@@ -1,0 +1,235 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OscSendReceive" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="11.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 275.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 28, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9535330631675756">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.7775340080261, 505.6708173655081}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send and receive OSC Messages on localhost. &#10;The OscSender packs up received tokens into &#10;OSC message bundles. This implies that if tokens &#10;with the same time stamp are received at input ports&#10;of OscSender, these will be packed into the same OSC bundle. &#10;&#10;The clock has an initial delay of 2.0 seconds to allow for&#10;UDP socket initialization.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 525.0]">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 355.0}">
+        </property>
+    </entity>
+    <entity name="OscSender" class="org.ptolemy.osc.OscSender">
+        <property name="remotePort" class="ptolemy.data.expr.Parameter" value="2225">
+        </property>
+        <property name="localPort" class="ptolemy.data.expr.Parameter" value="2224">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 365.0}">
+        </property>
+        <port name="tagPrefix" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="time" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="OscReceiver" class="org.ptolemy.osc.OscReceiver">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="2225">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 560.0]">
+        </property>
+        <port name="time" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="timeAsString" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 365.0}">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 455.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 450.0}">
+        </property>
+    </entity>
+    <entity name="OscSender2" class="org.ptolemy.osc.OscSender">
+        <property name="remotePort" class="ptolemy.data.expr.Parameter" value="2225">
+        </property>
+        <property name="localPort" class="ptolemy.data.expr.Parameter" value="2227">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{670.0, 445.0}">
+        </property>
+        <port name="tagPrefix" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="timeAsString" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;time: &quot;+time">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 455.0}">
+        </property>
+        <port name="t" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 499, 249, 343}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[161, 299]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 675.0]">
+        </property>
+    </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 501, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 560.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="2.0" max="10.0"/>
+<yRange min="0.0" max="8.0"/>
+<default connected="no" marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscSender.value&quot;,x=540.0,y=365.0}, tail={id=&quot;Ramp.output&quot;,x=405.0,y=365.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{215.0, 355.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=135.0,y=355.0}, tail={id=&quot;relation3.vertex1&quot;,x=215.0,y=355.0}, points={} },{ head={id=&quot;Ramp.trigger&quot;,x=405.0,y=365.0}, tail={id=&quot;relation3.vertex1&quot;,x=215.0,y=355.0}, points={} },{ head={id=&quot;CurrentTime.trigger&quot;,x=280.0,y=455.0}, tail={id=&quot;relation3.vertex1&quot;,x=215.0,y=355.0}, points={215.0,455.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.start&quot;,x=135.0,y=355.0}, tail={id=&quot;SingleEvent.output&quot;,x=35.0,y=450.0}, points={125.0,450.0} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{455.0, 455.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscSender.time&quot;,x=540.0,y=365.0}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=455.0}, points={455.0,375.0} },{ head={id=&quot;CurrentTime.output&quot;,x=280.0,y=455.0}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=455.0}, points={} },{ head={id=&quot;Expression.t&quot;,x=520.0,y=455.0}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscSender2.timeAsString&quot;,x=670.0,y=445.0}, tail={id=&quot;Expression.output&quot;,x=520.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscReceiver.timeAsString&quot;,x=495.0,y=560.0}, tail={id=&quot;Display2.input&quot;,x=590.0,y=675.0}, points={495.0,675.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscReceiver.time&quot;,x=495.0,y=560.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=590.0,y=560.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=590.0,y=560.0}, tail={id=&quot;OscReceiver.value&quot;,x=495.0,y=560.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="DiscreteClock.start" relation="relation4"/>
+    <link port="OscSender.value" relation="relation"/>
+    <link port="OscSender.time" relation="relation9"/>
+    <link port="OscReceiver.time" relation="relation2"/>
+    <link port="OscReceiver.value" relation="relation6"/>
+    <link port="OscReceiver.timeAsString" relation="relation5"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp.trigger" relation="relation3"/>
+    <link port="CurrentTime.output" relation="relation9"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="OscSender2.timeAsString" relation="relation8"/>
+    <link port="Expression.output" relation="relation8"/>
+    <link port="Expression.t" relation="relation9"/>
+    <link port="Display2.input" relation="relation5"/>
+    <link port="XYPlotter.inputX" relation="relation2"/>
+    <link port="XYPlotter.inputY" relation="relation6"/>
+</entity>

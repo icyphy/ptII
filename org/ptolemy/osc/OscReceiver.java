@@ -108,7 +108,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /* The receive port - set to 57946 by default */
+    /** The receive port*/
     public Parameter port;
 
     ///////////////////////////////////////////////////////////////////
@@ -200,18 +200,20 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
     /* incoming osc message are forwarded to the oscEvent method. */
     public void oscEvent(OscMessage theMessage) { 
-        try { 
-            Object[] receivedData = theMessage.arguments();
-            String addressPattern = theMessage.addrPattern(); 
-            _processMessage(receivedData, addressPattern);
+        synchronized(this) {
+            try { 
+                Object[] receivedData = theMessage.arguments();
+                String addressPattern = theMessage.addrPattern(); 
+                _processMessage(receivedData, addressPattern);
 
-            // Note that fireAt() will modify the requested firing time if it is in the past.
-            getDirector().fireAtCurrentTime(this);//fireAt(this, timeOfRequest);
+                // Note that fireAt() will modify the requested firing time if it is in the past.
+                getDirector().fireAtCurrentTime(this);//fireAt(this, timeOfRequest);
 
-        } catch (IllegalActionException e) {
-            System.err.println("Error Processing OSCPacket:\n"
-                    + theMessage.toString());
-        } 
+            } catch (IllegalActionException e) {
+                System.err.println("Error Processing OSCPacket:\n"
+                        + theMessage.toString());
+            } 
+        }
     }
 
     public void oscStatus( OscStatus s) { 
