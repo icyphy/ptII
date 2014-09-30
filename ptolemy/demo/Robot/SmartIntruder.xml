@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, -15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1319, 693}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 191, 1433, 674}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1085, 583]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1199, 564]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8198644333901112">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7308512138974678">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{863.97998046875, 308.1960633175871}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{812.31884765625, 331.70550019927543}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-5.0, 40.0}">
         </property>
     </property>
-    <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://ptango.eecs.berkeley.edu:8077/keyvalue&quot;">
+    <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:8077/keyvalue&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -125,7 +125,7 @@
     <class name="KVtoArray" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, -5.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 134, 736, 633}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 134, 739, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[505, 524]">
         </property>
@@ -328,7 +328,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-515.0, -430.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1115, 559}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1115, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[881, 449]">
         </property>
@@ -723,7 +723,7 @@
         </property>
         <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
         </property>
-        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-4.175823475758685,190.40288442658377]&quot;">
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-169.7667290105279,83.51365669770293]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1105.0, 125.0}">
         </property>
