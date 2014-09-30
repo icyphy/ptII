@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 22, 1286, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1514, 457, 1286, 878}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1052, 768]">
     </property>
@@ -62,7 +62,7 @@
     </entity>
     <entity name="now" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -256,7 +256,7 @@
     </entity>
     <entity name="1 hour later" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -277,7 +277,7 @@
     </entity>
     <entity name="1 millisecond earlier" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -486,7 +486,7 @@
     </entity>
     <entity name="constructed date" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -563,7 +563,7 @@
     </entity>
     <entity name="reconstructed date" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -630,7 +630,7 @@
     </entity>
     <entity name="2 seconds later" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -638,16 +638,16 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 30.0]">
         </property>
     </entity>
     <entity name="DateToEvent" class="ptolemy.domains.de.lib.DateToEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 60.0]">
         </property>
     </entity>
     <entity name="output 2 seconds later" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="38">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -655,7 +655,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[955.0, 60.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -746,11 +746,11 @@
         </port>
     </entity>
     <entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 715.0]">
         </property>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123456789 PDT 2014&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123456789 -0700 2014&quot;">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -759,12 +759,12 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 715.0]">
         </property>
     </entity>
     <entity name="constructed date3" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -772,12 +772,12 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 715.0]">
         </property>
     </entity>
     <entity name="constructed date2" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -789,11 +789,11 @@
         </property>
     </entity>
     <entity name="StringToDate2" class="ptolemy.actor.lib.conversions.StringToDate">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 765.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 765.0]">
         </property>
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123 PDT 2014&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123 -0700 2014&quot;">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -802,12 +802,12 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 765.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 765.0]">
         </property>
     </entity>
     <entity name="constructed date4" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="43">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -815,7 +815,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 765.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 765.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

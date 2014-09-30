@@ -160,7 +160,7 @@
         </property>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123456789 GMT 2014&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123456789 +0000 2014&quot;">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -173,7 +173,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;\&quot;Sun Sep 09 01:46:40.000000000 GMT 2001\&quot;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;\&quot;Sun Sep 09 01:46:40.000000000 +0000 2001\&quot;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -233,7 +233,7 @@
         </port>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;8&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -317,7 +317,7 @@
         </port>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Greenwich Mean Time&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;GMT-07:00&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
