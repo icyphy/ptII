@@ -77,5 +77,35 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball 
 install: subinstall jars
 
+# Update the fmus from fmusdk
+FMUSDK=$(HOME)/src/fmi/fmusdk2
+MODELS=bouncingBall dq inc values vanDerPol
+updateFromFmuSdk:
+	set $(MODELS); \
+	for x do \
+		echo "Creating $${x}20";
+		cd $(ROOT)/ptolemy/actor/lib/fmi/fmus/; $(ROOT)/ptolemy/actor/lib/fmi/fmus/template/mkfmudir $${x}20; 
+		cp $(FMUSDK)/$$x/_main.html $${x}20/src/documentation; \
+		if [ -f $(FMUSDK)/$${x}/*.PNG ]; then \
+			cp $(FMUSDK)/$${x}/*.PNG $${x}20/src/; \
+		fi; \
+		if [ -f $(FMUSDK)/$${x}/*.png ]; then \
+			cp $(FMUSDK)/$${x}/*.png $${x}20/src/; \
+		fi; \
+		cp $(FMUSDK)/$${x}/$${x}.c $${x}20/src/sources; \
+		cp $(FMUSDK)/$${x}/modelDescription_cs.c $${x}20/src/modelDescription.xml; \
+		echo "Creating $${x}ME20";
+		cd $(ROOT)/ptolemy/actor/lib/fmi/fmus/; $(ROOT)/ptolemy/actor/lib/fmi/fmus/template/mkfmudir $${x}ME20; 
+		cp $(FMUSDK)/$$x/_main.html $${x}ME20/src/documentation; \
+		if [ -f $(FMUSDK)/$${x}/*.PNG ]; then \
+			cp $(FMUSDK)/$${x}/*.PNG $${x}ME20/src/; \
+		fi; \
+		if [ -f $(FMUSDK)/$${x}/*.png ]; then \
+			cp $(FMUSDK)/$${x}/*.png $${x}ME20/src/; \
+		fi; \
+		cp $(FMUSDK)/$${x}/$${x}.c $${x}ME20/src/sources; \
+		cp $(FMUSDK)/$${x}/modelDescription_me.c $${x}ME20/src/modelDescription.xml; \
+	done;
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
