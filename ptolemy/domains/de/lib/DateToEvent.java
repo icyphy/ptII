@@ -98,7 +98,6 @@ public class DateToEvent extends Transformer {
         super.fire();
         long systemTime = System.currentTimeMillis();
         Time time = _director.getModelTime();
-        System.out.println("modeltime " + time);
         if (_outputTimes != null && _outputTimes.size() > 0) {
             Time t = (Collections.min(_outputTimes));
             if (t.compareTo(time) == 0) {
