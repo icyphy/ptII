@@ -329,10 +329,11 @@ public class FMIModelDescription {
         Function function = null;
         // FMI-2.0
         String name1 = modelIdentifier + "_" + functionName.replace("fmi", "fmi2");
+        String name2 = functionName.replace("fmi", "fmi2");
         // FMI-2.0RC1
-        String name2 = modelIdentifier + "_" + functionName;
+        String name3 = modelIdentifier + "_" + functionName;
         // FMI-1.0?
-        String name3 = functionName;
+        String name4 = functionName;
         try {
             function = _nativeLibrary.getFunction(name1);
         } catch (UnsatisfiedLinkError error) {
@@ -342,12 +343,16 @@ public class FMIModelDescription {
                 try {
                     function = _nativeLibrary.getFunction(name3);
                 } catch (UnsatisfiedLinkError error3) {
-                    UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
+                    try {
+                        function = _nativeLibrary.getFunction(name4);
+                    } catch (UnsatisfiedLinkError error4) {
+                        UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
                             "Could not find the function, \"" + name1 + "\" or \""
-                            + name2 + "\" or \"" + name3
+                            + name2 + "\" or \"" + name3 + "\" or \"" + name4
                             + "\" in " + _nativeLibrary);
-                    //linkError.initCause(error);
-                    throw linkError;
+                        //linkError.initCause(error);
+                        throw linkError;
+                    }
                 }
             }
         }
