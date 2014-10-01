@@ -497,8 +497,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         getDirector().finish();
                         return;
                     }
+                    // Can't enter continuous mode here, calling fmi2SetInteger will fail
+                    // if we are in the modelContinuousTimeMode
 
-                    _enterContinuousTimeMode();
                 }
 
                 // Record the state.
@@ -510,6 +511,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _checkEventIndicators();
             }
 
+            if (_fmiVersion >= 2.0) {
+                // Need to be in modelEventMode during second and subsequent fires
+                // for fmi2SetInteger() to work.  See valuesME20.fmu.
+                _enterEventMode();
+            }
             // Initialize the _newStates vector.
             double states[] = _states.array();
             if (_newStates == null || _newStates.length != states.length) {
@@ -632,6 +638,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // Even then, it's incomplete. Probably need to record and reset _all_ variables,
             // not just the continuous states.
             // _fmiSetContinuousStates(states);
+
+            if (_fmiVersion >= 2.0) {
+                // Enter the Continuous Time Mode after setting the inputs.
+                // valuesME20.fmu tests this by having integer inputs.
+                _enterContinuousTimeMode();
+            }
 
             if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
                 // Set states only if the FMU has states
@@ -1181,6 +1193,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 boolean hideLocal = false;
 
                 String causality = "";
+                System.out.println("FMUImport: scalar.causality: " + scalar.causality + " name: " + scalar.name);
                 switch (scalar.causality) {
                 case local:
                     // If an FMU is imported as model exchange, then
@@ -1192,19 +1205,21 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // derivative="index" " appears, then Ptolemy
                     // should read the "index", go to this variable,
                     // and add it to the list of input ports,
-
                     // The default is to hide local scalars
                     hideLocal = true;
                     if (fmiModelDescription.modelExchange) {
                         if (fmiModelDescription.continuousStates
                                 .contains(scalar.name)) {
+                            System.out.println("FMUImport: scalar.causality: " + scalar.causality + " contains " + scalar.name);
                             // This local scalar is the state variable for a scalar
                             // that has a "<Real derivative=N" element, where N is
                             // the index (starting with 1) of this scalar.
                             hideLocal = false;
-                        } else {
-                            break;
-                        }
+                        } 
+                        portCount++;
+                        dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                        causality = "output";
+                        break;
                     }
                 case input:
                     portCount++;
@@ -3206,7 +3221,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // causality="local" and
                     // variability="continuous", so we should
                     // return it as an input.
-                    || (_fmiModelDescription.modelExchange && scalarVariable.causality == Causality.local))) {
+                            /*|| (_fmiModelDescription.modelExchange && scalarVariable.causality == Causality.local)*/
+                        )) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {
                     throw new IllegalActionException(this,
