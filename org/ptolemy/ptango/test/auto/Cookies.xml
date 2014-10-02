@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.3749999999987, 259.00000000000006}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8060">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="">
         </property>
@@ -31,15 +31,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Settings:&#10;DE Director: stopWhenQueueIsEmpty false&#10;Model: enableBackwardTypeInference true&#10;ThreadedComposites inside CookiesClient: delay UNDEFINED for all">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 30.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8060">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 30.0}">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -61,6 +53,44 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 35.0]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 125.0]">
+        </property>
+    </property>
+    <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/cookies#in_browser&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 145.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -229,7 +259,7 @@
             </property>
         </port>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt; \n  &lt;script type=\&quot;text/javascript\&quot;&gt;\n\t\t\tfunction deleteCookie() {\n\t\t\t\tjQuery.ajax({\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\n\t\t\t\t\t  type: \&quot;post\&quot;,\n\t\t\t\t\t  success: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\n\t\t\t\t\t\t  },\n\t\t\t\t\t  error: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\n\t\t\t\t\t  }\n\t\t\t\t\t});\n\t\t\t}\n\t\t&lt;/script&gt; \n  &lt;title&gt;Cookies Demo&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div&gt; \n   &lt;div id=\&quot;welcomeMessage\&quot;&gt;\n    Welcome to the cookies demo! \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; You can: &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt; \n    &lt;p&gt; Save a cookie with your name &lt;/p&gt; \n    &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt; \n   &lt;/form&gt; \n   &lt;div&gt; \n    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; \n    &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt; \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt; \n    &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt; \n   &lt;/form&gt; \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but \t\t      there are only two items for this page.  --&gt;   &lt;style type=\&quot;text/css\&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;   &lt;script type=\&quot;text/javascript\&quot;&gt;\t\t\tfunction deleteCookie() {\t\t\t\tjQuery.ajax({\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\t\t\t\t\t  type: \&quot;post\&quot;,\t\t\t\t\t  success: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\t\t\t\t\t\t  },\t\t\t\t\t  error: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\t\t\t\t\t  }\t\t\t\t\t});\t\t\t}\t\t&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=\&quot;welcomeMessage\&quot;&gt;    Welcome to the cookies demo!    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt;     &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -250,7 +280,7 @@
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt; \n  &lt;script type=\&quot;text/javascript\&quot;&gt;\n\t\t\tfunction deleteCookie() {\n\t\t\t\tjQuery.ajax({\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\n\t\t\t\t\t  type: \&quot;post\&quot;,\n\t\t\t\t\t  success: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\n\t\t\t\t\t\t  },\n\t\t\t\t\t  error: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\n\t\t\t\t\t  }\n\t\t\t\t\t});\n\t\t\t}\n\t\t&lt;/script&gt; \n  &lt;title&gt;Cookies Demo&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div&gt; \n   &lt;div id=\&quot;welcomeMessage\&quot;&gt;\n    Name Claudius Ptolemaeus successfully saved as a cookie \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; You can: &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt; \n    &lt;p&gt; Save a cookie with your name &lt;/p&gt; \n    &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt; \n   &lt;/form&gt; \n   &lt;div&gt; \n    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; \n    &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt; \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt; \n    &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt; \n   &lt;/form&gt; \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but \t\t      there are only two items for this page.  --&gt;   &lt;style type=\&quot;text/css\&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;   &lt;script type=\&quot;text/javascript\&quot;&gt;\t\t\tfunction deleteCookie() {\t\t\t\tjQuery.ajax({\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\t\t\t\t\t  type: \&quot;post\&quot;,\t\t\t\t\t  success: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\t\t\t\t\t\t  },\t\t\t\t\t  error: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\t\t\t\t\t  }\t\t\t\t\t});\t\t\t}\t\t&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=\&quot;welcomeMessage\&quot;&gt;    Name Claudius Ptolemaeus successfully saved as a cookie    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt;     &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -258,7 +288,7 @@
             </property>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt; \n  &lt;script type=\&quot;text/javascript\&quot;&gt;\n\t\t\tfunction deleteCookie() {\n\t\t\t\tjQuery.ajax({\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\n\t\t\t\t\t  type: \&quot;post\&quot;,\n\t\t\t\t\t  success: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\n\t\t\t\t\t\t  },\n\t\t\t\t\t  error: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\n\t\t\t\t\t  }\n\t\t\t\t\t});\n\t\t\t}\n\t\t&lt;/script&gt; \n  &lt;title&gt;Cookies Demo&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div&gt; \n   &lt;div id=\&quot;welcomeMessage\&quot;&gt;\n    Welcome to the cookies demo! \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; You can: &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt; \n    &lt;p&gt; Save a cookie with your name &lt;/p&gt; \n    &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt; \n   &lt;/form&gt; \n   &lt;div&gt; \n    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; \n    &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt; \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt; \n    &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt; \n   &lt;/form&gt; \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but \t\t      there are only two items for this page.  --&gt;   &lt;style type=\&quot;text/css\&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;   &lt;script type=\&quot;text/javascript\&quot;&gt;\t\t\tfunction deleteCookie() {\t\t\t\tjQuery.ajax({\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\t\t\t\t\t  type: \&quot;post\&quot;,\t\t\t\t\t  success: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\t\t\t\t\t\t  },\t\t\t\t\t  error: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\t\t\t\t\t  }\t\t\t\t\t});\t\t\t}\t\t&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=\&quot;welcomeMessage\&quot;&gt;    Welcome to the cookies demo!    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt;     &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -279,7 +309,7 @@
             </property>
         </entity>
         <entity name="Test4" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Cookie named \&quot;name\&quot; successfully deleted\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Cookie named \&quot;name\&quot; successfully deleted&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -287,7 +317,7 @@
             </property>
         </entity>
         <entity name="Test5" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt; \n  &lt;script type=\&quot;text/javascript\&quot;&gt;\n\t\t\tfunction deleteCookie() {\n\t\t\t\tjQuery.ajax({\n\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\n\t\t\t\t\t  type: \&quot;post\&quot;,\n\t\t\t\t\t  success: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\n\t\t\t\t\t\t  },\n\t\t\t\t\t  error: function(data) {\n\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\n\t\t\t\t\t  }\n\t\t\t\t\t});\n\t\t\t}\n\t\t&lt;/script&gt; \n  &lt;title&gt;Cookies Demo&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div&gt; \n   &lt;div id=\&quot;welcomeMessage\&quot;&gt;\n    Welcome to the cookies demo! \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; You can: &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt; \n    &lt;p&gt; Save a cookie with your name &lt;/p&gt; \n    &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt; \n   &lt;/form&gt; \n   &lt;div&gt; \n    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; \n    &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt; \n   &lt;/div&gt; \n   &lt;div&gt; \n    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; \n   &lt;/div&gt; \n   &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt; \n    &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt; \n   &lt;/form&gt; \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but \t\t      there are only two items for this page.  --&gt;   &lt;style type=\&quot;text/css\&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;   &lt;script type=\&quot;text/javascript\&quot;&gt;\t\t\tfunction deleteCookie() {\t\t\t\tjQuery.ajax({\t\t\t\t\t  url: \&quot;/cookies/delete\&quot;,\t\t\t\t\t  type: \&quot;post\&quot;,\t\t\t\t\t  success: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(data);\t\t\t\t\t\t  },\t\t\t\t\t  error: function(data) {\t\t\t\t\t\t  jQuery('#welcomeMessage').html(\&quot;Error deleting cookie.\&quot;);\t\t\t\t\t  }\t\t\t\t\t});\t\t\t}\t\t&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=\&quot;welcomeMessage\&quot;&gt;    Welcome to the cookies demo!    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=\&quot;UTF-8\&quot; action=\&quot;cookies\&quot; method=\&quot;post\&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=\&quot;text\&quot; name=\&quot;name\&quot; id=\&quot;name\&quot; /&gt; &lt;br /&gt; &lt;input type=\&quot;submit\&quot; value=\&quot;Save cookie\&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=\&quot;button\&quot; value=\&quot;Delete cookie\&quot; onclick=\&quot;deleteCookie()\&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=\&quot;input\&quot; action=\&quot;/cookies\&quot; method=\&quot;get\&quot;&gt;     &lt;input type=\&quot;submit\&quot; value=\&quot;Refresh page\&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -333,7 +363,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/cookies">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 290}">
                 </property>
@@ -364,7 +394,7 @@
                 <property name="output"/>
             </port>
             <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/cookies">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 380}">
                 </property>
@@ -396,7 +426,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/cookies">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{380, 545}">
                 </property>
@@ -427,7 +457,7 @@
                 <property name="output"/>
             </port>
             <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies/delete">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/cookies/delete">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{590, 565}">
                 </property>
@@ -459,7 +489,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8060/cookies">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/cookies">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{560, 645}">
                 </property>
@@ -470,7 +500,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#13;&#10;&lt;html&gt;&#13;&#10; &lt;head&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot;&gt;&#13;&#10;			function deleteCookie() {&#13;&#10;				jQuery.ajax({&#13;&#10;					  url: &quot;/cookies/delete&quot;,&#13;&#10;					  type: &quot;post&quot;,&#13;&#10;					  success: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(data);&#13;&#10;						  },&#13;&#10;					  error: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);&#13;&#10;					  }&#13;&#10;					});&#13;&#10;			}&#13;&#10;		&lt;/script&gt; &#13;&#10;  &lt;title&gt;Cookies Demo&lt;/title&gt; &#13;&#10; &lt;/head&gt; &#13;&#10; &lt;body&gt; &#13;&#10;  &lt;div&gt; &#13;&#10;   &lt;div id=&quot;welcomeMessage&quot;&gt;&#13;&#10;    Welcome to the cookies demo! &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; You can: &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt; &#13;&#10;    &lt;p&gt; Save a cookie with your name &lt;/p&gt; &#13;&#10;    &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; &#13;&#10;    &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt; &#13;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;  &lt;/div&gt;   &#13;&#10; &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but 		      there are only two items for this page.  --&gt;   &lt;style type=&quot;text/css&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;   &lt;script type=&quot;text/javascript&quot;&gt;			function deleteCookie() {				jQuery.ajax({					  url: &quot;/cookies/delete&quot;,					  type: &quot;post&quot;,					  success: function(data) {						  jQuery('#welcomeMessage').html(data);						  },					  error: function(data) {						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);					  }					});			}		&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=&quot;welcomeMessage&quot;&gt;    Welcome to the cookies demo!    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt;     &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -483,7 +513,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#13;&#10;&lt;html&gt;&#13;&#10; &lt;head&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot;&gt;&#13;&#10;			function deleteCookie() {&#13;&#10;				jQuery.ajax({&#13;&#10;					  url: &quot;/cookies/delete&quot;,&#13;&#10;					  type: &quot;post&quot;,&#13;&#10;					  success: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(data);&#13;&#10;						  },&#13;&#10;					  error: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);&#13;&#10;					  }&#13;&#10;					});&#13;&#10;			}&#13;&#10;		&lt;/script&gt; &#13;&#10;  &lt;title&gt;Cookies Demo&lt;/title&gt; &#13;&#10; &lt;/head&gt; &#13;&#10; &lt;body&gt; &#13;&#10;  &lt;div&gt; &#13;&#10;   &lt;div id=&quot;welcomeMessage&quot;&gt;&#13;&#10;    Name Claudius Ptolemaeus successfully saved as a cookie &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; You can: &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt; &#13;&#10;    &lt;p&gt; Save a cookie with your name &lt;/p&gt; &#13;&#10;    &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; &#13;&#10;    &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt; &#13;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;  &lt;/div&gt;   &#13;&#10; &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but 		      there are only two items for this page.  --&gt;   &lt;style type=&quot;text/css&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;   &lt;script type=&quot;text/javascript&quot;&gt;			function deleteCookie() {				jQuery.ajax({					  url: &quot;/cookies/delete&quot;,					  type: &quot;post&quot;,					  success: function(data) {						  jQuery('#welcomeMessage').html(data);						  },					  error: function(data) {						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);					  }					});			}		&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=&quot;welcomeMessage&quot;&gt;    Name Claudius Ptolemaeus successfully saved as a cookie    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt;     &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -496,7 +526,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#13;&#10;&lt;html&gt;&#13;&#10; &lt;head&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot;&gt;&#13;&#10;			function deleteCookie() {&#13;&#10;				jQuery.ajax({&#13;&#10;					  url: &quot;/cookies/delete&quot;,&#13;&#10;					  type: &quot;post&quot;,&#13;&#10;					  success: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(data);&#13;&#10;						  },&#13;&#10;					  error: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);&#13;&#10;					  }&#13;&#10;					});&#13;&#10;			}&#13;&#10;		&lt;/script&gt; &#13;&#10;  &lt;title&gt;Cookies Demo&lt;/title&gt; &#13;&#10; &lt;/head&gt; &#13;&#10; &lt;body&gt; &#13;&#10;  &lt;div&gt; &#13;&#10;   &lt;div id=&quot;welcomeMessage&quot;&gt;&#13;&#10;    Welcome to the cookies demo! &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; You can: &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt; &#13;&#10;    &lt;p&gt; Save a cookie with your name &lt;/p&gt; &#13;&#10;    &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; &#13;&#10;    &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt; &#13;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;  &lt;/div&gt;   &#13;&#10; &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but 		      there are only two items for this page.  --&gt;   &lt;style type=&quot;text/css&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;   &lt;script type=&quot;text/javascript&quot;&gt;			function deleteCookie() {				jQuery.ajax({					  url: &quot;/cookies/delete&quot;,					  type: &quot;post&quot;,					  success: function(data) {						  jQuery('#welcomeMessage').html(data);						  },					  error: function(data) {						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);					  }					});			}		&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=&quot;welcomeMessage&quot;&gt;    Welcome to the cookies demo!    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt;     &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -509,7 +539,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="Cookie named &quot;name&quot; successfully deleted&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="Cookie named &quot;name&quot; successfully deleted">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -522,7 +552,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#13;&#10;&lt;html&gt;&#13;&#10; &lt;head&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot;&gt;&#13;&#10;			function deleteCookie() {&#13;&#10;				jQuery.ajax({&#13;&#10;					  url: &quot;/cookies/delete&quot;,&#13;&#10;					  type: &quot;post&quot;,&#13;&#10;					  success: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(data);&#13;&#10;						  },&#13;&#10;					  error: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);&#13;&#10;					  }&#13;&#10;					});&#13;&#10;			}&#13;&#10;		&lt;/script&gt; &#13;&#10;  &lt;title&gt;Cookies Demo&lt;/title&gt; &#13;&#10; &lt;/head&gt; &#13;&#10; &lt;body&gt; &#13;&#10;  &lt;div&gt; &#13;&#10;   &lt;div id=&quot;welcomeMessage&quot;&gt;&#13;&#10;    Welcome to the cookies demo! &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; You can: &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt; &#13;&#10;    &lt;p&gt; Save a cookie with your name &lt;/p&gt; &#13;&#10;    &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; &#13;&#10;    &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt; &#13;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;  &lt;/div&gt;   &#13;&#10; &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;!--  Custom CSS.  Typically, CSS is placed in a separate file, but 		      there are only two items for this page.  --&gt;   &lt;style type=&quot;text/css&quot;&gt; body {font-size: 1.2em;} input {font-size: 1em;} &lt;/style&gt;   &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;   &lt;script type=&quot;text/javascript&quot;&gt;			function deleteCookie() {				jQuery.ajax({					  url: &quot;/cookies/delete&quot;,					  type: &quot;post&quot;,					  success: function(data) {						  jQuery('#welcomeMessage').html(data);						  },					  error: function(data) {						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);					  }					});			}		&lt;/script&gt;   &lt;title&gt;Cookies Demo&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div&gt;    &lt;div id=&quot;welcomeMessage&quot;&gt;    Welcome to the cookies demo!    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; You can: &lt;/p&gt;    &lt;/div&gt;    &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt;     &lt;p&gt; Save a cookie with your name &lt;/p&gt;     &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt;    &lt;/form&gt;    &lt;div&gt;     &lt;p&gt; Delete the cookie with your name &lt;/p&gt;     &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt;    &lt;/div&gt;    &lt;div&gt;     &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt;    &lt;/div&gt;    &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt;     &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt;    &lt;/form&gt;   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -732,31 +762,6 @@
                 </property>
             </property>
         </property>
-        <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/cookies&#10;Please run the model and navigate to that location&#10;(or run the model and double click on this comment).&#10;&#10;&#10;">
-            </property>
-            <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/cookies#in_browser">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[160.81240844726562, 13.271728515625]">
-            </property>
-        </property>
         <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we return only a line of text, instead of a complete HTML page.&#10;The cookies web page uses an ajax call to /cookies/delete .  Ajax is&#10;used to insert new data into an existing web page. So, here, we only&#10;need the new message.&#10;&#10;Ajax is used so that the URL in the browser does not change.  &#10;We want to keep /cookies , not /cookies/delete , as the URL, &#10;so that our cookies will be saved relative to the /cookies URL.">
             </property>
@@ -770,9 +775,9 @@
             </property>
         </property>
         <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the list of cookies in your browser, please try:&#10;Safari's Web Inspector Storage Navigator (in Developer Tools)&#10;Firebug for Firefox:  https://getfirebug.com/">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the list of cookies in your browser, please try:&#10;Safari's Web Inspector Storage Navigator (in Developer Tools)&#10;Firebug for Firefox:  https://getfirebug.com/&#10;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 20.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{620.0, 20.0}">
             </property>
         </property>
         <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -791,6 +796,31 @@
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
                 </property>
+            </property>
+        </property>
+        <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/cookies&#10;&#10;The service shows a web page demonstrating how cookies&#10;can be stored, retrieved and deleted.  &#10;&#10;Please run the model and navigate to that URL &#10;(or run the model and double click on this comment).&#10;&#10;&#10;&#10;&#10;">
+            </property>
+            <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[180.0, -40.0]">
             </property>
         </property>
         <port name="done" class="ptolemy.actor.TypedIOPort">
@@ -1219,6 +1249,86 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 230.0]">
         </property>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 50.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 75}">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 75.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="link">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;http://localhost:&quot; + port + &quot;/cookies#in_browser&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 135.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation4"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation4"/>
+        <link port="SetVariable.output" relation="relation3"/>
+        <link port="SetVariable2.input" relation="relation2"/>
+        <link port="Expression.output" relation="relation2"/>
+        <link port="Expression.trigger" relation="relation3"/>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>

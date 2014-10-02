@@ -4,13 +4,13 @@
 <entity name="DynamicPortSelection" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 3, 1199, 726}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 3, 1199, 727}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 609]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 610]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.7613065326633, 402.20917085427146}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.76130653266307, 402.83417085427135}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at a dynamic port, with link of the form http://localhost:8078/test&#10;The link activated by this comment will be updated dynamically&#10;&#10;Please run the model and double click on this comment.&#10;&#10;&#10;&#10;&#10;">
@@ -38,7 +38,7 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -48,9 +48,7 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="8078">
-        </property>
-        <property name="dynamicPortSelection" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 65.0}">
         </property>
@@ -94,7 +92,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DE Director&#10;stopTime of 10 seconds &#10;so test won't run indefinitely&#10;synchronizeToRealTime true">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DE Director&#10;synchronizeToRealTime true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 100.0]">
         </property>
@@ -102,38 +100,40 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Update the link that is activated upon double-clicking the comment&#10;Set the port number according the the deployedPort from the server&#10;Use a Ramp since it retrieves the latest deployedPort during initialize()&#10;(vs. a Const which only updates upon attributeChanged(), &#10;or an Expression which does not seem to parse the &quot;WebServer&quot; ID correctly)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 395.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that response is received.  HttpGet uses dynamically determined link.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 640.0]">
-        </property>
-    </property>
-    <property name="link2" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/test&quot;">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 625.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ThreadedComposite for HttpGet: delay UNDEFINED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 665.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 650.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Strip any \r since these do not 
+occur on all operating systems</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 680.0]">
         </property>
     </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -232,7 +232,7 @@
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 750.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 765.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -240,40 +240,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 740.0]">
-        </property>
-    </entity>
-    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;http://localhost:&quot; + port + &quot;/test&quot;">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 605.0]">
-        </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="link2">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 740.0]">
         </property>
     </entity>
     <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
@@ -292,7 +259,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 750.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 765.0}">
         </property>
         <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="input"/>
@@ -310,13 +277,43 @@
             </property>
         </port>
         <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="$link">
+            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/test">
             </property>
             <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-55, 540}">
             </property>
         </entity>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;/head&gt;&lt;body&gt; Hi! &lt;/body&gt;&lt;/html&gt;">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 765.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 805.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 805.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 805.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -330,15 +327,21 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[475.0, 555.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[560.0, 765.0]">
+        </vertex>
+    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HttpActor.response" relation="relation3"/>
     <link port="HttpActor.getRequestURI" relation="relation"/>
@@ -355,10 +358,14 @@
     <link port="Expression.port" relation="relation11"/>
     <link port="SetVariable2.input" relation="relation7"/>
     <link port="SingleEvent2.output" relation="relation6"/>
-    <link port="Test.input" relation="relation8"/>
-    <link port="Expression2.output" relation="relation10"/>
-    <link port="Expression2.port" relation="relation11"/>
-    <link port="SetVariable3.input" relation="relation10"/>
+    <link port="Test.input" relation="relation10"/>
     <link port="ThreadedComposite.trigger" relation="relation6"/>
-    <link port="ThreadedComposite.output" relation="relation8"/>
+    <link port="ThreadedComposite.output" relation="relation13"/>
+    <link port="StringReplace.stringToEdit" relation="relation13"/>
+    <link port="StringReplace.output" relation="relation10"/>
+    <link port="Stop.input" relation="relation12"/>
+    <link port="MicrostepDelay2.input" relation="relation8"/>
+    <link port="MicrostepDelay2.output" relation="relation12"/>
+    <link port="Const2.output" relation="relation8"/>
+    <link port="Const2.trigger" relation="relation10"/>
 </entity>

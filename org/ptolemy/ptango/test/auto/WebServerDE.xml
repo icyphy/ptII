@@ -42,12 +42,29 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 200.0]">
         </property>
     </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="24">
+    <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 30.0]">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="port is set dynamically in RunCompositeActor&#10;The parameter is declared at the top-level &#10;so RunCompositeActor2 can access it">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 15.0]">
         </property>
     </property>
     <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
@@ -58,9 +75,7 @@
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8078/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -5.0]">
-            </property>
-            <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8078/ptolemnizer#in_browser">
+            <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$link">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -79,6 +94,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
                 </property>
             </property>
+            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[170.0, -5.0]">
+                <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </property>
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -89,7 +110,7 @@
             </property>
         </property>
         <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-            <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+            <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
             </property>
             <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">
             </property>
@@ -131,14 +152,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 120.0]">
             </property>
         </property>
-        <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="textSize" class="ptolemy.data.expr.Parameter" value="22">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8078">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
-            </property>
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 9, 990, 759}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[762, 642]">
@@ -146,6 +159,25 @@
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{371.0, 311.0}">
+        </property>
+        <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/ptolemnizer#in_browser&quot;">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 100.0]">
+            </property>
         </property>
         <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
             <property name="path" class="ptolemy.data.expr.StringParameter" value="/ptolemnizer/*">
@@ -288,6 +320,86 @@
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
+        <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 55.0]">
+            </property>
+            <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 55.0]">
+                </property>
+            </entity>
+            <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+                <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+                </property>
+                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+                </property>
+                <doc>Create a sequence of tokens with increasing value</doc>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 65}">
+                </property>
+            </entity>
+            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 65.0]">
+                </property>
+            </entity>
+            <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="link">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
+                </property>
+            </entity>
+            <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;http://localhost:&quot; + port + &quot;/ptolemnizer#in_browser&quot;">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                    <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 135.0]">
+                </property>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="SingleEvent.output" relation="relation"/>
+            <link port="Ramp.output" relation="relation2"/>
+            <link port="Ramp.trigger" relation="relation"/>
+            <link port="SetVariable.input" relation="relation2"/>
+            <link port="SetVariable.output" relation="relation4"/>
+            <link port="SetVariable2.input" relation="relation3"/>
+            <link port="Expression.output" relation="relation3"/>
+            <link port="Expression.trigger" relation="relation4"/>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
@@ -417,13 +529,13 @@
             </property>
         </entity>
         <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8078/ptolemnizer">
+            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ptolemnizer">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 145.0]">
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!-- The input form for the WebServerDE model\n\n Copyright (c) 1997-2013 The Regents of the University of California.\n All rights reserved.\n Permission is hereby granted, without written agreement and without\n license or royalty fees, to use, copy, modify, and distribute this\n software and its documentation for any purpose, provided that the above\n copyright notice and the following two paragraphs appear in all copies\n of this software.\n\n IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY\n FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES\n ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF\n THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF\n SUCH DAMAGE.\n\n THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,\n INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\n MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE\n PROVIDED HEREUNDER IS ON AN \&quot;AS IS\&quot; BASIS, AND THE UNIVERSITY OF\n CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,\n ENHANCEMENTS, OR MODIFICATIONS.\n\n PT_COPYRIGHT_VERSION_2\n COPYRIGHTENDKEY\n\n --&gt;\n \n&lt;!DOCTYPE html&gt;\n&lt;head&gt; \n\t&lt;meta charset=\&quot;utf-8\&quot;&gt;\n\t\n\t&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  \n\t\t Note that jQuery must come before jQueryMobile \n\t\t Use online version to avoid problems rendering icons.  The files are \n\t\t included in the repository for reference.  The local version could be used\n\t\t so that an internet connection is not required if testing from localhost.\n\t\t Both the human-readable version and the .min.js version for smaller \n\t\t footprint are in the repository, though the web app only needs one version \n\t\t to run.\n\t\t Note that jQuery 1.7 is available, but there are currently problems with\n\t\t that version and jQueryMobile.  jQuery 1.6.4 is the latest version \n\t\t supported. --&gt; \n\t\t \n&lt;!-- Uncomment this to get handheld look and feel\t\t \n\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css\&quot; /&gt;\n\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;\n\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js\&quot;&gt;&lt;/script&gt;\n--&gt;\n\t&lt;title&gt; Website Ptolemnizer &lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n\n&lt;div data-role=\&quot;page\&quot; data-theme=\&quot;c\&quot;&gt;\n\n\t&lt;div data-role=\&quot;header\&quot;&gt;\n\t\t&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;\n\t&lt;/div&gt;\n\n\t&lt;div data-role=\&quot;content\&quot;&gt;\n\t\tPlease enter text to Ptolemnize:\n\t\t&lt;!-- could have an action=\&quot;suburl\&quot; in the form item to send the post to another actor. --&gt;\n\t\t&lt;form action=\&quot;ptolemnizer\&quot; method=\&quot;post\&quot; &gt;\n\t\t\n\t\t\t&lt;div data-role=\&quot;fieldcontain\&quot; class=\&quot;ui-hide-label\&quot;&gt;\n\t\t\t\t&lt;label for=\&quot;text\&quot;&gt;text:&lt;/label&gt;\n\t\t\t\t&lt;input type=\&quot;text\&quot; name=\&quot;text\&quot; id=\&quot;text\&quot; value=\&quot;\&quot; width=\&quot;80\&quot; placeholder=\&quot;text to tolemnize\&quot;/&gt;\n\t\t\t\t&lt;/br&gt;\n\t\t\t&lt;/div&gt;\n\t\t\n\t\t\t&lt;div&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;br /&gt;\n\t\t\t\t&lt;button type=\&quot;submit\&quot; id=\&quot;ptolemnize\&quot;&gt; Ptolemynize &lt;/button&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/form&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;/body&gt;\n&lt;/html&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!-- The input form for the WebServerDE model Copyright (c) 1997-2013 The Regents of the University of California. All rights reserved. Permission is hereby granted, without written agreement and without license or royalty fees, to use, copy, modify, and distribute this software and its documentation for any purpose, provided that the above copyright notice and the following two paragraphs appear in all copies of this software. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN \&quot;AS IS\&quot; BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS. PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY --&gt; &lt;!DOCTYPE html&gt;&lt;head&gt; \t&lt;meta charset=\&quot;utf-8\&quot;&gt;\t\t&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  \t\t Note that jQuery must come before jQueryMobile \t\t Use online version to avoid problems rendering icons.  The files are \t\t included in the repository for reference.  The local version could be used\t\t so that an internet connection is not required if testing from localhost.\t\t Both the human-readable version and the .min.js version for smaller \t\t footprint are in the repository, though the web app only needs one version \t\t to run.\t\t Note that jQuery 1.7 is available, but there are currently problems with\t\t that version and jQueryMobile.  jQuery 1.6.4 is the latest version \t\t supported. --&gt; \t\t &lt;!-- Uncomment this to get handheld look and feel\t\t \t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css\&quot; /&gt;\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js\&quot;&gt;&lt;/script&gt;--&gt;\t&lt;title&gt; Website Ptolemnizer &lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div data-role=\&quot;page\&quot; data-theme=\&quot;c\&quot;&gt;\t&lt;div data-role=\&quot;header\&quot;&gt;\t\t&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;\t&lt;/div&gt;\t&lt;div data-role=\&quot;content\&quot;&gt;\t\t&lt;p&gt; This web service \&quot;ptolemnizes\&quot; a string by locating leading t's and \t\t replacing with pt's. &lt;/p&gt; &lt;p&gt; Please enter text to Ptolemnize: &lt;/p&gt;\t\t&lt;!-- could have an action=\&quot;suburl\&quot; in the form item to send the post to another actor. --&gt;\t\t&lt;form action=\&quot;ptolemnizer\&quot; method=\&quot;post\&quot; &gt;\t\t\t\t\t&lt;div data-role=\&quot;fieldcontain\&quot; class=\&quot;ui-hide-label\&quot;&gt;\t\t\t\t&lt;label for=\&quot;text\&quot;&gt;text:&lt;/label&gt;\t\t\t\t&lt;input type=\&quot;text\&quot; name=\&quot;text\&quot; id=\&quot;text\&quot; value=\&quot;\&quot; width=\&quot;80\&quot; placeholder=\&quot;text to tolemnize\&quot;/&gt;\t\t\t\t&lt;/br&gt;\t\t\t&lt;/div&gt;\t\t\t\t\t&lt;div&gt; &lt;p&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;/p&gt;\t\t\t\t&lt;button type=\&quot;submit\&quot; id=\&quot;ptolemnize\&quot;&gt; Ptolemynize &lt;/button&gt;\t\t\t&lt;/div&gt;\t\t&lt;/form&gt;\t&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -444,7 +556,7 @@
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;img src=\&quot;/img/Icon.gif\&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;ptext pto ptolemnize&lt;p&gt;&lt;img src=\&quot;/files/PtolemyIISmallIcon.gif\&quot;/&gt;&lt;p&gt;&lt;img src=\&quot;/files/PtolemyIISmall.gif\&quot;/&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;img src=\&quot;/img/Icon.gif\&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;ptext pto ptolemnize&lt;p&gt;&lt;img src=\&quot;/files/PtolemyIISmallIcon.gif\&quot;/&gt;&lt;p&gt;&lt;img src=\&quot;/files/PtolemyIISmall.gif\&quot;/&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -452,15 +564,15 @@
             </property>
         </entity>
         <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8078/ptolemnizer">
+            <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ptolemnizer">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 210.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 200.0]">
             </property>
         </entity>
         <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!-- The input form for the WebServerDE model&#13;&#10;&#13;&#10; Copyright (c) 1997-2013 The Regents of the University of California.&#13;&#10; All rights reserved.&#13;&#10; Permission is hereby granted, without written agreement and without&#13;&#10; license or royalty fees, to use, copy, modify, and distribute this&#13;&#10; software and its documentation for any purpose, provided that the above&#13;&#10; copyright notice and the following two paragraphs appear in all copies&#13;&#10; of this software.&#13;&#10;&#13;&#10; IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#13;&#10; FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#13;&#10; ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#13;&#10; THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#13;&#10; SUCH DAMAGE.&#13;&#10;&#13;&#10; THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#13;&#10; INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#13;&#10; MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#13;&#10; PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#13;&#10; CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#13;&#10; ENHANCEMENTS, OR MODIFICATIONS.&#13;&#10;&#13;&#10; PT_COPYRIGHT_VERSION_2&#13;&#10; COPYRIGHTENDKEY&#13;&#10;&#13;&#10; --&gt;&#13;&#10; &#13;&#10;&lt;!DOCTYPE html&gt;&#13;&#10;&lt;head&gt; &#13;&#10;	&lt;meta charset=&quot;utf-8&quot;&gt;&#13;&#10;	&#13;&#10;	&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  &#13;&#10;		 Note that jQuery must come before jQueryMobile &#13;&#10;		 Use online version to avoid problems rendering icons.  The files are &#13;&#10;		 included in the repository for reference.  The local version could be used&#13;&#10;		 so that an internet connection is not required if testing from localhost.&#13;&#10;		 Both the human-readable version and the .min.js version for smaller &#13;&#10;		 footprint are in the repository, though the web app only needs one version &#13;&#10;		 to run.&#13;&#10;		 Note that jQuery 1.7 is available, but there are currently problems with&#13;&#10;		 that version and jQueryMobile.  jQuery 1.6.4 is the latest version &#13;&#10;		 supported. --&gt; &#13;&#10;		 &#13;&#10;&lt;!-- Uncomment this to get handheld look and feel		 &#13;&#10;	&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css&quot; /&gt;&#13;&#10;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;&#13;&#10;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js&quot;&gt;&lt;/script&gt;&#13;&#10;--&gt;&#13;&#10;	&lt;title&gt; Website Ptolemnizer &lt;/title&gt;&#13;&#10;&lt;/head&gt;&#13;&#10;&lt;body&gt;&#13;&#10;&#13;&#10;&lt;div data-role=&quot;page&quot; data-theme=&quot;c&quot;&gt;&#13;&#10;&#13;&#10;	&lt;div data-role=&quot;header&quot;&gt;&#13;&#10;		&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;&#13;&#10;	&lt;div data-role=&quot;content&quot;&gt;&#13;&#10;		Please enter text to Ptolemnize:&#13;&#10;		&lt;!-- could have an action=&quot;suburl&quot; in the form item to send the post to another actor. --&gt;&#13;&#10;		&lt;form action=&quot;ptolemnizer&quot; method=&quot;post&quot; &gt;&#13;&#10;		&#13;&#10;			&lt;div data-role=&quot;fieldcontain&quot; class=&quot;ui-hide-label&quot;&gt;&#13;&#10;				&lt;label for=&quot;text&quot;&gt;text:&lt;/label&gt;&#13;&#10;				&lt;input type=&quot;text&quot; name=&quot;text&quot; id=&quot;text&quot; value=&quot;&quot; width=&quot;80&quot; placeholder=&quot;text to tolemnize&quot;/&gt;&#13;&#10;				&lt;/br&gt;&#13;&#10;			&lt;/div&gt;&#13;&#10;		&#13;&#10;			&lt;div&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;br /&gt;&#13;&#10;				&lt;button type=&quot;submit&quot; id=&quot;ptolemnize&quot;&gt; Ptolemynize &lt;/button&gt;&#13;&#10;			&lt;/div&gt;&#13;&#10;		&lt;/form&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;&lt;/div&gt;&#13;&#10;&#13;&#10;&lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!-- The input form for the WebServerDE model Copyright (c) 1997-2013 The Regents of the University of California. All rights reserved. Permission is hereby granted, without written agreement and without license or royalty fees, to use, copy, modify, and distribute this software and its documentation for any purpose, provided that the above copyright notice and the following two paragraphs appear in all copies of this software. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS. PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY --&gt; &lt;!DOCTYPE html&gt;&lt;head&gt; 	&lt;meta charset=&quot;utf-8&quot;&gt;		&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  		 Note that jQuery must come before jQueryMobile 		 Use online version to avoid problems rendering icons.  The files are 		 included in the repository for reference.  The local version could be used		 so that an internet connection is not required if testing from localhost.		 Both the human-readable version and the .min.js version for smaller 		 footprint are in the repository, though the web app only needs one version 		 to run.		 Note that jQuery 1.7 is available, but there are currently problems with		 that version and jQueryMobile.  jQuery 1.6.4 is the latest version 		 supported. --&gt; 		 &lt;!-- Uncomment this to get handheld look and feel		 	&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js&quot;&gt;&lt;/script&gt;--&gt;	&lt;title&gt; Website Ptolemnizer &lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div data-role=&quot;page&quot; data-theme=&quot;c&quot;&gt;	&lt;div data-role=&quot;header&quot;&gt;		&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;	&lt;/div&gt;	&lt;div data-role=&quot;content&quot;&gt;		&lt;p&gt; This web service &quot;ptolemnizes&quot; a string by locating leading t's and 		 replacing with pt's. &lt;/p&gt; &lt;p&gt; Please enter text to Ptolemnize: &lt;/p&gt;		&lt;!-- could have an action=&quot;suburl&quot; in the form item to send the post to another actor. --&gt;		&lt;form action=&quot;ptolemnizer&quot; method=&quot;post&quot; &gt;					&lt;div data-role=&quot;fieldcontain&quot; class=&quot;ui-hide-label&quot;&gt;				&lt;label for=&quot;text&quot;&gt;text:&lt;/label&gt;				&lt;input type=&quot;text&quot; name=&quot;text&quot; id=&quot;text&quot; value=&quot;&quot; width=&quot;80&quot; placeholder=&quot;text to tolemnize&quot;/&gt;				&lt;/br&gt;			&lt;/div&gt;					&lt;div&gt; &lt;p&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;/p&gt;				&lt;button type=&quot;submit&quot; id=&quot;ptolemnize&quot;&gt; Ptolemynize &lt;/button&gt;			&lt;/div&gt;		&lt;/form&gt;	&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 200.0]">
@@ -469,7 +581,7 @@
         <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;img src=&quot;/img/Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;ptext pto ptolemnize&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot;/&gt;&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmall.gif&quot;/&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;img src=&quot;/img/Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;ptext pto ptolemnize&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot;/&gt;&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmall.gif&quot;/&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 135.0]">

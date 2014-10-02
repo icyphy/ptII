@@ -21,19 +21,11 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8055">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/test/auto/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 65.0]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8055">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 145.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -49,6 +41,25 @@
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
+        </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 230.0]">
@@ -153,7 +164,7 @@
                 </property>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8055/test">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/test">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 330}">
                 </property>
@@ -193,28 +204,32 @@
                 </property>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8055/notfound">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/notfound">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 330}">
                 </property>
             </entity>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML&gt;\n&lt;html&gt;\n\t&lt;head&gt;\n\t\t&lt;meta charset=\&quot;utf-8\&quot;&gt;\n\t\t\n\t\t&lt;title&gt; GET / POST Test &lt;/title&gt;\n\t&lt;/head&gt;\n\t&lt;body&gt;\t\n\t\t&lt;div&gt; \n\t\t\tThis is a test.\n\t\t&lt;/div&gt;\n\t&lt;/body&gt;\n&lt;/html&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML&gt;&lt;html&gt;\t&lt;head&gt;\t\t&lt;meta charset=\&quot;utf-8\&quot;&gt;\t\t\t\t&lt;title&gt; GET / POST Test &lt;/title&gt;\t&lt;/head&gt;\t&lt;body&gt;\t\t\t&lt;div&gt; \t\t\tThis is a test.\t\t&lt;/div&gt;\t&lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 620.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 540.0]">
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{furtherActionExpected = false, responseCode = 200, responseMessage = &quot;OK&quot;, successful = true}}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 545.0]">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 625.0]">
             </property>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;html&gt;\n&lt;head&gt;\n&lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;text/html;charset=ISO-8859-1\&quot;/&gt;\n&lt;title&gt;Error 404 Not Found&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;h2&gt;HTTP ERROR: 404&lt;/h2&gt;\n&lt;p&gt;Problem accessing /notfound. Reason:\n&lt;pre&gt;    Not Found&lt;/pre&gt;&lt;/p&gt;\n&lt;hr /&gt;&lt;i&gt;&lt;small&gt;Powered by Jetty://&lt;/small&gt;&lt;/i&gt;\n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n                                                \n&lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;text/html;charset=ISO-8859-1\&quot;/&gt;&lt;title&gt;Error 404 Not Found&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h2&gt;HTTP ERROR: 404&lt;/h2&gt;&lt;p&gt;Problem accessing /notfound. Reason:&lt;pre&gt;    Not Found&lt;/pre&gt;&lt;/p&gt;&lt;hr /&gt;&lt;i&gt;&lt;small&gt;Powered by Jetty://&lt;/small&gt;&lt;/i&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                &lt;/body&gt;&lt;/html&gt;&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 330.0]">
             </property>
@@ -228,16 +243,16 @@
         <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML&gt;&#13;&#10;&lt;html&gt;&#13;&#10;	&lt;head&gt;&#13;&#10;		&lt;meta charset=&quot;utf-8&quot;&gt;&#13;&#10;		&#13;&#10;		&lt;title&gt; GET / POST Test &lt;/title&gt;&#13;&#10;	&lt;/head&gt;&#13;&#10;	&lt;body&gt;	&#13;&#10;		&lt;div&gt; &#13;&#10;			This is a test.&#13;&#10;		&lt;/div&gt;&#13;&#10;	&lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML&gt;&lt;html&gt;	&lt;head&gt;		&lt;meta charset=&quot;utf-8&quot;&gt;				&lt;title&gt; GET / POST Test &lt;/title&gt;	&lt;/head&gt;	&lt;body&gt;			&lt;div&gt; 			This is a test.		&lt;/div&gt;	&lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 610.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 540.0]">
             </property>
         </entity>
         <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;html&gt;&#13;&#10;&lt;head&gt;&#13;&#10;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=ISO-8859-1&quot;/&gt;&#13;&#10;&lt;title&gt;Error 404 Not Found&lt;/title&gt;&#13;&#10;&lt;/head&gt;&#13;&#10;&lt;body&gt;&#13;&#10;&lt;h2&gt;HTTP ERROR: 404&lt;/h2&gt;&#13;&#10;&lt;p&gt;Problem accessing /notfound. Reason:&#13;&#10;&lt;pre&gt;    Not Found&lt;/pre&gt;&lt;/p&gt;&#13;&#10;&lt;hr /&gt;&lt;i&gt;&lt;small&gt;Powered by Jetty://&lt;/small&gt;&lt;/i&gt;&#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;                                                &#13;&#10;&lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=ISO-8859-1&quot;/&gt;&lt;title&gt;Error 404 Not Found&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h2&gt;HTTP ERROR: 404&lt;/h2&gt;&lt;p&gt;Problem accessing /notfound. Reason:&lt;pre&gt;    Not Found&lt;/pre&gt;&lt;/p&gt;&lt;hr /&gt;&lt;i&gt;&lt;small&gt;Powered by Jetty://&lt;/small&gt;&lt;/i&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 330.0]">
@@ -257,7 +272,7 @@
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[255.0, 575.0]">
+            <vertex name="vertex1" value="[255.0, 540.0]">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -421,6 +436,45 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 290.0]">
         </property>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 155.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 60.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 60.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>

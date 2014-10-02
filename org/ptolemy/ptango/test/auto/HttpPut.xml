@@ -79,7 +79,7 @@ occur on all operating systems</text></svg></configure>
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML 2.0//EN\&quot;&gt;\n&lt;html&gt;&lt;head&gt;\n&lt;title&gt;405 Method Not Allowed&lt;/title&gt;\n&lt;/head&gt;&lt;body&gt;\n&lt;h1&gt;Method Not Allowed&lt;/h1&gt;\n&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;\n&lt;hr&gt;\n&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 80&lt;/address&gt;\n&lt;/body&gt;&lt;/html&gt;\n&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML 2.0//EN\&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 80&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -95,7 +95,7 @@ occur on all operating systems</text></svg></configure>
     <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
         <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
         </property>
-        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;&#13;&#10;&lt;html&gt;&lt;head&gt;&#13;&#10;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&#13;&#10;&lt;/head&gt;&lt;body&gt;&#13;&#10;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&#13;&#10;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&#13;&#10;&lt;hr&gt;&#13;&#10;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 80&lt;/address&gt;&#13;&#10;&lt;/body&gt;&lt;/html&gt;&#13;&#10;">
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 80&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 195.0]">

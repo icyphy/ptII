@@ -8,12 +8,12 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 538]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8292311845108098">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8292311845108099">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{569.5414447206443, 270.63281249999994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{569.5414447206444, 270.63281249999994}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8061">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="">
         </property>
@@ -26,14 +26,6 @@
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -20.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8061">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 65.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -67,6 +59,25 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, -5.0]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 60.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -833,7 +844,7 @@
             </property>
         </port>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -854,7 +865,7 @@
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -875,7 +886,7 @@
             </property>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Bad Job! To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Bad Job! To reset, enter \&quot;reset\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -883,7 +894,7 @@
             </property>
         </entity>
         <entity name="Test4" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -904,7 +915,7 @@
             </property>
         </entity>
         <entity name="Test5" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;To reset, enter \&quot;reset\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -925,7 +936,7 @@
             </property>
         </entity>
         <entity name="Test6" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -933,7 +944,7 @@
             </property>
         </entity>
         <entity name="Test7" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;\n&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;\nEnter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;\n&lt;/form&gt;\n\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;h1&gt;Enter anything except \&quot;error\&quot;&lt;/h1&gt;&lt;form name=\&quot;input\&quot; action=\&quot;http://localhost:8061/ErrorHandler\&quot; method=\&quot;post\&quot;&gt;Enter: &lt;input type=\&quot;text\&quot; name=\&quot;entry\&quot; /&gt;&lt;input type=\&quot;submit\&quot; value=\&quot;Submit\&quot; /&gt;&lt;/form&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -979,7 +990,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{40, 135}">
                 </property>
@@ -1010,7 +1021,7 @@
                 <property name="output"/>
             </port>
             <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 230}">
                 </property>
@@ -1041,7 +1052,7 @@
                 <property name="output"/>
             </port>
             <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 350}">
                 </property>
@@ -1073,7 +1084,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 425}">
                 </property>
@@ -1104,7 +1115,7 @@
                 <property name="output"/>
             </port>
             <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 585}">
                 </property>
@@ -1135,7 +1146,7 @@
                 <property name="output"/>
             </port>
             <entity name="HttpPost" class="org.ptolemy.ptango.lib.HttpPost">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 710}">
                 </property>
@@ -1167,7 +1178,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8061/ErrorHandler">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/ErrorHandler">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 845}">
                 </property>
@@ -1178,7 +1189,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1191,7 +1202,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1204,7 +1215,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1217,7 +1228,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1230,7 +1241,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1243,7 +1254,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1256,7 +1267,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&lt;/form&gt;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1378,6 +1389,45 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 225.0]">
         </property>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 110.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[178.75, 55.41015625]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>

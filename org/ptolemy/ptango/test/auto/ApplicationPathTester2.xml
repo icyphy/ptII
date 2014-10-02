@@ -4,13 +4,13 @@
 <entity name="ApplicationPathTester2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 22, 1317, 691}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 22, 1311, 698}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1083, 581]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000002">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000003">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.96176193467306, 258.67807788944725}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.96176193467284, 258.67807788944725}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -21,7 +21,7 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8058">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="/app">
         </property>
@@ -33,7 +33,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for WebServer application path with slash&#10;/app&#10;&#10;and various servlet paths with and without slashes&#10;servlet1, /servlet2, servlet3/, servlet4/*, /servlet5/, /servlet6/*, and the default /*&#10;&#10;Note that if the servlet path has a trailing slash but no star following, the URL must include the trailing slash, e.g.&#10;http://localhost:8058/app/servlet3/&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for WebServer application path with slash&#10;/app&#10;&#10;and various servlet paths with and without slashes&#10;servlet1, /servlet2, servlet3/, servlet4/*, /servlet5/, /servlet6/*, and the default /*&#10;&#10;Note that if the servlet path has a trailing slash but no star following, the URL must include the trailing slash, e.g.&#10;http://localhost:8078/app/servlet3/&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, -15.0]">
         </property>
@@ -46,12 +46,23 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+    <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8058">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 90.0]">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 145.0]">
         </property>
     </property>
     <entity name="TesterService" class="ptolemy.actor.TypedCompositeActor">
@@ -540,7 +551,7 @@
         <link port="MicrostepDelay8.output" relation="relation30"/>
     </entity>
     <entity name="TesterClient" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 230.0}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ThreadedComposites (HttpGet, HttpPost): delay UNDEFINED for all">
@@ -548,7 +559,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 185.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 127, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -596,7 +607,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet1">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/servlet1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 280}">
                 </property>
@@ -628,7 +639,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet2">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/servlet2">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 400}">
                 </property>
@@ -660,7 +671,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet3/">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/servlet3/">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 485}">
                 </property>
@@ -692,7 +703,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet4">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/servlet4">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 595}">
                 </property>
@@ -724,7 +735,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet5/">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/servlet5/">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 370}">
                 </property>
@@ -756,7 +767,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet6">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/servlet6">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 465}">
                 </property>
@@ -788,14 +799,14 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/default">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:$port/app/default">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 555}">
                 </property>
             </entity>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 1 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Servlet 1   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -803,37 +814,39 @@
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 2 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Servlet 2   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 390.0]">
             </property>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 3 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Servlet 3   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 495.0]">
             </property>
         </entity>
         <entity name="Test4" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 4 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Servlet 4   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 650.0]">
             </property>
         </entity>
         <entity name="Test5" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 5 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Servlet 5   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 325.0]">
             </property>
         </entity>
         <entity name="Test6" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 6 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Servlet 6   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 430.0]">
             </property>
         </entity>
         <entity name="Test7" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Default \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=\&quot;utf-8\&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=\&quot;message\&quot;&gt;   Default   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -856,7 +869,7 @@
         <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Servlet 1 &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Servlet 1   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{242.0, 247.0}">
@@ -865,7 +878,7 @@
         <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Servlet 2 &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Servlet 2   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 345.0]">
@@ -874,7 +887,7 @@
         <entity name="StringReplace3" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Servlet 3 &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Servlet 3   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 440.0]">
@@ -883,7 +896,7 @@
         <entity name="StringReplace4" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Servlet 4 &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Servlet 4   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 595.0]">
@@ -892,7 +905,7 @@
         <entity name="StringReplace5" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Servlet 5 &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Servlet 5   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 226.0}">
@@ -901,7 +914,7 @@
         <entity name="StringReplace6" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Servlet 6 &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Servlet 6   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 385.0]">
@@ -910,7 +923,7 @@
         <entity name="StringReplace7" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div id=&quot;message&quot;&gt;&#10;   Default &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&lt;html&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot; &gt;   &lt;title&gt;Application Path Test&lt;/title&gt;  &lt;/head&gt;  &lt;body&gt;   &lt;div id=&quot;message&quot;&gt;   Default   &lt;/div&gt;    &lt;/body&gt;&lt;/html&gt;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 490.0]">
@@ -1046,6 +1059,45 @@
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 295.0]">
         </property>
+    </entity>
+    <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 195.0]">
+        </property>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
+            </property>
+        </entity>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 60.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="port">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 60.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="Ramp.output" relation="relation2"/>
+        <link port="Ramp.trigger" relation="relation"/>
+        <link port="SetVariable.input" relation="relation2"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
