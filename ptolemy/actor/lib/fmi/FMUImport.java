@@ -1215,11 +1215,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             // that has a "<Real derivative=N" element, where N is
                             // the index (starting with 1) of this scalar.
                             hideLocal = false;
-                        } 
-                        portCount++;
-                        dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                        causality = "output";
-                        break;
+                        } else {
+                            if (scalar.type instanceof FMIRealType) {
+                                if (((FMIRealType)scalar.type).indexState != -1) {
+                                    portCount++;
+                                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                                    causality = "output";
+                                }
+                            }
+                            break;
+                        }
                     }
                 case input:
                     portCount++;
@@ -3221,7 +3226,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // causality="local" and
                     // variability="continuous", so we should
                     // return it as an input.
-                            /*|| (_fmiModelDescription.modelExchange && scalarVariable.causality == Causality.local)*/
+                            || (_fmiModelDescription.modelExchange && scalarVariable.causality == Causality.local
+                                    // If it is a scalar that is marked as a derivative, then it is not an input
+                                    && (((scalarVariable.type instanceof FMIRealType 
+                                                            && ((FMIRealType)scalarVariable.type).indexState == -1))
+                                            || !(scalarVariable.type instanceof FMIRealType)))
                         )) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {

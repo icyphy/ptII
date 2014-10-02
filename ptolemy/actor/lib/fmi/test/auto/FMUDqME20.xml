@@ -9,7 +9,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 55.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
@@ -25,7 +25,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 130.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -33,44 +33,42 @@
 <plot>
 <title>SequencePlotter</title>
 <xRange min="0.0" max="9.0"/>
-<yRange min="-1.0" max="1.0"/>
+<yRange min="-9.0" max="9.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 195.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-0.0, -1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0, -8.0, -9.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 275.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 265.0}">
         </property>
     </entity>
-    <entity name="dqME2" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="dqME" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/dqME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 265.0}">
         </property>
         <property name="k" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
+            <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -94,26 +92,41 @@
             </property>
         </port>
     </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 265.0}">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{225.0, 190.0}">
+        <vertex name="vertex1" value="{225.0, 195.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=225.0,y=190.0}, tail={id=&quot;Test.input&quot;,x=275.0,y=125.0}, points={225.0,125.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=270.0,y=195.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=190.0}, points={} },{ head={id=&quot;dq20.x&quot;,x=135.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=190.0}, points={205.0,255.0,205.0,190.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=275.0,y=195.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=195.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=370.0,y=130.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=195.0}, points={225.0,125.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{225.0, 275.0}">
+        <vertex name="vertex1" value="{325.0, 265.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=225.0,y=275.0}, tail={id=&quot;Test2.input&quot;,x=275.0,y=275.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=270.0,y=195.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=225.0,y=275.0}, points={225.0,195.0} },{ head={id=&quot;dq20.der_x_&quot;,x=135.0,y=265.0}, tail={id=&quot;relation.vertex1&quot;,x=225.0,y=275.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test2.input&quot;,x=375.0,y=265.0}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=265.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=370.0,y=130.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=265.0}, points={325.0,130.0} },{ head={id=&quot;dqME.der_x_&quot;,x=155.0,y=265.0}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=265.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{100.0, 265.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=100.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=195.0}, points={100.0,195.0} },{ head={id=&quot;Ramp.output&quot;,x=40.0,y=265.0}, tail={id=&quot;relation4.vertex1&quot;,x=100.0,y=265.0}, points={} },{ head={id=&quot;dqME.x&quot;,x=155.0,y=265.0}, tail={id=&quot;relation4.vertex1&quot;,x=100.0,y=265.0}, points={} } }">
         </property>
     </relation>
     <link port="SequencePlotter.input" relation="relation3"/>
     <link port="SequencePlotter.input" relation="relation"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation"/>
-    <link port="dqME2.x" relation="relation3"/>
-    <link port="dqME2.der_x_" relation="relation"/>
+    <link port="dqME.x" relation="relation4"/>
+    <link port="dqME.der_x_" relation="relation"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link relation1="relation3" relation2="relation4"/>
 </entity>

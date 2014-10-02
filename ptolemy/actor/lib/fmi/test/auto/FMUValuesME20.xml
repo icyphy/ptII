@@ -5,9 +5,9 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="13">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 30}">
         </property>
@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -29,7 +29,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -66,22 +66,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 310.0]">
         </property>
     </entity>
-    <entity name="valuesME2" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.9, -0.91, -0.909, -0.9091, -0.90909, -0.909091, -0.9090909, -0.90909091, -0.909090909, -0.9090909091, -0.90909090909}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="valuesME" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/valuesME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 165.0]">
         </property>
         <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
+            <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -183,27 +189,19 @@
             </property>
         </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+    <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, 0.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 50.0]">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 85.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -215,20 +213,20 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Test3.input" relation="relation9"/>
-    <link port="Test4.input" relation="relation7"/>
-    <link port="Test5.input" relation="relation3"/>
-    <link port="Ramp.output" relation="relation5"/>
-    <link port="Pulse.output" relation="relation"/>
-    <link port="Ramp2.output" relation="relation2"/>
-    <link port="valuesME2.x" relation="relation4"/>
-    <link port="valuesME2.der_x_" relation="relation8"/>
-    <link port="valuesME2.int_in" relation="relation5"/>
-    <link port="valuesME2.int_out" relation="relation9"/>
-    <link port="valuesME2.bool_in" relation="relation"/>
-    <link port="valuesME2.bool_out" relation="relation7"/>
-    <link port="valuesME2.string_in" relation="relation2"/>
-    <link port="valuesME2.string_out" relation="relation3"/>
-    <link port="Test.input" relation="relation4"/>
-    <link port="Test2.input" relation="relation8"/>
+    <link port="Test3.input" relation="relation6"/>
+    <link port="Test4.input" relation="relation8"/>
+    <link port="Test5.input" relation="relation7"/>
+    <link port="Ramp.output" relation="relation3"/>
+    <link port="Pulse.output" relation="relation5"/>
+    <link port="Ramp2.output" relation="relation"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="valuesME.x" relation="relation2"/>
+    <link port="valuesME.der_x_" relation="relation4"/>
+    <link port="valuesME.int_in" relation="relation3"/>
+    <link port="valuesME.int_out" relation="relation6"/>
+    <link port="valuesME.bool_in" relation="relation5"/>
+    <link port="valuesME.bool_out" relation="relation8"/>
+    <link port="valuesME.string_in" relation="relation"/>
+    <link port="valuesME.string_out" relation="relation7"/>
+    <link port="Pulse2.output" relation="relation2"/>
 </entity>
