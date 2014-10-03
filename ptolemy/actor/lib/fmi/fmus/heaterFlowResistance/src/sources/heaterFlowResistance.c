@@ -333,7 +333,7 @@ FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
         fmiEventInfo* fmiEventInfo) {
     // Model Exchange
     fmiEventInfo->newDiscreteStatesNeeded = fmiFalse;
-    return fmiError;
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],

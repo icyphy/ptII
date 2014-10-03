@@ -241,7 +241,7 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
 
 FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
         size_t nx) {
-    printf("helloWorldME.c: fmiGetContinuousStates() returning fmiOk, it is not implemented yet");
+    printf("helloWorldME.c: fmiGetContinuousStates() returning fmiOk, it is not implemented yet.\n");
     return fmiOK;
 }
 
@@ -288,7 +288,11 @@ FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c,
 FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
         fmiEventInfo* fmiEventInfo) {
     // Model Exchange
-    return fmiError;
+    ModelInstance* component = (ModelInstance *) c;
+
+    printf("helloWorldME.c: fmiNewDiscreteStates() returning fmiOK\n");
+    fmiEventInfo->newDiscreteStatesNeeded = 0;
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],

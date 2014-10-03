@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.ptolemy.fmi.FMI20EventInfo;
+import org.ptolemy.fmi.FMI20ModelInstance;
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
@@ -443,7 +444,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         double derivatives[] = null;
 
-        FMI20EventInfo.ByReference fmi20EventInfo = new FMI20EventInfo.ByReference();
+        //FMI20EventInfo.ByReference fmi20EventInfo = new FMI20EventInfo.ByReference();
+        FMI20EventInfo.ByReference fmi20EventInfo = null;
+
 
         if (_fmiModelDescription.modelExchange) {
             /////////////////////////////////////////
@@ -480,13 +483,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiInitialize();
                 
                 if (_fmiVersion >= 2.0) {
+                    FMI20ModelInstance fmi20ModelInstance = new FMI20ModelInstance(_fmiComponent);
+                    FMI20EventInfo fmi20EventInfoStruct = fmi20ModelInstance.eventInfo;
+                    fmi20EventInfo = new FMI20EventInfo.ByReference(fmi20EventInfoStruct);
+
                     // "event iteration"
                     fmi20EventInfo.newDiscreteStatesNeeded = (byte)1;
                     fmi20EventInfo.terminateSimulation = (byte)0;
-                    while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)0) && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
+                    while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1) && !(fmi20EventInfo.terminateSimulation == (byte)1)) {
                         // "update discrete states"
                         int fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(Integer.class, new Object[] {
                                             _fmiComponent, fmi20EventInfo})).intValue();
+
                         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
                             throw new IllegalActionException("Failed to set a new discrete state.");
                         }
@@ -696,7 +704,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         fmi20EventInfo.newDiscreteStatesNeeded = (byte)1;
                         fmi20EventInfo.terminateSimulation = (byte)0;
 
-                        while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)0) && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
+                        while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1) && !(fmi20EventInfo.terminateSimulation == (byte)1)) {
                             // "update discrete states"
                             int fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(Integer.class, new Object[] {
                                                 _fmiComponent, fmi20EventInfo})).intValue();
