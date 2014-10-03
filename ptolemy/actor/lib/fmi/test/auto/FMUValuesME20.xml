@@ -21,25 +21,25 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 300.0]">
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 395.0]">
         </property>
@@ -67,9 +67,9 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.9, -0.91, -0.909, -0.9091, -0.90909, -0.909091, -0.9090909, -0.90909091, -0.909090909, -0.9090909091, -0.90909090909}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 110.0]">
         </property>
