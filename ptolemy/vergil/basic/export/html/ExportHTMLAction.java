@@ -901,8 +901,20 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 printWriter
                 .println("<div id=\"inlineImg\">" // Defined in UCB.css
                                 + "<p>Below is a browsable image of the model.</p> "
-                                + "<ul>\n"
-                                + "<li>For an executable version,"
+                        + "<ul>\n");
+
+                StringParameter noJNLPLinkParameter = (StringParameter) model
+                    .getAttribute("_noJNLPLink", StringParameter.class);
+                if (linkToJNLP && noJNLPLinkParameter != null) {
+                    System.out.println("The ptolemy.ptII.exportHTML.linkToJNLP JVM property was set, "
+                        + "but the _noJNLPLink parameter was set, so this model " + model.getFullName()
+                        + " will not have a link to the JNLP version.  Typically models that don't run well, "
+                        + "like the BCVTB models have this parameter set.");
+                    printWriter.println("<!-- The model had a _noJNLPLink parameter set, so we are not "
+                            + "linking to the JNLP files. -->\n");
+                } else {
+                    printWriter.println(
+                                "<li>For an executable version,"
                                 + "<!-- We use the deployJava.js script so that Java "
                                 + "will be installed if necessary -->\n"
                                 + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
@@ -922,6 +934,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 + _sanitizedModelName
                                 + ".jnlp\">WebStart version</a>. \n"
                                 + linkToHelp + "</noscript>\n" + "</li>\n");
+                }
                 printWriter
                         .println("<li>To view or save the MoML file for this model, "
                                 + "<a href=\"../"

@@ -4,6 +4,8 @@
 <entity name="MatlabRoom" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
     </property>
+    <property name="_noJNLPLink" class="ptolemy.data.expr.StringParameter" value="">
+    </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>

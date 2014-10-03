@@ -4,6 +4,8 @@
 <entity name="CRoom" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
+    <property name="_noJNLPLink" class="ptolemy.data.expr.StringParameter" value="">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-modelStartTime)/timeStep+1">
         </property>
