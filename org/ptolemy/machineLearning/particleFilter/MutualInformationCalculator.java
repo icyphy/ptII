@@ -122,18 +122,18 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-
+        
         if (particles.hasToken(0)) {
             ArrayToken incoming = (ArrayToken) particles.get(0);
             N = incoming.length(); 
-
+            _weights = new double[N];
             if (_px.length == 0) {
                 _px = new double[N];
                 _py = new double[N];
-                _weights = new double[incoming.length()];
+                _weights = new double[N];
             }
 
-            for (int i = 0; i < incoming.length(); i++) {
+            for (int i = 0; i < N; i++) {
                 RecordToken token = (RecordToken) incoming.getElement(i); 
 
                 for (int k = 0; k < _labels.length; k++) {
