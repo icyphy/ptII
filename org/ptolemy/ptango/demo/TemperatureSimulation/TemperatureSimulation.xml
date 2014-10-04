@@ -205,7 +205,7 @@
         </port>
     </entity>
     <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="EPlusSimulation.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/EPlusSimulation.xml">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>

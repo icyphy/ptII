@@ -241,16 +241,22 @@
     <include name="org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar" />
     <include name="org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar" />
     <include name="org/ptolemy/ptango/demo/BlinkyLight/BlinkyLigh.jar" />
+    <include name="org/ptolemy/ptango/demo/Chat/Chat.jar" />
+    <include name="org/ptolemy/ptango/demo/Chat/ChatClient.jar" />
+    <include name="org/ptolemy/ptango/demo/Chat/ChatClient2.jar" />
+    <include name="org/ptolemy/ptango/demo/Chat/ChatServer.jar" />
     <include name="org/ptolemy/ptango/demo/Cookies/Cookies.jar" />
     <include name="org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar" />
     <include name="org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar" />
     <include name="org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar" />
     <include name="org/ptolemy/ptango/demo/Guidance/Guidance.jar" />
+    <include name="org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.jar" />
     <include name="org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar" />
     <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar" />
     <include name="org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar" />
     <include name="org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar" />
     <include name="org/ptolemy/ptango/demo/TemperatureSimulation.jar" />
+    <include name="org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.jar" />
     <include name="org/ptolemy/ptango/demo/UCBPower/UCBPower.jar" />
     <include name="org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar" />
     <include name="org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar" />
@@ -5779,6 +5785,30 @@
     </jar>
 
     <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/ChatClient.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/ChatClient2.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/ChatServer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
          destfile="${basedir}/org/ptolemy/ptango/demo/Cookies/Cookies.jar"
          >
        <fileset dir="${basedir}">
@@ -5824,11 +5854,25 @@
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/ErrorHandler/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
        </fileset>
     </jar>
 
     <jar defaultexcludes="yes"
          destfile="${basedir}/org/ptolemy/ptango/demo/Guidance/Guidance.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/Guidance/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
@@ -5857,6 +5901,7 @@
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/*.xml"/>
         <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
+	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
        </fileset>
     </jar>
 
@@ -5916,12 +5961,25 @@
     </jar>
 
     <jar defaultexcludes="yes"
+         destfile="${basedir}/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
          destfile="${basedir}/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar"
          >
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.txt"/>
         <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.xml"/>
         <include name="org/ptolemy/ptango/demo/UCBPowerPtera/data/*.txt"/>
+	<include name="org/ptolemy/ptango/demo/UCBPower/ucb_medium_map.png"/>
        </fileset>
     </jar>
 
@@ -5932,6 +5990,7 @@
         <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
         <include name="org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif"/>
         <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
+	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
        </fileset>
     </jar>
 
@@ -6294,6 +6353,11 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/actor/lib/js/demo/GoogleOAuth/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif"/>
+        <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
+	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
+        <include name="org/ptolemy/ptango/demo/files/*.gif"/>
        </fileset>
     </jar>
 

@@ -4,26 +4,26 @@
 <entity name="DOPpresence" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 22, 1426, 897}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 22, 1188, 754}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1192, 787]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[954, 644]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{596.0, 393.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.25, 304.125}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -5.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DEDirector&#10;stopWhenQueueIsEmpty false&#10;synchronizeToRealTime true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 25.0]">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
@@ -31,7 +31,7 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/DOPpresence/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 0.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -39,19 +39,19 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET request:  Return welcome page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 100.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST request:  Return true/false success status and info message&#10; Also, if successful, send mail to dopresence@embedded.eecs.berkeley.edu&#10; Perform case-insensitive check, since iPad auto-capitalizes first letter&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 135.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Email: Create file containing password at:&#10;$HOME/.DOPMailPassword.txt&#10;The email password can be found on the DOP Presence wiki page.&#10;&#10;IMPORTANT!  Right click on SendMail actor -&gt; check &quot;reallySendMail&quot;&#10;Check your SPAM folder for mail&#10;&#10;enableSSL is checked, as both Berkeley mail and Gmail require this.&#10;Berkeley SMTP info:&#10;https://calmail.berkeley.edu/docs/client.html&#10;&#10;Gmail SMTP info:&#10;http://email.about.com/od/accessinggmail/f/Gmail_SMTP_Settings.htm&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 430.0]">
         </property>
     </property>
     <property name="username" class="ptolemy.data.expr.Parameter" value="&quot;sample&quot;">
@@ -70,7 +70,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, -10.0]">
         </property>
     </property>
     <property name="doorCode" class="ptolemy.data.expr.Parameter" value="&quot;code&quot;">
@@ -89,19 +89,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 10.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model&#10;enableBackwardTypeInference false here,&#10;due to DatabaseSelect">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 95.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Database: Create file containing password at:&#10;$HOME/cat .databasePassword.txt&#10;Username and password can be found on the DOP presence wiki page. &#10;&#10;See also:&#10;http://embedded.eecs.berkeley.edu/dopresence/wiki/Main/PtolemyModel&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 630.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 545.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -109,7 +109,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model probably won't run from off &#10;the UC Berkeley campus because port 3306 is blocked.&#10;&#10;Also, the password for the database would be needed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 40.0]">
         </property>
     </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -117,7 +117,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Beth Latronic, Armin Wasicek">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 750.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 665.0]">
         </property>
     </property>
     <property name="port" class="ptolemy.data.expr.Parameter" value="WebServer.getAttribute(&quot;deployedPort&quot;).getToken().intValue()">
@@ -136,7 +136,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 380.0]">
         </property>
     </property>
     <property name="link" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:&quot; + port + &quot;/dop#in_browser&quot;">
@@ -155,7 +155,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 400.0]">
         </property>
     </property>
     <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -180,17 +180,17 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440, 335}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[245.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[110.0, -75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebServer.preferredPort blank for dynamic port selection&#10;Find deployed port number for header comment link&#10;Force evaluation on model start">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 305.0]">
         </property>
     </property>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 240.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -210,11 +210,11 @@
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="ptolemy">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 0.0]">
         </property>
     </entity>
     <entity name="Kiosk" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.000000000000007, 315.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 134, 928, 641}, maximized=false}">
         </property>
@@ -395,7 +395,7 @@
         <link port="MicrostepDelay.output" relation="relation7"/>
     </entity>
     <entity name="Authentication" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 315.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="RecordAssembler2: &#10;Make sure both username &#10;and doorcode are set &#10;before querying db">
@@ -633,7 +633,7 @@
         <link port="Const.trigger" relation="relation11"/>
     </entity>
     <entity name="Notification" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 315.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 83, 979, 594}, maximized=false}">
         </property>
@@ -967,7 +967,7 @@
         <link relation1="relation17" relation2="relation19"/>
     </entity>
     <entity name="DoorActuator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 430.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
@@ -996,7 +996,7 @@
         </port>
     </entity>
     <entity name="Clear Doorcode" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 240.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1076,7 +1076,7 @@
         <link port="Const2.trigger" relation="relation3"/>
     </entity>
     <entity name="Init" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 445.0]">
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
@@ -1156,7 +1156,7 @@
         <link port="Expression.trigger" relation="relation3"/>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[490.0, 410.0]">
+        <vertex name="vertex1" value="[355.0, 325.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1168,7 +1168,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[710.0, 325.0]">
+        <vertex name="vertex1" value="[575.0, 240.0]">
         </vertex>
     </relation>
     <link port="MicrostepDelay2.input" relation="relation7"/>

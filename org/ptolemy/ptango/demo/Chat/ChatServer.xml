@@ -31,7 +31,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 30.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="ChatClient.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat/ChatClient.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -82,7 +82,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 145.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="ChatClient2.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat/ChatClient2.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

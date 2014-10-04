@@ -855,6 +855,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             Map<String,String> atomicMap = new HashMap<String,String>();
+            atomicMap.put("lbnl",
+                    "lbnl/lbnl.jar");
             atomicMap.put("ptolemy.backtrack",
                     "ptolemy/backtrack/backtrack.jar");
             atomicMap.put("ptolemy.actor.lib.aspect",
@@ -863,6 +865,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/actor/lib/jai/jai.jar");
             atomicMap.put("ptolemy.actor.lib.jmf",
                     "ptolemy/actor/lib/jmf/jmf.jar");
+            atomicMap.put("ptolemy.actor.lib.mail",
+                    "ptolemy/actor/lib/mail/mail.jar");
             atomicMap.put("ptolemy.cg",
                     "ptolemy/cg/cg.jar");
             atomicMap.put("ptolemy.domains.de.lib.aspect",
@@ -1767,6 +1771,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         "ptolemy/vergil/basic/export/html/jsoup/jsoup.jar")) {
             auxiliaryClassMap.put("jsoup.jar needs lib/jsoup-1.7.3.jar",
                     "lib/jsoup-1.7.3.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/actor/lib/mail/mail.jar")) {
+            auxiliaryClassMap.put("SendMail actor requires javax.mail.jar", "lib/javax.mail.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(optimizationJar)) {

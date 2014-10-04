@@ -134,7 +134,7 @@
         </property>
     </entity>
     <entity name="HTMLModelExporter" class="org.ptolemy.ptango.lib.HTMLModelExporter">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="UCBPowerAnalyzerForServer.xml">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerForServer.xml">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>

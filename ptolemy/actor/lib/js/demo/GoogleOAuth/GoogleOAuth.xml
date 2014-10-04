@@ -45,7 +45,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[89.5, 45.00000000000014]">
         </property>
     </property>
-    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/WebServerDE/WebSerberDE.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/demo.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;doc/docConfig.jar&quot;}}">
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;org/ptolemy/ptango/demo/demo.jar&quot;},{&quot;org.ptolemy.ptango.lib.WebServer&quot;,&quot;doc/docConfig.jar&quot;}}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourcePath" class="ptolemy.data.expr.StringParameter" value="/files">

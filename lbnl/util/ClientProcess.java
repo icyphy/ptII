@@ -151,7 +151,7 @@ public class ClientProcess extends Thread {
         logFil = new File(simLogFil.getAbsolutePath());
         logToSysOut = true;
         // Delete log file if it exists
-        if (!logFil.delete()) {
+        if (logFil.exists() && !logFil.delete()) {
             throw new RuntimeException("Cannot delete \""
                     + logFil.getAbsolutePath() + "\"");
         }
