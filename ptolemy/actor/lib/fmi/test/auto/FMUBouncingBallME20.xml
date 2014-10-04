@@ -5,12 +5,14 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 45}">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 45.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={185, 136, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={819, 22, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -23,7 +25,7 @@
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 205.0}">
         </property>
         <property name="g" class="ptolemy.data.expr.Parameter" value="9.81">
         </property>
@@ -41,15 +43,15 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
-            </property>
         </port>
         <port name="der_h_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="der(h)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -64,19 +66,21 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
-            </property>
         </port>
         <port name="der_v_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="der(v)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -86,4 +90,135 @@
             </property>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.091209149999999E-7">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 115.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0791E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 195.0}">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0791E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 280.0}">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-9.81, -9.81, -9.81, -9.81, -9.81, -9.81, -9.81, -9.81, -9.81, -9.81}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 350.0}">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1168, 518, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 285.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="9.0"/>
+<yRange min="-9.81" max="1.0"/>
+<default stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 115.0}">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 215.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{220.0, 115.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=220.0,y=115.0}, tail={id=&quot;SequencePlotter.input&quot;,x=390.0,y=285.0,index=4}, points={220.0,155.0,335.0,155.0,335.0,270.0} },{ head={id=&quot;Test.input&quot;,x=270.0,y=115.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=115.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{335.0, 280.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=335.0,y=280.0}, tail={id=&quot;bouncingBallME.der_v_&quot;,x=150.0,y=205.0}, points={220.0,280.0,220.0,215.0} },{ head={id=&quot;relation2.vertex1&quot;,x=335.0,y=280.0}, tail={id=&quot;SequencePlotter.input&quot;,x=390.0,y=285.0,index=4}, points={} },{ head={id=&quot;Test4.input&quot;,x=385.0,y=350.0}, tail={id=&quot;relation2.vertex1&quot;,x=335.0,y=280.0}, points={335.0,350.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{320.0, 195.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=320.0,y=195.0}, tail={id=&quot;SequencePlotter.input&quot;,x=390.0,y=285.0,index=4}, points={320.0,275.0} },{ head={id=&quot;Test2.input&quot;,x=385.0,y=195.0}, tail={id=&quot;relation6.vertex1&quot;,x=320.0,y=195.0}, points={} },{ head={id=&quot;bouncingBallME.der_h_&quot;,x=150.0,y=205.0}, tail={id=&quot;relation6.vertex1&quot;,x=320.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{95.0, 115.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=95.0,y=115.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=115.0}, points={} },{ head={id=&quot;Const.output&quot;,x=50.0,y=115.0}, tail={id=&quot;relation3.vertex1&quot;,x=95.0,y=115.0}, points={} },{ head={id=&quot;bouncingBallME.h&quot;,x=150.0,y=205.0}, tail={id=&quot;relation3.vertex1&quot;,x=95.0,y=115.0}, points={95.0,195.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{95.0, 215.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;bouncingBallME.v&quot;,x=150.0,y=205.0}, tail={id=&quot;relation4.vertex1&quot;,x=95.0,y=215.0}, points={} },{ head={id=&quot;Const2.output&quot;,x=50.0,y=215.0}, tail={id=&quot;relation4.vertex1&quot;,x=95.0,y=215.0}, points={} },{ head={id=&quot;relation4.vertex1&quot;,x=95.0,y=215.0}, tail={id=&quot;Test3.input&quot;,x=145.0,y=280.0}, points={95.0,280.0} },{ head={id=&quot;relation4.vertex1&quot;,x=95.0,y=215.0}, tail={id=&quot;SequencePlotter.input&quot;,x=390.0,y=285.0,index=4}, points={95.0,320.0,320.0,320.0,320.0,285.0} } }">
+        </property>
+    </relation>
+    <link port="bouncingBallME.h" relation="relation3"/>
+    <link port="bouncingBallME.der_h_" relation="relation6"/>
+    <link port="bouncingBallME.v" relation="relation4"/>
+    <link port="bouncingBallME.der_v_" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test2.input" relation="relation6"/>
+    <link port="Test3.input" relation="relation4"/>
+    <link port="Test4.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation6"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Const2.output" relation="relation4"/>
+    <link relation1="relation" relation2="relation3"/>
 </entity>
