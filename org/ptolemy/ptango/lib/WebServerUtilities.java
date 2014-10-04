@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -51,6 +52,7 @@ import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.util.resource.FileResource;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
+import org.ptolemy.ptango.lib.websocket.PtolemyWebSocketServlet;
 
 ///////////////////////////////////////////////////////////////////
 ////WebServerUtilities
@@ -239,7 +241,7 @@ public class WebServerUtilities {
         // Add this application to the list of registered applications
         _applications.add(appInfo);
 
-        // Create a handler for servlet requests
+        // Create handlers for standard HTTP and WebSocket requests
         _createServletHandler(appInfo);
 
         // Create / re-use handlers for resource requests
@@ -321,19 +323,28 @@ public class WebServerUtilities {
                 // Only need to check servlet handlers (e.g. not the
                 // DefaultHandler, not resource handlers...)
                 // Check for matching application path
+                
+                // TODO:  Update for WebContextHandler
                 if (handler instanceof ServletContextHandler
                         && ((ServletContextHandler) handler)
                                 .getContextPath()
                                 .equalsIgnoreCase(
                                         appInfo.getApplicationPath().toString())) {
-                    for (URI servletPath : appInfo.getServletInfo().keySet()) {
-                        ServletHandler servletHandler = ((ServletContextHandler) handler)
+                    
+                    // Check for matching HTTP request and WebSocket servlets
+                    Set<URI> keySet = 
+                            new HashSet(appInfo.getServletInfo().keySet());
+                    keySet.addAll(appInfo.getWebSocketInfo().keySet());
+                    
+                    for (URI servletPath : keySet) {
+                        ServletHandler servletHandler = 
+                                ((ServletContextHandler) handler)
                                 .getServletHandler();
                         for (ServletMapping mapping : servletHandler
                                 .getServletMappings()) {
 
-                            // Any matching path means this is the servlet we want
-                            // to stop and remove
+                            // Any matching path means this is the servlet we 
+                            // want to stop and remove
                             for (String path : mapping.getPathSpecs()) {
                                 if (path.equalsIgnoreCase(servletPath
                                         .toString())) {
@@ -399,7 +410,8 @@ public class WebServerUtilities {
     ////                         protected methods                 ////
 
     /** Create a ContextHandler to store all of the servlets defined in the
-     *  given application (e.g. a Ptolemy model).  Add this handler to the
+     *  given application (e.g. a Ptolemy model).  This includes servlets for 
+     *  both standard HTTP requests and WebSockets.  Add this handler to the
      *  collection of handlers for this web server.
      *
      *  @param appInfo Information about the web application.
@@ -413,11 +425,26 @@ public class WebServerUtilities {
 
         servletHandler.setContextPath(appInfo.getApplicationPath().toString());
 
-        for (URI servletPath : appInfo.getServletInfo().keySet()) {
+        // Add handlers for standard HTTP services
+        for (URI path : appInfo.getServletInfo().keySet()) {
             servletHandler
                     .addServlet(
                             new ServletHolder(appInfo.getServletInfo().get(
-                                    servletPath)), servletPath.toString());
+                                    path)), path.toString());
+        }
+        
+        // Add handlers for WebSockets
+        // FIXME:  In app info, keep track of servlets instead of actors?
+        // Since WebSocket knows web services it is affiliated with?
+        // TODO:  Open all of these connections here for local readers/writers
+        // Remote readers/writers are expected to open their own connection
+        // TODO:  Determine if connection is local of remote based on URL
+        // Need to pass the client to reader and writer??  
+        
+        for (URI path : appInfo.getWebSocketInfo().keySet()){
+            PtolemyWebSocketServlet servlet = new PtolemyWebSocketServlet();
+            servletHandler.addServlet(new ServletHolder(
+                    servlet), path.toString());
         }
 
         ((ContextHandlerCollection) _server.getHandler())

@@ -38,6 +38,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.websocket.WebSocketClient;
+import org.eclipse.jetty.websocket.WebSocketClientFactory;
+import org.ptolemy.ptango.lib.websocket.WebSocketReader;
+import org.ptolemy.ptango.lib.websocket.WebSocketService;
+import org.ptolemy.ptango.lib.websocket.WebSocketWriter;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.expr.FileParameter;
@@ -334,7 +339,7 @@ public class WebServer extends AbstractInitializableAttribute {
     }
     
     /** Collect servlets from all model objects implementing HttpService
-     *  and start the web server in a new thread.
+     *  and WebSocketService and start the web server in a new thread.
      *  <p>
      * In the current implementation, servlets must be registered before the
      * Jetty server starts.  Servlets are not allowed to be added to a running
@@ -361,6 +366,14 @@ public class WebServer extends AbstractInitializableAttribute {
         if (_debugging) {
             _debug("Initializing web server.");
         }
+        
+        // Remember local websocket services so the websockets can be 
+        // opened after the web server is started and its port number determined
+        // TODO:  Refactor to use e.g. an interface instead of class names
+        // Want local clients only.  Does not apply to remote clients or 
+        // local server-side socket endpoints
+        HashSet<WebSocketReader> readers = new HashSet();
+        HashSet<WebSocketWriter> writers = new HashSet();
         
         int preferredPortValue = WebServerUtilities.DEFAULT_PORT_NUMBER;
         
@@ -430,14 +443,42 @@ public class WebServer extends AbstractInitializableAttribute {
                     _appInfo.addServletInfo(path, service.getServlet());
                 } catch (Exception e) {
                     throw new IllegalActionException(
-                            this,
-                            "Actor "
-                                    + entity.getName()
-                                    + " requested the web service URL "
-                                    + path
-                                    + " , but this URL has already been claimed "
-                                    + "by another actor or by a resource in this WebServer."
-                                    + "  Please specify a unique URL.");
+                            this, "Actor " + entity.getName()
+                              + " requested the web service URL "
+                              + path
+                              + " , but this URL has already been claimed "
+                              + "by another actor or by a resource in this " 
+                              + "WebServer.  Please specify a unique URL.");
+                }
+            } else if (entity instanceof WebSocketService) {
+                WebSocketService service = (WebSocketService) entity;
+                service.setWebServer(this);
+                
+                // TODO:  Refactor to use e.g. an interface for local clients 
+                // only
+                if (service instanceof WebSocketReader) {
+                    readers.add((WebSocketReader) service);
+                } else if (service instanceof WebSocketWriter) {
+                    writers.add((WebSocketWriter) service);
+                }
+                
+                if (_debugging) {
+                    _debug("Found WebSocket actor: " + entity.getFullName());
+                }
+                
+                // Add this path to the list of socket paths
+                URI path = service.getRelativePath();
+                
+                try {
+                    _appInfo.addSocketInfo(path, entity);
+                } catch (Exception e) {
+                    throw new IllegalActionException(
+                            this, "Actor " + entity.getName()
+                            + " requested the web service URL "
+                            + path
+                            + " , but this URL has already been claimed "
+                            + "by another actor or by a resource in this " 
+                            + "WebServer.  Please specify a unique URL.");
                 }
             }
         }
@@ -539,10 +580,35 @@ public class WebServer extends AbstractInitializableAttribute {
                 deployedPort.setExpression(Integer.toString(actualPort));
                 deployedPort.validate();
             }
+            
+            // Open all local web sockets
+            // TODO: Use e.g. an interface here for local clients only
+            for (WebSocketReader reader : readers){
+                reader.open(actualPort);
+            }
+            
+            for (WebSocketWriter writer : writers){
+                writer.open(actualPort);
+            }
+
         } catch (Exception e) {
             throw new IllegalActionException(this, e,
                     "Failed to register web server.");
         }
+    }
+    
+    /** Create a new WebSocket client
+     * 
+     * @return A new WebSocketClient
+     * @throws Exception If the WebSocketClientFactory cannot be started
+     */
+    public WebSocketClient newWebSocketClient() throws Exception {
+        if (_webSocketClientFactory == null) {
+            _webSocketClientFactory = new WebSocketClientFactory();
+            _webSocketClientFactory.start();
+        }
+        
+        return _webSocketClientFactory.newWebSocketClient();
     }
 
     /** Unregister this application with the web server manager.
@@ -591,4 +657,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;
+    
+    /** A factory for creating WebSocketClients. */
+    private static WebSocketClientFactory _webSocketClientFactory;
 }

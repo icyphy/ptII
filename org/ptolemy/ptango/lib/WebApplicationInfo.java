@@ -38,6 +38,7 @@ import javax.servlet.Servlet;
 import org.eclipse.jetty.util.resource.Resource;
 
 import ptolemy.data.expr.FileParameter;
+import ptolemy.kernel.Entity;
 
 ///////////////////////////////////////////////////////////////////
 ////WebApplicationInfo
@@ -97,6 +98,7 @@ public class WebApplicationInfo {
         // Initialize lists
         _servletInfo = new HashMap<URI, Servlet>();
         _resourceInfo = new HashMap<URI, HashSet<Resource>>();
+        _websocketInfo = new HashMap<URI, HashSet<Entity>>();
 
     }
 
@@ -108,11 +110,11 @@ public class WebApplicationInfo {
      * was added successfully, or false if the path was null, empty or a
      * duplicate
      *
-     * @param servletPath  The new servlet path to add
+     * @param path  The new servlet path to add
      * @param servlet The servlet to associated with the servlet path
      * @exception Exception If the path has already been requested by another servlet
      */
-    public void addServletInfo(URI servletPath, Servlet servlet)
+    public void addServletInfo(URI path, Servlet servlet)
             throws Exception {
         if (_servletInfo == null) {
             _servletInfo = new HashMap<URI, Servlet>();
@@ -128,16 +130,52 @@ public class WebApplicationInfo {
         // intended a less-specific path to handle all requests - in this
         // scenario, the new controller with the more-specific path will
         // erroneously handle some of the requests.
-        if (servletPath == null || servletPath.toString().isEmpty()
-                || _servletInfo.containsKey(servletPath)
-                || _resourceInfo.keySet().contains(servletPath)) {
+        
+        if (path == null || path.toString().isEmpty()) {
+            throw new Exception("Servlet path cannot be empty");
+        } else if (_servletInfo.containsKey(path)
+                || _websocketInfo.containsKey(path)
+                || _resourceInfo.keySet().contains(path)) {
             throw new Exception("Duplicate path requested by a servlet, "
-                    + servletPath
-                    + " . Please check other servlet paths and resource "
+                    + path
+                    + " . Please check other servlet, socket and resource "
                     + "paths for matches.");
         }
 
-        _servletInfo.put(servletPath, servlet);
+        _servletInfo.put(path, servlet);
+    }
+    
+    /** Add a new socket path to the set of paths of this web application.
+     * Null or empty paths are not allowed.  New path is not allowed if already
+     * claimed by a servlet or resource.  Return true if the path
+     * was added successfully; false otherwise
+     *
+     * @param path  The new socket path to add
+     * @param entity The entity (multiple allowed) associated with this socket path 
+     * @exception Exception If the path has already been requested by a servlet
+     * or resource
+     */
+    public void addSocketInfo(URI path, Entity entity)
+            throws Exception {
+        if (_websocketInfo == null) {
+            _websocketInfo = new HashMap<URI, HashSet<Entity>>();
+        }
+        
+        if (path == null || path.toString().isEmpty()) {
+            throw new Exception("Socket path cannot be empty");
+        } else if (_servletInfo.containsKey(path)
+                || _resourceInfo.keySet().contains(path)) {
+            throw new Exception("Duplicate path requested by a socket, "
+                    + path
+                    + " . Please check other servlet and resource "
+                    + "paths for matches.");
+        }
+        
+        if (!_websocketInfo.containsKey(path)) {
+            _websocketInfo.put(path, new HashSet<Entity>());
+        } 
+        
+        _websocketInfo.get(path).add(entity);    
     }
 
     /** Add a new resource path and location set for this web application.
@@ -150,18 +188,23 @@ public class WebApplicationInfo {
      *
      * There should be at least one resource location.
      *
-     * @param resourcePath  The new resource path to add.  May not be null.
+     * @param path  The new resource path to add.  May not be null.
      * @param resourceLocations The non-empty set of resource locations to add
      * @exception Exception If this path is a duplicate of a path already requested by
      * a servlet, or if the resource does not exist
      */
-    public void addResourceInfo(URI resourcePath,
-            Set<Resource> resourceLocations) throws Exception {
-        if (resourcePath == null || _servletInfo.containsKey(resourcePath)
-                || resourceLocations == null || resourceLocations.isEmpty()) {
+    public void addResourceInfo(URI path, Set<Resource> resourceLocations) 
+            throws Exception {
+
+        if (path == null || path.toString().isEmpty()){
+            throw new Exception("Resource path cannot be empty");
+        } else if (resourceLocations == null || resourceLocations.isEmpty()){
+            throw new Exception("At least one resource location must be given");
+        } else if (_servletInfo.containsKey(path) || 
+                _websocketInfo.containsKey(path)) {
             throw new Exception("Duplicate path requested by a resource, "
-                    + resourcePath
-                    + " . Please check servlet paths for matches.");
+                    + path
+                    + " . Please check servlet and socket paths for matches.");
         }
 
         for (Resource resource : resourceLocations) {
@@ -172,10 +215,10 @@ public class WebApplicationInfo {
             }
         }
 
-        if (_resourceInfo.containsKey(resourcePath)) {
-            _resourceInfo.get(resourcePath).addAll(resourceLocations);
+        if (_resourceInfo.containsKey(path)) {
+            _resourceInfo.get(path).addAll(resourceLocations);
         } else {
-            _resourceInfo.put(resourcePath, new HashSet(resourceLocations));
+            _resourceInfo.put(path, new HashSet(resourceLocations));
         }
     }
 
@@ -187,6 +230,16 @@ public class WebApplicationInfo {
     public URI getApplicationPath() {
         return _applicationPath;
     }
+    
+    /** Get the full model name of the model that is running the web application.
+    *
+    * @return  The full model name of the model that is running the web
+    * application
+    * @see #setModelName(String)
+    */
+   public String getModelName() {
+       return _modelName;
+   }
 
     /** Get the set of servlet paths assigned to this web application and their
      * corresponding servlets. May be empty.
@@ -197,23 +250,23 @@ public class WebApplicationInfo {
     public HashMap<URI, Servlet> getServletInfo() {
         return _servletInfo;
     }
-
-    /** Get the full model name of the model that is running the web application.
-     *
-     * @return  The full model name of the model that is running the web
-     * application
-     * @see #setModelName(String)
-     */
-    public String getModelName() {
-        return _modelName;
-    }
-
+    
     /** Get the set of resource paths and their associated locations.
      *
      * @return The set of resource paths and their associated locations
      */
     public HashMap<URI, HashSet<Resource>> getResourceInfo() {
         return _resourceInfo;
+    }
+    
+    /** Get the set of socket paths assigned to this web application and their
+     * corresponding sets of actors.  May be empty. 
+     * 
+     * @return the set of socket paths assigned to this web application and their
+     * corresponding sets of actors.  May be empty.
+     */
+    public HashMap<URI, HashSet<Entity>> getWebSocketInfo() {
+        return _websocketInfo;
     }
 
     /** Get the location where temporary files should be stored.  May be empty
@@ -271,6 +324,8 @@ public class WebApplicationInfo {
                 return true;
             }
         }
+        
+        // TODO:  Check for a matching socket path
 
         return false;
     }
@@ -363,20 +418,20 @@ public class WebApplicationInfo {
 
     /** The full name of the Ptolemy model that this web app was created from.
      */
-    private String _modelName;
+    private String _modelName;  
 
-    /** A map associating a resource path with one or more resource locations.
+    /** A map associating a path with one or more resource locations.
      *
      * A web application often hosts static content such as HTML pages and
      * images.  This content is server by a resource handler.  The resource
-     * handler mapped to a URL, the resource path.  For example, the file
+     * handler mapped to a URL path.  For example, the file
      * image.gif served by a resource handler with path /files in the
      * application with path /modelName on host localhost at port 8080 would be
      * accessed at URL http://localhost:8080/modelName/files/image.gif
      *
      * This full URL path must be unique on the server and may not be a prefix
      * of any other unique path.  This ensures that there is a unique handler
-     * for each HTTP request.  One
+     * for each request.  One
      * {@link org.eclipse.jetty.server.handler.ResourceHandler}
      * will be allocated per resource path.  Models may share a ResourceHandler
      * by specifying the same resource path.
@@ -399,17 +454,16 @@ public class WebApplicationInfo {
      */
     private HashMap<URI, HashSet<Resource>> _resourceInfo;
 
-    /** A map associating servlet paths with servlets.
+    /** A map associating paths with servlets.
      *
-     * A web application is typically composed of multiple servlets that
-     * handle requests submitted to a specific sub-path prefix.  For example,
-     * a servlet that handles requests at the path prefix /start on the host
-     * localhost at port 8080 in the application at path /modelName would be
-     * accessed at URL http://localhost:8080/modelName/start
+     * A web application is typically composed of request handlers, each 
+     * assigned to a path prefix.  For example, handler at path prefix /start 
+     * on the host localhost at port 8080 in the application at path /modelName 
+     * would be accessed at URL http://localhost:8080/modelName/start
      *
      * This full URL path must be unique on the server and may not be a prefix
      * of any other unique path.  This ensures that there is a unique handler
-     * for each HTTP request.  One
+     * for each request.  One
      * {@link org.eclipse.jetty.server.handler.ContextHandler}
      * will be allocated per servlet path.  Since the servlet
      * functionality is different for each web service actor, two separate
@@ -433,4 +487,25 @@ public class WebApplicationInfo {
      * May be null or empty if the model does not store temporary files.
      */
     private FileParameter _temporaryFileLocation;
+    
+    /** A map associating paths with sets of actors for WebSocket communication.
+    *
+    * A web application is typically composed of request handlers, each 
+    * assigned to a path prefix.  For example, handler at path prefix /start 
+    * on the host localhost at port 8080 in the application at path /modelName 
+    * would be accessed at URL http://localhost:8080/modelName/start
+    *
+    * This full URL path must be unique on the server and may not be a prefix
+    * of any other unique path.  This ensures that there is a unique handler
+    * for each request.  One
+    * {@link org.eclipse.jetty.server.handler.WebContextHandler}
+    * will be allocated per path.  Multiple actors may read from and write to 
+    * the socket.
+    *
+    * May be an empty list if the application does not use any WebSocket 
+    * communication.
+    *
+    * See also comments in {@link org.ptolemy.ptango.lib.WebServer}
+    */
+    private HashMap<URI, HashSet<Entity>> _websocketInfo;
 }
