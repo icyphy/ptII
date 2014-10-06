@@ -5,7 +5,7 @@
   <configure>
     <?moml
       <group>
-  <doc>Communication Aspects</doc>
+  <doc>Hidden Markov Model Actors</doc>
 
   <entity name="HMMGaussianEstimator" class="org.ptolemy.machineLearning.hmm.HMMGaussianEstimator">
   </entity>
