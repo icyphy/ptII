@@ -167,7 +167,7 @@ import ptolemy.util.MessageHandler;
    <li> get(port, n): get an input from a port on channel n (return null if there is no input).
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)
    <li> print(string): print the specified string to the console (standard out).
-   <li> readURL(string): read the specified URL and return its contents as a string.
+   <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).
    <li> send(value, port, n): send a value to an output port on channel n
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.
    <li> valueOf(parameter): retrieve the value of a parameter.
@@ -1220,7 +1220,7 @@ public class JavaScript extends TypedAtomicActor {
          *  @param url The URL to read.
          *  @return The content of the URL.
          *  @exception IOException If the specified URL can't be read (that is, a response code
-         *   was received that is not in the range 
+         *   was received that is not in the range 100 to 399.
          */
         public String readURL(String url) throws IOException {
             // FIXME: We should have a version that takes a callback function
