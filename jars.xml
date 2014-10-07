@@ -4030,6 +4030,8 @@
         <include name="org/ptolemy/ptango/lib/http/*.class"/>
         <include name="org/ptolemy/ptango/lib/http/*.xml"/>
         <include name="org/ptolemy/ptango/lib/img/*.gif"/>
+        <include name="org/ptolemy/ptango/lib/websocket/*.class"/>
+        <include name="org/ptolemy/ptango/lib/websocket/*.xml"/>
         <include name="org/ptolemy/ptango/lib/xmpp/*.class"/>
         <include name="org/ptolemy/ptango/lib/xmpp/img/*.gif"/>
         <include name="org/ptolemy/ptango/lib/xmpp/*.xml"/>
