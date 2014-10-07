@@ -284,6 +284,7 @@ public class ExportModelJUnitTest {
                 "ExecDemos", // hangs
                 "FMUSimulationX", // 32-bit only
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
+                "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
                 "HierarchyFlattening.xml", // gt
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
@@ -297,11 +298,14 @@ public class ExportModelJUnitTest {
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RecordManipulation", // Python demo pops up a dialog.
+                "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SerialPort.xml", // Requires serial port.
                 "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
+                "SmartChaseWithSmartIntruder.xml", // Needs the KeyValue model running.
+                "SmartIntruder.xml", // Needs the KeyValue model running.
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
