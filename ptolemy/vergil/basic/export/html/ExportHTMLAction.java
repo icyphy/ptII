@@ -31,8 +31,10 @@ import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PrinterException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -968,75 +970,79 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 printWriter
                         .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
-                // Start the top of the toc.htm file.
-                _addContent("toc.htm", false, "<div id=\"menu\">");
-                _addContent("toc.htm", false, "<ul>");
-                _addContent("toc.htm", false,
-                        "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+                String tocContents = ExportHTMLAction._findToc(model);
+                if (tocContents != "") {
+                    _addContent("toc.htm", false, tocContents);
+                } else {
+                    // Start the top of the toc.htm file.
+                    _addContent("toc.htm", false, "<div id=\"menu\">");
+                    _addContent("toc.htm", false, "<ul>");
+                    _addContent("toc.htm", false,
+                            "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
 
-                // The URL of the current release.
-                String ptURL = (usePtWebsite ? "http://ptolemy.org" : "")
+                    // The URL of the current release.
+                    String ptURL = (usePtWebsite ? "http://ptolemy.org" : "")
                         + "/ptolemyII/ptII"
                         + VersionAttribute.majorCurrentVersion() + "/ptII"
                         + VersionAttribute.CURRENT_VERSION.getExpression()
                         + "/";
 
-                _addContent("toc.htm", false,
-                        "<li><a href=\"" + ptURL + "doc/index.htm\">Ptolemy "
-                                + VersionAttribute.majorCurrentVersion()
-                                + "</a></li>");
-                _addContent("toc.htm", false, "</ul>");
-                _addContent("toc.htm", false, "");
+                    _addContent("toc.htm", false,
+                            "<li><a href=\"" + ptURL + "doc/index.htm\">Ptolemy "
+                            + VersionAttribute.majorCurrentVersion()
+                            + "</a></li>");
+                    _addContent("toc.htm", false, "</ul>");
+                    _addContent("toc.htm", false, "");
 
-                String upHTML = null;
-                if (_isInDomains(model)) {
-                    upHTML = "<li><a href=\"../../../doc/\">Up</a></li>";
-                } else {
-                    // If there is a _upHTML parameter, use its value.
-                    StringParameter upHTMLParameter = (StringParameter) model
-                            .getAttribute("_upHTML", StringParameter.class);
-                    if (upHTMLParameter != null) {
-                        upHTML = upHTMLParameter.stringValue();
+                    String upHTML = null;
+                    if (_isInDomains(model)) {
+                        upHTML = "<li><a href=\"../../../doc/\">Up</a></li>";
                     } else {
-                        if (!usePtWebsite) {
-                            upHTML = " <li><a href=\"../index.html\">Up</a></li>";
+                        // If there is a _upHTML parameter, use its value.
+                        StringParameter upHTMLParameter = (StringParameter) model
+                            .getAttribute("_upHTML", StringParameter.class);
+                        if (upHTMLParameter != null) {
+                            upHTML = upHTMLParameter.stringValue();
                         } else {
-                            // Generate links to the domain docs.
-                            String domains[] = { "Continuous", "DDF", "DE",
-                                    "Modal", "PN", "Rendezvous", "SDF", "SR",
-                            "Wireless" };
-                            StringBuffer buffer = new StringBuffer();
-                            for (int i = 0; i < domains.length; i++) {
-                                buffer.append("<li><a href=\"" + ptURL
-                                        + "ptolemy/domains/"
-                                        + domains[i].toLowerCase()
-                                        + "/doc/index.htm\">" + domains[i]
-                                                + "</a></li>");
+                            if (!usePtWebsite) {
+                                upHTML = " <li><a href=\"../index.html\">Up</a></li>";
+                            } else {
+                                // Generate links to the domain docs.
+                                String domains[] = { "Continuous", "DDF", "DE",
+                                                     "Modal", "PN", "Rendezvous", "SDF", "SR",
+                                                     "Wireless" };
+                                StringBuffer buffer = new StringBuffer();
+                                for (int i = 0; i < domains.length; i++) {
+                                    buffer.append("<li><a href=\"" + ptURL
+                                            + "ptolemy/domains/"
+                                            + domains[i].toLowerCase()
+                                            + "/doc/index.htm\">" + domains[i]
+                                            + "</a></li>");
+                                }
+                                upHTML = buffer.toString();
                             }
-                            upHTML = buffer.toString();
                         }
                     }
-                }
-
-                // Only add <ul> if we have upHTML
-                if (upHTML != null) {
-                    _addContent("toc.htm", false, "<ul>");
-                    _addContent("toc.htm", false, upHTML);
+                    
+                    // Only add <ul> if we have upHTML
+                    if (upHTML != null) {
+                        _addContent("toc.htm", false, "<ul>");
+                        _addContent("toc.htm", false, upHTML);
                     _addContent("toc.htm", false, "</ul>");
-                }
-
-                // Get the toc contents and stuff it into toc.htm.
-                List<StringBuffer> contents = _contents.get("tocContents");
-                if (contents != null) {
-                    _addContent("toc.htm", false, "<ul>");
-                    for (StringBuffer line : contents) {
-                        _addContent("toc.htm", false, line.toString());
                     }
-                    _addContent("toc.htm", false, "</ul>");
+                    
+                    // Get the toc contents and stuff it into toc.htm.
+                    List<StringBuffer> contents = _contents.get("tocContents");
+                    if (contents != null) {
+                        _addContent("toc.htm", false, "<ul>");
+                        for (StringBuffer line : contents) {
+                            _addContent("toc.htm", false, line.toString());
+                        }
+                        _addContent("toc.htm", false, "</ul>");
+                    }
+                    _addContent("toc.htm", false, "</div><!-- /#menu -->");
                 }
             }
-
-            _addContent("toc.htm", false, "</div><!-- /#menu -->");
 
             // If _contents contains any entry other than head, start, or end,
             // then interpret that entry as a file name to write to.
@@ -1050,7 +1056,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         // (cd $PTII/doc/papers/y12/designContracts; $PTII/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel -run -whiteBackground -openComposites htm DCMotorTol.xml)
 
                         System.out
-                                .println("Warning, key of tocContents was empty?");
+                                .println("Warning, key of _contents was empty?");
                         continue;
                     }
                     // NOTE: A RESTful version of this would create a resource
@@ -1524,6 +1530,69 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             return null;
         }
         return _findCopiedLibrary(container, "../" + path, copier);
+    }
+
+    /** Return the contents of a toc.htm file
+     *  that is located in either the current directory
+     *  or ../../doc/
+     *  @param model The model to be checked
+     *  @return the contents of the toc.htm file or the empty string.
+     */
+    private static String _findToc(NamedObj model) {
+        try {
+            URIAttribute modelURI = (URIAttribute) model.getAttribute("_uri",
+                    URIAttribute.class);
+            if (modelURI != null) {
+                // Look in the current directory for toc.htm or toc.html, then
+                // look for ../../doc/toc.htm and then ../../doc/toc.html.
+                File modelFile = new File(modelURI.getURI());
+                File tocFile = new File(modelFile.getParent(), "toc.htm");
+                if (!tocFile.exists()) {
+                    tocFile = new File(modelFile.getParent(), "toc.html");
+                    if (!tocFile.exists()) {
+                        File docDirectory = new File(modelFile.getParent(), "../../doc/");
+                        if (docDirectory.exists() 
+                                && docDirectory.isDirectory()) {
+                            tocFile = new File(docDirectory, "toc.htm");
+                            if (!tocFile.exists()) {
+                                tocFile = new File(docDirectory, "toc.html");
+                                if (!tocFile.exists()) {
+                                    tocFile = null;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (tocFile == null) {
+                    return "";
+                } else {
+                    // Read the contents and return it.
+                    System.out.println("Copying the contents of " + tocFile);
+                    StringBuffer result = new StringBuffer();
+                    FileReader fileReader = null;
+                    BufferedReader bufferedReader = null;
+                    try {
+                        fileReader = new FileReader(tocFile);
+                        bufferedReader = new BufferedReader(fileReader);
+                        String line = null;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            result.append(line + "\n");
+                        }
+                    } catch (IOException x) {
+                        System.err.format("IOException: %s%n", x);
+                    } finally {
+                        if (bufferedReader != null) {
+                            bufferedReader.close();
+                        }
+                    }
+                    return result.toString();
+                }
+            }
+        } catch (Throwable throwable) {
+            System.out.println("Failed to find toc for " + model.getFullName() + ": " + throwable);
+            return "";
+        }
+        return "";
     }
 
     /** Return true if the model is in the domains demo directory
