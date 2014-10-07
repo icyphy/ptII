@@ -1026,7 +1026,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 ##########
 
 
-update_ftp: update_ptii_ftp untar update_ftp_book
+update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
@@ -1042,6 +1042,9 @@ update_ftp_book: PtolemyII_DigitalV1_02.pdf
 
 PtolemyII_DigitalV1_02.pdf:
 	wget http://ptolemy.eecs.berkeley.edu/books/Systems/PtolemyII_DigitalV1_02.pdf
+
+update_ftp_index:
+	scp index2.htm moog:$(PTII_FTP)/ptII$(VERSION)/index.htm
 
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
@@ -3170,6 +3173,8 @@ PTBUILDRELEASE=tmp/build/ptII$(VERSION)
 build_release: $(PTBUILDRELEASE)
 
 ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out clean_ptrelease_doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit clean_ptrelease_doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out clean_ptrelease_scpDemos.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+
+ptbuildrelease_jnlp: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed clean_ptrelease_doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit clean_ptrelease_doit.out
 
 ptbuildrelease2: $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
