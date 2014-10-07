@@ -971,9 +971,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
                 String tocContents = ExportHTMLAction._findToc(model);
-                if (tocContents != "") {
-                    _addContent("toc.htm", false, tocContents);
-                } else {
+                //if (tocContents != "") {
+                //    _addContent("toc.htm", false, tocContents);
+                //} else {
                     // Start the top of the toc.htm file.
                     _addContent("toc.htm", false, "<div id=\"menu\">");
                     _addContent("toc.htm", false, "<ul>");
@@ -1041,7 +1041,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         _addContent("toc.htm", false, "</ul>");
                     }
                     _addContent("toc.htm", false, "</div><!-- /#menu -->");
-                }
+                    //}
             }
 
             // If _contents contains any entry other than head, start, or end,
