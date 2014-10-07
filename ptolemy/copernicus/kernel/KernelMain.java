@@ -130,6 +130,9 @@ public abstract class KernelMain {
             initialize(toplevel);
         } catch (Throwable ex) {
             System.out.println("initialize() failed: " + ex);
+            System.out.println("If the model does not have a director, consider adding \n"
+                    + "<property name=\"DoNothingDirector\" class=\"ptolemy.actor.DoNothingDirector\">\n"
+                    + "</property>");
         }
 
         if (attribute.getParameter("outputDirectory").indexOf(" ") != -1) {
