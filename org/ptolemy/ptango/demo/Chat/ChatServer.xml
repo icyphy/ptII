@@ -4,6 +4,8 @@
 <entity name="ChatServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameter&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.ptango.lib.WebServer&quot;,&quot;ptolemy/domains/pn/pn.jar&quot;}}">
+    </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/Chat">
         </property>

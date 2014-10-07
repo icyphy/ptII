@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1017, 778]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{508.5, 389.0}">
     </property>
@@ -5311,6 +5311,9 @@
 
                         </configure>
                         <configure>
+
+                        </configure>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5347,6 +5350,9 @@
 
                 </configure>
                 <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5373,6 +5379,9 @@
 
                 </configure>
                 <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5388,6 +5397,9 @@
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[328, 300]">
                 </property>
                 <configure>
+                </configure>
+                <configure>
+
                 </configure>
                 <configure>
 
@@ -5499,6 +5511,9 @@
 
                         </configure>
                         <configure>
+
+                        </configure>
+                        <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5535,6 +5550,9 @@
 
                 </configure>
                 <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5561,6 +5579,9 @@
 
                 </configure>
                 <configure>
+
+                </configure>
+                <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
@@ -5576,6 +5597,9 @@
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 300]">
                 </property>
                 <configure>
+                </configure>
+                <configure>
+
                 </configure>
                 <configure>
 
