@@ -37,7 +37,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketClient;
-import org.ptolemy.ptango.lib.WebServer;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -172,7 +171,6 @@ public class WebSocketWriter extends TypedAtomicActor
         newObject._connectionFuture = null;
         newObject._connectionTimeout = 5000;
         newObject._isLocal = false;
-        newObject._server = null;
         newObject._URIpath = null;
         return newObject;
     }
@@ -240,6 +238,23 @@ public class WebSocketWriter extends TypedAtomicActor
         return _URIpath;
     }
     
+    /** Open any websocket connections to remote URIs.  Connections to local
+     * URIs will be opened by the web server once it starts up.   
+     *  @exception IllegalActionException If the parent throws it.
+     */
+    @Override
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        
+        // Open any websockets connecting to remote locations
+        if (!_isLocal) {
+            open(_URIpath);
+        }
+        
+        // The server will open websockets to local locations later once it
+        // has acquired a port.  The port number is needed for the URL.
+    }
+    
     /** Do nothing upon receipt of a message, since this actor is a writer.
      * 
      * @param sender The WebSocketEndpoint that sent the message.
@@ -250,44 +265,34 @@ public class WebSocketWriter extends TypedAtomicActor
     
     /** Open the WebSocket connection on the given port.
      * 
-     * @param port  The port to use in the connection URL.
+     * @param path The URI to connect to.
      * @exception IllegalActionException If the websocket cannot be opened.
      */
-    public void open(int port) throws IllegalActionException {
+    public void open(URI path) throws IllegalActionException {
         
         // Based on http://download.eclipse.org/jetty/stable-8/apidocs/org/eclipse/jetty/websocket/WebSocketClient.html
         // and http://stackoverflow.com/questions/19770278/jetty-8-1-1-websocket-client-handshake
         
-        // Open a new connection to the web server
+        // Create a new client
         try {
-            _client = _server.newWebSocketClient();
+            _client = PtolemyWebSocketClientFactory.getInstance()
+                    .newWebSocketClient();
         } catch(Exception e) {
             throw new IllegalActionException(this, 
                     "Can't create WebSocket client");
         }
         
-        // Only local ones need to wait for the webserver to start
-        // TODO:  Implement remote opening.  Refactor to not be depedent on 
-        // WebServer.
-        // TODO:  Implement opening websockets for remote paths.
-        if (_isLocal) {
-            // Request connection.  Wait it a separate thread to avoid blocking.
-            try {
-                WebSocketEndpoint endpoint = new WebSocketEndpoint(this);
-                
-                // Prepend ws://localhost:port to URI
-                // TODO:  Add support for secure websockets
-                URI path = URI.create("ws://localhost:" + port + 
-                        _URIpath.toString());
-                 _connectionFuture = _client.open(path, endpoint);
+        // Request connection.  _client.open() is a non-blocking operation.
+        try {
+            WebSocketEndpoint endpoint = new WebSocketEndpoint(this);             
+            _connectionFuture = _client.open(path, endpoint);
                  
-                 if (_debugging) {
-                     _debug("Websocket connection opened for " + getName());
-                 }
-            } catch(IOException e){
-                throw new IllegalActionException(this, 
-                        "Can't open WebSocket connection");
+            if (_debugging) {
+                _debug("Websocket connection opened for " + getName());
             }
+        } catch(IOException e){
+            throw new IllegalActionException(this, 
+                    "Can't open WebSocket connection");
         }
     }
     
@@ -300,16 +305,6 @@ public class WebSocketWriter extends TypedAtomicActor
     @Override
     public void setRelativePath(URI path) {
         _URIpath = path;
-    }
-    
-    /** Set the WebServer responsible for opening connections for this 
-     *  websocket.
-     *  
-     *  @param server The WebServer responsible for opening connections for 
-     *  this websocket.
-     */
-    public void setWebServer(WebServer server) {
-        _server = server;
     }
     
     /** Close any open WebSocket connections.
@@ -343,9 +338,6 @@ public class WebSocketWriter extends TypedAtomicActor
      *  otherwise.
      */
     private boolean _isLocal;
-    
-    /** The WebServer attribute handling communication for this socket. */
-    private WebServer _server;
     
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to

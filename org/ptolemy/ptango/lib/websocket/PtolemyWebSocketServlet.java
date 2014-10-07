@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
-import org.ptolemy.ptango.lib.WebServer;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyWebSocketServlet
@@ -126,16 +125,6 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     public void setRelativePath(URI relativePath) {
         // TODO Auto-generated method stub
         
-    }
-    
-    // TODO:  This class doesn't need anything from the web server.  Refactor?
-    /** Not used here.
-     * 
-     * @param  The server responsible for receiving requests for this servlet.
-     */
-    @Override
-    public void setWebServer(WebServer server) {
-        // TODO Auto-generated method stub
     }
     
     ///////////////////////////////////////////////////////////////////

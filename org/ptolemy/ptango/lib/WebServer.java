@@ -38,8 +38,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.websocket.WebSocketClient;
-import org.eclipse.jetty.websocket.WebSocketClientFactory;
 import org.ptolemy.ptango.lib.websocket.WebSocketReader;
 import org.ptolemy.ptango.lib.websocket.WebSocketService;
 import org.ptolemy.ptango.lib.websocket.WebSocketWriter;
@@ -452,7 +450,6 @@ public class WebServer extends AbstractInitializableAttribute {
                 }
             } else if (entity instanceof WebSocketService) {
                 WebSocketService service = (WebSocketService) entity;
-                service.setWebServer(this);
                 
                 // TODO:  Refactor to use e.g. an interface for local clients 
                 // only
@@ -582,33 +579,26 @@ public class WebServer extends AbstractInitializableAttribute {
             }
             
             // Open all local web sockets
-            // TODO: Use e.g. an interface here for local clients only
+            // Prepend ws://localhost:port to URI
+            
             for (WebSocketReader reader : readers){
-                reader.open(actualPort);
+                // TODO:  Allow secure websockets, with wss://
+                URI path = URI.create("ws://localhost:" + actualPort +
+                        reader.getRelativePath().toString());
+                reader.open(path);
             }
             
             for (WebSocketWriter writer : writers){
-                writer.open(actualPort);
+                // TODO:  Allow secure websockets, with wss://
+                URI path = URI.create("ws://localhost:" + actualPort +
+                        writer.getRelativePath().toString());
+                writer.open(path);
             }
 
         } catch (Exception e) {
             throw new IllegalActionException(this, e,
                     "Failed to register web server.");
         }
-    }
-    
-    /** Create a new WebSocket client
-     * 
-     * @return A new WebSocketClient
-     * @throws Exception If the WebSocketClientFactory cannot be started
-     */
-    public WebSocketClient newWebSocketClient() throws Exception {
-        if (_webSocketClientFactory == null) {
-            _webSocketClientFactory = new WebSocketClientFactory();
-            _webSocketClientFactory.start();
-        }
-        
-        return _webSocketClientFactory.newWebSocketClient();
     }
 
     /** Unregister this application with the web server manager.
@@ -657,7 +647,4 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;
-    
-    /** A factory for creating WebSocketClients. */
-    private static WebSocketClientFactory _webSocketClientFactory;
 }

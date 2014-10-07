@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketClient;
-import org.ptolemy.ptango.lib.WebServer;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -171,13 +170,11 @@ public class WebSocketReader extends TypedAtomicActor
         newObject._initializeRealTime = 0L;
         newObject._isLocal = false;
         newObject._message = null;
-        newObject._server = null;
         newObject._URIpath = null;
         return newObject;
     }
     
     /** Send the message from the websocket to the output port.
-     *  
      *  @exception IllegalActionException If the message cannot be sent to the 
      *  output port.
      */
@@ -194,7 +191,6 @@ public class WebSocketReader extends TypedAtomicActor
     }
     
     /** Return the relative path that this WebSocketService is mapped to.
-     *  
      *  @return The relative path that this WebSocketService is mapped to.
      *  @see #setRelativePath(URI)
      */
@@ -205,7 +201,6 @@ public class WebSocketReader extends TypedAtomicActor
     
     /** Remember the time at which this actor was initialized in order to 
      *  request firings at a particular time.
-     *  
      *  @exception IllegalActionException If the parent throws it.
      */
     @Override
@@ -220,13 +215,16 @@ public class WebSocketReader extends TypedAtomicActor
         // to avoid this workaround
         _initializeRealTime = System.currentTimeMillis() - 100;
         
-        // The server will initiate websocket opening later once the server
-        // has acquired a port.  The port number is needed for the websocket's 
-        // connection URL for locally hosted websockets.
+        // Open any websockets connecting to remote locations
+        if (!_isLocal) {
+            open(_URIpath);
+        }
+        
+        // The server will open websockets to local locations later once it
+        // has acquired a port.  The port number is needed for the URL.
     }
     
     /** Upon receipt of a message, store the message and request a firing. 
-     * 
      * @param sender The WebSocketEndpoint that sent the message.
      * @param message The message that was received.
      */
@@ -264,55 +262,44 @@ public class WebSocketReader extends TypedAtomicActor
     }
     
     /** Open the WebSocket connection on the given port.
-     * 
-     * @param port  The port to use in the connection URL.
+     * @param path The URI to connect to.
      * @exception IllegalActionException If the websocket cannot be opened.
      */
-    public void open(int port) throws IllegalActionException {
+    public void open(URI path) throws IllegalActionException {
         
         // Based on http://download.eclipse.org/jetty/stable-8/apidocs/org/eclipse/jetty/websocket/WebSocketClient.html
         // and http://stackoverflow.com/questions/19770278/jetty-8-1-1-websocket-client-handshake
         
-        // Open a new connection to the web server
+        // Create a new client
         try {
-            _client = _server.newWebSocketClient();
+            _client = PtolemyWebSocketClientFactory.getInstance()
+                    .newWebSocketClient();
         } catch(Exception e) {
             throw new IllegalActionException(this, 
                     "Can't create WebSocket client");
         }
         
-        // Only local ones need to wait for the webserver to start
-        // TODO:  Implement remote opening.  Refactor to not be dependent on 
-        // WebServer.
-        if (_isLocal) {
-            // Request connection.  Wait it a separate thread to avoid blocking.
-            try {
-                WebSocketEndpoint endpoint = new WebSocketEndpoint(this);
-                
-                // Prepend ws://localhost:port to URI
-                // TODO:  Add support for secure websockets
-                URI path = URI.create("ws://localhost:" + port + 
-                        _URIpath.toString());
-                 _connectionFuture = _client.open(path, endpoint);
+        // Request connection.  _client.open() is a non-blocking operation.
+        try {
+            WebSocketEndpoint endpoint = new WebSocketEndpoint(this);
+            _connectionFuture = _client.open(path, endpoint);
                  
-                 // Create and start new runnable to obtain result of Future
-                 _connectionThread = new Thread(new RunnableConnectionGetter());
-                 _connectionThread.start();
+            // Create and start new runnable to obtain result of Future
+             _connectionThread = new Thread(new RunnableConnectionGetter());
+             _connectionThread.start();
                  
-                 if (_debugging) {
-                     _debug("Websocket connection opened for " + getName());
-                 }
+             if (_debugging) {
+                 _debug("Websocket connection opened for " + getName());
+             }
                  
-            } catch(IOException e){
-                throw new IllegalActionException(this, 
-                        "Can't open WebSocket connection");
-            }
+         } catch(IOException e){
+             throw new IllegalActionException(this, 
+                     "Can't open WebSocket connection");
         }
     }
     
     /** Set the relative path that this WebSocketService is mapped to.
      *  This method is required by the WebSocketService interface.
-     *  
      *  @param path The relative path that this WebSocketService is mapped to.
      *  @see #getRelativePath()
      */
@@ -321,18 +308,7 @@ public class WebSocketReader extends TypedAtomicActor
         _URIpath = path;
     }
     
-    /** Set the WebServer responsible for opening connections for this 
-     *  websocket.
-     *  
-     *  @param server The WebServer responsible for opening connections for 
-     *  this websocket.
-     */
-    public void setWebServer(WebServer server) {
-        _server = server;
-    }
-    
     /** Close any open WebSocket connections.
-    *
     * @exception IllegalActionException If thrown by the parent. */
    @Override
    public void wrapup() throws IllegalActionException {
@@ -377,9 +353,6 @@ public class WebSocketReader extends TypedAtomicActor
     /** The last message received. */
     private String _message;
     
-    /** The WebServer attribute handling communication for this socket. */
-    private WebServer _server;
-    
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to
      *  all of the URI naming conventions.
@@ -399,6 +372,7 @@ public class WebSocketReader extends TypedAtomicActor
                     _connection = _connectionFuture
                             .get(_connectionTimeout, TimeUnit.MILLISECONDS);
                 } catch(Exception e) {
+                    // TODO:  Where to check for this?  
                     _connectionException = e;
                 }
             }

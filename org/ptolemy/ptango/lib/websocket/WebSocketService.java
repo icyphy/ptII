@@ -65,7 +65,6 @@ public interface WebSocketService {
     public URI getRelativePath();
     
     /** Notify service of a WebSocket message event.
-     * 
      * @param sender The PtolemyWebSocketEndpoint that sent the message
      * @param message The message that was received
      */
@@ -76,19 +75,4 @@ public interface WebSocketService {
      *  @see #getRelativePath()
      */
     public void setRelativePath(URI relativePath);
-    
-    // TODO:  Implement this method some
-    /** Return true if the URI is a remote URI; false otherwise.  
-     * Used to determine if the server should instantiate a context handler for
-     * this URI.  (No if remote, yes if local.)
-     * 
-     * @return True if the URI is a remote URI; false otherwise
-     */
-    
-    /** Specify the web server for this service. This will be called by the 
-     * {@link WebServer} attribute of a model to enable access to the 
-     *  WebServer's WebSocketClientFactory.
-     *  @param server The WebServer for this service
-     */
-    public void setWebServer(WebServer server);
 }
