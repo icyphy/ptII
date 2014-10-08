@@ -61,15 +61,13 @@ a sequence of {@link Note} objects, in logical timestamp order.
  */
 public class NoteParser extends TypedAtomicActor {
 
-    /** Construct an actor with the given container and name.
-        *  @param container The container.
-        *  @param name The name of this actor
-        *  @param trainingSequence The input string that the oracle is built from
-        *  @exception IllegalActionException If the actor cannot be contained
-        *   by the proposed container.
-        *  @exception NameDuplicationException If the container already has an
-        *   actor with this name.
-        */
+    /**
+     * Construct an actor with the given container and name.
+     * @param container The container.
+     * @param name The name of this actor   
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
+     */
     public NoteParser(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -115,20 +113,44 @@ public class NoteParser extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
   
+    /**
+     * Sequence of note tokens
+     */
     public TypedIOPort notes; 
     
+    /**
+     * The time stamp tokens
+     */
     public TypedIOPort timestamp;
     
+    /**
+     * Indicator that the note sequence has terminated
+     */
     public TypedIOPort endTraining;
     
+    /**
+     * Indicator that a new sequence has started
+     */
     public TypedIOPort resetFO;
     
+    /**
+     * The replication probability of the factor oracle
+     */
     public TypedIOPort replicationProbability;
     
+    /**
+     * Number of bars in training melody
+     */
     public TypedIOPort bars; 
     
+    /**
+     * Note frequency
+     */
     public TypedIOPort freq;
     
+    /**
+     * Note durations
+     */
     public TypedIOPort dur; 
     
  

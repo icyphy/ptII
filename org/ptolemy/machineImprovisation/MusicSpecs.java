@@ -31,9 +31,21 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+/** A static class that contains musical specifications
 
+ @author Ilge Akkaya
+ @version  $Id$
+ @since Ptolemy II 10.1
+ @Pt.ProposedRating Red (ilgea)
+ @Pt.AcceptedRating 
+ */
 public class MusicSpecs {
 
+    /**
+     * Get the chord tones contained by the given chords.
+     * @param chords The list of chords
+     * @return a map of pitches contained by the specified list of chords
+     */
     public static HashMap getChordTones(List<String> chords) {
         HashMap chordMap = new HashMap(); 
         for (int i = 0; i < chords.size(); i++) {
@@ -42,6 +54,13 @@ public class MusicSpecs {
         } 
         return chordMap;
     }
+    
+    /**
+     * Get a list of notes contained by the chord
+     * @param chord The chord name
+     * @param useScale A boolean specifying whether scale notes should be included
+     * @return a List of notes
+     */
     public static List getChordPitches(String chord, boolean useScale) {
         
         
@@ -271,6 +290,12 @@ public class MusicSpecs {
         return notesInChord; 
     }
 
+    /**
+     * Translate a MIDI key to its equivalent letter note representation
+     * @param key MIDI key index
+     * @param addOctave boolean -- if true indicates that octave information should be output
+     * @return letter note representation of note
+     */
     public static String translateKeyToLetterNote(double key, boolean addOctave) { 
 
         if ( key == TERMINATION_NOTE_KEY) {
@@ -303,6 +328,11 @@ public class MusicSpecs {
 
     }
 
+    /**
+     * Translate a letter note to MIDI key
+     * @param note a letter note
+     * @return the MIDI key index
+     */
     public static int translateNoteToKey(String note) {
         int octave =  -1;
         String letterPart = note;
@@ -340,6 +370,11 @@ public class MusicSpecs {
         return noteKeyValue; 
     }
 
+    /**
+     * Translate a letter note to MIDI key
+     * @param note a letter note
+     * @return the MIDI key index in base 12
+     */
     public static int translateLetterToKeyIndex(String keyLetter) {  
         String letterPart = keyLetter.substring(0,keyLetter.length()); 
         int noteIndex = 0;    
@@ -363,8 +398,20 @@ public class MusicSpecs {
         }  
         return noteIndex; 
     } 
+    /**
+     * Symbol for the termination chord
+     */
     public static final String TERMINATION_CHORD = "T";
+    /**
+     * Symbol for the termination note
+     */
     public static final String TERMINATION_NOTE_SYMBOL = "T";
+    /**
+     * Rest symbol
+     */
     public static final String REST_SYMBOL = "R";
+    /**
+     * MIDI key for the termination note
+     */
     public static final int TERMINATION_NOTE_KEY = -100; 
 }

@@ -153,12 +153,12 @@ public class ChordFollower extends TypedAtomicActor {
      */
     public TypedIOPort resetBeat;
 
-    /*
+    /**
      * Current beat count of the improvised melody.
      */
     public TypedIOPort currentBeat;
 
-    /*
+    /**
      * Trigger to begin counting.
      */
     public TypedIOPort trigger;

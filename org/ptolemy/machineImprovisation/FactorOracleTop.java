@@ -55,6 +55,13 @@ import ptolemy.kernel.util.Workspace;
  */
 public class FactorOracleTop extends ModalModel {
 
+    /**
+     * Constructs a FactorOracleTop object.
+     *
+     * @param workspace  The workspace
+     * @throws IllegalActionException 
+     * @throws NameDuplicationException 
+     */
     public FactorOracleTop(Workspace workspace) throws IllegalActionException,
     NameDuplicationException {
         super(workspace);
@@ -76,6 +83,18 @@ public class FactorOracleTop extends ModalModel {
         _init(null,1.0,false,false); 
     }
 
+    /**
+     * Constructs a FactorOracleTop object.
+     *
+     * @param container         The container.
+     * @param name              Name of this actor.
+     * @param trainingSequence  The training sequence as an Object array.
+     * @param repetitionFactor  a double indicating the repetition factor on the forward links.
+     * @param pitch             a boolean -- true if music pitch specifications are being used.
+     * @param validate          a boolean -- true if pitches are subject to validation.
+     * @throws NameDuplicationException ...
+     * @throws IllegalActionException ...
+     */
     public FactorOracleTop(CompositeEntity container, 
             String name, 
             Object[] trainingSequence,  
@@ -87,15 +106,32 @@ public class FactorOracleTop extends ModalModel {
         _init(trainingSequence, repetitionFactor, pitch, validate); 
     }
     
+    /**
+     * Constructs a FactorOracleTop object.
+     *
+     * @param workspace         The workspace. 
+     * @param trainingSequence  The training sequence as an Object array.
+     * @param repetitionFactor  a double indicating the repetition factor on the forward links.
+     * @param pitch             a boolean -- true if music pitch specifications are being used.
+     * @param validate          a boolean -- true if pitches are subject to validation.
+     * @throws NameDuplicationException ...
+     * @throws IllegalActionException ...
+     */
     public FactorOracleTop(Workspace workspace, 
-            Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
+            Object[] trainingSequence, 
+            double repetitionFactor, 
+            boolean pitch, 
+            boolean validate)
                     throws NameDuplicationException, IllegalActionException {
         super(workspace);
         _init(trainingSequence, repetitionFactor, pitch, validate); 
     }
     
     
-
+    /**
+     * Specify the controller.
+     * @param f The controller
+     */
     public void setController(FactorOracle f){
         _controller = f;
     }
@@ -105,13 +141,18 @@ public class FactorOracleTop extends ModalModel {
     ////                         private methods                   ////
     //  
 
-    /** Create a Factor Oracle to be used within the hierarchical FO
+    /**
+     * Create a Factor Oracle to be used within the hierarchical FO
      * that is used for generation of improvised jazz "licks".
-     *
-     *  @return A controller to be used in the top level hierarchical FO
-     *  @exception IllegalActionException If the modal model is
+     * 
+     * @param trainingSequence the training sequence
+     * @param repetitionFactor the repetition factor on the forward links
+     * @param pitch boolean indicating a pitch oracle
+     * @param validate boolean indicating whether the pitches should be validated
+     * @return A controller to be used in the top level hierarchical FO
+     * @throws IllegalActionException If the modal model is
      *   incompatible with the controller.
-     *  @exception NameDuplicationException If the name of the controller
+     * @throws NameDuplicationException If the name of the controller
      *   collides with a name already in the container.
      */
     protected FactorOracle _createController(Object[] trainingSequence, 
@@ -151,6 +192,7 @@ public class FactorOracleTop extends ModalModel {
         }
         return newModel;
     }
+    
     private void _init(Object[] trainingSequence, 
             double repetitionFactor,  
             boolean pitch, 

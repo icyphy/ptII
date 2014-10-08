@@ -44,11 +44,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  Simple conversion actor that converts a midi key integer into a letter
  note</p> 
 
- @author Yuhong Xiong and Edward A. Lee
- @version $Id: AddSubtract.java 66874 2013-07-16 23:40:51Z marten $
- @since Ptolemy II 0.3
- @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Green (bilung)
+ @author Ilge Akkaya
+ @version $Id$
+ @since Ptolemy II 10.0
+ @Pt.ProposedRating 
+ @Pt.AcceptedRating 
  */
 public class MidiKeyToNote extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified

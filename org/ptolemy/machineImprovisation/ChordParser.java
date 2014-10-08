@@ -102,14 +102,25 @@ public class ChordParser extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
   
+    /**
+     * Name of chord
+     */
     public TypedIOPort chordName; 
-    
+    /**
+     * Duration of chord
+     */
     public TypedIOPort chordDuration;
-    
+    /**
+     * Index of chord in the global chord sequence
+     */
     public TypedIOPort chordIndex;
-    
+    /**
+     * Termination input to end chord sequence
+     */
     public TypedIOPort endChord;
-    
+    /**
+     * An array of ordered chord objects
+     */
     public TypedIOPort chords; 
     
  

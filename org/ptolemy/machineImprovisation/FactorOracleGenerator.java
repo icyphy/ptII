@@ -130,14 +130,29 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /**
+     * The ordered note sequence consisting of {@link Note} objects.
+     */
     public TypedIOPort noteSequence;
 
+    /**
+     * The repetition probability of the forward links in the Factor Oracle
+     */
     public PortParameter repetitionProbability;
 
+    /**
+     * Parameter indicating whether to check pitch specifications
+     */
     public Parameter usePitchSpecs;
 
+    /**
+     * The pitch oracle in MoML format
+     */
     public TypedIOPort pitchMoML;
 
+    /**
+     * The duration oracle in MoML format
+     */
     public TypedIOPort durationMoML;
 
     ///////////////////////////////////////////////////////////////////
@@ -222,6 +237,9 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
     }
 
+    /**
+     * Reset the factor oracle generator by discarding cached data.
+     */
     public void reset() {
         _durationOracles.clear();
         _pitchSequence.clear();
@@ -253,6 +271,11 @@ public class FactorOracleGenerator extends TypedAtomicActor {
         _durationSequence.clear();
     }
 
+    /**
+     * Get a list of transitions originating from node
+     * @param node Node index
+     * @return a List of states which can be reached from current node
+     */
     protected List<Integer> _getTransitionsFrom(Integer node) {
         List<Integer> _transitions = (List<Integer>) _adjacencyList.get(node);
         return _transitions;

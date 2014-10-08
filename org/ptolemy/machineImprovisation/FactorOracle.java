@@ -93,6 +93,7 @@ public class FactorOracle extends ModalController {
      *  @param container The container.
      *  @param name The name of this actor
      *  @param trainingSequence The input string that the oracle is built from
+     *  @param repetitionFactor a double indicating the factor repetition probability
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
@@ -103,13 +104,31 @@ public class FactorOracle extends ModalController {
                     throws NameDuplicationException, IllegalActionException {
         this(container, name, trainingSequence, repetitionFactor, false, false);
     }
-
+    /**
+     * Constructs a FactorOracle object.
+     *
+     * @param container  The container
+     * @param name       The name
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
+     */
     public FactorOracle(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException { 
         this(container, name, null, 1.0 ); 
     }
 
-
+    /**
+     * Constructs a FactorOracle object.
+     *
+     * @param container         The Container
+     * @param name              The name
+     * @param trainingSequence  An object array containing the training sequence
+     * @param repetitionFactor  a double indicating the factor repetition probability
+     * @param symbolicOutput    a boolean that determines whether symbolic outputs should be produced
+     * @param validateSymbols   a boolean -- true if symbol validation should be included in guard expressions
+     * @throws IllegalActionException repetition factor range checking
+     * @throws NameDuplicationException 
+     */
     public FactorOracle(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols) 
                     throws IllegalActionException, NameDuplicationException {
@@ -157,15 +176,20 @@ public class FactorOracle extends ModalController {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /* The repetition probability P(moving along the original sequence rather than taking a jump along 
+    /**
+     * The repetition probability P(moving along the original sequence rather than taking a jump along 
      * a suffix link)*/
     public Parameter repetitionFactor;
 
-    /* Boolean that when set to true, enables the transitions to have a condition that validates each
+    /** 
+     * Boolean that when set to true, enables the transitions to have a condition that validates each
      * pitch against a specification. 
-     * */
+     */
     public Parameter validatePitch;
 
+    /**
+     * Current chord in improvisation
+     */
     public TypedIOPort currentChord;
 
     @Override
@@ -383,29 +407,33 @@ public class FactorOracle extends ModalController {
         } 
     } 
 
+    /**
+     * Get a list of transitions originating from node
+     * @param node Node index
+     * @return a List of states which can be reached from current node
+     */
     protected List<Integer> _getTransitionsFrom(Integer node) {
         List<Integer> _transitions = (List<Integer>) _adjacencyList.get(node);
         return _transitions;
     }
 
-    /* Find the (unique) path that produces a given prefix and return the node index which terminates the 
-     * desired string sequence. Return null if no such path is found. Implements depth-first search on the
-     * adjacency list
-     * 
-     * */
-
+    /**
+     * Input Sequence
+     */
     private Object[] _inputSequence;
-    /* The adjacency list given on the Factor Oracle graph structure */
+    /** The adjacency list given on the Factor Oracle graph structure */
     private HashMap _adjacencyList;
 
-    /* The symbol map given on the Factor Oracle graph structure */
+    /** The symbol map given on the Factor Oracle graph structure */
     private HashMap _adjacencyListSymbols;
 
+    /** A map of all suffix links */
     private HashMap _suffixLinks;
 
+    /** The input alphabet of the probabilistic automaton */
     private Set _alphabet;
     /**
-     * Interpret as pitches 
+     * A boolean that when true, symbols should be interpreted as symbolic inputs
      */
     private boolean _symbolic; 
 
@@ -446,6 +474,11 @@ public class FactorOracle extends ModalController {
         BaseType.STRING };
 
 
+    /**
+     * An inner class that defines a Chord Function Token,  which is used in
+     * pitch validation.
+     * @author ilgea 
+     */
     protected class ChordFunctionToken extends FunctionToken {
         public ChordFunctionToken() {
             super(new ChordFunction(), new FunctionType(
@@ -488,7 +521,7 @@ public class FactorOracle extends ModalController {
             return BooleanToken.FALSE;
         }
 
-        /** The implementation of the probability function as a token. */
+        
 
         @Override
         public int getNumberOfArguments() {

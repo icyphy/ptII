@@ -48,23 +48,25 @@ import ptolemy.kernel.util.NameDuplicationException;
  Note that this actor has no attributes of its own.
  Requests for attributes are delegated to the container.
 
- @author Edward A. Lee
- @version $Id: ModalRefinement.java 66458 2013-05-31 00:23:14Z cxh $
- @since Ptolemy II 8.0
- @Pt.ProposedRating Red (eal)
+ @author Ilge Akkaya
+ @version $Id$
+ @since Ptolemy II 10.1
+ @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class OracleModel extends ModalRefinement{
 
-    /** Construct a modal controller with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
+    /**
+     * Constructs an OracleModel object.
+     *
+     * @param container         The Container
+     * @param name              The name
+     * @param trainingSequence  training sequence of the factor oracle
+     * @param repetitionFactor  a double indicating repetition factor on forward links
+     * @param pitch             a boolean -- true if pitch oracle
+     * @param validate          a boolean -- true if pitch validation is enabled
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
     public OracleModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -81,6 +83,9 @@ public class OracleModel extends ModalRefinement{
         // TODO Auto-generated constructor stub
     }
 
+    /**
+    * Specifies the controller value.
+    */
     public void setController( FactorOracle f){
         _controller = f;
     }
@@ -90,14 +95,15 @@ public class OracleModel extends ModalRefinement{
 ////                         private methods                   ////
 // Initialize the model.
     
-    /** Create a Ptera controller within this Ptera modal model. A subclass may
-     *  return a different controller to be used in this Ptera modal model.
-     *
-     *  @return A controller to be used in this modal model.
-     *  @exception IllegalActionException If the Ptera modal model is
-     *   incompatible with the controller.
-     *  @exception NameDuplicationException If the name of the controller
-     *   collides with a name already in the container.
+    /** 
+     * Create a Factor Oracle controller
+     * @param trainingSequence
+     * @param repetitionFactor
+     * @param pitch
+     * @param validate
+     * @return
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
      */
     protected FactorOracle _createController(Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
             throws IllegalActionException, NameDuplicationException {
