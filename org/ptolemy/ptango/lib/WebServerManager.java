@@ -145,6 +145,9 @@ public final class WebServerManager {
      * application was successfully registered; false otherwise.
      *
      * @param appInfo Information about the registered web application
+     * @param dynamicPortSelection True if server may dynamically select a port;
+     *  false if the server should use the fixed port and throw an exception
+     *  if not available
      * @param portNumber The desired port number to host this web application on
      * @return The actual port number the web application is running on (may be 
      * different from the portNumber parameter if dynamic selection is enabled)

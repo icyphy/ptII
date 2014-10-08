@@ -48,15 +48,16 @@ public class PtolemyWebSocketClientFactory {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    //// 
  
-        /** Get the factory instance, creating a new one if none created yet. */
+        /** Get the factory instance, creating a new one if none created yet. 
+         * @return The websocket client factory instance.
+         */
         public static PtolemyWebSocketClientFactory getInstance() {
                 return PtolemyWebSocketClientFactoryHolder.INSTANCE;
         }
         
-        /** Create a new WebSocket client
-         * 
-         * @return A new WebSocketClient
-         * @throws Exception If the WebSocketClientFactory cannot be started
+        /** Create a new WebSocket client.
+         * @return A new WebSocketClient.
+         * @throws Exception If the WebSocketClientFactory cannot be started.
          */
         public WebSocketClient newWebSocketClient() throws Exception {
             if (_webSocketClientFactory.isStopped()) {

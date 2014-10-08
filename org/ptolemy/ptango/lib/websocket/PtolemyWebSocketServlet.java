@@ -72,6 +72,7 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
      * 
      * @param request The request.
      * @param protocol The protocol of the request.
+     * @return A websocket to handle the new connection.
      */
     @Override
     public WebSocket doWebSocketConnect(HttpServletRequest request, 
@@ -88,7 +89,9 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     
     // TODO:  The servlet path is tracked by the WebServer; not needed here.  
     // Refactor?
-    /** Not used here.  */
+    /** Not used here.  
+     *  @see #setRelativePath(URI)
+     */
     @Override
     public URI getRelativePath() {
         // TODO Auto-generated method stub
@@ -97,8 +100,8 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     
     /** Broadcast message to other recipient actors in the Ptolemy model.
      * 
-     *  @param sender  The WebSocketEndpoint that sent the message
-     *  @param message The message that was received 
+     *  @param sender  The WebSocketEndpoint that sent the message.
+     *  @param message The message that was received. 
      */
     @Override
     public void onMessage(WebSocketEndpoint sender, String message) {
@@ -118,8 +121,8 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     // TODO:  The servlet path is tracked by the WebServer; not needed here.  
     // Refactor?
     /** Not used here.
-     * 
      * @param relativePath The URI to associate with this servlet.
+     * @see #getRelativePath()
      */
     @Override
     public void setRelativePath(URI relativePath) {

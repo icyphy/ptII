@@ -225,7 +225,7 @@ public class WebSocketReader extends TypedAtomicActor
     }
     
     /** Upon receipt of a message, store the message and request a firing. 
-     * @param sender The WebSocketEndpoint that sent the message.
+     * @param endpoint The WebSocketEndpoint that sent the message.
      * @param message The message that was received.
      */
     @Override
