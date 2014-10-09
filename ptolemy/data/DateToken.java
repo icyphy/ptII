@@ -133,6 +133,7 @@ PartiallyOrderedToken {
             _value = 0l;
             return;
         }
+        String dateString = value;
 
         // Simple date format is not thread safe - intermediate parsing results are
         // stored in instance fields.
@@ -146,7 +147,8 @@ PartiallyOrderedToken {
                     value = value.substring(1, value.length() - 1);
                 }
                 Calendar calendar = Calendar.getInstance();
-                
+                System.out.println(_simpleDateFormat.format(calendar.getTime()));
+                System.out.println(value.length() + " " + _SIMPLE_DATE_FORMAT.length());
                 // Parse dates in varying precision
                 if (value.length() == _SIMPLE_DATE_FORMAT.length()) {
                     calendar.setTime(_simpleDateFormat.parse(value));
@@ -173,13 +175,19 @@ PartiallyOrderedToken {
                     _value = (_value * 1000 + Integer.parseInt(micros)) * 1000
                             + Integer.parseInt(nanos);
                     _precision = PRECISION_NANOSECOND;
+                } else {
+                    throw new IllegalActionException(null, "Unexpected date"
+                            + "format: " + 
+                            dateString + " is not formatted as " + 
+                            _SIMPLE_DATE_FORMAT);
                 }
-                _calendar = calendar;
                 
+                System.out.println(_simpleDateFormat.format(calendar.getTime()));
                 // Calculate and set time zone.
                 int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
                 _timeZone = TimeZone.getTimeZone("GMT" + offset);
                 calendar.setTimeZone(_timeZone);
+                _calendar = calendar;
             } catch (ParseException ex) {
                 throw new IllegalActionException(null, ex, "The date value \""
                         + value + "\" could not be parsed to a Date."
@@ -792,7 +800,7 @@ PartiallyOrderedToken {
     private static final String _NIL = "nil";
 
     /** The format used to read and write dates. */
-    private static final SimpleDateFormat _simpleDateFormat;
+    private SimpleDateFormat _simpleDateFormat = new SimpleDateFormat(_SIMPLE_DATE_FORMAT);
 
     /** The time in a given precision */
     private long _value;
@@ -808,8 +816,6 @@ PartiallyOrderedToken {
     static {
         try {
             NIL = new DateToken(_NIL);
-            _simpleDateFormat = new SimpleDateFormat(_SIMPLE_DATE_FORMAT);
-
         } catch (IllegalActionException ex) {
             throw new ExceptionInInitializerError(ex);
         }
