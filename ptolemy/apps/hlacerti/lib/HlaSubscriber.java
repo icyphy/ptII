@@ -53,7 +53,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
-import ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesNetworkType;
+import ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesNetworkModelTimeType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -299,7 +299,7 @@ public class HlaSubscriber extends TypedAtomicActor {
                     new DoubleToken((Double) obj[1]),
                     new DoubleToken((Double) obj[4]) };
 
-            RecordToken record = new RecordToken(PtidesNetworkType.LABELS,
+            RecordToken record = new RecordToken(PtidesNetworkModelTimeType.LABELS,
                     values);
 
             return record;
