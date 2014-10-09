@@ -229,7 +229,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                         JsonObject received = new JsonObject(msg);
                         try {
                             subscribe.send(0,
-                                    new StringToken(received.getField("body")));
+                                    new StringToken(received.getField("body").toString()));
                         } catch (NoRoomException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
