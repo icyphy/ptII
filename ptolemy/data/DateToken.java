@@ -147,8 +147,6 @@ PartiallyOrderedToken {
                     value = value.substring(1, value.length() - 1);
                 }
                 Calendar calendar = Calendar.getInstance();
-                System.out.println(_simpleDateFormat.format(calendar.getTime()));
-                System.out.println(value.length() + " " + _SIMPLE_DATE_FORMAT.length());
                 // Parse dates in varying precision
                 if (value.length() == _SIMPLE_DATE_FORMAT.length()) {
                     calendar.setTime(_simpleDateFormat.parse(value));
@@ -182,7 +180,6 @@ PartiallyOrderedToken {
                             _SIMPLE_DATE_FORMAT);
                 }
                 
-                System.out.println(_simpleDateFormat.format(calendar.getTime()));
                 // Calculate and set time zone.
                 int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
                 _timeZone = TimeZone.getTimeZone("GMT" + offset);
