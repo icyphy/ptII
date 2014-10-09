@@ -105,10 +105,10 @@
     <h4>Adding a directory</h4>
 
     <p>The Ptolemy Java classes that use a third party package typically
-    go into a directory that shares the name of the package.  The
-    reason is that it is helpful to group dependencies so that if a
-    configuration does not need to use functionality provided by a
-    third party package, then it is easy to exclude.</p>
+      go into a directory that shares the name of the package.  The
+      reason is that it is helpful to group dependencies so that if a
+      configuration does not need to use functionality provided by a
+      third party package, then it is easy to exclude.</p>
 
     <p>For details, see the <a href="coding/coding.pdf#in_browser" target="_top">Checklist for creating a new directory</a> at the end of the Ptolemy Coding Style document.</p>
 
@@ -256,18 +256,27 @@
         Add a similar line for your jar file and test that it works by
         compiling, invoking Vergil and selecting Help | About</li>
 
-    <li>In addition, the new directory should be added to the following places:
-    <dl>
-      <dt><code>$PTII/mk/jnlp.mk</code></dt>
-      <dd>This make file fragment is included in <code>$PTII/makefile</code> and <a href="../webStartHelp_index.htm" target="_top">WebStart</a>.  Typically, the jar file for the ptolemy directory is added under <code>FULL_ONLY_JNLP_JARS</code>
-      </dd>
-      <dt><code>$PTII/doc/makefile</code></dt>
-      <dd>configure typically sets a <code>XXX_PACKAGES</code> makefile variable in $PTII/mk/ptII.mk that lists the Ptolemy
-	packages that are compiled.  This variable <code>XXX_PACKAGES</code> variable is passed to <code>javadoc</code> to generate documentation.   Typically, the package is added to the <code>ALLPACKAGES</code> variable.</dd>
-      <dt><code>adm/gen-N.M/ptIIN_M_devel_setup_windows.xml</code></dt>
-      <dd>This file is used by the installer.  Updating it is optional.</dd>
-    </dl>
-    </li>
+      <li>In addition, the new directory should be added to the following places:
+	<dl>
+	  <dt><code>$PTII/.classpath.default</code></dt>
+	  <dd>This directory is used by Eclipse users who can't run <code>./configure</code>.  If the jar file is
+	    in <code>$PTII/lib</code>, then add it to the list of jar files.  If the jar file is in vendors or elsewhere,
+	    then exclude the directory.</dd>
+	  <dt><code>$PTII/doc/makefile</code></dt>
+	  <dd>configure typically sets a <code>XXX_PACKAGES</code> makefile variable in $PTII/mk/ptII.mk that lists the Ptolemy
+	    packages that are compiled.  This variable <code>XXX_PACKAGES</code> variable is passed to <code>javadoc</code> to generate documentation.   Typically, the package is added to the <code>ALLPACKAGES</code> variable.</dd>
+	</dl>
+      </li>
+
+      <li>Optionally, the directory can be added to these locations for use in WebStart and the installers.
+	<dl>
+	  <dt><code>$PTII/mk/jnlp.mk</code></dt>
+	  <dd>This make file fragment is included in <code>$PTII/makefile</code> and <a href="../webStartHelp_index.htm" target="_top">WebStart</a>.  Typically, the jar file for the ptolemy directory is added under <code>FULL_ONLY_JNLP_JARS</code>
+	  </dd>
+	  <dt><code>adm/gen-N.M/ptIIN_M_devel_setup_windows.xml</code></dt>
+	  <dd>This file is used by the installer.  Updating it is optional.</dd>
+	</dl>
+      </li>
 
     </ol>
 
