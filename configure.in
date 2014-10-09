@@ -5683,7 +5683,7 @@ else
         PTVERTX_JAR_DIR=$PTII/lib)
             if test -d "$PTVERTX_JAR_DIR"; then
     	    PTVERTX_DIR=vertx
-            jars="vertex-platform-*.jar vertx-hazelcast-*.jar vertx-core-*.jar java-xmlhttprequest-*.jar jackson-databind-*.jar jackson-core-*.jar jackson-annotations-*.jar hazelcast-*.jar"
+            jars="vertx-platform-*.jar vertx-hazelcast-*.jar vertx-core-*.jar java-xmlhttprequest-*.jar jackson-databind-*.jar jackson-core-*.jar jackson-annotations-*.jar hazelcast-*.jar"
             for jar in $jars
     	    do
 	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
