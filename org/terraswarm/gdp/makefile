@@ -211,12 +211,10 @@ $(GDP_SRC):
 	@if [ ! -d src ]; then mkdir src; echo "making the src/ directory."; fi
 	cd src; git clone https://$(USER)@repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
 
-patch_gdp:
-
-patch_gdp:
-	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."
-	cd src/gdp; patch -p1 < ../../gdp.patch
-	cd src/gdp; $(MAKE)
+#patch_gdp:
+#	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."
+#	cd src/gdp; patch -p1 < ../../gdp.patch
+#	cd src/gdp; $(MAKE)
 
 jnaerator-0.12-20140626.234513-58-shaded.jar:
 	wget --no-check-certificate https://oss.sonatype.org/content/groups/public/com/nativelibs4java/jnaerator/0.12-SNAPSHOT/jnaerator-0.12-20140626.234513-58-shaded.jar

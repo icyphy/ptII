@@ -71,6 +71,11 @@ public class WriterTest {
      *  <p><code>-D <i>debuggingSpecification</i></code>, where an example of <i>debuggingSpecifiction</i> is,
      *  <code>gdp.api=100</code>.  See the gdp .c files for debugging specifications</p>.
      *
+     *  <p><code>-G <i>gdpdAddress</i></code>, which names the IP
+     *  address and port name of the gdp daemon (<code>gdpd</code>)
+     *  where an example of <i>gdpdAddress</i> is <code>127.0.0.1:2468</code>.  If <code>-G</code> is not
+     *  present, then the default address of <code>127.0.0.1:2468</code> is used.
+     *
      *  <p><code>-a</code> FIXME: what does this do?</p>
      *
      *  <p><code><i>gcl_name</i></code> The name of the gcl.  This string is used with ReaderTest</p>
@@ -107,8 +112,14 @@ public class WriterTest {
 	int opt;
 	EP_STAT estat;
 	boolean append = false;
-	String xname = null;
 	String buf = "";
+
+        // The address of the gdp daemon (gdpd), null means to use the
+        // default of 127.0.0.1:2468.  This value can be set by the -G command line argument.
+        String gdpd_addr = null;
+
+	String xname = null;
+
 
         int argc = argv.length;
         for (int i = 0; i < argv.length; i++) {
@@ -118,6 +129,10 @@ public class WriterTest {
             } else if (argv[i].equals("-D")) {
                 argc--;
                 Gdp10Library.INSTANCE.ep_dbg_set(argv[i+1]);
+                argc--;
+            } else if (argv[i].equals("-G")) {
+                argc--;
+                gdpd_addr = argv[i+1];
                 argc--;
             }
         }
@@ -129,14 +144,14 @@ public class WriterTest {
             argc--;
         } 
 	if (argc != 0 || (append && xname == null)) {
-            System.err.println("Usage: WriterTest [-D dbgspec] [-a] [<gcl_name>]\n"
+            System.err.println("Usage: WriterTest [-D dbgspec] [-G gdpdAddress] [-a] [<gcl_name>]\n"
                     + "  (name is required for -a)");
             _debug("argc: " + argc + ", append: " + append + ", xname: " + (xname == null ? "null" : xname));
             System.exit(64 /* EX_USAGE from /usr/includes/sysexits.h */);
 	}
 
         _debug("About to initialize the GDP.");
-	estat = Gdp10Library.INSTANCE.gdp_init();
+	estat = Gdp10Library.INSTANCE.gdp_init(gdpd_addr);
 	if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);

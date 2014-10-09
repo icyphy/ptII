@@ -63,7 +63,7 @@ import com.sun.jna.ptr.PointerByReference;
 public class ReaderTest {
     // This code follows the naming conventions of the original .c file.
 
-    /** Read a gcl
+    /** Read a gcl.
      *  @param gclh The handle to the GCL
      *  @param firstrec the record number of the first record.
      *  @return the status.
@@ -203,13 +203,18 @@ public class ReaderTest {
      *  <dt><code>-f <i>firstRecordNumber</i></code></dt>
      *  <dd>FIXME: what does this do?</dd>
      *
+     *  <p><code>-G <i>gdpdAddress</i></code>, which names the IP
+     *  address and port name of the gdp daemon (<code>gdpd</code>)
+     *  where an example of <i>gdpdAddress</i> is <code>127.0.0.1:2468</code>.  If <code>-G</code> is not
+     *  present, then the default address of <code>127.0.0.1:2468</code> is used.
+     *
      *  <dt><code>-m</code>
      *  <dd>Multiread FIXME: what does this do?</dd>
      *
      *  <dt><code>-n <i>numberOfRecords</i></code></dt>
      *  <dd>FIXME: what does this do?</dp>
      *
-     *  <dt><code>-s</code>
+     *  <dt><code>-s</code></dt>
      *  <dd>Subscribe FIXME: what does this do?</dd>
      *
      *  <dt><code><i>gcl_name</i></code></dt>
@@ -251,6 +256,10 @@ public class ReaderTest {
         // gdp.h:#define GDP_GCL_PNAME_LEN	43			// length of an encoded pname
         ByteBuffer gclpname = ByteBuffer.allocate(43);
 
+        // The address of the gdp daemon (gdpd), null means to use the
+        // default of 127.0.0.1:2468.  This value can be set by the -G command line argument.
+        String gdpd_addr = null;
+
 	int opt;
 	boolean subscribe = false;
 	boolean multiread = false;
@@ -264,6 +273,10 @@ public class ReaderTest {
                 // Was: ep_dbg_set(optarg);
                 argc--;
                 Gdp10Library.INSTANCE.ep_dbg_set(argv[i+1]);
+                argc--;
+            } else if (argv[i].equals("-G")) {
+                argc--;
+                gdpd_addr = argv[i+1];
                 argc--;
             } else if (argv[i].equals("-f")) {
                 // Was: firstrec = atol(optarg);
@@ -294,7 +307,7 @@ public class ReaderTest {
 
         // estat = gdp_init();
         System.err.println("About to initialize the GDP.");
-	estat = Gdp10Library.INSTANCE.gdp_init();
+	estat = Gdp10Library.INSTANCE.gdp_init(gdpd_addr);
 	if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);

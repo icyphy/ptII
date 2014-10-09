@@ -1,4 +1,4 @@
-/* A GDP Writer Test application.
+/* Useful utilities for working with the Global Data Plane.
 
    Copyright (c) 2014 The Regents of the University of California.
    All rights reserved.
