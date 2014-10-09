@@ -606,7 +606,7 @@ WABA_DIR
 WABA_CLASSES
 PTVERTX_PACKAGES
 PTVERTX_DIR
-PTVERTX_JAR
+PTVERTX_JARS
 GIOTTO_DIR
 GIOTTO_CLASSES
 TOSDIR_NO_CYGDRIVE
@@ -12775,7 +12775,7 @@ fi
     	    do
 	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
 	        if test -e $file -a -f $file; then
-	            PTVERTX_JARS="$PTVERTX_JARS\$(CLASSPATHSEPARATOR)$file"
+	            PTVERTX_JARS="$PTVERTX_JARS\${CLASSPATHSEPARATOR}$file"
 		    # If we don't find all the jars, then the classpath will have some of them.
 		    # However, it is better to do this here in case the paths have spaces in them.
 		    updateClasspath "$file"
