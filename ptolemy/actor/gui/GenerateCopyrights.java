@@ -875,6 +875,7 @@ public class GenerateCopyrights {
      * We use a simple table here for ease of maintenance.
      */
     private static String[][] _licenses = {
+        // Name, Ptiny, Windows JRE, Included in Sources, Included in Kepler, Summary
         { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh" },
         { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
         { "BrowserLauncher", "Y", " ", "Y", "Y",
@@ -896,8 +897,10 @@ public class GenerateCopyrights {
         { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
         { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
         { "guava", " ", " ", "Y", "Y", "Apache License" },
+        { "hazelcast", " ", " ", "Y", " ", "Apache License" },
         { "itextpdf", " ", " ", "Y", " ",
         "Affero General Public License <font color=\"red\">like GPL</font>" },
+        { "jackson", " ", " ", "Y", " ", "Apache License or LGPL" },
         { "jai", " ", "Y", " ", " ", "Oracle" },
         { "java3d", " ", "Y", "", " ", "Oracle" },
         { "javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT" },
@@ -940,6 +943,8 @@ public class GenerateCopyrights {
         { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
         { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
         { "udunits", " ", " ", "Y", " ",
-        "Similar to BSD.  No use of sponsor name in advertising" } };
+          "Similar to BSD.  No use of sponsor name in advertising" }, 
+        { "vertx", " ", " ", "Y", " ", "Apache License" }
+    };
 
 }

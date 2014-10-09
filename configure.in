@@ -5688,7 +5688,7 @@ else
     	    do
 	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
 	        if test -e $file -a -f $file; then
-	            PTVERTX_JARS="$PTVERTX_JARS\$(CLASSPATHSEPARATOR)$file"
+	            PTVERTX_JARS="$PTVERTX_JARS\${CLASSPATHSEPARATOR}$file"
 		    # If we don't find all the jars, then the classpath will have some of them.
 		    # However, it is better to do this here in case the paths have spaces in them.
 		    updateClasspath "$file"
@@ -6786,7 +6786,7 @@ AC_SUBST(GIOTTO_CLASSES)
 AC_SUBST(GIOTTO_DIR)
 
 # Vertx jars used by actor.lib.vertx
-AC_SUBST(PTVERTX_JAR)
+AC_SUBST(PTVERTX_JARS)
 
 # Set to vertx if the Vertx jars are found
 AC_SUBST(PTVERTX_DIR)

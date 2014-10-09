@@ -659,9 +659,9 @@ NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CL
 
 #### Vertx is an application framework
 # PTVERTX_DIR is set to vertx if configure found the Vertx jars
-PTPVERTX_DIR=@PTPVERTX_DIR@
+PTVERTX_DIR=@PTVERTX_DIR@
 if [ "$PTVERTX_DIR" = "vertx" ]; then 
-    PTVERTX_JARS="${CLASSPATHSEPARATOR}@PTVERTX_JARS@"
+    PTVERTX_JARS="@PTVERTX_JARS@"
 fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load

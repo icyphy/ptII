@@ -36,7 +36,7 @@ DIRS =		demo
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
