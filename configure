@@ -604,6 +604,9 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 WABA_DIR
 WABA_CLASSES
+PTVERTX_PACKAGES
+PTVERTX_DIR
+PTVERTX_JAR
 GIOTTO_DIR
 GIOTTO_CLASSES
 TOSDIR_NO_CYGDRIVE
@@ -1751,6 +1754,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
                           defaults to \$PTII/vendors/giotto
+  --with-vertx=LIB       use vertx jars from JAR,
+                              defaults to \$PTII/lib
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-expat-include=DIR       use expat.h from DIR
@@ -7014,7 +7019,7 @@ $as_echo "$PTII/lib/g4ltl.jar" >&6; }; fi
 	which means that importing an FSMActor using LTL synthesis (G4LTL) will not be supported." >&5
 $as_echo "$as_me: WARNING: Failed to find $PTII/lib/g4ltl.jar,
 	which means that importing an FSMActor using LTL synthesis (G4LTL) will not be supported." >&2;};
-        updateExcludes "ptolemy/vergil/actor/g4ltl"
+        updateExcludes "ptolemy/vergil/actor/g4ltl/"
     fi
 fi
 
@@ -8489,8 +8494,8 @@ $as_echo "$PTSOCKETIO_JAR" >&6; }; fi
 fi
 
 if test -z "$PTJAVASCRIPT_DIR"; then
-    updateExcludes "ptolemy/actor/lib/js"
-    updateExcludes "org/terraswarm/kernel"
+    updateExcludes "ptolemy/actor/lib/js/"
+    updateExcludes "org/terraswarm/kernel/"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar files or socketio necessary to
     to compile ptolemy/actor/lib/js and org/terraswarm/kernel
     Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.
@@ -8930,7 +8935,7 @@ $as_echo "$PTJSOUP_JAR" >&6; }; fi
         # PTJSOUP_PACKAGES is used in ptII/doc/makefile
 	PTJSOUP_PACKAGES=ptolemy.vergil.basic.export.html.jsoup
     else
-        updateExcludes "ptolemy/vergil/basic/export/html"
+        updateExcludes "ptolemy/vergil/basic/export/html/"
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the JSoup jar files necessary to
     to compile the export html facility.
     Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar." >&5
@@ -9679,7 +9684,7 @@ $as_echo "$PTOSCP5_JAR" >&6; }; fi
 fi
 
 if test -z "$PTOSCP5_DIR"; then
-    updateExcludes "org/ptolemy/osc"
+    updateExcludes "org/ptolemy/osc/"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Open Sound Control/Processing.org (oscP5) interface necessary
     to compile org/ptolemy/osc.
     Typically, the oscp5.jar file is found at $PTII/lib/oscP5.jar." >&5
@@ -11532,7 +11537,7 @@ $as_echo "$as_me: WARNING: Failed to find $PTII/lib/protobuf-java-2.4.1.jar.
       Protocol Buffers are a way of encoding structured data in an efficient
       yet extensible format.
     Protobuf is needed at runtime for the MetroII director." >&2;}
-        updateExcludes "ptolemy/domains/metroII"
+        updateExcludes "ptolemy/domains/metroII/"
     fi
 fi
 
@@ -12323,9 +12328,9 @@ PTPDFRENDERER_JAR=
 PDFRENDERER_USER_DIR=$PTII/ptolemy/vergil/pdfrenderer
 # We only need to look for PDFRender.jar if the directory that uses it exists.
 if test ! -d "$PDFRENDERER_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/$PDFRENDERER_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PDFRENDERER_USER_DIR is not present,
     so we need not find PDFRenderer." >&5
-$as_echo "$PTII/$PDFRENDERER_USER_DIR is not present,
+$as_echo "$PDFRENDERER_USER_DIR is not present,
     so we need not find PDFRenderer." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for PDFRenderer" >&5
@@ -12358,7 +12363,7 @@ $as_echo "$as_me: WARNING: Failed to find the PDFRenderer Jar file
 fi
 
 if test -z "$PTPDFRENDERER_DIR"; then
-   updateExcludes "$PDFRENDERER_USER_DIR"
+   updateExcludes "ptolemy/vergil/pdfrenderer/"
 fi
 
 
@@ -12712,6 +12717,99 @@ $as_echo "$as_me: WARNING: Failed to find giotto/gdk.jar
 fi
 
 #--------------------------------------------------------------------
+#       Vertx
+#	http://vertx.io/
+#       Vert.x is a lightweight, high performance application platform
+#       for the JVM that's designed for modern mobile, web, and
+#       enterprise applications.
+#--------------------------------------------------------------------
+
+# Vertx jars used by actor.lib.vertx
+PTVERTX_JARS=
+
+# Set to vertx if the Vertx jars are found
+PTVERTX_DIR=
+
+# Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
+PTVERTX_PACKAGES=
+
+# We only need to look for the Vertx jar files if $PTVERTX_USER_DIR is present
+PTVERTX_USER_DIR="$PTII/ptolemy/actor/lib/vertx"
+
+if test ! -d "$PTVERTX_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTVERTX_USER_DIR is not present,
+    so we need not find the Vertx application platform interface." >&5
+$as_echo "$PTVERTX_USER_DIR is not present,
+    so we need not find the Vertx application platform interface." >&6; }; fi
+else
+    case "$JVERSION" in
+        1.6.*) PRE_JDK18=yes;;
+        1.7.*) PRE_JDK18=yes;;
+        *) PRE_JDK18=no;;
+    esac
+
+    if test "$PRE_JDK18" = "yes"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Vertx requires Java 1.8 or later, you are running $JVERSION.
+    Vertx is the application platform interface used in actor.lib.vertx
+    To use Vertx, choose a Java 1.8 or later JVM and rerun configure." >&5
+$as_echo "$as_me: WARNING: Vertx requires Java 1.8 or later, you are running $JVERSION.
+    Vertx is the application platform interface used in actor.lib.vertx
+    To use Vertx, choose a Java 1.8 or later JVM and rerun configure." >&2;}
+
+    else
+
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the Vertx application platform interface. " >&5
+$as_echo_n "checking for the Vertx application platform interface. ... " >&6; }
+
+# Check whether --with-oscp5 was given.
+if test "${with_oscp5+set}" = set; then :
+  withval=$with_oscp5; PTVERTX_JAR_DIR=$withval
+else
+  PTVERTX_JAR_DIR=$PTII/lib
+fi
+
+            if test -d "$PTVERTX_JAR_DIR"; then
+    	    PTVERTX_DIR=vertx
+            jars="vertex-platform-*.jar vertx-hazelcast-*.jar vertx-core-*.jar java-xmlhttprequest-*.jar jackson-databind-*.jar jackson-core-*.jar jackson-annotations-*.jar hazelcast-*.jar"
+            for jar in $jars
+    	    do
+	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
+	        if test -e $file -a -f $file; then
+	            PTVERTX_JARS="$PTVERTX_JARS\$(CLASSPATHSEPARATOR)$file"
+		    # If we don't find all the jars, then the classpath will have some of them.
+		    # However, it is better to do this here in case the paths have spaces in them.
+		    updateClasspath "$file"
+	         else
+	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >&5
+$as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >&2;}
+		    PTVERTX_DIR=
+	            break;
+                 fi
+            done
+        fi
+
+        if test ! -z "$PTVERTX_DIR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTVERTX_JARS" >&5
+$as_echo "$PTVERTX_JARS" >&6; }; fi
+	    PTVERTX_PACKAGES=ptolemy.actor.lib.vertx
+        fi
+    fi
+fi
+
+if test -z "$PTVERTX_DIR"; then
+    updateExcludes "ptolemy/actor/lib/vertx/"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
+    or a version of Java before 1.8 was found
+    so ptolemy.actor.vertx will not be compiled.
+    Vertx consists of a number of jar files that are typically in $PTII/lib." >&5
+$as_echo "$as_me: WARNING: Failed to find the the Vertx application platform interface jar files,
+    or a version of Java before 1.8 was found
+    so ptolemy.actor.vertx will not be compiled.
+    Vertx consists of a number of jar files that are typically in $PTII/lib." >&2;}
+fi
+
+#--------------------------------------------------------------------
 #       WABA is the JDK for PalmOS
 #	See if there was a command-line option for where
 #       wabask is;  if not,
@@ -13023,7 +13121,7 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
 $as_echo "$as_me: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
     will not be compiled. FMI++ is an extension of the Funcional Mockup Interface, see
     http://sourceforge.net/p/fmipp/wiki/Home/" >&2;}
-            updateExcludes "ptolemy/actor/lib/fmi/fmipp"
+            updateExcludes "ptolemy/actor/lib/fmi/fmipp/"
         fi
     fi
 fi
@@ -13912,6 +14010,15 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Directory that contains the GiottoSDK installation
+
+
+# Vertx jars used by actor.lib.vertx
+
+
+# Set to vertx if the Vertx jars are found
+
+
+# Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
 
 
 # waba/tools/classes.jar file used by the PalmOS WABA
