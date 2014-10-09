@@ -149,12 +149,12 @@ public final class WebServerManager {
      *  false if the server should use the fixed port and throw an exception
      *  if not available
      * @param portNumber The desired port number to host this web application on
+     * @param dynamicPortSelection If true, then select the port dynamically.
      * @return The actual port number the web application is running on (may be 
      * different from the portNumber parameter if dynamic selection is enabled)
      * @exception Exception thrown if web server cannot be instantiated or if
      * application conflicts with an already-registered application
      */
-
     public int register(WebApplicationInfo appInfo, int portNumber,
             boolean dynamicPortSelection)
             throws Exception {

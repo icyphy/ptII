@@ -1,6 +1,6 @@
 /* A interface with meta information for modular generated code.
 
- Copyright (c) 2009-2013 The Regents of the University of California.
+ Copyright (c) 2009-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -77,7 +77,10 @@ abstract public class Profile {
      * A named connection between an actor and a junction.
      */
     static public class Connection {
+        /** The name of the actor to be connected. */
         public String actorName;
+
+        /** The name of the junction. */
         public String junctionName;
     }
 
@@ -179,6 +182,8 @@ abstract public class Profile {
 
         /** Get the profile.
          *  @return the profile.   
+         *  @exception IllegalActionException If there is a problem
+         *  loading the class from the $HOME/cg directory.
          */
         public Profile getProfile() throws IllegalActionException {
             try {

@@ -72,40 +72,60 @@ public class FMI20ModelInstance extends Structure {
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
-    /** C type : double* */
+    /** C type : double*. */
     public DoubleByReference r;
-    /** C type : int* */
+
+    /** C type : int*. */
     public IntByReference i;
-    /** C type : int* */
+
+    /** C type : int*. */
     public IntByReference b;
-    /** C type : const char** */
+
+    /** C type : const char**. */
     public PointerByReference s;
-    /** C type : int* */
+
+    /** C type : int*. */
     public IntByReference isPositive;
+
+    /** The time. */
     public double time;
-    /** C type : const char** */
+
+    /** C type : const char**. */
     public PointerByReference instanceName;
+
     /**
-     * @see fmi2Type<br>
+     * The type.
      * C type : fmi2Type
+     * @see fmi2Type
      */
     public int type;
-    /** C type : const char** */
+
+    /** C type : const char**. */
     public PointerByReference GUID;
-    /** C type : const fmi2CallbackFunctions* */
+
+    /** C type : const fmi2CallbackFunctions*. */
     public Pointer /*org.ptolemy.fmi.fmi2CallbackFunctions.ByReference*/ functions;
+
+    /** True if logging is on. */
     public int loggingOn;
-    /** C type : int[4] */
+
+    /** C type : int[4]. */
     public int[] logCategories = new int[4];
-    /** C type : fmi2ComponentEnvironment */
+
+    /** C type : fmi2ComponentEnvironment. */
     public Pointer componentEnvironment;
+
     /**
-     * @see ModelState<br>
+     * The state of the model.
      * C type : ModelState
+     * @see ModelState
      */
     public int state;
-    /** C type : fmi2EventInfo */
+
+    /** C type : fmi2EventInfo. */
     public FMI20EventInfo eventInfo;
+
+    /** 1 if the values are dirty. */
     public int isDirtyValues;
 
     ///////////////////////////////////////////////////////////////////
