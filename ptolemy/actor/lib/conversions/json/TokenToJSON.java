@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DateToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
@@ -183,6 +184,8 @@ public class TokenToJSON extends Converter {
                 o = ((DoubleToken) token).doubleValue();
             } else if (token instanceof StringToken) {
                 o = ((StringToken) token).stringValue();
+            } else if (token instanceof DateToken) {
+                o = ((DateToken) token).toString();
             } else if (token.equals(new ObjectToken(null))) {
                 o = JSONObject.NULL;
             } else {
