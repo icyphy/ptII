@@ -69,7 +69,7 @@ ME =		ptolemy/actor/lib
 #
 DIRS = 		aspect conversions gui logic hoc image test \
 		javasound jopio net io xslt \
-		test comm security string tutorial vhdl video \
+		test comm security string tutorial vertx vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJAVASCRIPT) \
