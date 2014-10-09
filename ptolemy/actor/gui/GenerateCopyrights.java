@@ -179,6 +179,20 @@ public class GenerateCopyrights {
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
+        // Vertx
+        _addIfPresent(copyrightsMap, "com.fasterxml.jackson.core.base.GeneratorBase",
+                "lib/jackson-2.2.2-license.htm");
+
+        _addIfPresent(copyrightsMap, "io.netty.handler.traffic.ChannelTrafficShapingHandler",
+                "lib/netty-all-4.0.20.Final-license.htm");
+
+        _addIfPresent(copyrightsMap, "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
+                "lib/hazelcast-3.2.3-license.htm");
+
+        _addIfPresent(copyrightsMap, "org.vertx.java.core.Vertx",
+                "lib/vertx-2.1.2-license.htm");
+
+
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
@@ -218,7 +232,6 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/python/jython-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
-
         _addIfPresent(copyrightsMap, "ptolemy.actor.ptalon.PtalonActor",
                 "ptolemy/actor/ptalon/ptalon-copyright.html");
 
