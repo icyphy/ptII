@@ -148,7 +148,6 @@ public class VertxBusHandler extends TypedAtomicActor {
                 JsonObject msg = new JsonObject().putString("type", "publish")
                         .putString("address", _address)
                         .putString("body", tokenString);
-                System.out.println(msg);
                 _websocket.writeTextFrame(msg.encode());
             }
         }
@@ -217,7 +216,6 @@ public class VertxBusHandler extends TypedAtomicActor {
                 WebSocketVersion.RFC6455, map, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
-                System.out.println("register");
                 //register
                 JsonObject msg = new JsonObject().putString("type",
                         "register").putString("address", _address);
@@ -245,7 +243,6 @@ public class VertxBusHandler extends TypedAtomicActor {
                 _websocket.closeHandler(new Handler<Void>() {
                     @Override
                     public void handle(final Void event) {
-                        System.out.println("closed");
                         _openWebSocket();
                     }
                 });
@@ -261,39 +258,3 @@ public class VertxBusHandler extends TypedAtomicActor {
     private WebSocket _websocket;
 
 }
-
-//_eventBus = _vertx.eventBus();
-// Handler<Message> myHandler = new Handler<Message>() {
-// public void handle(Message message) {
-// try {
-// output.send(0, new StringToken(message.body().toString()));
-// } catch (NoRoomException e) {
-// // TODO Auto-generated catch block
-// e.printStackTrace();
-// } catch (IllegalActionException e) {
-// // TODO Auto-generated catch block
-// e.printStackTrace();
-// }
-// }
-// };
-// _eventBus.registerHandler(_address, myHandler);
-
-// HttpServer httpServer = _vertx.createHttpServer();
-// SockJSServer sockJSServer = _vertx.createSockJSServer(httpServer);
-// JsonObject config = new JsonObject().putString("prefix", "/eventbus");
-// JsonArray noPermitted = new JsonArray();
-// noPermitted.add(new JsonObject());
-// sockJSServer.bridge(config, noPermitted, noPermitted);
-// httpServer.listen(8080);
-
-// _vertx = VertxFactory.newVertx(_host);
-// , new Handler<AsyncResult<Vertx>>() {
-// @Override
-// public void handle(AsyncResult<Vertx> arg0) {
-// if (arg0.succeeded()) {
-// System.out.println("succeeded");
-// } else {
-// System.out.println("failed");
-// }
-// }
-// });
