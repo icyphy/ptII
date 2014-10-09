@@ -53,7 +53,8 @@ exist in the specification have been received and if so, (ii) outputs
 a sequence of {@link Chord} objects, in sequence order.
 
  @author Ilge Akkaya
- @version  
+ @version $Id$
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating 
  */
