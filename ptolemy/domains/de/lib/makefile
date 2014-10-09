@@ -56,10 +56,12 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AverageOverTime.java \
 	DateToEvent.java \
+	DateToModelTime.java \
 	Derivative.java \
 	DETransformer.java \
 	EventButton.java \
 	EventFilter.java \
+	EventToDate.java \
 	GetCurrentMicrostep.java \
 	Inhibit.java \
 	Integrator.java \
@@ -84,9 +86,11 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	DateToEventIcon.xml \
+	DateToModelTime.xml \
 	deentities.xml \
 	DerivativeIcon.xml \
 	DerivativeIcon.gif \
+	EventToModelTime.java \
 	IntegratorIcon.gif \
 	IntegratorIcon.xml \
 	NonInterruptibleTimerIcon.xml \

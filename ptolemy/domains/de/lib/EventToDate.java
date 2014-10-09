@@ -28,12 +28,8 @@
 
 package ptolemy.domains.de.lib;
 
-import java.util.Collections;
-import java.util.HashSet;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
 import ptolemy.data.type.BaseType;
@@ -42,17 +38,15 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that outputs the date token provided on the input
- *  at the date of the date token. If the
- *  date lies in the past, an exception is thrown.
+/** A timed actor that outputs a date token that corresponds to 
+ *  the real time value of the timestamp of the input event.
  * @author Patricia Derler
-@version $Id$
+@version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
 @since Ptolemy II 10.0
- * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DateToEvent extends Transformer {
+public class EventToDate extends Transformer {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -66,10 +60,9 @@ public class DateToEvent extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public DateToEvent(CompositeEntity container, String name)
+    public EventToDate(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.DATE);
         output.setTypeEquals(BaseType.DATE);
     }
 
@@ -83,14 +76,6 @@ public class DateToEvent extends Transformer {
         super.initialize();
         Director director = getDirector();
         if (director instanceof DEDirector) {
-            if (!((BooleanToken) ((DEDirector) director).synchronizeToRealTime
-                    .getToken()).booleanValue()) {
-                throw new IllegalActionException(
-                        this,
-                        "This actor can only be used when synchronizeToRealTime "
-                                + "in the director is enabled because a reference to real time is needed to compare "
-                                + "dates.");
-            }
             _director = (DEDirector) director;
         }
     }
@@ -98,36 +83,16 @@ public class DateToEvent extends Transformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        long systemTime = System.currentTimeMillis();
-        Time time = _director.getModelTime();
-        if (_outputTimes != null && _outputTimes.size() > 0) {
-            Time t = (Collections.min(_outputTimes));
-            if (t.compareTo(time) == 0) {
-                output.send(0, new DateToken(systemTime));
-                _outputTimes.remove(t);
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                input.get(i);
             }
-        }
-        if (input.hasToken(0)) {
-            DateToken token = (DateToken) input.get(0);
-            if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
-                throw new IllegalActionException(this,
-                        "The date on the input port lies in the past.");
-            } else {
-                Time fireTime = new Time(
-                        _director,
-                        (token.getCalendarInstance().getTimeInMillis() - _director
-                                .getRealStartTimeMillis())
-                                * _director.localClock.getTimeResolution());
-                _director.fireAt(this, fireTime);
-                if (_outputTimes == null) {
-                    _outputTimes = new HashSet<Time>();
-                }
-                _outputTimes.add(fireTime);
-            }
+            long time = (long)(_director.getModelTime().getDoubleValue() 
+                    / _director.localClock.getTimeResolution()) 
+                    + _director.getRealStartTimeMillis();
+            output.send(0, new DateToken(time));
         }
     }
-
-    private HashSet<Time> _outputTimes;
 
     private DEDirector _director;
 

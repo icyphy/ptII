@@ -7,6 +7,21 @@
       <group>
 <doc>Discrete-event actors</doc>
 
+<entity name="Date" class="ptolemy.moml.EntityLibrary">
+      <group>
+<doc>Date actors</doc>
+<entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate"/>
+<entity name="DateElements" class="ptolemy.actor.lib.DateElements"/>
+<entity name="DateConstructor" class="ptolemy.actor.lib.DateConstructor"/>
+<entity name="DateToEvent" class="ptolemy.domains.de.lib.DateToEvent"/>
+<entity name="DateToModelTime" class="ptolemy.domains.de.lib.DateToModelTime"/>
+<entity name="EventToDate" class="ptolemy.domains.de.lib.EventToDate"/>
+<entity name="ModifyDate" class="ptolemy.actor.lib.ModifyDate"/>
+<entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate"/>
+</group>
+</entity>
+
+
 <!-- Duplicate of SR Button Time -->
 <!-- entity name="EventButton" class="ptolemy.domains.de.lib.EventButton" -->
 <!-- /entity -->

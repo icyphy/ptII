@@ -36,23 +36,22 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that outputs the date token provided on the input
- *  at the date of the date token. If the
- *  date lies in the past, an exception is thrown.
+/** A timed actor that outputs the model time that corresponds to the date.
  * @author Patricia Derler
-@version $Id$
+@version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
 @since Ptolemy II 10.0
- * @version $Id$
+ * @version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DateToEvent extends Transformer {
+public class DateToModelTime extends Transformer {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -66,11 +65,11 @@ public class DateToEvent extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public DateToEvent(CompositeEntity container, String name)
+    public DateToModelTime(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DATE);
-        output.setTypeEquals(BaseType.DATE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     /** Check weather enclosing director is a DEDirector with
@@ -98,36 +97,20 @@ public class DateToEvent extends Transformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        long systemTime = System.currentTimeMillis();
-        Time time = _director.getModelTime();
-        if (_outputTimes != null && _outputTimes.size() > 0) {
-            Time t = (Collections.min(_outputTimes));
-            if (t.compareTo(time) == 0) {
-                output.send(0, new DateToken(systemTime));
-                _outputTimes.remove(t);
-            }
-        }
-        if (input.hasToken(0)) {
-            DateToken token = (DateToken) input.get(0);
-            if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
-                throw new IllegalActionException(this,
-                        "The date on the input port lies in the past.");
-            } else {
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                DateToken token = (DateToken) input.get(i);
                 Time fireTime = new Time(
                         _director,
                         (token.getCalendarInstance().getTimeInMillis() - _director
-                                .getRealStartTimeMillis())
-                                * _director.localClock.getTimeResolution());
-                _director.fireAt(this, fireTime);
-                if (_outputTimes == null) {
-                    _outputTimes = new HashSet<Time>();
-                }
-                _outputTimes.add(fireTime);
+                        .getRealStartTimeMillis())
+                        * _director.localClock.getTimeResolution());
+                output.send(0, new DoubleToken(fireTime.getDoubleValue()));
             }
         }
-    }
+       
 
-    private HashSet<Time> _outputTimes;
+    }
 
     private DEDirector _director;
 
