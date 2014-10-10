@@ -137,7 +137,7 @@ PartiallyOrderedToken {
 
         // Simple date format is not thread safe - intermediate parsing results are
         // stored in instance fields.
-        synchronized(_simpleDateFormat) {    
+        synchronized(_SIMPLE_DATE_FORMAT) {    
             try {
                 // See https://stackoverflow.com/questions/4713825/how-to-parse-output-of-new-date-tostring
                 // FIXME: this is probably Locale.US-specific
