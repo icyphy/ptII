@@ -146,30 +146,18 @@ public class RecursiveFileFilter implements FilenameFilter {
             isDirectory = file.isDirectory();
             isFile = file.isFile();
         } else {
+            // Could be a URL.
+            file = new File(name);
             if (name.endsWith("/")) {
                 isDirectory = true;
             } else {
                 isFile = true;
             }
         }
-        if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles) || (isDirectory && _includeDirectories)))
-                || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
-            // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
-            // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
-
-            // Avoid a NPE if the pattern is empty.
-            // See ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml
-            // and https://projects.ecoinformatics.org/ecoinfo/issues/6233
-            if (_pattern != null) {
-                Matcher match = _pattern.matcher(name);
-                if (match.matches() || match.find()) {
-                    _files.add(file);
-                    return true;
-                }
-            } else {
-                return true;
-            }
+        if (_match(isDirectory, isFile, name, file)) {
+            return true;
         }
+
         // file will be null if we are trying to accept a URL.
         if (file != null && _recursive && isDirectory) {
             file.list(this);
@@ -292,6 +280,34 @@ public class RecursiveFileFilter implements FilenameFilter {
     private String _escape(String string) {
         String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
         return escaped.replaceAll("\\\\\\*", ".*").replaceAll("\\\\\\?", ".?");
+    }
+
+    /** Return true if there is a match.
+     *  @param isDirectory True if the name is a directory.
+     *  @param isFile True if the name is a file
+     *  @param name The name to check.
+     *  @param file The file to be added if there is a match.
+     */
+    private boolean _match(boolean isDirectory, boolean isFile, String name, File file) {
+        if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles) || (isDirectory && _includeDirectories)))
+                || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
+            // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
+            // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
+
+            // Avoid a NPE if the pattern is empty.
+            // See ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml
+            // and https://projects.ecoinformatics.org/ecoinfo/issues/6233
+            if (_pattern != null) {
+                Matcher match = _pattern.matcher(name);
+                if (match.matches() || match.find()) {
+                    _files.add(file);
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** The pattern for the wildcard conversion.

@@ -34,7 +34,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -357,21 +362,62 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             _debug("Reading URL: " + sourceURL);
         }
 
+        List<StringToken> resultsList = new LinkedList<StringToken>();
+
         URLConnection urlConnection = sourceURL.openConnection();
         String contentType = urlConnection.getContentType();
 
         if (!contentType.startsWith("text/html")
                 && !contentType.startsWith("text/plain")) {
-            throw new IllegalActionException(this, "Could not parse '"
-                    + directoryOrURL.stringValue()
-                    + "'; it is not \"text/html\", "
-                    + "or \"text/plain\", it is: "
-                    + urlConnection.getContentType());
-        }
+            if (!sourceURL.toString().startsWith("jar:file:/")) {
+                throw new IllegalActionException(this, "Could not parse '"
+                        + directoryOrURL.stringValue()
+                        + "'; as URL '" + sourceURL
+                        + "', it is not \"text/html\", "
+                        + "or \"text/plain\", it is: "
+                        + urlConnection.getContentType());
+            } else {
+                // Reading from a directory from a jar file.
 
-        List resultsList = new LinkedList();
+                if (_recursiveFileFilter == null) {
+                    _recursiveFileFilter = new RecursiveFileFilter(_recursive,
+                            true /*includeFiles*/, true /*includeDirectories*/,
+                            _listOnlyFiles, _listOnlyDirectories, _pattern, false /*escape*/);
+                }
+         
+                // Every thing after the !/
+                String path = sourceURL.getPath().substring(sourceURL.getPath().indexOf("!/") + 2);
+
+                // Get rid of the jar:file and read up to the !
+                String jarPath = sourceURL.getPath().substring(5, sourceURL.getPath().indexOf("!"));
+                JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+
+                Enumeration<JarEntry> entries = jar.entries();
+                while(entries.hasMoreElements()) {
+                    String name = entries.nextElement().getName();
+                    if (name.startsWith(path)) {
+                        String entry = name.substring(path.length());
+                        int slashIndex = entry.indexOf("/");
+                        if (slashIndex >= 0) {
+                            entry = entry.substring(0, slashIndex);
+                        }
+
+                        // FIXME: recursion on URLs not yet supported.
+                        if (_recursiveFileFilter.accept(null, entry)) {
+                            StringToken results = new StringToken(entry);
+                            // Add the results here if it is not present.
+                            // We want to preserve the order, otherwise we could
+                            // use a Set.
+                            if (!resultsList.contains(results)) {
+                                resultsList.add(results);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+
         BufferedReader in = null;
-
         try {
             in = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream()));
@@ -492,6 +538,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             if (in != null) {
                 in.close();
             }
+        }
         }
 
         if (_debugging) {

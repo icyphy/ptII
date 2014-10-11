@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DirectoryListingJar" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 834, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Return the names of the .class files from a &#10;directory in ptCal.jar&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 80.0]">
+        </property>
+    </property>
+    <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/caltrop/interpreter/">
+        </property>
+        <property name="pattern" class="ptolemy.data.expr.StringParameter" value=".*\.class">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 285.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{&quot;ChannelID.class&quot;, &quot;Context.class&quot;, &quot;ExprEvaluator.class&quot;, &quot;Function.class&quot;, &quot;InputChannel.class&quot;, &quot;InputPort.class&quot;, &quot;InterpreterException.class&quot;, &quot;LambdaFunction.class&quot;, &quot;OutputChannel.class&quot;, &quot;OutputPort.class&quot;, &quot;Procedure.class&quot;, &quot;ProcProcedure.class&quot;, &quot;SimpleThunk.class&quot;, &quot;SingleInputPort.class&quot;, &quot;SingleOutputPort.class&quot;, &quot;StmtEvaluator.class&quot;, &quot;UndefinedVariableException.class&quot;}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205, 290}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DirectoryListing.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
