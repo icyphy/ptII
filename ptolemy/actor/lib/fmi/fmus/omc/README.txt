@@ -1,5 +1,5 @@
 ptolemy/actor/lib/fmi/fmus/omc/README.txt
-Version: $Id: README.txt 69601 2014-07-30 13:51:01Z cxh $
+Version: $Id$
 
 The fmus here use the work of James Nutaro.
 

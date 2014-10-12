@@ -1,6 +1,6 @@
 # Makefile for PtolemyII FMI Domain
 #
-# @Version: $Id: makefile 58200 2010-06-16 17:40:20Z bldmastr $
+# @Version: $Id$
 # @Author: Christopher Hylands
 #
 # @Copyright (c) 1998-2006 The Regents of the University of California.

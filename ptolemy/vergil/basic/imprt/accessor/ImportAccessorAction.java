@@ -92,7 +92,7 @@ import diva.graph.GraphController;
    this parameter so that we have a smaller download.</p>
 
    @author  Christopher Brooks, Patricia Derler.
-   @version $Id: ImportFMUAction.java 69608 2014-07-30 18:15:49Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)

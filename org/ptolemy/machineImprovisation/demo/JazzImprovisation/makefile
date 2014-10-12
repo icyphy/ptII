@@ -1,6 +1,6 @@
 # Makefile for Machine Improvisation Factor Oracle Execution demo
 #
-# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2013-2014 The Regents of the University of California.

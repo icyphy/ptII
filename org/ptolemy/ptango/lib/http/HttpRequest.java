@@ -45,7 +45,7 @@ import ptolemy.data.RecordToken;
  *  @see org.ptolemy.ptango.lib.HttpPost
  *  @see org.ptolemy.ptango.lib.HttpPut
  *  @author Marten Lohstroh
- *  @version $Id: HttpRequest.java 69715 2014-08-10 20:12:28Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)

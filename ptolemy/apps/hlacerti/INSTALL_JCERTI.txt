@@ -1,5 +1,5 @@
 -- Author: Gilles Lasnier (gilles.lasnier@isae.fr)
--- @version: $Id: INSTALL_JCERTI.txt 29 2013-10-13 13:12:06Z g.lasnier $
+-- @version: $Id$
 
 Installation and deployment of JCERTI (Java bindings for CERTI)
 

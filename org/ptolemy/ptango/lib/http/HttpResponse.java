@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @see org.ptolemy.ptango.lib.HttpPost
  *  @see org.ptolemy.ptango.lib.HttpPut
  *  @author Marten Lohstroh, Elizabeth Latronico
- *  @version $Id: HttpResponse.java 69983 2014-09-04 04:14:47Z beth@berkeley.edu $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)

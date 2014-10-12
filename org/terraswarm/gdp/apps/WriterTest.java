@@ -54,7 +54,7 @@ import com.sun.jna.ptr.PointerByReference;
     be written to the GCL.
 
     @author Christopher Brooks, based on the gdp/apps/writer-test.c by Eric Allman.
-    @version $Id: AccessorOne.java 69931 2014-08-29 23:36:38Z eal $
+    @version $Id$
     @since Ptolemy II 10.0
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (cxh)

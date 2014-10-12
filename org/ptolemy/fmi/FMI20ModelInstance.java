@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * A Java Native Access (JNA) interface to the Functional Mock-up Interface 2.0 ModelInstance struct.
  * @author Christopher Brooks
- * @version $Id: FMIModelDescription.java 70265 2014-10-01 15:03:22Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

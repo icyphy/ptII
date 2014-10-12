@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  Requests for attributes are delegated to the container.
 
  @author Ilge Akkaya
- @version $Id: ModalRefinement.java 66458 2013-05-31 00:23:14Z cxh $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating

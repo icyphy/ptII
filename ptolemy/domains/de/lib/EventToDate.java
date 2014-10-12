@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** A timed actor that outputs a date token that corresponds to 
  *  the real time value of the timestamp of the input event.
  * @author Patricia Derler
-@version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
+@version $Id$
 @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

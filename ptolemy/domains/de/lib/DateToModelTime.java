@@ -45,9 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A timed actor that outputs the model time that corresponds to the date.
  * @author Patricia Derler
-@version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
+@version $Id$
 @since Ptolemy II 10.0
- * @version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

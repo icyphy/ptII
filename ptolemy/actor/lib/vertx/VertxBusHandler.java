@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
 /** An actor that subscribes to and publishes to a Vert.x eventbus
  *  hosted on a server.
  * @author Patricia Derler
-@version $Id: DateToEvent.java 70268 2014-10-01 17:28:35Z pd $
+@version $Id$
 @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (pd)
  * @Pt.AcceptedRating Red (pd)
