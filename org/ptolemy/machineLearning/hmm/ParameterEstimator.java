@@ -100,7 +100,7 @@ converge and is given the option to randomize initial guesses to reiterate.
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating Red (ilgea)
  */
 public abstract class ParameterEstimator extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -547,7 +547,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @param y input observation stream
      * @param A transition probability matrix guess
      * @param prior prior state distribution guess
-     * @return
+     * @return the results.
      */
     protected HashMap HMMAlphaBetaRecursionNonNormalized(double[] y,
             double[][] A, double[] prior) {

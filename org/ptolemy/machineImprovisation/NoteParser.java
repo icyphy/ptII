@@ -55,9 +55,10 @@ builds a sequence of chord objects. Outputs
 a sequence of {@link Note} objects, in logical timestamp order.
 
  @author Ilge Akkaya
- @version  
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @version $Id$
+ @since Ptolemy II 10.0
+ @Pt.ProposedRating red (ilgea)
+ @Pt.AcceptedRating red (ilgea)
  */
 public class NoteParser extends TypedAtomicActor {
 
