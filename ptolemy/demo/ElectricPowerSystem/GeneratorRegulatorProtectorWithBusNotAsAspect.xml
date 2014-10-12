@@ -4,14 +4,15 @@
 <entity name="GeneratorRegulatorProtectorWithBusNotAsAspect" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <!-- include jars needed by all the EPS models in case someone downloads one model and clicks the the next. --> <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameterk&quot;,&quot;ptolemy/data/ontologies/ontologies.jar&quot;},{&quot;ptolemy.kernel.attributes.VersionAttribute&quot;,&quot;ptolemy/domains/de/de.jar&quot;},{&quot;ptolemy.kernel.util.StringAttribute&quot;,&quot;ptolemy/actor/lib/aspect/aspect.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/actor/lib/fmi/fmi.jar&quot;},{&quot;ptolemy.kernel.util.ColorAttribute&quot;,&quot;ptolemy/domains/ptides/ptides.jar&quot;}}"/>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 22, 1271, 693}, maximized=false}">
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameterk&quot;,&quot;ptolemy/data/ontologies/ontologies.jar&quot;},{&quot;ptolemy.kernel.attributes.VersionAttribute&quot;,&quot;ptolemy/domains/de/de.jar&quot;},{&quot;ptolemy.kernel.util.StringAttribute&quot;,&quot;ptolemy/actor/lib/aspect/aspect.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/actor/lib/fmi/fmi.jar&quot;},{&quot;ptolemy.kernel.util.ColorAttribute&quot;,&quot;ptolemy/domains/ptides/ptides.jar&quot;}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1037, 583]">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 22, 1175, 653}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1600512163892445">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[941, 543]">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{444.6528697571744, 254.15349492963577}">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.5, 271.5}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
