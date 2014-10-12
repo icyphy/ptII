@@ -4,6 +4,8 @@
 <entity name="UCBPowerForServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/domains/ptera/ptera.jar&quot;},{&quot;ptolemy.kernel.util.SingletonAttribute&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/actor/lib/conversions/json/json.jar&quot;},{&quot;ptolemy.data.expr.ExpertParameter&quot;,&quot;ptolemy/vergil/basic/export/web/web.jar&quot;},{&quot;ptolemy.vergil.icon.ValueIcon&quot;,&quot;ptolemy/vergil/basic/export/html/html.jar&quot;},{&quot;ptolemy.data.expr.Parameter&quot;,&quot;ptolemy/domains/ddf/ddf.jar&quot;}}">
+    </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             <display name="Background Color"/>

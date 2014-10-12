@@ -4,6 +4,8 @@
 <entity name="TemperatureSimulation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.kernel.util.SingletonAttribute&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;lbnl/lbnl.jar&quot;}}">
+   </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 51, 1314, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1080, 524]">
@@ -166,7 +168,7 @@
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/onlinegraphs.html">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/TemperatureSimulation/pages/onlinegraphs.html">
         </property>
         <doc>Read an entire file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 290.0]">

@@ -4,6 +4,8 @@
 <entity name="UCBPowerAnalyzerServer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/domains/ptera/ptera.jar&quot;},{&quot;ptolemy.kernel.util.SingletonAttribute&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/actor/lib/conversions/json/json.jar&quot;},{&quot;ptolemy.data.expr.ExpertParameter&quot;,&quot;ptolemy/vergil/basic/export/web/web.jar&quot;},{&quot;ptolemy.vergil.icon.ValueIcon&quot;,&quot;ptolemy/vergil/basic/export/html/html.jar&quot;},{&quot;ptolemy.data.expr.Parameter&quot;,&quot;ptolemy/domains/ddf/ddf.jar&quot;}}">
+    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1050, 737}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[816, 627]">

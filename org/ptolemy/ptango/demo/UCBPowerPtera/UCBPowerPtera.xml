@@ -4,6 +4,8 @@
 <entity name="UCBPowerPtera" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/domains/ptera/ptera.jar&quot;},{&quot;ptolemy.kernel.util.SingletonAttribute&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/actor/lib/conversions/json/json.jar&quot;},{&quot;ptolemy.data.expr.ExpertParameter&quot;,&quot;ptolemy/actor/lib/mail/mail.jar&quot;}}">
+    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -269,7 +271,7 @@
             </property>
         </entity>
         <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
-            <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="PowerMonitoringSeries.xml">
+            <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/org/ptolemy/ptango/demo/UCBPowerPtera/PowerMonitoringSeries.xml">
             </property>
             <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="true">
             </property>

@@ -5956,6 +5956,7 @@
        <fileset dir="${basedir}">
         <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
         <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
+        <include name="org/ptolemy/ptango/demo/UCBPower/*.png"/>
         <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
         <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
         <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
@@ -5993,6 +5994,7 @@
         <include name="org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif"/>
         <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
 	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
+        <include name="doc/img/PtolemyIISmall.gif"/>
        </fileset>
     </jar>
 
