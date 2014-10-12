@@ -207,6 +207,7 @@
     <exclude name="ptolemy/actor/lib/mail/" />
     <exclude name="ptolemy/actor/lib/opencv/" />
     <exclude name="ptolemy/actor/lib/reactable/" />
+    <exclude name="ptolemy/actor/lib/vertx/" />
     <exclude name="ptolemy/actor/lib/x10/" />
     <exclude name="ptolemy/apps/" />
     <exclude name="ptolemy/backtrack/eclipse/" />
