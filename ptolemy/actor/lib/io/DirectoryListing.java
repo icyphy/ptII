@@ -369,7 +369,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
         if (!contentType.startsWith("text/html")
                 && !contentType.startsWith("text/plain")) {
-            if (!sourceURL.toString().startsWith("jar:file:/")) {
+            if (!sourceURL.toString().startsWith("jar:")) {
                 throw new IllegalActionException(this, "Could not parse '"
                         + directoryOrURL.stringValue()
                         + "'; as URL '" + sourceURL
