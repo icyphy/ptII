@@ -60,7 +60,6 @@ import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
@@ -188,26 +187,25 @@ public class ParticleFilter extends TypedCompositeActor {
     /** A boolean parameter that when set to true, implements the so-called
      * bootstrap particle filter, where particles are resampled at each time step
      * If this parameter is false, particles are resampled only when the effective
-     * sample size drops below 50% of the total number of particles.
+     * sample size drops below 50% of the total number of particles
      */
     public Parameter bootstrap;
 
-    /** Low-variance resampler. */
+    /** Low-variance resampler */
     public Parameter lowVarianceSampler;
 
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
-     * at the moment).
+     * at the moment)
      */
     public Parameter measurementCovariance;
 
     /**
-     * The number of particles used internally for state estimation.
+     * The expression that specifies the PDF for the measurementNoise. use N(m,s) for
+     * a Gaussian distribution with mean m and standard deviation s. unif (x,y) evaluates
+     * to a uniform distribution in range [x,y]
      */
     public Parameter particleCount;
 
-    /**
-     * Number of particles to be output at each iterations.
-     */
     public Parameter outputParticleCount;
 
     /** An expression for the prior distribution from which the samples are drawn.
@@ -219,7 +217,7 @@ public class ParticleFilter extends TypedCompositeActor {
      */
     public Parameter processNoise;
 
-    /** An expression for a prior distribution from which the initial particles are sampled.
+    /** An expression for a prior distribution from which the initial particles are sampled
      */
     public Parameter priorDistribution;
 
@@ -290,7 +288,6 @@ public class ParticleFilter extends TypedCompositeActor {
                             y.setExpression("0.0");
                             y.setVisibility(Settable.EXPERT);
                         }
-                       
                         _particleLabels[i] = stateName;
                         _particleTypes[i] = BaseType.DOUBLE; // preset to be double
 
@@ -534,7 +531,7 @@ public class ParticleFilter extends TypedCompositeActor {
                         TypedIOPort port = new TypedIOPort(
                                 _updateEquations.get(_stateVariables[i]),
                                 inputs[k], true, false);
-                        port.setTypeEquals(BaseType.DOUBLE);
+                        //port.setTypeEquals(BaseType.DOUBLE);
                         port.link(inputRelations[k]);
                     }
                 }
@@ -552,12 +549,6 @@ public class ParticleFilter extends TypedCompositeActor {
         super.preinitialize();
     }
 
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize(); 
-        _scope = new VariableScope(); 
-        _parseTreeEvaluator = new ParseTreeEvaluator();
-    }
     @Override
     public void wrapup() throws IllegalActionException {
         _firstIteration = true;
@@ -592,7 +583,7 @@ public class ParticleFilter extends TypedCompositeActor {
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    protected void _checkParameters() throws IllegalActionException {
+    private void _checkParameters() throws IllegalActionException {
         // Check state variable names.
         ArrayToken stateNames = (ArrayToken) stateVariableNames.getToken();
         int n = stateNames.length();
@@ -656,9 +647,9 @@ public class ParticleFilter extends TypedCompositeActor {
             }
 
             for (int i = 0; i < Noutput; i++) {
-                LinkedList l = (LinkedList) outputParticles[i].getValue();
+                double[] l = outputParticles[i].getValue();
                 for (int j = 0; j < _stateSpaceSize; j++) {
-                    tokens[j] = new DoubleToken((Double) l.get(j));
+                    tokens[j] = new DoubleToken(l[j]);
                 }
                 tokens[_stateSpaceSize] = new DoubleToken(
                         outputParticles[i].getWeight());
@@ -667,9 +658,9 @@ public class ParticleFilter extends TypedCompositeActor {
             }
         } else {
             for (int i = 0; i < Nparticles; i++) {
-                LinkedList l = (LinkedList) particles[i].getValue();
+                double[] l = particles[i].getValue();
                 for (int j = 0; j < _stateSpaceSize; j++) {
-                    tokens[j] = new DoubleToken((Double) l.get(j));
+                    tokens[j] = new DoubleToken(l[j]);
                 }
                 tokens[_stateSpaceSize] = new DoubleToken(
                         particles[i].getWeight());
@@ -723,15 +714,7 @@ public class ParticleFilter extends TypedCompositeActor {
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
         //setClassName("org.ptolemy.machineLearning.ParticleFilter");
         particleOutput.setTypeEquals(RecordType.EMPTY_RECORD);
-        SingletonParameter showName = (SingletonParameter) particleOutput
-                .getAttribute("_showName");
-        if (showName == null) {
-            showName = new SingletonParameter(particleOutput, "_showName");
-            showName.setToken("true");
-        } else {
-            showName.setToken("true");
-        }
-        
+
         seed = new SharedParameter(this, "seed");
         seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
@@ -744,14 +727,6 @@ public class ParticleFilter extends TypedCompositeActor {
 
         stateEstimate = new TypedIOPort(this, "stateEstimate", false, true);
         stateEstimate.setTypeEquals(RecordType.EMPTY_RECORD);
-        showName = (SingletonParameter) stateEstimate
-                .getAttribute("_showName");
-        if (showName == null) {
-            showName = new SingletonParameter(stateEstimate, "_showName");
-            showName.setToken("true");
-        } else {
-            showName.setToken("true");
-        }
 
         prior = new Parameter(this, "prior");
         prior.setExpression("random()*200-100");
@@ -775,6 +750,8 @@ public class ParticleFilter extends TypedCompositeActor {
 
         _tokenMap = new HashMap<String, Token>();
 
+        _parseTreeEvaluator = new ParseTreeEvaluator();
+        _scope = new VariableScope();
 
         new DEDirector(this, "DEDirector").setPersistent(false);
         //((Parameter)this.getAttribute("_isOpaque")).setExpression("true");
@@ -794,7 +771,7 @@ public class ParticleFilter extends TypedCompositeActor {
         for (int i = 0; i < particles.length; i++) {
             particles[i] = new Particle(_stateSpaceSize);
             particles[i].sampleFromPrior();
-            particles[i].assignWeight(_measurementEquations, _stateVariables);
+            particles[i].assignWeight();
         }
     }
 
@@ -831,7 +808,7 @@ public class ParticleFilter extends TypedCompositeActor {
         }
     }
 
-    private void _resample() {
+    private void _resample() throws IllegalActionException {
         double randomValue;
         int intervalIndex;
         double[] cumulativeSums = new double[Nparticles + 1];
@@ -857,7 +834,7 @@ public class ParticleFilter extends TypedCompositeActor {
                 } else {
                     particles[i] = new Particle(particles[i].getSize());
                     particles[i]
-                            .setValue((LinkedList) previousParticles[intervalIndex]
+                            .setValue(previousParticles[intervalIndex]
                                     .getValue());
                     // the weights are equal at a result of resampling
                     particles[i].setWeight(1.0 / Nparticles);
@@ -878,7 +855,7 @@ public class ParticleFilter extends TypedCompositeActor {
                 } else {
                     particles[i] = new Particle(particles[i].getSize());
                     particles[i]
-                            .setValue((LinkedList) previousParticles[intervalIndex]
+                            .setValue(previousParticles[intervalIndex]
                                     .getValue());
                     // the weights are equal at a result of resampling
                     particles[i].setWeight(1.0 / Nparticles);
@@ -897,10 +874,10 @@ public class ParticleFilter extends TypedCompositeActor {
         double weight = 0;
         for (int i = 0; i < Nparticles; i++) {
             Particle p = particles[i];
-            List<Double> pVal = p.getValue();
+            double[] pVal = p.getValue();
             weight = p.getWeight();
-            for (int j = 0; j < pVal.size(); j++) {
-                stateValues[j] += weight * pVal.get(j);
+            for (int j = 0; j < pVal.length; j++) {
+                stateValues[j] += weight * pVal[j];
             }
         }
         for (int j = 0; j < _stateSpaceSize; j++) {
@@ -973,7 +950,7 @@ public class ParticleFilter extends TypedCompositeActor {
     private boolean _lowVarianceSampler;
 
     /** Flag indicating whether the contained model is up to date. */
-    protected boolean _upToDate;
+    private boolean _upToDate;
 
     /** List that holds the measurement equation expression objects */
     private List<Expression> _measurementEquations;
@@ -1035,22 +1012,19 @@ public class ParticleFilter extends TypedCompositeActor {
     // set particle dimensions to be equal to the state space dimension
     private class Particle {
         public Particle(int size) {
-            _particleValue = new LinkedList<Double>();
-            _ssSize = size;
+            this._particleValue = new double[size];  
         }
 
         public Particle(Particle p) {
-            this._weight = p._weight;
-            this._ssSize = p._ssSize;
-            this._particleValue = new LinkedList<Double>();
-            List<Double> temp = p.getValue();
-            for (int i = 0; i < temp.size(); i++) {
-                this._particleValue.add(temp.get(i));
-            }
+            this._weight = p.getWeight(); 
+            this._particleValue = new double[p.getSize()];
+            double[] tempParticle = p.getValue();
+            for (int i = 0; i < p.getSize() ; i++) {
+                this._particleValue[i] = tempParticle[i];
+            } 
         }
 
-        public void assignWeight(List<Expression> measurementEquations,
-                String[] _stateVariables) throws IllegalActionException,
+        public void assignWeight() throws IllegalActionException,
                 NameDuplicationException {
             Token[] _result = new Token[_measurementEquations.size()];
             Token _particleCovariance;
@@ -1068,9 +1042,9 @@ public class ParticleFilter extends TypedCompositeActor {
                         p = (Parameter) (ParticleFilter.this)
                                 .getAttribute(_stateVariables[i]);
                     }
-                    p.setExpression(_particleValue.get(i).toString());
+                    p.setExpression(((Double)_particleValue[i]).toString());
                     _tokenMap.put(_stateVariables[i], new DoubleToken(
-                            _particleValue.get(i)));
+                            _particleValue[i]));
                 }
                 try {
                     PtParser parser = new PtParser();
@@ -1119,13 +1093,16 @@ public class ParticleFilter extends TypedCompositeActor {
                                 variableName.length() - 9);
                         double _meanEstimate = ((DoubleToken) _result[i])
                                 .doubleValue();
-                        double z_t = ((DoubleToken) _measurementValues
-                                .get(variableName)).doubleValue();
-                        _weight *= 1
-                                / (Math.pow(2 * Math.PI, 0.5) * DoubleMatrixMath
-                                        .determinant(_Sigma))
-                                * Math.exp(-Math.pow(z_t - _meanEstimate, 2)
-                                        / (2 * Math.pow(_Sigma[0][0], 2)));
+                        
+                        if (_measurementValues.containsKey(variableName)) {
+                            double z_t = ((DoubleToken) _measurementValues
+                                    .get(variableName)).doubleValue();
+                            _weight *= 1
+                                    / (Math.pow(2 * Math.PI, 0.5) * DoubleMatrixMath
+                                            .determinant(_Sigma))
+                                    * Math.exp(-Math.pow(z_t - _meanEstimate, 2)
+                                            / (2 * Math.pow(_Sigma[0][0], 2)));
+                        }
                     }
 
                 } else {
@@ -1136,28 +1113,29 @@ public class ParticleFilter extends TypedCompositeActor {
                         //lose the "_equation" postfix
                         variableName = variableName.substring(0,
                                 variableName.length() - 9);
-                        MatrixToken z_t = (MatrixToken) _measurementValues
-                                .get(variableName);
-                        int k = z_t.getRowCount();
-                        MatrixToken X = (DoubleMatrixToken) z_t
-                                .subtract(_result[i]);
-                        MatrixToken Covariance = (DoubleMatrixToken) _particleCovariance;
-                        //MatrixToken Cov = new DoubleMatrixToken(DoubleMatrixMath.inverse(Covariance.doubleMatrix()));
-                        MatrixToken Xt = new DoubleMatrixToken(
-                                DoubleMatrixMath.transpose(X.doubleMatrix()));
-                        double multiplier = Math.pow(2 * Math.PI, -0.5 * k)
-                                * Math.pow(
-                                        DoubleMatrixMath.determinant(Covariance
-                                                .doubleMatrix()), -0.5);
-                        Token exponent = Xt.multiply(Covariance);
-                        exponent = exponent.multiply(X);
-                        double value = ((DoubleMatrixToken) exponent)
-                                .getElementAt(0, 0);
-                        _weight *= multiplier * Math.exp(-0.5 * value);
+                        if (_measurementValues.containsKey(variableName)) {
+                            MatrixToken z_t = (MatrixToken) _measurementValues
+                                    .get(variableName);
+                            int k = z_t.getRowCount();
+                            MatrixToken X = (DoubleMatrixToken) z_t
+                                    .subtract(_result[i]);
+                            MatrixToken Covariance = (DoubleMatrixToken) _particleCovariance;
+                            //MatrixToken Cov = new DoubleMatrixToken(DoubleMatrixMath.inverse(Covariance.doubleMatrix()));
+                            MatrixToken Xt = new DoubleMatrixToken(
+                                    DoubleMatrixMath.transpose(X.doubleMatrix()));
+                            double multiplier = Math.pow(2 * Math.PI, -0.5 * k)
+                                    * Math.pow(
+                                            DoubleMatrixMath.determinant(Covariance
+                                                    .doubleMatrix()), -0.5);
+                            Token exponent = Xt.multiply(Covariance);
+                            exponent = exponent.multiply(X);
+                            double value = ((DoubleMatrixToken) exponent)
+                                    .getElementAt(0, 0);
+                            _weight *= multiplier * Math.exp(-0.5 * value);
+                        }
                     }
                 }
-            }
-
+            } 
         }
 
         public boolean adjustWeight(double w) {
@@ -1170,16 +1148,16 @@ public class ParticleFilter extends TypedCompositeActor {
             return true;
         }
 
-        public List<Double> getValue() {
-            List<Double> values = new LinkedList<Double>();
-            for (int i = 0; i < _particleValue.size(); i++) {
-                values.add(_particleValue.get(i));
+        public double[] getValue() {
+            double[] values = new double[this.getSize()]; 
+            for (int i = 0; i < this.getSize(); i++) {
+                values[i] = this._particleValue[i];
             }
             return values;
         }
 
         public int getSize() {
-            return _ssSize;
+            return this._particleValue.length;
         }
 
         public void sampleFromPrior() throws IllegalActionException {
@@ -1196,21 +1174,21 @@ public class ParticleFilter extends TypedCompositeActor {
             Type t = priorSample.getType();
             if (t.equals(BaseType.DOUBLE)) {
                 // one dimensional
-                if (this.getSize() > 1) {
+                if (this.getSize() != 1) {
                     throw new IllegalActionException(
                             "Prior distribution and state space dimensions must match.");
                 }
                 double value = ((DoubleToken) priorSample).doubleValue();
-                _particleValue.add(Double.valueOf(value));
+                 _particleValue[0] = value;
             } else {
                 Token[] vals = ((ArrayToken) priorSample).arrayValue();
-                if (vals.length != _ssSize) {
+                if (vals.length != this.getSize()) {
                     throw new IllegalActionException(
                             "Prior distribution and state space dimensions must match.");
                 }
-                for (int i = 0; i < _ssSize; i++) {
+                for (int i = 0; i < this.getSize(); i++) {
                     double value = ((DoubleToken) vals[i]).doubleValue();
-                    _particleValue.add(Double.valueOf(value));
+                    _particleValue[i] = value;
                 }
 
             }
@@ -1221,7 +1199,7 @@ public class ParticleFilter extends TypedCompositeActor {
             Token _result;
             //FIXME: the noise sample does not have to be an arrayToken
             Token processNoiseSample;
-            LinkedList newParticle = new LinkedList();
+            double[] newParticle = new double[this.getSize()];
             for (int i = 0; i < _stateSpaceSize; i++) {
                 // every component of the particle will be propagated according to its own update equation.
                 //Parameter p = new Parameter(_updateEquations.get(_stateVariables[i]), _stateVariables[i]);
@@ -1229,14 +1207,14 @@ public class ParticleFilter extends TypedCompositeActor {
                         .get(_stateVariables[i]))
                         .getAttribute(_stateVariables[i]);
                 if (p != null) {
-                    p.setExpression(_particleValue.get(i).toString());
+                    p.setExpression(((Double)_particleValue[i]).toString());
                 } else {
                     p = new Parameter(_updateEquations.get(_stateVariables[i]),
                             _stateVariables[i]);
-                    p.setExpression(_particleValue.get(i).toString());
+                    p.setExpression(((Double)_particleValue[i]).toString());
                 }
                 _tokenMap.put(_stateVariables[i], new DoubleToken(
-                        _particleValue.get(i).doubleValue()));
+                        _particleValue[i]));
                 Iterator ci = _controlInputs.keySet().iterator();
                 // set the control input values in scope
                 while (ci.hasNext()) {
@@ -1300,21 +1278,23 @@ public class ParticleFilter extends TypedCompositeActor {
                 //FIXME: what if the process noise sample is not an array token?
                 double processNoiseForElement = ((DoubleToken) ((ArrayToken) processNoiseSample)
                         .getElement(i)).doubleValue();
-                newParticle.add(_meanEstimate + processNoiseForElement);
+                newParticle[i] =_meanEstimate + processNoiseForElement;
             }
             // set control inputs in range and also assigned state variable values to equal the current particle
             // value
-            this.setValue(newParticle);
-
-            this.assignWeight(_measurementEquations, _stateVariables);
+            this.setValue(newParticle); 
+            this.assignWeight();
 
         }
 
-        public void setValue(LinkedList<Double> l) {
-            _particleValue = new LinkedList<Double>();
+        public void setValue(double[] l) throws IllegalActionException {
+            
+            if (l.length != this._particleValue.length) {
+                throw new IllegalActionException("Cannot set a value with different size");
+            }
 
-            for (int i = 0; i < l.size(); i++) {
-                _particleValue.add(l.get(i));
+            for (int i = 0; i < l.length; i++) {
+                _particleValue[i] = l[i];
             }
         }
 
@@ -1325,15 +1305,11 @@ public class ParticleFilter extends TypedCompositeActor {
         public double getWeight() {
             return _weight;
         }
-
-        /**
-         * State-space size
-         */
-        private int _ssSize;
+ 
         /**
          * Value of the particle. Size is equal to _ssSize
          */
-        private List<Double> _particleValue;
+        private final double[] _particleValue;
         /**
          * Weight of the particle
          */
