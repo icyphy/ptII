@@ -69,7 +69,7 @@ public class DateConstructor extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        output = new TypedIOPort(this, "input", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DATE);
 
         year = new TypedIOPort(this, "year", true, false);
