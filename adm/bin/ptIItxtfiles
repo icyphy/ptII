@@ -12,6 +12,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.doc$' \
         | egrep -v '\.dmg$' \
         | egrep -v '\.dSYM/' \
+        | egrep -v '\.DS_Store$/' \
 	| egrep -v '\.dsp$' |egrep -v '\.dsw$' \
         | egrep -v '\.dylib$' \
         | egrep -v '\.fmu$' \
@@ -20,6 +21,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.eps$' |egrep -v '\.exe$' \
         | egrep -v '\.gz$'  |egrep -v '\.gif$' \
         | egrep -v '\.GIF$' \
+        | egrep -v '\.git' \
         | egrep -v '\.ico$' |egrep -v '\.icns$' \
         | egrep -v '\.idf$' \
         | egrep -v '\.idl$' \
