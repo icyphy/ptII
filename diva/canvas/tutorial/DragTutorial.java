@@ -50,7 +50,7 @@ import diva.gui.BasicFrame;
 
 /** An example showing how to make figures draggable with interactors.
  *
- * <img src="doc-files/DragTutorial.gif" align="right">
+ * <img src="doc-files/DragTutorial.gif" align="right" alt="Drag Tutorial">
  *
  * Each figure on the canvas can have its
  * interactor set or read with the methods setInteractor()

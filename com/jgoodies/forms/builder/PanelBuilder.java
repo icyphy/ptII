@@ -177,9 +177,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addLabel("Name");       // No Mnemonic
-     * addLabel("N&ame");      // Mnemonic is 'a'
-     * addLabel("Save &as");   // Mnemonic is the second 'a'
-     * addLabel("Look&&Feel"); // No mnemonic, text is "look&feel"
+     * addLabel("N&amp;ame");      // Mnemonic is 'a'
+     * addLabel("Save &amp;as");   // Mnemonic is the second 'a'
+     * addLabel("Look&amp;&amp;Feel"); // No mnemonic, text is "look&feel"
      * </pre>
      *
      * @param textWithMnemonic   the label's text -
@@ -197,9 +197,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addLabel("Name",       cc.xy(1, 1)); // No Mnemonic
-     * addLabel("N&ame",      cc.xy(1, 1)); // Mnemonic is 'a'
-     * addLabel("Save &as",   cc.xy(1, 1)); // Mnemonic is the second 'a'
-     * addLabel("Look&&Feel", cc.xy(1, 1)); // No mnemonic, text is "look&feel"
+     * addLabel("N&amp;ame",      cc.xy(1, 1)); // Mnemonic is 'a'
+     * addLabel("Save &amp;as",   cc.xy(1, 1)); // Mnemonic is the second 'a'
+     * addLabel("Look&amp;&amp;Feel", cc.xy(1, 1)); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic  the label's text -
@@ -221,9 +221,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addLabel("Name",       "1, 1"); // No Mnemonic
-     * addLabel("N&ame",      "1, 1"); // Mnemonic is 'a'
-     * addLabel("Save &as",   "1, 1"); // Mnemonic is the second 'a'
-     * addLabel("Look&&Feel", "1, 1"); // No mnemonic, text is "look&feel"
+     * addLabel("N&amp;ame",      "1, 1"); // Mnemonic is 'a'
+     * addLabel("Save &amp;as",   "1, 1"); // Mnemonic is the second 'a'
+     * addLabel("Look&amp;&amp;Feel", "1, 1"); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic    the label's text -
@@ -335,7 +335,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <strong>Wrong:</strong><pre>
      * builder.addLabel(
-     *     "&Name:",            // Mnemonic is 'N'
+     *     "&amp;Name:",            // Mnemonic is 'N'
      *     cc.xy(1, 7),         // will be modified by the code below
      *     nameField,
      *     cc.xy(3, 7)          // sets the single instance to (3, 7)
@@ -345,7 +345,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * // Using a single CellConstraints instance and cloning
      * CellConstraints cc = new CellConstraints();
      * builder.addLabel(
-     *     "&Name:",
+     *     "&amp;Name:",
      *     (CellConstraints) cc.xy(1, 7).clone(), // cloned before the next modification
      *     nameField,
      *     cc.xy(3, 7)                            // sets this instance to (3, 7)
@@ -355,7 +355,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * CellConstraints cc1 = new CellConstraints();
      * CellConstraints cc2 = new CellConstraints();
      * builder.addLabel(
-     *     "&Name:",           // Mnemonic is 'N'
+     *     "&amp;Name:",           // Mnemonic is 'N'
      *     cc1.xy(1, 7),       // sets instance 1 to (1, 7)
      *     nameField,
      *     cc2.xy(3, 7)        // sets instance 2 to (3, 7)
@@ -399,9 +399,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addTitle("Name");       // No mnemonic
-     * addTitle("N&ame");      // Mnemonic is 'a'
-     * addTitle("Save &as");   // Mnemonic is the second 'a'
-     * addTitle("Look&&Feel"); // No mnemonic, text is Look&Feel
+     * addTitle("N&amp;ame");      // Mnemonic is 'a'
+     * addTitle("Save &amp;as");   // Mnemonic is the second 'a'
+     * addTitle("Look&amp;&amp;Feel"); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic   the title label's text -
@@ -419,9 +419,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addTitle("Name",       cc.xy(1, 1)); // No mnemonic
-     * addTitle("N&ame",      cc.xy(1, 1)); // Mnemonic is 'a'
-     * addTitle("Save &as",   cc.xy(1, 1)); // Mnemonic is the second 'a'
-     * addTitle("Look&&Feel", cc.xy(1, 1)); // No mnemonic, text is Look&Feel
+     * addTitle("N&amp;ame",      cc.xy(1, 1)); // Mnemonic is 'a'
+     * addTitle("Save &amp;as",   cc.xy(1, 1)); // Mnemonic is the second 'a'
+     * addTitle("Look&amp;&amp;Feel", cc.xy(1, 1)); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic   the title label's text -
@@ -443,9 +443,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addTitle("Name",       "1, 1"); // No mnemonic
-     * addTitle("N&ame",      "1, 1"); // Mnemonic is 'a'
-     * addTitle("Save &as",   "1, 1"); // Mnemonic is the second 'a'
-     * addTitle("Look&&Feel", "1, 1"); // No mnemonic, text is Look&Feel
+     * addTitle("N&amp;ame",      "1, 1"); // Mnemonic is 'a'
+     * addTitle("Save &amp;as",   "1, 1"); // Mnemonic is the second 'a'
+     * addTitle("Look&amp;&amp;Feel", "1, 1"); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic   the title label's text -
@@ -468,9 +468,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addSeparator("Name");       // No Mnemonic
-     * addSeparator("N&ame");      // Mnemonic is 'a'
-     * addSeparator("Save &as");   // Mnemonic is the second 'a'
-     * addSeparator("Look&&Feel"); // No mnemonic, text is "look&feel"
+     * addSeparator("N&amp;ame");      // Mnemonic is 'a'
+     * addSeparator("Save &amp;as");   // Mnemonic is the second 'a'
+     * addSeparator("Look&amp;&amp;Feel"); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic   the separator label's text -
@@ -486,9 +486,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addSeparator("Name",       cc.xy(1, 1)); // No Mnemonic
-     * addSeparator("N&ame",      cc.xy(1, 1)); // Mnemonic is 'a'
-     * addSeparator("Save &as",   cc.xy(1, 1)); // Mnemonic is the second 'a'
-     * addSeparator("Look&&Feel", cc.xy(1, 1)); // No mnemonic, text is "look&feel"
+     * addSeparator("N&amp;ame",      cc.xy(1, 1)); // Mnemonic is 'a'
+     * addSeparator("Save &amp;as",   cc.xy(1, 1)); // Mnemonic is the second 'a'
+     * addSeparator("Look&amp;&amp;Feel", cc.xy(1, 1)); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic   the separator label's text -
@@ -511,9 +511,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addSeparator("Name",       "1, 1"); // No Mnemonic
-     * addSeparator("N&ame",      "1, 1"); // Mnemonic is 'a'
-     * addSeparator("Save &as",   "1, 1"); // Mnemonic is the second 'a'
-     * addSeparator("Look&&Feel", "1, 1"); // No mnemonic, text is "look&feel"
+     * addSeparator("N&amp;ame",      "1, 1"); // Mnemonic is 'a'
+     * addSeparator("Save &amp;as",   "1, 1"); // Mnemonic is the second 'a'
+     * addSeparator("Look&amp;&amp;Feel", "1, 1"); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic   the separator label's text -
@@ -532,9 +532,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * <pre>
      * addSeparator("Name",       3); // No Mnemonic
-     * addSeparator("N&ame",      3); // Mnemonic is 'a'
-     * addSeparator("Save &as",   3); // Mnemonic is the second 'a'
-     * addSeparator("Look&&Feel", 3); // No mnemonic, text is "look&feel"
+     * addSeparator("N&amp;ame",      3); // Mnemonic is 'a'
+     * addSeparator("Save &amp;as",   3); // Mnemonic is the second 'a'
+     * addSeparator("Look&amp;&amp;Feel", 3); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic   the separator label's text -

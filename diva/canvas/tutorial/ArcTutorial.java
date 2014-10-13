@@ -61,7 +61,7 @@ import diva.gui.BasicFrame;
 
 /** This tutorial shows how to use "arc" connectors.
  *
- * <img src="doc-files/ArcTutorial.gif" align="right">
+ * <img src="doc-files/ArcTutorial.gif" align="right" alt="Arc">
  *
  * In this example,
  * the connectors are attached to "perimeter sites" -- that is,

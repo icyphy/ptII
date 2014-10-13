@@ -63,10 +63,10 @@ import diva.gui.BasicFrame;
  * renders these nodes according to their types.
  * The rendering looks like this:
  * <ul>
- *   <li> String =>  a blue circle
- *   <li> Set    =>  a red circle
- *   <li> Integer => an orange square
- *   <li> Default => a grey circle
+ *   <li> String =&gt;  a blue circle</li>
+ *   <li> Set    =&gt;  a red circle</li>
+ *   <li> Integer =&gt; an orange square</li>
+ *   <li> Default =&gt; a grey circle</li>
  * </ul>
  *
  * @author Michael Shilman

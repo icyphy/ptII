@@ -49,7 +49,7 @@ import diva.util.java2d.Polyline2D;
  * <p> This tutorial shows how to construct a JCanvas and place
  * figures on it.
  * <p>
- * <img src="doc-files/SimpleTutorial.gif" align="right">
+ * <img src="doc-files/SimpleTutorial.gif" align="right" alt="Simple Tutorial">
  *
  * <P> In this example, we create figures with a few
  * different shapes, using the BasicFigure class in

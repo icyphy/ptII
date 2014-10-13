@@ -78,13 +78,13 @@ public class RelativeBundle extends ResourceBundle {
      * ("baseName.properties") are relative to the package containing
      * that class.
      *
-     * For example, you could create a default Bundle and override
-     * it as follows:
+     * <p>For example, you could create a default Bundle and override
+     * it as follows:</p>
      * <pre>
      *   RelativeBundle default = new diva.resource.Default();
      *   RelativeBundle resource = new RelativeBundle(
      *       "mypackage.resource.MyResources", getClass(), default);
-     * <pre>
+     * </pre>
      *
      * In this example, the file mypackage/resource/MyResource.properties
      * would contain resource such as
@@ -93,10 +93,10 @@ public class RelativeBundle extends ResourceBundle {
      *    SaveImage = resources/save.gif
      * </pre>
      *
-     * <P>If you don't mind cluttering up your source directory
+     * <p>If you don't mind cluttering up your source directory
      * with resource files, then it's probably better to put the
      * resource file in the same directory as the application classes,
-     * so the properties files doesn't need the "resources/" strings.
+     * so the properties files doesn't need the "resources/" strings.</p>
      */
     public RelativeBundle(String baseName, Class loader,
             ResourceBundle overrides) {

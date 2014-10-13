@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
  Both biased and unbiased autocorrelation estimates are supported.
  If the parameter <i>biased</i> is true, then
  the autocorrelation estimate is
- <a name="unbiased autocorrelation"></a>
+ <a name="unbiasedAutocorrelation"></a>
  <pre>
           N-1-k
         1  ---
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  lags to estimate (<i>numberOfLags</i>), and x<sup>*</sup> is the
  conjugate of the input (if it is complex).
  This estimate is biased because the outermost lags have fewer than <i>N</i>
- <a name="biased autocorrelation"></a>
+ <a name="biasedAutocorrelation"></a>
  terms in the summation, and yet the summation is still normalized by <i>N</i>.
  <p>
  If the parameter <i>biased</i> is false (the default), then the estimate is
@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  However, note that the unbiased estimate does not guarantee
  a positive definite sequence, so a power spectral estimate based on this
  autocorrelation estimate may have negative components.
- <a name="spectral estimation"></a>
+ <a name="spectralEstimation"></a>
  <p>
  The output will be an array of tokens whose type is at least that
  of the input. If the parameter <i>symmetricOutput</i> is true,

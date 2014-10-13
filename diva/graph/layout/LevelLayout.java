@@ -278,7 +278,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * <li>Assign level numbers to the nodes in the composite.  This
      * creates the _levels data structure which provides access
      * to all the nodes in each level.</li>
-     * </li>
+     * </ul>
      * To apply this layout to the target environment, call applyLayout
      * with the returned LevelData.
      */

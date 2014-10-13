@@ -47,7 +47,7 @@ import diva.gui.BasicFrame;
 
 /**
  * This tutorial demonstrates how to use composite figures.
- * <img src="doc-files/CompositeFigureTutorial.gif" align="right">
+ * <img src="doc-files/CompositeFigureTutorial.gif" align="right" alt="Composite Figure Tutorial">
  *
  * <P>
  * It instantiates a composite figure which contains a

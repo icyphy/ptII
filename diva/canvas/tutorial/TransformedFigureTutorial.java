@@ -54,7 +54,7 @@ import diva.util.java2d.ShapeUtilities;
 /** This tutorial shows how to make custom figures that contain
  * their own TransformContext.
  *
- * <img src="doc-files/TransformedFigureTutorial.gif" align="right">
+ * <img src="doc-files/TransformedFigureTutorial.gif" align="right" alt="Transformed Figure Tutorial">
  *
  * In the FigureTutorial class, we
  * showed how to make a custom figure, and how to transform the

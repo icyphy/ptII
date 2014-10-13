@@ -52,7 +52,7 @@ import javax.swing.filechooser.FileFilter;
  * <pre>
  *     JFileChooser chooser = new JFileChooser();
  *     ExtensionFileFilter filter = new ExtensionFileFilter(
- *                   new String{"gif", "jpg"}, "JPEG & GIF Images")
+ *                   new String{"gif", "jpg"}, "JPEG &amp; GIF Images")
  *     chooser.addChoosableFileFilter(filter);
  *     chooser.showOpenDialog(this);
  * </pre>
