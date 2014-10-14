@@ -59,7 +59,7 @@ import diva.util.java2d.ShapeUtilities;
 /** An example showing how to make custom figures.
  *
  * <p>
- * <img src="doc-files/FigureTutorial.gif" align="right">
+ * <img src="doc-files/FigureTutorial.gif" align="right" alt="Figure Tutorial">
  *
  * Although the Diva Canvas provides a number of pre-built concrete
  * figures in <b>diva.canvas.toolbox</b> (BasicFigure is used in many
