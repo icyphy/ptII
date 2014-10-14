@@ -380,9 +380,8 @@ public class FMIModelDescription {
             // sometimes compile this with gcj, which is
             // Java 1.5
             IOException exception = new IOException(
-                    "Attempted to build shared " + "library for the current "
-                            + "platform because " + sharedLibrary
-                            + " was not found.");
+                    "Error loading \"" + sharedLibrary 
+                    + "\" shared library.");
             exception.initCause(throwable3);
             throw exception;
         }
