@@ -765,6 +765,34 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 results.put(object.getClass().getName(), _getDomainJar(object
                                 .getClass().getPackage().getName()));
             }
+
+            // Needed for the PDFAttribute in DOPpresence.xml
+            if (object instanceof Attribute) {
+                Iterator innerAttributes = ((Attribute)object).attributeList().iterator();
+                while (innerAttributes.hasNext()) {
+                    Object innerObject = innerAttributes.next();
+                    String innerClassName = innerObject.getClass().getName();
+                    System.out.println("allAttributeJars1.1a: " + object);
+
+                    foundOne = false;
+                    for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
+                        if (className.contains(entry.getKey())) {
+                            if (_debug) {
+                                System.out.println("_allAttributeJars1.1b: "
+                                        + className + " "
+                                        + entry.getValue());
+                            }
+                            results.put(className, entry.getValue());
+                            foundOne = true;
+                            break;
+                        }
+                    }
+                    if (! foundOne) {
+                        results.put(innerObject.getClass().getName(), _getDomainJar(innerObject
+                                    .getClass().getPackage().getName()));
+                    }
+                }
+            }
         }
 
         // Get the attributes of the composites.  We need to traverse
@@ -808,6 +836,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // FIXME: should we get the attributes inside atomic actors?
                 if (_debug) {
                     System.out.println("allAttributeJars32: " + object);
+                    //System.out.println(((CompositeEntity)object).exportMoML());
                 }
                 results.putAll(_allAttributeJars((CompositeEntity) object));
 
