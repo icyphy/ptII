@@ -381,7 +381,10 @@ public class FMIModelDescription {
             // Java 1.5
             IOException exception = new IOException(
                     "Error loading \"" + sharedLibrary 
-                    + "\" shared library.");
+                    + "\" shared library.  "
+                    + "To debug loading errors, "
+                    + "Restart Java with \"-Djna.debug_load=true\".  "
+                    + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging.");
             exception.initCause(throwable3);
             throw exception;
         }
