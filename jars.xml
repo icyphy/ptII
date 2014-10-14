@@ -33,6 +33,7 @@
     <include name="org/ptolemy/machineImprovisation/machineImprovisation.jar" />
     <include name="org/ptolemy/machineImprovisation/demo/demo.jar" />
     <include name="org/ptolemy/machineLearning/machineLearning.jar" />
+    <include name="org/ptolemy/machineLearning/particleFilter/particleFilter.jar" />
     <include name="org/ptolemy/optimization.jar" />
     <include name="org/ptolemy/osc.jar" />
     <include name="org/ptolemy/ptango/ptango.jar" />
@@ -97,6 +98,7 @@
     <include name="ptolemy/data/type/demo/demo.jar" />
     <include name="ptolemy/data/unit/demo/demo.jar" />
     <include name="ptolemy/demo/demo.jar" />
+    <include name="ptolemy/distributed/client/client.jar" />
     <include name="ptolemy/distributed/demo/demo.jar" />
     <include name="ptolemy/distributed/distributed.jar" />
     <include name="ptolemy/distributed/domains/sdf/sdf.jar" />
@@ -126,6 +128,7 @@
     <include name="ptolemy/domains/de/de.jar" />
     <include name="ptolemy/domains/de/demo/demo.jar" />
     <include name="ptolemy/domains/de/doc/doc.jar" />
+    <include name="ptolemy/domains/de/lib/aspect/aspect.jar" />
     <include name="ptolemy/domains/domains.jar" />
     <include name="ptolemy/domains/dt/dt.jar" />
     <include name="ptolemy/domains/dt/demo/demo.jar" />
@@ -145,6 +148,7 @@
     <include name="ptolemy/domains/metroII/demo/demo.jar" />
     <include name="ptolemy/domains/modal/demo/demo.jar" />
     <include name="ptolemy/domains/modal/doc/doc.jar" />
+    <include name="ptolemy/domains/modal/kernel/fmv/fmv.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
     <include name="ptolemy/domains/modal/modal/modal.jar" />
     <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
@@ -2025,30 +2029,23 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/actor/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/actor/lib/*.xml"/>
+	<include name="ptolemy/distributed/client/*.class"/>
+	<include name="ptolemy/distributed/common/*.class"/>
+	<include name="ptolemy/distributed/config/*.config"/>
+	<include name="ptolemy/distributed/domains/sdf/kernel/*.class"/>
+	<include name="ptolemy/distributed/rmi/*.class"/>
+	<include name="ptolemy/distributed/util/*.class"/>
       </fileset>
+    </jar>
+
+    <!-- ptolemy/distributed/client/client.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/distributed/client/client.jar"
+	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/client/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/distributed/common/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/distributed/config/*.config"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/distributed/domains/sdf/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/distributed/rmi/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/distributed/util/*.class"/>
       </fileset>
     </jar>
 
@@ -2067,14 +2064,8 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/demo/Sleep/*.bat"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/demo/Sleep/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/demo/Sleep/*.startplatform"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/distributed/demo/Sleep/*.xml"/>
       </fileset>
     </jar>
@@ -3121,8 +3112,6 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/modal/fmv/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/modal/fmv/img/*.gif"/>
       </fileset>
     </jar>
@@ -3995,6 +3984,16 @@
       </fileset>
     </jar>
 
+    <!-- org/ptolemy/machineLearning/particleFilter/particleFilter.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/machineLearning/particleFilter/particleFilter.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/particleFilter/*.class"/>
+	<include name="org/ptolemy/machineLearning/particleFilter/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- org/ptolemy/optimization/optimization.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/ptolemy/optimization/optimization.jar"
@@ -4292,6 +4291,16 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/gr/lib/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/modal/kernel/fmv/fmv.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/modal/kernel/fmv/fmv.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/modal/kernel/fmv/*.class"/>
+	<include name="ptolemy/domains/modal/kernel/fmv/*.xml"/>
       </fileset>
     </jar>
 
@@ -5236,6 +5245,16 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/doc/*.htm"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/de/lib/aspect/aspect.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/de/lib/aspect/aspect.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/de/lib/aspect/*.class"/>
+	<include name="ptolemy/domains/de/lib/aspect/*.xml"/>
       </fileset>
     </jar>
 
@@ -6742,6 +6761,9 @@
          destfile="${basedir}/ptolemy/distributed/demo/Sleep/Sleep.jar"
          >
        <fileset dir="${basedir}">
+	<include name="ptolemy/distributed/demo/Sleep/*.bat"/>
+	<include name="ptolemy/distributed/demo/Sleep/*.htm"/>
+	<include name="ptolemy/distributed/demo/Sleep/*.startplatform"/>
         <include name="ptolemy/distributed/demo/Sleep/*.xml"/>
        </fileset>
     </jar>
