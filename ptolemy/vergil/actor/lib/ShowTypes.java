@@ -167,7 +167,9 @@ public class ShowTypes extends AbstractInitializableAttribute implements
                 List<IOPort> ports = entity.inputPortList();
                 for (IOPort port : ports) {
                     Attribute attribute = port.getAttribute("_showInfo");
-                    attribute.setContainer(null);
+                    if (attribute != null) {
+                        attribute.setContainer(null);
+                    } 
                 }
             }
         }
