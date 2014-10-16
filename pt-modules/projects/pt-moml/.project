@@ -126,6 +126,16 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>bin/com/microstar/xml/README.txt</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/README.txt</locationURI>
+		</link>
+		<link>
+			<name>bin/com/microstar/xml/package.html</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/package.html</locationURI>
+		</link>
+		<link>
 			<name>linked-src/com/microstar/xml/HandlerBase.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/com/microstar/xml/HandlerBase.java</locationURI>

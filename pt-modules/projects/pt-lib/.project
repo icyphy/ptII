@@ -481,6 +481,76 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringCompare.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringCompare.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringCompare2.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringCompare2.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringFunction.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringFunction.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringLength.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringLength.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringMatches.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringMatches.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringMatches2.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringMatches2.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringParameter.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringParameter.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringReplace.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringReplace.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringReplace2.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringReplace2.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringSubstring.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringSubstring.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml</locationURI>
+		</link>
+		<link>
+			<name>bin/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml</locationURI>
+		</link>
+		<link>
 			<name>linked-test/ptolemy/actor/lib/string/test/auto/StringCompare.xml</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/lib/string/test/auto/StringCompare.xml</locationURI>

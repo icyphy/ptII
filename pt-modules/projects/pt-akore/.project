@@ -46,6 +46,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/actor/ActorExecutionAspect.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/ActorExecutionAspect.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/actor/AbstractInitializableAttribute.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/AbstractInitializableAttribute.java</locationURI>
@@ -76,9 +81,19 @@
 			<locationURI>PT_LOC/ptolemy/actor/AtomicActor.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/actor/CausalityMarker.java</name>
+			<name>linked-src/ptolemy/actor/CommunicationAspect.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/CausalityMarker.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/actor/CommunicationAspect.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/CommunicationAspectAttributes.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/CommunicationAspectAttributes.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/CommunicationAspectListener.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/CommunicationAspectListener.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/CompositeActor.java</name>
@@ -141,6 +156,11 @@
 			<locationURI>PT_LOC/ptolemy/actor/Initializable.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/actor/InstanceOpener.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/InstanceOpener.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/actor/IntermediateReceiver.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/IntermediateReceiver.java</locationURI>
@@ -186,11 +206,6 @@
 			<locationURI>PT_LOC/ptolemy/actor/PublisherPort.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/actor/QuantityManager.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/QuantityManager.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/QuasiTransparentDirector.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/QuasiTransparentDirector.java</locationURI>
@@ -204,16 +219,6 @@
 			<name>linked-src/ptolemy/actor/RelationWidthInference.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/RelationWidthInference.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/lib/ResourceAttributes.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/lib/ResourceAttributes.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/lib/resourceScheduler/ResourceScheduler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/lib/resourceScheduler/ResourceScheduler.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/SubscriberPort.java</name>
@@ -349,6 +354,11 @@
 			<name>linked-src/ptolemy/data/ComplexToken.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/data/ComplexToken.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/data/DateToken.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/data/DateToken.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/data/DoubleMatrixToken.java</name>
@@ -846,6 +856,11 @@
 			<locationURI>PT_LOC/ptolemy/actor/lib/Transformer.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/actor/lib/resourceScheduler</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/actor/parameters/ParameterPort.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/parameters/ParameterPort.java</locationURI>
@@ -1269,11 +1284,6 @@
 			<name>linked-src/ptolemy/data/expr/PtParserTreeConstants.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/data/expr/PtParserTreeConstants.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/data/expr/ScopeExtender.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/data/expr/ScopeExtender.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/data/expr/ScopeExtendingAttribute.java</name>

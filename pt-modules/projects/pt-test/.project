@@ -181,14 +181,14 @@
 			<locationURI>PT_LOC/ptolemy/kernel/util/Debuggable.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/DecoratorAttributes.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DecoratorAttributes.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/kernel/util/Decorator.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/util/Decorator.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/DecoratorAttributes.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/DecoratorAttributes.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/kernel/util/Derivable.java</name>

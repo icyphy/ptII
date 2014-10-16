@@ -36,6 +36,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>bin/ptolemy/actor/ActorModule.properties</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/ActorModule.properties</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/actor/ActorModule.properties</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/ActorModule.properties</locationURI>

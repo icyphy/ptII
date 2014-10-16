@@ -226,6 +226,11 @@
 			<locationURI>PT_LOC/ptolemy/domains/modal/kernel/Transition.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/domains/modal/modal/ModalBasePort.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/domains/modal/modal/ModalBasePort.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/domains/modal/modal/Case.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/modal/Case.java</locationURI>
