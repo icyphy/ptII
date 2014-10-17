@@ -134,20 +134,20 @@ public class StringSubstring extends Transformer {
             if (stopValue < startValue) {
                 if (value.length() < startValue) {
                     throw new IllegalActionException(this, 
-                            "Cannot compute substring between "
-                            + startValue + " and "
-                            + stopValue + " of "
-                            + "input string \"" + value + "\"");
+                            "Cannot compute substring of "
+                            + "\"" + value + "\""
+                            + " starting at "
+                            + startValue);
                 }
                 substringValue = value.substring(startValue);
             } else {
                 if (value.length() < stopValue ||
                         startValue < 0) {
                     throw new IllegalActionException(this, 
-                            "Cannot compute substring between "
+                            "Cannot compute substring of "
+                            + "\"" + value + "\" between "
                             + startValue + " and "
-                            + stopValue + " of "
-                            + "input string \"" + value + "\"");
+                            + stopValue);
                 }
                 substringValue = value.substring(startValue, stopValue);
             }
