@@ -16,31 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/DesignPatternGetMoMLAction.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/DesignPatternGetMoMLAction.java</locationURI>
@@ -49,51 +24,6 @@
 			<name>linked-src/ptolemy/actor/InvariantViolationException.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/InvariantViolationException.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/modal</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/filter</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/modal/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/modal/modal</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/DropTargetHandler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DropTargetHandler.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Flowable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Flowable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/StreamListener.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/StreamListener.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/filter/RemoveClasses.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/moml/filter/RemoveClasses.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/modal/kernel/AbstractActionsAttribute.java</name>
@@ -154,6 +84,11 @@
 			<name>linked-src/ptolemy/domains/modal/kernel/FSMReceiver.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/kernel/FSMReceiver.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/domains/modal/kernel/FSMTransitionParameter.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/domains/modal/kernel/FSMTransitionParameter.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/modal/kernel/ModalDirector.java</name>
@@ -226,19 +161,24 @@
 			<locationURI>PT_LOC/ptolemy/domains/modal/kernel/Transition.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/domains/modal/modal/ModalBasePort.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/domains/modal/modal/ModalBasePort.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/domains/modal/modal/Case.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/modal/Case.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/domains/modal/modal/ClassComparator.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/domains/modal/modal/ClassComparator.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/domains/modal/modal/MirrorCausalityInterface.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/modal/MirrorCausalityInterface.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/domains/modal/modal/ModalBasePort.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/domains/modal/modal/ModalBasePort.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/modal/modal/ModalController.java</name>
@@ -294,6 +234,26 @@
 			<name>linked-src/ptolemy/domains/modal/modal/TransitionRefinementPort.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/modal/TransitionRefinementPort.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/DropTargetHandler.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/DropTargetHandler.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/Flowable.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/Flowable.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/StreamListener.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/StreamListener.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/moml/filter/RemoveClasses.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/moml/filter/RemoveClasses.java</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

@@ -16,41 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/sched</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/sdf</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/lib/Lattice.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/lib/Lattice.java</locationURI>
@@ -119,16 +84,6 @@
 			<name>linked-src/ptolemy/actor/util/PeriodicDirectorHelper.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/util/PeriodicDirectorHelper.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/sdf/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/sdf/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/sdf/kernel/ArrayFIFOQueue.java</name>

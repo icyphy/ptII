@@ -16,39 +16,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/sched</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/sr</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/sched/FixedPointDirector.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/sched/FixedPointDirector.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/sr/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/sr/kernel/SRDirector.java</name>

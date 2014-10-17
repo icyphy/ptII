@@ -1,0 +1,50 @@
+#!/bin/sh
+# $Id$
+# mkptproject - read in a pt-jar.files and generate a .project file
+# This is used in $PTII/pt-modules
+
+projects="pt-akore pt-ddf pt-de pt-junit pt-kore pt-kore-test pt-lib pt-modal pt-moml pt-momlapp pt-ptera pt-sdf pt-sr"
+
+for project in $projects
+do
+	echo $project
+	cat > $project/.project << EoF
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>$project</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+EoF
+
+	cat $project/pt-jar.files | egrep '^/(ptolemy|com|org)' | sort | uniq | awk '{
+	    printf("\t\t<link>\n");
+	    printf("\t\t\t<name>linked-src%s</name>\n", $0);
+	    printf("\t\t\t<type>1</type>\n");
+	    printf("\t\t\t<locationURI>PT_LOC%s</locationURI>\n", $0);
+	    printf("\t\t</link>\n");
+		}' >> $project/.project
+	cat >> $project/.project <<EoF2
+	</linkedResources>
+	<variableList>
+		<variable>
+			<name>PT_LOC</name>
+			<value>$%7BPARENT-3-PROJECT_LOC%7D</value>
+		</variable>
+	</variableList>
+</projectDescription>
+EoF2
+
+
+done

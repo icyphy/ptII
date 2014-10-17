@@ -16,34 +16,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/QueueReceiver.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/QueueReceiver.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/ddf</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/lib/SingleTokenCommutator.java</name>
@@ -51,24 +26,9 @@
 			<locationURI>PT_LOC/ptolemy/actor/lib/SingleTokenCommutator.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/domains/ddf/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/ddf/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/domains/ddf/kernel/ActorEnablingStatus.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/ddf/kernel/ActorEnablingStatus.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/ddf/kernel/DDFDirector.class</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/domains/ddf/kernel/DDFDirector.class</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/ddf/kernel/DDFDirector.java</name>

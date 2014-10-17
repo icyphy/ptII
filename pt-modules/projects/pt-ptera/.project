@@ -16,54 +16,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/ptera</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/util/BreakCausalityInterface.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/util/BreakCausalityInterface.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/domains/ptera/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/ptera/lib</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/domains/ptera/kernel/ActionsAttribute.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/ptera/kernel/ActionsAttribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/domains/ptera/kernel/Event$RefiringData.class</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/domains/ptera/kernel/Event$RefiringData.class</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/domains/ptera/kernel/Event.java</name>

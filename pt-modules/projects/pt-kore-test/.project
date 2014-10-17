@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>pt-kore</name>
+	<name>pt-kore-test</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,349 +16,144 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/ComponentEntity.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/ComponentEntity.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/ComponentPort.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/ComponentPort.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/ComponentRelation.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/ComponentRelation.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/CompositeEntity.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/CompositeEntity.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/Entity.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/Entity.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/InstantiableNamedObj.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/InstantiableNamedObj.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/Port.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/Port.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/Relation.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/Relation.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/ClassUtilities.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/ClassUtilities.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/FileUtilities.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/FileUtilities.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/StringUtilities.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/StringUtilities.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes/FileAttribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/attributes/FileAttribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes/FileOrURLAccessor.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/attributes/FileOrURLAccessor.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes/RequireVersion.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/attributes/RequireVersion.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes/URIAttribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/attributes/URIAttribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes/VersionAttribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/attributes/VersionAttribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/AbstractSettableAttribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/AbstractSettableAttribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Attribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Attribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/BasicModelErrorHandler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/BasicModelErrorHandler.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/ChangeListener.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/ChangeListener.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/ChangeRequest.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/ChangeRequest.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Changeable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Changeable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Configurable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Configurable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/ConfigurableAttribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/ConfigurableAttribute.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/CrossRefList.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/CrossRefList.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/DebugEvent.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DebugEvent.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/DebugListener.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DebugListener.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Debuggable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Debuggable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/DecoratorAttributes.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DecoratorAttributes.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Decorator.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Decorator.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Derivable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Derivable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/DropTargetHandler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DropTargetHandler.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/ExceptionHandler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/ExceptionHandler.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Flowable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Flowable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/HierarchyListener.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/HierarchyListener.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/IllegalActionException.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/IllegalActionException.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Instantiable.java</name>
+			<name>linked-src/ptolemy/kernel/test/ComponentEntityTimeTest.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Instantiable.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/ComponentEntityTimeTest.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/InternalErrorException.java</name>
+			<name>linked-src/ptolemy/kernel/test/ExampleSystem.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/InternalErrorException.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/ExampleSystem.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/InvalidStateException.java</name>
+			<name>linked-src/ptolemy/kernel/test/PortHasNoContainer.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/InvalidStateException.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/PortHasNoContainer.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/KernelException.java</name>
+			<name>linked-src/ptolemy/kernel/test/PortNameProblem.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/KernelException.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/PortNameProblem.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/KernelRuntimeException.java</name>
+			<name>linked-src/ptolemy/kernel/test/TestComponentPort.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/KernelRuntimeException.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/TestComponentPort.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/LazyComposite.java</name>
+			<name>linked-src/ptolemy/kernel/test/TestComponentRelation.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/LazyComposite.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/TestComponentRelation.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Locatable.java</name>
+			<name>linked-src/ptolemy/kernel/test/TestCompositeEntity.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Locatable.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/TestCompositeEntity.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Location.java</name>
+			<name>linked-src/ptolemy/kernel/test/TestSerializable.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Location.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/TestSerializable.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/MoMLExportable.java</name>
+			<name>linked-src/ptolemy/kernel/test/junit/ExampleSystemJUnitTest.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/MoMLExportable.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/junit/ExampleSystemJUnitTest.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/ModelErrorHandler.java</name>
+			<name>linked-src/ptolemy/kernel/test/junit/JUnitTclTest.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/ModelErrorHandler.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/test/junit/JUnitTclTest.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Moveable.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/AccessAction.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Moveable.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/AccessAction.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/NameDuplicationException.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/AccessThread.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/NameDuplicationException.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/AccessThread.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Nameable.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/InvalidStringAttribute.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Nameable.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/InvalidStringAttribute.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/NamedList.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/PtestWorkspace.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/NamedList.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/PtestWorkspace.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/NamedObj.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/StreamValueListener.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/NamedObj.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/StreamValueListener.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/NoSuchItemException.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestDebugEvent.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/NoSuchItemException.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestDebugEvent.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/PtolemyThread.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestInstantiableAttribute.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/PtolemyThread.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestInstantiableAttribute.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/RecorderListener.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestInstantiableNamedObj.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/RecorderListener.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestInstantiableNamedObj.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Settable.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestNullNamedObj.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Settable.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestNullNamedObj.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Singleton.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestPtolemyThread.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Singleton.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestPtolemyThread.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/SingletonAttribute.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspace.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/SingletonAttribute.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspace.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/SingletonConfigurableAttribute.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspace2.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/SingletonConfigurableAttribute.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspace2.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/StreamChangeListener.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspace3.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/StreamChangeListener.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspace3.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/StreamListener.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspace4.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/StreamListener.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspace4.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/StringAttribute.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspace5.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/StringAttribute.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspace5.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/TransientSingletonConfigurableAttribute.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspace6.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/TransientSingletonConfigurableAttribute.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspace6.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/ValueListener.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/TestWorkspaceBase.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/ValueListener.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/TestWorkspaceBase.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/Workspace.java</name>
+			<name>linked-src/ptolemy/kernel/util/test/junit/JUnitTclTest.java</name>
 			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Workspace.java</locationURI>
+			<locationURI>PT_LOC/ptolemy/kernel/util/test/junit/JUnitTclTest.java</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

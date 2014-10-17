@@ -16,54 +16,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>bin/ptolemy/actor/ActorModule.properties</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/ActorModule.properties</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/ActorModule.properties</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/ActorModule.properties</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/injection</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/MoMLSimpleApplication.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/moml/MoMLSimpleApplication.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/filter</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/injection/ActorModuleInitializer.java</name>
@@ -89,6 +44,11 @@
 			<name>linked-src/ptolemy/kernel/util/BasicModelErrorHandler.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/util/BasicModelErrorHandler.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/moml/MoMLSimpleApplication.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/moml/MoMLSimpleApplication.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/moml/filter/AddIcon.java</name>

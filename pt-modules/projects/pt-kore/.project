@@ -16,21 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/kernel/ComponentEntity.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/ComponentEntity.java</locationURI>
@@ -69,31 +54,6 @@
 			<name>linked-src/ptolemy/kernel/Relation.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/Relation.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/attributes</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/ClassUtilities.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/ClassUtilities.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/FileUtilities.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/FileUtilities.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/util/StringUtilities.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/util/StringUtilities.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/kernel/attributes/FileAttribute.java</name>
@@ -181,14 +141,14 @@
 			<locationURI>PT_LOC/ptolemy/kernel/util/Debuggable.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/DecoratorAttributes.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DecoratorAttributes.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/kernel/util/Decorator.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/util/Decorator.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/DecoratorAttributes.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/DecoratorAttributes.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/kernel/util/Derivable.java</name>
@@ -311,6 +271,11 @@
 			<locationURI>PT_LOC/ptolemy/kernel/util/RecorderListener.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/kernel/util/ScopeExtender.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/ScopeExtender.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/kernel/util/Settable.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/util/Settable.java</locationURI>
@@ -359,6 +324,21 @@
 			<name>linked-src/ptolemy/kernel/util/Workspace.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/kernel/util/Workspace.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/util/ClassUtilities.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/util/ClassUtilities.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/util/FileUtilities.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/util/FileUtilities.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/util/StringUtilities.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/util/StringUtilities.java</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

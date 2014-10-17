@@ -16,39 +16,59 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>linked-src/com</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/HandlerBase.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/HandlerBase.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/README.txt</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/README.txt</locationURI>
 		</link>
 		<link>
-			<name>linked-src/com/microstar</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/XmlException.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/XmlException.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/XmlHandler.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/XmlHandler.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/moml</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/XmlParser.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/XmlParser.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/com/microstar/xml</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/driver/SAXDriver.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/driver/SAXDriver.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/undo</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			<name>linked-src/com/microstar/xml/package.html</name>
+			<type>1</type>
+			<locationURI>PT_LOC/com/microstar/xml/package.html</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/undo/UndoAction.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoAction.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/undo/UndoActionsList.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoActionsList.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/undo/UndoChangeRequest.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoChangeRequest.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/undo/UndoStackAttribute.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoStackAttribute.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/moml/Documentation.java</name>
@@ -114,81 +134,6 @@
 			<name>linked-src/ptolemy/moml/Vertex.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/moml/Vertex.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/filter</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/unit</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>bin/com/microstar/xml/README.txt</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/README.txt</locationURI>
-		</link>
-		<link>
-			<name>bin/com/microstar/xml/package.html</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/package.html</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/HandlerBase.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/HandlerBase.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/README.txt</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/README.txt</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/XmlException.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/XmlException.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/XmlHandler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/XmlHandler.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/XmlParser.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/XmlParser.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/driver</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/package.html</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/package.html</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/undo/UndoAction.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoAction.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/undo/UndoActionsList.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoActionsList.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/undo/UndoChangeRequest.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoChangeRequest.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/undo/UndoStackAttribute.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/undo/UndoStackAttribute.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/moml/filter/MoMLFilterSimple.java</name>
@@ -299,11 +244,6 @@
 			<name>linked-src/ptolemy/moml/unit/UnitTerm.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/moml/unit/UnitTerm.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/com/microstar/xml/driver/SAXDriver.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/driver/SAXDriver.java</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
