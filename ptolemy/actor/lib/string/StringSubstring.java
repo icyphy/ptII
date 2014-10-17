@@ -130,9 +130,25 @@ public class StringSubstring extends Transformer {
             int stopValue = ((IntToken) stop.getToken()).intValue();
             String substringValue;
 
+            
             if (stopValue < startValue) {
+                if (value.length() < startValue) {
+                    throw new IllegalActionException(this, 
+                            "Cannot compute substring between "
+                            + startValue + " and "
+                            + stopValue + " of "
+                            + "input string \"" + value + "\"");
+                }
                 substringValue = value.substring(startValue);
             } else {
+                if (value.length() < stopValue ||
+                        startValue < 0) {
+                    throw new IllegalActionException(this, 
+                            "Cannot compute substring between "
+                            + startValue + " and "
+                            + stopValue + " of "
+                            + "input string \"" + value + "\"");
+                }
                 substringValue = value.substring(startValue, stopValue);
             }
 
