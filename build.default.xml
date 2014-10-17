@@ -106,6 +106,8 @@
     <pathelement location="lib/saxon8-dom.jar" />
     <pathelement location="lib/chic.jar" />
     <pathelement location="lib/guava.jar" />
+    <pathelement location="lib/jetty-all-8.1.5-v20120716.jar" />
+    <pathelement location="lib/javax.servlet-api-3.0.1.jar" />
     <pathelement location="lib/jna.jar" />
     <pathelement location="lib/junit-4.8.2.jar" />
     <pathelement location="lib/JUnitParams-0.3.0.jar"/>
@@ -119,6 +121,8 @@
     <pathelement location="lib/ptjacl.jar" />
     <pathelement location="lib/mapss.jar" />
     <pathelement location="lib/oscP5.jar" />
+    <pathelement location="lib/smack.jar" />
+    <pathelement location="lib/smackx.jar" />
     <pathelement location="lib/socketio.jar" />
     <pathelement location="lib/sootclasses.jar" />
     <pathelement location="lib/jasminclasses.jar" />
@@ -190,7 +194,6 @@
     <exclude name="mk/" />
     <exclude name="org/ptolemy/fmi/" />
     <exclude name="org/ptolemy/terraswarm/gdp" />
-    <exclude name="org/ptolemy/ptango/" />
     <exclude name="ptdb/" />
     <exclude name="pt-modules/" />
     <exclude name="ptolemy/actor/corba/" />
