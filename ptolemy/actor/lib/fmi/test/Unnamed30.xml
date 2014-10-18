@@ -1,0 +1,205 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Unnamed30" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model will only work under 32-bit Linux.&#10;&#10;Unnamed.fmu is a very simple FMI-1.0 Cosimulation FMU that does nothing.&#10;&#10;The FMU was created from Dymola.&#10;&#10;There are 30 actors to test that we can have lots of FMUs that are the same.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 395.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    </property>
+    <entity name="Unnamed" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed2" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed3" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed4" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed5" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed6" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed7" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed8" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed9" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed10" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed11" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed12" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed13" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed14" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed15" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed16" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed17" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed18" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed19" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed20" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed21" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed22" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed23" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed24" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed25" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed26" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed27" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed28" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed29" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Unnamed30" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/Unnamed.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 280.0]">
+        </property>
+    </entity>
+</entity>
