@@ -1,0 +1,1531 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMU30Inc" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="35">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 47, 1663, 955}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1429, 845]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{714.5, 422.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU comes from the version 1.0 SDK&#10;(see $CLASSPATH/vendors/fmusdk/src/models/inc).&#10;It is a counter that is supposed to increment&#10;its output by one every one time unit.&#10;&#10;Here, we try 30 different instances of the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="inc" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 50.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 50.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1125.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="inc2" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1015.0, 50.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1115.0, 50.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="inc3" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 190.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 260.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1355.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="inc4" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1245.0, 50.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter4" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1345.0, 115.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="inc5" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 50.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter5" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, 50.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="inc6" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 195.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter6" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 195.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="inc7" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 195.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter7" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 195.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="inc8" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 195.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter8" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1050.0, 195.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test9" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="inc9" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 195.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter9" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 195.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test10" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 685.0]">
+        </property>
+    </entity>
+    <entity name="inc10" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 620.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter10" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 620.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test11" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[855.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="inc11" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 335.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter11" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 400.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1290.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="inc12" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1180.0, 190.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter12" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1280.0, 260.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test13" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1325.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="inc13" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1215.0, 335.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter13" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1315.0, 335.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test14" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 480.0]">
+        </property>
+    </entity>
+    <entity name="inc14" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 480.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter14" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 545.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test15" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="inc15" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 335.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter15" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 335.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test16" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1330.0, 545.0]">
+        </property>
+    </entity>
+    <entity name="inc16" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1220.0, 480.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter16" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1320.0, 480.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test17" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 545.0]">
+        </property>
+    </entity>
+    <entity name="inc17" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 480.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter17" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 480.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test18" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 830.0]">
+        </property>
+    </entity>
+    <entity name="inc18" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 765.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter18" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 765.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test19" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 620.0]">
+        </property>
+    </entity>
+    <entity name="inc19" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 620.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter19" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 685.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test20" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 685.0]">
+        </property>
+    </entity>
+    <entity name="inc20" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 620.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter20" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1085.0, 620.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test21" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1090.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="inc21" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[980.0, 335.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter21" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1080.0, 335.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test22" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="inc22" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 335.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter22" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 400.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test23" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 480.0]">
+        </property>
+    </entity>
+    <entity name="inc23" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 480.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter23" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 545.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test24" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 545.0]">
+        </property>
+    </entity>
+    <entity name="inc24" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 480.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter24" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 480.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test25" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="inc25" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 335.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter25" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 335.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test26" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 685.0]">
+        </property>
+    </entity>
+    <entity name="inc26" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 620.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter26" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 620.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test27" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 480.0]">
+        </property>
+    </entity>
+    <entity name="inc27" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 480.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter27" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1085.0, 545.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test28" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 765.0]">
+        </property>
+    </entity>
+    <entity name="inc28" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 765.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter28" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 830.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test29" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 685.0]">
+        </property>
+    </entity>
+    <entity name="inc29" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 620.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter29" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 620.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test30" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1330.0, 620.0]">
+        </property>
+    </entity>
+    <entity name="inc30" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/inc.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1220.0, 620.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter30" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1320.0, 685.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.4"/>
+<yRange min="1.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[630.0, 50.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=670.0,y=50.0}, tail={id=&quot;relation2.vertex1&quot;,x=630.0,y=50.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=570.0,y=50.0}, tail={id=&quot;relation2.vertex1&quot;,x=630.0,y=50.0}, points={} },{ head={id=&quot;Test.input&quot;,x=680.0,y=115.0}, tail={id=&quot;relation2.vertex1&quot;,x=630.0,y=50.0}, points={630.0,115.0} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1075.0, 50.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc2.counter&quot;,x=1015.0,y=50.0}, tail={id=&quot;relation.vertex1&quot;,x=1075.0,y=50.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=1125.0,y=115.0}, tail={id=&quot;relation.vertex1&quot;,x=1075.0,y=50.0}, points={1075.0,115.0} },{ head={id=&quot;TimedPlotter2.input&quot;,x=1115.0,y=50.0}, tail={id=&quot;relation.vertex1&quot;,x=1075.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[330.0, 190.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter3.input&quot;,x=370.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=330.0,y=190.0}, points={330.0,260.0} },{ head={id=&quot;Test3.input&quot;,x=380.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=330.0,y=190.0}, points={} },{ head={id=&quot;inc3.counter&quot;,x=270.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=330.0,y=190.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1305.0, 50.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test4.input&quot;,x=1355.0,y=50.0}, tail={id=&quot;relation4.vertex1&quot;,x=1305.0,y=50.0}, points={} },{ head={id=&quot;inc4.counter&quot;,x=1245.0,y=50.0}, tail={id=&quot;relation4.vertex1&quot;,x=1305.0,y=50.0}, points={} },{ head={id=&quot;TimedPlotter4.input&quot;,x=1345.0,y=115.0}, tail={id=&quot;relation4.vertex1&quot;,x=1305.0,y=50.0}, points={1305.0,115.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[850.0, 50.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter5.input&quot;,x=890.0,y=50.0}, tail={id=&quot;relation5.vertex1&quot;,x=850.0,y=50.0}, points={} },{ head={id=&quot;Test5.input&quot;,x=900.0,y=115.0}, tail={id=&quot;relation5.vertex1&quot;,x=850.0,y=50.0}, points={850.0,115.0} },{ head={id=&quot;inc5.counter&quot;,x=790.0,y=50.0}, tail={id=&quot;relation5.vertex1&quot;,x=850.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[560.0, 195.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter6.input&quot;,x=600.0,y=195.0}, tail={id=&quot;relation6.vertex1&quot;,x=560.0,y=195.0}, points={} },{ head={id=&quot;Test6.input&quot;,x=610.0,y=260.0}, tail={id=&quot;relation6.vertex1&quot;,x=560.0,y=195.0}, points={560.0,260.0} },{ head={id=&quot;inc6.counter&quot;,x=500.0,y=195.0}, tail={id=&quot;relation6.vertex1&quot;,x=560.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[105.0, 195.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc7.counter&quot;,x=45.0,y=195.0}, tail={id=&quot;relation7.vertex1&quot;,x=105.0,y=195.0}, points={} },{ head={id=&quot;Test7.input&quot;,x=155.0,y=260.0}, tail={id=&quot;relation7.vertex1&quot;,x=105.0,y=195.0}, points={105.0,260.0} },{ head={id=&quot;TimedPlotter7.input&quot;,x=145.0,y=195.0}, tail={id=&quot;relation7.vertex1&quot;,x=105.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1010.0, 195.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter8.input&quot;,x=1050.0,y=195.0}, tail={id=&quot;relation8.vertex1&quot;,x=1010.0,y=195.0}, points={} },{ head={id=&quot;Test8.input&quot;,x=1060.0,y=260.0}, tail={id=&quot;relation8.vertex1&quot;,x=1010.0,y=195.0}, points={1010.0,260.0} },{ head={id=&quot;inc8.counter&quot;,x=950.0,y=195.0}, tail={id=&quot;relation8.vertex1&quot;,x=1010.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[785.0, 195.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc9.counter&quot;,x=725.0,y=195.0}, tail={id=&quot;relation9.vertex1&quot;,x=785.0,y=195.0}, points={} },{ head={id=&quot;TimedPlotter9.input&quot;,x=825.0,y=195.0}, tail={id=&quot;relation9.vertex1&quot;,x=785.0,y=195.0}, points={} },{ head={id=&quot;Test9.input&quot;,x=835.0,y=260.0}, tail={id=&quot;relation9.vertex1&quot;,x=785.0,y=195.0}, points={785.0,260.0} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[810.0, 620.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc10.counter&quot;,x=750.0,y=620.0}, tail={id=&quot;relation10.vertex1&quot;,x=810.0,y=620.0}, points={} },{ head={id=&quot;TimedPlotter10.input&quot;,x=850.0,y=620.0}, tail={id=&quot;relation10.vertex1&quot;,x=810.0,y=620.0}, points={} },{ head={id=&quot;Test10.input&quot;,x=860.0,y=685.0}, tail={id=&quot;relation10.vertex1&quot;,x=810.0,y=620.0}, points={810.0,685.0} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[805.0, 335.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter11.input&quot;,x=845.0,y=400.0}, tail={id=&quot;relation11.vertex1&quot;,x=805.0,y=335.0}, points={805.0,400.0} },{ head={id=&quot;Test11.input&quot;,x=855.0,y=335.0}, tail={id=&quot;relation11.vertex1&quot;,x=805.0,y=335.0}, points={} },{ head={id=&quot;inc11.counter&quot;,x=745.0,y=335.0}, tail={id=&quot;relation11.vertex1&quot;,x=805.0,y=335.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1240.0, 190.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test12.input&quot;,x=1290.0,y=190.0}, tail={id=&quot;relation12.vertex1&quot;,x=1240.0,y=190.0}, points={} },{ head={id=&quot;inc12.counter&quot;,x=1180.0,y=190.0}, tail={id=&quot;relation12.vertex1&quot;,x=1240.0,y=190.0}, points={} },{ head={id=&quot;TimedPlotter12.input&quot;,x=1280.0,y=260.0}, tail={id=&quot;relation12.vertex1&quot;,x=1240.0,y=190.0}, points={1240.0,260.0} } }">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1275.0, 335.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test13.input&quot;,x=1325.0,y=400.0}, tail={id=&quot;relation13.vertex1&quot;,x=1275.0,y=335.0}, points={1275.0,400.0} },{ head={id=&quot;inc13.counter&quot;,x=1215.0,y=335.0}, tail={id=&quot;relation13.vertex1&quot;,x=1275.0,y=335.0}, points={} },{ head={id=&quot;TimedPlotter13.input&quot;,x=1315.0,y=335.0}, tail={id=&quot;relation13.vertex1&quot;,x=1275.0,y=335.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[340.0, 480.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter14.input&quot;,x=380.0,y=545.0}, tail={id=&quot;relation14.vertex1&quot;,x=340.0,y=480.0}, points={340.0,545.0} },{ head={id=&quot;inc14.counter&quot;,x=280.0,y=480.0}, tail={id=&quot;relation14.vertex1&quot;,x=340.0,y=480.0}, points={} },{ head={id=&quot;Test14.input&quot;,x=390.0,y=480.0}, tail={id=&quot;relation14.vertex1&quot;,x=340.0,y=480.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[340.0, 335.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter15.input&quot;,x=380.0,y=335.0}, tail={id=&quot;relation15.vertex1&quot;,x=340.0,y=335.0}, points={} },{ head={id=&quot;Test15.input&quot;,x=390.0,y=400.0}, tail={id=&quot;relation15.vertex1&quot;,x=340.0,y=335.0}, points={340.0,400.0} },{ head={id=&quot;inc15.counter&quot;,x=280.0,y=335.0}, tail={id=&quot;relation15.vertex1&quot;,x=340.0,y=335.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1280.0, 480.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc16.counter&quot;,x=1220.0,y=480.0}, tail={id=&quot;relation16.vertex1&quot;,x=1280.0,y=480.0}, points={} },{ head={id=&quot;Test16.input&quot;,x=1330.0,y=545.0}, tail={id=&quot;relation16.vertex1&quot;,x=1280.0,y=480.0}, points={1280.0,545.0} },{ head={id=&quot;TimedPlotter16.input&quot;,x=1320.0,y=480.0}, tail={id=&quot;relation16.vertex1&quot;,x=1280.0,y=480.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[810.0, 480.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter17.input&quot;,x=850.0,y=480.0}, tail={id=&quot;relation17.vertex1&quot;,x=810.0,y=480.0}, points={} },{ head={id=&quot;Test17.input&quot;,x=860.0,y=545.0}, tail={id=&quot;relation17.vertex1&quot;,x=810.0,y=480.0}, points={810.0,545.0} },{ head={id=&quot;inc17.counter&quot;,x=750.0,y=480.0}, tail={id=&quot;relation17.vertex1&quot;,x=810.0,y=480.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[105.0, 765.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc18.counter&quot;,x=45.0,y=765.0}, tail={id=&quot;relation18.vertex1&quot;,x=105.0,y=765.0}, points={} },{ head={id=&quot;TimedPlotter18.input&quot;,x=145.0,y=765.0}, tail={id=&quot;relation18.vertex1&quot;,x=105.0,y=765.0}, points={} },{ head={id=&quot;Test18.input&quot;,x=155.0,y=830.0}, tail={id=&quot;relation18.vertex1&quot;,x=105.0,y=765.0}, points={105.0,830.0} } }">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[340.0, 620.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test19.input&quot;,x=390.0,y=620.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=620.0}, points={} },{ head={id=&quot;TimedPlotter19.input&quot;,x=380.0,y=685.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=620.0}, points={340.0,685.0} },{ head={id=&quot;inc19.counter&quot;,x=280.0,y=620.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=620.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1045.0, 620.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc20.counter&quot;,x=985.0,y=620.0}, tail={id=&quot;relation20.vertex1&quot;,x=1045.0,y=620.0}, points={} },{ head={id=&quot;TimedPlotter20.input&quot;,x=1085.0,y=620.0}, tail={id=&quot;relation20.vertex1&quot;,x=1045.0,y=620.0}, points={} },{ head={id=&quot;Test20.input&quot;,x=1095.0,y=685.0}, tail={id=&quot;relation20.vertex1&quot;,x=1045.0,y=620.0}, points={1045.0,685.0} } }">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1040.0, 335.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test21.input&quot;,x=1090.0,y=400.0}, tail={id=&quot;relation21.vertex1&quot;,x=1040.0,y=335.0}, points={1040.0,400.0} },{ head={id=&quot;inc21.counter&quot;,x=980.0,y=335.0}, tail={id=&quot;relation21.vertex1&quot;,x=1040.0,y=335.0}, points={} },{ head={id=&quot;TimedPlotter21.input&quot;,x=1080.0,y=335.0}, tail={id=&quot;relation21.vertex1&quot;,x=1040.0,y=335.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[105.0, 335.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test22.input&quot;,x=155.0,y=335.0}, tail={id=&quot;relation22.vertex1&quot;,x=105.0,y=335.0}, points={} },{ head={id=&quot;inc22.counter&quot;,x=45.0,y=335.0}, tail={id=&quot;relation22.vertex1&quot;,x=105.0,y=335.0}, points={} },{ head={id=&quot;TimedPlotter22.input&quot;,x=145.0,y=400.0}, tail={id=&quot;relation22.vertex1&quot;,x=105.0,y=335.0}, points={105.0,400.0} } }">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[105.0, 480.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test23.input&quot;,x=155.0,y=480.0}, tail={id=&quot;relation23.vertex1&quot;,x=105.0,y=480.0}, points={} },{ head={id=&quot;inc23.counter&quot;,x=45.0,y=480.0}, tail={id=&quot;relation23.vertex1&quot;,x=105.0,y=480.0}, points={} },{ head={id=&quot;TimedPlotter23.input&quot;,x=145.0,y=545.0}, tail={id=&quot;relation23.vertex1&quot;,x=105.0,y=480.0}, points={105.0,545.0} } }">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[575.0, 480.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc24.counter&quot;,x=515.0,y=480.0}, tail={id=&quot;relation24.vertex1&quot;,x=575.0,y=480.0}, points={} },{ head={id=&quot;TimedPlotter24.input&quot;,x=615.0,y=480.0}, tail={id=&quot;relation24.vertex1&quot;,x=575.0,y=480.0}, points={} },{ head={id=&quot;Test24.input&quot;,x=625.0,y=545.0}, tail={id=&quot;relation24.vertex1&quot;,x=575.0,y=480.0}, points={575.0,545.0} } }">
+        </property>
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[575.0, 335.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc25.counter&quot;,x=515.0,y=335.0}, tail={id=&quot;relation25.vertex1&quot;,x=575.0,y=335.0}, points={} },{ head={id=&quot;TimedPlotter25.input&quot;,x=615.0,y=335.0}, tail={id=&quot;relation25.vertex1&quot;,x=575.0,y=335.0}, points={} },{ head={id=&quot;Test25.input&quot;,x=625.0,y=400.0}, tail={id=&quot;relation25.vertex1&quot;,x=575.0,y=335.0}, points={575.0,400.0} } }">
+        </property>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[105.0, 620.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test26.input&quot;,x=155.0,y=685.0}, tail={id=&quot;relation26.vertex1&quot;,x=105.0,y=620.0}, points={105.0,685.0} },{ head={id=&quot;TimedPlotter26.input&quot;,x=145.0,y=620.0}, tail={id=&quot;relation26.vertex1&quot;,x=105.0,y=620.0}, points={} },{ head={id=&quot;inc26.counter&quot;,x=45.0,y=620.0}, tail={id=&quot;relation26.vertex1&quot;,x=105.0,y=620.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1045.0, 480.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc27.counter&quot;,x=985.0,y=480.0}, tail={id=&quot;relation27.vertex1&quot;,x=1045.0,y=480.0}, points={} },{ head={id=&quot;Test27.input&quot;,x=1095.0,y=480.0}, tail={id=&quot;relation27.vertex1&quot;,x=1045.0,y=480.0}, points={} },{ head={id=&quot;TimedPlotter27.input&quot;,x=1085.0,y=545.0}, tail={id=&quot;relation27.vertex1&quot;,x=1045.0,y=480.0}, points={1045.0,545.0} } }">
+        </property>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[340.0, 765.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;TimedPlotter28.input&quot;,x=380.0,y=830.0}, tail={id=&quot;relation28.vertex1&quot;,x=340.0,y=765.0}, points={340.0,830.0} },{ head={id=&quot;Test28.input&quot;,x=390.0,y=765.0}, tail={id=&quot;relation28.vertex1&quot;,x=340.0,y=765.0}, points={} },{ head={id=&quot;inc28.counter&quot;,x=280.0,y=765.0}, tail={id=&quot;relation28.vertex1&quot;,x=340.0,y=765.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[575.0, 620.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;Test29.input&quot;,x=625.0,y=685.0}, tail={id=&quot;relation29.vertex1&quot;,x=575.0,y=620.0}, points={575.0,685.0} },{ head={id=&quot;inc29.counter&quot;,x=515.0,y=620.0}, tail={id=&quot;relation29.vertex1&quot;,x=575.0,y=620.0}, points={} },{ head={id=&quot;TimedPlotter29.input&quot;,x=615.0,y=620.0}, tail={id=&quot;relation29.vertex1&quot;,x=575.0,y=620.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[1280.0, 620.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=135.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;inc.counter&quot;,x=35.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=170.0}, points={95.0,235.0} },{ head={id=&quot;inc30.counter&quot;,x=1220.0,y=620.0}, tail={id=&quot;relation30.vertex1&quot;,x=1280.0,y=620.0}, points={} },{ head={id=&quot;TimedPlotter30.input&quot;,x=1320.0,y=685.0}, tail={id=&quot;relation30.vertex1&quot;,x=1280.0,y=620.0}, points={1280.0,685.0} },{ head={id=&quot;Test30.input&quot;,x=1330.0,y=620.0}, tail={id=&quot;relation30.vertex1&quot;,x=1280.0,y=620.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation2"/>
+    <link port="inc.counter" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="inc2.counter" relation="relation"/>
+    <link port="TimedPlotter2.input" relation="relation"/>
+    <link port="Test3.input" relation="relation3"/>
+    <link port="inc3.counter" relation="relation3"/>
+    <link port="TimedPlotter3.input" relation="relation3"/>
+    <link port="Test4.input" relation="relation4"/>
+    <link port="inc4.counter" relation="relation4"/>
+    <link port="TimedPlotter4.input" relation="relation4"/>
+    <link port="Test5.input" relation="relation5"/>
+    <link port="inc5.counter" relation="relation5"/>
+    <link port="TimedPlotter5.input" relation="relation5"/>
+    <link port="Test6.input" relation="relation6"/>
+    <link port="inc6.counter" relation="relation6"/>
+    <link port="TimedPlotter6.input" relation="relation6"/>
+    <link port="Test7.input" relation="relation7"/>
+    <link port="inc7.counter" relation="relation7"/>
+    <link port="TimedPlotter7.input" relation="relation7"/>
+    <link port="Test8.input" relation="relation8"/>
+    <link port="inc8.counter" relation="relation8"/>
+    <link port="TimedPlotter8.input" relation="relation8"/>
+    <link port="Test9.input" relation="relation9"/>
+    <link port="inc9.counter" relation="relation9"/>
+    <link port="TimedPlotter9.input" relation="relation9"/>
+    <link port="Test10.input" relation="relation10"/>
+    <link port="inc10.counter" relation="relation10"/>
+    <link port="TimedPlotter10.input" relation="relation10"/>
+    <link port="Test11.input" relation="relation11"/>
+    <link port="inc11.counter" relation="relation11"/>
+    <link port="TimedPlotter11.input" relation="relation11"/>
+    <link port="Test12.input" relation="relation12"/>
+    <link port="inc12.counter" relation="relation12"/>
+    <link port="TimedPlotter12.input" relation="relation12"/>
+    <link port="Test13.input" relation="relation13"/>
+    <link port="inc13.counter" relation="relation13"/>
+    <link port="TimedPlotter13.input" relation="relation13"/>
+    <link port="Test14.input" relation="relation14"/>
+    <link port="inc14.counter" relation="relation14"/>
+    <link port="TimedPlotter14.input" relation="relation14"/>
+    <link port="Test15.input" relation="relation15"/>
+    <link port="inc15.counter" relation="relation15"/>
+    <link port="TimedPlotter15.input" relation="relation15"/>
+    <link port="Test16.input" relation="relation16"/>
+    <link port="inc16.counter" relation="relation16"/>
+    <link port="TimedPlotter16.input" relation="relation16"/>
+    <link port="Test17.input" relation="relation17"/>
+    <link port="inc17.counter" relation="relation17"/>
+    <link port="TimedPlotter17.input" relation="relation17"/>
+    <link port="Test18.input" relation="relation18"/>
+    <link port="inc18.counter" relation="relation18"/>
+    <link port="TimedPlotter18.input" relation="relation18"/>
+    <link port="Test19.input" relation="relation19"/>
+    <link port="inc19.counter" relation="relation19"/>
+    <link port="TimedPlotter19.input" relation="relation19"/>
+    <link port="Test20.input" relation="relation20"/>
+    <link port="inc20.counter" relation="relation20"/>
+    <link port="TimedPlotter20.input" relation="relation20"/>
+    <link port="Test21.input" relation="relation21"/>
+    <link port="inc21.counter" relation="relation21"/>
+    <link port="TimedPlotter21.input" relation="relation21"/>
+    <link port="Test22.input" relation="relation22"/>
+    <link port="inc22.counter" relation="relation22"/>
+    <link port="TimedPlotter22.input" relation="relation22"/>
+    <link port="Test23.input" relation="relation23"/>
+    <link port="inc23.counter" relation="relation23"/>
+    <link port="TimedPlotter23.input" relation="relation23"/>
+    <link port="Test24.input" relation="relation24"/>
+    <link port="inc24.counter" relation="relation24"/>
+    <link port="TimedPlotter24.input" relation="relation24"/>
+    <link port="Test25.input" relation="relation25"/>
+    <link port="inc25.counter" relation="relation25"/>
+    <link port="TimedPlotter25.input" relation="relation25"/>
+    <link port="Test26.input" relation="relation26"/>
+    <link port="inc26.counter" relation="relation26"/>
+    <link port="TimedPlotter26.input" relation="relation26"/>
+    <link port="Test27.input" relation="relation27"/>
+    <link port="inc27.counter" relation="relation27"/>
+    <link port="TimedPlotter27.input" relation="relation27"/>
+    <link port="Test28.input" relation="relation28"/>
+    <link port="inc28.counter" relation="relation28"/>
+    <link port="TimedPlotter28.input" relation="relation28"/>
+    <link port="Test29.input" relation="relation29"/>
+    <link port="inc29.counter" relation="relation29"/>
+    <link port="TimedPlotter29.input" relation="relation29"/>
+    <link port="Test30.input" relation="relation30"/>
+    <link port="inc30.counter" relation="relation30"/>
+    <link port="TimedPlotter30.input" relation="relation30"/>
+</entity>
