@@ -761,7 +761,7 @@ public abstract class BaseType implements Type {
 
         @Override
         public int getTypeHash() {
-            return 15;
+            return 16;
         }
     }
 
