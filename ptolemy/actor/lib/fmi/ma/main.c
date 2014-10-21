@@ -29,6 +29,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+#include <stdbool.h>
 #include "fmi.h"
 #include "sim_support.h"
 
@@ -60,6 +62,10 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     ModelDescription* md = fmu->modelDescription;
     // global unique id of the fmu
     const char *guid = getAttributeValue((Element *)md, att_guid);
+    // check for ability to get and set state
+
+    fmu->canGetAndSetFMUstate = getAttributeBool((Element*)getCoSimulation(md), att_canGetAndSetFMUstate, &vs);
+    fmu->canGetMaxStepSize = getAttributeBool((Element*)getCoSimulation(md), att_canGetMaxStepSize, &vs);
     // instance name
     const char *instanceName = getAttributeValue((Element *)getCoSimulation(md), att_modelIdentifier);
     // path to the fmu resources as URL, "file://C:\QTronic\sales"
@@ -116,6 +122,27 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     return comp;
 }
 
+static fmiStatus checkForLegacyFMUs(FMU* fmus, int numberOfFMUs, fmiBoolean *legacyFMU) {
+    int i;
+
+    printf("Rolling back FMUs!\n");
+
+    for (i = 0; i < numberOfFMUs - 1; i++) {
+        if (!fmus[i].canGetAndSetFMUstate) {
+            printf("Legacy FMU has been detected and it's not at the end of the topological sort.\n");
+            return fmiError;
+        }
+    }
+
+    // Check for last FMU in topological sort and set boolean flag to fmiTrue, if legacy FMU is present
+    if(!fmus[numberOfFMUs-1].canGetAndSetFMUstate) {
+        *legacyFMU = fmiTrue;
+        printf("Legacy FMU detected.\n");
+    } else { *legacyFMU = fmiFalse; }
+
+    return fmiOK;
+}
+
 static fmiStatus rollbackFMUs(FMU *fmus, int numberOfFMUs) {
         int i;
         fmiStatus fmiFlag;
@@ -123,34 +150,56 @@ static fmiStatus rollbackFMUs(FMU *fmus, int numberOfFMUs) {
         printf("Rolling back FMUs!\n");
 
         for (i = 0; i < numberOfFMUs; i++) {
-                fmiFlag = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-                if (fmiFlag > fmiWarning) {
-                        printf("Rolling back FMU %d failed!\n", i+1);
-                        return fmiFlag;
-                }
+            fmiFlag = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+            if (fmiFlag > fmiWarning) {
+                    printf("Rolling back FMU %d failed!\n", i+1);
+                    return fmiFlag;
+            }
         }
+
         return fmiOK;
 }
 
 static fmiStatus setValue(portConnection* connection)
 {
-    // FIXME: Currently does not support type recognition
-
     fmiStatus fmiFlag;
     fmiInteger tempInt;
     fmiReal tempReal;
+    fmiBoolean tempBoolean;
+    fmiString tempString;
 
     // get source value and cast if neccessary
     switch (connection->sourceType) {
         case fmi_Integer :
             fmiFlag = connection->sourceFMU->getInteger(connection->sourceFMU->component, &connection->sourcePort, 1, &tempInt);
             tempReal = (fmiReal)tempInt;
+            tempBoolean = (tempInt == 0 ? fmiFalse : fmiTrue);
             break;
         case fmi_Real :
             fmiFlag = connection->sourceFMU->getReal(connection->sourceFMU->component, &connection->sourcePort, 1, &tempReal);
+            tempInt = (fmiInteger)round(tempReal);
+            tempBoolean = (tempReal == 0.0 ? fmiFalse : fmiTrue);
+            break;
+        case fmi_Boolean :
+            fmiFlag = connection->sourceFMU->getBoolean(connection->sourceFMU->component, &connection->sourcePort, 1, &tempBoolean);
+            tempInt = (fmiInteger)tempBoolean;
+            tempReal = (fmiReal)tempBoolean;
+            break;
+        case fmi_String :
+            fmiFlag = connection->sourceFMU->getString(connection->sourceFMU->component, &connection->sourcePort, 1, &tempString);
             break;
         default :
             return fmiError;
+    }
+
+    if (fmiFlag > fmiWarning) {
+        printf("Getting the value of an FMU caused an error.");
+        return fmiFlag;
+    }
+
+    if (connection->sourceType != connection->sinkType && (connection->sinkType == fmi_String || connection ->sourceType == fmi_String)) {
+        printf("A connection of FMUs has incompatible data types. Terminating simulation.\n");
+        return fmiError;
     }
 
     // set sink value
@@ -160,6 +209,12 @@ static fmiStatus setValue(portConnection* connection)
             break;
         case fmi_Real :
             fmiFlag = connection->sinkFMU->setReal(connection->sinkFMU->component, &connection->sinkPort, 1, &tempReal);
+            break;
+        case fmi_Boolean :
+            fmiFlag = connection->sinkFMU->setBoolean(connection->sinkFMU->component, &connection->sinkPort, 1, &tempBoolean);
+            break;
+        case fmi_String :
+            fmiFlag = connection->sinkFMU->setString(connection->sinkFMU->component, &connection->sinkPort, 1, &tempString);
             break;
         default :
             return fmiError;
@@ -174,9 +229,10 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
     // set up experiment
     double time = tStart;
     double stepSize = h;
-    double newStepSize = h;
 
-        // temporary variables
+    // temporary variables
+    fmiBoolean doStepOnLegacy = fmiTrue;
+    fmiBoolean legacyFMU = fmiFalse;
     fmiStatus fmiFlag = fmiOK;   // return code of the fmu functions
     fmiStatus simulationFlag = fmiOK; // status of the whole simulation
     int i = 0;
@@ -191,14 +247,24 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
         return 0; // failure
     }
 
+    // Check for legacy FMUs
+    if (checkForLegacyFMUs(fmus, NUMBER_OF_FMUS, &legacyFMU) > fmiWarning) {
+        goto endSimulation;
+    }
+
+    // Set input values
+    for (i = 0 ; i < NUMBER_OF_EDGES; i++) {
+        setValue(&connections[i]);
+    }
+
     // TODO: Should be done by an FMU
     // output solution for time t0
-    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, TRUE);  // output column names
-    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values
+    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, TRUE);  // output column names
+    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values
 
     // enter the simulation loop
 
-    // FIXME: remove evil gotos!!
+    // TODO: Find consistent error checking!!
     while (time < tEnd) {
         // Run trough the topologically sorted list of FMUs (Master-Step)
 
@@ -207,9 +273,24 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
             setValue(&connections[i]);
         }
 
-        // Save the current state of all FMUs
-        // TODO: The implementation does not yet take FMUs into account, that do not support get and set state.
-        for (i = 0 ; i < NUMBER_OF_FMUS ; i++) {
+/* TODO: getMaxStepSize() support. Needs change of FMI header files.
+ *
+        // Save current state of all FMUs. Skip legacy FMU if present.
+        for (i = 0 ; i < NUMBER_OF_FMUS - legacyFMU ; i++) {
+            if (fmus[i]->canGetMaxStepSize) {
+                fmiFlag = fmus[i].getMaxStepSize(fmus[i].component, &tempMaxStepSize);
+
+                if (fmiFlag > fmiWarning) {
+                    printf("Saving state of FMU at index %d failed. Terminating simulation.", i);
+                    goto endSimulation;
+                }
+                // Update step size if new step size is smaller
+                stepSize = min(stepSize, tempMaxStepSize);
+            }
+        }
+*/
+        // Save current state of all FMUs. Skip legacy FMU if present.
+        for (i = 0 ; i < NUMBER_OF_FMUS - legacyFMU ; i++) {
             fmiFlag = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
 
             if (fmiFlag > fmiWarning) {
@@ -218,8 +299,11 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
             }
         }
 
-        // Try doStep() for all FMUs and find acceptable stepSize
-            for (i = 0 ; i < NUMBER_OF_FMUS; i++) {
+        // reset simulationFlag
+        simulationFlag = fmiOK;
+
+        // Try doStep() for all FMUs and find acceptable stepSize (skip legacy FMU if present and doStepOnLegacy != fmiTrue)
+        for (i = 0 ; i < NUMBER_OF_FMUS-(legacyFMU && !doStepOnLegacy); i++) {
             // Try doStep() and check if FMU accepts the step size
             fmiFlag = fmus[i].doStep(fmus[i].component, time, stepSize, fmiFalse);
 
@@ -235,31 +319,26 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
             if (fmiFlag == fmiDiscard) {
                 fmiReal lastSuccessfulTime;
                 fmus[i].getRealStatus(fmus[i].component, fmiLastSuccessfulTime, &lastSuccessfulTime);
-                newStepSize = min(stepSize, (lastSuccessfulTime - time));  // setting step size to successful step size of current fmu if smaller
+                stepSize = min(stepSize, (lastSuccessfulTime - time));  // setting step size to successful step size of current fmu if smaller
                 simulationFlag = fmiDiscard;
             }
         }
 
-        // Set new step size
-        stepSize = newStepSize;
-
-            if (simulationFlag == fmiDiscard) {
-                // TODO: There is currently no way to determine, which FMU supports rollback and which does not!
-                // There has to be a flag in the FMU struct so that we can go over all FMUs. The implementation below is a hack!
-                fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS );
+        // Rolling back FMUs if step size was rejected. Skip legacy FMU if present.
+        if (simulationFlag == fmiDiscard) {
+            fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS - legacyFMU );
             if (fmiFlag > fmiWarning) {
                 printf("Rolling back of FMUs failed. Terminating simulation.");
                 goto endSimulation;
             }
+        }
 
-            }
+        if (simulationFlag != fmiDiscard) {
+            time += stepSize;
+        }
 
-            if (simulationFlag != fmiDiscard) {
-                time += stepSize;
-            }
-
-            // TODO: Should be done by FMU
-        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values for this step
+        // TODO: Should be done by FMU
+        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
     }

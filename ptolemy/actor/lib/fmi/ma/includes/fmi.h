@@ -30,6 +30,8 @@ typedef struct {
     fmiCallbackFunctions callbacks;
     fmiComponent component;
     fmiFMUstate lastFMUstate;
+    fmiBoolean canGetAndSetFMUstate;
+    fmiBoolean canGetMaxStepSize;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
