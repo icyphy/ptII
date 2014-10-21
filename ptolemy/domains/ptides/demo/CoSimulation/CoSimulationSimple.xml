@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CoSimulationSimple" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300">
@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-69.81498209635413, 2.4971923828125}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to do co-simulation&#10;of functional models and architecture&#10;mapping models. ">
@@ -261,12 +261,10 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
                 </property>
             </property>
-            <property name="scheduler" class="ptolemy.data.expr.Parameter" value="SchedulerModel">
-            </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="to observe executions during simulation: double click">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="to observe executions during simulation, &#10;use &quot;listen to actor&quot; from right click menu">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 80.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 25.0]">
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                 </property>
@@ -276,7 +274,7 @@
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The top level MoC of the functional model is &#10;DE. We use Ptides here because it allows &#10;specification of logical and physical time. &#10;The time in the DE MoC is logical time, the&#10;physical time is used to simulate execution &#10;time.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 275.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 275.0]">
                 </property>
                 <property name="scheduler" class="ptolemy.data.expr.Parameter" value="">
                 </property>
@@ -297,6 +295,10 @@
                     </property>
                     <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
+                </property>
+                <property name="_editorFactory" class="ptolemy.actor.gui.ExecutionAspectPlotterEditorFactory">
+                </property>
+                <property name="_editorFactory2" class="ptolemy.actor.gui.ExecutionAspectPlotterEditorFactory">
                 </property>
             </entity>
             <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -373,6 +375,18 @@
                     <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
                     </property>
                 </property>
+                <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                    </property>
+                    <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </property>
                 <port name="port2" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 125.0]">
@@ -412,6 +426,18 @@
                         <property name="LOWEST_PRIORITY" class="ptolemy.data.expr.Parameter" value="2147483647">
                         </property>
                         <property name="priority" class="ptolemy.data.expr.Parameter" value="LOWEST_PRIORITY">
+                        </property>
+                    </property>
+                    <property name="DecoratorAttributesFor_PtidesDirector" class="ptolemy.domains.ptides.kernel.ThrottleAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="PtidesPlatform.PtidesPlatformContents.PtidesDirector">
+                        </property>
+                        <property name="useMaximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumLookaheadTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="useMaximumFutureEvents" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="maximumFutureEvents" class="ptolemy.data.expr.Parameter" value="0">
                         </property>
                     </property>
                     <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
@@ -564,7 +590,7 @@
                 <link port="Ramp.output" relation="relation3"/>
             </entity>
             <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 408, 431, 251}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={389, 585, 431, 251}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[431, 207]">
                 </property>
@@ -601,7 +627,7 @@
                 </configure>
             </entity>
             <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={800, 384, 431, 244}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={876, 601, 431, 244}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[431, 200]">
                 </property>
@@ -632,7 +658,7 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="10.0" max="300.0"/>
+<xRange min="4.4" max="294.40000000000003"/>
 <yRange min="3.010299956639811" max="56.47071809921773"/>
 </plot>?>
                 </configure>
