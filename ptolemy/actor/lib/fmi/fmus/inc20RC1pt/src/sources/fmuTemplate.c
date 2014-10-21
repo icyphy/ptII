@@ -661,6 +661,7 @@ fmiStatus fmiCancelStep(fmiComponent c) {
 fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance *comp = (ModelInstance *)c;
+    comp->communicationStepSize = communicationStepSize;
     double h = communicationStepSize / 10;
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0

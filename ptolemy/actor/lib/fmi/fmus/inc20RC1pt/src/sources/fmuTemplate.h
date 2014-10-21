@@ -45,6 +45,7 @@ typedef struct {
     fmiBoolean *isPositive;
 
     fmiReal time;
+    fmiReal communicationStepSize;
     fmiString instanceName;
     fmiType type;
     fmiString GUID;

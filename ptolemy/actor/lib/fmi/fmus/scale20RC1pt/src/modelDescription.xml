@@ -7,7 +7,8 @@
 
 <CoSimulation
   modelIdentifier="scale20RC1pt"
-  canHandleVariableCommunicationStepSize="true"/>
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"/>
 
 <LogCategories>
   <Category name="logAll"/>

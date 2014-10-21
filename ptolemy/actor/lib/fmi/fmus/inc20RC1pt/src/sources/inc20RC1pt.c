@@ -47,13 +47,28 @@ void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 
 // used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
-    i(counter_) += 1;
-    if (i(counter_) == 13)
+    int floorTime = (int)comp->time;
+    if (i(counter_) >= 13 && comp->communicationStepSize >= 0.5) {
         eventInfo->terminateSimulation = fmiTrue;
+    }
+    if (comp->time - floorTime <= 0.000000001) {
+        i(counter_) += 1;
+    }
     else {
         eventInfo->nextEventTimeDefined   = fmiTrue;
         eventInfo->nextEventTime          = 1 + comp->time;
     }
+}
+
+// FMI function for getting max step size as proposed in the EMSOFT Paper of 2013
+fmiStatus fmiGetMaxStepSize (fmiComponent c, fmiReal *maxStepSize) {
+    ModelInstance *comp = (ModelInstance*)c;
+    if (i(counter_)<13) {
+        *maxStepSize = 1;
+    } else {
+        *maxStepSize = 0.5;
+    }
+    return fmiOK;
 }
 
 // include code that implements the FMI based on the above definitions
