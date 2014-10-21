@@ -86,7 +86,6 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	DateToEventIcon.xml \
-	DateToModelTime.xml \
 	deentities.xml \
 	DerivativeIcon.xml \
 	DerivativeIcon.gif \
