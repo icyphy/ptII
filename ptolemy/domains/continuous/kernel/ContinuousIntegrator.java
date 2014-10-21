@@ -414,6 +414,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      */
     @Override
     public void initialize() throws IllegalActionException {
+        if (!(getDirector() instanceof ContinuousDirector)) {
+            throw new IllegalActionException(this, "This actor can only be run in"
+                    + " a ContinuousDirector.");
+        }
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
         if (dir == null) {
