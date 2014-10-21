@@ -95,7 +95,7 @@ public interface Type {
      *  to return HASH_INVALID, than to return a number that is not
      *  unique, or different number for the same type from different
      *  instances.
-     *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
+     *  @return A number greater than or equal to 0, or HASH_INVALID.
      */
     public int getTypeHash();
 
@@ -201,6 +201,6 @@ public interface Type {
     public static final int HASH_INVALID = Integer.MIN_VALUE;
 
     // The maximum size of the type hash. 
-    // HASH_MAX was used in TypeLattice but as of r66807is no longer used.
+    // HASH_MAX was used in TypeLattice but as of r66807 is no longer used.
     //public static final int HASH_MAX = 16;
 }

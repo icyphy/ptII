@@ -159,7 +159,7 @@ public abstract class BaseType implements Type {
      *  to return HASH_INVALID, than to return a number that is not
      *  unique, or different number for the same type from different
      *  instances.  This base class returns HASH_INVALID.
-     *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
+     *  @return A number greater than or equal to 0, or HASH_INVALID.
      */
     @Override
     public int getTypeHash() {
