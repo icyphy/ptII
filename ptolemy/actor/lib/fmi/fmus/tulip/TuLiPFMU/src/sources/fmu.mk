@@ -5,14 +5,6 @@
 # Instead, update fmus/fmu.mk and run "make update_makefiles"
 
 # The build_fmu script calls make with the appropriate makefile variables set.
-#
-# The makefile sets some variables and then includes fmu.mk.
-#
-# Useful variables to set in the makefile are:
-# FMU_NAME - always needs to be set
-# CFLAGS
-# USERLIBS
-
 # Below are the defaults for our environment.
 
 # The architecture: linux32, linux64, darwin32, darwin64

@@ -1,0 +1,18 @@
+<fmiModelDescription
+    description="Discrete Time Controller"
+    fmiVersion="1.5"
+    guid="{3c8b1df2-5349-11e4-b587-94de8060c546}"
+    modelName="TuLiPFMU">
+
+<CoSimulation modelIdentifier="TuLiPFMU"             canHandleVariableCommunicationStepSize="true"             canHandleEvents="true"             canProvideMaxStepSize="true"/>
+<ModelVariables>
+<ScalarVariable name="u0"                 valueReference="0"                 description="output"                 causality="output"><Real/>
+</ScalarVariable>
+<ScalarVariable name="u1"                 valueReference="1"                 description="output"                 causality="output"><Real/>
+</ScalarVariable>
+<ScalarVariable name="y0"                 valueReference="2"                 description="input"                 causality="input"><Real/>
+</ScalarVariable>
+<ScalarVariable name="y1"                 valueReference="3"                 description="input"                 causality="input"><Real/>
+</ScalarVariable>
+<ScalarVariable name="park"                 valueReference="4"                 description="input"                 causality="input"><Integer/></ScalarVariable></ModelVariables>
+</fmiModelDescription>

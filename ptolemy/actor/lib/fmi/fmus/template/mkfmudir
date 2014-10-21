@@ -34,6 +34,7 @@ fi
 
 
 YEAR=`date +%Y`
+GUID=`uuidgen`
 
 cat > $fmuName/makefile <<EOF
 
@@ -76,7 +77,7 @@ EOF
 
 mkdir $fmuName/src
 
-#cp $fmiTemplateDirectory/model.png $fmuName/src
+cp $fmiTemplateDirectory/model.png $fmuName/src
 
 mkdir $fmuName/src/binaries
 
@@ -116,7 +117,7 @@ cat > $fmuName/src/modelDescription.xml <<EOF3
 <fmiModelDescription
   description="TBD"
   fmiVersion="2.0"
-  guid="{0e634258-412b-4602-a29d-e7882503fd59}"
+  guid="{$GUID}"
   modelName="$fmuName"
   numberOfEventIndicators="42"
    >
@@ -146,6 +147,8 @@ cp $fmiTemplateDirectory/sources/{build_fmu,build_fmu.bat,fmu.mk} $fmuName/src/s
 cp $fmiTemplateDirectory/sources/fmuTemplate_$fmiVersion.c $fmuName/src/sources/fmuTemplate.c
 cp $fmiTemplateDirectory/sources/fmuTemplate_$fmiVersion.h $fmuName/src/sources/fmuTemplate.h
 cp $fmiSourceDirectory/{fmi2FunctionTypes.h,fmi2Functions.h,fmi2TypesPlatform.h} $fmuName/src/sources
+sed -e "s/@@GIUD@@/$GUID/" \
+    -e "s/@@fmuName@@/$fmuName/" < $fmiSourceDirectory/fmuName.c > $fmuName/src/sources/$fmuName.c
 
 cat > $fmuName/src/sources/makefile <<EOF4
 # $Id$
