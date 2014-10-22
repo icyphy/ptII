@@ -12,12 +12,12 @@
 typedef struct Controller {
     pfloat *u;            // The output of the feedback controller
     pfloat *y;            // The input of the feedback controller
-    pfloat *hatx;         // The state estimates 
+    pfloat *hatx;         // The state estimates
     idxint dRegion;       // The discrete region of the system
-    idxint goal;          // The next discrete region of the system 
+    idxint goal;          // The next discrete region of the system
     idxint nSteps;        // The number of steps left to reach the goal
     idxint *dInput;       // The discrete input
-    FSM *fsm;                
+    FSM *fsm;
 }Controller;
 
 /*Methods-----------------------------------------*/
@@ -37,9 +37,9 @@ void free_controller(Controller* controller);
 
 void transition_function(Controller* controller);
 
-void output_function(Controller* controller, pfloat u[]); 
+void output_function(Controller* controller, pfloat u[]);
 
-void input_function(Controller* controller, const pfloat y[], const idxint dInput[]); 
+void input_function(Controller* controller, const pfloat y[], const idxint dInput[]);
 
 void estimate_function(Controller* controller);
 
@@ -57,11 +57,11 @@ void display_controller(Controller* controller);
  * N is the window size
  * l1 is the number of inequalities describing polytope 1
  * l2 is the number of inequalities describing polytope 2
- * u0 is the input at time 0, which is the solution of the optimization problem 
+ * u0 is the input at time 0, which is the solution of the optimization problem
  * the entries of any n by m matrix X is assumed to be arranged as[X11,X21,...,Xn1,X12,...,Xn2,...,X1m,...,Xnm]
  */
-idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pfloat* A, const pfloat* B, 
-                const pfloat* A1, const pfloat* b1, const idxint l1, 
+idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pfloat* A, const pfloat* B,
+                const pfloat* A1, const pfloat* b1, const idxint l1,
                 const pfloat* A2, const pfloat* b2, const idxint l2,
                        const pfloat* x0, const pfloat* xc, pfloat* u0);
 

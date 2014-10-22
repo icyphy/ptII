@@ -42,7 +42,7 @@ package ptolemy.gui;
 public interface EditableParametersDialog {
     // This interface exists so that ptolemy.gui.Query does
     // not depend on ptolemy.actor.gui.EditParametersDialog.
-    
+
     /** Do the layout and then pack.
      */
     public void doLayoutAndPack();

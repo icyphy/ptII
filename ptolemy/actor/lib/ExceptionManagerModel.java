@@ -57,7 +57,7 @@ public class ExceptionManagerModel extends CompositeEntity {
         super(workspace);
         _modelContainer = null;
     }
-    
+
     /** Create a new ExceptionManagerModel with the specified name and container.
      *  @param container The container for the solver model.
      *  @param name The name for the solver model.
@@ -65,13 +65,13 @@ public class ExceptionManagerModel extends CompositeEntity {
      *  @exception NameDuplicationException If the container already contains an
      *   entity with the specified name.
      */
-    
+
     public ExceptionManagerModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _modelContainer = null;
     }
-    
+
 
     /** Create a new ExceptionManagerModel with the specified workspace and the
      *  specified ExceptionManager.

@@ -1,4 +1,4 @@
-/* An Input-agnostic OSC message receiver and decoder. 
+/* An Input-agnostic OSC message receiver and decoder.
 
 Copyright (c) 2014 The Regents of the University of California.
 All rights reserved.
@@ -29,7 +29,7 @@ package org.ptolemy.osc;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap; 
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.ptolemy.machineLearning.hmm.HMMGaussianEstimator;
 
@@ -72,7 +72,7 @@ for the full OSC Specification.
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
@@ -87,23 +87,23 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
      */
     public OscReceiver(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name); 
+        super(container, name);
 
         port = new Parameter(this, "port");
         port.setTypeEquals(BaseType.INT);
         port.setExpression("9000");
 
-        _receivedTokens = new ConcurrentHashMap<String, List<Object>>(); 
+        _receivedTokens = new ConcurrentHashMap<String, List<Object>>();
     }
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OscReceiver newObject = (OscReceiver) super
                 .clone(workspace);
-        newObject._receivedTokens = new ConcurrentHashMap<String, List<Object>>();  
+        newObject._receivedTokens = new ConcurrentHashMap<String, List<Object>>();
         newObject.oscP5 = null;
         return newObject;
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -123,19 +123,19 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
         if (attribute == port) {
             int portValue = ((IntToken) port.getToken()).intValue();
             _port = portValue;
-        } else { 
+        } else {
             super.attributeChanged(attribute);
         }
     }
 
     public void initialize() throws IllegalActionException {
-        super.initialize(); 
+        super.initialize();
         _constructOscReceiver(_port);
     }
 
     public void fire() throws IllegalActionException {
 
-        super.fire(); 
+        super.fire();
         // Send received tokens to corresponding output ports
         // Remove from list if ports do not exist
         boolean portTypeDefined = false;
@@ -151,7 +151,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                             if (destinationPort.getType() != null) {
                                 portTypeDefined = true;
                             }
-                            for (Object token : _receivedTokens.get(identifier)) { 
+                            for (Object token : _receivedTokens.get(identifier)) {
 
                                 if (token instanceof Double) {
                                     if (!portTypeDefined) {
@@ -181,17 +181,17 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                                     if (!portTypeDefined) {
                                         destinationPort.setTypeEquals(BaseType.OBJECT);
                                         portTypeDefined = true;
-                                    } 
+                                    }
                                     destinationPort.send(0, new ObjectToken(token));
                                 }
                             }
                             _receivedTokens.get(identifier).clear(); // reset list
                         }
                     }
-                } 
-            } 
+                }
+            }
         }
-    }  
+    }
 
     public boolean postfire() throws IllegalActionException {
         this._receivedTokens.clear();
@@ -199,11 +199,11 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
     }
 
     /* incoming osc message are forwarded to the oscEvent method. */
-    public void oscEvent(OscMessage theMessage) { 
+    public void oscEvent(OscMessage theMessage) {
         synchronized(this) {
-            try { 
+            try {
                 Object[] receivedData = theMessage.arguments();
-                String addressPattern = theMessage.addrPattern(); 
+                String addressPattern = theMessage.addrPattern();
                 _processMessage(receivedData, addressPattern);
 
                 // Note that fireAt() will modify the requested firing time if it is in the past.
@@ -212,11 +212,11 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
             } catch (IllegalActionException e) {
                 System.err.println("Error Processing OSCPacket:\n"
                         + theMessage.toString());
-            } 
+            }
         }
     }
 
-    public void oscStatus( OscStatus s) { 
+    public void oscStatus( OscStatus s) {
         //TODO(ilgea): Add OSC Connection Error Handling
     }
 
@@ -226,13 +226,13 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
     }
     private void _constructOscReceiver(int port) throws IllegalActionException {
 
-        oscP5 = new OscP5(this, port);  
+        oscP5 = new OscP5(this, port);
         _port = port; // set port if succ essful
 
 
     }
 
-    private void _processMessage(Object[] message, String address) { 
+    private void _processMessage(Object[] message, String address) {
 
         String[] addressBits = address.split("/");
         if (addressBits != null) {
@@ -256,18 +256,18 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                         tokenList.add((Float)b);
                     } else {
                         tokenList.add(b);
-                    } 
+                    }
                 }
                 _receivedTokens.put(identifier, tokenList);
             }
-        } 
-    } 
+        }
+    }
 
-    private OscP5 oscP5;  
+    private OscP5 oscP5;
 
-    private int _port;  
+    private int _port;
     /**
      * Data structure that holds received tokens which are not yet sent to an output
      */
-    private ConcurrentHashMap<String, List<Object>> _receivedTokens;  
+    private ConcurrentHashMap<String, List<Object>> _receivedTokens;
 }

@@ -59,8 +59,8 @@ import ptolemy.kernel.util.StringAttribute;
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 0.3
- @Pt.ProposedRating  
- @Pt.AcceptedRating  
+ @Pt.ProposedRating
+ @Pt.AcceptedRating
  */
 public class ChordFollower extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -82,15 +82,15 @@ public class ChordFollower extends TypedAtomicActor {
         chordSequence = new TypedIOPort(this, "chordSequence", true, false);
         chordSequence.setTypeEquals(BaseType.OBJECT);
 
-        acceptedTuples = new TypedIOPort(this, "acceptedTuples", false, true); 
-        Type[] tupleType = {BaseType.STRING,BaseType.DOUBLE}; 
+        acceptedTuples = new TypedIOPort(this, "acceptedTuples", false, true);
+        Type[] tupleType = {BaseType.STRING,BaseType.DOUBLE};
         acceptedTuples.setTypeEquals(new RecordType(labels, tupleType));
 
         trigger = new TypedIOPort(this, "trigger", true, false);
         _triggersSinceLastOutput = 0;
 
         nextChord = new TypedIOPort(this, "nextChord", false, true);
-        nextChord.setTypeEquals(BaseType.STRING);  
+        nextChord.setTypeEquals(BaseType.STRING);
 
         reset = new TypedIOPort(this, "reset",true, false);
         StringAttribute cardinality = new StringAttribute( reset, "_cardinal");
@@ -110,8 +110,8 @@ public class ChordFollower extends TypedAtomicActor {
         resetBeat = new TypedIOPort(this, "resetBeat", true, false);
 
         _allChords = new HashMap<Double,Chord>();
-        _currentBeatCursor = 0.0; 
-        _durations = new LinkedList<Double>(); 
+        _currentBeatCursor = 0.0;
+        _durations = new LinkedList<Double>();
 
     }
 
@@ -141,7 +141,7 @@ public class ChordFollower extends TypedAtomicActor {
     /**
      * Next chord information provided to the Pitch oracle.
      */
-    public TypedIOPort nextChord; 
+    public TypedIOPort nextChord;
 
     /**
      * Reset all inputs and begin new melody.
@@ -166,7 +166,7 @@ public class ChordFollower extends TypedAtomicActor {
     /**
      * Boolean output to decide whether Pitch oracle should switch to a new lick.
      */
-    public TypedIOPort startLick; 
+    public TypedIOPort startLick;
 
     public void fire() throws IllegalActionException {
         super.fire();
@@ -174,8 +174,8 @@ public class ChordFollower extends TypedAtomicActor {
         // if the next note to be produced is a rest output a rest instead
 
         if (resetBeat.isOutsideConnected() && resetBeat.hasToken(0)) {
-            if (((BooleanToken)resetBeat.get(0)).booleanValue()) { 
-                _currentBeatCursor = 0.0; 
+            if (((BooleanToken)resetBeat.get(0)).booleanValue()) {
+                _currentBeatCursor = 0.0;
             }
         }
 
@@ -183,34 +183,34 @@ public class ChordFollower extends TypedAtomicActor {
             if (((BooleanToken)reset.get(0)).booleanValue()) {
                 _allChords.clear();
                 _currentBeatCursor = 0.0;
-                _barProgress = 0.0; 
+                _barProgress = 0.0;
                 _durations.clear();
             }
         }
 
-        // FIXME: In the future, the incoming chords could be provided through a 
+        // FIXME: In the future, the incoming chords could be provided through a
         // port parameter as an array. This implementation supports individual Chord
-        // objects to be received and stored, so that we do not need to wait until 
+        // objects to be received and stored, so that we do not need to wait until
         // all chords to be received before starting the improvisation but can simultaneously
-        // receive chords to follow, and improvise based on the chords that have 
+        // receive chords to follow, and improvise based on the chords that have
         // already been received.
         if ( chordSequence.hasToken(0)) {
-            Chord c = (Chord)((ObjectToken)chordSequence.get(0)).getValue(); 
+            Chord c = (Chord)((ObjectToken)chordSequence.get(0)).getValue();
             Double chordDuration = c.getDuration();
             String chordName = c.getName();
 
             if (chordName.equals(MusicSpecs.TERMINATION_CHORD)) {
                 // do nothing,
-                // termination chord has been received 
-            } else { 
+                // termination chord has been received
+            } else {
                 Chord newChord = new Chord(chordName, chordDuration);
                 _allChords.put(_barProgress, newChord);
-                _barProgress += chordDuration; 
+                _barProgress += chordDuration;
             }
         }
 
         if (trigger.isOutsideConnected() && trigger.hasToken(0)) {
-            trigger.get(0); 
+            trigger.get(0);
             _currentChord = _getChordForBeat(_currentBeatCursor);
             if (_currentChord!=null && !_currentChord.equals("NIL")) {
                 nextChord.send(0, new StringToken(_currentChord));
@@ -223,31 +223,31 @@ public class ChordFollower extends TypedAtomicActor {
             startLick.send(0, new BooleanToken(true));
         }
 
-        if (incomingNote.hasToken(0)) { 
+        if (incomingNote.hasToken(0)) {
             StringToken note = ((StringToken)incomingNote.get(0));
-            if (_durations!= null 
-                    && _durations.size() >0) { 
-                double duration = _durations.get(0);    
+            if (_durations!= null
+                    && _durations.size() >0) {
+                double duration = _durations.get(0);
                 Token[] nextTokens = new Token[2];
                 nextTokens[1] = new DoubleToken(duration);
                 if ( duration < 0) {
-                    // discard incoming note 
-                    nextTokens[0] = new StringToken(MusicSpecs.REST_SYMBOL); 
+                    // discard incoming note
+                    nextTokens[0] = new StringToken(MusicSpecs.REST_SYMBOL);
                 } else {
                     // if not a rest, attach with a note.
                     nextTokens[0] = note;
                 }
-                RecordToken next = new RecordToken(labels, nextTokens); 
+                RecordToken next = new RecordToken(labels, nextTokens);
                 acceptedTuples.send(0,next);
                 _currentBeatCursor += Math.abs(duration);
                 currentBeat.send(0, new DoubleToken(_currentBeatCursor));
-                _durations.remove(0); 
+                _durations.remove(0);
 
             }
-        }  
-        if (incomingDuration.hasToken(0)) { 
+        }
+        if (incomingDuration.hasToken(0)) {
             // TODO: also, if the note is too short, repeat it until
-            // bar progress reaches a multiple of 0.5 
+            // bar progress reaches a multiple of 0.5
             double nextDurationValue = ((DoubleToken)incomingDuration.get(0)).doubleValue();
             if (nextDurationValue != 0) {
                 _durations.add(nextDurationValue);
@@ -256,13 +256,13 @@ public class ChordFollower extends TypedAtomicActor {
             if (Math.abs(nextDurationValue - 0.33) < 0.1){
                 _durations.add(nextDurationValue);
                 _durations.add(nextDurationValue);
-            } 
-        } 
+            }
+        }
     }
-    public void wrapup(){ 
+    public void wrapup(){
         _allChords.clear();
         _currentBeatCursor = 0.0;
-        _barProgress = 0.0; 
+        _barProgress = 0.0;
         _durations.clear();
         _triggersSinceLastOutput = 0;
     }
@@ -270,7 +270,7 @@ public class ChordFollower extends TypedAtomicActor {
         Iterator a = _allChords.keySet().iterator();
         String chordName = null;
         boolean found = false;
-        while (a.hasNext()) { 
+        while (a.hasNext()) {
             double start = ((Double)a.next()).doubleValue();
             Chord c = ((Chord)_allChords.get(start));
             double dur = c.getDuration();
@@ -284,7 +284,7 @@ public class ChordFollower extends TypedAtomicActor {
         if (!found) {
             return null;
         }
-        return chordName;  
+        return chordName;
     }
 
     /** The beat count of the improvisation progress.*/
@@ -292,23 +292,23 @@ public class ChordFollower extends TypedAtomicActor {
     /** the keys are the starting points of chords in the bar, and the values are chord objects. */
     private HashMap _allChords;
     /** the cursor progress in the bar so far. incremented when new chords arrive. */
-    private double _barProgress = 0.0;  
+    private double _barProgress = 0.0;
     /**
      * List of received durations, in time stamp order.
      */
-    private List<Double> _durations; 
-    /** 
+    private List<Double> _durations;
+    /**
      * Current chord according to the beat cursor.
      */
     private String _currentChord;
-    
-    /** 
-     * Number of triggers sent to the pitch oracle, since 
+
+    /**
+     * Number of triggers sent to the pitch oracle, since
      * a note-duration pair was successfully output.
      */
-    private int _triggersSinceLastOutput; 
+    private int _triggersSinceLastOutput;
 
-    /** 
+    /**
      * Labels of output record tokens.
      */
     private String[] labels = {"frequency","duration"};

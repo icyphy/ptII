@@ -1,4 +1,4 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * sim_support.c
  * Functions used by both FMU simulators fmu20sim_me and fmu20sim_cs
  * to parse command-line arguments, to unzip and load an fmu,
@@ -93,11 +93,11 @@ int unzip(const char *zipPath, const char *outPath) {
       printf ("error: Could not get current directory\n");
       return 0; // error
     }
-        
+
     // run the unzip command
     n = strlen(UNZIP_CMD) + strlen(outPath) + 1 +  strlen(zipPath) + 16;
     cmd = (char*)calloc(sizeof(char), n);
-    sprintf(cmd, "%s%s \"%s\" > /dev/null", UNZIP_CMD, outPath, zipPath); 
+    sprintf(cmd, "%s%s \"%s\" > /dev/null", UNZIP_CMD, outPath, zipPath);
     printf("cmd='%s'\n", cmd);
     code = system(cmd);
     free(cmd);
@@ -112,11 +112,11 @@ int unzip(const char *zipPath, const char *outPath) {
             default: printf("unknown problem\n");
         }
     }
-    
+
     // restore current directory
     chdir(cwd);
-    
-    return (code==SEVEN_ZIP_NO_ERROR || code==SEVEN_ZIP_WARNING) ? 1 : 0;  
+
+    return (code==SEVEN_ZIP_NO_ERROR || code==SEVEN_ZIP_WARNING) ? 1 : 0;
 }
 #endif /* WINDOWS */
 
@@ -140,7 +140,7 @@ static char* getTmpPath() {
     return strdup(tmpPath);
 }
 
-#else 
+#else
 // fmuFileName is an absolute path, e.g. "C:\test\a.fmu"
 // or relative to the current dir, e.g. "..\test\a.fmu"
 static char* getFmuPath(const char* fmuFileName){
@@ -185,7 +185,7 @@ static void *getAdr(int *success, HMODULE dllHandle, const char *functionName) {
 #ifdef _MSC_VER
 #else
         printf ("Error was: %s\n", dlerror());
-#endif 
+#endif
         *success = 0;
     }
     return fp;
@@ -335,7 +335,7 @@ void loadFMU(FMU *fmu, const char* fmuFileName) {
     sprintf(dllPath,"%s%s%s%s", tmpPath, DLL_DIR, modelId, DLL_SUFFIX);
     if (!loadDll(dllPath, fmu)) {
         // try the alternative directory and suffix
-        dllPath = calloc(sizeof(char), strlen(tmpPath) + strlen(DLL_DIR2) 
+        dllPath = calloc(sizeof(char), strlen(tmpPath) + strlen(DLL_DIR2)
                 + strlen(modelId) +  strlen(DLL_SUFFIX2) + 1);
         sprintf(dllPath,"%s%s%s%s", tmpPath, DLL_DIR2, modelId, DLL_SUFFIX2);
         if (!loadDll(dllPath, fmu)) exit(EXIT_FAILURE);
@@ -356,7 +356,7 @@ static void doubleToCommaString(char* buffer, double r){
 
 // output time and all variables in CSV format
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
-// otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used 
+// otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator, boolean header) {
     int k;

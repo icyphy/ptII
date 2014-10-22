@@ -40,14 +40,14 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class Algorithms {
- 
-    
-    /** Return the probability mass function P(x=k) ~ Poisson(mean) 
+
+
+    /** Return the probability mass function P(x=k) ~ Poisson(mean)
      * value at k, for the Poisson distribution with parameter mean
      *  @param k The value at which the probability mass function will be computed
-     *  @param mean The mean (lambda) of the poisson distribution 
+     *  @param mean The mean (lambda) of the poisson distribution
      *  @return The PMF value at k.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @exception Exception If k < 0
      */
     public static double poissonPmf(int k, double mean) throws IllegalActionException {
@@ -64,13 +64,13 @@ public class Algorithms {
         double logTerm = -mean + k*Math.log(mean) - logFactorial;
         return Math.exp(logTerm);
     }
-    
-    /** Return the probability mass function P(x=k) ~ Poisson(mean) 
+
+    /** Return the probability mass function P(x=k) ~ Poisson(mean)
      * value at k, for the poisson distribution with parameter mean
      *  @param k The value at which the probability mass function will be computed
-     *  @param mean The mean (lambda) of the poisson distribution 
+     *  @param mean The mean (lambda) of the poisson distribution
      *  @return The PMF value at k.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      *  @exception Exception If k < 0
      */
     public static double poissonPmf(int k, double mean, double logFactorial) throws IllegalActionException{
@@ -79,7 +79,7 @@ public class Algorithms {
         // compute the log and then take exponential, to avoid numerical errors
         if ( k < 0) {
             throw new IllegalActionException("Poisson distribution is only defined over nonnegative integer values!");
-        } 
+        }
         double logTerm = -mean + k*Math.log(mean) - logFactorial;
         return Math.exp(logTerm);
     }
@@ -95,15 +95,15 @@ public class Algorithms {
         return _binaryIntervalSearch(A, key, 0, A.length - 1);
     }
 
-    /** 
+    /**
      * Do a binary interval search for the key in array A. The bin index in which
      * key is found is returned.
      * @param A A The search array
      * @param key Key to be searched
      * @param imin minimum array index to look for key
      * @param imax maximum array index to look for key
-     * @return the found key index, or value of KEY_NOT_FOUND for not found. 
-     */ 
+     * @return the found key index, or value of KEY_NOT_FOUND for not found.
+     */
     public static int _binaryIntervalSearch(double[] A, double key, int imin,
             int imax) {
         if (imax < imin) {
@@ -122,7 +122,7 @@ public class Algorithms {
                 return imid;
             }
         }
-    } 
+    }
 
     private static final int KEY_NOT_FOUND = -1;
 }

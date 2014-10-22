@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - 
+ * Sample implementation of an FMU -
 
  * Based on bouncingBall.c from FMUSDK2.0
  * Copyright QTronic GmbH. All rights reserved.
@@ -70,7 +70,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr) {
     }
 }
 
-// offset for event indicator, adds hysteresis and prevents z=0 at restart 
+// offset for event indicator, adds hysteresis and prevents z=0 at restart
 #define EPS_INDICATORS 1e-14
 
 fmi2Real getEventIndicator(ModelInstance* comp, int z) {

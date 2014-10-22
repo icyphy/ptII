@@ -78,10 +78,10 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Initial value of the state. */
     public Parameter initialState;
-    
+
     /** Quantum. */
     public Parameter quantum;
 

@@ -222,7 +222,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         _decoratedObjects = list;
         return list;
     }
-    
+
     /** Initialize actor, reset variables.
      */
     @Override
@@ -465,7 +465,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** Listeners registered to receive events from this object. */
     private ArrayList<CommunicationAspectListener> _listeners;
 
-    /** Name of request ports for every actor port that is decorated. 
+    /** Name of request ports for every actor port that is decorated.
      */
     private HashMap<Port, String> _communicationRequestPortNames;
 

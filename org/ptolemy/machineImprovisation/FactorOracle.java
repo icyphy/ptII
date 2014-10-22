@@ -30,9 +30,9 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineImprovisation;
 
 import java.util.HashMap;
-import java.util.HashSet; 
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List; 
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Initializable;
@@ -68,25 +68,25 @@ import ptolemy.kernel.util.Workspace;
  * suffixes of the training string. If the <i> validatePitch </i> Parameter
  * is set to true, the factor oracle interprets the input string as a sequence
  * of notes and adds a check to the transitions to validate the note against
- * a specification. 
- * 
- <p> As an example, if a transition that would generate a "C4" upon firing, the 
+ * a specification.
+ *
+ <p> As an example, if a transition that would generate a "C4" upon firing, the
  guard expression would look like: <i> validatePitch("C4") && probability(p) </i>,
- where p is a double in range [0.0,1.0]. This transition would be taken 
+ where p is a double in range [0.0,1.0]. This transition would be taken
  (i) if the probability() transition evaluates to true AND (ii) if
  * validatePitch() returns true.
  *
  <p>
  <b>References</b>
  <p>[1]
- C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching." 
+ C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching."
  <i>SOFSEM’99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
 
  @author Ilge Akkaya
  @version  $Id$
  @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class FactorOracle extends ModalController {
     /** Construct an actor with the given container and name.
@@ -109,12 +109,12 @@ public class FactorOracle extends ModalController {
      *
      * @param container  The container
      * @param name       The name
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
      */
     public FactorOracle(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException { 
-        this(container, name, null, 1.0 ); 
+            throws NameDuplicationException, IllegalActionException {
+        this(container, name, null, 1.0 );
     }
 
     /**
@@ -127,13 +127,13 @@ public class FactorOracle extends ModalController {
      * @param symbolicOutput    a boolean that determines whether symbolic outputs should be produced
      * @param validateSymbols   a boolean -- true if symbol validation should be included in guard expressions
      * @throws IllegalActionException repetition factor range checking
-     * @throws NameDuplicationException 
+     * @throws NameDuplicationException
      */
     public FactorOracle(CompositeEntity container, String name,
-            Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols) 
+            Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols)
                     throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setClassName("org.ptolemy.machineImprovisation.FactorOracle"); 
+        setClassName("org.ptolemy.machineImprovisation.FactorOracle");
 
         if (repetitionFactor > 1.0 || repetitionFactor < 0.0) {
             throw new IllegalActionException(this,
@@ -177,13 +177,13 @@ public class FactorOracle extends ModalController {
     ////                         public variables                  ////
 
     /**
-     * The repetition probability P(moving along the original sequence rather than taking a jump along 
+     * The repetition probability P(moving along the original sequence rather than taking a jump along
      * a suffix link)*/
     public Parameter repetitionFactor;
 
-    /** 
+    /**
      * Boolean that when set to true, enables the transitions to have a condition that validates each
-     * pitch against a specification. 
+     * pitch against a specification.
      */
     public Parameter validatePitch;
 
@@ -208,7 +208,7 @@ public class FactorOracle extends ModalController {
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
             throw new CloneNotSupportedException(e.getMessage());
-        } 
+        }
         return newObject;
     }
 
@@ -218,23 +218,23 @@ public class FactorOracle extends ModalController {
     private void _buildFactorOracle() throws NameDuplicationException,
     IllegalActionException {
 
-        // create factor oracle transitions including the suffix links.  
+        // create factor oracle transitions including the suffix links.
         _stateList = new HashMap();
         if (_adjacencyList.size() > 0 ) {
             for (int i = 0; i <= _adjacencyList.size(); i++) {
                 _createNewState(i); //add state to the FO
             }
             _setTransitions();
-        } 
+        }
     }
 
-    private void _createNewState(final int i) 
+    private void _createNewState(final int i)
             throws IllegalActionException, NameDuplicationException {
         final Double horizontal = i * HORIZONTAL_SPACING_PIXELS;
-        final Double vertical   = i * VERTICAL_SPACING_PIXELS; 
+        final Double vertical   = i * VERTICAL_SPACING_PIXELS;
         try {
             String name = (STATE_PREFIX + i);
-            State s = new State(FactorOracle.this, name); 
+            State s = new State(FactorOracle.this, name);
             // set location
             Location stateLocation = (Location) s
                     .getAttribute("_location");
@@ -244,11 +244,11 @@ public class FactorOracle extends ModalController {
             stateLocation.setExpression("{" + horizontal.toString()
                     + "," + vertical.toString() + "}");
 
-            if (i == 0) { 
+            if (i == 0) {
                 s.isInitialState.setExpression("true");
-                this.initialStateName.setExpression(s.getName()); 
-            }  
-            _stateList.put(i, s); 
+                this.initialStateName.setExpression(s.getName());
+            }
+            _stateList.put(i, s);
 
         } catch(IllegalActionException e) {
             throw new IllegalActionException(this);
@@ -303,12 +303,12 @@ public class FactorOracle extends ModalController {
                 _suffixLinks.put(i, wiSonValue);
             }
         }
-    } 
+    }
 
-    private void _setTransitions() throws IllegalActionException, NameDuplicationException { 
+    private void _setTransitions() throws IllegalActionException, NameDuplicationException {
 
         String exitAngle;
-        String outputExpression; 
+        String outputExpression;
 
         for (int i = 0; i < _adjacencyList.size(); i++) {
             List destinations = (List) _adjacencyList.get(i);
@@ -325,14 +325,14 @@ public class FactorOracle extends ModalController {
                 int j = (Integer) destinations.get(k);
 
                 double _probability;
-                if (i == j - 1) { 
+                if (i == j - 1) {
                     // if this is the ONLY transition enabled from this state, then the probability to the next has to be 1.
                     if (destinations.size() == 1 && suffixCount == 0) {
                         _probability = 1.0;
                     } else {
                         _probability = _repetitionFactor;
                     }
-                    exitAngle = STRAIGHT_EXIT_ANGLE; 
+                    exitAngle = STRAIGHT_EXIT_ANGLE;
                 } else {
                     // divide the improvisation probability amongst the other transitions
                     int numberOfBranches = nTransitions - (1 - suffixCount);
@@ -355,7 +355,7 @@ public class FactorOracle extends ModalController {
                     String outputChar = " ";
                     // get the symbol to be produced, when this transition is taken
                     outputChar = ((List) (_adjacencyListSymbols.get(i)))
-                            .get(k).toString(); 
+                            .get(k).toString();
 
 
                     // if chord progression specification exists, a check will be added in conjunction with the guard expression
@@ -373,7 +373,7 @@ public class FactorOracle extends ModalController {
                         }
                     } else {
                         outputExpression = "";
-                    } 
+                    }
 
                     Transition t = new Transition(FactorOracle.this,
                             relationName);
@@ -404,8 +404,8 @@ public class FactorOracle extends ModalController {
                 ((State) _stateList.get(i)).outgoingPort.link(t);
                 ((State) _stateList.get(destination)).incomingPort.link(t);
             }
-        } 
-    } 
+        }
+    }
 
     /**
      * Get a list of transitions originating from node
@@ -435,7 +435,7 @@ public class FactorOracle extends ModalController {
     /**
      * A boolean that when true, symbols should be interpreted as symbolic inputs
      */
-    private boolean _symbolic; 
+    private boolean _symbolic;
 
     /** Input string sequence length
      */
@@ -477,7 +477,7 @@ public class FactorOracle extends ModalController {
     /**
      * An inner class that defines a Chord Function Token,  which is used in
      * pitch validation.
-     * @author ilgea 
+     * @author ilgea
      */
     protected class ChordFunctionToken extends FunctionToken {
         public ChordFunctionToken() {
@@ -488,7 +488,7 @@ public class FactorOracle extends ModalController {
 
     /** A function that evaluates to true if the "pitch" that would be produced
      * as a result of taking this transition satisfies chord specifications. In
-     * the current application, the specifications are given by 
+     * the current application, the specifications are given by
      * {@link org.ptolemy.machineImprovsation.ChordSpecifications.getChordPitches(String, boolean)} */
     protected class ChordFunction implements Function {
         @Override
@@ -509,19 +509,19 @@ public class FactorOracle extends ModalController {
                 if (chordTones != null) {
                     System.out.println("Chord: " + chordName + " Tones:"
                             + chordTones.toString() + " Note being tested: "
-                            + noteToTest);  
-                } 
+                            + noteToTest);
+                }
 
                 if (chordTones.contains(pureNote)) {
                     System.out.println("Accepted Note: " + noteToTest);
                     //okay to play
                     return BooleanToken.TRUE;
-                } 
-            } 
+                }
+            }
             return BooleanToken.FALSE;
         }
 
-        
+
 
         @Override
         public int getNumberOfArguments() {

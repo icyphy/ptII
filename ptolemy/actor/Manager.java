@@ -1121,7 +1121,7 @@ public class Manager extends NamedObj implements Runnable {
                     List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
                     for (Actor otherActor : list) {
                             if (((CompositeEntity)actor).deepContains((NamedObj)otherActor)) {
-                                _actorsToInitialize.remove(otherActor);                                    
+                                _actorsToInitialize.remove(otherActor);
                             }
                     }
             }

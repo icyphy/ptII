@@ -154,14 +154,14 @@ public class WebServer extends AbstractInitializableAttribute {
 
         temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
         temporaryFileLocation.setExpression("$TMPDIR");
-        
+
         deployedPort = new Parameter(this, "deployedPort");
         deployedPort.setExpression("-1");
         deployedPort.setVisibility(Settable.NOT_EDITABLE);
-        // Don't save deployed port in MoML.  Otherwise, Ptolemy will ask you to 
+        // Don't save deployed port in MoML.  Otherwise, Ptolemy will ask you to
         // save the model upon exiting every time a new deployed port is chosen
         deployedPort.setPersistent(false);
-        
+
         _dynamicPortSelection = false;
     }
 
@@ -201,13 +201,13 @@ public class WebServer extends AbstractInitializableAttribute {
      *  respectively.
      */
     public StringParameter applicationPath;
-    
-    /** The port number the server is listening to.  Can be different from 
+
+    /** The port number the server is listening to.  Can be different from
      *  preferredPort if dynamic port selection is enabled.
      */
     public Parameter deployedPort;
-    
-    /** The preferred port number for the server to listen to. This is a integer 
+
+    /** The preferred port number for the server to listen to. This is a integer
      *  that defaults to 8078.
      */
     public Parameter preferredPort;
@@ -271,7 +271,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  {@link #resourcePath} regarding the URL.
      */
     public FileParameter resourceLocation;
-   
+
     /** A directory where the web server will look for resources
      *  (like image files and the like). This specifies an additional
      *  resource location after {@link #resourceLocation}, but the
@@ -308,7 +308,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // web server.
 
         if (attribute == preferredPort) {
-            if (preferredPort == null || 
+            if (preferredPort == null ||
                     preferredPort.getExpression().isEmpty()) {
                 _dynamicPortSelection = true;
             } else {
@@ -335,7 +335,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
         return newObject;
     }
-    
+
     /** Collect servlets from all model objects implementing HttpService
      *  and WebSocketService and start the web server in a new thread.
      *  <p>
@@ -364,17 +364,17 @@ public class WebServer extends AbstractInitializableAttribute {
         if (_debugging) {
             _debug("Initializing web server.");
         }
-        
-        // Remember local websocket services so the websockets can be 
+
+        // Remember local websocket services so the websockets can be
         // opened after the web server is started and its port number determined
         // TODO:  Refactor to use e.g. an interface instead of class names
-        // Want local clients only.  Does not apply to remote clients or 
+        // Want local clients only.  Does not apply to remote clients or
         // local server-side socket endpoints
         HashSet<WebSocketReader> readers = new HashSet();
         HashSet<WebSocketWriter> writers = new HashSet();
-        
+
         int preferredPortValue = WebServerUtilities.DEFAULT_PORT_NUMBER;
-        
+
         if (preferredPort != null && !preferredPort.getExpression().isEmpty()) {
            preferredPortValue = Integer.parseInt(preferredPort.getExpression());
            _dynamicPortSelection = false;
@@ -445,18 +445,18 @@ public class WebServer extends AbstractInitializableAttribute {
                               + " requested the web service URL "
                               + path
                               + " , but this URL has already been claimed "
-                              + "by another actor or by a resource in this " 
+                              + "by another actor or by a resource in this "
                               + "WebServer.  Please specify a unique URL.");
                 }
             } else if (entity instanceof WebSocketService)  {
-                // Set up support for local websocket services.  Remote 
+                // Set up support for local websocket services.  Remote
                 // websocket services do not require anything from the server
                 WebSocketService service = (WebSocketService) entity;
                 boolean isLocal = true;
-                
-                // TODO:  Refactor to use e.g. an interface for local clients 
+
+                // TODO:  Refactor to use e.g. an interface for local clients
                 // only.  Add isLocal to interface?
-                if (service instanceof WebSocketReader) { 
+                if (service instanceof WebSocketReader) {
                     isLocal = ((WebSocketReader)service).isLocal();
                     if (isLocal) {
                         readers.add((WebSocketReader) service);
@@ -467,15 +467,15 @@ public class WebServer extends AbstractInitializableAttribute {
                         writers.add((WebSocketWriter) service);
                     }
                 }
-                
+
                 if (_debugging) {
                     _debug("Found WebSocket actor: " + entity.getFullName());
                 }
-                
+
                 if (isLocal) {
                     // Add this path to the list of socket paths
                     URI path = service.getRelativePath();
-                    
+
                     try {
                         _appInfo.addSocketInfo(path, entity);
                     } catch (Exception e) {
@@ -484,7 +484,7 @@ public class WebServer extends AbstractInitializableAttribute {
                                 + " requested the web service URL "
                                 + path
                                 + " , but this URL has already been claimed "
-                                + "by another actor or by a resource in this " 
+                                + "by another actor or by a resource in this "
                                 + "WebServer.  Please specify a unique URL.");
                     }
                 }
@@ -494,7 +494,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // Specify directories or URLs in which to look for resources.
         // These are given by all instances of FileParameter in this
         // WebServer. Use a LinkedHashSet to preserve the order.
-        LinkedHashSet<Resource> resourceLocations = 
+        LinkedHashSet<Resource> resourceLocations =
                 new LinkedHashSet<Resource>();
         List<FileParameter> bases = attributeList(FileParameter.class);
         // To prevent duplicates, keep track of bases added
@@ -515,11 +515,11 @@ public class WebServer extends AbstractInitializableAttribute {
                     // Assumes full path is given
                     // TODO:  What to do about paths relative to model's location?
                     // Would these work?  None are used so far.
-                    
+
                     String expression = base.getExpression();
                     if (expression.startsWith("$PTII/")) {
                         expression = expression.substring(6);
-                    }                    
+                    }
 
                     // Get directory
                     // Try ClassLoader first to resolve any directories within
@@ -548,14 +548,14 @@ public class WebServer extends AbstractInitializableAttribute {
                         if (_debugging) {
                             _debug("Adding resource location: " + baseAsURL);
                         }
-                        
+
                         // Use Resource.newResource() to support WebStart
                         // http://67-23-9-112.static.slicehost.net/faq?s=960-WebStart&t=Eclipse
                         String stringURL = baseAsURL.toExternalForm();
                         if (!stringURL.endsWith("/")) {
                             stringURL = stringURL + "/";
                         }
-                        
+
                         resourceLocations.add(Resource.newResource(stringURL));
                     }
                 } catch (IOException e3) {
@@ -565,7 +565,7 @@ public class WebServer extends AbstractInitializableAttribute {
             }
         }
 
-        
+
         // Throw an exception if resource path is not a valid URI, if a
         // duplicate path is requested or if the directory does not exist
         try {
@@ -580,25 +580,25 @@ public class WebServer extends AbstractInitializableAttribute {
         }
 
         try {
-            int actualPort = 
-            _serverManager.register(_appInfo, preferredPortValue, 
+            int actualPort =
+            _serverManager.register(_appInfo, preferredPortValue,
                _dynamicPortSelection);
             if (actualPort != -1) {
-                
+
                 deployedPort.setExpression(Integer.toString(actualPort));
                 deployedPort.validate();
             }
-            
+
             // Open all local web sockets
             // Prepend ws://localhost:port to URI
-            
+
             for (WebSocketReader reader : readers){
                 // TODO:  Allow secure websockets, with wss://
                 URI path = URI.create("ws://localhost:" + actualPort +
                         reader.getRelativePath().toString());
                 reader.open(path);
             }
-            
+
             for (WebSocketWriter writer : writers){
                 // TODO:  Allow secure websockets, with wss://
                 URI path = URI.create("ws://localhost:" + actualPort +
@@ -622,15 +622,15 @@ public class WebServer extends AbstractInitializableAttribute {
         if (_debugging) {
             _debug("Unregistering web application.");
         }
-        
+
         if (deployedPort != null && deployedPort.getExpression() != null) {
             // Only attempt to unregister application if registration was
             // successful.
 
             // If we are exporting to JNLP, then initialize might not
             // have been called.
-            
-            int deployedPortValue = 
+
+            int deployedPortValue =
                     Integer.parseInt(deployedPort.getExpression());
             if (_serverManager != null
                     && _appInfo != null
@@ -652,7 +652,7 @@ public class WebServer extends AbstractInitializableAttribute {
     /** Info about the web application defined by the model.
      */
     private WebApplicationInfo _appInfo;
-    
+
     /** A flag indicating if dynamic port allocation is enabled. */
     private boolean _dynamicPortSelection;
 

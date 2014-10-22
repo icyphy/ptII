@@ -731,7 +731,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         + _getDomainJar(object.getClass().getPackage()
                                 .getName()));
             }
-            
+
             Map<String,String> attributeMap = new HashMap<String,String>();
             attributeMap.put("ptolemy.codegen", "ptolemy/codegen/codegen.jar");
             attributeMap.put("ptolemy.data.ontologies",
@@ -1022,7 +1022,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
                 String className = componentEntity.getClass().getName();
                 Map<String,String> componentMap = new HashMap<String,String>();
-                componentMap.put("org.ptolemy.machineLearning.particleFilter", 
+                componentMap.put("org.ptolemy.machineLearning.particleFilter",
                     "org/ptolemy/machineLearning/particleFilter/particleFilter.jar");
                 componentMap.put("ptolemy.cg",
                         "ptolemy/cg/cg.jar");

@@ -114,7 +114,7 @@ public class SCRTableHelper {
      *  @param columnIndex the index of the column.
      *  @param columnCount The number of columns.
      *  @return the content index.
-     */   
+     */
     public static int getContentIndex(int rowIndex, int columnIndex,
             int columnCount) {
         return (columnIndex - 1) + (columnCount - 1) * rowIndex;
@@ -187,8 +187,8 @@ public class SCRTableHelper {
     /** Return the self transition.
      *  @param state The state.
      *  @param parameter the parameter.
-     *  @return the self transition.   
-     */   
+     *  @return the self transition.
+     */
     public static Transition getSelfTransition(State state, Parameter parameter) {
         for (Object relation : state.incomingPort.linkedRelationList()) {
             if (state.outgoingPort.linkedRelationList().contains(relation)) {

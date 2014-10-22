@@ -200,7 +200,7 @@ public interface Type {
      */
     public static final int HASH_INVALID = Integer.MIN_VALUE;
 
-    // The maximum size of the type hash. 
+    // The maximum size of the type hash.
     // HASH_MAX was used in TypeLattice but as of r66807 is no longer used.
     //public static final int HASH_MAX = 16;
 }

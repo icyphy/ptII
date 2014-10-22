@@ -94,7 +94,7 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
 
     /**
      * An array that defines a probability mass, defining the multinomial
-     * observation probabilities. 
+     * observation probabilities.
      */
     public PortParameter observationProbabilities;
 
@@ -170,7 +170,7 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
      * Emission probability matrix.
      */
     private double[][] _B;
-    
+
     /**
      * Number of categories assumed for the Multinomial distribution.
      */

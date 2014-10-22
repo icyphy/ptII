@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - a bouncing ball. 
+ * Sample implementation of an FMU - a bouncing ball.
  * This demonstrates the use of state events and reinit of states.
  * Equations:
  *  der(h) = v;
@@ -81,7 +81,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr) {
     }
 }
 
-// offset for event indicator, adds hysteresis and prevents z=0 at restart 
+// offset for event indicator, adds hysteresis and prevents z=0 at restart
 #define EPS_INDICATORS 1e-14
 
 fmi2Real getEventIndicator(ModelInstance* comp, int z) {

@@ -1,4 +1,4 @@
-/* A class that stores a reference to a WebSocket connection and notifies 
+/* A class that stores a reference to a WebSocket connection and notifies
  the parent WebSocketService of incoming messages.
 
  Copyright (c) 1997-2014 The Regents of the University of California.
@@ -27,7 +27,7 @@
 
  */
 
-package org.ptolemy.ptango.lib.websocket; 
+package org.ptolemy.ptango.lib.websocket;
 
 import java.util.HashSet;
 
@@ -38,7 +38,7 @@ import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
 
 /** A class that keeps a reference to the WebSocket connection, notifies
  *  services of incoming messages and allows services to write to the WebSocket.
- *  
+ *
  *  Uses Jetty 8 WebSocket classes.  Note that Jetty 9 has substantial WebSocket
  *  revisions that are not backward compatible.
  *
@@ -52,9 +52,9 @@ import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
  */
 
 public class WebSocketEndpoint implements OnTextMessage {
-    
+
     /** Create a new WebSocketEndpoint with the given parent service.
-     * 
+     *
      * @param parentService  The WebSocketService to be notified of messages.
      */
     public WebSocketEndpoint(WebSocketService parentService) {
@@ -63,35 +63,35 @@ public class WebSocketEndpoint implements OnTextMessage {
         _parentServices = new HashSet();
         _parentServices.add(parentService);
     }
-    
+
     /** Add a parent WebSocketService of this endpoint.
-     * 
+     *
      * @param service  A parent WebSocketService of this endpoint.
      * @see #removeParentService(WebSocketService)
      */
     public void addParentService(WebSocketService service) {
         _parentServices.add(service);
     }
-    
+
     /** Return the Connection object for this WebSocket.  Used for sending
      *  messages.
-     *  
+     *
      * @return  The Connection object for this WebSocket.
      */
     public Connection getConnection() {
         return _connection;
     }
-    
-    /** Return true if the connection is open; false otherwise. 
-     * 
+
+    /** Return true if the connection is open; false otherwise.
+     *
      * @return True if the connection is open; false otherwise.
      */
     public boolean isOpen() {
         return _isOpen;
     }
-    
+
     /** Upon close, set the connection to null.
-     * 
+     *
      *  @param statusCode The status code of the closed connection.
      *  @param statusMessage The status message of the closed connection.
      */
@@ -100,9 +100,9 @@ public class WebSocketEndpoint implements OnTextMessage {
         _connection = null;
         _isOpen = false;
     }
-    
+
     /** Notify the parent service about a new message.
-     * 
+     *
      * @param message The message that was received.
      */
     @Override
@@ -115,7 +115,7 @@ public class WebSocketEndpoint implements OnTextMessage {
     }
 
     /** Upon opening, save a reference to the connection.
-     * 
+     *
      * @param connection The connection that was opened.
      */
     @Override
@@ -123,27 +123,27 @@ public class WebSocketEndpoint implements OnTextMessage {
         _connection = connection;
         _isOpen = true;
     }
-    
+
     /** Remove a parent WebSocketService of this endpoint.
-     * 
+     *
      * @param service  A parent WebSocketService of this endpoint.
      * @see #addParentService(WebSocketService)
      */
     public void removeParentService(WebSocketService service) {
         _parentServices.remove(service);
     }
-    
-    // TODO:  Do something onError? 
-    
+
+    // TODO:  Do something onError?
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The WebSocket connection */
     private Connection _connection;
-    
+
     /** Flag indicating if the connection is open. */
     private boolean _isOpen;
-    
+
     /** The parent services to be notified of incoming messages. */
     private HashSet<WebSocketService> _parentServices;
 }

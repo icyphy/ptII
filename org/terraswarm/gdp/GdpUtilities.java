@@ -74,7 +74,7 @@ public class GdpUtilities {
 
         // For a discussion about unsigned longs, see
         // See http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit
-        
+
         //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
         long EP_STAT_SEVERITY = (code >>> Gdp10Library._EP_STAT_SEVSHIFT) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1);
         //BigInteger big = BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT).and(
@@ -97,7 +97,7 @@ public class GdpUtilities {
 //                 + "EP_STAT_SEVERITY < EP_STAT_SEV_WARN: " + (EP_STAT_SEVERITY < EP_STAT_SEV_WARN));
         return EP_STAT_SEVERITY < Gdp10Library.EP_STAT_SEV_WARN;
     }
-    
+
     /** Create a new status code.
      *  Based on ep_stat.h, Copyright Eric Allman, See ep_license.htm
      *  @param sev The severity
@@ -121,17 +121,17 @@ public class GdpUtilities {
     public static EP_STAT EP_STAT_NEW(int s, int r, int m, int d) {
         // We use the same parameter names as are in the original C
         // code for ease of maintenance.
-        long code = ((((s) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT) | 
-                (((r) & ((1l << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT) | 
+        long code = ((((s) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT) |
+                (((r) & ((1l << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT) |
                 (((m) & ((1l << Gdp10Library._EP_STAT_MODBITS) - 1)) << Gdp10Library._EP_STAT_MODSHIFT) |
                 (((d) & ((1l << Gdp10Library._EP_STAT_DETBITS) - 1))));
         return new EP_STAT( new NativeLong(code));
-    }                    
+    }
 
     /** Print the datum to standard out.  This is a port of
      *  gdp_datum_print from gdp/gdp_datum.c by Eric Allman.
      *  @param datum The datum to be printed.
-     */   
+     */
     public static void gdp_datum_print(/*gdp_datum*/PointerByReference datum) {
 
         Pointer d = null;
@@ -140,7 +140,7 @@ public class GdpUtilities {
         if (datum == null) {
             System.out.print("null datum");
         }
-        System.out.print("GDP record " + 
+        System.out.print("GDP record " +
                 Gdp10Library.INSTANCE.gdp_datum_getrecno(datum) + ", ");
         PointerByReference dbuf = Gdp10Library.INSTANCE.gdp_datum_getbuf(datum);
         if (dbuf == null) {

@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------*
  * Sample implementation of an FMU - the Van der Pol oscillator.
  * See http://en.wikipedia.org/wiki/Van_der_Pol_oscillator
- *  
+ *
  *   der(x0) = x1
  *   der(x1) = mu * ((1 - x0 ^ 2) * x1) - x0;
  *
@@ -71,7 +71,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // used to set the next time event, if any.
 void eventUpdate(ModelInstance *comp, fmi2EventInfo *eventInfo, int isTimeEvent) {
-} 
+}
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

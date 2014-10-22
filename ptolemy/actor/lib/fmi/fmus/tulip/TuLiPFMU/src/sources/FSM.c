@@ -7,7 +7,7 @@ FSM* init_fsm(){
 };
 
 int fsm_transition(FSM* fsm, int input[]){
-        int currentState = fsm->currentState;        
+        int currentState = fsm->currentState;
         int index = value2index(input);
         fsm->currentState = transition[currentState][index];
         return (output[currentState][index]);

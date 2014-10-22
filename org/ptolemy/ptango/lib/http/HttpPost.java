@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  Post the contents of an input record to a specified URL.
- 
+
 
  @see HttpGet
  @author Edward A. Lee and Marten Lohstroh
@@ -59,11 +59,11 @@ public class HttpPost extends HttpSink {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
     protected Method getMethod() {
         return Method.POST;
-    }   
+    }
 
 }

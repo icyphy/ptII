@@ -438,7 +438,7 @@ public class Query extends JPanel {
                 startingDirectory, allowFiles, allowDirectories, save,
                 background, foreground, null);
     }
-    
+
     /** Create a FileChooser.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
@@ -2200,7 +2200,7 @@ public class Query extends JPanel {
             this(owner, name, defaultName, base, startingDirectory, allowFiles,
                     allowDirectories, save, background, foreground, null);
         }
-        
+
         /** Construct a query file chooser.
          * @param owner The query object that owns the file chooser
          * @param name The name of the query object
@@ -2258,7 +2258,7 @@ public class Query extends JPanel {
             _entryBox.addFocusListener(new QueryFocusListener(_owner, name));
 
             _name = name;
-            
+
             _filter = filter;
         }
 
@@ -2337,7 +2337,7 @@ public class Query extends JPanel {
             } else {
                 System.setProperty("apple.awt.fileDialogForDirectories", "false");
             }
-            
+
             if (_filter != null) {
                 fileDialog.setFilenameFilter(_filter);
             }
@@ -2580,7 +2580,7 @@ public class Query extends JPanel {
         private boolean _allowFiles;
 
         private boolean _allowDirectories;
-        
+
         private FilenameFilter _filter;
     }
 

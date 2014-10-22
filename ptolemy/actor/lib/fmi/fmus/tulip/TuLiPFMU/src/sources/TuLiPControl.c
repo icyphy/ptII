@@ -65,7 +65,7 @@ void transition_function(Controller* controller) {
         //arrives at the goal
         if (controller->nSteps<=0)
         {
-                //todo:check if the goal is really reached 
+                //todo:check if the goal is really reached
                 controller->dRegion = controller->goal;
                 //reset nSteps
                 controller->nSteps = totalSteps;
@@ -133,8 +133,8 @@ void display_controller(Controller* controller){
         return;
 }
 
-idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pfloat* A, const pfloat* B, 
-                const pfloat* A1, const pfloat* b1, const idxint l1, 
+idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pfloat* A, const pfloat* B,
+                const pfloat* A1, const pfloat* b1, const idxint l1,
                 const pfloat* A2, const pfloat* b2, const idxint l2,
                 const pfloat* x0, const pfloat* xc, pfloat* u0) {
         idxint i, j, k, l, sparsepr;
@@ -146,14 +146,14 @@ idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pf
          * a = (t-1)/2, b = (t+1)/2
          * norm([u0,...,uN-1,xN,a],2)<= b
          * these equalities and inequality implies that u0^2+...+(uN-1)^2 + xN^2<=t*/
-        idxint ecos_n = n*(N+1) + p*N + 3;        
+        idxint ecos_n = n*(N+1) + p*N + 3;
         idxint ecos_m = l1 * N + l2 + p*N + n + 2;
         idxint ecos_p = n*(N+1) + 2;
         idxint ecos_l = l1 * N + l2;
         idxint ecos_ncones = 1;
         idxint ecos_q[1] = {p*N + n + 2};
 
-        /*generating matrix G of ECOS*/        
+        /*generating matrix G of ECOS*/
         idxint nnzG = N*p + n + N*(n+p)*l1 + n*l2 + 2;
         pfloat *ecos_Gpr = (pfloat*)MALLOC(sizeof(pfloat)*nnzG);
         if (ecos_Gpr == NULL)
@@ -211,7 +211,7 @@ idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pf
         *(ecos_Gjc+ecos_n-1) = nnzG;
         *(ecos_Gjc+ecos_n) = nnzG;
 
-        /*generating matrix A of ECOS*/        
+        /*generating matrix A of ECOS*/
         idxint nnzA = (N+1)*n + N*n*n + N*n*p + 4;
         /*The number of none zero entries in the block [I,0;-A,-B]*/
         idxint nnzAblock = n*n + n*p + n;
@@ -353,7 +353,7 @@ idxint get_input_helper(const idxint n, const idxint p, const idxint N, const pf
         mywork = ECOS_setup(ecos_n, ecos_m, ecos_p, ecos_l, ecos_ncones, ecos_q, ecos_Gpr, ecos_Gjc, ecos_Gir, ecos_Apr, ecos_Ajc, ecos_Air, ecos_c, ecos_h, ecos_b);
         if( mywork != NULL ){
                 mywork->stgs->verbose = 0;
-                // solve         
+                // solve
                 exitflag = ECOS_solve(mywork);
 
                 for (i = 0; i < p; i++)

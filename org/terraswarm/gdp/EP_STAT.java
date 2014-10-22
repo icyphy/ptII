@@ -26,9 +26,9 @@ public class EP_STAT extends Structure {
                 super(peer);
         }
         public static class ByReference extends EP_STAT implements Structure.ByReference {
-                
+
         };
         public static class ByValue extends EP_STAT implements Structure.ByValue {
-                
+
         };
 }

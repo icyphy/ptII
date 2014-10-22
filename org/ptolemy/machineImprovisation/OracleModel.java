@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
  */
 package org.ptolemy.machineImprovisation;
- 
+
 import ptolemy.domains.modal.modal.ModalRefinement;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -65,17 +65,17 @@ public class OracleModel extends ModalRefinement{
      * @param repetitionFactor  a double indicating repetition factor on forward links
      * @param pitch             a boolean -- true if pitch oracle
      * @param validate          a boolean -- true if pitch validation is enabled
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
      */
     public OracleModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         //_init();
-        
+
     }
-    
-    public OracleModel(CompositeEntity container, String name, 
+
+    public OracleModel(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -89,13 +89,13 @@ public class OracleModel extends ModalRefinement{
     public void setController( FactorOracle f){
         _controller = f;
     }
-   
-    
+
+
 ///////////////////////////////////////////////////////////////////
 ////                         private methods                   ////
 // Initialize the model.
-    
-    /** 
+
+    /**
      * Create a Factor Oracle controller
      * @param trainingSequence
      * @param repetitionFactor
@@ -108,25 +108,25 @@ public class OracleModel extends ModalRefinement{
     protected FactorOracle _createController(Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
             throws IllegalActionException, NameDuplicationException {
         //return new FactorOracle(this, "_Controller");
-        return new FactorOracle(this, "_Controller", trainingSequence, 
+        return new FactorOracle(this, "_Controller", trainingSequence,
                 repetitionFactor, pitch, validate);
     }
 
-    
+
     private void _init(Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate) throws IllegalActionException,
             NameDuplicationException {
-       
+
         // Set the director before changing directorClass, because changing the
         // latter causes a ChangeRequest to be issued (in superclass'
         // attributeChanged(), which then causes the expanded node in the actor
         // library to be collapsed immediately.
-        
+
         setClassName("org.ptolemy.machineImprovisation.OracleModel");
         ComponentEntity controller = getEntity("_Controller");
         if (controller != null) {
             controller.setContainer(null);
         }
-        _controller = _createController(trainingSequence,  
+        _controller = _createController(trainingSequence,
                 repetitionFactor, pitch, validate);
     }
         }

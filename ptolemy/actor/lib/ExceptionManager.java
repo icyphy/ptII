@@ -109,7 +109,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
         statusMessage = new StringParameter(this, "statusMessage");
         statusMessage.setExpression("No exceptions encountered");
         statusMessage.setVisibility(Settable.NOT_EDITABLE);
-        
+
         modelURL.setVisibility(Settable.NONE);
 
         _resetMessages = true;
@@ -152,7 +152,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
         _initializables.add(initializable);
     }
 
-    
+
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -168,10 +168,10 @@ public class ExceptionManager extends MoMLModelAttribute implements
         newObject._resetMessages = false;
         newObject._restartDesired = false;
         newObject._subscribers = new ArrayList();
-        
+
         return newObject;
     }
-    
+
     /** Do nothing upon execution error.  Exceptions are passed to this
      *  attribute through handleException().  This method is required by
      *  the ExecutionListener interface.
@@ -207,7 +207,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
             _restartDesired = false;
         }
     }
-    
+
     /** Notify this object that the containment hierarchy above it has
      *  changed. This method does nothing because instead we use
      *  {@link #preinitialize()} to handle re-establishing the connections.
@@ -239,7 +239,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
             container.removeInitializable(this);
         }
     }
-    
+
     /** Find all of the ExceptionSubscribers in the model and save in a list.
      *
      *  @exception IllegalActionException If thrown by parent
@@ -251,7 +251,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
         // actors. Could switch to containedObjectsIterator in the future if we
         // want to allow attributes to be ExceptionSubscribers.  (Will need to
         // implement a deep search.  containedObjectsIterator does not look
-        // inside composite entities). 
+        // inside composite entities).
 
         Iterator iterator = ((CompositeActor) toplevel()).allAtomicEntityList()
                 .iterator();
@@ -264,17 +264,17 @@ public class ExceptionManager extends MoMLModelAttribute implements
                 _subscribers.add((ExceptionSubscriber) obj);
             }
         }
-        
+
         // Also, check for entities inside the model contained by this attribute
         iterator = _model.containedObjectsIterator();
-        
+
         while (iterator.hasNext()) {
             obj = (NamedObj) iterator.next();
             if (obj instanceof ExceptionSubscriber) {
                 _subscribers.add((ExceptionSubscriber) obj);
             }
         }
-        
+
         // TODO:  Figure out why setting this through the constructor is not
         // working
         ((ExceptionManagerModel) _model).setModelContainer(this);
@@ -311,39 +311,39 @@ public class ExceptionManager extends MoMLModelAttribute implements
         // Notify all subscribers, in the specified order, of the exception
         // Note at this stage it is not guaranteed that the exception can be
         // handled successfully
-       
+
         for (ExceptionSubscriber subscriber : _subscribers) {
             subscriber.exceptionOccurred(policy.getValueAsString(), exception);
         }
-            
+
         // Handle the exception according to the policy
-        
+
          // Save the exception message.  Only informational at the moment.
          exceptionMessage.setExpression(exception.getMessage());
-        
+
          Date date = new Date(System.currentTimeMillis());
          SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-         
-         // Handle the exception according to the specified policy 
-         
+
+         // Handle the exception according to the specified policy
+
          String policyValue = policy.stringValue();
-         
-         // Set initialized to false here, unless policy is to restart, in 
+
+         // Set initialized to false here, unless policy is to restart, in
          // which case set it after the current value is checked
          if (!policyValue.equals(CatchExceptionAttribute.RESTART)) {
-             // Set _initialized here instead of in wrapup(), since 
+             // Set _initialized here instead of in wrapup(), since
              // wrapup() is called prior to handleException()
              _initialized = false;
          }
-         
+
           if (policyValue.equals(CatchExceptionAttribute.RESTART)){
              // Restarts the model in a new thread
-             
+
              // Check if the model made it through initialize().  If not, return
              // false (thereby leaving exception unhandled)
              if (!_initialized) {
-                 
-                 // Return false if an exception is thrown, since this attribute 
+
+                 // Return false if an exception is thrown, since this attribute
                  // did not resolve the exception.
                  statusMessage.setExpression("Cannot restart: Error before " +
                                  "or during intialize()");
@@ -352,14 +352,14 @@ public class ExceptionManager extends MoMLModelAttribute implements
                  }
                  return false;
              }
-             
-             // Set _initialized here, instead of in wrapup(), since 
+
+             // Set _initialized here, instead of in wrapup(), since
              // wrapup() is called prior to handleException()
              _initialized = false;
-             
+
              // Find an actor in the model; use the actor to get the manager.
              Manager manager = null;
-             
+
              NamedObj toplevel = toplevel();
              if (toplevel != null) {
                  Iterator iterator = toplevel.containedObjectsIterator();
@@ -370,16 +370,16 @@ public class ExceptionManager extends MoMLModelAttribute implements
                      }
                  }
              }
-             
+
              if (manager != null) {
                  // End execution
                  manager.finish();
-                 
+
                  // Wait until the manager notifies listeners of successful
-                 // completion before restarting.  Manager will call 
+                 // completion before restarting.  Manager will call
                  // _executionFinished().  Set a flag here indicating to restart
                  _restartDesired = true;
-                
+
              } else {
                  statusMessage.setExpression("Cannot restart model since " +
                     "there is no model Manager.  Perhaps the model has no " +
@@ -387,53 +387,53 @@ public class ExceptionManager extends MoMLModelAttribute implements
                  for (ExceptionSubscriber subscriber : _subscribers) {
                      subscriber.exceptionHandled(false, policyValue);
                  }
-                 return false;               
+                 return false;
              }
- 
+
          } else if (policyValue.equals(CatchExceptionAttribute.STOP)) {
-             statusMessage.setExpression("Model stopped at " 
+             statusMessage.setExpression("Model stopped at "
                      + dateFormat.format(date));
-             
+
              // Call validate() to notify listeners of these changes
              exceptionMessage.validate();
              statusMessage.validate();
 
-             // wrapup() is automatically called prior to handleException(), 
+             // wrapup() is automatically called prior to handleException(),
              // so don't need to call it again
          } else if (policyValue.equals(CatchExceptionAttribute.THROW)) {
-             statusMessage.setExpression("Exception thrown at " 
+             statusMessage.setExpression("Exception thrown at "
                      + dateFormat.format(date));
-                 
-             // Return false if an exception is thrown, since this attribute 
+
+             // Return false if an exception is thrown, since this attribute
              // did not resolve the exception.
              for (ExceptionSubscriber subscriber : _subscribers) {
                  subscriber.exceptionHandled(false, policyValue);
              }
              return false;
-                 
+
          } else {
              statusMessage.setExpression("Illegal policy encountered at: "
                      + dateFormat.format(date));
-             
+
              for (ExceptionSubscriber subscriber : _subscribers) {
                  subscriber.exceptionHandled(false, policyValue);
              }
              // Throw an exception here instead of just returning false, since
              // this is a problem with CatchExceptionAttribute
-             throw new IllegalActionException(this, 
+             throw new IllegalActionException(this,
                      "Illegal exception handling policy.");
          }
-         
+
          // Call validate() to notify listeners of these changes
          exceptionMessage.validate();
          statusMessage.validate();
-         
+
          _resetMessages = false;
-        
+
          for (ExceptionSubscriber subscriber : _subscribers) {
              subscriber.exceptionHandled(true, policyValue);
          }
-         
+
         return true;
     }
 
@@ -515,7 +515,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
                     + "Perhaps the model has no actors?");
         }
     }
-    
+
     /** Override the base class to register as an
      *  {@link Initializable}
      *  so that preinitialize() is invoked, and as a
@@ -566,7 +566,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -623,7 +623,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
      *  completion (i.e. when executionFinished() is invoked).
      */
     private boolean _restartDesired;
-    
+
     /** A list of all ExceptionSusbcribers, to be notified when an exception is
      *  caught by this class.
      */

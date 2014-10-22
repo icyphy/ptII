@@ -380,7 +380,7 @@ public class FMIModelDescription {
             // sometimes compile this with gcj, which is
             // Java 1.5
             IOException exception = new IOException(
-                    "Error loading \"" + sharedLibrary 
+                    "Error loading \"" + sharedLibrary
                     + "\" shared library.  "
                     + "To debug loading errors, "
                     + "Restart Java with \"-Djna.debug_load=true\".  "

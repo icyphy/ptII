@@ -87,8 +87,8 @@ public interface ExceptionSubscriber {
      * @param successful True if the exception was successfully handled; false
      * otherwise
      * @param message A status message from the exception handler
-     * @return True if the subscriber successfully processed the information; 
-     *  false otherwise (for example, an ExceptionEmailer that fails to send 
+     * @return True if the subscriber successfully processed the information;
+     *  false otherwise (for example, an ExceptionEmailer that fails to send
      *  an email)
      */
     public boolean exceptionHandled(boolean successful, String message);

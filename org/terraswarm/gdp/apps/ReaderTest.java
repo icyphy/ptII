@@ -39,7 +39,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
-/** 
+/**
     Read from a GCL
 
     From gdp/README (lightly edited):
@@ -53,7 +53,7 @@ import com.sun.jna.ptr.PointerByReference;
     <p>" Check success by running apps/reader-test giving it the
     internal (256-bit) name printed by writer-test.  If you
     gave writer-test an argument you can use that instead.</p>
-    
+
     @author Christopher Brooks, based on the gdp/apps/writer-test.c by Eric Allman.
     @version $Id$
     @since Ptolemy II 10.0
@@ -103,13 +103,13 @@ public class ReaderTest {
         }
         // if we've reached the end of file, that's not an error, at least
         // as far as the user is concerned
-        // Was: if (EP_STAT_IS_SAME(estat, GDP_STAT_NAK_NOTFOUND)) 
+        // Was: if (EP_STAT_IS_SAME(estat, GDP_STAT_NAK_NOTFOUND))
         //        estat = EP_STAT_END_OF_FILE;
 
         // epstat.h:
         // compare two status codes for equality
         // #define EP_STAT_IS_SAME(a, b)        ((a).code == (b).code)
-        // gdp_stat.h: 
+        // gdp_stat.h:
         // #define GDP_STAT_NAK_NOTFOUND                GDP_STAT_NEW(ERROR, GDP_COAP_NOTFOUND)
         // ep_stat:
         //#define EP_STAT_END_OF_FILE        _EP_STAT_INTERNAL(WARN, EP_STAT_MOD_GENERIC, 3)
@@ -118,7 +118,7 @@ public class ReaderTest {
         //        EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_EPLIB, mod, code)
         if (estat.code == GdpUtilities.GDP_STAT_NAK_NOTFOUND.code) {
             estat = GdpUtilities.EP_STAT_END_OF_FILE;
-        } 
+        }
 
         return estat;
     }
@@ -136,7 +136,7 @@ public class ReaderTest {
      *  @return the status.
      */
     static EP_STAT do_subscribe(Pointer gclh,
-            long /*gdp_recno_t*/ firstrec, 
+            long /*gdp_recno_t*/ firstrec,
             int /*int32_t*/ numrecs, boolean subscribe) {
         EP_STAT estat;
 
@@ -145,7 +145,7 @@ public class ReaderTest {
         }
         //System.out.println("ReaderTest.java: gclh: " + gclh);
         if (subscribe) {
-            // Was: estat = gdp_gcl_subscribe(gclh, firstrec, numrecs, NULL, NULL, NULL); 
+            // Was: estat = gdp_gcl_subscribe(gclh, firstrec, numrecs, NULL, NULL, NULL);
             //PointerByReference gclhByReference = new PointerByReference(gclh);
             estat = Gdp10Library.INSTANCE.gdp_gcl_subscribe(gclh, firstrec, numrecs, null, null, null);
             //gclh = gclhByReference.getValue();
@@ -163,7 +163,7 @@ public class ReaderTest {
             //                        subscribe ? "subscribe" : "multiread",
             //                        ep_stat_tostr(estat, ebuf, sizeof ebuf));
             // I have no idea what to do with ep_stat_tostr(), so we just print
-            System.err.println("Cannot " + (subscribe ? "subscribe" : "multiread") 
+            System.err.println("Cannot " + (subscribe ? "subscribe" : "multiread")
                     + ": " + estat.code);
         }
 
@@ -186,7 +186,7 @@ public class ReaderTest {
             }
             Gdp10Library.INSTANCE.gdp_event_free(gev);
         }
-        
+
         // should never get here
         //return estat;
     }
@@ -354,7 +354,7 @@ public class ReaderTest {
     }
 
     private static void _fail0(EP_STAT estat) {
-        // We use a separate method here so that we can mimic the 
+        // We use a separate method here so that we can mimic the
         // structure of the original writer-test.c.
         if (GdpUtilities.EP_STAT_ISOK(estat)) {
             estat = GdpUtilities.EP_STAT_OK;

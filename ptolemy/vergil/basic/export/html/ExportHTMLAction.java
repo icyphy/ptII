@@ -887,11 +887,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             //    System.out.println("ExportHTMLAction: name: " + model.getContainer().getName() + model.getContainer().getContainer());
             //}
             if (linkToJNLP
-                    && ((model.getContainer() == null 
+                    && ((model.getContainer() == null
                                     && model instanceof CompositeEntity
-                                    // Don't include links to the .xml of class definitions 
+                                    // Don't include links to the .xml of class definitions
                                     && !((CompositeEntity)model).isClassDefinition())
-                            || (model.getContainer() != null 
+                            || (model.getContainer() != null
                                     && /* Ptera */model.getContainer().getContainer() == null
                                     && model.getName().equals("_Controller")))) {
                 String linkToHelp = "<a href=\""
@@ -1023,14 +1023,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                             }
                         }
                     }
-                    
+
                     // Only add <ul> if we have upHTML
                     if (upHTML != null) {
                         _addContent("toc.htm", false, "<ul>");
                         _addContent("toc.htm", false, upHTML);
                     _addContent("toc.htm", false, "</ul>");
                     }
-                    
+
                     // Get the toc contents and stuff it into toc.htm.
                     List<StringBuffer> contents = _contents.get("tocContents");
                     if (contents != null) {
@@ -1551,7 +1551,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     tocFile = new File(modelFile.getParent(), "toc.html");
                     if (!tocFile.exists()) {
                         File docDirectory = new File(modelFile.getParent(), "../../doc/");
-                        if (docDirectory.exists() 
+                        if (docDirectory.exists()
                                 && docDirectory.isDirectory()) {
                             tocFile = new File(docDirectory, "toc.htm");
                             if (!tocFile.exists()) {
@@ -1611,7 +1611,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     try {
                         File modelFile = new File(modelURI.getURI());
                         File docDirectory = new File(modelFile, "../../../doc/");
-                        if (docDirectory.exists() 
+                        if (docDirectory.exists()
                                 && docDirectory.isDirectory()
                                 && (new File(docDirectory, "index.htm").exists()
                                         || new File(docDirectory, "index.html").exists())) {

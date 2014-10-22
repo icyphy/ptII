@@ -1300,7 +1300,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  the parameters should be generated.  Usually, this false when
      *  actor is a NamedObj and true when actor is a
      *  TypedCompositeActor.
-     *  @param generateElectricityConnections If true, invoke 
+     *  @param generateElectricityConnections If true, invoke
      *  _generateElectricityConnections().
      *  @return code that calls the shared method that instantiates the actor
      *  @exception IllegalActionException If thrown while generating

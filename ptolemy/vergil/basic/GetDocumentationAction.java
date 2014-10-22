@@ -236,7 +236,7 @@ public class GetDocumentationAction extends FigureAction {
                 // Opening a remote URL can be slow, so we report to the status bar.
                 BasicGraphFrame basicGraphFrame = BasicGraphFrame
                         .getBasicGraphFrame(context);
-                
+
                 if (basicGraphFrame != null) {
                     basicGraphFrame.report("Opening " + toRead);
                 }

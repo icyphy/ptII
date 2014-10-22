@@ -735,7 +735,7 @@ public class JavaScript extends TypedAtomicActor {
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
@@ -1646,7 +1646,7 @@ public class JavaScript extends TypedAtomicActor {
                     result[i] = _createToken(array.get(i));
                 }
                 if (result.length > 0) {
-                    return new ArrayToken(result);                    
+                    return new ArrayToken(result);
                 } else {
                     // Need to return an empty array. But of what element type?
                     // FIXME: For now, return an empty array of strings.

@@ -229,7 +229,7 @@ public class HTMLAbout {
     }
 
     /** Check that all the demos in otherDemos are in completeDemos.
-     *  Be sure to call {@link #about(Configuration)} before calling this method.   
+     *  Be sure to call {@link #about(Configuration)} before calling this method.
      *  @param completeDemos A URL pointing to the completeDemos.htm file
      *  @return HTML listing demos in otherDemos that are not in completeDemos.
      *  @exception IOException If there is a problem reading the

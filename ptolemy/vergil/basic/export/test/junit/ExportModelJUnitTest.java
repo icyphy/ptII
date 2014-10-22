@@ -244,7 +244,7 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = { 
+        String[] skip = {
                 "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
                 "SimplePassPointer", // Only works on 32-bit
         };
@@ -275,7 +275,7 @@ public class ExportModelJUnitTest {
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
-                "GeneratorRegulatorProtectorSimXRhapsodyFMU", //SimX only works under 32-bits.          
+                "GeneratorRegulatorProtectorSimXRhapsodyFMU", //SimX only works under 32-bits.
                 "PhysicalPlantCausalityLoop", // Deliberately brings up message on run.  AMS
                 "ptango", // Skip running all ptango demos, they do not provide useful exportable output.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."

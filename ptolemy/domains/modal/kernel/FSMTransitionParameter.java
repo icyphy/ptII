@@ -79,7 +79,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     }
 
     /** Add value listener. Nothing to do.
-     *  @param listener Ignored in this base class. 
+     *  @param listener Ignored in this base class.
      *  @see #removeValueListener(ValueListener)
      */
     @Override

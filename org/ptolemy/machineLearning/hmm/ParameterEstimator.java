@@ -390,7 +390,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @param prior prior state distribution guess
      * @param nCategories number of categories in the multinomial distribution, where applies
      * @return a HashMap containing the updated estimates of all model parameters
-     */ 
+     */
     protected HashMap HMMAlphaBetaRecursion(double[] y, double[][] A,
             double[] prior, int nCategories)
 
@@ -731,9 +731,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     /** randomize the initial guess vectors or not.*/
     protected boolean _randomize;
-    
+
     /** Initial guess array for the state transition matrix for the Alpha-Beta Recursion.*/
-    protected double[][] _transitionMatrix; 
+    protected double[][] _transitionMatrix;
 
     /** Updated parameter sets, used during Expectation-Maximization. */
     protected HashMap newEstimates;

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * An adaptive FIR filter with a lattice structure.  This class extends
  * the base class to dynamically adapt the reflection coefficients to
  * minimize the power of the output sequence.  The output reflection
@@ -71,13 +71,13 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
     // The currently adapted reflection coefficients
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The output port that produces the current reflection
      * coefficients.  The port is of type array of double.
      */
     public TypedIOPort adaptedReflectionCoefficients;
 
-    /**     
+    /**
      * The time constant of the filter, which determines how fast the
      * filter adapts.
      * The default value of this parameter is 1.0.
@@ -116,7 +116,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
 
     private double[] _reflectionCoefficientsCache;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -136,7 +136,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         output.setTypeAtLeast(input);
     }
 
-    /**     
+    /**
      * Handle parameter change events on the
      * <i>order</i> and <i>timeConstant</i> parameters. The
      * filter state vector is reinitialized to zero state.
@@ -153,7 +153,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         super.attributeChanged(attribute);
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -173,7 +173,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Initialize the state of the filter.
      */
     public void initialize() throws IllegalActionException  {
@@ -191,7 +191,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */

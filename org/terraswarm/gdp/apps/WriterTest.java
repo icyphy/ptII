@@ -44,7 +44,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
 /** Create a GCL.
-    
+
     Invoke the main method of this class without arguments and it will
     create a random 256-bit name.  Run it with an argument and the
     value of the argument will be used to sha-256'd and used to create
@@ -65,7 +65,7 @@ public class WriterTest {
     /** Write to the GCL.
      *  <p>Usage:<code>
      *  DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest elvis</code></p>
-     *  
+     *
      *  <p>The arguments below are optional:</p>
      *
      *  <p><code>-D <i>debuggingSpecification</i></code>, where an example of <i>debuggingSpecifiction</i> is,
@@ -102,7 +102,7 @@ public class WriterTest {
         //_debug("new gclh: " + gclh);
         //gdp_gcl_t gclhReally = new gdp_gcl_t(gclh.getValue());
         Pointer gclh = null;
-        
+
 
         // Was: gcl_name_t gcliname;
         // BTW - gcl_name_t is defined in gdp/gdp/gdp.h:
@@ -142,7 +142,7 @@ public class WriterTest {
         if (argc > 0) {
             xname = argv[argv.length - 1];
             argc--;
-        } 
+        }
         if (argc != 0 || (append && xname == null)) {
             System.err.println("Usage: WriterTest [-D dbgspec] [-G gdpdAddress] [-a] [<gcl_name>]\n"
                     + "  (name is required for -a)");
@@ -239,7 +239,7 @@ public class WriterTest {
                 PointerByReference dbuf = Gdp10Library.INSTANCE.gdp_datum_getbuf(datum);
                 _debug("About to call gdp_buf_write(): pointer: " + pointer + "pointer.getString(): " + pointer.getString(0));
                 Gdp10Library.INSTANCE.gdp_buf_write(dbuf, pointer, new NativeSizeT(line.length()));
-                
+
                 _debug("About to call gdp_gcl_publish()");
                 _debug("gclh: " + gclh);
                 _debug("datum: " + datum);
@@ -271,7 +271,7 @@ public class WriterTest {
      *  @parameter gclh The GCL handle.
      */
     private static void _fail1(EP_STAT estat, PointerByReference gclh) {
-        // We use a separate method here so that we can mimic the 
+        // We use a separate method here so that we can mimic the
         // structure of the original writer-test.c.
         Gdp10Library.INSTANCE.gdp_gcl_close(gclh);
         _fail0(estat);
@@ -281,7 +281,7 @@ public class WriterTest {
      *  @parameter estat The libep Enhanced Portability status code.
      */
     private static void _fail0(EP_STAT estat) {
-        // We use a separate method here so that we can mimic the 
+        // We use a separate method here so that we can mimic the
         // structure of the original writer-test.c.
         if (GdpUtilities.EP_STAT_ISOK(estat)) {
             estat = GdpUtilities.EP_STAT_OK;
@@ -298,7 +298,7 @@ public class WriterTest {
 
     /** Optionally print a message.
      *  @param the message
-     */   
+     */
     private static void _debug(String message) {
         //System.out.println(message);
     }

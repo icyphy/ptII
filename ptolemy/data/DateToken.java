@@ -137,7 +137,7 @@ PartiallyOrderedToken {
 
         // Simple date format is not thread safe - intermediate parsing results are
         // stored in instance fields.
-        synchronized(_SIMPLE_DATE_FORMAT) {    
+        synchronized(_SIMPLE_DATE_FORMAT) {
             try {
                 // See https://stackoverflow.com/questions/4713825/how-to-parse-output-of-new-date-tostring
                 // FIXME: this is probably Locale.US-specific
@@ -175,11 +175,11 @@ PartiallyOrderedToken {
                     _precision = PRECISION_NANOSECOND;
                 } else {
                     throw new IllegalActionException(null, "Unexpected date"
-                            + "format: " + 
-                            dateString + " is not formatted as " + 
+                            + "format: " +
+                            dateString + " is not formatted as " +
                             _SIMPLE_DATE_FORMAT);
                 }
-                
+
                 // Calculate and set time zone.
                 int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
                 _timeZone = TimeZone.getTimeZone("GMT" + offset);
@@ -569,9 +569,9 @@ PartiallyOrderedToken {
 
         String beforeTimeZone = timeString.substring(0, timeString.lastIndexOf(" "));
         beforeTimeZone = beforeTimeZone.substring(0, beforeTimeZone.lastIndexOf(" "));
-        
+
         String remainder = timeString.substring(beforeTimeZone.length());
-        
+
         return "\"" + beforeTimeZone
                 + String.format("%03d", getMicrosecond())
                 + String.format("%03d", getNanosecond())

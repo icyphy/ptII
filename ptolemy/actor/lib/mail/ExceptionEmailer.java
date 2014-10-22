@@ -72,11 +72,11 @@ import ptolemy.kernel.util.Workspace;
 //// ExceptionEmailer
 
 /**
- * An ExceptionEmailer sends an email to the specified party upon occurrence of 
+ * An ExceptionEmailer sends an email to the specified party upon occurrence of
  * an exception.  The functionality is a simplified version of {@link SendMail}
  * without attachments or an output.  The password is read from a file to avoid
  * storing it in the model.
- * 
+ *
  * @author Edward A. Lee, Elizabeth Latronico
  * @version $Id: ExceptionSubscriber.java 69467 2014-06-29 14:35:19Z beth@berkeley.edu$
  * @since Ptolemy II 10.0
@@ -84,13 +84,13 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (beth)
  * @see SendMail
  */
-public class ExceptionEmailer extends AbstractInitializableAttribute 
+public class ExceptionEmailer extends AbstractInitializableAttribute
     implements ExceptionSubscriber {
     /** Invoked by an exception handler (e.g. CatchExceptionAttribute) when an
-     *  exception occurs.  Some subscribers may need to set up access to 
-     *  resources (such as opening a file) prior to being notified of an 
+     *  exception occurs.  Some subscribers may need to set up access to
+     *  resources (such as opening a file) prior to being notified of an
      *  exception. These could extend AbstractInitalizableAttribute to do so.
-     * 
+     *
      *  <p>
      *  This attribute requires the JavaMail 1.5 javax.mail.jar file be in the
      *  classpath.</p>
@@ -104,7 +104,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
      *     ./configure
      *  </pre>
      *  <p>In Eclipse, you will then need to refresh the project.</p> *
-     *   
+     *
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If the superclass throws it.
@@ -113,7 +113,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
     public ExceptionEmailer(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
- 
+
         to = new StringParameter(this,"to");
         to.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
 
@@ -128,7 +128,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         SMTPHostName = new StringParameter(this, "SMTPHostName");
         SMTPHostName.setExpression("smtp.myserver.com");
-        
+
         SMTPPort = new StringParameter(this, "SMTPPort");
         SMTPPort.setExpression("");
 
@@ -147,34 +147,34 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         reallySendMail.setTypeEquals(BaseType.BOOLEAN);
         reallySendMail.setExpression("false");
         reallySendMail.setPersistent(true);
-        
+
         statusMessage = new StringParameter(this, "statusMessage");
         statusMessage.setExpression("No exception encountered");
         statusMessage.setVisibility(Settable.NOT_EDITABLE);
-        
+
         _newline = new Parameter(this, "_newline");
         _newline.setExpression("property(\"line.separator\")");
-        
+
         _props = new Properties();
         _props.put("mail.transport.protocol", "smtp");
         _props.put("mail.smtp.auth", "true");
-        
-        // Required by some mail servers 
+
+        // Required by some mail servers
         _props.put("mail.smtp.starttls.enable", "true");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////              public parameters                            ////
 
     /** Email address to copy on the message. */
     public StringParameter cc;
-    
+
     /** Enable the Secure Sockets Layer (SSL) protocol.*/
     public Parameter enableSSL;
 
     /** Email address from which this is sent. */
     public StringParameter from;
-    
+
     /** The file that the password is stored in. */
     public FileParameter passwordFile;
 
@@ -185,7 +185,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
      *  wrapup() method, to help prevent duplicate mailings.
      */
     public Parameter reallySendMail;
-    
+
     /** The address to which replies should be directed.
      *  This is a comma-separated list that defaults to
      *  an empty string, which indicates that the reply
@@ -201,22 +201,22 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
     /** User name for the send mail server. */
     public StringParameter SMTPUserName;
-    
+
     /** A status message reflecting the success or failure of actions taken
      * upon occurrence of an exception.  Implemented as a public parameter so
      * the message can be displayed in the icon.
      */
-    public StringParameter statusMessage;  
+    public StringParameter statusMessage;
 
     /** Email address(es) to which this is sent.
      *  This is a comma-separated list that defaults to
      *  "nobody1@nowhere.com, nobody2@nowhere.com".
      */
     public StringParameter to;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////              public methods                               ////
-    
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this class,
      *  if the SMTP host or user name is changed, this method forgets the password.
@@ -232,7 +232,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
@@ -245,26 +245,26 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         newObject._newline = (Parameter)newObject.getAttribute("_newline");
         newObject._newline.setExpression("property(\"line.separator\")");
-        
+
         newObject._password = null;
         newObject._props = null;
-        
+
         return newObject;
     }
-    
+
     // TODO:  Allow sending an email upon exception handled.  Could have one or
     // the other, or both
     @Override
     public boolean exceptionHandled(boolean succesful, String message) {
         return true;
-        
+
     }
 
     /** Send a mail upon occurrence of an exception.
-     * 
+     *
      * @param policy  The exception handling policy
      * @param exception The exception that occurred
-     * @return True if email was sent successfully (or if notification message 
+     * @return True if email was sent successfully (or if notification message
      *  was successfully generated if reallySendMail is false), false otherwise
      */
     @Override
@@ -273,7 +273,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         //configure SMTP server
         _props.put("mail.smtp.host", SMTPHostName.getValueAsString());
 
-        String SMTPPortValue = SMTPPort.getValueAsString(); 
+        String SMTPPortValue = SMTPPort.getValueAsString();
         if (!SMTPPortValue.equals("")) {
             _props.put("mail.smtp.port", SMTPPortValue);
         } else {
@@ -282,18 +282,18 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         boolean enableSSLValue = false;
         try {
-            enableSSLValue = 
+            enableSSLValue =
                     ((BooleanToken) enableSSL.getToken()).booleanValue();
         } catch(IllegalActionException e){
             statusMessage.setExpression("Failed to enable SSL");
-            try { 
+            try {
                 statusMessage.validate();
             } catch(IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
         }
-        
+
         if (enableSSLValue) {
             if (!SMTPPortValue.equals("")) {
                 _props.put("mail.smtp.socketFactory.port", SMTPPortValue);
@@ -316,14 +316,14 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         // Make sure the user name is valid, since parse errors will
         // be ignored in the authenticator below.
         SMTPUserName.getValueAsString();
-        
+
         // Open password file an retrieve password
         BufferedReader reader = null;
 
         StringBuffer lineBuffer = new StringBuffer();
         try {
             reader = passwordFile.openForReading();
-            
+
             String newlineValue = ((StringToken) _newline.getToken())
                     .stringValue();
             while (true) {
@@ -338,7 +338,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             }
         } catch (Throwable throwable) {
             statusMessage.setExpression("Failed to read password file.");
-            try { 
+            try {
                 statusMessage.validate();
             } catch(IllegalActionException e) {
                 // Should not happen since expression is legal
@@ -349,9 +349,9 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 try {
                     passwordFile.close();
                 } catch(IllegalActionException e){
-                   statusMessage.setExpression("Failed to close password " 
+                   statusMessage.setExpression("Failed to close password "
                                    + "file.");
-                   try { 
+                   try {
                        statusMessage.validate();
                    } catch(IllegalActionException e2) {
                        // Should not happen since expression is legal
@@ -360,7 +360,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 }
             }
         }
-        
+
         String passwordValue = lineBuffer.toString();
         if (!passwordValue.equals("")) {
             _password = passwordValue.toCharArray();
@@ -368,38 +368,38 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         // Construct the email
         StringBuffer result = new StringBuffer();
-        
+
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        
+
         NamedObj toplevel;
-        
+
         // If contained by an ExceptionManager, get toplevel of container
-        if (getContainer() != null && 
+        if (getContainer() != null &&
                 getContainer() instanceof ExceptionManagerModel) {
             toplevel = ((ExceptionManagerModel) getContainer())
                     .getModelContainer().toplevel();
         } else {
             toplevel = toplevel();
         }
-        
+
         String modelName = toplevel.getName();
         String policyAction;
-        
+
         // Policies restart, stop and throw
         if (policy.equals("restart")) {
             policyAction = "restarted";
         } else {
             policyAction = "stopped";
         }
-        
-        String subject = modelName + " " + policyAction + " at " 
+
+        String subject = modelName + " " + policyAction + " at "
                 + dateFormat.format(date);
         String message = "An exception occurred in model " + modelName + " at "
-                + dateFormat.format(date) + ".  The model was " 
+                + dateFormat.format(date) + ".  The model was "
                 + policyAction + ".";
 
-        StringTokenizer tokenizer = 
+        StringTokenizer tokenizer =
                 new StringTokenizer(to.getValueAsString(), ",");
         while (tokenizer.hasMoreTokens()) {
             result.append("To: " + tokenizer.nextToken().trim() + "\n");
@@ -424,26 +424,26 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         Boolean reallySendMailValue = false;
         try {
-            reallySendMailValue = 
+            reallySendMailValue =
                     ((BooleanToken) reallySendMail.getToken()).booleanValue();
         } catch(IllegalActionException e){
-            statusMessage.setExpression("Failed to read reallySendMail " 
+            statusMessage.setExpression("Failed to read reallySendMail "
                             + "parameter.");
-            try { 
+            try {
                 statusMessage.validate();
             } catch(IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
         }
-        
+
         if (!reallySendMailValue) {
             // Don't want to actually send email, so we just return now.
             if (_debugging) {
                 _debug("reallySendMail is false, so no mail is sent.");
             }
             statusMessage.setExpression(message);
-            try { 
+            try {
                 statusMessage.validate();
             } catch(IllegalActionException e) {
                 // Should not happen since expression is legal
@@ -500,10 +500,10 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 mimeMessage.addRecipient(Message.RecipientType.CC,
                         new InternetAddress(nextToken));
             }
-            
+
             if (!atLeastOneToAddress) {
                 statusMessage.setExpression("Error: No recipient specified.");
-                try { 
+                try {
                     statusMessage.validate();
                 } catch(IllegalActionException e) {
                     // Should not happen since expression is legal
@@ -517,32 +517,32 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             transport.close();
         } catch (MessagingException e) {
             statusMessage.setExpression("Message failed.");
-            try { 
+            try {
                 statusMessage.validate();
             } catch(IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
         }
-        
+
         statusMessage.setExpression("Mail sent at " + dateFormat.format(date));
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////              private variables                            ////
-    
+
     /** The end of line character. */
     private Parameter _newline;
-    
+
     /** The password last entered. */
     private char[] _password;
-    
+
     /** Reference to a persistent set of properties used to configure
      *  the SMTP parameters.
      */
     private Properties _props;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

@@ -103,7 +103,7 @@ public class ImportAccessorAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
 
     /** Create a new action to import an accessor.
-     *  The initial default value for last location is 
+     *  The initial default value for last location is
      *  "http://www.terraswarm.org/accessors".
      * @param frame The Top that gets the menu.
      */

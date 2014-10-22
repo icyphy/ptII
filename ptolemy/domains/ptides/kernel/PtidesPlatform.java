@@ -459,7 +459,7 @@ public class PtidesPlatform extends MirrorComposite {
         return ((PtidesPort) ((MirrorPort) port).getAssociatedPort())
                 .isNetworkTransmitterPort();
     }
-    
+
     private boolean _useRealTime;
 
     ///////////////////////////////////////////////////////////////////
@@ -496,7 +496,7 @@ public class PtidesPlatform extends MirrorComposite {
          */
         private static final String payload = "payload";
     }
-    
+
     /** The Ptides type that is sent over the network. This is a RecordType
      *  containing timestamp, microstep and payload.
      */
@@ -557,7 +557,7 @@ public class PtidesPlatform extends MirrorComposite {
             useRealTime = new Parameter(this, "useRealTime", new BooleanToken(false));
             useRealTime.setTypeEquals(BaseType.BOOLEAN);
         }
-        
+
         /** This boolean parameter defaults to false and indicates whether
          *  the timestamp in the recordtokens sent and received by network
          *  ports are model time or real time.
@@ -566,7 +566,7 @@ public class PtidesPlatform extends MirrorComposite {
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
         @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
@@ -787,7 +787,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 if (_useRealTime) {
                                     timestampToken = record
                                             .get(PtidesNetworkRealTimeType.timestamp);
-                                    DateToken token = ((DateToken)timestampToken); 
+                                    DateToken token = ((DateToken)timestampToken);
                                     recordTimestamp = new Time(
                                             director,
                                             (token.getCalendarInstance().getTimeInMillis() - director
@@ -885,7 +885,7 @@ public class PtidesPlatform extends MirrorComposite {
                 throws IllegalActionException {
             boolean result = false;
             PtidesDirector director = (PtidesDirector) _getEmbeddedPtidesDirector();
-            
+
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
 
@@ -908,10 +908,10 @@ public class PtidesPlatform extends MirrorComposite {
 
                             Token timeToken;
                             Time timestamp = (Time) timestamps[0];
-                            
+
                             if (_useRealTime) {
-                                long time = (long)(timestamp.getDoubleValue() 
-                                        / director.localClock.getTimeResolution()) 
+                                long time = (long)(timestamp.getDoubleValue()
+                                        / director.localClock.getTimeResolution())
                                         + director.getRealStartTimeMillis();
                                 timeToken = new DateToken(time);
                             } else {
@@ -921,7 +921,7 @@ public class PtidesPlatform extends MirrorComposite {
                             Token[] values = new Token[] {
                                     timeToken,
                                     new IntToken(microstep), t };
-                            
+
                             RecordToken record = new RecordToken(
                                     PtidesNetworkModelTimeType.LABELS, values);
                             try {

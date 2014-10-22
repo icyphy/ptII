@@ -48,17 +48,17 @@ import ptolemy.kernel.util.Workspace;
 ////WebSocketReader
 
 /** An actor that reads information from a websocket.  Multiple readers of the
- * same URL path are allowed.  (Internally, this is managed using a separate 
- * websocket connection for each reader). 
+ * same URL path are allowed.  (Internally, this is managed using a separate
+ * websocket connection for each reader).
  *
- *  @author Elizabeth Latronico 
+ *  @author Elizabeth Latronico
  *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
  */
 
-public class WebSocketReader extends TypedAtomicActor 
+public class WebSocketReader extends TypedAtomicActor
     implements WebSocketService {
     /** Create an instance of the actor.
      *  @param container The container
@@ -69,37 +69,37 @@ public class WebSocketReader extends TypedAtomicActor
     public WebSocketReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         path = new StringParameter(this, "path");
         path.setExpression("/*");
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-        
+
         _connectionManager = WebSocketConnectionManager.getInstance();
-        
+
         // Assume false until the path is set
         _isLocal = false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** The URL affiliated with the websocket.  Can refer to a locally 
+
+    /** The URL affiliated with the websocket.  Can refer to a locally
      * hosted websocket or a remotely hosted websocket.  Locally hosted
-     * websockets have paths of the form /* such as / or /mysocket 
-     * or /mysocket/first   .  These will internally be translated to 
+     * websockets have paths of the form /* such as / or /mysocket
+     * or /mysocket/first   .  These will internally be translated to
      * ws://localhost:port/path e.g. ws://localhost:8078/mysocket    .
-     * Paths for remotely hosted websockets should start with ws:// or wss://  
+     * Paths for remotely hosted websockets should start with ws:// or wss://
      */
     public StringParameter path;
-    
+
     /** A port that outputs each message received from the websocket. */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  In this case, check the
      *  value of the <i>path</i> attribute to make sure it is a valid URI.
      *  @param attribute The attribute that changed.
@@ -115,17 +115,17 @@ public class WebSocketReader extends TypedAtomicActor
                 // Paths connecting to remote websockets should start with ws://
                 // or wss:// (for secure websockets)
                 // Paths not starting with these are assumed to be local
-                // For locally hosted websockets should start with a "/" 
+                // For locally hosted websockets should start with a "/"
                 // or be "*"
                 if (!pathValue.trim().equals("")) {
                     // Check for common incorrect protocols
-                    if (pathValue.startsWith("http") || 
+                    if (pathValue.startsWith("http") ||
                             pathValue.startsWith("ftp")) {
-                      throw new IllegalActionException(this, "Remote websocket" 
-                            + " paths must start with ws://");  
-                    } 
-                    
-                    if (pathValue.startsWith("ws://") || 
+                      throw new IllegalActionException(this, "Remote websocket"
+                            + " paths must start with ws://");
+                    }
+
+                    if (pathValue.startsWith("ws://") ||
                             pathValue.startsWith("wss://")) {
                         _URIpath = URI.create(pathValue);
                         _isLocal = false;
@@ -148,7 +148,7 @@ public class WebSocketReader extends TypedAtomicActor
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the actor.
      *  @param workspace The workspace in which to place the cloned attribute.
      *  @return The cloned attribute.
@@ -158,7 +158,7 @@ public class WebSocketReader extends TypedAtomicActor
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebSocketReader newObject = (WebSocketReader) super.clone(workspace);
-        
+
         newObject._connection = null;
         newObject._connectionManager = WebSocketConnectionManager.getInstance();
         newObject._initializeModelTime = null;
@@ -169,23 +169,23 @@ public class WebSocketReader extends TypedAtomicActor
         newObject._URIpath = null;
         return newObject;
     }
-    
+
     /** Send the message from the websocket to the output port.
-     *  @exception IllegalActionException If the message cannot be sent to the 
+     *  @exception IllegalActionException If the message cannot be sent to the
      *  output port.
      */
 
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (_message != null) {
             output.send(0, new StringToken(_message));
         }
-        
+
         _message = null;
     }
-    
+
     /** Return the relative path that this WebSocketService is mapped to.
      *  @return The relative path that this WebSocketService is mapped to.
      *  @see #setRelativePath(URI)
@@ -194,15 +194,15 @@ public class WebSocketReader extends TypedAtomicActor
     public URI getRelativePath() {
         return _URIpath;
     }
-    
-    /** Remember the time at which this actor was initialized in order to 
+
+    /** Remember the time at which this actor was initialized in order to
      *  request firings at a particular time.
      *  @exception IllegalActionException If the parent throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _initializeModelTime = getDirector().getModelTime();
         // Subtract a tenth of a second.  As this actor is initialized
         // after the director, the initial time here could be later than what
@@ -210,31 +210,31 @@ public class WebSocketReader extends TypedAtomicActor
         // FIXME:  The director could offer e.g. a getInitialRealTime() function
         // to avoid this workaround
         _initializeRealTime = System.currentTimeMillis() - 100;
-        
+
         // Open any websockets connecting to remote locations
         if (!_isLocal) {
             open(_URIpath);
         }
-        
+
         // The server will open websockets to local locations later once it
         // has acquired a port.  The port number is needed for the URL.
     }
-    
+
     /** Returns true if connecting to a locally hosted service; false otherwise.
      * @return True if connecting to a locally hosted service; false otherwise.
      */
     public boolean isLocal() {
         return _isLocal;
     }
-    
-    /** Upon receipt of a message, store the message and request a firing. 
+
+    /** Upon receipt of a message, store the message and request a firing.
      * @param endpoint The WebSocketEndpoint that sent the message.
      * @param message The message that was received.
      */
     @Override
     public void onMessage(WebSocketEndpoint endpoint, String message) {
         _message = message;
-        
+
         // Request a firing
         // Figure out what time to request a firing for.
         long elapsedRealTime = System.currentTimeMillis()
@@ -263,7 +263,7 @@ public class WebSocketReader extends TypedAtomicActor
             }
         }
     }
-    
+
     /** Open the WebSocket connection on the given port.
      * @param path The URI to connect to.
      * @exception IllegalActionException If the websocket cannot be opened.
@@ -275,12 +275,12 @@ public class WebSocketReader extends TypedAtomicActor
         } else {
             _connectionManager.requestConnection(path, this);
         }
-        
+
         if (_debugging) {
             _debug("Websocket connected for " + getName());
         }
     }
-    
+
     /** Set the connection that this WebSocketService will use.
      * @param connection The connection that this WebSocketService will use.
      */
@@ -288,7 +288,7 @@ public class WebSocketReader extends TypedAtomicActor
     public void setConnection(Connection connection) {
         _connection = connection;
     }
-    
+
     /** Set the relative path that this WebSocketService is mapped to.
      *  @param path The relative path that this WebSocketService is mapped to.
      *  @see #getRelativePath()
@@ -297,46 +297,46 @@ public class WebSocketReader extends TypedAtomicActor
     public void setRelativePath(URI path) {
         _URIpath = path;
     }
-    
+
     /** Close any open WebSocket connections.
     * @exception IllegalActionException If thrown by the parent. */
    @Override
    public void wrapup() throws IllegalActionException {
        super.wrapup();
-       
+
        _connectionManager.releaseConnection(_URIpath, this);
        _connection  = null;
    }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The WebSocket connection. */
     private Connection _connection;
-    
+
     /** A manager responsible for generating and releasing connections. */
     private WebSocketConnectionManager _connectionManager;
-    
+
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
 
     /** The real time at which this actor was last initialized, in milliseconds. */
     private long _initializeRealTime;
-    
-    /** True if the WebSocket is hosted locally be the Ptolemy model; false 
+
+    /** True if the WebSocket is hosted locally be the Ptolemy model; false
      *  otherwise.
      */
     private boolean _isLocal;
-    
-    /** True if the actor wishes to share a socket connection.  Used for 
+
+    /** True if the actor wishes to share a socket connection.  Used for
      * remote services for e.g. writing to a socket, then receiving a response.
      * Always true for WebSocketReader.
      */
     private boolean _isShared = true;
-    
+
     /** The last message received. */
     private String _message;
-    
+
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to
      *  all of the URI naming conventions.

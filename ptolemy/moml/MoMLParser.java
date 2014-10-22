@@ -771,7 +771,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Adding another dialog is annoying, so we print out the warning.
             System.err.println("Warning: Missing Classes: " + warning);
 
-            // MessageHandler(String) is not selectable, so we use MessageHandler(String, Throwable).            
+            // MessageHandler(String) is not selectable, so we use MessageHandler(String, Throwable).
             //MessageHandler.warning("Missing Classes", new Exception(warning.toString()));
         }
 
@@ -7362,7 +7362,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Add a class name to the list of missing classes.
      *  @param className the class name to be added.
-     */   
+     */
     private void _updateMissingClasses(String className) {
         if (_missingClasses == null) {
             _missingClasses = new HashSet<String>();

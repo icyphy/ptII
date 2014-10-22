@@ -134,9 +134,9 @@ public class WebServerUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return true if dynamic port selection is permitted; false otherwise.
-     * 
+     *
      * @return True if dynamic port selection is permitted; false otherwise.
      * @see #setDynamicPortSelection(boolean)
      */
@@ -251,15 +251,15 @@ public class WebServerUtilities {
     }
 
     /** Set a flag indicating if dynamic port selection is permitted.
-     * 
-     * @param dynamicPortSelection True if dynamic port selection is permitted; 
+     *
+     * @param dynamicPortSelection True if dynamic port selection is permitted;
      * false otherwise
      * @see #getDynamicPortSelection()
      */
     public void setDynamicPortSelection(boolean dynamicPortSelection) {
         _dynamicPortSelection = dynamicPortSelection;
     }
-    
+
     /** Set the maximum amount of time, in milliseconds, that the server will
      * wait before returning a timeout response page.
      *
@@ -323,27 +323,27 @@ public class WebServerUtilities {
                 // Only need to check servlet handlers (e.g. not the
                 // DefaultHandler, not resource handlers...)
                 // Check for matching application path
-                
+
                 // TODO:  Update for WebContextHandler
                 if (handler instanceof ServletContextHandler
                         && ((ServletContextHandler) handler)
                                 .getContextPath()
                                 .equalsIgnoreCase(
                                         appInfo.getApplicationPath().toString())) {
-                    
+
                     // Check for matching HTTP request and WebSocket servlets
-                    Set<URI> keySet = 
+                    Set<URI> keySet =
                             new HashSet(appInfo.getServletInfo().keySet());
                     keySet.addAll(appInfo.getWebSocketInfo().keySet());
-                    
+
                     for (URI servletPath : keySet) {
-                        ServletHandler servletHandler = 
+                        ServletHandler servletHandler =
                                 ((ServletContextHandler) handler)
                                 .getServletHandler();
                         for (ServletMapping mapping : servletHandler
                                 .getServletMappings()) {
 
-                            // Any matching path means this is the servlet we 
+                            // Any matching path means this is the servlet we
                             // want to stop and remove
                             for (String path : mapping.getPathSpecs()) {
                                 if (path.equalsIgnoreCase(servletPath
@@ -410,7 +410,7 @@ public class WebServerUtilities {
     ////                         protected methods                 ////
 
     /** Create a ContextHandler to store all of the servlets defined in the
-     *  given application (e.g. a Ptolemy model).  This includes servlets for 
+     *  given application (e.g. a Ptolemy model).  This includes servlets for
      *  both standard HTTP requests and WebSockets.  Add this handler to the
      *  collection of handlers for this web server.
      *
@@ -432,15 +432,15 @@ public class WebServerUtilities {
                             new ServletHolder(appInfo.getServletInfo().get(
                                     path)), path.toString());
         }
-        
+
         // Add handlers for WebSockets
         // FIXME:  In app info, keep track of servlets instead of actors?
         // Since WebSocket knows web services it is affiliated with?
         // TODO:  Open all of these connections here for local readers/writers
         // Remote readers/writers are expected to open their own connection
         // TODO:  Determine if connection is local of remote based on URL
-        // Need to pass the client to reader and writer??  
-        
+        // Need to pass the client to reader and writer??
+
         for (URI path : appInfo.getWebSocketInfo().keySet()){
             PtolemyWebSocketServlet servlet = new PtolemyWebSocketServlet();
             servletHandler.addServlet(new ServletHolder(
@@ -465,9 +465,9 @@ public class WebServerUtilities {
      *
      *  @param appInfo An object containing information needed to register the
      *   new application
-     *  @throws Exception If a FileParameter is found that is not a valid URI or 
+     *  @throws Exception If a FileParameter is found that is not a valid URI or
      *  references a resource that cannot be found, or if the handler cannot
-     *  be started on the server 
+     *  be started on the server
      */
 
     // FIXME:  Throw exception instead of allowing an empty list?  An
@@ -504,7 +504,7 @@ public class WebServerUtilities {
                             // Add the new resource locations (if any)
                             // FIXME:  Check if this cast is OK.  Otherwise
                             // will have to manually remember the resources
-                            ResourceCollection resources = (ResourceCollection) 
+                            ResourceCollection resources = (ResourceCollection)
                                     handler.getBaseResource();
 
                             for (Resource resource : appInfo
@@ -613,12 +613,12 @@ public class WebServerUtilities {
                         // setResourceBase(String) is a wrapper for
                         // setBaseResource(ResourceCollection) that only allows
                         // one location.
-                        
-                        ResourceCollection collection 
+
+                        ResourceCollection collection
                             = new ResourceCollection();
                         collection.setResources(resources
                                 .toArray(new Resource[resources.size()]));
-                        
+
                         resourceHandler.setBaseResource(collection);
 
                         fileHandler.setHandler(resourceHandler);
@@ -637,10 +637,10 @@ public class WebServerUtilities {
             handler.start();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     private void startServer() throws Exception {
         _server = new Server();
         _selectChannelConnector = new SelectChannelConnector();
@@ -683,9 +683,9 @@ public class WebServerUtilities {
                 }
             }
         }
-        
+
         boolean success = false;
-                
+
         // If an exception occurred, re-throw it
         // One alternative considered was to use a Callable instead of a
         // a Runnable, since a Callable can throw an exception
@@ -696,13 +696,13 @@ public class WebServerUtilities {
         if (_exception != null) {
             if (_exception instanceof BindException) {
                 if (_dynamicPortSelection) {
-                    _portNumber = _initialDynamicPortNumber; 
-                    
+                    _portNumber = _initialDynamicPortNumber;
+
                     while (_portNumber <= _maxDynamicPortNumber) {
                         _startAttempted = false;
                         _exception = null;
                         _serverThread = new Thread(new RunnableServer());
-                        
+
                         _selectChannelConnector.setPort(_portNumber);
                         _serverThread.start();
 
@@ -719,7 +719,7 @@ public class WebServerUtilities {
                                 }
                             }
                         }
-                        
+
                         if (_exception != null) {
                             if (_exception instanceof BindException) {
                                 _portNumber++;
@@ -730,14 +730,14 @@ public class WebServerUtilities {
                             // No exception means server started successfully
                             success = true;
                             break;
-                        } 
+                        }
                     }
-                    
+
                     // Ran out of port numbers to try
                     if (!success) {
-                        throw new Exception("The web server could not find an " 
-                                + "available port between " 
-                                + _initialDynamicPortNumber + " and " 
+                        throw new Exception("The web server could not find an "
+                                + "available port between "
+                                + _initialDynamicPortNumber + " and "
                                 + _maxDynamicPortNumber);
                     }
                 } else {
@@ -757,15 +757,15 @@ public class WebServerUtilities {
 
     /** The set of applications running on this web server. */
     private HashSet<WebApplicationInfo> _applications;
-    
+
     /** A flag indicating if dynamic port selection is allowed. */
     private boolean _dynamicPortSelection;
 
     /** An exception thrown (if any) when the server is started.  The main
      * thread will check if this exception has been set by the server thread. */
     private Exception _exception;
-    
-    /** The initial port number to try, under dynamic port selection.  
+
+    /** The initial port number to try, under dynamic port selection.
      *  Note that the port specified in the constructor will be tried first. */
     private int _initialDynamicPortNumber = 8001;
 
@@ -774,10 +774,10 @@ public class WebServerUtilities {
      */
     private Object _lock = new Object();
 
-    /** The maximum port number to try, under dynamic port selection.  A 
+    /** The maximum port number to try, under dynamic port selection.  A
      * maximum is specified so the server won't try indefinitely. */
     private int _maxDynamicPortNumber = 8999;
-    
+
     /** The maximum idle time for a connection, in milliseconds.
      */
     private int _maxIdleTime;
@@ -801,7 +801,7 @@ public class WebServerUtilities {
     /** A Runnable class to run a Jetty web server in a separate thread.
      */
     private class RunnableServer implements Runnable {
-        
+
         /** Run the Jetty web server.  Stop the server if this thread is
          *  interrupted (for example, when the model is finished executing,
          *  WebServer's wrapup() will interrupt this thread) or if an

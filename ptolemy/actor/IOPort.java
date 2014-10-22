@@ -170,7 +170,7 @@ public class IOPort extends ComponentPort {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
      *  @exception IllegalActionException If thrown by the superclass
-     *  or while initializing 
+     *  or while initializing
      */
     public IOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
@@ -217,7 +217,7 @@ public class IOPort extends ComponentPort {
         setInput(isInput);
         setOutput(isOutput);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
@@ -2192,7 +2192,7 @@ public class IOPort extends ComponentPort {
         }
         return hasNewToken(channelIndex);
     }
-    
+
     /** Return true if the specified channel has the specified number
      *  of tokens to deliver via the get() method.
      *  If this port is not an input, or if the
@@ -2243,8 +2243,8 @@ public class IOPort extends ComponentPort {
 
         return result;
     }
-    
-    /** Return true if the port is persisent or the specified channel 
+
+    /** Return true if the port is persisent or the specified channel
      *  has a token to deliver
      *  via the getInside() method.  If this port is not an output, or
      *  if the channel index is out of range, then throw an exception.

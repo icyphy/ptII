@@ -89,7 +89,7 @@ public class ConditionsTableModel extends AbstractTableModel {
                 getColumnCount(), _model);
     }
 
-    /** Delete a column. 
+    /** Delete a column.
      *  @param index The column to be deleted.
      */
     public void deleteColumn(int index) {
@@ -150,7 +150,7 @@ public class ConditionsTableModel extends AbstractTableModel {
         _tableContent.remove(contentIndex + 1);
     }
 
-    /** Save the model. 
+    /** Save the model.
      *  @exception IllegalActionException  If thrown while saving the model.
      *  @exception NameDuplicationException  If thrown while saving the model.
      */

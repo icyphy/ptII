@@ -84,7 +84,7 @@ public class AccessorOne extends JavaScript {
         // to the model, and hence a way to invoke Java code. Prevent this
         // by putting the actor in "restricted" mode.
         _restricted = true;
-        
+
         // Set the script parameter to Visibility EXPERT.
         script.setVisibility(Settable.EXPERT);
     }

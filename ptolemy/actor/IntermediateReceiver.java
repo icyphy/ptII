@@ -168,7 +168,7 @@ public class IntermediateReceiver extends AbstractReceiver {
         ((Actor) _receiver.getContainer().getContainer()).getDirector()
         .notifyTokenSentToCommunicationAspect();
     }
-    
+
     /** Reset this receiver to its initial state, which in this base
      *  class is the same as calling clear().
      *  @exception IllegalActionException If reset() is not supported by

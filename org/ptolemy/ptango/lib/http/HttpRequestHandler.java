@@ -149,7 +149,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-public class HttpRequestHandler extends TypedAtomicActor 
+public class HttpRequestHandler extends TypedAtomicActor
                 implements HttpService, ExceptionSubscriber {
 
     /** Create an instance of the actor.
@@ -173,7 +173,7 @@ public class HttpRequestHandler extends TypedAtomicActor
         responseCode = new TypedIOPort(this, "responseCode", true, false);
         responseCode.setTypeEquals(BaseType.INT);
         new Parameter(responseCode, "_showName").setExpression("true");
-        
+
         responseContentType = new PortParameter(this, "responseContentType");
         responseContentType.setTypeEquals(BaseType.STRING);
         responseContentType.setStringMode(true);
@@ -263,7 +263,7 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  {@link en.wikipedia.org/wiki/User_agent}).
      *  </ul>
      *  See the class comments for type constraints
-     *  on output ports that produce records. 
+     *  on output ports that produce records.
      */
     public TypedIOPort headers;
 
@@ -306,7 +306,7 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  port. This is an array of strings that defaults to an empty array.
      */
     public Parameter requestedCookies;
-    
+
     /** Output port that produces the name or IP address of the
      *  client or the last proxy that sent the request.
      *  This is a string.
@@ -455,7 +455,7 @@ public class HttpRequestHandler extends TypedAtomicActor
      *    there are no operations that throw exceptions
      */
     @Override
-    public synchronized boolean exceptionOccurred(String policy, 
+    public synchronized boolean exceptionOccurred(String policy,
             Throwable exception) {
         // If there is a pending request,
         // For "restart" policy, generate an error page with retry
@@ -484,7 +484,7 @@ public class HttpRequestHandler extends TypedAtomicActor
     public URI getRelativePath() {
         return _URIpath;
     }
-    
+
     /** Create and return an HttpServlet that is used to handle requests that
      *  arrive at the path given by the <i>path</i> parameter.
      *  This method is required by the HttpService interface.
@@ -553,11 +553,11 @@ public class HttpRequestHandler extends TypedAtomicActor
         // Handle the responseContentType input.
         responseContentType.update();
         responseData.contentType = ((StringToken) responseContentType.getToken()).stringValue();
-        
+
         // Handle the responseHeaders input.
         responseHeaders.update();
         responseData.headers = (RecordToken)responseHeaders.getToken();
-        
+
         if (responseFound) {
             if (_pendingRequest == null) {
                 // There is no pending request, so ignore the response.
@@ -763,7 +763,7 @@ public class HttpRequestHandler extends TypedAtomicActor
 
                 // Read header information from the request and store.
                 _newRequest.headers = _readHeaders(request);
-                
+
                 // Get the name or IP address of the requestor.
                 _newRequest.requestor = request.getRemoteHost();
 
@@ -772,7 +772,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                 // Note that each parameter name may have more than one value,
                 // hence the array of strings.
                 _newRequest.parameters = _readParameters(request);
-                
+
                 // Read the body of the request. This may be an empty string.
                 _newRequest.body = _readBody(request);
 
@@ -875,7 +875,7 @@ public class HttpRequestHandler extends TypedAtomicActor
             // At this point, we are assured that _response is not null.
             response.setStatus(_response.statusCode);
             response.setContentType(_response.contentType);
-            
+
             // Write all the headers to the response.
             if (_response.headers != null) {
                 for (String name : _response.headers.labelSet()) {
@@ -933,7 +933,7 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  @param request  The HttpServletRequest to read header information from.
      *  @return A string containing the body.
      *  @exception IllegalActionException If construction of the record token fails.
-     *  @throws IOException 
+     *  @throws IOException
      */
     protected String _readBody(HttpServletRequest request)
             throws IllegalActionException, IOException {
@@ -1106,7 +1106,7 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1370,7 +1370,7 @@ public class HttpRequestHandler extends TypedAtomicActor
             _handleRequest(request, response, "POST");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// HttpRequestItems
 
@@ -1380,7 +1380,7 @@ public class HttpRequestHandler extends TypedAtomicActor
     protected static class HttpRequestItems {
         /** The body of the request. Only strings are supported for now. */
         public String body;
-        
+
         /** Cookies associated with the request. */
         public RecordToken cookies;
 
@@ -1392,7 +1392,7 @@ public class HttpRequestHandler extends TypedAtomicActor
 
         /** The type of request (the method). */
         public String method;
-        
+
         /** The name or IP address of the originator of the request (or proxy). */
         public String requestor;
 
@@ -1409,7 +1409,7 @@ public class HttpRequestHandler extends TypedAtomicActor
     protected static class HttpResponseItems {
         /** The content type of the response. This defaults to "text/html". */
         public String contentType;
-        
+
         /** All cookies from the setCookies port plus the Cookies from the
          *  HttpRequest.  Values provided on the setCookies port override values
          *  from the HttpRequest for cookies with the same name.  (I.e., the model
@@ -1425,7 +1425,7 @@ public class HttpRequestHandler extends TypedAtomicActor
          *  HttpServletResponse, but it would be inefficient.
          */
         public boolean hasNewCookies;
-        
+
         /** Headers to include in the response, if any. */
         public RecordToken headers;
 

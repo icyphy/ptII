@@ -71,7 +71,7 @@ public class HttpResponse {
 
     /** Construct a new HttpResponse with the given message. Used for creating
      *  responses when errors occur on the Ptolemy side, such as an IOException.
-     *  
+     *
      *  @param message The response message
      */
     public HttpResponse(String message) {
@@ -83,7 +83,7 @@ public class HttpResponse {
     }
 
     /** Construct a new HttpResponse object from an HttpURLConnection object.
-     * 
+     *
      * @param connection The connection object
      */
     public HttpResponse(HttpURLConnection connection) {
@@ -303,7 +303,7 @@ public class HttpResponse {
         /** NONE:  Any other status code. */
         NONE,
         /** CLIENT:  Status codes 4xx. */
-        CLIENT, 
+        CLIENT,
         /** SERVER:  Status codes 5xx and -1. */
         SERVER
     }

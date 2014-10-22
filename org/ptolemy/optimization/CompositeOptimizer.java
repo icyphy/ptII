@@ -98,7 +98,7 @@ and/or with unknown gradient.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
- */ 
+ */
 public class CompositeOptimizer extends ReflectComposite {
 
     /**

@@ -61,7 +61,7 @@ public class WebApplicationInfo {
      * @param applicationPath  The base path for the application
      * @param temporaryFileLocation  The directory where temporary files are
      * stored
-     * @throws Exception If the model does not yet have a name (for example, 
+     * @throws Exception If the model does not yet have a name (for example,
      *  a new unsaved model)
      */
     public WebApplicationInfo(String modelName, String applicationPath,

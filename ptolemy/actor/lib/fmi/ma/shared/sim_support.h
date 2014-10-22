@@ -1,4 +1,4 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * sim_support.h
  * Functions used by the FMU simulations fmusim_me and fmusim_cs.
  * Copyright QTronic GmbH. All rights reserved.
@@ -70,7 +70,7 @@ void parseArguments(int argc, char *argv[], char **fmuFileNames, double *tEnd, d
                     int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]);
 void loadFMU(FMU *fmu, const char *fmuFileName);
 #ifndef _MSC_VER
-typedef int boolean; 
+typedef int boolean;
 #endif
 void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator, boolean header);
 int error(const char *message);

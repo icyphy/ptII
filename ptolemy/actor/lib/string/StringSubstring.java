@@ -130,10 +130,10 @@ public class StringSubstring extends Transformer {
             int stopValue = ((IntToken) stop.getToken()).intValue();
             String substringValue;
 
-            
+
             if (stopValue < startValue) {
                 if (value.length() < startValue) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Cannot compute substring of "
                             + "\"" + value + "\""
                             + " starting at "
@@ -143,7 +143,7 @@ public class StringSubstring extends Transformer {
             } else {
                 if (value.length() < stopValue ||
                         startValue < 0) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Cannot compute substring of "
                             + "\"" + value + "\" between "
                             + startValue + " and "

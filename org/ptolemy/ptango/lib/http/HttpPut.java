@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  Put the contents of an input string to a specified URL.
- 
+
 
  @see HttpGet
  @author Edward A. Lee and Marten Lohstroh

@@ -110,7 +110,7 @@ public class EventTableModel extends AbstractTableModel {
     }
 
     /** Return the row count.
-     *  @return the row count   
+     *  @return the row count
      */
     @Override
     public int getRowCount() {
@@ -131,7 +131,7 @@ public class EventTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
-    /** Delete a column. 
+    /** Delete a column.
      *  @param index The column to be deleted.
      */
     public void deleteColumn(int index) {
@@ -153,7 +153,7 @@ public class EventTableModel extends AbstractTableModel {
         return _columnCount;
     }
 
-    /** Save the model. 
+    /** Save the model.
      *  @exception IllegalActionException  If thrown while saving the model.
      *  @exception NameDuplicationException  If thrown while saving the model.
      */

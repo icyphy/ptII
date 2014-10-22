@@ -418,7 +418,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     // ptolemy.vergil.basic.import.accessor.ImportAccessorAction
 
                     // The reason to *not* add imports that use third-party libraries is because
-                    // various configurations such as Ptiny, Kepler and BCVTB use this class and 
+                    // various configurations such as Ptiny, Kepler and BCVTB use this class and
                     // we don't want to clutter Ptiny with third-party libraries.
                     /////////////////////////////////////////////////
 
@@ -438,9 +438,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     // IMPORTANT: Do not add any export actions to this class
                     // that require 3rd-party libraries.
                     // Instead, edit defaultConfiguration.xml.
-                    
+
                     // The reason to *not* add exports that use third-party libraries is because
-                    // various configurations such as Ptiny, Kepler and BCVTB use this class and 
+                    // various configurations such as Ptiny, Kepler and BCVTB use this class and
                     // we don't want to clutter Ptiny with third-party libraries.
                     /////////////////////////////////////////////////
 

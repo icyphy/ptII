@@ -393,7 +393,7 @@ int main(int argc, char *argv[]) {
     char* fmuFileNames[NUMBER_OF_FMUS];
 #endif
     int i;
-    
+
     // parse command line arguments and load the FMU
     // default arguments value
     double h = 0.1;
@@ -402,7 +402,7 @@ int main(int argc, char *argv[]) {
     char **categories = NULL;
     int nCategories = 0;
     fmiBoolean visible = fmiFalse;           // no simulator user interface
-    
+
     // Create and allocate arrays for FMUs and port mapping
     FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
     portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));

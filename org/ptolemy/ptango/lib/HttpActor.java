@@ -362,7 +362,7 @@ ExceptionSubscriber {
      */
 
     @Override
-    public synchronized boolean exceptionOccurred(String policy, 
+    public synchronized boolean exceptionOccurred(String policy,
             Throwable exception) {
 
         // If there is a pending request,

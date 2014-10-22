@@ -112,7 +112,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     }
 
     /** Return the parse tree of the expression for this function.
-     *  @return the parse tree of the expression for this function.    
+     *  @return the parse tree of the expression for this function.
      */
     public ASTPtRootNode getExpressionTree() {
         // The first children are the arguments.

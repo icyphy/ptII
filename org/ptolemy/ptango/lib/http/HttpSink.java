@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  An abstract base class for an actor that outputs the response to an HTTP-request.
- 
+
  @see HttpGet
  @author Edward A. Lee and Marten Lohstroh
  @version $Id$
@@ -106,7 +106,7 @@ public abstract class HttpSink extends TypedAtomicActor {
 
         timeoutResponse = new StringParameter(this, "timeoutResponse");
 
-        // FIXME: what about URL-encoded parameters? Should we be able to manipulate them using inputs? 
+        // FIXME: what about URL-encoded parameters? Should we be able to manipulate them using inputs?
         uri = new PortParameter(this, "uri");
         uri.setStringMode(true);
         uri.setExpression("http://localhost");
@@ -128,7 +128,7 @@ public abstract class HttpSink extends TypedAtomicActor {
      */
     public Parameter contentType;
 
-    /** The input port, which accepts a string that must be formatted and 
+    /** The input port, which accepts a string that must be formatted and
      *  encoded in accordance with the given content-type.
      */
     public TypedIOPort input;

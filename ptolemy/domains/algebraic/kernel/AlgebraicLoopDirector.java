@@ -453,7 +453,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         AlgebraicLoopReceiver receiver = new AlgebraicLoopReceiver(this);
         return receiver;
     }
-    
+
     /** Postfire all contained actors.
      * @throws IllegalActionException If the superclass throws it, or
      *  if any of the contained actors throw it.
@@ -673,7 +673,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         }
 
         /** Return true if each element of f is within the solver tolerance.
-         * 
+         *
          * @param f Value of residual function to be tested.
          * @return true if convergence is achieved, false otherwise.
          */
@@ -822,12 +822,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // Reset the coordinate to its old value
                 xNew[i] = xOri;
             }
-            
+
             // Check whether Jacobian is invertible.
-            // 
+            //
             // For now, we reject the problem. An improvement will be to try to recover from this,
             // for example by switching the solver, trying a different start value, adding
-            // a perturbation, increasing the precision of the Jacobian approximation, 
+            // a perturbation, increasing the precision of the Jacobian approximation,
             // adding relaxation, and/or some other means.
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5) {
@@ -999,7 +999,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Allocate storage for initial value
             _xIni = new double[_nVars];
-            
+
             // Solver parameters
             _ctmax = 0.8;
             _dmax = 0.2;
@@ -1020,18 +1020,18 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  with initial values u=0 and lambda=0.
          *
          * The solution, for lambda=1, is a fixed point of F : Re^n -> Re^n.
-         * 
-         * To allow a non-zero initial guess for the loop function, the problem 
+         *
+         * To allow a non-zero initial guess for the loop function, the problem
          * is reformulated as H(s, lambda, x0) = s - lambda (g(s+x0)-x0),
          * where lambda has an initial value of 0 and is successively increased to 1,
          * s is a coordinate transformation defined so that x = s+x0, where
          * x0 is the initial iterate.
-         * 
+         *
          * The Jacobian is approximated at the start of the solution using finite differences,
          * and then updated using Broyden's method.
          *
          * The method starts with computing the Jacobian H'(x)=A, where
-         * x=(s, lambda). 
+         * x=(s, lambda).
          * Next, it computes the tangent vector t = t(A).
          * It then conducts a predictor Euler step u = x+h*t.
          * After computing a perturbation vector pv, it corrects the iterates using
@@ -1077,19 +1077,19 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Compute _b and _q, the orthogonal decompositions of _b.
             double cond = _decomp();
-            
+
             // Check condition number of initial point.
             if (cond > _cdmax) {
                 throw new IllegalActionException("Bad condition number '"
                         + cond
                         + "' of initial point. Select different initial point.");
             }
-            
+
             // Save the tangent vector
             for (int k = 0; k < _n1; k++) {
                 _t[k] = _q[_nVars][k];
             }
-            
+
             // Set the orientation for search.
             final double or = _getOrientation();
 
@@ -1236,12 +1236,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  is not a double.
          */
         double[] _map(final double[] x) throws IllegalActionException {
-            
+
             double[] g = new double[_nVars];
             double[] y = new double[_nVars];
 
             // Add transformation of x that takes into account the initial value,
-            // as the implementaiton of Allgower and Georg uses _xIni=0. 
+            // as the implementaiton of Allgower and Georg uses _xIni=0.
             for(int i = 0; i < _nVars; i++){
                 y[i] = x[i]+_xIni[i];
             }
@@ -1250,7 +1250,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             System.arraycopy(x, 0, y, 0, _nVars);
             for (int i = 0; i < _nVars; i++) {
                 // Subtact _xIni from the loop function due to the above transformation,
-                // and multiply the difference with the homotopy factor that is stored in x[_nVars]. 
+                // and multiply the difference with the homotopy factor that is stored in x[_nVars].
                 y[i] -= x[_nVars] * (g[i]-_xIni[i]);
             }
             if (_debugging){
@@ -1523,7 +1523,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         ///////////////////////////////////////////////////////////////////
         ////             protected variables                           ////
         /** Maximum contraction rate in corrector step, 0 < ctmax < 1. */
-        protected double _ctmax; // See also algorithm 7.2.13 in Allgower and Georg 
+        protected double _ctmax; // See also algorithm 7.2.13 in Allgower and Georg
 
         /** Maximal norm for H */
         protected double _dmax;
@@ -1542,7 +1542,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
         /** Initial step size */
         protected double _h;
-        
+
         /** Number of independent variables including the homotopy factor */
         protected int _n1;
 
@@ -1568,7 +1568,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
         /** Initial guess */
         protected double[] _xIni;
-        
+
         /** Current guess of solution */
         protected double[] _y;
 

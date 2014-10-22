@@ -23,7 +23,7 @@ namespace sfmi
 
                         // Link an input variable to its function
                         void link(void* var, void(*func)(model_data*));
-                        // Link a function its output variable        
+                        // Link a function its output variable
                         void link(void(*func)(model_data*),void* var);
                         // Indicate that a variable has been modified by a call to SetXXX
                         void modify(void* var);

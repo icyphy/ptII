@@ -1012,16 +1012,16 @@ public class ParticleFilter extends TypedCompositeActor {
     // set particle dimensions to be equal to the state space dimension
     private class Particle {
         public Particle(int size) {
-            this._particleValue = new double[size];  
+            this._particleValue = new double[size];
         }
 
         public Particle(Particle p) {
-            this._weight = p.getWeight(); 
+            this._weight = p.getWeight();
             this._particleValue = new double[p.getSize()];
             double[] tempParticle = p.getValue();
             for (int i = 0; i < p.getSize() ; i++) {
                 this._particleValue[i] = tempParticle[i];
-            } 
+            }
         }
 
         public void assignWeight() throws IllegalActionException,
@@ -1093,7 +1093,7 @@ public class ParticleFilter extends TypedCompositeActor {
                                 variableName.length() - 9);
                         double _meanEstimate = ((DoubleToken) _result[i])
                                 .doubleValue();
-                        
+
                         if (_measurementValues.containsKey(variableName)) {
                             double z_t = ((DoubleToken) _measurementValues
                                     .get(variableName)).doubleValue();
@@ -1135,7 +1135,7 @@ public class ParticleFilter extends TypedCompositeActor {
                         }
                     }
                 }
-            } 
+            }
         }
 
         public boolean adjustWeight(double w) {
@@ -1149,7 +1149,7 @@ public class ParticleFilter extends TypedCompositeActor {
         }
 
         public double[] getValue() {
-            double[] values = new double[this.getSize()]; 
+            double[] values = new double[this.getSize()];
             for (int i = 0; i < this.getSize(); i++) {
                 values[i] = this._particleValue[i];
             }
@@ -1282,13 +1282,13 @@ public class ParticleFilter extends TypedCompositeActor {
             }
             // set control inputs in range and also assigned state variable values to equal the current particle
             // value
-            this.setValue(newParticle); 
+            this.setValue(newParticle);
             this.assignWeight();
 
         }
 
         public void setValue(double[] l) throws IllegalActionException {
-            
+
             if (l.length != this._particleValue.length) {
                 throw new IllegalActionException("Cannot set a value with different size");
             }
@@ -1305,7 +1305,7 @@ public class ParticleFilter extends TypedCompositeActor {
         public double getWeight() {
             return _weight;
         }
- 
+
         /**
          * Value of the particle. Size is equal to _ssSize
          */

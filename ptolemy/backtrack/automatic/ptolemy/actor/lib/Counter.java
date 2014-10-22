@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** 
+/**
  * This actor implements an up-down counter of received tokens.  Whenever
  * a token is received from the <i>increment</i> input, the internal
  * counter is incremented.  Whenever a token is received from the
@@ -71,27 +71,27 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The increment port. If this input port
      * receives a token, then the counter is incremented.  The port
      * has type general.
      */
     public TypedIOPort increment;
 
-    /**     
+    /**
      * The decrement port. If this input port
      * receives a token, then the counter is decremented.  The port
      * has type general.
      */
     public TypedIOPort decrement;
 
-    /**     
+    /**
      * The output port with type IntToken.
      */
     public TypedIOPort output;
 
-    /**     
-     * The reset input port. This is of type boolean. 
+    /**
+     * The reset input port. This is of type boolean.
      */
     public TypedIOPort reset;
 
@@ -106,7 +106,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
 
     private int _latestCount = 0;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -132,7 +132,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         cardinal.setExpression("SOUTH");
     }
 
-    /**     
+    /**
      * Consume at most one token from each input and update the
      * counter appropriately. Send the current value of the counter
      * to the output.  If there are no input tokens available, no
@@ -180,7 +180,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Reset the count of inputs to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -189,7 +189,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         $ASSIGN$_count(0);
     }
 
-    /**     
+    /**
      * Record the most recent output count as the actual count.
      * @exception IllegalActionException If the base class throws it.
      */

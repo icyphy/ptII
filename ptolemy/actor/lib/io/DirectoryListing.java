@@ -384,7 +384,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                             true /*includeFiles*/, true /*includeDirectories*/,
                             _listOnlyFiles, _listOnlyDirectories, _pattern, false /*escape*/);
                 }
-         
+
                 // Every thing after the !/
                 String path = sourceURL.getPath().substring(sourceURL.getPath().indexOf("!/") + 2);
 

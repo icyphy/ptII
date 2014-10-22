@@ -37,7 +37,7 @@ import org.eclipse.jetty.websocket.WebSocketClientFactory;
 ///////////////////////////////////////////////////////////////////
 //// PtolemyWebSocketClientFactory
 
-/** A singleton factory class that creates websocket clients.    
+/** A singleton factory class that creates websocket clients.
  *
  *  @author Elizabeth Latronico
  *  @version $Id$
@@ -47,83 +47,83 @@ import org.eclipse.jetty.websocket.WebSocketClientFactory;
 */
 
 public class PtolemyWebSocketClientFactory {
-        
+
         ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    //// 
- 
-        /** Get the factory instance, creating a new one if none created yet. 
+        ////                         public methods                    ////
+
+        /** Get the factory instance, creating a new one if none created yet.
          * @return The websocket client factory instance.
          */
         public static PtolemyWebSocketClientFactory getInstance() {
                 return PtolemyWebSocketClientFactoryHolder.INSTANCE;
         }
-        
+
         /** Create a new WebSocket client.
          * @return A new WebSocketClient.
          * @throws Exception If the WebSocketClientFactory cannot be started.
          */
-        public WebSocketClient newWebSocketClient() 
+        public WebSocketClient newWebSocketClient()
                 throws Exception {
             if (_webSocketClientFactory.isStopped()) {
                 _webSocketClientFactory.start();
             }
-            
+
             return _webSocketClientFactory.newWebSocketClient();
         }
-        
-        /** Create a new WebSocket client that can be shared among other 
+
+        /** Create a new WebSocket client that can be shared among other
          * WebSocketServices affiliated with this path.
          * @return A new WebSocketClient.
          * @throws Exception If the WebSocketClientFactory cannot be started.
          */
-        public WebSocketClient newSharedWebSocketClient(URI path) 
+        public WebSocketClient newSharedWebSocketClient(URI path)
                 throws Exception {
             if (_webSocketClientFactory.isStopped()) {
                 _webSocketClientFactory.start();
             }
-            
+
             if(_sharedClients.containsKey(path)) {
-                return _sharedClients.get(path); 
+                return _sharedClients.get(path);
             } else {
-                WebSocketClient client 
+                WebSocketClient client
                     = _webSocketClientFactory.newWebSocketClient();
                 _sharedClients.put(path, client);
                 return client;
             }
         }
-        
+
         ///////////////////////////////////////////////////////////////////
-        ////                         private methods                   //// 
-        
-        /** Create a new WebSocketClientFactory and start it.  The private 
+        ////                         private methods                   ////
+
+        /** Create a new WebSocketClientFactory and start it.  The private
          *  constructor prevents instantiation from other classes.
          */
-        private PtolemyWebSocketClientFactory() { 
+        private PtolemyWebSocketClientFactory() {
             _webSocketClientFactory = new WebSocketClientFactory();
             _sharedClients = new Hashtable();
         }
- 
-        /** The Holder is loaded on the first execution of getInstance() 
+
+        /** The Holder is loaded on the first execution of getInstance()
         * or the first access to INSTANCE, allowing on-demand loading since
         * not all models use websockets.
         */
-        private static class PtolemyWebSocketClientFactoryHolder { 
-                private static final PtolemyWebSocketClientFactory INSTANCE = 
+        private static class PtolemyWebSocketClientFactoryHolder {
+                private static final PtolemyWebSocketClientFactory INSTANCE =
                         new PtolemyWebSocketClientFactory();
         }
-        
+
         ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 //// 
-        
+        ////                         private variables                 ////
+
         /** A table of paths and shared clients.  Actors can choose to share
-         * a client connection (for example, to read from and write to the 
+         * a client connection (for example, to read from and write to the
          * same socket of a remote service) or to have a unique client
-         * (giving a unique connection to a remote web service).  
-         * A third possibility would be "groups" that share a client.  This is 
+         * (giving a unique connection to a remote web service).
+         * A third possibility would be "groups" that share a client.  This is
          * not implemented.
          */
         private Hashtable<URI, WebSocketClient> _sharedClients;
-        
+
         /** A factory for creating WebSocketClients. */
         private static WebSocketClientFactory _webSocketClientFactory;
 }

@@ -169,7 +169,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements
                     Attribute attribute = port.getAttribute("_showInfo");
                     if (attribute != null) {
                         attribute.setContainer(null);
-                    } 
+                    }
                 }
             }
         }

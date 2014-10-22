@@ -44,7 +44,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException; 
+import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 <p> The Chord parser receives OSC information regarding the Chords and
@@ -56,7 +56,7 @@ a sequence of {@link Chord} objects, in sequence order.
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class ChordParser extends TypedAtomicActor {
 
@@ -75,26 +75,26 @@ public class ChordParser extends TypedAtomicActor {
 
         chordName = new TypedIOPort(this, "chordName", true, false);
         chordName.setTypeEquals(BaseType.STRING);
-        
-        
+
+
         chordDuration = new TypedIOPort(this, "chordDuration", true, false);
         chordDuration.setTypeEquals(BaseType.DOUBLE);
-        
+
         chordIndex = new TypedIOPort(this, "chordIndex", true, false);
         chordIndex.setTypeEquals(BaseType.INT);
-        
+
         chords = new TypedIOPort(this, "chords", false, true);
         chords.setTypeEquals(BaseType.OBJECT);
-   
+
         endChord = new TypedIOPort(this, "endChord", true, false);
         endChord.setTypeEquals(BaseType.INT);
-        
+
         _durations = new LinkedList<Double>();
 
         _chordNames = new LinkedList<String>();
-        _orderedChords = new HashMap<Integer, Chord>(); 
+        _orderedChords = new HashMap<Integer, Chord>();
         _timestamps = new LinkedList<Integer>();
- 
+
         _terminateChord = false;
         _chordLength = 0;
 
@@ -102,11 +102,11 @@ public class ChordParser extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-  
+
     /**
      * Name of chord
      */
-    public TypedIOPort chordName; 
+    public TypedIOPort chordName;
     /**
      * Duration of chord
      */
@@ -122,39 +122,39 @@ public class ChordParser extends TypedAtomicActor {
     /**
      * An array of ordered chord objects
      */
-    public TypedIOPort chords; 
-    
- 
+    public TypedIOPort chords;
+
+
 
     public void fire() throws IllegalActionException {
 
-        super.fire(); 
-        
-        if (chordName.hasToken(0)) { 
+        super.fire();
+
+        if (chordName.hasToken(0)) {
             String chord = ((StringToken) chordName.get(0)).stringValue();
             _chordNames.add(chord);
         }
-        
+
         if (chordDuration.hasToken(0)) {
             double duration = ((DoubleToken) chordDuration.get(0)).doubleValue();
             _durations.add(duration);
         }
-        
+
         if (chordIndex.hasToken(0)) {
             int ts = ((IntToken) chordIndex.get(0)).intValue();
-            _timestamps.add(ts); 
-            
-        }  
-        
+            _timestamps.add(ts);
+
+        }
+
         if (endChord.hasToken(0)) {
             _terminateChord = true;
             _chordLength = ((IntToken)endChord.get(0)).intValue();
-            _orderedChords.put(_chordLength+1, new Chord(MusicSpecs.TERMINATION_CHORD,0.0));  
-        } 
-        
-        
-        if ( _chordNames.size() == _durations.size() 
-                && _chordNames.size() == _timestamps.size() 
+            _orderedChords.put(_chordLength+1, new Chord(MusicSpecs.TERMINATION_CHORD,0.0));
+        }
+
+
+        if ( _chordNames.size() == _durations.size()
+                && _chordNames.size() == _timestamps.size()
                 && _chordNames.size() >= _chordLength &&
                         _chordLength > 0) {
             // sort
@@ -162,12 +162,12 @@ public class ChordParser extends TypedAtomicActor {
                 int index = _timestamps.get(i);
                 if ( index < _durations.size() && index < _chordNames.size()) {
                     double duration = _durations.get(index);
-                    _orderedChords.put(index,new Chord(_chordNames.get(index),duration)); 
-                    _timestamps.remove(i); 
-                } 
+                    _orderedChords.put(index,new Chord(_chordNames.get(index),duration));
+                    _timestamps.remove(i);
+                }
             }
-        } 
-        if (_terminateChord && _orderedChords.keySet().size() >= _chordLength) { 
+        }
+        if (_terminateChord && _orderedChords.keySet().size() >= _chordLength) {
             // sort hash map before sending out the tokens
             List keysSoFar = new LinkedList();
             keysSoFar.addAll(_orderedChords.keySet());
@@ -176,16 +176,16 @@ public class ChordParser extends TypedAtomicActor {
             while(iter.hasNext()){
                 chords.send(0, new ObjectToken(_orderedChords.get(iter.next())));
             }
-            _orderedChords.clear(); 
+            _orderedChords.clear();
             _chordNames.clear();
             _durations.clear();
             _timestamps.clear();
             _terminateChord = false;
-            _chordLength = 0; 
+            _chordLength = 0;
         }
-    }  
+    }
 
-    /** 
+    /**
      * A list of chord duration tokens that are received so far.
      */
     private List<Double> _durations;
@@ -201,14 +201,14 @@ public class ChordParser extends TypedAtomicActor {
      * List of chord indices, representing the order of appearance of the chord in the music sequence.
      */
     private List<Integer> _timestamps;
-    
+
     /**
      * Boolean indicating whether the termination symbol for the chord stream has been received.
      */
-    private boolean _terminateChord; 
-    
+    private boolean _terminateChord;
+
     /**
      * Total number of chords in the sequence
-     */ 
+     */
     private int _chordLength;
 }

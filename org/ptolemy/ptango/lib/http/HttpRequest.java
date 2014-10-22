@@ -131,7 +131,7 @@ public class HttpRequest {
                 || _method.equals(Method.TRACE)) {
             _connection.setDoInput(true);
         }
-        
+
         /* Only OPTIONS, POST, PUT, and TRACE are supposed to write output */
         if (_method.equals(Method.OPTIONS) || _method.equals(Method.POST)
                 || _method.equals(Method.PUT) || _method.equals(Method.TRACE)) {
@@ -165,7 +165,7 @@ public class HttpRequest {
             return response;
         }
 
-        // Return response 
+        // Return response
         // FIXME: let pay load be byte array and decode according to content-type
         return new HttpResponse(_connection);
     }
@@ -309,10 +309,10 @@ public class HttpRequest {
         /** The DELETE method.  Deletes the resource at the specified URL. */
         DELETE,
         /** The TRACE method.  Echos the content sent to the server.  Can create
-         * vulnerability to Cross Site Tracing attack.  
+         * vulnerability to Cross Site Tracing attack.
          */
         TRACE,
-        /** The CONNECT method.  Creates a tunnel between two machines through 
+        /** The CONNECT method.  Creates a tunnel between two machines through
          * a proxy or firewall machine.
          */
         CONNECT

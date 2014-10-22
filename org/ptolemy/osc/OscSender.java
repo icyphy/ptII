@@ -28,7 +28,7 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.osc;
 
-import java.util.HashMap; 
+import java.util.HashMap;
 import java.util.Map;
 
 import oscP5.OscBundle;
@@ -58,14 +58,14 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 <p> An actor that generates and sends OSC Messages. Add input ports to this actor
-and name the ports to match the desired tag name. Any token received via an input 
+and name the ports to match the desired tag name. Any token received via an input
 port will have a tag equal to the name. A tag prefix common to all ports
 can be defined by the help of the <i>tagPrefix</i> PortParameter. If specified, this
-prefix will be prepended to all the tags, defined by the port names. 
+prefix will be prepended to all the tags, defined by the port names.
 
 <p> Tokens that are received simultaneously at multiple input ports, i.e., that have
 the same time stamp, will be bundled into a single OSCBundle object and will be sent
-out as a single OSC message. 
+out as a single OSC message.
 
 
 @see org.ptolemy.osc.OscReceiver
@@ -73,7 +73,7 @@ out as a single OSC message.
  @author Ilge Akkaya
  @version $Id$
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
 public class OscSender extends TypedAtomicActor {
 
@@ -88,50 +88,50 @@ public class OscSender extends TypedAtomicActor {
      */
     public OscSender(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name); 
-        
+        super(container, name);
+
         remoteHost = new Parameter(this, "remoteHost");
         remoteHost.setTypeEquals(BaseType.STRING);
         remoteHost.setExpression("\"127.0.0.1\"");
 
         remotePort = new Parameter(this, "remotePort");
         remotePort.setTypeEquals(BaseType.INT);
-        remotePort.setExpression("9999"); 
+        remotePort.setExpression("9999");
 
         localPort = new Parameter(this, "localPort");
         localPort.setTypeEquals(BaseType.INT);
-        localPort.setExpression("56999");  
-        
+        localPort.setExpression("56999");
+
         tagPrefix = new PortParameter(this,"tagPrefix");
         tagPrefix.setTypeEquals(BaseType.STRING);
         tagPrefix.setExpression("\"\"");
     }
-    
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OscSender newObject = (OscSender) super
                 .clone(workspace);
-        newObject.oscP5 = null; 
+        newObject.oscP5 = null;
         return newObject;
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  //// 
+    ////                         public variables                  ////
 
     /**
      * IP Address of the remote host
      */
-    public Parameter remoteHost; 
-    
+    public Parameter remoteHost;
+
     /**
      * Remote port to which the OSC messages will be sent to.
      */
-    public Parameter remotePort; 
+    public Parameter remotePort;
     /**
      * Local port from which the OSC messages will be sent.
      */
-    public Parameter localPort; 
-    
+    public Parameter localPort;
+
     /**
      * OSC prefix tag that will be prepended to each port name
      */
@@ -147,12 +147,12 @@ public class OscSender extends TypedAtomicActor {
         } else if (attribute == remoteHost) {
             _host = (((StringToken) remoteHost.getToken()).stringValue());
         } else if (attribute == localPort) {
-            _localPort = (((IntToken) localPort.getToken()).intValue()); 
+            _localPort = (((IntToken) localPort.getToken()).intValue());
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _constructOscReceiver(_localPort);
@@ -162,13 +162,13 @@ public class OscSender extends TypedAtomicActor {
 
         super.fire();
         if (tagPrefix.getPort().isOutsideConnected()) {
-            tagPrefix.update(); 
+            tagPrefix.update();
         }
         // collect tokens and generate OSC Messages
 
         HashMap<String, Object> tokensToBeTransmitted = new HashMap<String,Object>();
-        for(TypedIOPort port : this.inputPortList()) { 
-            if (!(port instanceof ParameterPort) && 
+        for(TypedIOPort port : this.inputPortList()) {
+            if (!(port instanceof ParameterPort) &&
                     port.isInput() && port.hasToken(0)) {
                 Token t = port.get(0);
                 String portName = port.getName();
@@ -185,26 +185,26 @@ public class OscSender extends TypedAtomicActor {
                 }
             }
         }
-        _sendOscPackets(tokensToBeTransmitted); 
+        _sendOscPackets(tokensToBeTransmitted);
 
     }
-    
+
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         oscP5.stop();
     }
-    
-    
+
+
 
     OscP5 oscP5;
     NetAddress myRemoteLocation;
 
-    private void _constructOscReceiver(int port) throws IllegalActionException { 
-        oscP5 = new OscP5(this, port);// set port if successful 
+    private void _constructOscReceiver(int port) throws IllegalActionException {
+        oscP5 = new OscP5(this, port);// set port if successful
     }
 
-    private void _sendOscPackets(HashMap<String, Object> tokenMap) throws IllegalActionException { 
-        
+    private void _sendOscPackets(HashMap<String, Object> tokenMap) throws IllegalActionException {
+
         myRemoteLocation = new NetAddress(_host, _remotePort);
 
         // initialize an OSC bundle
@@ -214,12 +214,12 @@ public class OscSender extends TypedAtomicActor {
             prefix = "/"+prefix;
         }
 
-        for ( Map.Entry<String, Object> entry : tokenMap.entrySet()) {  
-            
+        for ( Map.Entry<String, Object> entry : tokenMap.entrySet()) {
+
             String label = entry.getKey();
             Object o = entry.getValue();
-            OscMessage m = new OscMessage(prefix+"/"+label); 
-            
+            OscMessage m = new OscMessage(prefix+"/"+label);
+
             if (o instanceof Double) {
                 m.add((Double)o);
             } else if (o instanceof Integer) {
@@ -230,15 +230,15 @@ public class OscSender extends TypedAtomicActor {
                 throw new IllegalActionException("Invalid OSC input. " +
                                 "Currently this OSC Client  Integer, String and Double types");
             }
-            bundle.add(m); 
+            bundle.add(m);
         }
- 
-        oscP5.send(bundle, myRemoteLocation); 
-        
+
+        oscP5.send(bundle, myRemoteLocation);
+
         tokenMap.clear();
-    }  
+    }
     private int _remotePort = 9999;
     private int _localPort = 56999;
-    private String _host = ""; 
+    private String _host = "";
 
 }

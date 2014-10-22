@@ -54,7 +54,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 
     /** Construct the mode transition table for configuring an SCR Model.
      *  @param model The model.
-     */   
+     */
     public ModeTransitionTableModel(FSMActor model) {
         _model = model;
         _tableContentIsInvalid = true;
@@ -96,7 +96,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
     /** Get the column name.
      *  @param column The column number.
      *  @return the name of the column.
-     */   
+     */
     @Override
     public String getColumnName(int column) {
         switch (column) {
@@ -113,7 +113,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
     }
 
     /** Return the row count.
-     *  @return the row count   
+     *  @return the row count
      */
        @Override
     public int getRowCount() {
@@ -149,7 +149,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         return true;
     }
 
-    /** Save the model. 
+    /** Save the model.
      *  @exception IllegalActionException  If thrown while saving the model.
      *  @exception NameDuplicationException  If thrown while saving the model.
      */

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
-/** 
+/**
  * This actor is an implementation of an infinite impulse response IIR
  * filter.  A direct form II [1] implementation is used. This actor is type
  * polymorphic. Its input, output,
@@ -74,7 +74,7 @@ public class IIR extends Transformer implements Rollbackable {
     // Parameters
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * This parameter represents the numerator coefficients as an array
      * of tokens. The format is
      * {b<sub>0</sub>, b<sub>1</sub>, ..., b<sub>M</sub>}. The default
@@ -82,7 +82,7 @@ public class IIR extends Transformer implements Rollbackable {
      */
     public Parameter numerator;
 
-    /**     
+    /**
      * This  parameter represents the denominator coefficients as an
      * array of a tokens. The format is
      * {a<sub>0</sub>, a<sub>1</sub>, ..., a<sub>N</sub>}. Note that
@@ -124,7 +124,7 @@ public class IIR extends Transformer implements Rollbackable {
 
     private Token _latestWindow;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -147,7 +147,7 @@ public class IIR extends Transformer implements Rollbackable {
         output.setTypeAtLeast(input);
     }
 
-    /**     
+    /**
      * Handle parameter change events on the
      * <i>numerator</i> and <i>denominator</i> parameters. The
      * filter state vector is reinitialized to zero state.
@@ -179,7 +179,7 @@ public class IIR extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -208,7 +208,7 @@ public class IIR extends Transformer implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * If at least one input token is available, consume a single
      * input token, apply the filter to that input token, and
      * compute a single output token. If this method is invoked
@@ -228,7 +228,7 @@ public class IIR extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Initialize the filter state vector with zero state.
      * @exception IllegalActionException If the base class throws
      * it.
@@ -239,16 +239,16 @@ public class IIR extends Transformer implements Rollbackable {
         $ASSIGN$_currentTap(0);
     }
 
-    /**     
+    /**
      * Return false if the input does not have a token.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     public boolean prefire() throws IllegalActionException  {
         boolean result = super.prefire();
         return result && input.hasToken(0);
     }
 
-    /**     
+    /**
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */

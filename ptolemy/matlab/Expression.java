@@ -189,7 +189,7 @@ public class Expression extends TypedAtomicActor {
         getIntegerMatrices = new Parameter(this, "getIntegerMatrices",
                 new BooleanToken(_dataParameters.getIntMatrices));
         new CheckBoxStyle(getIntegerMatrices, "style");
-        
+
         clearEnvironment = new Parameter(this, "clearEnvironment",
                 new BooleanToken(true));
         clearEnvironment.setTypeEquals(BaseType.BOOLEAN);
@@ -222,7 +222,7 @@ public class Expression extends TypedAtomicActor {
      all elements represent integers, and if so, an IntMatrixToken is
      returned, default is <i>false</i> for performance reasons. */
     public Parameter getIntegerMatrices;
-    
+
     /** If true, clear variables and globals before each execution. */
     public Parameter clearEnvironment;
 
@@ -390,7 +390,7 @@ public class Expression extends TypedAtomicActor {
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        
+
         boolean clearEnvironmentValue = ((BooleanToken) clearEnvironment
                 .getToken()).booleanValue();
 
@@ -403,7 +403,7 @@ public class Expression extends TypedAtomicActor {
             }
 
             synchronized (Engine.semaphore) {
-                
+
                 if(clearEnvironmentValue) {
                     // The following clears variables, but preserves any
                     // persistent storage created by a function (this usually
@@ -412,7 +412,7 @@ public class Expression extends TypedAtomicActor {
                     matlabEngine.evalString(engine,
                             "clear variables;clear globals");
                 }
-                
+
                 if (_addPathCommand != null) {
                     matlabEngine.evalString(engine, _addPathCommand);
                 }

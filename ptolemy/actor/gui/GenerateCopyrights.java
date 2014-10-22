@@ -427,7 +427,7 @@ public class GenerateCopyrights {
                 if (copyrightURL.contains("backtrack") && !copyrightURL.contains("http")) {
                     // If the backtrack copyright is not local, then don't print it.
                     continue;
-                } 
+                }
                 htmlBuffer.append("<tr>\n" + "  <td> <a href=\""
                         + foundCopyright + "\"><code>"
                         + _canonicalizeURLToPTII(foundCopyright)
@@ -728,7 +728,7 @@ public class GenerateCopyrights {
                     entitiesSet.add(className);
                 }
             } catch (Throwable throwable) {
-                // Ignore errors, it must means we 
+                // Ignore errors, it must means we
             }
         }
     }
@@ -943,7 +943,7 @@ public class GenerateCopyrights {
         { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
         { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
         { "udunits", " ", " ", "Y", " ",
-          "Similar to BSD.  No use of sponsor name in advertising" }, 
+          "Similar to BSD.  No use of sponsor name in advertising" },
         { "vertx", " ", " ", "Y", " ", "Apache License" }
     };
 

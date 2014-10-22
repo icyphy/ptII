@@ -38,7 +38,7 @@ typedef struct {
         pfloat* input;
         pfloat* output;
         idxint* dInput;
-        fmi2Boolean atBreakpoint;    // Indicator that the first output at a step 
+        fmi2Boolean atBreakpoint;    // Indicator that the first output at a step
         // time has been produced.
         // General states
         fmi2Real currentCount;       // The current count (the output).

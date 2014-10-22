@@ -38,7 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that outputs a date token that corresponds to 
+/** A timed actor that outputs a date token that corresponds to
  *  the real time value of the timestamp of the input event.
  * @author Patricia Derler
 @version $Id$
@@ -87,8 +87,8 @@ public class EventToDate extends Transformer {
             if (input.hasToken(i)) {
                 input.get(i);
             }
-            long time = (long)(_director.getModelTime().getDoubleValue() 
-                    / _director.localClock.getTimeResolution()) 
+            long time = (long)(_director.getModelTime().getDoubleValue()
+                    / _director.localClock.getTimeResolution())
                     + _director.getRealStartTimeMillis();
             output.send(0, new DateToken(time));
         }

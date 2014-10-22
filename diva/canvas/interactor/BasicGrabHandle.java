@@ -69,7 +69,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
             AffineTransform transform = figure.getTransformContext().getScreenTransform();
             // Assume the zoom factor in the x axis is the same as the y axis.
             double scaleX = transform.getScaleX();
-            setSize(4.0f / (float)scaleX); 
+            setSize(4.0f / (float)scaleX);
         } else {
             setSize(_size);
         }

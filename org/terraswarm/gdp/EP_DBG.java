@@ -57,9 +57,9 @@ public class EP_DBG extends Structure {
                 super(peer);
         }
         public static class ByReference extends EP_DBG implements Structure.ByReference {
-                
+
         };
         public static class ByValue extends EP_DBG implements Structure.ByValue {
-                
+
         };
 }

@@ -302,10 +302,10 @@ public class HttpRequest {
         /** The DELETE method.  Deletes the resource at the specified URL. */
         DELETE,
         /** The TRACE method.  Echos the content sent to the server.  Can create
-         * vulnerability to Cross Site Tracing attack.  
+         * vulnerability to Cross Site Tracing attack.
          */
         TRACE,
-        /** The CONNECT method.  Creates a tunnel between two machines through 
+        /** The CONNECT method.  Creates a tunnel between two machines through
          * a proxy or firewall machine.
          */
         CONNECT

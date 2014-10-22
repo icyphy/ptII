@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.machineLearning.particleFilter; 
+package org.ptolemy.machineLearning.particleFilter;
 
 
 import java.util.LinkedList;
@@ -56,7 +56,7 @@ import ptolemy.math.DoubleMatrixMath;
 Black-box optimizer that uses JCobyla as the solver
 
 <p> Performs mutual information-based optimization using a zeroth-order Gaussian approximation
-to the entropy expression that is approximated over a subset of particles. See references for 
+to the entropy expression that is approximated over a subset of particles. See references for
 further details on the theory.
 
 <b>References</b>
@@ -79,8 +79,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
      *
      * @param container  a CompositeEntity object
      * @param name       entity name
-     * @throws IllegalActionException 
-     * @throws NameDuplicationException 
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
      */
     public MutualInformationCalculator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -92,8 +92,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
      * Constructs a MutualInformationCalculator object.
      *
      * @param workspace The workspace
-     * @throws IllegalActionException 
-     * @throws NameDuplicationException 
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
      */
     public MutualInformationCalculator(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -122,10 +122,10 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-        
+
         if (particles.hasToken(0)) {
             ArrayToken incoming = (ArrayToken) particles.get(0);
-            N = incoming.length(); 
+            N = incoming.length();
             _weights = new double[N];
             if (_px.length == 0) {
                 _px = new double[N];
@@ -134,15 +134,15 @@ public class MutualInformationCalculator extends TypedAtomicActor {
             }
 
             for (int i = 0; i < N; i++) {
-                RecordToken token = (RecordToken) incoming.getElement(i); 
+                RecordToken token = (RecordToken) incoming.getElement(i);
 
                 for (int k = 0; k < _labels.length; k++) {
-                    if (_labels[k].equals("weight")) { 
+                    if (_labels[k].equals("weight")) {
                         _weights[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
-                    } 
-                } 
+                    }
+                }
                 _px[i] = ((DoubleToken) token.get(_labels[0])).doubleValue(); //particleValue.get(0);
-                _py[i] = ((DoubleToken) token.get(_labels[1])).doubleValue(); //particleValue.get(1); 
+                _py[i] = ((DoubleToken) token.get(_labels[1])).doubleValue(); //particleValue.get(1);
             }
 
             double wsum = 0;
@@ -243,24 +243,24 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         }
         double[][] gaussianMeans = new double[N][_nRobots];
 
-        for (int i = 0; i < N; i++) { 
+        for (int i = 0; i < N; i++) {
 
             if (_optIndex < 0) {
-                for (int j = 0; j < _nRobots; j++) { 
+                for (int j = 0; j < _nRobots; j++) {
                     gaussianMeans[i][j] = Math.sqrt(Math.pow(
                             _px[i] - robotX[j], 2)
                             + Math.pow(_py[i] - robotY[j], 2));
                 }
             } else {
                 // optimize over single robot
-                for (int j = 0; j < _nRobots; j++) { 
+                for (int j = 0; j < _nRobots; j++) {
                     gaussianMeans[i][j] = Math.sqrt(Math.pow(
                             _px[i] - robotX[j], 2)
                             + Math.pow(_py[i] - robotY[j], 2));
                 }
             }
         }
-        double Hz = 0; 
+        double Hz = 0;
         // Prepare Inverse and Determinant of Sigma before Integration
         // so that Hz will be calculated faster.
         double[][] invSigma = DoubleMatrixMath.inverse(Sigma);
@@ -278,7 +278,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
                         Sigma, invSigma, detSigma);
                 logSums[k] += _weights[j] * log_kj;
                 if (j != k) {
-                    logSums[j] += _weights[k] * log_kj; 
+                    logSums[j] += _weights[k] * log_kj;
                 }
             }
             Hz += _weights[k] * Math.log(logSums[k]);
@@ -303,7 +303,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         ArrayToken names = new ArrayToken("{\"x\",\"y\"}"); //
         String stateName;
         _labels = new String[names.length() + 1];
-        _types = new Type[names.length() + 1]; 
+        _types = new Type[names.length() + 1];
         for (int i = 0; i < names.length(); i++) {
             stateName = ((StringToken) names.getElement(i)).stringValue();
             if (this.getAttribute(stateName) == null
@@ -312,13 +312,13 @@ public class MutualInformationCalculator extends TypedAtomicActor {
                 y.setExpression("0.0");
                 y.setVisibility(Settable.EXPERT);
             }
-            _labels[i] = stateName; 
+            _labels[i] = stateName;
             _types[i] = BaseType.DOUBLE;
         }
         _labels[names.length()] = "weight";
         _types[names.length()] = BaseType.DOUBLE;
         particles.setTypeEquals(new ArrayType(new RecordType(_labels,
-                _types))); 
+                _types)));
         _px = new double[0];
         _py = new double[0];
         _weights = new double[0];
@@ -357,7 +357,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
         return multiplier * Math.exp(-0.5 * exponent);
 
-    } 
+    }
 
     private double[] _weights;
     private double[] _px;

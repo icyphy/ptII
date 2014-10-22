@@ -41,9 +41,9 @@ public class ep_stat_to_string extends Structure {
                 super(peer);
         }
         public static class ByReference extends ep_stat_to_string implements Structure.ByReference {
-                
+
         };
         public static class ByValue extends ep_stat_to_string implements Structure.ByValue {
-                
+
         };
 }

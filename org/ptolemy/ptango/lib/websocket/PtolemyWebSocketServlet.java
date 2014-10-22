@@ -41,10 +41,10 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 ///////////////////////////////////////////////////////////////////
 //// PtolemyWebSocketServlet
 
-/** A servlet that manages locally hosted websockets. There is one servlet per 
- *  URI path.  Each servlet maintains a set of WebSockets affiliated with this 
- *  path.  WebSockets are pairwise (client - server). 
- *   
+/** A servlet that manages locally hosted websockets. There is one servlet per
+ *  URI path.  Each servlet maintains a set of WebSockets affiliated with this
+ *  path.  WebSockets are pairwise (client - server).
+ *
  *  Uses Jetty 8 WebSocket classes.  Note that Jetty 9 has substantial WebSocket
  *  revisions that are not backward compatible.
  *
@@ -57,40 +57,40 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
  *  @Pt.AcceptedRating Red (ltrnc)
 */
 
-public class PtolemyWebSocketServlet extends WebSocketServlet 
+public class PtolemyWebSocketServlet extends WebSocketServlet
     implements WebSocketService {
 
     /** Create a new servlet. */
     public PtolemyWebSocketServlet() {
         _webSocketEndpoints = new HashSet<WebSocketEndpoint>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Upon receiving a connect request, create a new websocket endpoint to 
+
+    /** Upon receiving a connect request, create a new websocket endpoint to
      * manage communication.
-     * 
+     *
      * @param request The request.
      * @param protocol The protocol of the request.
      * @return A websocket to handle the new connection.
      */
     @Override
-    public WebSocket doWebSocketConnect(HttpServletRequest request, 
+    public WebSocket doWebSocketConnect(HttpServletRequest request,
             String protocol) {
         WebSocketEndpoint endpoint = new WebSocketEndpoint(this);
         _webSocketEndpoints.add(endpoint);
         return endpoint;
     }
-    
+
     /** Clear the list of endpoints. Called by the WebServer in initialize(). */
     public void clearEndpoints(){
         _webSocketEndpoints.clear();
     }
-    
-    // TODO:  The servlet path is tracked by the WebServer; not needed here.  
+
+    // TODO:  The servlet path is tracked by the WebServer; not needed here.
     // Refactor?
-    /** Not used here.  
+    /** Not used here.
      *  @see #setRelativePath(URI)
      */
     @Override
@@ -98,15 +98,15 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
         // TODO Auto-generated method stub
         return null;
     }
-    
+
     /** Broadcast message to other recipient actors in the Ptolemy model.
-     * 
+     *
      *  @param sender  The WebSocketEndpoint that sent the message.
-     *  @param message The message that was received. 
+     *  @param message The message that was received.
      */
     @Override
     public void onMessage(WebSocketEndpoint sender, String message) {
-       
+
         // Broadcast message to actors associated with this servlet path
         for (WebSocketEndpoint recipient : _webSocketEndpoints){
             if (recipient != sender && recipient.getConnection() != null) {
@@ -116,18 +116,18 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
                     //TODO:  What to do here?
                 }
             }
-        }    
+        }
     }
-    
-    // TODO:  Don't need this here either.  Refactor interface.  
+
+    // TODO:  Don't need this here either.  Refactor interface.
     // Interface for WebSocketSubscriber and WebSocketClient?
     @Override
     public void setConnection(Connection connection) {
         // TODO Auto-generated method stub
-        
+
     }
 
-    // TODO:  The servlet path is tracked by the WebServer; not needed here.  
+    // TODO:  The servlet path is tracked by the WebServer; not needed here.
     // Refactor?
     /** Not used here.
      * @param relativePath The URI to associate with this servlet.
@@ -136,12 +136,12 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     @Override
     public void setRelativePath(URI relativePath) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 //// 
-    
+    ////                         private variables                 ////
+
     /** The set of WebSocket endpoints affiliated with this URI.  */
     private HashSet<WebSocketEndpoint> _webSocketEndpoints;
 }

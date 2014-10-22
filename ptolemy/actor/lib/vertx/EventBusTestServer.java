@@ -30,7 +30,7 @@ public class EventBusTestServer extends Verticle {
         sockJSServer.bridge(new JsonObject().putString("prefix", "/eventbus")
                 .putNumber("heartbeat_period", 400)
                 .putNumber("session_timeout", 50000)
-                .putNumber("ping_interval", 100000) 
+                .putNumber("ping_interval", 100000)
                 .putNumber("vertxbus_ping_interval", 100000),
                 permitted, permitted);
 

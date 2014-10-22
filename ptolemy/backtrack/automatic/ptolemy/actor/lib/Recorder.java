@@ -50,7 +50,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * <p>Record all input tokens for later querying.  This actor can be used for
  * testing configurations of actors.  It can also be used in programs that
  * invoke Ptolemy models and wish to query the results after the model
@@ -77,7 +77,7 @@ public class Recorder extends Sink implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The capacity of the record for each channel.
      * This parameter must contain an IntToken.
      */
@@ -114,7 +114,7 @@ public class Recorder extends Sink implements Rollbackable {
 
     private static Token _bottom = new StringToken("_");
 
-    /**     
+    /**
      * Construct an actor with an input multiport that can accept any
      * Token.
      * @param container The container.
@@ -130,7 +130,7 @@ public class Recorder extends Sink implements Rollbackable {
         capacity.setTypeEquals(BaseType.INT);
     }
 
-    /**     
+    /**
      * Get the total number of events seen so far.
      * @return The total number of events seen so far.
      */
@@ -138,7 +138,7 @@ public class Recorder extends Sink implements Rollbackable {
         return _count;
     }
 
-    /**     
+    /**
      * Get the history for the specified channel number.  If in any
      * firing there is no such channel, or no token was read on that
      * channel, then a string token with value "_" is returned in the
@@ -167,7 +167,7 @@ public class Recorder extends Sink implements Rollbackable {
         return result;
     }
 
-    /**     
+    /**
      * Get the latest input for the specified channel.
      * If there has been no record yet for the specified channel,
      * then return the string token "_", representing "bottom".
@@ -181,7 +181,7 @@ public class Recorder extends Sink implements Rollbackable {
         return _latest[channel];
     }
 
-    /**     
+    /**
      * Get the record for the specified channel number.  If in any
      * firing there is no such channel, or no token was read on that
      * channel, then a string token with value "_" is returned.
@@ -195,7 +195,7 @@ public class Recorder extends Sink implements Rollbackable {
         return Collections.enumeration(getHistory(channel));
     }
 
-    /**     
+    /**
      * Get the history of the time of each invocation of postfire().
      * @return A list of Double objects.
      */
@@ -203,7 +203,7 @@ public class Recorder extends Sink implements Rollbackable {
         return _timeRecord;
     }
 
-    /**     
+    /**
      * Get the record of the current time of each invocation of postfire().
      * @return An enumeration of Double objects.
      * @deprecated This method is deprecated. Use getTimeHistory().
@@ -212,7 +212,7 @@ public class Recorder extends Sink implements Rollbackable {
         return Collections.enumeration(_timeRecord);
     }
 
-    /**     
+    /**
      * Initialize the lists used to record input data.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -224,7 +224,7 @@ public class Recorder extends Sink implements Rollbackable {
         $ASSIGN$_count(0);
     }
 
-    /**     
+    /**
      * Read at most one token from each input channel and record its value.
      * @exception IllegalActionException If there is no director.
      */

@@ -212,7 +212,7 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception IllegalActionException If thrown while creating a new SyntacticNode or adding an entity.
      *  @exception NameDuplicationException If thrown while creating a new SyntacticNode or adding an entity.
      */
-    public void addNode2(Entity entity) 
+    public void addNode2(Entity entity)
         throws IllegalActionException, NameDuplicationException {
         int repcount = _representors.size();
         SyntacticNode node = new SyntacticNode(this, "rep_" + repcount);

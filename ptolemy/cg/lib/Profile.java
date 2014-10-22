@@ -158,7 +158,7 @@ abstract public class Profile {
          *  @param name The name of the actor.
          *  @param original True if this actor is original?
          *  @exception IllegalActionException Not thrown in this base clasee.
-         */   
+         */
         public ProfileActor(String name, boolean original)
                 throws IllegalActionException {
             _name = name;
@@ -181,7 +181,7 @@ abstract public class Profile {
         }
 
         /** Get the profile.
-         *  @return the profile.   
+         *  @return the profile.
          *  @exception IllegalActionException If there is a problem
          *  loading the class from the $HOME/cg directory.
          */
@@ -224,7 +224,7 @@ abstract public class Profile {
          *  @param externalPort The external port.
          *  @param portRate The rate of the port.
          *  @param isInputPort True if this is an input port.
-         */   
+         */
         public FiringFunctionPort(String portName, String externalPort,
                 int portRate, boolean isInputPort) {
             name = portName;

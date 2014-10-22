@@ -43,10 +43,10 @@ static char *strallocprintf(const char *format, va_list argp) {
 #ifdef _MSC_VER
     n = _vscprintf(format, argp);
 #else
-    va_list argcopy; 
-    va_copy(argcopy, argp); 
-    n = vsnprintf(NULL, 0, format, argcopy); 
-    va_end(argcopy); 
+    va_list argcopy;
+    va_copy(argcopy, argp);
+    n = vsnprintf(NULL, 0, format, argcopy);
+    va_end(argcopy);
 #endif
 
     result = (char *)malloc((n + 1) * sizeof(char));

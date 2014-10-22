@@ -37,18 +37,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////  
+////
 
 /**
  <p>
  Simple conversion actor that converts a midi key integer into a letter
- note</p> 
+ note</p>
 
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 10.0
- @Pt.ProposedRating 
- @Pt.AcceptedRating 
+ @Pt.ProposedRating
+ @Pt.AcceptedRating
  */
 public class MidiKeyToNote extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -62,7 +62,7 @@ public class MidiKeyToNote extends TypedAtomicActor {
      */
     public MidiKeyToNote(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
 
         letterNote = new TypedIOPort(this, "letterNote", false, true);
         letterNote.setTypeEquals(BaseType.STRING);
@@ -83,13 +83,13 @@ public class MidiKeyToNote extends TypedAtomicActor {
     /**
      * The midi key index
      */
-    public TypedIOPort midiKey; 
- 
+    public TypedIOPort midiKey;
+
     public void fire() throws IllegalActionException {
         super.fire();
         if (midiKey.hasToken(0)) {
             int key = ((IntToken)midiKey.get(0)).intValue();
             letterNote.send(0, new StringToken(MusicSpecs.translateKeyToLetterNote(key, true)));
-        } 
-    }  
+        }
+    }
 }

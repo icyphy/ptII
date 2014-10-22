@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * Output the initial value plus the sum of all the inputs since
  * the last time a true token was received at the reset port.
  * One output is produced each time the actor is fired. The
@@ -72,7 +72,7 @@ public class Accumulator extends Transformer implements Rollbackable {
     // set the type constraints.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The lower bound. If this is set, then its type must be the
      * same as that of the <i>init</i> parameter, and the output
      * will be constrained to never drop below the lower bound.
@@ -80,20 +80,20 @@ public class Accumulator extends Transformer implements Rollbackable {
      */
     public Parameter lowerBound;
 
-    /**     
+    /**
      * The value produced by the actor on its first iteration.
      * The default value of this parameter is the integer 0.
      */
     public Parameter init;
 
-    /**     
+    /**
      * If this port receives a True token on any channel, then the
      * accumulator state will be reset to the initial value.
      * This is a multiport and has type boolean.
      */
     public TypedIOPort reset;
 
-    /**     
+    /**
      * The upper bound. If this is set, then its type must be the
      * same as that of the <i>init</i> parameter, and the output
      * will be constrained to never rise above the upper bound.
@@ -109,17 +109,17 @@ public class Accumulator extends Transformer implements Rollbackable {
     // Check the bounds.
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    /**     
-     * The running sum. 
+    /**
+     * The running sum.
      */
     private Token _sum;
 
-    /**     
-     * The latest sum, prior to a state commit. 
+    /**
+     * The latest sum, prior to a state commit.
      */
     private Token _latestSum;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -146,7 +146,7 @@ public class Accumulator extends Transformer implements Rollbackable {
         output.setTypeAtLeast(input);
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets up the type constraints.
      * @param workspace The workspace for the new object.
@@ -163,7 +163,7 @@ public class Accumulator extends Transformer implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Consume at most one token from each channel of the <i>input</i>
      * port, add it to the running sum, and produce the result at the
      * <i>output</i> port.  If there is no input token available,
@@ -214,7 +214,7 @@ public class Accumulator extends Transformer implements Rollbackable {
         output.broadcast(_latestSum);
     }
 
-    /**     
+    /**
      * Reset the running sum to equal the value of <i>init</i>.
      * @exception IllegalActionException If the parent class throws it.
      */
@@ -223,7 +223,7 @@ public class Accumulator extends Transformer implements Rollbackable {
         $ASSIGN$_latestSum($ASSIGN$_sum(output.getType().convert(init.getToken())));
     }
 
-    /**     
+    /**
      * Record the most recent input as part of the running average.
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.

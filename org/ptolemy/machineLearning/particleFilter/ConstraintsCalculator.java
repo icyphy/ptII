@@ -147,12 +147,12 @@ public class ConstraintsCalculator extends TypedAtomicActor {
      * Minimum distance to the robot team.
      */
     public TypedIOPort minDistance;
-    
+
     /**
      * Distance to target.
      */
     public TypedIOPort distToTarget;
-    
+
     /**
      * Current speed.
      */

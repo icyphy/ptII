@@ -66,7 +66,7 @@ public class VertxBusHandler extends TypedAtomicActor {
     /**Construct an actor in the default workspace with an empty string as its
      * name. The object is added to the workspace directory. Increment the
      * version number of the workspace.
-     * 
+     *
      * @throws NameDuplicationException
      * @throws IllegalActionException
      */
@@ -80,7 +80,7 @@ public class VertxBusHandler extends TypedAtomicActor {
      * name. You can then change the name with setName(). If the workspace
      * argument is null, then use the default workspace. The object is added to
      * the workspace directory. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace that will list the entity.
      * @throws NameDuplicationException
@@ -118,7 +118,7 @@ public class VertxBusHandler extends TypedAtomicActor {
     /** Input port that receives tokens to be published on the eventbus.
      */
     public TypedIOPort publish;
-    
+
     /** Output port that outputs tokens received from the eventbus.
      */
     public TypedIOPort subscribe;
@@ -126,11 +126,11 @@ public class VertxBusHandler extends TypedAtomicActor {
     /** Event bus address that this actor publishes to and subscribes to.
      */
     public Parameter address;
-    
+
     /** Host address of the server that runs the event bus.
      */
     public Parameter host;
-    
+
     /** Port on the host that provides access to the event bus.
      */
     public Parameter port;
@@ -173,7 +173,7 @@ public class VertxBusHandler extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Initialize verticle, create http client and open web socket to connect
      *  to event bus.
      */
@@ -212,7 +212,7 @@ public class VertxBusHandler extends TypedAtomicActor {
     private void _openWebSocket() {
         MultiMap map = new CaseInsensitiveMultiMap();
         map.add("connectTimeout", "10000000");
-        _client.connectWebsocket("/eventbus/websocket", 
+        _client.connectWebsocket("/eventbus/websocket",
                 WebSocketVersion.RFC6455, map, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
@@ -221,7 +221,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                         "register").putString("address", _address);
                 websocket.writeTextFrame(msg.encode());
                 _websocket = websocket;
-    
+
                 websocket.dataHandler(new Handler<Buffer>() {
                     @Override
                     public void handle(Buffer buff) {
@@ -237,9 +237,9 @@ public class VertxBusHandler extends TypedAtomicActor {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                    } 
+                    }
                 });
-                
+
                 _websocket.closeHandler(new Handler<Void>() {
                     @Override
                     public void handle(final Void event) {

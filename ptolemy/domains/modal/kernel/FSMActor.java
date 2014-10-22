@@ -4506,7 +4506,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // the director was unable to honor the exact timing request.
                 // Presumably we are going to take a transition in this
                 // firing, so there should be no time for next expiration.
-                    
+
                     // If the director supports superdense time, then we need to
                     // ensure that we are not at microstep zero.
                     if (director instanceof SuperdenseTimeDirector) {

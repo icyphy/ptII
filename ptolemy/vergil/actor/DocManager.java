@@ -256,7 +256,7 @@ public class DocManager extends HandlerBase {
             if (_className != null) {
                 _targetClass = Class.forName(_className);
             } else {
-                System.err.println("DocManager: while reading " + url 
+                System.err.println("DocManager: while reading " + url
                         + ", _className was null?");
             }
         } catch (Exception ex) {

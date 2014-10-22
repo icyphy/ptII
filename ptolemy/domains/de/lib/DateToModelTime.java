@@ -108,7 +108,7 @@ public class DateToModelTime extends Transformer {
                 output.send(0, new DoubleToken(fireTime.getDoubleValue()));
             }
         }
-       
+
 
     }
 

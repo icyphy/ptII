@@ -37,9 +37,9 @@ public class EP_TIME_SPEC extends Structure {
                 super(peer);
         }
         public static class ByReference extends EP_TIME_SPEC implements Structure.ByReference {
-                
+
         };
         public static class ByValue extends EP_TIME_SPEC implements Structure.ByValue {
-                
+
         };
 }

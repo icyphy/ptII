@@ -52,7 +52,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * A clock source for sequence-capable domains.  This actor is considerably
  * simpler than the Clock actor.  On each firing, it produces the next value
  * from its <i>values</i> parameter, and schedules another firing at
@@ -108,26 +108,26 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
     // Call this so that we don't have to copy its code here...
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The output port.  The type of this port is determined by from
      * the <i>values</i> parameter.
      */
     public TypedIOPort output = null;
 
-    /**     
+    /**
      * The offsets at which the specified values will be produced.
      * This parameter must contain an array of doubles, and it defaults
      * to {0.0, 1.0}.
      */
     public Parameter offsets;
 
-    /**     
+    /**
      * The period of the output waveform.
      * This parameter must contain a DoubleToken, and defaults to 2.0.
      */
     public Parameter period;
 
-    /**     
+    /**
      * The values that will be produced at the specified offsets.
      * This parameter must contain an ArrayToken, and defaults to {1, 0}.
      */
@@ -165,7 +165,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
 
     private transient int _phase;
 
-    /**     
+    /**
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -192,7 +192,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         attributeChanged(values);
     }
 
-    /**     
+    /**
      * If the argument is the <i>offsets</i> parameter, check that the
      * array is nondecreasing and has the right dimension; if the
      * argument is <i>period</i>, check that it is positive. Other
@@ -224,7 +224,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the parameter public members to refer
      * to the parameters of the new actor.
@@ -243,7 +243,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         return newObject;
     }
 
-    /**     
+    /**
      * Output the current value of the clock.
      * @exception IllegalActionException If the <i>values</i> and
      * <i>offsets</i> parameters do not have the same length, or if
@@ -255,7 +255,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         output.send(0, _currentValue);
     }
 
-    /**     
+    /**
      * Schedule the first firing and initialize local variables.
      * @exception IllegalActionException If the parent class throws it,
      * or if the <i>values</i> parameter is not a row vector, or if the
@@ -271,7 +271,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         _fireAt(nextFiringTime);
     }
 
-    /**     
+    /**
      * Update the state of the actor and schedule the next firing,
      * if appropriate.
      * @exception IllegalActionException If the director throws it when
@@ -300,7 +300,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         return true;
     }
 
-    /**     
+    /**
      * Set the current value.
      * @return True.
      * @exception IllegalActionException If there is no director.

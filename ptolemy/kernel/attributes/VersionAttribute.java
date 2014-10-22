@@ -305,7 +305,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  release that is currently running.  This variable may be read
      *  to take action if the assumed version does not match the current
      *  version.  For example,
-     *  
+     *
      *  <pre>
      *  VersionAttribute assumedVersion = ...;
      *  if (VersionAttribute.CURRENT_VERSION.isLessThan(assumedVersion)) {

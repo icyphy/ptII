@@ -1,4 +1,4 @@
-/* Type conversion from note name to MIDI key 
+/* Type conversion from note name to MIDI key
 
 Copyright (c) 2013 The Regents of the University of California.
 All rights reserved.
@@ -39,18 +39,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-////  
+////
 
 /**
  <p>
  Simple conversion actor that converts a letter note as "C4" into
- a MIDI key integer</p> 
+ a MIDI key integer</p>
 
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 0.3
- @Pt.ProposedRating 
- @Pt.AcceptedRating 
+ @Pt.ProposedRating
+ @Pt.AcceptedRating
  */
 public class NoteToMidiKey extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -64,19 +64,19 @@ public class NoteToMidiKey extends TypedAtomicActor {
      */
     public NoteToMidiKey(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
-        
+        super(container, name);
+
         letterNote = new TypedIOPort(this, "letterNote", true, false);
         letterNote.setTypeEquals(BaseType.STRING);
-        
+
         midiKey = new TypedIOPort(this, "midiKey", false, true);
         midiKey.setTypeEquals(BaseType.INT);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /**
      * A note, represented by a string, consisting of the pitch letter A-G, the ocrave, and (possibly) a trailing symbol
      */
@@ -85,13 +85,13 @@ public class NoteToMidiKey extends TypedAtomicActor {
     /**
      * The midi key equivalent of the input letter note
      */
-    public TypedIOPort midiKey; 
-  
+    public TypedIOPort midiKey;
+
     public void fire() throws IllegalActionException {
         super.fire();
         if (letterNote.hasToken(0)) {
             String letter = ((StringToken)letterNote.get(0)).stringValue();
             midiKey.send(0, new IntToken(MusicSpecs.translateNoteToKey(letter)));
-        } 
-    }  
+        }
+    }
 }

@@ -3469,7 +3469,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** True if the message about problems reading
      *  _importActionClassNames has been printed.
-     */   
+     */
     private static boolean _printedImportActionClassNamesMessage = false;
 
     /** Action to redo the last undone MoML change. */
@@ -4124,7 +4124,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
         */
-    
+
     ///////////////////////////////////////////////////////////////////
     //// HierarchyTreeMouseAdapter
 

@@ -101,7 +101,7 @@ import com.sun.jna.ptr.PointerByReference;
 //// FMUImport
 
 /**
- * Invoke a Functional Mock-up Interface (FMI) 
+ * Invoke a Functional Mock-up Interface (FMI)
  * Functional Mock-up Unit (FMU).
  *
  * <p>Read in a <code>.fmu</code> file named by the
@@ -483,7 +483,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // Initialize the FMU if necessary.  Model exchange only.
             if (_firstFire) {
                 _fmiInitialize();
-                
+
                 if (_fmiVersion >= 2.0) {
                     FMI20ModelInstance fmi20ModelInstance = new FMI20ModelInstance(_fmiComponent);
                     FMI20EventInfo fmi20EventInfoStruct = fmi20ModelInstance.eventInfo;
@@ -1958,10 +1958,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
 
     /** Invoke the fmi2EnterContinuousTimeMode() function.
-     *  This method is typically invoked by FMI-2.0 model exchange.   
+     *  This method is typically invoked by FMI-2.0 model exchange.
      *  @exception IllegalActionException If there is a problem
      *  invoking the fmi2ContinuousTimeMode() function in the fmi.
-     */   
+     */
     protected void _enterContinuousTimeMode() throws IllegalActionException {
         // Can't call fmi2CompletedIntegratorStep() unless
         // fmi2EnterContinuousTimeMode() has been called.
@@ -1977,10 +1977,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /** Invoke the fmi2EnterEventMode() function.
-     *  This method is typically invoked by FMI-2.0 model exchange.   
+     *  This method is typically invoked by FMI-2.0 model exchange.
      *  @exception IllegalActionException If there is a problem
      *  invoking the fmi2EnterEventMode() function in the fmi.
-     */   
+     */
     protected void _enterEventMode() throws IllegalActionException {
         int fmiFlag = ((Integer) _fmiEnterEventModeFunction
                 .invoke(Integer.class, new Object[] { _fmiComponent }))
@@ -2006,8 +2006,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _debug(message);
     }
 
-    /** For model exchange, complete the integrator step. 
-     *  
+    /** For model exchange, complete the integrator step.
+     *
      *  <p> Under FMI previous to 2.0, if the FMU indicates that
      *  fmiEventUpdate() should be called, call it.</p>
      *
@@ -2057,7 +2057,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 byte noSetFMUStatePriorToCurrentPointByte = (eventOccuredOrNoSetFMUStatePriorToCurrentPoint ? (byte)1 : (byte)0);
                 ByteBuffer enterEventMode = ByteBuffer.allocate(1);
                 ByteBuffer terminateSimulation = ByteBuffer.allocate(1);
-            
+
                 int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
                                                           noSetFMUStatePriorToCurrentPointByte,
@@ -3243,7 +3243,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // return it as an input.
                             || (_fmiModelDescription.modelExchange && scalarVariable.causality == Causality.local
                                     // If it is a scalar that is marked as a derivative, then it is not an input
-                                    && (((scalarVariable.type instanceof FMIRealType 
+                                    && (((scalarVariable.type instanceof FMIRealType
                                                             && ((FMIRealType)scalarVariable.type).indexState == -1))
                                             || !(scalarVariable.type instanceof FMIRealType)))
                         )) {

@@ -6,7 +6,7 @@
 #include <ecos.h>
 
 /*
- * Polytope of the form Ax >= b 
+ * Polytope of the form Ax >= b
  * A is a k by l  matrix
  * the entries of A is assumed to be arranged as[A11,A21,...,Ak1,A12,...,Ak2,...,A1l,...,Akl]
  * */

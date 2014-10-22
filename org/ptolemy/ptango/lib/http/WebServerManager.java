@@ -56,11 +56,11 @@ public final class WebServerManager {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Return the existing web server manager; create and return a new one if 
+
+    /** Return the existing web server manager; create and return a new one if
      * none is present yet.
-     * 
-     * @return The web server manager 
+     *
+     * @return The web server manager
      */
     public static WebServerManager getInstance() {
         if (_instance == null) {
@@ -146,7 +146,7 @@ public final class WebServerManager {
      *
      * @param appInfo Information about the registered web application
      * @param portNumber The desired port number to host this web application on
-     * @return The actual port number the web application is running on (may be 
+     * @return The actual port number the web application is running on (may be
      * different from the portNumber parameter if dynamic selection is enabled)
      * @exception Exception thrown if web server cannot be instantiated or if
      * application conflicts with an already-registered application
@@ -160,13 +160,13 @@ public final class WebServerManager {
         // uses a default port
         WebServerUtilities server = null;
 
-        // If dynamic port selection is enabled, first try to reuse any server 
+        // If dynamic port selection is enabled, first try to reuse any server
         // currently hosting models for this Ptolemy instance.
         // TODO:  Server sharing could be prohibited in the future if desired
         // for security reasons, depending on the application
         // Otherwise, retrieve any server at the specified port
         // Create a new server if no suitable server is found
-      
+
         if (dynamicPortSelection) {
             if (!_servers.isEmpty()) {
                 for (WebServerUtilities reuseServer : _servers) {
@@ -174,7 +174,7 @@ public final class WebServerManager {
                     break;
                 }
             }
-            
+
             if (server == null) {
                 server = new WebServerUtilities();
                 server.setDynamicPortSelection(dynamicPortSelection);
@@ -186,7 +186,7 @@ public final class WebServerManager {
                     break;
                 }
             }
-            
+
             if (server == null) {
                 server = new WebServerUtilities(portNumber);
                 server.setDynamicPortSelection(dynamicPortSelection);
@@ -200,7 +200,7 @@ public final class WebServerManager {
 
         // Update information about this server in the server table
         _servers.add(server);
-        
+
         return server.getPortNumber();
     }
 
@@ -256,6 +256,6 @@ public final class WebServerManager {
     /** The singleton instance of the WebServerManager class */
     private static WebServerManager _instance = null;
 
-    private HashSet<WebServerUtilities> _servers = 
+    private HashSet<WebServerUtilities> _servers =
             new HashSet<WebServerUtilities>();
 }

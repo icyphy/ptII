@@ -111,7 +111,7 @@ public class ParticleFilterRange extends ParticleFilter {
     public ParticleFilterRange(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _init(); 
+        _init();
     }
 
     /**
@@ -123,12 +123,12 @@ public class ParticleFilterRange extends ParticleFilter {
      */
     public ParticleFilterRange(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
-        super(workspace); 
+        super(workspace);
     }
 
     /** Incoming measurements */
     public TypedIOPort z_m;
-    
+
     /**
      * Observation expression.
      */
@@ -141,14 +141,14 @@ public class ParticleFilterRange extends ParticleFilter {
      * y component update equation.
      */
     public Parameter y_update;
-    
+
     /**
      * Position of the observer.
      */
     public PortParameter observerPosition;
 
-    /** 
-     * Initialize particle filter parameters. 
+    /**
+     * Initialize particle filter parameters.
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
@@ -193,17 +193,17 @@ public class ParticleFilterRange extends ParticleFilter {
 
         x_update = new Parameter(this, "x_update");
         x_update.setExpression("x");
-        
+
 
         y_update = new Parameter(this, "y_update");
         y_update.setExpression("y");
 
         measurementCovariance.setExpression("[2.0]");
         prior.setExpression("{random()*200-100,random()*200-100}");
-        
+
         processNoise
         .setExpression("multivariateGaussian({0.0,0.0},[3.0,0.0;0.0,3.0])");
-        
+
         particleCount.setExpression("2000");
 
         bootstrap.setVisibility(Settable.EXPERT);

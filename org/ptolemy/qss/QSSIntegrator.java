@@ -88,8 +88,8 @@ public class QSSIntegrator extends TypedAtomicActor {
     public TypedIOPort q;
 
     /** Initial value of the state. */
-    public Parameter xInit; 
-    
+    public Parameter xInit;
+
     /** Quantum. */
     public Parameter quantum;
 
@@ -142,7 +142,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 .doubleValue());
         _previousInput = null;
         _previousOutputValue = _nextOutputValue;
-        _previousStateUpdateTime = null;   
+        _previousStateUpdateTime = null;
         _currentSlope = 0.0;
         _previousSlope = 0.0;
         _x = ((DoubleToken) xInit.getToken()).doubleValue();
