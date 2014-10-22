@@ -259,7 +259,7 @@ CLEAN_SHIPPING_FILES = \
 		autom4te.cache \
 		bin/ptinvoke \
 		bin/comm.policy \
-		build.xml
+		build.xml \
 		com/microstar/xml/SAXDriver.* \
 		config.log \
 		diva/build.xml \
