@@ -138,8 +138,10 @@ public class PtDoclet {
                 allNamedObjsWriter.close();
             }
         }
-        _ptIndexer.write(new File(_outputDirectory, "PtIndexer.ser")
-                .getCanonicalPath());
+        // Running (cd $PTII/ptolemy/plot; make dists) comments
+        // out lines with _ptIndexer in them.
+        File ptIndexerSer = new File(_outputDirectory, "PtIndexer.ser");
+        _ptIndexer.write(ptIndexerSer.getCanonicalPath());
         return true;
     }
 

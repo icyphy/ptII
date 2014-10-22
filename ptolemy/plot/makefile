@@ -545,7 +545,7 @@ fixtmpdist:
 		sed "s/\ttest//" > \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui/makefile
 	@echo "Copy over util stuff"
-	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	-mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	# Remove most of the .java files
 	cp "$(PTII)/ptolemy/util/CancelException.java" \
 		"$(PTII)/ptolemy/util/MessageHandler.java" \
@@ -581,9 +581,9 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/doc/img
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/doclets
 	cp -r "$(PTII)/doc/doclets/RatingTaglet.java" \
-		"$(PTII)/doc/doclets/PtDoclet.java" \
 		"$(PTII)/doc/doclets/makefile" \
 		$(PTTMPDIR)/$(PTDIST)/doc/doclets
+	sed 's@\(.*_ptIndexer.*\)@//\1@' "$(PTII)/doc/doclets/PtDoclet.java" > $(PTTMPDIR)/$(PTDIST)/doc/doclets/PtDoclet.java
 	# Create a file in the top level doc directory that points to
 	# the real docs
 	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/doc/index.htm
@@ -619,6 +619,14 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
+	# Remove javachdir32 from configure.in
+	sed 's@ptolemy/util/test/junit/javachdir32@@g' $(PTTMPDIR)/$(PTDIST)/configure.in > $(PTTMPDIR)/$(PTDIST)/configure.in.tmp
+	mv $(PTTMPDIR)/$(PTDIST)/configure.in.tmp $(PTTMPDIR)/$(PTDIST)/configure.in
+	(cd $(PTTMPDIR)/$(PTDIST); autoconf)
+	# Remove build-subprojects, from build.xml.in
+	sed 's@build-subprojects,@@g' $(PTTMPDIR)/$(PTDIST)/build.xml.in > $(PTTMPDIR)/$(PTDIST)/build.xml.in.tmp
+	mv $(PTTMPDIR)/$(PTDIST)/build.xml.in.tmp $(PTTMPDIR)/$(PTDIST)/build.xml.in
+	# Fix permissions and clean up
 	chmod -R a+r $(PTTMPDIR)/$(PTDIST)
 	$(FIND) $(PTTMPDIR)/$(PTDIST) -name "*.class" -exec rm {} \;
 
