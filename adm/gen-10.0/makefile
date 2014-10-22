@@ -3172,17 +3172,17 @@ coverity:
 PTBUILDRELEASE=tmp/build/ptII$(VERSION)
 build_release: $(PTBUILDRELEASE)
 
-ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out clean_ptrelease_doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit clean_ptrelease_doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out clean_ptrelease_scpDemos.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+ptbuildrelease: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed $(PTBUILDRELEASE)/test.out clean_ptrelease_doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit clean_ptrelease_doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out clean_ptrelease_scpDemos.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out  $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
 ptbuildrelease_jnlp: $(PTBUILDRELEASE) $(PTBUILDRELEASE)/ptolemy/ptsupport.jar $(PTBUILDRELEASE)/signed clean_ptrelease_doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit clean_ptrelease_doit.out
 
-ptbuildrelease2: $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+ptbuildrelease2: $(PTBUILDRELEASE)/test.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out  $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
-ptbuildrelease3: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+ptbuildrelease3: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out  $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
-ptbuildrelease4: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+ptbuildrelease4: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
-ptbuildrelease5: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
+ptbuildrelease5: $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
 $(PTBUILDRELEASE):
 	@echo "#"
@@ -3247,4 +3247,14 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 clean_ptrelease_scpDemos.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
+dists.out: $(PTBUILDRELEASE)/ptolemy/plot/dists.out
+$(PTBUILDRELEASE)/ptolemy/plot/dists.out:
+	@echo "#"
+	@echo "# Creating the $(PTBUILDRELEASE)/ptolemy/plot/adm direcotry by running 'make dists' in plot/."
+	@echo "# This will update the Ptplot pages on the website."
+	@echo "#"
+	@echo "$@ `date`"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/plot; rm -rf adm tmp; make dists >& dists.out && make update_ftp)
+clean_ptrelease_dists.out:
+	rm -f $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
