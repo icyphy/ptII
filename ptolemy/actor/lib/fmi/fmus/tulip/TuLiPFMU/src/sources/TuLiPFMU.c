@@ -34,17 +34,17 @@
  * Data structure for an instance of this FMU.
  */
 typedef struct {
-	Controller *controller;
-	pfloat* input;
-	pfloat* output;
-	idxint* dInput;
-	fmi2Boolean atBreakpoint;    // Indicator that the first output at a step 
-	// time has been produced.
-	// General states
-	fmi2Real currentCount;       // The current count (the output).
-	fmi2Real lastSuccessfulTime; // The time to which this FMU has advanced.
-	const fmi2CallbackFunctions *functions;
-	fmi2String instanceName;
+        Controller *controller;
+        pfloat* input;
+        pfloat* output;
+        idxint* dInput;
+        fmi2Boolean atBreakpoint;    // Indicator that the first output at a step 
+        // time has been produced.
+        // General states
+        fmi2Real currentCount;       // The current count (the output).
+        fmi2Real lastSuccessfulTime; // The time to which this FMU has advanced.
+        const fmi2CallbackFunctions *functions;
+        fmi2String instanceName;
 } ModelInstance;
 
 /*****************************************************************************************
@@ -61,37 +61,37 @@ typedef struct {
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
 int checkFMU(
-		fmi2String instanceName,
-		fmi2String GUID,
-		fmi2String modelGUID,
-		fmi2String fmuResourceLocation,
-		const fmi2CallbackFunctions *functions,
-		fmi2Boolean visible,
-		fmi2Boolean loggingOn)  {
-	// Logger callback is required.
-	if (!functions->logger) {
-		return 0;
-	}
-	// Functions to allocate and free memory are required.
-	if (!functions->allocateMemory || !functions->freeMemory) {
-		functions->logger(NULL, instanceName, fmi2Error, "error",
-				"fmiInstantiateSlave: Missing callback function: freeMemory");
-		return 0;
-	}
-	if (!instanceName || strlen(instanceName)==0) {
-		functions->logger(NULL, instanceName, fmi2Error, "error",
-				"fmiInstantiateSlave: Missing instance name.");
-		return 0;
-	}
-	if (strcmp(GUID, modelGUID)) {
-		// FIXME: Remove printfs. Replace with logger calls when they work.
-		fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, modelGUID);
-		fflush(stderr);
-		//functions->logger(NULL, instanceName, fmi2Error, "error",
-		//                  "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, modelGUID);
-		return 0;
-	}
-	return 1;
+                fmi2String instanceName,
+                fmi2String GUID,
+                fmi2String modelGUID,
+                fmi2String fmuResourceLocation,
+                const fmi2CallbackFunctions *functions,
+                fmi2Boolean visible,
+                fmi2Boolean loggingOn)  {
+        // Logger callback is required.
+        if (!functions->logger) {
+                return 0;
+        }
+        // Functions to allocate and free memory are required.
+        if (!functions->allocateMemory || !functions->freeMemory) {
+                functions->logger(NULL, instanceName, fmi2Error, "error",
+                                "fmiInstantiateSlave: Missing callback function: freeMemory");
+                return 0;
+        }
+        if (!instanceName || strlen(instanceName)==0) {
+                functions->logger(NULL, instanceName, fmi2Error, "error",
+                                "fmiInstantiateSlave: Missing instance name.");
+                return 0;
+        }
+        if (strcmp(GUID, modelGUID)) {
+                // FIXME: Remove printfs. Replace with logger calls when they work.
+                fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, modelGUID);
+                fflush(stderr);
+                //functions->logger(NULL, instanceName, fmi2Error, "error",
+                //                  "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, modelGUID);
+                return 0;
+        }
+        return 1;
 }
 
 /*****************************************************************************************
@@ -107,48 +107,48 @@ int checkFMU(
  *  @return fmi2Discard if the FMU rejects the step size, otherwise fmi2OK.
  */
 fmi2Status fmiDoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
-		fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
-	ModelInstance* component = (ModelInstance *) c;
+                fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
+        ModelInstance* component = (ModelInstance *) c;
 
-	// If current time is greater than period * (value + 1), then it is
-	// time for another increment.
-	double endOfStepTime = currentCommunicationPoint + communicationStepSize;
-	double targetTime = TICK_PERIOD * (component->currentCount + 1);
-	if (endOfStepTime >= targetTime - EPSILON) {
-		// It is time for an increment.
-		// Is it too late for the increment?
-		if (endOfStepTime > targetTime + EPSILON) {
-			// Indicate that the last successful time is
-			// at the target time.
-			component->lastSuccessfulTime = targetTime;
-			fflush(stdout);
-			return fmi2Discard;
-		}
-		// We are at the target time. Are we
-		// ready for the increment yet? Have to have already
-		// completed one firing at this time.
-		if (component->atBreakpoint) {
-			// Not the first firing. Go ahead an increment.
-			component->currentCount++;
+        // If current time is greater than period * (value + 1), then it is
+        // time for another increment.
+        double endOfStepTime = currentCommunicationPoint + communicationStepSize;
+        double targetTime = TICK_PERIOD * (component->currentCount + 1);
+        if (endOfStepTime >= targetTime - EPSILON) {
+                // It is time for an increment.
+                // Is it too late for the increment?
+                if (endOfStepTime > targetTime + EPSILON) {
+                        // Indicate that the last successful time is
+                        // at the target time.
+                        component->lastSuccessfulTime = targetTime;
+                        fflush(stdout);
+                        return fmi2Discard;
+                }
+                // We are at the target time. Are we
+                // ready for the increment yet? Have to have already
+                // completed one firing at this time.
+                if (component->atBreakpoint) {
+                        // Not the first firing. Go ahead an increment.
+                        component->currentCount++;
 
-			input_function(component->controller,component->input,component->dInput);
+                        input_function(component->controller,component->input,component->dInput);
 
-			transition_function(component->controller);
+                        transition_function(component->controller);
 
-			output_function(component->controller,component->output);
-			// Reset the indicator that the increment is needed.
-			component->atBreakpoint = fmi2False;
-		} else {
-			// This will complete the first firing at the target time.
-			// We don't want to increment yet, but we set an indicator
-			// that we have had a firing at this time.
-			fflush(stdout);
-			component->atBreakpoint = fmi2True;
-		}
-	}
-	component->lastSuccessfulTime = endOfStepTime;
-	fflush(stdout);
-	return fmi2OK;
+                        output_function(component->controller,component->output);
+                        // Reset the indicator that the increment is needed.
+                        component->atBreakpoint = fmi2False;
+                } else {
+                        // This will complete the first firing at the target time.
+                        // We don't want to increment yet, but we set an indicator
+                        // that we have had a firing at this time.
+                        fflush(stdout);
+                        component->atBreakpoint = fmi2True;
+                }
+        }
+        component->lastSuccessfulTime = endOfStepTime;
+        fflush(stdout);
+        return fmi2OK;
 }
 
 /*****************************************************************************************
@@ -156,12 +156,12 @@ fmi2Status fmiDoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
  *  @param c The FMU.
  */
 void fmiFreeSlaveInstance(fmi2Component c) {
-	ModelInstance* component = (ModelInstance *) c;
-	free_controller(component->controller);
-	component->functions->freeMemory(component->input);
-	component->functions->freeMemory(component->output);
-	component->functions->freeMemory(component->dInput);
-	component->functions->freeMemory(component);
+        ModelInstance* component = (ModelInstance *) c;
+        free_controller(component->controller);
+        component->functions->freeMemory(component->input);
+        component->functions->freeMemory(component->output);
+        component->functions->freeMemory(component->dInput);
+        component->functions->freeMemory(component);
 }
 
 /*****************************************************************************************
@@ -173,15 +173,15 @@ void fmiFreeSlaveInstance(fmi2Component c) {
  *  @return fmi2OK.
  */
 fmi2Status fmiGetMaxStepSize(fmi2Component c, fmi2Real *maxStepSize) {
-	ModelInstance* component = (ModelInstance *) c;
-	if (component->atBreakpoint) {
-		*maxStepSize = 0.0;
-	} else {
-		double targetTime = TICK_PERIOD * (component->currentCount + 1);
-		double step = targetTime - component->lastSuccessfulTime;
-		*maxStepSize = step;
-	}
-	return fmi2OK;
+        ModelInstance* component = (ModelInstance *) c;
+        if (component->atBreakpoint) {
+                *maxStepSize = 0.0;
+        } else {
+                double targetTime = TICK_PERIOD * (component->currentCount + 1);
+                double step = targetTime - component->lastSuccessfulTime;
+                *maxStepSize = step;
+        }
+        return fmi2OK;
 }
 
 /*****************************************************************************************
@@ -193,17 +193,17 @@ fmi2Status fmiGetMaxStepSize(fmi2Component c, fmi2Real *maxStepSize) {
  *  @return fmi2Error if a value reference is out of range, otherwise fmi2OK.
  */
 fmi2Status fmiGetReal(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Real value[]) {
-	int i, valueReference;
-	ModelInstance* component = (ModelInstance *) c;
+        int i, valueReference;
+        ModelInstance* component = (ModelInstance *) c;
 
-	for (i = 0; i < nvr; i++) {
-		valueReference = vr[i];
-		if (valueReference >= 0 && valueReference <p)
-		{
-			value[i] = (fmi2Real) (*(component->output+valueReference));
-		}
-	}
-	return fmi2OK;
+        for (i = 0; i < nvr; i++) {
+                valueReference = vr[i];
+                if (valueReference >= 0 && valueReference <p)
+                {
+                        value[i] = (fmi2Real) (*(component->output+valueReference));
+                }
+        }
+        return fmi2OK;
 }
 
 /*****************************************************************************************
@@ -215,17 +215,17 @@ fmi2Status fmiGetReal(fmi2Component c, const fmi2ValueReference vr[], size_t nvr
  *  @return fmi2Discard if the kind is not fmi2LastSuccessfulTime, otherwise fmi2OK.
  */
 fmi2Status fmiGetRealStatus(fmi2Component c, const fmi2StatusKind s, fmi2Real* value) {
-	ModelInstance* component = (ModelInstance *) c;
-	if (s == fmi2LastSuccessfulTime) {
-		*value = component->lastSuccessfulTime;
+        ModelInstance* component = (ModelInstance *) c;
+        if (s == fmi2LastSuccessfulTime) {
+                *value = component->lastSuccessfulTime;
 
-		printf("fmiGetRealStatus returns lastSuccessfulTime is %g\n", *value);
-		fflush(stdout);
+                printf("fmiGetRealStatus returns lastSuccessfulTime is %g\n", *value);
+                fflush(stdout);
 
-		return fmi2OK;
-	}
-	// Since this FMU does not return fmiPending, there shouldn't be other queries of status.
-	return fmi2Discard;
+                return fmi2OK;
+        }
+        // Since this FMU does not return fmiPending, there shouldn't be other queries of status.
+        return fmi2Discard;
 }
 
 /*****************************************************************************************
@@ -241,38 +241,38 @@ fmi2Status fmiGetRealStatus(fmi2Component c, const fmi2StatusKind s, fmi2Real* v
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
 fmi2Component fmiInstantiateSlave(
-		fmi2String instanceName,
-		fmi2String GUID,
-		fmi2String fmuResourceLocation,
-		const fmi2CallbackFunctions *functions,
-		fmi2Boolean visible,
-		fmi2Boolean loggingOn)  {
-	ModelInstance* component;
+                fmi2String instanceName,
+                fmi2String GUID,
+                fmi2String fmuResourceLocation,
+                const fmi2CallbackFunctions *functions,
+                fmi2Boolean visible,
+                fmi2Boolean loggingOn)  {
+        ModelInstance* component;
 
-	// Perform checks.
-	if (!checkFMU(instanceName, GUID, MODEL_GUID, fmuResourceLocation, functions, visible, loggingOn)) {
-		return NULL;
-	}
-	component = (ModelInstance *)functions->allocateMemory(1, sizeof(ModelInstance));
-	component->currentCount = 0.0;
-	component->lastSuccessfulTime = -1.0;
-	component->atBreakpoint = fmi2False;
-	component->functions = functions;
+        // Perform checks.
+        if (!checkFMU(instanceName, GUID, MODEL_GUID, fmuResourceLocation, functions, visible, loggingOn)) {
+                return NULL;
+        }
+        component = (ModelInstance *)functions->allocateMemory(1, sizeof(ModelInstance));
+        component->currentCount = 0.0;
+        component->lastSuccessfulTime = -1.0;
+        component->atBreakpoint = fmi2False;
+        component->functions = functions;
 
-	component->controller = instantiate_controller();
-	component->input = (pfloat*)functions->allocateMemory(m,sizeof(pfloat));
-	component->output= (pfloat*)functions->allocateMemory(p,sizeof(pfloat));
-	component->dInput= (idxint*)functions->allocateMemory(nInputVariable,sizeof(idxint));
+        component->controller = instantiate_controller();
+        component->input = (pfloat*)functions->allocateMemory(m,sizeof(pfloat));
+        component->output= (pfloat*)functions->allocateMemory(p,sizeof(pfloat));
+        component->dInput= (idxint*)functions->allocateMemory(nInputVariable,sizeof(idxint));
 
-	// Need to allocate memory and copy the string because JNA stores the string
-	// in a temporary buffer that gets GC'd.
-	component->instanceName = (char*)functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
-	strcpy((char *)component->instanceName, instanceName);
+        // Need to allocate memory and copy the string because JNA stores the string
+        // in a temporary buffer that gets GC'd.
+        component->instanceName = (char*)functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
+        strcpy((char *)component->instanceName, instanceName);
 
-	printf("%s: Invoked fmiInstantiateSlave.\n", component->instanceName);
-	fflush(stdout);
+        printf("%s: Invoked fmiInstantiateSlave.\n", component->instanceName);
+        fflush(stdout);
 
-	return component;
+        return component;
 }
 
 /*****************************************************************************************
@@ -286,26 +286,26 @@ fmi2Component fmiInstantiateSlave(
  *  @return fmi2OK
  */
 fmi2Status fmiInitializeSlave(fmi2Component c,
-		fmi2Real relativeTolerance,
-		fmi2Real tStart,
-		fmi2Boolean stopTimeDefined,
-		fmi2Real tStop) {
+                fmi2Real relativeTolerance,
+                fmi2Real tStart,
+                fmi2Boolean stopTimeDefined,
+                fmi2Real tStop) {
 
-	ModelInstance* component = (ModelInstance *) c;
-	printf("%s: Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g..\n",
-			component->instanceName, tStart, stopTimeDefined, tStop);
-	fflush(stdout);
+        ModelInstance* component = (ModelInstance *) c;
+        printf("%s: Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g..\n",
+                        component->instanceName, tStart, stopTimeDefined, tStop);
+        fflush(stdout);
 
-	component->lastSuccessfulTime = tStart;
-	component->atBreakpoint = fmi2False;
+        component->lastSuccessfulTime = tStart;
+        component->atBreakpoint = fmi2False;
 
-	init_controller(component->controller);
+        init_controller(component->controller);
 
-	printf("successful init controller\n");
-	fflush(stdout);
-	output_function(component->controller,component->output);
+        printf("successful init controller\n");
+        fflush(stdout);
+        output_function(component->controller,component->output);
 
-	return fmi2OK;
+        return fmi2OK;
 }
 
 /*****************************************************************************************
@@ -317,16 +317,16 @@ fmi2Status fmiInitializeSlave(fmi2Component c,
  *  @return fmi2Error if a value reference is out of range, otherwise fmi2OK.
  */
 fmi2Status fmiSetReal(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[]){
-	int i, valueReference;
-	ModelInstance* component = (ModelInstance *) c;
-	for (i = 0; i < nvr; i++) {
-		valueReference = vr[i];
-		if (valueReference >= p && valueReference < p+m)
-		{
-			*(component->input+valueReference-p)=(pfloat) value[i];
-		}
-	}
-	return fmi2OK;
+        int i, valueReference;
+        ModelInstance* component = (ModelInstance *) c;
+        for (i = 0; i < nvr; i++) {
+                valueReference = vr[i];
+                if (valueReference >= p && valueReference < p+m)
+                {
+                        *(component->input+valueReference-p)=(pfloat) value[i];
+                }
+        }
+        return fmi2OK;
 }
 
 /*****************************************************************************************
@@ -338,16 +338,16 @@ fmi2Status fmiSetReal(fmi2Component c, const fmi2ValueReference vr[], size_t nvr
  *  @return fmi2Error if a value reference is out of range, otherwise fmi2OK.
  */
 fmi2Status fmiSetInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Integer value[]){
-	int i, valueReference;
-	ModelInstance* component = (ModelInstance *) c;
-	for (i = 0; i < nvr; i++) {
-		valueReference = vr[i];
-		if (valueReference >= p+m && valueReference < p+m+nInputVariable)
-		{
-			*(component->dInput+valueReference-p-m)=(idxint) value[i];
-		}
-	}
-	return fmi2OK;
+        int i, valueReference;
+        ModelInstance* component = (ModelInstance *) c;
+        for (i = 0; i < nvr; i++) {
+                valueReference = vr[i];
+                if (valueReference >= p+m && valueReference < p+m+nInputVariable)
+                {
+                        *(component->dInput+valueReference-p-m)=(idxint) value[i];
+                }
+        }
+        return fmi2OK;
 }
 
 /*****************************************************************************************
@@ -356,16 +356,16 @@ fmi2Status fmiSetInteger(fmi2Component c, const fmi2ValueReference vr[], size_t 
  *  @return fmi2OK if the FMU was non-null, otherwise return fmi2Error
  */
 fmi2Status fmiTerminateSlave(fmi2Component c) {
-	ModelInstance* component = (ModelInstance *) c;
+        ModelInstance* component = (ModelInstance *) c;
 
-	if (component == NULL) {
-		printf("fmiTerminateSlave called with a null argument?  This can happen while exiting during a failure to construct the component\n");
-		fflush(stdout);
-		return fmi2Error;
-	} else {
-		printf("%s: fmiTerminateSlave\n", component->instanceName);
-		fflush(stdout);
-	}
+        if (component == NULL) {
+                printf("fmiTerminateSlave called with a null argument?  This can happen while exiting during a failure to construct the component\n");
+                fflush(stdout);
+                return fmi2Error;
+        } else {
+                printf("%s: fmiTerminateSlave\n", component->instanceName);
+                fflush(stdout);
+        }
 
-	return fmi2OK;
+        return fmi2OK;
 }

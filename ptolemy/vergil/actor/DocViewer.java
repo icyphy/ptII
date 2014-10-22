@@ -370,7 +370,7 @@ public class DocViewer extends HTMLViewer {
         while (attributes.hasNext()) {
             Settable parameter = (Settable) attributes.next();
             if (_isHidden((NamedObj)parameter)) {
-            	continue;
+                    continue;
             }
             if (parameter instanceof PortParameter) {
                 // Skip this one.
@@ -450,7 +450,7 @@ public class DocViewer extends HTMLViewer {
         while (ports.hasNext()) {
             Port port = (Port) ports.next();
             if (_isHidden(port)) {
-            	continue;
+                    continue;
             }
             if (port instanceof ParameterPort) {
                 // Skip this one.
@@ -587,7 +587,7 @@ public class DocViewer extends HTMLViewer {
         while (attributes.hasNext()) {
             Settable parameter = (Settable) attributes.next();
             if (_isHidden((NamedObj)parameter)) {
-            	continue;
+                    continue;
             }
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {

@@ -58,15 +58,15 @@ int output[NUM_STATE][NUM_INPUT]={
 };
 
 int value2index(int inputValue[]){
-	int result = 0;
-	int tmp = 1;
-	int valuation;
-	int i;
-	for(i=0;i<nInputVariable;i++)
-	{
-		valuation = inputValue[i]%nInputValue[i];
-		result += valuation * tmp;
-		tmp *= nInputValue[i];
-	}
-	return result;
+        int result = 0;
+        int tmp = 1;
+        int valuation;
+        int i;
+        for(i=0;i<nInputVariable;i++)
+        {
+                valuation = inputValue[i]%nInputValue[i];
+                result += valuation * tmp;
+                tmp *= nInputValue[i];
+        }
+        return result;
 };

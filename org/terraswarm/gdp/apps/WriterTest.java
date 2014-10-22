@@ -97,28 +97,28 @@ public class WriterTest {
         // On the Mac, isProtected() will probably return false.
         _debug("Native.isProtected(): " + Native.isProtected());
 
-        // Was:	gdp_gcl_t *gclh;
-	//PointerByReference gclh = new PointerByReference();
+        // Was:        gdp_gcl_t *gclh;
+        //PointerByReference gclh = new PointerByReference();
         //_debug("new gclh: " + gclh);
         //gdp_gcl_t gclhReally = new gdp_gcl_t(gclh.getValue());
         Pointer gclh = null;
         
 
-	// Was: gcl_name_t gcliname;
+        // Was: gcl_name_t gcliname;
         // BTW - gcl_name_t is defined in gdp/gdp/gdp.h:
         // typedef uint8_t                            gcl_name_t[32];
         ByteBuffer gcliname = ByteBuffer.allocate(32);
 
-	int opt;
-	EP_STAT estat;
-	boolean append = false;
-	String buf = "";
+        int opt;
+        EP_STAT estat;
+        boolean append = false;
+        String buf = "";
 
         // The address of the gdp daemon (gdpd), null means to use the
         // default of 127.0.0.1:2468.  This value can be set by the -G command line argument.
         String gdpd_addr = null;
 
-	String xname = null;
+        String xname = null;
 
 
         int argc = argv.length;
@@ -143,22 +143,22 @@ public class WriterTest {
             xname = argv[argv.length - 1];
             argc--;
         } 
-	if (argc != 0 || (append && xname == null)) {
+        if (argc != 0 || (append && xname == null)) {
             System.err.println("Usage: WriterTest [-D dbgspec] [-G gdpdAddress] [-a] [<gcl_name>]\n"
                     + "  (name is required for -a)");
             _debug("argc: " + argc + ", append: " + append + ", xname: " + (xname == null ? "null" : xname));
             System.exit(64 /* EX_USAGE from /usr/includes/sysexits.h */);
-	}
+        }
 
         _debug("About to initialize the GDP.");
-	estat = Gdp10Library.INSTANCE.gdp_init(gdpd_addr);
-	if (!GdpUtilities.EP_STAT_ISOK(estat)) {
+        estat = Gdp10Library.INSTANCE.gdp_init(gdpd_addr);
+        if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);
-	}
+        }
         _debug("GDP Initialized.");
 
-	if (xname == null) {
+        if (xname == null) {
             // create a new GCL handle
             _debug("About to create a new handle.");
 
@@ -170,7 +170,7 @@ public class WriterTest {
             gclh = gclhByReference.getValue();
             _debug("Handle created: " + estat);
             _debug("2 gclh: " + gclh);
-	} else {
+        } else {
             _debug("About to parse " + xname);
             Gdp10Library.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
             if (append) {
@@ -185,14 +185,14 @@ public class WriterTest {
                 estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname, gclhByReference);
                 gclh = gclhByReference.getValue();
             }
-	}
+        }
         _debug("About to check error code after either creating a new handle, gdp_gcl_open() or gdp_gcl_create()");
-	// EP_STAT_CHECK(estat, goto fail0);
+        // EP_STAT_CHECK(estat, goto fail0);
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             _fail0(estat);
         }
 
-	//Gdp10Library.INSTANCE.gdp_gcl_print(gclh, stdout, 0, 0);
+        //Gdp10Library.INSTANCE.gdp_gcl_print(gclh, stdout, 0, 0);
         _debug("GCL" + System.identityHashCode(gclh) + ":");
 
         // FIXME: Need to allocate something 44 chars long (GDP_GCL_PNAME_LEN in gdp.h)
@@ -200,10 +200,10 @@ public class WriterTest {
         // Print nbuf
 
 
-	System.out.println("Starting to read input.");
+        System.out.println("Starting to read input.");
 
         _debug("About to create a gdp_datum.");
-	PointerByReference datum = Gdp10Library.INSTANCE.gdp_datum_new();
+        PointerByReference datum = Gdp10Library.INSTANCE.gdp_datum_new();
         _debug("Done creating a gdp_datum");
         // Invoke with -Djna.dump_memory=true
         _debug("datum: " + datum);
@@ -218,7 +218,7 @@ public class WriterTest {
                 System.out.println("Got input \"" +  line + "\"");
 
                 // FIXME: gdp/gdp_buf.h has
-                // #define gdp_buf_write(b, i, z)	evbuffer_add(b, i, z)
+                // #define gdp_buf_write(b, i, z)        evbuffer_add(b, i, z)
                 // evbuffer_add is declared in /usr/local/include/event2/buffer.h
                 //gdp_buf_write(datum->dbuf, buf, buf.length());
 
@@ -244,7 +244,7 @@ public class WriterTest {
                 _debug("gclh: " + gclh);
                 _debug("datum: " + datum);
                 GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-		estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclh, datum);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclh, datum);
                 if (!GdpUtilities.EP_STAT_ISOK(estat)) {
                     PointerByReference gclhByReference = new PointerByReference();
                     _fail1(estat, gclhByReference);
@@ -261,7 +261,7 @@ public class WriterTest {
                 bufferedReader.close();
             }
         }
-	Gdp10Library.INSTANCE.gdp_datum_free(datum);
+        Gdp10Library.INSTANCE.gdp_datum_free(datum);
         _fail0(estat);
     }
 
@@ -273,7 +273,7 @@ public class WriterTest {
     private static void _fail1(EP_STAT estat, PointerByReference gclh) {
         // We use a separate method here so that we can mimic the 
         // structure of the original writer-test.c.
-	Gdp10Library.INSTANCE.gdp_gcl_close(gclh);
+        Gdp10Library.INSTANCE.gdp_gcl_close(gclh);
         _fail0(estat);
     }
 
@@ -288,12 +288,12 @@ public class WriterTest {
         }
 
         // FIXME: writer-test.c has:
-	// fprintf(stderr, "exiting with status %s\n",
-	//		ep_stat_tostr(estat, buf, sizeof buf));
+        // fprintf(stderr, "exiting with status %s\n",
+        //                ep_stat_tostr(estat, buf, sizeof buf));
         // I have no idea what to do with ep_stat_tostr(), so we just print
-	System.err.println("exiting with status " + estat + ", code: " + estat.code);
+        System.err.println("exiting with status " + estat + ", code: " + estat.code);
 
-	System.exit(GdpUtilities.EP_STAT_ISOK(estat) ? 0 : 1);
+        System.exit(GdpUtilities.EP_STAT_ISOK(estat) ? 0 : 1);
     }
 
     /** Optionally print a message.

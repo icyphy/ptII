@@ -55,13 +55,13 @@ public class GdpUtilities {
 
     /** Create a new status for GDP
      * Based on:
-     * #define GDP_STAT_NEW(sev, det)		EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_UCB, GDP_MODULE, det)
+     * #define GDP_STAT_NEW(sev, det)                EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_UCB, GDP_MODULE, det)
      * @param sev The severity
      * @param det FIXME
      * @return the status.
      */
     public static EP_STAT GDP_STAT_NEW(int sev, int det) {
-	return EP_STAT_NEW(/* EP_STAT_SEV_ ## */ sev, EP_REGISTRY_UCB, GDP_MODULE, det);
+        return EP_STAT_NEW(/* EP_STAT_SEV_ ## */ sev, EP_REGISTRY_UCB, GDP_MODULE, det);
     }
 
     /** Return true if the status code is ok.
@@ -107,7 +107,7 @@ public class GdpUtilities {
      */
     public static EP_STAT EP_STAT_INTERNAL(int sev, int mod, int code) {
         //#define _EP_STAT_INTERNAL(sev, mod, code)                     \
-	//	EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_EPLIB, mod, code)
+        //        EP_STAT_NEW(EP_STAT_SEV_ ## sev, EP_REGISTRY_EPLIB, mod, code)
         return EP_STAT_NEW(sev, EP_REGISTRY_EPLIB, mod, code);
     }
     /** Create a new status code.
@@ -154,7 +154,7 @@ public class GdpUtilities {
             // In gdp_api.c, this method calls:
             // d = gdp_buf_getptr(datum->dbuf, l);
             // gdp_buf.h has:
-            // #define gdp_buf_getptr(b, z)	evbuffer_pullup(b, z)
+            // #define gdp_buf_getptr(b, z)        evbuffer_pullup(b, z)
             // So, we would need to call evbuffer_pullup() here.
 
             // A different idea would be to have a gdp_buf.c method
@@ -187,7 +187,7 @@ public class GdpUtilities {
 
         if (length.longValue() > 0) {
             // gdp_api.c has
-            //fprintf(fp, "\n	 %s%.*s%s", EpChar->lquote, l, d, EpChar->rquote);
+            //fprintf(fp, "\n         %s%.*s%s", EpChar->lquote, l, d, EpChar->rquote);
             byte [] bytes = d.getByteArray(0, length.intValue());
             System.out.print("\n  \"" + /*d.getString(0)*/ new String(bytes) + "\"");
             if (d.getString(0).length() != length.intValue()) {
@@ -230,7 +230,7 @@ public class GdpUtilities {
     public static final int GDP_EVENT_EOS = 2;
 
     /** Not Found (404). From gdp_stat.h */
-    public static final int GDP_COAP_NOTFOUND =	404;
+    public static final int GDP_COAP_NOTFOUND =        404;
 
     /** From gdp_stat.h */
     public static final int GDP_MODULE = 1;

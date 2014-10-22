@@ -346,7 +346,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
                  // Return false if an exception is thrown, since this attribute 
                  // did not resolve the exception.
                  statusMessage.setExpression("Cannot restart: Error before " +
-                 		"or during intialize()");
+                                 "or during intialize()");
                  for (ExceptionSubscriber subscriber : _subscribers) {
                      subscriber.exceptionHandled(false, policyValue);
                  }

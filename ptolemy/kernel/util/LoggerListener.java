@@ -63,13 +63,13 @@ public class LoggerListener implements DebugListener {
         _logger.setLevel(level);
         if (directory != null) {
             if (!directory.exists()) {
-            	// Attempt to create the directory.
-            	try {
-            		directory.mkdir();
-            	} catch (SecurityException ex) {
-            		throw new IllegalActionException("Failed to create directory for log file: "
+                    // Attempt to create the directory.
+                    try {
+                            directory.mkdir();
+                    } catch (SecurityException ex) {
+                            throw new IllegalActionException("Failed to create directory for log file: "
                             + directory.getPath());
-            	}
+                    }
             }
             if (!directory.isDirectory()) {
                 throw new IllegalActionException(

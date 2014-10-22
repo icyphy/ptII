@@ -4123,7 +4123,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-	*/
+        */
     
     ///////////////////////////////////////////////////////////////////
     //// HierarchyTreeMouseAdapter
@@ -4132,21 +4132,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     private class HierarchyTreeMouseAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
-        	if(e.getClickCount() == 2) {
-        		// Returns the last path element of the selection.
-        		// This method is useful only when the selection model allows a single selection.
-        		Object lastSelectedPathComponent = _treeView
-        				.getLastSelectedPathComponent();
-        		if (lastSelectedPathComponent instanceof NamedObj) {
-        			try {
-        				getConfiguration().openInstance(
-        						(NamedObj) lastSelectedPathComponent);
-        			} catch (Throwable throwable) {
-        				MessageHandler.error("Could not open "
-        						+ lastSelectedPathComponent, throwable);
-        			}
-        		}
-        	}
+                if(e.getClickCount() == 2) {
+                        // Returns the last path element of the selection.
+                        // This method is useful only when the selection model allows a single selection.
+                        Object lastSelectedPathComponent = _treeView
+                                        .getLastSelectedPathComponent();
+                        if (lastSelectedPathComponent instanceof NamedObj) {
+                                try {
+                                        getConfiguration().openInstance(
+                                                        (NamedObj) lastSelectedPathComponent);
+                                } catch (Throwable throwable) {
+                                        MessageHandler.error("Could not open "
+                                                        + lastSelectedPathComponent, throwable);
+                                }
+                        }
+                }
         }
     }
 

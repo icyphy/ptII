@@ -350,7 +350,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                     passwordFile.close();
                 } catch(IllegalActionException e){
                    statusMessage.setExpression("Failed to close password " 
-                   		+ "file.");
+                                   + "file.");
                    try { 
                        statusMessage.validate();
                    } catch(IllegalActionException e2) {
@@ -428,7 +428,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                     ((BooleanToken) reallySendMail.getToken()).booleanValue();
         } catch(IllegalActionException e){
             statusMessage.setExpression("Failed to read reallySendMail " 
-            		+ "parameter.");
+                            + "parameter.");
             try { 
                 statusMessage.validate();
             } catch(IllegalActionException e2) {

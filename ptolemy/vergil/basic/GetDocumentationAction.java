@@ -488,8 +488,8 @@ public class GetDocumentationAction extends FigureAction {
             }
         } else {
             if (_isMultipleDocumentationAllowed() ||
-            		// For some reason, the frame might be null.
-            		(tableau instanceof Tableau) && ((Tableau)tableau).getFrame() == null) {
+                            // For some reason, the frame might be null.
+                            (tableau instanceof Tableau) && ((Tableau)tableau).getFrame() == null) {
                 try {
                     // FIXME: This is necessary for Kepler, but
                     // not for Ptolemy?  Why?

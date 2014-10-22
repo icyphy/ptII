@@ -177,24 +177,24 @@ is provided by command line arguments.
     <br>There are two binary formats, both of which use 4 byte floats.
     <ol>
       <li>If the first byte of the data file is not a <code>d</code>, then
-	we assume that the file contains 4 byte floats in big-endian ordering
-	with no plot commands.
+        we assume that the file contains 4 byte floats in big-endian ordering
+        with no plot commands.
       <li>If the first byte of the data file is a <code>d</code>, then
-	we assume that the plot commands are encoded as single characters,
-	and the numeric data is a 4 byte float encoded in the
-	native endian format of the machine that the java interpreter is
-	running on.
-	<br>The commands are encoded as follows:
-	<dl>
-	  <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code></dt>
-	  <dd> Draw a X, Y point</dd>
-	  <dt> <code>e</code></dt>
-	  <dd> End of dataset</dd>
-	  <dt> <code>n <I>&lt;dataset name&gt;</I>&#92;</code></dt>
-	  <dd> New dataset name, ends in <code>&#92;</code></dd>
-	  <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code></dt>
-	  <dd> Move to a X, Y point.</dd>
-	</dl>
+        we assume that the plot commands are encoded as single characters,
+        and the numeric data is a 4 byte float encoded in the
+        native endian format of the machine that the java interpreter is
+        running on.
+        <br>The commands are encoded as follows:
+        <dl>
+          <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code></dt>
+          <dd> Draw a X, Y point</dd>
+          <dt> <code>e</code></dt>
+          <dd> End of dataset</dd>
+          <dt> <code>n <I>&lt;dataset name&gt;</I>&#92;</code></dt>
+          <dd> New dataset name, ends in <code>&#92;</code></dd>
+          <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code></dt>
+          <dd> Move to a X, Y point.</dd>
+        </dl>
       </li>
     </ol>
     <br/>To view a binary plot file under unix, we can use the
@@ -253,17 +253,17 @@ is provided by command line arguments.
     In the Java version, fonts may be specified as
     <menu>
       <li><code><i>fontname</i></code>, where
-	<code><i>fontname</i></code> is one of <code>helvetica</code>,
-	<code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
-	<code>DialogInput</code>, <code>ZapfDingbats</code>.
+        <code><i>fontname</i></code> is one of <code>helvetica</code>,
+        <code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
+        <code>DialogInput</code>, <code>ZapfDingbats</code>.
 
       <li><code><i>fontname</i>-<i>style</i></code>, where
-	<code><i>style</i></code> is one of
-	<code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
-	i.e. <code>helvetica-ITALIC</code>
+        <code><i>style</i></code> is one of
+        <code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
+        i.e. <code>helvetica-ITALIC</code>
       <li><code><i>fontname</i>-<i>size</i></code>, or
       <li><code><i>fontname</i>-<i>style</i>-<i>size</i></code>, where
-	<code><i>size</i></code> is an integer font size in points.
+        <code><i>size</i></code> is an integer font size in points.
     </menu>
     The default is <code>helvetica-PLAIN-12</code>.
   </dd>

@@ -356,8 +356,8 @@ public class Dictionary extends TypedAtomicActor {
                     _debug("Retrieved key, value: " + theKey + ", " + theResult);
                 }
             } else {
-        	// Sending nil on the output enables use of this actor in SDF, since
-        	// every input will trigger an output.
+                // Sending nil on the output enables use of this actor in SDF, since
+                // every input will trigger an output.
                 result.send(0, Token.NIL);
                 StringToken[] theKeys = new StringToken[1];
                 theKeys[0] = theKey;
@@ -373,7 +373,7 @@ public class Dictionary extends TypedAtomicActor {
             ArrayList<StringToken> keysNotFound = new ArrayList<StringToken>();
             int i = 0;
             for (Token theKey : theKeys.arrayValue()) {
-        	String theKeyAsString = ((StringToken) theKey).stringValue();
+                String theKeyAsString = ((StringToken) theKey).stringValue();
                 theResult[i] = _store.get(theKeyAsString);
                 if (theResult[i] == null) {
                     theResult[i] = Token.NIL;
@@ -387,10 +387,10 @@ public class Dictionary extends TypedAtomicActor {
             }
             resultArray.send(0, resultToken);
             if (keysNotFound.size() > 0) {
-        	ArrayToken notFoundToken = new ArrayToken(
-        		BaseType.STRING,
-        		keysNotFound.toArray(new StringToken[keysNotFound.size()]));
-        	notFound.send(0, notFoundToken);
+                ArrayToken notFoundToken = new ArrayToken(
+                        BaseType.STRING,
+                        keysNotFound.toArray(new StringToken[keysNotFound.size()]));
+                notFound.send(0, notFoundToken);
                 if (_debugging) {
                     _debug("Keys with no value: " + notFoundToken);
                 }
@@ -406,10 +406,10 @@ public class Dictionary extends TypedAtomicActor {
                 i++;
             }
             if (result.length > 0) {
-        	keys.send(0, new ArrayToken(result));
+                keys.send(0, new ArrayToken(result));
             } else {
-        	// Send an empty array.
-        	keys.send(0, new ArrayToken(BaseType.STRING));
+                // Send an empty array.
+                keys.send(0, new ArrayToken(BaseType.STRING));
             }
         }
     }

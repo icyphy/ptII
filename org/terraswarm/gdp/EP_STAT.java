@@ -11,24 +11,24 @@ import java.util.List;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public class EP_STAT extends Structure {
-	public NativeLong code;
-	public EP_STAT() {
-		super();
-	}
-	protected List<? > getFieldOrder() {
-		return Arrays.asList("code");
-	}
-	public EP_STAT(NativeLong code) {
-		super();
-		this.code = code;
-	}
-	public EP_STAT(Pointer peer) {
-		super(peer);
-	}
-	public static class ByReference extends EP_STAT implements Structure.ByReference {
-		
-	};
-	public static class ByValue extends EP_STAT implements Structure.ByValue {
-		
-	};
+        public NativeLong code;
+        public EP_STAT() {
+                super();
+        }
+        protected List<? > getFieldOrder() {
+                return Arrays.asList("code");
+        }
+        public EP_STAT(NativeLong code) {
+                super();
+                this.code = code;
+        }
+        public EP_STAT(Pointer peer) {
+                super(peer);
+        }
+        public static class ByReference extends EP_STAT implements Structure.ByReference {
+                
+        };
+        public static class ByValue extends EP_STAT implements Structure.ByValue {
+                
+        };
 }

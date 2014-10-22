@@ -300,7 +300,7 @@ public class IOPort extends ComponentPort {
                 }
             }
         } else if (attribute == defaultValue) {
-        	_persistentToken = defaultValue.getToken();
+                _persistentToken = defaultValue.getToken();
         }
         super.attributeChanged(attribute);
     }
@@ -986,7 +986,7 @@ public class IOPort extends ComponentPort {
         }
         // If this port is persistent, then remember the value of this input.
         if (_persistentToken != null) {
-        	_persistentToken = token;
+                _persistentToken = token;
         }
 
         return token;
@@ -1269,7 +1269,7 @@ public class IOPort extends ComponentPort {
         }
         // If the port is persistent, update the remembered value.
         if (_persistentToken != null) {
-        	_persistentToken = token;
+                _persistentToken = token;
         }
         return token;
     }
@@ -2884,7 +2884,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If defaultValue cannot be retrieved.
      */
     public void reset() throws IllegalActionException {
-    	_persistentToken = defaultValue.getToken();
+            _persistentToken = defaultValue.getToken();
     }
 
     /** Send the specified token to all receivers connected to the

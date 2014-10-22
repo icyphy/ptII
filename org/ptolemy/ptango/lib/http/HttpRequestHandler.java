@@ -150,7 +150,7 @@ import ptolemy.util.StringUtilities;
  *  @see org.ptolemy.ptango.lib.WebServer
  */
 public class HttpRequestHandler extends TypedAtomicActor 
-		implements HttpService, ExceptionSubscriber {
+                implements HttpService, ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -537,8 +537,8 @@ public class HttpRequestHandler extends TypedAtomicActor
             responseData.response = ((StringToken) responseBody.get(0)).stringValue();
             responseFound = true;
             if (_debugging) {
-        	_debug("Received response on the response input port: "
-        		+ responseData.response);
+                _debug("Received response on the response input port: "
+                        + responseData.response);
             }
         }
         // Handle the code input.
@@ -546,8 +546,8 @@ public class HttpRequestHandler extends TypedAtomicActor
             responseData.statusCode = ((IntToken) responseCode.get(0)).intValue();
             responseFound = true;
             if (_debugging) {
-        	_debug("Received response code: "
-        		+ responseData.statusCode);
+                _debug("Received response code: "
+                        + responseData.statusCode);
             }
         }
         // Handle the responseContentType input.
@@ -600,61 +600,61 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
 
             if (_debugging) {
-            	_debug("Sending request method: " + _pendingRequest.method);
-            	_debug("Sending request URI: " + _pendingRequest.requestURI);
+                    _debug("Sending request method: " + _pendingRequest.method);
+                    _debug("Sending request URI: " + _pendingRequest.requestURI);
             }
             // Produce header output.
             if (_pendingRequest.headers != null && _pendingRequest.headers.length() > 0) {
                 if (!headers.sinkPortList().isEmpty()) {
                     if (_debugging) {
-                	_debug("Sending request header: " + _pendingRequest.headers);
+                        _debug("Sending request header: " + _pendingRequest.headers);
                     }
                     try {
-                	headers.send(0, _pendingRequest.headers);
+                        headers.send(0, _pendingRequest.headers);
                     } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                	// Parameters provided do not match the required type.
-                	// Construct an appropriate response.
-                	_respondWithBadRequestMessage(_pendingRequest.headers,
-                		headers.getType(), "header");
-                	return;
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_pendingRequest.headers,
+                                headers.getType(), "header");
+                        return;
                     }
                 }
             }
             // Produce requestor output.
             if (_pendingRequest.requestor != null && _pendingRequest.requestor.length() > 0) {
-        	if (_debugging) {
-        	    _debug("Sending requestor identification: " + _pendingRequest.requestor);
-        	}
-        	requestor.send(0, new StringToken(_pendingRequest.requestor));
+                if (_debugging) {
+                    _debug("Sending requestor identification: " + _pendingRequest.requestor);
+                }
+                requestor.send(0, new StringToken(_pendingRequest.requestor));
             }
             if (!parameters.sinkPortList().isEmpty()) {
                 if (_debugging) {
-                	_debug("Sending request parameters: " + _pendingRequest.parameters);
+                        _debug("Sending request parameters: " + _pendingRequest.parameters);
                 }
-            	// Send parameters, but handle type errors locally.
-            	try {
-            	    parameters.send(0, _pendingRequest.parameters);
-            	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
-            	    // Parameters provided do not match the required type.
-            	    // Construct an appropriate response.
-            	    _respondWithBadRequestMessage(_pendingRequest.parameters,
-            		    parameters.getType(), "parameters");
-            	    return;
-            	}
+                    // Send parameters, but handle type errors locally.
+                    try {
+                        parameters.send(0, _pendingRequest.parameters);
+                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_pendingRequest.parameters,
+                                parameters.getType(), "parameters");
+                        return;
+                    }
             }
             if (_pendingRequest.cookies != null && _pendingRequest.cookies.length() > 0) {
                 if (!cookies.sinkPortList().isEmpty()) {
                     if (_debugging) {
-                	_debug("Sending request cookies: " + _pendingRequest.cookies);
+                        _debug("Sending request cookies: " + _pendingRequest.cookies);
                     }
                     try {
-                	cookies.send(0, _pendingRequest.cookies);
+                        cookies.send(0, _pendingRequest.cookies);
                     } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                	// Parameters provided do not match the required type.
-                	// Construct an appropriate response.
-                	_respondWithBadRequestMessage(_pendingRequest.cookies,
-                		cookies.getType(), "cookies");
-                	return;
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_pendingRequest.cookies,
+                                cookies.getType(), "cookies");
+                        return;
                     }
                 }
             }
@@ -744,8 +744,8 @@ public class HttpRequestHandler extends TypedAtomicActor
             // Is this possible?
             // This will simply overwrite it. For now, print a warning to standard error.
             if (_newRequest != null) {
-        	System.err.println(getFullName()
-        		+ ": WARNING. Discarding HTTP request that has not yet been handled.");
+                System.err.println(getFullName()
+                        + ": WARNING. Discarding HTTP request that has not yet been handled.");
             }
             _newRequest = new HttpRequestItems();
 
@@ -835,10 +835,10 @@ public class HttpRequestHandler extends TypedAtomicActor
                     // constructed.
                     HttpRequestHandler.this.wait(timeoutValue);
                     if (_response == null
-                	    && System.currentTimeMillis() - startTime >= timeoutValue) {
-                	// A timeout has occurred, and there is still no _reponse.
-                	// This means that the second firing never occurred, so no
-                	// response data have been provided.
+                            && System.currentTimeMillis() - startTime >= timeoutValue) {
+                        // A timeout has occurred, and there is still no _reponse.
+                        // This means that the second firing never occurred, so no
+                        // response data have been provided.
                         if (_debugging) {
                             _debug("**** Request timed out.");
                         }
@@ -846,8 +846,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                         // Set the content length (enables persistent
                         // connections) and send the buffer
                         response.sendError(
-                        	HttpServletResponse.SC_REQUEST_TIMEOUT,
-                        	"Request Timeout (408)");
+                                HttpServletResponse.SC_REQUEST_TIMEOUT,
+                                "Request Timeout (408)");
 
                         // Indicate that there is no longer a pending request.
                         // This ensures that if the second firing later occurs,
@@ -861,8 +861,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                         _debug("*** Request thread interrupted.");
                     }
                     response.sendError(
-                	    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                	    "Get request thread interrupted (Internal Server Error, 500)");
+                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            "Get request thread interrupted (Internal Server Error, 500)");
 
                     // Indicate that there is no longer a pending request or response.
                     _pendingRequest = null;
@@ -878,14 +878,14 @@ public class HttpRequestHandler extends TypedAtomicActor
             
             // Write all the headers to the response.
             if (_response.headers != null) {
-        	for (String name : _response.headers.labelSet()) {
-        	    Token token = _response.headers.get(name);
-        	    if (token instanceof StringToken) {
-        		response.addHeader(name, ((StringToken)token).stringValue());
-        	    } else if (token != null) {
-        		response.addHeader(name, token.toString());
-        	    }
-        	}
+                for (String name : _response.headers.labelSet()) {
+                    Token token = _response.headers.get(name);
+                    if (token instanceof StringToken) {
+                        response.addHeader(name, ((StringToken)token).stringValue());
+                    } else if (token != null) {
+                        response.addHeader(name, token.toString());
+                    }
+                }
             }
 
             // Write all cookies to the response, if there are some new
@@ -937,13 +937,13 @@ public class HttpRequestHandler extends TypedAtomicActor
      */
     protected String _readBody(HttpServletRequest request)
             throws IllegalActionException, IOException {
-	BufferedReader reader = request.getReader();
-	StringBuffer result = new StringBuffer();
-	String line = reader.readLine();
-	while (line != null) {
-	    result.append(line);
-	    result.append(StringUtilities.LINE_SEPARATOR);
-	}
+        BufferedReader reader = request.getReader();
+        StringBuffer result = new StringBuffer();
+        String line = reader.readLine();
+        while (line != null) {
+            result.append(line);
+            result.append(StringUtilities.LINE_SEPARATOR);
+        }
         return result.toString();
     }
 
@@ -998,24 +998,24 @@ public class HttpRequestHandler extends TypedAtomicActor
     protected RecordToken _readHeaders(HttpServletRequest request)
             throws IllegalActionException {
         LinkedHashMap<String, Token> map = new LinkedHashMap<String, Token>();
-	Enumeration<String> names = request.getHeaderNames();
-	while (names.hasMoreElements()) {
-	    String name = names.nextElement();
-	    LinkedList<StringToken> valueList = new LinkedList<StringToken>();
-	    Enumeration<String> values = request.getHeaders(name);
-	    while (values.hasMoreElements()) {
-		valueList.add(new StringToken(values.nextElement()));
-	    }
-	    if (valueList.isEmpty()) {
-		// Do not include empty headers.
-		continue;
-	    }
-	    if (valueList.size() == 1) {
-		map.put(name, valueList.get(0));
-	    } else {
-		map.put(name, new ArrayToken(valueList.toArray(new StringToken[valueList.size()])));
-	    }
-	}
+        Enumeration<String> names = request.getHeaderNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            LinkedList<StringToken> valueList = new LinkedList<StringToken>();
+            Enumeration<String> values = request.getHeaders(name);
+            while (values.hasMoreElements()) {
+                valueList.add(new StringToken(values.nextElement()));
+            }
+            if (valueList.isEmpty()) {
+                // Do not include empty headers.
+                continue;
+            }
+            if (valueList.size() == 1) {
+                map.put(name, valueList.get(0));
+            } else {
+                map.put(name, new ArrayToken(valueList.toArray(new StringToken[valueList.size()])));
+            }
+        }
         if (map.isEmpty()) {
             // Return an empty record.
             return RecordToken.EMPTY_RECORD;
@@ -1378,9 +1378,9 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  HTTP request.
      */
     protected static class HttpRequestItems {
-	/** The body of the request. Only strings are supported for now. */
-	public String body;
-	
+        /** The body of the request. Only strings are supported for now. */
+        public String body;
+        
         /** Cookies associated with the request. */
         public RecordToken cookies;
 
@@ -1407,9 +1407,9 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  HTTP response.
      */
     protected static class HttpResponseItems {
-	/** The content type of the response. This defaults to "text/html". */
-	public String contentType;
-	
+        /** The content type of the response. This defaults to "text/html". */
+        public String contentType;
+        
         /** All cookies from the setCookies port plus the Cookies from the
          *  HttpRequest.  Values provided on the setCookies port override values
          *  from the HttpRequest for cookies with the same name.  (I.e., the model

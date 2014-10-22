@@ -253,7 +253,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 _debug("Requesting a refiring at: " + _nextOutputTime);
             }
         } else if (_debugging) {
-        	_debug("Next output time is infinite, so not calling fireAt().");
+                _debug("Next output time is infinite, so not calling fireAt().");
         }
         return super.postfire();
     }

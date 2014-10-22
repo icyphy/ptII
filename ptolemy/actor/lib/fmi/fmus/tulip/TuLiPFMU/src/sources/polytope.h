@@ -11,11 +11,11 @@
  * the entries of A is assumed to be arranged as[A11,A21,...,Ak1,A12,...,Ak2,...,A1l,...,Akl]
  * */
 typedef struct Polytope {
-	idxint k;
-	idxint l;
-	pfloat *A;
-	pfloat *b;
-	pfloat *center;
+        idxint k;
+        idxint l;
+        pfloat *A;
+        pfloat *b;
+        pfloat *center;
 } Polytope;
 
 void display_polytope(Polytope* p);

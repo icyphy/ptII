@@ -2339,7 +2339,7 @@ public class Query extends JPanel {
             }
             
             if (_filter != null) {
-        	fileDialog.setFilenameFilter(_filter);
+                fileDialog.setFilenameFilter(_filter);
             }
 
             fileDialog.show();

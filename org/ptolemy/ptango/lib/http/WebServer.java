@@ -413,7 +413,7 @@ public class WebServer extends AbstractInitializableAttribute {
         }
         @SuppressWarnings("unchecked")
         List<Entity<Port>> entities = ((CompositeEntity) container)
-        	.allAtomicEntityList();
+                .allAtomicEntityList();
         for (Entity<Port> entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
@@ -535,8 +535,8 @@ public class WebServer extends AbstractInitializableAttribute {
 
         try {
             int actualPort = 
-            		_serverManager.register(_appInfo, preferredPortValue, 
-            		_dynamicPortSelection);
+                            _serverManager.register(_appInfo, preferredPortValue, 
+                            _dynamicPortSelection);
             if (actualPort != -1) {
                 deployedPort.setExpression(Integer.toString(actualPort));
                 deployedPort.validate();

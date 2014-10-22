@@ -1117,14 +1117,14 @@ public class Manager extends NamedObj implements Runnable {
         // OK, then we need to initialize this actor.  However, we
         // don't need to initialize any actors contained by this
         // actor.
-    	if (actor instanceof CompositeEntity) {
-    		List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
-    		for (Actor otherActor : list) {
-    			if (((CompositeEntity)actor).deepContains((NamedObj)otherActor)) {
-        			_actorsToInitialize.remove(otherActor);    				
-    			}
-    		}
-    	}
+            if (actor instanceof CompositeEntity) {
+                    List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
+                    for (Actor otherActor : list) {
+                            if (((CompositeEntity)actor).deepContains((NamedObj)otherActor)) {
+                                _actorsToInitialize.remove(otherActor);                                    
+                            }
+                    }
+            }
 
         // Lastly, add this actor to the actors to initialize.
         _actorsToInitialize.add(actor);

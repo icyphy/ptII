@@ -185,7 +185,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                     
         if (!(exception instanceof KernelException)) {
             statusMessage.setExpression("Cannot analyze: Not a " +
-            		"KernelException or subclass");
+                            "KernelException or subclass");
             try { 
                 statusMessage.validate();
             } catch(IllegalActionException e) {

@@ -459,13 +459,13 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      *  if any of the contained actors throw it.
      */
     public boolean postfire() throws IllegalActionException {
-    	CompositeEntity container = (CompositeEntity)getContainer();
-    	@SuppressWarnings("unchecked")
-		List<Actor> actors = container.deepEntityList();
-    	for (Actor actor : actors) {
-    		actor.postfire();
-    	}
-    	return super.postfire();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            @SuppressWarnings("unchecked")
+                List<Actor> actors = container.deepEntityList();
+            for (Actor actor : actors) {
+                    actor.postfire();
+            }
+            return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////

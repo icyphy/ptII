@@ -17,7 +17,7 @@ void init_input_bound(void){
 };
 
 void free_input_bound(void){
-		FREE(input_bound);
+                FREE(input_bound);
 };
 pfloat x0[] = {1.5,1.5,};
 idxint dRegion0 = 18;

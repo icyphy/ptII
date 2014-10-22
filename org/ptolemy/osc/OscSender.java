@@ -228,7 +228,7 @@ public class OscSender extends TypedAtomicActor {
                 m.add((String)o);
             } else {
                 throw new IllegalActionException("Invalid OSC input. " +
-                		"Currently this OSC Client  Integer, String and Double types");
+                                "Currently this OSC Client  Integer, String and Double types");
             }
             bundle.add(m); 
         }

@@ -247,9 +247,9 @@ public class DocAttribute extends SingletonAttribute {
                 String name = attribute.getName() + modifier;
                 if (getAttribute(name) == null) {
                     try {
-                    	// FIXME: Using a StringParameter here is a really poor choice.
-                    	// It will try to parse anything with a dollar sign.
-                    	// But fixing this in a backward compatible way appears to be hard.
+                            // FIXME: Using a StringParameter here is a really poor choice.
+                            // It will try to parse anything with a dollar sign.
+                            // But fixing this in a backward compatible way appears to be hard.
                         new StringParameter(this, name);
                     } catch (KernelException e) {
                         throw new InternalErrorException(e);

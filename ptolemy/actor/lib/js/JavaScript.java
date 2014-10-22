@@ -733,7 +733,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
-	return null;
+        return null;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -906,10 +906,10 @@ public class JavaScript extends TypedAtomicActor {
          *  @return The buffered inputs.
          */
         public Object get(NativeJavaObject portWrapper, Double channel) {
-        	if (portWrapper == null) {
+                if (portWrapper == null) {
                 throw new InternalErrorException(JavaScript.this, null,
                         "Invalid (null) port argument to get(port, channel).");
-        	}
+                }
             // In JavaScript, all numbers are doubles. So we have to convert
             // to an integer.
             int channelNumber = 0;
@@ -1240,9 +1240,9 @@ public class JavaScript extends TypedAtomicActor {
 
             HttpResponse response = request.execute();
             if (!response.isSuccessful()) {
-            	throw new IOException("Failed to read URL: " + url +
-            			"\nResponse code: " + response.getResponseCode() +
-            			"\nResponse message: " + response.getResponseMessage());
+                    throw new IOException("Failed to read URL: " + url +
+                                    "\nResponse code: " + response.getResponseCode() +
+                                    "\nResponse message: " + response.getResponseMessage());
             }
             return response.getBody();
         }
@@ -1280,7 +1280,7 @@ public class JavaScript extends TypedAtomicActor {
 
             if (portWrapper == null) {
                 throw new InternalErrorException(JavaScript.this, null,
-                	"Send failed. Port argument is null.");
+                        "Send failed. Port argument is null.");
             }
             Object unwrappedPort = portWrapper.unwrap();
             // The port reference will be a PortProxy in restricted mode, and a port otherwise.

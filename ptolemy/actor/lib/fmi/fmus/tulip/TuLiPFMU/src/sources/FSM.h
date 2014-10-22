@@ -5,7 +5,7 @@
 #include "mealydata.h"
 
 typedef struct FSM {
-	int currentState;
+        int currentState;
 } FSM;
 
 FSM* init_fsm();
