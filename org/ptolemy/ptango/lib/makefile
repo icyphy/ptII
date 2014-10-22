@@ -88,6 +88,7 @@ OPTIONAL_FILES = \
 	manifest.tmp \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
+	websocket \
 	'HTMLModelExporter$$1.class' \
 	'HttpActor$$ActorServlet.class' \
 	'HttpRequest$$Method.class' \

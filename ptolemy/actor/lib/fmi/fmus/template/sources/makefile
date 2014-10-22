@@ -58,7 +58,9 @@ OTHER_FILES_TO_BE_JARED = \
 	build_fmu \
 	build_fmu.bat \
 	fmu.mk \
-	fmuTemplate.c
+	fmuTemplate.c \
+	fmuTemplate_fmiv20.c \
+	fmuTemplate_fmiv20.h
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 

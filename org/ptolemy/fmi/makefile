@@ -102,6 +102,8 @@ OPTIONAL_FILES = \
 	'FMILibrary$$FMIStatus.class' \
 	'FMILibrary$$FMIStatusKind.class' \
 	'FMILibrary$$FMIStepFinished.class' \
+	'FMI20ModelInstance$$ByReference.class' \
+	'FMI20ModelInstance$$ByValue.class' \
 	'FMIScalarVariable$$Alias.class' \
 	'FMIScalarVariable$$Causality.class' \
 	'FMIScalarVariable$$Variability.class' \

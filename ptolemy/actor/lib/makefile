@@ -413,6 +413,7 @@ OPTIONAL_FILES = \
 	mail \
 	opencv \
 	reactable \
+	vertx \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
 	'AbsoluteValue$$TypeOfAbsoluteValue.class' \

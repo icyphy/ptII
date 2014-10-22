@@ -59,7 +59,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	fmi2FunctionTypes.h \
 	fmi2Functions.h \
-	fmi2TypesPlatform.h
+	fmi2TypesPlatform.h \
+	fmuName.c
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 

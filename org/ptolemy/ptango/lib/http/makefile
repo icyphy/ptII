@@ -64,6 +64,7 @@ JSRCS = \
 	WebServerUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
+	HttpRequestHandlerIcon.xml \
 	WebServerIcon.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.

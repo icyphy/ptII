@@ -34,7 +34,7 @@ ME =		ptolemy/actor/lib/qm/demo/AFDX
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 

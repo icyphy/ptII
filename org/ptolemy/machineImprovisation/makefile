@@ -79,9 +79,9 @@ MISC_FILES =	#doc test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	'FactorOracle$ChordFunction.class' \
-	'FactorOracle$ChordFunction$ChordFunctionToken.class' \
-	'FactorOracle$ChordFunctionToken.class' 
+	'FactorOracle$$ChordFunction.class' \
+	'FactorOracle$$ChordFunction$$ChordFunctionToken.class' \
+	'FactorOracle$$ChordFunctionToken.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -1,10 +1,9 @@
-# Makefile for Ptolemy II actor.lib.net Datagram demo 
-#
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# Makefile for TerraSwarm c4po demo
 #
 # @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 1998-2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,56 +27,52 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/domains/de/demo/Bus
+# Root of Ptolemy II directory
+ROOT = ../../../..
 
-DIRS =
+DIRS = 
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+# $(ME) is used in ptdir.mk
+ME = org/terraswarm/demo/c4po
 
 CLASSPATH =	$(ROOT)
 
+# True source directory
+VPATH =	$(ROOT)/$(ME)
+
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	Bus
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = StockTick
+PTCLASSJAR = $(PTPACKAGE).jar
 
-# Keep this list alphabetized.
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	Bus.xml \
-	2Bus.xml \
-	BusConfigureParamsContinuous.xml \
-	BusConfigureParamsDE.xml
+	BluetoothDistance.xml \
+	BluetoothMOML.xml \
+	c4po.xml
 
-
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	$(DIRS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demos, run 'make demo'"
-
 install: jclass jars
-
-demo:
-	vergil Bus.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

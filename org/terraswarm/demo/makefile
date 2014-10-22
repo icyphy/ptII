@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../..
 
-DIRS = StockTick
+DIRS = c4po StockTick
 
 # $(ME) is used in ptdir.mk
 ME = org/terraswarm/kernel/demo
@@ -48,7 +48,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = demo
-PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	c4po/c4po.jar \
+	StockTick/StockTick.jar
 
 JSRCS = 
 
