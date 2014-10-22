@@ -120,7 +120,7 @@ public class ImportAccessorAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /** Import an accessor.
      *  @param event The Action Event.

@@ -167,7 +167,7 @@ public class OscSender extends TypedAtomicActor {
         // collect tokens and generate OSC Messages
 
         HashMap<String, Object> tokensToBeTransmitted = new HashMap<String,Object>();
-        for(TypedIOPort port : this.inputPortList()) {
+        for (TypedIOPort port : this.inputPortList()) {
             if (!(port instanceof ParameterPort) &&
                     port.isInput() && port.hasToken(0)) {
                 Token t = port.get(0);

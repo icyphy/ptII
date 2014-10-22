@@ -105,8 +105,8 @@ public class ParticleFilterRange extends ParticleFilter {
      *
      * @param container  a CompositeEntity object
      * @param name       a String ...
-     * @throws NameDuplicationException ...
-     * @throws IllegalActionException ...
+     * @exception NameDuplicationException ...
+     * @exception IllegalActionException ...
      */
     public ParticleFilterRange(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -118,8 +118,8 @@ public class ParticleFilterRange extends ParticleFilter {
      * Constructs a ParticleFilterRange object.
      *
      * @param workspace  a Workspace object
-     * @throws IllegalActionException ...
-     * @throws NameDuplicationException ...
+     * @exception IllegalActionException ...
+     * @exception NameDuplicationException ...
      */
     public ParticleFilterRange(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -149,8 +149,8 @@ public class ParticleFilterRange extends ParticleFilter {
 
     /**
      * Initialize particle filter parameters.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _init() throws IllegalActionException,
     NameDuplicationException {

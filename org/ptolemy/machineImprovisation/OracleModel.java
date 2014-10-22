@@ -65,8 +65,8 @@ public class OracleModel extends ModalRefinement{
      * @param repetitionFactor  a double indicating repetition factor on forward links
      * @param pitch             a boolean -- true if pitch oracle
      * @param validate          a boolean -- true if pitch validation is enabled
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public OracleModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -86,7 +86,7 @@ public class OracleModel extends ModalRefinement{
     /**
     * Specifies the controller value.
     */
-    public void setController( FactorOracle f){
+    public void setController( FactorOracle f) {
         _controller = f;
     }
 
@@ -102,8 +102,8 @@ public class OracleModel extends ModalRefinement{
      * @param pitch
      * @param validate
      * @return
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     protected FactorOracle _createController(Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
             throws IllegalActionException, NameDuplicationException {

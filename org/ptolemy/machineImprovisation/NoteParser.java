@@ -66,8 +66,8 @@ public class NoteParser extends TypedAtomicActor {
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public NoteParser(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -213,7 +213,7 @@ public class NoteParser extends TypedAtomicActor {
             keysSoFar.addAll(_orderedNotes.keySet());
             Collections.sort(keysSoFar);
             Iterator iter = keysSoFar.iterator();
-            while(iter.hasNext()){
+            while (iter.hasNext()) {
                 notes.send(0, new ObjectToken((Note)_orderedNotes.get(iter.next())));
             }
             _orderedNotes.clear();
@@ -225,7 +225,7 @@ public class NoteParser extends TypedAtomicActor {
 
             bars.send(0, new DoubleToken(_nBeats));
             _nBeats = 0;
-            if(_replicationProbability <= 0){
+            if (_replicationProbability <= 0) {
                 _replicationProbability= 0.1;
             }
             replicationProbability.send(0, new DoubleToken(_replicationProbability));

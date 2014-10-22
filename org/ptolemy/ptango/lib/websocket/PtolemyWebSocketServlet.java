@@ -84,7 +84,7 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     }
 
     /** Clear the list of endpoints. Called by the WebServer in initialize(). */
-    public void clearEndpoints(){
+    public void clearEndpoints() {
         _webSocketEndpoints.clear();
     }
 
@@ -108,11 +108,11 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
     public void onMessage(WebSocketEndpoint sender, String message) {
 
         // Broadcast message to actors associated with this servlet path
-        for (WebSocketEndpoint recipient : _webSocketEndpoints){
+        for (WebSocketEndpoint recipient : _webSocketEndpoints) {
             if (recipient != sender && recipient.getConnection() != null) {
                 try {
                  recipient.getConnection().sendMessage(message);
-                } catch(IOException e){
+                } catch (IOException e) {
                     //TODO:  What to do here?
                 }
             }

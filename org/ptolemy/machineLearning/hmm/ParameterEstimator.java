@@ -307,7 +307,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * Expectation-Maximization, which internally executes a gradient-descent algorithm
      * for parameter estimation.
      * @return whether parameter estimation has succeded
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected boolean _EMParameterEstimation() throws IllegalActionException {
 
@@ -345,7 +345,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     /**
      * Initialize arrays to be used in parameter estimation
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _initializeArrays() throws IllegalActionException {
 
@@ -372,7 +372,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * Check whether the gradient-descent algorithm has converged
      * @param i Current iteration index
      * @return boolean indicating whether algorithm has converged
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract boolean _checkForConvergence(int i) throws IllegalActionException;
 

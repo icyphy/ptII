@@ -762,7 +762,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // See https://projects.ecoinformatics.org/ecoinfo/issues/6587: summarize missing actors
         if (_missingClasses != null) {
             StringBuffer warning = new StringBuffer();
-            for(String missingClass : _missingClasses) {
+            for (String missingClass : _missingClasses) {
                 warning.append(missingClass + ", ");
             }
             // Get rid of the trailing comma and space.

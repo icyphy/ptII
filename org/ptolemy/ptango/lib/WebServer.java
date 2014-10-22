@@ -592,14 +592,14 @@ public class WebServer extends AbstractInitializableAttribute {
             // Open all local web sockets
             // Prepend ws://localhost:port to URI
 
-            for (WebSocketReader reader : readers){
+            for (WebSocketReader reader : readers) {
                 // TODO:  Allow secure websockets, with wss://
                 URI path = URI.create("ws://localhost:" + actualPort +
                         reader.getRelativePath().toString());
                 reader.open(path);
             }
 
-            for (WebSocketWriter writer : writers){
+            for (WebSocketWriter writer : writers) {
                 // TODO:  Allow secure websockets, with wss://
                 URI path = URI.create("ws://localhost:" + actualPort +
                         writer.getRelativePath().toString());

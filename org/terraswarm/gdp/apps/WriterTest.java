@@ -214,7 +214,7 @@ public class WriterTest {
            String line;
            // 200 is a magic number from writer-test and seems wrong.
            final int bufferLength = 200;
-           while((line = bufferedReader.readLine())!=null){
+           while ((line = bufferedReader.readLine())!=null) {
                 System.out.println("Got input \"" +  line + "\"");
 
                 // FIXME: gdp/gdp_buf.h has

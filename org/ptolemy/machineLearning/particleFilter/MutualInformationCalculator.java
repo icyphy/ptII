@@ -79,8 +79,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
      *
      * @param container  a CompositeEntity object
      * @param name       entity name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public MutualInformationCalculator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -92,8 +92,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
      * Constructs a MutualInformationCalculator object.
      *
      * @param workspace The workspace
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public MutualInformationCalculator(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {

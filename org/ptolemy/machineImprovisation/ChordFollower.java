@@ -253,13 +253,13 @@ public class ChordFollower extends TypedAtomicActor {
                 _durations.add(nextDurationValue);
             }
             // handling triplets
-            if (Math.abs(nextDurationValue - 0.33) < 0.1){
+            if (Math.abs(nextDurationValue - 0.33) < 0.1) {
                 _durations.add(nextDurationValue);
                 _durations.add(nextDurationValue);
             }
         }
     }
-    public void wrapup(){
+    public void wrapup() {
         _allChords.clear();
         _currentBeatCursor = 0.0;
         _barProgress = 0.0;

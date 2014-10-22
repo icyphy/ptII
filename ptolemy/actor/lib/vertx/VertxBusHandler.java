@@ -67,8 +67,8 @@ public class VertxBusHandler extends TypedAtomicActor {
      * name. The object is added to the workspace directory. Increment the
      * version number of the workspace.
      *
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public VertxBusHandler() throws IllegalActionException,
             NameDuplicationException {
@@ -83,8 +83,8 @@ public class VertxBusHandler extends TypedAtomicActor {
      *
      * @param workspace
      *            The workspace that will list the entity.
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public VertxBusHandler(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
@@ -195,8 +195,8 @@ public class VertxBusHandler extends TypedAtomicActor {
     }
 
     /** Initialize ports and parameters.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {

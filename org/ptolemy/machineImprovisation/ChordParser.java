@@ -173,7 +173,7 @@ public class ChordParser extends TypedAtomicActor {
             keysSoFar.addAll(_orderedChords.keySet());
             Collections.sort(keysSoFar);
             Iterator iter = keysSoFar.iterator();
-            while(iter.hasNext()){
+            while (iter.hasNext()) {
                 chords.send(0, new ObjectToken(_orderedChords.get(iter.next())));
             }
             _orderedChords.clear();

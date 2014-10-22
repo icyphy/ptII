@@ -60,7 +60,7 @@ public class HttpPut extends HttpSink {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
     protected Method getMethod() {
         return Method.PUT;
     }

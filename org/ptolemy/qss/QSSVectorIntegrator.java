@@ -86,7 +86,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
     public Parameter quantum;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** If it is time to produce a quantized output, produce it.
      *  Otherwise, indicate that the output is absent.

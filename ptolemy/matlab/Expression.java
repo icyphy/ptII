@@ -404,7 +404,7 @@ public class Expression extends TypedAtomicActor {
 
             synchronized (Engine.semaphore) {
 
-                if(clearEnvironmentValue) {
+                if (clearEnvironmentValue) {
                     // The following clears variables, but preserves any
                     // persistent storage created by a function (this usually
                     // for speed-up purposes to avoid recalculation on every

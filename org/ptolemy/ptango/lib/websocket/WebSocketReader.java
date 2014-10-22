@@ -130,7 +130,7 @@ public class WebSocketReader extends TypedAtomicActor
                         _URIpath = URI.create(pathValue);
                         _isLocal = false;
                     }
-                    else if(!pathValue.trim().startsWith("/")) {
+                    else if (!pathValue.trim().startsWith("/")) {
                         _URIpath = URI.create("/" + pathValue);
                         _isLocal = true;
                     } else {
@@ -256,7 +256,7 @@ public class WebSocketReader extends TypedAtomicActor
         // but a past time for the top-level model).
         try {
             getDirector().fireAt(WebSocketReader.this, timeOfRequest);
-        } catch (IllegalActionException e){
+        } catch (IllegalActionException e) {
             // Can't throw an exception from the onMessage() method
             if (_debugging) {
                 _debug("**** Firing denied for time " + timeOfRequest);

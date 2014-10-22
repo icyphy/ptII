@@ -455,7 +455,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     }
 
     /** Postfire all contained actors.
-     * @throws IllegalActionException If the superclass throws it, or
+     * @exception IllegalActionException If the superclass throws it, or
      *  if any of the contained actors throw it.
      */
     public boolean postfire() throws IllegalActionException {
@@ -677,7 +677,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          * @param f Value of residual function to be tested.
          * @return true if convergence is achieved, false otherwise.
          */
-        protected boolean _didConverge(final double[] f){
+        protected boolean _didConverge(final double[] f) {
             for (int i = 0; i < f.length; i++) {
                 final double diff = Math.abs(f[i]);
                 if (diff > Math.max(_tolerance[i], diff * _tolerance[i])) {
@@ -768,7 +768,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // Evaluate the loop function and store the residual in _f.
                 _residual(xNew, _f);
-                if(_debugging){
+                if (_debugging) {
                     _debug("Newton obtained residual " + DoubleArrayMath.toString(_f));
                 }
                 // Check for convergence.
@@ -1066,7 +1066,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Set x1 to zero. The initial value xIni will be taken into account
             // when the loop function is evaluated.
-            for(int i = 0; i < _n1; i++){
+            for (int i = 0; i < _n1; i++) {
                x1[i] = 0.0;
             }
 
@@ -1174,7 +1174,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                     if (succ) {
                         // Copy the solution vector to the function argument.
-                        for(int i = 0; i < _nVars; i++){
+                        for (int i = 0; i < _nVars; i++) {
                             xIni[i] = x1[i]+_xIni[i];
                         }
                         // Stop the curve tracing.
@@ -1202,7 +1202,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // size in all n1 coordinates. Our implementation uses h*_deltaX[i] for i = 0, ..., n1-2,
             // and h for i = n1-1. This is done to take the scaling of the variable into account.
             final double[] hNewton = new double[_n1];
-            for (int i = 0; i < _nVars; i++){
+            for (int i = 0; i < _nVars; i++) {
                 hNewton[i] = h*_deltaX[i];
             }
             hNewton[_nVars] = h;
@@ -1242,7 +1242,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Add transformation of x that takes into account the initial value,
             // as the implementaiton of Allgower and Georg uses _xIni=0.
-            for(int i = 0; i < _nVars; i++){
+            for (int i = 0; i < _nVars; i++) {
                 y[i] = x[i]+_xIni[i];
             }
             _evaluateLoopFunction(y, g);
@@ -1253,7 +1253,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // and multiply the difference with the homotopy factor that is stored in x[_nVars].
                 y[i] -= x[_nVars] * (g[i]-_xIni[i]);
             }
-            if (_debugging){
+            if (_debugging) {
                _debug("Obtained y = " + DoubleArrayMath.toString(y) + "\n" +
                       "with lambda = " + x[_nVars]);
             }
@@ -1371,7 +1371,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             double[] pv = new double[_nVars];
             double[] p = new double[_nVars];
-            if (_debugging){
+            if (_debugging) {
                _debug("Entered _newton.");
             }
             _test = true;
@@ -1389,7 +1389,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             }
             final double d1 = _l2norm(w);
             if (d1 > _dmax) {
-                if (_debugging){
+                if (_debugging) {
                     _debug("Failed test on d1: " + d1 + " > " + _dmax);
                 }
                 _test = false;
@@ -1420,7 +1420,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // Compute contraction
             final double contr = d3 / (d1 + _dmin);
             if (contr > _ctmax) {
-                if (_debugging){
+                if (_debugging) {
                     _debug("Failed contraction test 'contr > ctmax' as " + contr + " > " + _ctmax);
                 }
                 _test = false;

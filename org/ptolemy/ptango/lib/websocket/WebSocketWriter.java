@@ -134,7 +134,7 @@ public class WebSocketWriter extends TypedAtomicActor
                         _URIpath = URI.create(pathValue);
                         _isLocal = false;
                     }
-                    else if(!pathValue.trim().startsWith("/")) {
+                    else if (!pathValue.trim().startsWith("/")) {
                         _URIpath = URI.create("/" + pathValue);
                         _isLocal = true;
                     } else {
@@ -197,7 +197,7 @@ public class WebSocketWriter extends TypedAtomicActor
                 synchronized(_connectionMonitor) {
                     try {
                         _connectionMonitor.wait(_connectionTimeout);
-                    } catch(InterruptedException e) {
+                    } catch (InterruptedException e) {
                       throw new IllegalActionException(this, "Cannot establish "
                               + "a websocket connection to write to.");
                     }
@@ -213,7 +213,7 @@ public class WebSocketWriter extends TypedAtomicActor
             if (_connection != null) {
                 try {
                     _connection.sendMessage(message);
-                } catch(IOException e) {
+                } catch (IOException e) {
                     throw new IllegalActionException(this, "Can't write to "
                             + "WebSocket");
                 }

@@ -60,7 +60,7 @@ public class PtolemyWebSocketClientFactory {
 
         /** Create a new WebSocket client.
          * @return A new WebSocketClient.
-         * @throws Exception If the WebSocketClientFactory cannot be started.
+         * @exception Exception If the WebSocketClientFactory cannot be started.
          */
         public WebSocketClient newWebSocketClient()
                 throws Exception {
@@ -74,7 +74,7 @@ public class PtolemyWebSocketClientFactory {
         /** Create a new WebSocket client that can be shared among other
          * WebSocketServices affiliated with this path.
          * @return A new WebSocketClient.
-         * @throws Exception If the WebSocketClientFactory cannot be started.
+         * @exception Exception If the WebSocketClientFactory cannot be started.
          */
         public WebSocketClient newSharedWebSocketClient(URI path)
                 throws Exception {
@@ -82,7 +82,7 @@ public class PtolemyWebSocketClientFactory {
                 _webSocketClientFactory.start();
             }
 
-            if(_sharedClients.containsKey(path)) {
+            if (_sharedClients.containsKey(path)) {
                 return _sharedClients.get(path);
             } else {
                 WebSocketClient client

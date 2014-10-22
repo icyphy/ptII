@@ -68,7 +68,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ExceptionEmailer
 
 /**
@@ -215,7 +215,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
     public StringParameter to;
 
     ///////////////////////////////////////////////////////////////////
-    ////              public methods                               ////
+    ////                         public methods                    ////
 
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  In this class,
@@ -284,11 +284,11 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         try {
             enableSSLValue =
                     ((BooleanToken) enableSSL.getToken()).booleanValue();
-        } catch(IllegalActionException e){
+        } catch (IllegalActionException e) {
             statusMessage.setExpression("Failed to enable SSL");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e2) {
+            } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -340,7 +340,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             statusMessage.setExpression("Failed to read password file.");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -348,12 +348,12 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             if (passwordFile != null) {
                 try {
                     passwordFile.close();
-                } catch(IllegalActionException e){
+                } catch (IllegalActionException e) {
                    statusMessage.setExpression("Failed to close password "
                                    + "file.");
                    try {
                        statusMessage.validate();
-                   } catch(IllegalActionException e2) {
+                   } catch (IllegalActionException e2) {
                        // Should not happen since expression is legal
                    };
                    return false;
@@ -426,12 +426,12 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         try {
             reallySendMailValue =
                     ((BooleanToken) reallySendMail.getToken()).booleanValue();
-        } catch(IllegalActionException e){
+        } catch (IllegalActionException e) {
             statusMessage.setExpression("Failed to read reallySendMail "
                             + "parameter.");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e2) {
+            } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -445,7 +445,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             statusMessage.setExpression(message);
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
             };
             return true;
@@ -505,7 +505,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 statusMessage.setExpression("Error: No recipient specified.");
                 try {
                     statusMessage.validate();
-                } catch(IllegalActionException e) {
+                } catch (IllegalActionException e) {
                     // Should not happen since expression is legal
                 };
                 return false;
@@ -519,7 +519,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             statusMessage.setExpression("Message failed.");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e2) {
+            } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -530,7 +530,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////              private variables                            ////
+    ////                         private variables                 ////
 
     /** The end of line character. */
     private Parameter _newline;

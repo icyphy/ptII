@@ -336,7 +336,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
              _initialized = false;
          }
 
-          if (policyValue.equals(CatchExceptionAttribute.RESTART)){
+          if (policyValue.equals(CatchExceptionAttribute.RESTART)) {
              // Restarts the model in a new thread
 
              // Check if the model made it through initialize().  If not, return

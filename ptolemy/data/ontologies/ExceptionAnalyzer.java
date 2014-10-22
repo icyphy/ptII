@@ -156,7 +156,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
         while (iterator.hasNext()) {
             object = iterator.next();
             if (object instanceof LatticeOntologySolver &&
-                   ((NamedObj) object).getName().equals("ErrorOntologySolver")){
+                   ((NamedObj) object).getName().equals("ErrorOntologySolver")) {
                 solver = (LatticeOntologySolver) object;
             }
         }
@@ -169,7 +169,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                     + "found");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -188,7 +188,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                             "KernelException or subclass");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -207,7 +207,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                 + "identified");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -216,7 +216,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
         if (nameable1 != null) {
             // Return false from this method if _annoateActor encounters
             // a problem
-            if (!_annotateActor(nameable1)){
+            if (!_annotateActor(nameable1)) {
                 return false;
             }
         }
@@ -224,7 +224,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
         if (nameable2 != null) {
             // Return false from this method if _annoateActor encounters
             // a problem
-            if (!_annotateActor(nameable2)){
+            if (!_annotateActor(nameable2)) {
                 return false;
             }
         }
@@ -232,11 +232,11 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
         // Invoke the solver
         try {
             solver.invokeSolver();
-        }catch(IllegalActionException e){
+        } catch (IllegalActionException e) {
             statusMessage.setExpression("Failed to invoke solver.");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e2) {
+            } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -269,7 +269,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                     + nameable.getName() + " is not an actor");
             try {
                 statusMessage.validate();
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
             };
             return false;
@@ -307,7 +307,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                     attribute.setExpression(constraintText + "." +
                             port.getName() + ">= Error");
                     _annotations.add(attribute);
-                } catch(NameDuplicationException e) {
+                } catch (NameDuplicationException e) {
                     // If one exists already, assume the previous one
                     // can be overwritten.  This can occur if the model
                     // is saved after an exception is caught.
@@ -328,7 +328,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                                     + "." + port.getName());
                             try {
                                 statusMessage.validate();
-                            } catch(IllegalActionException e3) {
+                            } catch (IllegalActionException e3) {
                                 // Should not happen since expression is legal
                             };
                                     return false;
@@ -340,7 +340,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                                + port.getName());
                        try {
                            statusMessage.validate();
-                       } catch(IllegalActionException e2) {
+                       } catch (IllegalActionException e2) {
                            // Should not happen since expression is legal
                        };
                        return false;
@@ -349,7 +349,7 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                     statusMessage.setExpression("Cannot create annotations.");
                     try {
                         statusMessage.validate();
-                    } catch(IllegalActionException e2) {
+                    } catch (IllegalActionException e2) {
                         // Should not happen since expression is legal
                     };
                     return false;

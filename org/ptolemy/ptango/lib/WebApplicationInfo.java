@@ -62,7 +62,7 @@ public class WebApplicationInfo {
      * @param applicationPath  The base path for the application
      * @param temporaryFileLocation  The directory where temporary files are
      * stored
-     * @throws Exception If the model does not yet have a name (for example,
+     * @exception Exception If the model does not yet have a name (for example,
      *  a new unsaved model)
      */
     public WebApplicationInfo(String modelName, String applicationPath,
@@ -196,9 +196,9 @@ public class WebApplicationInfo {
     public void addResourceInfo(URI path, Set<Resource> resourceLocations)
             throws Exception {
 
-        if (path == null || path.toString().isEmpty()){
+        if (path == null || path.toString().isEmpty()) {
             throw new Exception("Resource path cannot be empty");
-        } else if (resourceLocations == null || resourceLocations.isEmpty()){
+        } else if (resourceLocations == null || resourceLocations.isEmpty()) {
             throw new Exception("At least one resource location must be given");
         } else if (_servletInfo.containsKey(path) ||
                 _websocketInfo.containsKey(path)) {

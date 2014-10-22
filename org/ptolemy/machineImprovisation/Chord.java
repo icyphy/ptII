@@ -68,7 +68,7 @@ public class Chord {
     /**
      * Construct an empty Chord with no chord tones.
      */
-    public Chord(){
+    public Chord() {
         _chordTones = new HashSet<Note>();
     }
     /**
@@ -102,7 +102,7 @@ public class Chord {
     /**
      * Set the notes contained by this chord by a dictionary lookup.
      * @param chord The chord name
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void setChordTones() throws IllegalActionException{
 
@@ -110,8 +110,8 @@ public class Chord {
             throw new IllegalActionException("Chord name is undefined.");
         } else {
             List<String> chordNotes = MusicSpecs.getChordPitches(this._name, true);
-            if(chordNotes != null){
-                for( int i = 0; i< chordNotes.size(); i++){
+            if (chordNotes != null) {
+                for ( int i = 0; i< chordNotes.size(); i++) {
                     _chordTones.add( new Note((String)chordNotes.get(i)));
                 }
             }
@@ -122,11 +122,11 @@ public class Chord {
      * Set the notes contained by this chord, by name reference.
      * @param chord The chord name
      */
-    public void setChordTones(String chord){
+    public void setChordTones(String chord) {
 
         List<String> chordNotes = MusicSpecs.getChordPitches(chord, true);
-        if(chordNotes != null){
-            for( int i = 0; i< chordNotes.size(); i++){
+        if (chordNotes != null) {
+            for ( int i = 0; i< chordNotes.size(); i++) {
                 _chordTones.add( new Note((String)chordNotes.get(i)));
             }
         }

@@ -59,8 +59,8 @@ public class FactorOracleTop extends ModalModel {
      * Constructs a FactorOracleTop object.
      *
      * @param workspace  The workspace
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public FactorOracleTop(Workspace workspace) throws IllegalActionException,
     NameDuplicationException {
@@ -92,8 +92,8 @@ public class FactorOracleTop extends ModalModel {
      * @param repetitionFactor  a double indicating the repetition factor on the forward links.
      * @param pitch             a boolean -- true if music pitch specifications are being used.
      * @param validate          a boolean -- true if pitches are subject to validation.
-     * @throws NameDuplicationException ...
-     * @throws IllegalActionException ...
+     * @exception NameDuplicationException ...
+     * @exception IllegalActionException ...
      */
     public FactorOracleTop(CompositeEntity container,
             String name,
@@ -114,8 +114,8 @@ public class FactorOracleTop extends ModalModel {
      * @param repetitionFactor  a double indicating the repetition factor on the forward links.
      * @param pitch             a boolean -- true if music pitch specifications are being used.
      * @param validate          a boolean -- true if pitches are subject to validation.
-     * @throws NameDuplicationException ...
-     * @throws IllegalActionException ...
+     * @exception NameDuplicationException ...
+     * @exception IllegalActionException ...
      */
     public FactorOracleTop(Workspace workspace,
             Object[] trainingSequence,
@@ -132,7 +132,7 @@ public class FactorOracleTop extends ModalModel {
      * Specify the controller.
      * @param f The controller
      */
-    public void setController(FactorOracle f){
+    public void setController(FactorOracle f) {
         _controller = f;
     }
 
@@ -150,9 +150,9 @@ public class FactorOracleTop extends ModalModel {
      * @param pitch boolean indicating a pitch oracle
      * @param validate boolean indicating whether the pitches should be validated
      * @return A controller to be used in the top level hierarchical FO
-     * @throws IllegalActionException If the modal model is
+     * @exception IllegalActionException If the modal model is
      *   incompatible with the controller.
-     * @throws NameDuplicationException If the name of the controller
+     * @exception NameDuplicationException If the name of the controller
      *   collides with a name already in the container.
      */
     protected FactorOracle _createController(Object[] trainingSequence,

@@ -415,7 +415,7 @@ public class WebServerUtilities {
      *  collection of handlers for this web server.
      *
      *  @param appInfo Information about the web application.
-     *  @throws Exception If the servlet cannot be started on the server
+     *  @exception Exception If the servlet cannot be started on the server
      */
     protected void _createServletHandler(WebApplicationInfo appInfo)
             throws Exception {
@@ -441,7 +441,7 @@ public class WebServerUtilities {
         // TODO:  Determine if connection is local of remote based on URL
         // Need to pass the client to reader and writer??
 
-        for (URI path : appInfo.getWebSocketInfo().keySet()){
+        for (URI path : appInfo.getWebSocketInfo().keySet()) {
             PtolemyWebSocketServlet servlet = new PtolemyWebSocketServlet();
             servletHandler.addServlet(new ServletHolder(
                     servlet), path.toString());
@@ -465,7 +465,7 @@ public class WebServerUtilities {
      *
      *  @param appInfo An object containing information needed to register the
      *   new application
-     *  @throws Exception If a FileParameter is found that is not a valid URI or
+     *  @exception Exception If a FileParameter is found that is not a valid URI or
      *  references a resource that cannot be found, or if the handler cannot
      *  be started on the server
      */

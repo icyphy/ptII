@@ -403,7 +403,7 @@ public class WebServerUtilities {
      *  collection of handlers for this web server.
      *
      *  @param appInfo Information about the web application.
-     *  @throws Exception If the servlet cannot be started on the server
+     *  @exception Exception If the servlet cannot be started on the server
      */
     protected void _createServletHandler(WebApplicationInfo appInfo)
             throws Exception {
@@ -437,7 +437,7 @@ public class WebServerUtilities {
      *
      *  @param appInfo An object containing information needed to register the
      *   new application
-     *  @throws Exception If a FileParameter is found that is not a valid URI or
+     *  @exception Exception If a FileParameter is found that is not a valid URI or
      *  references a resource that cannot be found, or if the handler cannot
      *  be started on the server
      */

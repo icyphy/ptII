@@ -42,7 +42,7 @@ public class Note{
      *
      * @param name  Note name
      */
-    public Note(String name){
+    public Note(String name) {
         this._name = name;
         this._noteValue = 0.0;
     }
@@ -52,7 +52,7 @@ public class Note{
      * @param name      Note name
      * @param duration  Note duration
      */
-    public Note(String name, double duration){
+    public Note(String name, double duration) {
         this._name = name;
         this._noteValue = duration;
     }
@@ -61,7 +61,7 @@ public class Note{
      * Returns the note duration
      * @return a double indicating the note duration
      */
-    public double getDuration(){
+    public double getDuration() {
         return this._noteValue;
     }
 
@@ -69,7 +69,7 @@ public class Note{
      * Returns the name of Note object
      * @return the name
      */
-    public String getName(){
+    public String getName() {
         return this._name;
     }
 
@@ -77,7 +77,7 @@ public class Note{
      * Returns the absolute MIDI key index of the note
      * @return MIDI key index
      */
-    public int getCompleteIndex(){
+    public int getCompleteIndex() {
         return this._getCompleteKeyIndex(_numericNoteIndex, _octave);
     }
 
@@ -85,7 +85,7 @@ public class Note{
      * Returns the relative MIDI key index in base 12
      * @return the relative key index
      */
-    public int getKeyIndex(){
+    public int getKeyIndex() {
         return this._numericNoteIndex;
     }
 
@@ -93,11 +93,11 @@ public class Note{
      * Returns true if the note is a rest.
      * @return true if note is a rest
      */
-    public boolean isRest(){
+    public boolean isRest() {
         return _name.startsWith(MusicSpecs.REST_SYMBOL);
     }
 
-    private int _getCompleteKeyIndex(int noteIndex, int octave){
+    private int _getCompleteKeyIndex(int noteIndex, int octave) {
         return noteIndex + 12*(octave+1);
     }
 

@@ -109,8 +109,8 @@ public class FactorOracle extends ModalController {
      *
      * @param container  The container
      * @param name       The name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public FactorOracle(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -126,8 +126,8 @@ public class FactorOracle extends ModalController {
      * @param repetitionFactor  a double indicating the factor repetition probability
      * @param symbolicOutput    a boolean that determines whether symbolic outputs should be produced
      * @param validateSymbols   a boolean -- true if symbol validation should be included in guard expressions
-     * @throws IllegalActionException repetition factor range checking
-     * @throws NameDuplicationException
+     * @exception IllegalActionException repetition factor range checking
+     * @exception NameDuplicationException
      */
     public FactorOracle(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols)
@@ -152,7 +152,7 @@ public class FactorOracle extends ModalController {
         if (trainingSequence != null) {
             _inputSequence = trainingSequence;
             _sequenceLength = _inputSequence.length;
-        } else{
+        } else {
             _sequenceLength = 0;
             _inputSequence = new Object[1];
         }
@@ -250,9 +250,9 @@ public class FactorOracle extends ModalController {
             }
             _stateList.put(i, s);
 
-        } catch(IllegalActionException e) {
+        } catch (IllegalActionException e) {
             throw new IllegalActionException(this);
-        } catch(NameDuplicationException e) {
+        } catch (NameDuplicationException e) {
             throw new NameDuplicationException(this,"Element with name already exists in Factor Oracle");
         }
     }

@@ -244,7 +244,7 @@ public abstract class HttpSink extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
     protected abstract Method getMethod();
 
     ///////////////////////////////////////////////////////////////////

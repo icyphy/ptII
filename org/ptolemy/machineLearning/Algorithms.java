@@ -47,7 +47,7 @@ public class Algorithms {
      *  @param k The value at which the probability mass function will be computed
      *  @param mean The mean (lambda) of the poisson distribution
      *  @return The PMF value at k.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *  @exception Exception If k < 0
      */
     public static double poissonPmf(int k, double mean) throws IllegalActionException {
@@ -70,7 +70,7 @@ public class Algorithms {
      *  @param k The value at which the probability mass function will be computed
      *  @param mean The mean (lambda) of the poisson distribution
      *  @return The PMF value at k.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *  @exception Exception If k < 0
      */
     public static double poissonPmf(int k, double mean, double logFactorial) throws IllegalActionException{

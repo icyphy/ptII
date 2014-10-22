@@ -713,7 +713,7 @@ public class HttpRequestHandler extends TypedAtomicActor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Handle an HTTP request by recording the request data, requesting
      *  a firing of this actor at the current time, waiting for a response
@@ -933,7 +933,7 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  @param request  The HttpServletRequest to read header information from.
      *  @return A string containing the body.
      *  @exception IllegalActionException If construction of the record token fails.
-     *  @throws IOException
+     *  @exception IOException
      */
     protected String _readBody(HttpServletRequest request)
             throws IllegalActionException, IOException {

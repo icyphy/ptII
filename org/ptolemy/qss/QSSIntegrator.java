@@ -236,7 +236,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 _nextOutputValue = _nextOutputValue(_currentSlope,
                         _previousOutputValue, quantumValue);
             }
-            else{
+            else {
             // Calculate the next output value
             _nextOutputValue = _nextOutputValue(_previousSlope,
                     _previousOutputValue, quantumValue);
@@ -340,15 +340,15 @@ public class QSSIntegrator extends TypedAtomicActor {
         return (Math.floor(x / quantumValue)) * quantumValue;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                  protected variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // FIXME: Is "SMALL" adequate to check whether slope is zero?
     /** A small number, below which the slope is considered to be zero. */
     protected static final double _SMALL = 10E-9;
 
-    /////////////////////////////////////////////////////////////////////
-    ////                    private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The time at which to produce the next output. */
     private Time _nextOutputTime;

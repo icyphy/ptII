@@ -118,7 +118,7 @@ public class WebSocketConnectionManager {
                 Thread thread = new Thread(new RunnableConnectionCreator(
                         connectionFuture, service));
                 thread.start();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 throw new IllegalActionException("Cannot open "
                         + "websocket to path " + path);
             }
@@ -139,7 +139,7 @@ public class WebSocketConnectionManager {
         public void requestConnection(URI path,
                 WebSocketService service)
             throws IllegalActionException {
-            if (_openConnections.containsKey(path)){
+            if (_openConnections.containsKey(path)) {
                 _openServices.get(path).add(service);
                 service.setConnection(_openConnections.get(path));
 
@@ -176,7 +176,7 @@ public class WebSocketConnectionManager {
                                RunnableConnectionGetter(connectionFuture,
                                        service, path));
                             thread.start();
-                        } catch(IOException e) {
+                        } catch (IOException e) {
                             throw new IllegalActionException("Cannot open "
                                     + "websocket to path " + path);
                         }
@@ -260,7 +260,7 @@ public class WebSocketConnectionManager {
                     if (connection != null) {
                         _service.setConnection(connection);
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // TODO:  Need an onError() method for
                     // WebSocketService
                     _connectionException = e;
@@ -269,13 +269,13 @@ public class WebSocketConnectionManager {
 
             // TODO:  Error notification
             /* Some errors:
-             *             } catch(TimeoutException e) {
+             *             } catch (TimeoutException e) {
                 throw new IllegalActionException(this, "Timeout establishing"
                         + " WebSocket connection");
-            } catch(ExecutionException e) {
+            } catch (ExecutionException e) {
                 throw new IllegalActionException(this, "Can't establish "
                         + "WebSocket connection");
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 throw new IllegalActionException(this, "WebSocket connection "
                         + "establishment interrupted");
             }
@@ -335,7 +335,7 @@ public class WebSocketConnectionManager {
 
                             _futureServices.remove(_path);
                         }
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         // TODO:  Need an onError() method for
                         // WebSocketService
                         _connectionException = e;

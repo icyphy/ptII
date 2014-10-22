@@ -393,7 +393,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
 
                 Enumeration<JarEntry> entries = jar.entries();
-                while(entries.hasMoreElements()) {
+                while (entries.hasMoreElements()) {
                     String name = entries.nextElement().getName();
                     if (name.startsWith(path)) {
                         String entry = name.substring(path.length());
