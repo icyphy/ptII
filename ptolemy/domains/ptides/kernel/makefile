@@ -84,6 +84,8 @@ OPTIONAL_FILES = \
 	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
 	'PtidesNoPhysicalTimeDirector$$Tag.class' \
 	'PtidesPlatform$$PtidesMirrorPort.class' \
+	'PtidesPlatform$$PtidesNetworkModelTimeType.class' \
+	'PtidesPlatform$$PtidesNetworkRealTimeType.class' \
 	'PtidesPlatform$$PtidesNetworkType.class' \
 	'PtidesPlatform$$PtidesPlatformContents.class' \
 	'PtidesPlatform$$PtidesPlatformDirector.class' \

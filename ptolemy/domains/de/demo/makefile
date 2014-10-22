@@ -34,12 +34,15 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		AssemblyLine Clock ClockDrift DateDemo \
+DIRS =		AssemblyLine AFDX Bus \
+		Clock ClockDrift DateDemo \
 		Inspection LineFault LongRuns ModalModel \
 		OpenQueueingNetwork \
 		PersistentIO QueueAndServer \
 		RealTimeComposite SmartSender \
+		Switch \
 		TimingParadox Trilateration \
+		TTE \
 		VariableDelay
 
 CLASSPATH =	$(ROOT)

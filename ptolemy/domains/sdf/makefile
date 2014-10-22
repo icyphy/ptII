@@ -58,9 +58,7 @@ MISC_FILES =	kernel lib optimize doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+OPTIONAL_FILES = demo doc
 
 all: jclass
 install: jclass jars

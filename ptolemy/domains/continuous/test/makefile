@@ -68,7 +68,8 @@ MISC_FILES =	alljtests.tcl  junit \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	BallDynamics.xml
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
