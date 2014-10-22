@@ -18,7 +18,9 @@
 #
 #    Remove files with copyrights by others
 #    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json doc/books/systems/export/WebServerDE.xml ./org/ptolemy/ptango/test/TestRunner.xml ./org/ptolemy/ptango/test/auto/WebServerDEInterleaved.xml ./org/ptolemy/ptango/test/auto/WebServerDE.xml copyright.htm configure ./ptolemy/configs/doc/copyright.htm ./ptdb/lib/db-dbxml-license.htm ./ptolemy/actor/gui/masterCopyrightStart.htm.in com
-
+#
+#    Remove the FMI .c and .h files that are copyrighted elsewhere.
+#    find . -name "fmi*.[ch]" -print -exec rm {} \;
 #
 # 3. Generate a list of text files
 #    Ptolemy: cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
