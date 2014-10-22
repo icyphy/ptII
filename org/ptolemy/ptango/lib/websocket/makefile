@@ -52,6 +52,7 @@ PTCLASSALLJARS =
 JSRCS = \
     PtolemyWebSocketClientFactory.java \
 	PtolemyWebSocketServlet.java \
+	WebSocketConnectionManager.java \
 	WebSocketEndpoint.java \
 	WebSocketReader.java \
 	WebSocketService.java \

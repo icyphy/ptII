@@ -28,6 +28,9 @@
 
 package org.ptolemy.ptango.lib.websocket;
 
+import java.net.URI;
+import java.util.Hashtable;
+
 import org.eclipse.jetty.websocket.WebSocketClient;
 import org.eclipse.jetty.websocket.WebSocketClientFactory;
 
@@ -59,12 +62,34 @@ public class PtolemyWebSocketClientFactory {
          * @return A new WebSocketClient.
          * @throws Exception If the WebSocketClientFactory cannot be started.
          */
-        public WebSocketClient newWebSocketClient() throws Exception {
+        public WebSocketClient newWebSocketClient() 
+                throws Exception {
             if (_webSocketClientFactory.isStopped()) {
                 _webSocketClientFactory.start();
             }
             
             return _webSocketClientFactory.newWebSocketClient();
+        }
+        
+        /** Create a new WebSocket client that can be shared among other 
+         * WebSocketServices affiliated with this path.
+         * @return A new WebSocketClient.
+         * @throws Exception If the WebSocketClientFactory cannot be started.
+         */
+        public WebSocketClient newSharedWebSocketClient(URI path) 
+                throws Exception {
+            if (_webSocketClientFactory.isStopped()) {
+                _webSocketClientFactory.start();
+            }
+            
+            if(_sharedClients.containsKey(path)) {
+                return _sharedClients.get(path); 
+            } else {
+                WebSocketClient client 
+                    = _webSocketClientFactory.newWebSocketClient();
+                _sharedClients.put(path, client);
+                return client;
+            }
         }
         
         ///////////////////////////////////////////////////////////////////
@@ -75,7 +100,7 @@ public class PtolemyWebSocketClientFactory {
          */
         private PtolemyWebSocketClientFactory() { 
             _webSocketClientFactory = new WebSocketClientFactory();
-            // _clients = new Hashtable();
+            _sharedClients = new Hashtable();
         }
  
         /** The Holder is loaded on the first execution of getInstance() 
@@ -90,17 +115,14 @@ public class PtolemyWebSocketClientFactory {
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 //// 
         
-        /** A set of paths and clients.  One client is allocated per path.
-         *  This allows multiple Ptolemy actors to see data from a single
-         *  socket connection.
+        /** A table of paths and shared clients.  Actors can choose to share
+         * a client connection (for example, to read from and write to the 
+         * same socket of a remote service) or to have a unique client
+         * (giving a unique connection to a remote web service).  
+         * A third possibility would be "groups" that share a client.  This is 
+         * not implemented.
          */
-        // TODO:  Implement client sharing for remote connections.  
-        // Otherwise, each actor will have a separate connection to the
-        // external site, meaning a reader won't receive a response message
-        // from a message a writer wrote
-        // (we could alternatively use a single actor that boths sends  
-        // messages and receives responses)
-        // private Hashtable<URI, WebSocketClient> _clients;
+        private Hashtable<URI, WebSocketClient> _sharedClients;
         
         /** A factory for creating WebSocketClients. */
         private static WebSocketClientFactory _webSocketClientFactory;

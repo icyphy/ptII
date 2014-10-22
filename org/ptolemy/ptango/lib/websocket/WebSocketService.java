@@ -4,6 +4,7 @@ package org.ptolemy.ptango.lib.websocket;
 
 import java.net.URI;
 
+import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.ptolemy.ptango.lib.WebServer;
 
 
@@ -70,6 +71,11 @@ public interface WebSocketService {
      */
     public void onMessage(WebSocketEndpoint sender, String message);
 
+    /** Set the websocket connection that the service should use. 
+     * @param The connection that the service should use.
+     */
+    public void setConnection(Connection connection);
+    
     /** Set the relative path that this WebSocketService is mapped to.
      *  @param relativePath The relative path that this HttpService is mapped to.
      *  @see #getRelativePath()

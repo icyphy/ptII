@@ -30,13 +30,9 @@ package org.ptolemy.ptango.lib.websocket;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.eclipse.jetty.websocket.WebSocket;
-import org.eclipse.jetty.websocket.WebSocketClient;
+import org.eclipse.jetty.websocket.WebSocket.Connection;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -81,6 +77,9 @@ public class WebSocketWriter extends TypedAtomicActor
         
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
+        
+        _connectionManager = WebSocketConnectionManager.getInstance();
+        _connectionMonitor = new Object();
         
         // Assume false until the path is set
         _isLocal = false;
@@ -166,11 +165,12 @@ public class WebSocketWriter extends TypedAtomicActor
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebSocketWriter newObject = (WebSocketWriter) super.clone(workspace);
         
-        newObject._client = null;
         newObject._connection = null;
-        newObject._connectionFuture = null;
+        newObject._connectionManager = _connectionManager;
+        newObject._connectionMonitor = new Object();
         newObject._connectionTimeout = 5000;
         newObject._isLocal = false;
+        newObject._isShared = true;
         newObject._URIpath = null;
         return newObject;
     }
@@ -186,32 +186,29 @@ public class WebSocketWriter extends TypedAtomicActor
     public void fire() throws IllegalActionException {
         super.fire();
         
-        if (_connection == null) {
-            
-            if (_connectionFuture == null) {
-                throw new IllegalActionException(this, "WebSocket connection " 
-                        + "not pproperly established");
-            }
-            
-            try {
-                _connection = _connectionFuture
-                        .get(_connectionTimeout, TimeUnit.MILLISECONDS);
-            } catch(TimeoutException e) {
-                throw new IllegalActionException(this, "Tiemout establishing" 
-                        + " WebSocket connection");
-            } catch(ExecutionException e) {
-                throw new IllegalActionException(this, "Can't establish "
-                        + "WebSocket connection");
-            } catch(InterruptedException e) {
-                throw new IllegalActionException(this, "WebSocket connection " 
-                        + "establishment interrupted");
-            }
-        }
-        
         // Read token on input port, if any.  Write token contents to socket.
         // Empty string tokens are acceptable
         
         if (input.hasToken(0)) {
+            
+            // If connection is not ready, wait on it, up to a max time limit 
+            // setConnection() calls notifyAll() on _connectionMonitor
+            if (_connection == null) {
+                synchronized(_connectionMonitor) {
+                    try {
+                        _connectionMonitor.wait(_connectionTimeout);
+                    } catch(InterruptedException e) {
+                      throw new IllegalActionException(this, "Cannot establish " 
+                              + "a websocket connection to write to.");  
+                    }
+                }
+            }
+            
+            if (_connection == null) {
+                throw new IllegalActionException(this, "Timed out waiting for " 
+                        + "websocket connection.");
+            }     
+
             String message = ((StringToken) input.get(0)).stringValue();
             if (_connection != null) {
                 try {
@@ -255,6 +252,13 @@ public class WebSocketWriter extends TypedAtomicActor
         // has acquired a port.  The port number is needed for the URL.
     }
     
+    /** Returns true if connecting to a locally hosted service; false otherwise.
+     * @return True if connecting to a locally hosted service; false otherwise.
+     */
+    public boolean isLocal() {
+        return _isLocal;
+    }
+    
     /** Do nothing upon receipt of a message, since this actor is a writer.
      * 
      * @param sender The WebSocketEndpoint that sent the message.
@@ -263,37 +267,33 @@ public class WebSocketWriter extends TypedAtomicActor
     public void onMessage(WebSocketEndpoint sender, String message) {
     }
     
+    
     /** Open the WebSocket connection on the given port.
-     * 
      * @param path The URI to connect to.
      * @exception IllegalActionException If the websocket cannot be opened.
      */
     public void open(URI path) throws IllegalActionException {
-        
-        // Based on http://download.eclipse.org/jetty/stable-8/apidocs/org/eclipse/jetty/websocket/WebSocketClient.html
-        // and http://stackoverflow.com/questions/19770278/jetty-8-1-1-websocket-client-handshake
-        
-        // Create a new client
-        try {
-            _client = PtolemyWebSocketClientFactory.getInstance()
-                    .newWebSocketClient();
-        } catch(Exception e) {
-            throw new IllegalActionException(this, 
-                    "Can't create WebSocket client");
+    
+        if (_isLocal || !_isShared) {
+            _connectionManager.newConnection(path, this);
+        } else {
+            _connectionManager.requestConnection(path, this);
         }
         
-        // Request connection.  _client.open() is a non-blocking operation.
-        try {
-            WebSocketEndpoint endpoint = new WebSocketEndpoint(this);             
-            _connectionFuture = _client.open(path, endpoint);
-                 
-            if (_debugging) {
-                _debug("Websocket connection opened for " + getName());
-            }
-        } catch(IOException e){
-            throw new IllegalActionException(this, 
-                    "Can't open WebSocket connection");
+        if (_debugging) {
+            _debug("Websocket connected for " + getName());
         }
+    }
+    
+    /** Set the connection that this WebSocketService will use.
+     * @param connection The connection that this WebSocketService will use.
+     */
+    @Override
+    public void setConnection(Connection connection) {
+        _connection = connection;
+        
+        // fire() might be waiting for a connection to be established
+        _connectionMonitor.notifyAll();
     }
     
     /** Set the relative path that this WebSocketService is mapped to.
@@ -315,21 +315,21 @@ public class WebSocketWriter extends TypedAtomicActor
    public void wrapup() throws IllegalActionException {
        super.wrapup();
        
-       _connection.close();
+       _connectionManager.releaseConnection(_URIpath, this);
        _connection  = null;
    }
    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** The client for the WebSocket. Handles connection opening and closing. */
-    private WebSocketClient _client; 
 
     /** The WebSocket connection. */
-    private WebSocket.Connection _connection;
+    private Connection _connection;
     
-    /** A Future object for the WebSocket connection. */
-    private Future<WebSocket.Connection> _connectionFuture;
+    /** A manager responsible for generating and releasing connections. */
+    private WebSocketConnectionManager _connectionManager;
+    
+    /** An object to wait on if the connection is not yet ready in fire() */
+    private Object _connectionMonitor;
     
     /** The timeout for establishing a connection.  In milliseconds. */
     private int _connectionTimeout = 5000; 
@@ -338,6 +338,12 @@ public class WebSocketWriter extends TypedAtomicActor
      *  otherwise.
      */
     private boolean _isLocal;
+    
+    /** True if the actor wishes to share a socket connection.  Used for 
+     * remote services for e.g. writing to a socket, then receiving a response.
+     * Always true for WebSocketReader.
+     */
+    private boolean _isShared = true;
     
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to

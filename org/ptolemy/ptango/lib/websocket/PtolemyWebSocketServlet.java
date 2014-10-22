@@ -35,6 +35,7 @@ import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.websocket.WebSocket;
+import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocketServlet;
 
 ///////////////////////////////////////////////////////////////////
@@ -116,6 +117,14 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
                 }
             }
         }    
+    }
+    
+    // TODO:  Don't need this here either.  Refactor interface.  
+    // Interface for WebSocketSubscriber and WebSocketClient?
+    @Override
+    public void setConnection(Connection connection) {
+        // TODO Auto-generated method stub
+        
     }
 
     // TODO:  The servlet path is tracked by the WebServer; not needed here.  

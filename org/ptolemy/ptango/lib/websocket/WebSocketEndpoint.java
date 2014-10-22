@@ -29,6 +29,8 @@
 
 package org.ptolemy.ptango.lib.websocket; 
 
+import java.util.HashSet;
+
 import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
 
 ///////////////////////////////////////////////////////////////////
@@ -58,7 +60,17 @@ public class WebSocketEndpoint implements OnTextMessage {
     public WebSocketEndpoint(WebSocketService parentService) {
         _connection = null;
         _isOpen = false;
-        _parentService = parentService;
+        _parentServices = new HashSet();
+        _parentServices.add(parentService);
+    }
+    
+    /** Add a parent WebSocketService of this endpoint.
+     * 
+     * @param service  A parent WebSocketService of this endpoint.
+     * @see #removeParentService(WebSocketService)
+     */
+    public void addParentService(WebSocketService service) {
+        _parentServices.add(service);
     }
     
     /** Return the Connection object for this WebSocket.  Used for sending
@@ -95,8 +107,10 @@ public class WebSocketEndpoint implements OnTextMessage {
      */
     @Override
     public void onMessage(String message) {
-        if (_parentService != null) {
-            _parentService.onMessage(this, message);
+        if (_parentServices != null) {
+            for (WebSocketService service : _parentServices) {
+                service.onMessage(this, message);
+            }
         }
     }
 
@@ -110,12 +124,13 @@ public class WebSocketEndpoint implements OnTextMessage {
         _isOpen = true;
     }
     
-    /** Set the parent WebSocketService of this endpoint.
+    /** Remove a parent WebSocketService of this endpoint.
      * 
-     * @param service  The parent WebSocketService of this endpoint.
+     * @param service  A parent WebSocketService of this endpoint.
+     * @see #addParentService(WebSocketService)
      */
-    public void setParentService(WebSocketService service) {
-        _parentService = service;
+    public void removeParentService(WebSocketService service) {
+        _parentServices.remove(service);
     }
     
     // TODO:  Do something onError? 
@@ -129,6 +144,6 @@ public class WebSocketEndpoint implements OnTextMessage {
     /** Flag indicating if the connection is open. */
     private boolean _isOpen;
     
-    /** The parent service to be notified of incoming messages. */
-    private WebSocketService _parentService;
+    /** The parent services to be notified of incoming messages. */
+    private HashSet<WebSocketService> _parentServices;
 }

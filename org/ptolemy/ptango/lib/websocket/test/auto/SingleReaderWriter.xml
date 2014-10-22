@@ -25,6 +25,8 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/lib/websocket/test/auto">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 50.0]">
         </property>
     </property>
@@ -51,6 +53,8 @@
         </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="3.0">
         </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{3.0}">
+        </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
         </property>
@@ -61,7 +65,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

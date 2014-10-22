@@ -448,34 +448,45 @@ public class WebServer extends AbstractInitializableAttribute {
                               + "by another actor or by a resource in this " 
                               + "WebServer.  Please specify a unique URL.");
                 }
-            } else if (entity instanceof WebSocketService) {
+            } else if (entity instanceof WebSocketService)  {
+                // Set up support for local websocket services.  Remote 
+                // websocket services do not require anything from the server
                 WebSocketService service = (WebSocketService) entity;
+                boolean isLocal = true;
                 
                 // TODO:  Refactor to use e.g. an interface for local clients 
-                // only
-                if (service instanceof WebSocketReader) {
-                    readers.add((WebSocketReader) service);
+                // only.  Add isLocal to interface?
+                if (service instanceof WebSocketReader) { 
+                    isLocal = ((WebSocketReader)service).isLocal();
+                    if (isLocal) {
+                        readers.add((WebSocketReader) service);
+                    }
                 } else if (service instanceof WebSocketWriter) {
-                    writers.add((WebSocketWriter) service);
+                    isLocal = ((WebSocketWriter)service).isLocal();
+                    if (isLocal) {
+                        writers.add((WebSocketWriter) service);
+                    }
                 }
                 
                 if (_debugging) {
                     _debug("Found WebSocket actor: " + entity.getFullName());
                 }
                 
-                // Add this path to the list of socket paths
-                URI path = service.getRelativePath();
-                
-                try {
-                    _appInfo.addSocketInfo(path, entity);
-                } catch (Exception e) {
-                    throw new IllegalActionException(
-                            this, "Actor " + entity.getName()
-                            + " requested the web service URL "
-                            + path
-                            + " , but this URL has already been claimed "
-                            + "by another actor or by a resource in this " 
-                            + "WebServer.  Please specify a unique URL.");
+                if (isLocal) {
+                    // Add this path to the list of socket paths
+                    URI path = service.getRelativePath();
+                    
+                    try {
+                        _appInfo.addSocketInfo(path, entity);
+                    } catch (Exception e) {
+                        throw new IllegalActionException(
+                                this, "Actor " + entity.getName()
+                                + " requested the web service URL "
+                                + path
+                                + " , but this URL has already been claimed "
+                                + "by another actor or by a resource in this " 
+                                + "WebServer.  Please specify a unique URL.");
+                    }
                 }
             }
         }
