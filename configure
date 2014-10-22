@@ -8496,7 +8496,10 @@ fi
 if test -z "$PTJAVASCRIPT_DIR"; then
     updateExcludes "ptolemy/actor/lib/js/"
     updateExcludes "org/terraswarm/kernel/"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar files or socketio necessary to
+
+    # Only print the message if the PTJAVASCRIPT_USER_DIR was present.
+    if test -d "$PTJAVASCRIPT_USER_DIR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar files or socketio necessary to
     to compile ptolemy/actor/lib/js and org/terraswarm/kernel
     Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.
     The lib/socketio.jar, is built by running \"ant jar\" after downloading source from here:
@@ -8506,6 +8509,7 @@ $as_echo "$as_me: WARNING: Failed to find the OAuth common jar files or socketio
     Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.
     The lib/socketio.jar, is built by running \"ant jar\" after downloading source from here:
     https://github.com/Gottox/socket.io-java-client" >&2;}
+    fi
 fi
 
 
@@ -9685,12 +9689,16 @@ fi
 
 if test -z "$PTOSCP5_DIR"; then
     updateExcludes "org/ptolemy/osc/"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Open Sound Control/Processing.org (oscP5) interface necessary
+
+    # Only print the message if the directory was found.
+    if test -d "$PTOSCP5_USER_DIR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Open Sound Control/Processing.org (oscP5) interface necessary
     to compile org/ptolemy/osc.
     Typically, the oscp5.jar file is found at $PTII/lib/oscP5.jar." >&5
 $as_echo "$as_me: WARNING: Failed to find the Open Sound Control/Processing.org (oscP5) interface necessary
     to compile org/ptolemy/osc.
     Typically, the oscp5.jar file is found at $PTII/lib/oscP5.jar." >&2;}
+    fi
 fi
 
 #--------------------------------------------------------------------
@@ -12799,7 +12807,8 @@ fi
 
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
+    if test -d "$PTVERTX_USER_DIR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
     or a version of Java before 1.8 was found
     so ptolemy.actor.vertx will not be compiled.
     Vertx consists of a number of jar files that are typically in $PTII/lib." >&5
@@ -12807,6 +12816,7 @@ $as_echo "$as_me: WARNING: Failed to find the the Vertx application platform int
     or a version of Java before 1.8 was found
     so ptolemy.actor.vertx will not be compiled.
     Vertx consists of a number of jar files that are typically in $PTII/lib." >&2;}
+    fi
 fi
 
 #--------------------------------------------------------------------
