@@ -254,9 +254,14 @@ cleanDerivedJavaFiles:
 	rm -rf ptolemy/backtrack/util/java/util/*.java
 
 CLEAN_SHIPPING_FILES = \
+		.classpath \
 		*.jnlp \
 		autom4te.cache \
+		bin/ptinvoke \
+		bin/comm.policy \
+		build.xml
 		com/microstar/xml/SAXDriver.* \
+		config.log \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
 		doc/img/PtolemyIICD.ec3 \
@@ -265,6 +270,7 @@ CLEAN_SHIPPING_FILES = \
 		doc/ptII.fbp \
 		jnlp_manifest.txt \
 		jnlp_sandbox_manifest.txt \
+		lib/ptII.properties \
 		lbnl/demo/CRoom/cclient.dSYM \
 		lbnl/lib/util/libbcvtb.dylib \
 		lbnl/lib/util/libbcvtb.dylib.dSYM \
@@ -272,6 +278,7 @@ CLEAN_SHIPPING_FILES = \
 		lbnl/lib/util/libbcvtb.jnilib.dSYM \
 		lbnl/lib/util/libbcvtb.so \
 		lib/cachedir \
+		mk/ptII.mk \
 		ptKeystore \
 		ptolemy/apps \
 		ptolemy/actor/lib/ptp \
@@ -311,6 +318,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/moml/filter/test/testModels.txt \
 		ptolemy/moml/filter/test/testNamedObjs.txt \
 		ptolemy/ptp \
+		ptolemy/util/test/junit/javachidr32 \
 	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml \
 	        ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml \
 		signed \
