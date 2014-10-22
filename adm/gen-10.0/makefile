@@ -3210,7 +3210,7 @@ $(PTBUILDRELEASE)/signed:
 
 $(PTBUILDRELEASE)/test.out:
 	@echo "#"
-	@echo "# Creating the $(PTBUILDRELEASE)/test.out by running the longest tests, which export the models.  This will take about 45 minutes."
+	@echo "# Creating the $(PTBUILDRELEASE)/test.out by running the longest tests, which export the models.  This will take about 100 minutes."
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:2.0; echo "DISPLAY=$$DISPLAY"; ant test.longest >& test.out)
