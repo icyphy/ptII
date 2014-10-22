@@ -175,6 +175,12 @@ public class VariableDelaySwitch extends BasicSwitch {
     @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
+        if (token == null) {
+            throw new IllegalActionException(this, "The token was null, "
+                    + "which is not supported.  The token may be null "
+                    + "through a convoluted and unlikely call sequence, see "
+                    + "Coverity Scan CID 1135586");
+        }
         Time currentTime = getDirector().getModelTime();
         // FIXME add Continuous support.
 
@@ -188,6 +194,7 @@ public class VariableDelaySwitch extends BasicSwitch {
         /* calculate and add input buffer delays */
         double _priorityDelay = 0.0;
         double _packetSizeDelay = 0.0;
+
 
         RecordToken TCPFrame = (RecordToken) token;
         // get payload
