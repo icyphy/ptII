@@ -1,7 +1,7 @@
 /* This abstract class implements functionality of an atomic
     communication aspect.
 
-@Copyright (c) 2010-2013 The Regents of the University of California.
+@Copyright (c) 2010-2014 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

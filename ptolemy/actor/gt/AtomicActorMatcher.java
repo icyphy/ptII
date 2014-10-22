@@ -1,7 +1,7 @@
 /* A matcher to match any AtomicActor or CompositeActor that is considered as a
    blackbox.
 
-@Copyright (c) 2007-2013 The Regents of the University of California.
+@Copyright (c) 2007-2014 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

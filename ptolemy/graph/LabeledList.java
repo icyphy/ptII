@@ -1,7 +1,7 @@
 /* A list of unique objects with an efficient mapping from the objects
  into consecutive integer labels.
 
- Copyright (c) 2001-2013 The Regents of the University of Maryland.
+ Copyright (c) 2001-2014 The Regents of the University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

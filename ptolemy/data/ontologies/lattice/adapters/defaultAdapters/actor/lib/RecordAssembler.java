@@ -1,6 +1,6 @@
 /* An adapter class for ptolemy.actor.lib.RecordAssembler.
  *
- * Copyright (c) 2006-2013 The Regents of the University of California. All
+ * Copyright (c) 2006-2014 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above

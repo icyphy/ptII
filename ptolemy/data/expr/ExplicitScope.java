@@ -1,6 +1,6 @@
 /* A class representing an explict evaluation scope.
 
- Copyright (c) 2002-2007 The Regents of the University of California.
+ Copyright (c) 2002-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

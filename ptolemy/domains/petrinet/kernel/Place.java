@@ -1,6 +1,6 @@
 /* A Petri net place.
 
- Copyright (c) 2001-2013 The Regents of the University of California.
+ Copyright (c) 2001-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
 
  PetriNet Director Modifications
 
- Copyright (c) 2010-2013 The University of Florida
+ Copyright (c) 2010-2014 The University of Florida
 
  All rights reserved.
  Permission is hereby granted, without written agreement and without

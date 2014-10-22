@@ -1,6 +1,6 @@
 /* An actor that read in a java.awt.Image and writes information to its output
 
- @Copyright (c) 2001-2013 The Regents of the University of California.
+ @Copyright (c) 2001-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

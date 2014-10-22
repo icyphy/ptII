@@ -2,7 +2,7 @@
  *  concept for a product lattice ontology to be used for constraints
  *  generated from an ontology that is a component of the product lattice ontology.
  *
- * Copyright (c) 2007-2011 The Regents of the University of California. All
+ * Copyright (c) 2007-2014 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above

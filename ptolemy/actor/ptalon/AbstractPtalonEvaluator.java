@@ -1,7 +1,7 @@
 /* A helper class to store information, like variable scope info, for
  the Ptalon compiler.
 
- Copyright (c) 2007-2013 The Regents of the University of California.
+ Copyright (c) 2007-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

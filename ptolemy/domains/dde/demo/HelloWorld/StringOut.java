@@ -1,7 +1,7 @@
 /* An abstract class that is used to produce StringTokens on the
  output for each token that is consumed on the input.
 
- Copyright (c) 1997-2013 The Regents of the University of California.
+ Copyright (c) 1997-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

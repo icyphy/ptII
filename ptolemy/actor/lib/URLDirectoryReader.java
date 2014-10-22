@@ -1,7 +1,7 @@
 /* An actor that reads a URL naming a directory and outputs each
  element of the directory one at a time.
 
- @Copyright (c) 1998-2013 The Regents of the University of California.
+ @Copyright (c) 1998-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

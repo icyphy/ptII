@@ -1,7 +1,7 @@
 /* A operation taking one operand of type Complex, and producing a value of
  type Complex.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

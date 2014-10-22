@@ -1,7 +1,7 @@
 /*
  CADirector
 
- Copyright (c) 2010-2013 The University of Florida
+ Copyright (c) 2010-2014 The University of Florida
 
  All rights reserved.
  Permission is hereby granted, without written agreement and without

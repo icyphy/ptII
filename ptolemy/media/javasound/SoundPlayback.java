@@ -1,7 +1,7 @@
 /* A buffer supporting the playback of audio data and the the
  writing of audio data to a sound file.
 
- Copyright (c) 2000-2013 The Regents of the University of California.
+ Copyright (c) 2000-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

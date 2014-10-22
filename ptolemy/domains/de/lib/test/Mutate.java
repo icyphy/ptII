@@ -1,6 +1,6 @@
 /* Mutations example: Figure 15.7 from the de chapter
 
- Copyright (c) 1999-2005 The Regents of the University of California.
+ Copyright (c) 1999-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

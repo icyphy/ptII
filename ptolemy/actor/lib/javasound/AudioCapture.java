@@ -1,7 +1,7 @@
 /* An actor that outputs audio samples that are captured from the
  audio input port of the computer.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
+ Copyright (c) 1998-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

@@ -1,7 +1,7 @@
 /* A TypedCompositeActor that creates multiple instances of itself
  during the preinitialize phase of model execution.
 
- Copyright (c) 2003-2013 The Regents of the University of California and
+ Copyright (c) 2003-2014 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without

@@ -1,6 +1,6 @@
 /* An extension of TypedCompositeActor for distributed environments.
 
- @Copyright (c) 2005 The Regents of Aalborg University.
+ @Copyright (c) 2005-2014 The Regents of Aalborg University.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

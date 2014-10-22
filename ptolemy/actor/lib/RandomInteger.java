@@ -1,6 +1,6 @@
 /* Actor for generating random integers.
  *
- * Copyright (c) 2012-2013 The Regents of the University of California. All
+ * Copyright (c) 2012-2014 The Regents of the University of California. All
  * rights reserved.
  *
  * Permission is hereby granted, without written agreement and without license

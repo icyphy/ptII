@@ -1,7 +1,7 @@
 /* An attribute that helps an OntologySolver to issue MoML requests and
  make changes to the model.
 
- Copyright (c) 2006-2013 The Regents of the University of California.
+ Copyright (c) 2006-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

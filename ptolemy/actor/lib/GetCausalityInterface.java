@@ -1,7 +1,7 @@
 /* Actor that reads the causality interface of its container and produces a
  * string describing it.
 
- Copyright (c) 2003-2013 The Regents of the University of California.
+ Copyright (c) 2003-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

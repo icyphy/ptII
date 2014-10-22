@@ -1,6 +1,6 @@
 /* ASTPtMatrixConstructNode represents matrix construction in the parse tree.
 
- Copyright (c) 1998-2005 The Regents of the University of California and
+ Copyright (c) 1998-2014 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without

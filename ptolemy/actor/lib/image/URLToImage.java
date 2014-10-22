@@ -1,7 +1,7 @@
 /* An actor that reads a String input token naming a URL and outputs
  an Image of type Object.
 
- @Copyright (c) 2001-2013 The Regents of the University of California.
+ @Copyright (c) 2001-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

@@ -1,7 +1,7 @@
 /*  XML handler to be used for "configure" code when parsing a MoML model
  that contains a PtalonActor.
 
- Copyright (c) 2006-2013 The Regents of the University of California.
+ Copyright (c) 2006-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

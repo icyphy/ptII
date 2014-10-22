@@ -1,7 +1,7 @@
 /** A static class that provides a method to display a message and highlight
     concepts in an ontology model based on whether the ontology is a lattice.
 
- Copyright (c) 1997-2013 The Regents of the University of California.
+ Copyright (c) 1997-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

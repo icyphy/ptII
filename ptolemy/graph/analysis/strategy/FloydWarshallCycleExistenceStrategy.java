@@ -1,7 +1,7 @@
 /* Computation of cycle existence in directed graphs using an all pair shortest
  path algorithm based on the Floyd-Warshall algorithm.
 
- Copyright (c) 2003-2013 The University of Maryland. All rights reserved.
+ Copyright (c) 2003-2014 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the above

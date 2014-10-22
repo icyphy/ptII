@@ -1,6 +1,6 @@
 /* Abstract base class for peripheral devices that reads input data from the environment.
 
-@Copyright (c) 2008-2009 The Regents of the University of California.
+@Copyright (c) 2008-2014 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

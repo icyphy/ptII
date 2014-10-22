@@ -1,6 +1,6 @@
 /* This class provides interaction techniques for relations in an ontology.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
+ Copyright (c) 1998-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

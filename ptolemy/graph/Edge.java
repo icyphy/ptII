@@ -1,6 +1,6 @@
 /* A weighted or unweighted edge for a directed or undirected graph.
 
- Copyright (c) 2001-2013 The University of Maryland
+ Copyright (c) 2001-2014 The University of Maryland
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

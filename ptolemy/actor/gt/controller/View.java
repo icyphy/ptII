@@ -1,6 +1,6 @@
 /* An event to view the model in the model parameter in a separate window.
 
- Copyright (c) 2008-2013 The Regents of the University of California.
+ Copyright (c) 2008-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

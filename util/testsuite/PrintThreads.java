@@ -1,6 +1,6 @@
 /* Print Information about all the threads
 
- @Copyright (c) 2000-2013 The Regents of the University of California.
+ @Copyright (c) 2000-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 /* This code was originally found at
  http://www.fsg.com/tech/threadmon.htm
  and is
- Copyright (c) 1997-2013 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
+ Copyright (c) 1997-2014 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
 
  Fusion Systems Group
  One Wall Street Court, New York, NY, 10005

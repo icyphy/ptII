@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 1998-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

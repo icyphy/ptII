@@ -1,7 +1,7 @@
 /* Layout interface between the Ptolemy Diva editor and the KIELER
  * layout library.*/
 /*
- @Copyright (c) 2009-2013 The Regents of the University of California.
+ @Copyright (c) 2009-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
