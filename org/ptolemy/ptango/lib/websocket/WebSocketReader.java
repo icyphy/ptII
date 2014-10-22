@@ -160,7 +160,7 @@ public class WebSocketReader extends TypedAtomicActor
         WebSocketReader newObject = (WebSocketReader) super.clone(workspace);
         
         newObject._connection = null;
-        newObject._connectionManager = _connectionManager;
+        newObject._connectionManager = WebSocketConnectionManager.getInstance();
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._isLocal = false;

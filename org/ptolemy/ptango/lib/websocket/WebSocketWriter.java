@@ -166,7 +166,7 @@ public class WebSocketWriter extends TypedAtomicActor
         WebSocketWriter newObject = (WebSocketWriter) super.clone(workspace);
         
         newObject._connection = null;
-        newObject._connectionManager = _connectionManager;
+        newObject._connectionManager = WebSocketConnectionManager.getInstance();
         newObject._connectionMonitor = new Object();
         newObject._connectionTimeout = 5000;
         newObject._isLocal = false;
