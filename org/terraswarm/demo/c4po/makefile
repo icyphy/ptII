@@ -47,7 +47,7 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = StockTick
+PTPACKAGE = c4po
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 
