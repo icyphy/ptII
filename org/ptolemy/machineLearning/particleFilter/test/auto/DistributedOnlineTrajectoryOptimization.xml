@@ -713,7 +713,7 @@
         <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5.0409476122077, 4.8407186908971, 3.5179530526014, 3.1698880536525, 4.4962931031681, 4.8941437752046, 6.852463380197, 7.4054051564494, 7.8862018424713, 9.1683509283129, 9.5732055920046, 10.5547993731893, 9.9849083260031, 11.4300765363748, 11.2885684235528, 13.3892982801876, 14.4116076190374, 13.8820852476719, 14.3429444948293, 15.7993460673822}">
             </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="5.0">
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="7.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{947.0638942459957, 270.6042588764591}">
             </property>
