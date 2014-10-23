@@ -54,7 +54,9 @@ PTCLASSALLJARS = \
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	simpleReader.js
+	simpleReader.js \
+	gcl/xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA.data \
+	gcl/xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA.index
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,7 +74,8 @@ MISC_FILES = #src
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS)
+	$(DIRS) \
+	gcl
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -83,11 +86,19 @@ NODE = node
 # Node modules necessary to run the JavaScript interface.
 NODE_MODULES = node_modules/ffi node_modules/ref node_modules/ref-array
 
-run: $(NODE_MODULES)
-	@echo "This test reads the last item in the gcl, so we prime the gcl."
+#PTJNI_SHAREDLIBRARY_SUFFIX2 is defined in $PTII/mk/ptII.mk.  Under
+# MacOSX, it will by dylib.
+EP_LIBRARY = ../src/gdp/libs/libep.2.0.$(PTJNI_SHAREDLIBRARY_SUFFIX2)
+GDP_LIBRARY = ../src/gdp/libs/libgdp.1.0.$(PTJNI_SHAREDLIBRARY_SUFFIX2)
+
+run: $(NODE_MODULES) $(EP_LIBRARY) $(GDP_LIBRARY)
+	@echo "# This test reads the last item in the gcl, so we prime the gcl."
 	cp gcl/* /var/tmp/gcl
-	@echo "Make sure that ../src/gdp/gdpd/gdpd & is running in the background."
+	@echo "# Make sure that ../src/gdp/gdpd/gdpd & is running in the background."
+	@echo "# Now we invoke the node binary on our .js file:"
 	$(NODE) simpleReader.js
+	@echo "# Compare the above results with a run of reader-test:"
+	../src/gdp/apps/reader-test xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA 2>&1 | tail
 
 node_modules/ffi:
 	npm install ffi
@@ -95,6 +106,11 @@ node_modules/ref:
 	npm install ref
 node_modules/ref-array:
 	npm install ref-array
+
+$(EP_LIBRARY) $(GDP_LIBRARY):
+	@echo "$@ does not exist?  Perhaps the gdp is not installed?"
+	@echo "See the org/terraswarm/gdp/js/README.txt file"
+	$@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
