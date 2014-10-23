@@ -18,7 +18,9 @@
     <include name="doc/codeDocViptos.jar" />
     <include name="doc/codeDocVisualSense.jar" />
     <include name="doc/design/design.jar" />
+    <include name="doc/design/hyvisual.jar" />
     <include name="doc/design/usingVergil/usingVergil.jar" />
+    <include name="doc/design/visualsense.jar" />
     <include name="doc/docConfig.jar" />
     <include name="doc/img/img.jar" />
     <include name="doc/papers/papers.jar" />
@@ -1540,6 +1542,25 @@
       <fileset dir="${basedir}">
 	<include name="doc/design/*.htm"/>
 	<include name="doc/design/*/*.pdf"/>
+      </fileset>
+    </jar>
+
+
+    <!-- doc/design/hyvisual.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/doc/design/hyvisual.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="doc/design/hyvisual.pdf"/>
+      </fileset>
+    </jar>
+
+    <!-- doc/design/visualsense.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/doc/design/visualsense.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="doc/design/visualsense.pdf"/>
       </fileset>
     </jar>
 

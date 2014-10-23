@@ -4,7 +4,7 @@
 <shortcuts>
   <skipIfNotSupported/>
 
-  <programGroup defaultName="Ptolemy\ptII11.0.beta"
+  <programGroup defaultName="Ptolemy\ptII11.0.devel"
                 location="applications"/>
 
   <shortcut
@@ -17,7 +17,7 @@
     target="$INSTALL_PATH\ptiny.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="Ptiny 11.0.beta, the subset of Ptolemy II GUI"
+    description="Ptiny 11.0.devel, the subset of Ptolemy II GUI"
     iconFile="$INSTALL_PATH\doc\img\ptiny.ico"
     iconIndex="0"
     initialState="normal">
@@ -37,7 +37,7 @@
      commandLine=""
      iconFile="%SystemRoot%\system32\SHELL32.dll"
      iconIndex="31" 
-     description="This uninstalls Ptolemy II 11.0.beta">
+     description="This uninstalls Ptolemy II 11.0.devel">
      
      <createForPack name="Ptiny" />
    </shortcut>
@@ -52,7 +52,7 @@
     target="$INSTALL_PATH\vergil.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="Vergil 11.0.beta, the full Ptolemy II GUI"
+    description="Vergil 11.0.devel, the full Ptolemy II GUI"
     iconFile="$INSTALL_PATH\doc\img\vergil.ico"
     iconIndex="0"
     initialState="normal">
@@ -70,7 +70,7 @@
     target="$INSTALL_PATH\hyvisual.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="HyVisual 11.0.beta, the Hybrid System GUI"
+    description="HyVisual 11.0.devel, the Hybrid System GUI"
     iconFile="$INSTALL_PATH\doc\img\hyvisual.ico"
     iconIndex="0"
     initialState="normal">
@@ -88,7 +88,7 @@
     target="$INSTALL_PATH\visualsense.exe"
     commandLine=""
     workingDirectory="$INSTALL_PATH"
-    description="VisualSense 11.0.beta, the Wireless Design GUI"
+    description="VisualSense 11.0.devel, the Wireless Design GUI"
     iconFile="$INSTALL_PATH\doc\img\visualsense.ico"
     iconIndex="0"
     initialState="normal">
@@ -125,7 +125,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual 11.0.beta (PDF) user documentation"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual 11.0.devel (PDF) user documentation"
      >     
      <createForPack name="FullDocs" />
    </shortcut -->
@@ -141,7 +141,7 @@
      commandLine=""
      iconFile="$INSTALL_PATH\doc\img\pdf.ico"
      iconIndex="0"
-     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense 11.0.beta (PDF) user documentation"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense 11.0.devel (PDF) user documentation"
      >	  
      <createForPack name="FullDocs" />
    </shortcut -->
