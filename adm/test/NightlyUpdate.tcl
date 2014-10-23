@@ -114,7 +114,7 @@ test nightly-1.7 {update_moog} {
     # Check that the files are there.
     set results {}
     set date [exec date +%Y-%m-%d]
-    set files [list ptII11.0.beta-$date.src.tar.gz  ptII11.0.beta.setup.mac-$date.app.tar.gz  ptII11_0_devel_setup_windows-$date.exe  ptII11_0_devel_setup_windows_64-$date.exe ]
+    set files [list ptII11.0.devel-$date.src.tar.gz  ptII11.0.devel.setup.mac-$date.app.tar.gz  ptII11_0_devel_setup_windows-$date.exe  ptII11_0_devel_setup_windows_64-$date.exe ]
     foreach file $files {
     puts $file
 	set url [java::new java.net.URL http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/$file]
