@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = apps
+DIRS = apps js
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -67,6 +67,7 @@ EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass 
+	@echo "See the apps directory for demos."
 install: jclass jars
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -225,10 +226,6 @@ jnaerator-0.12-20140626.234513-58-shaded.jar:
 #jnaerator-0.11-shaded.jar:
 #	wget http://search.maven.org/remotecontent?filepath=com/nativelibs4java/jnaerator/0.11/jnaerator-0.11-shaded.jar
 #	mv 'remotecontent?filepath=com%2Fnativelibs4java%2Fjnaerator%2F0.11%2Fjnaerator-0.11-shaded.jar' $@
-
-
-
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
