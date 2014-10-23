@@ -31,7 +31,7 @@ package org.ptolemy.machineImprovisation;
 
 @author Ilge Akkaya
 @version  $Id$
-@since Ptolemy II 10.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
 */

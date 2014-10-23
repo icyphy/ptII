@@ -58,7 +58,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 0.3
+ @since Ptolemy II 10.0
  @Pt.ProposedRating
  @Pt.AcceptedRating
  */

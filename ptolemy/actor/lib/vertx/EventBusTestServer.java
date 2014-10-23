@@ -38,6 +38,15 @@ import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.sockjs.SockJSServer;
 import org.vertx.java.platform.Verticle;
 
+/**
+ * EventBusTestServer class.
+ *
+ * @author pd
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class EventBusTestServer extends Verticle {
     @Override
     public void start() {

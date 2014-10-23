@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * currently defined in {@link MusicSpecs}.
  @author Ilge Akkaya
  @version  $Id$
- @since Ptolemy II 10.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (ilgea)
  @Pt.AcceptedRating
  */

@@ -65,7 +65,7 @@ import ptolemy.vergil.modal.modal.ModalTableauFactory;
 
  @author Ilge Akkaya
  @version  $Id$
- @since Ptolemy II 10.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating non
  */

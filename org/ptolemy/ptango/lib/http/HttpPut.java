@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see HttpGet
  @author Edward A. Lee and Marten Lohstroh
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */

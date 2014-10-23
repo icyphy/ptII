@@ -71,6 +71,8 @@ out as a single OSC message.
 @see org.ptolemy.osc.OscReceiver
 
  @author Ilge Akkaya
+@version $Id$
+@since Ptolemy II 10.0
  @version $Id$
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
