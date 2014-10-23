@@ -154,7 +154,7 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Accumulator newObject = (Accumulator)super.clone(workspace);
         newObject.lowerBound.setTypeSameAs(newObject.init);
         newObject.upperBound.setTypeSameAs(newObject.init);
@@ -174,7 +174,7 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception IllegalActionException If addition is not
      * supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_latestSum(_sum);
         for (int i = 0; i < reset.getWidth(); i++) {
@@ -218,7 +218,7 @@ public class Accumulator extends Transformer implements Rollbackable {
      * Reset the running sum to equal the value of <i>init</i>.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_latestSum($ASSIGN$_sum(output.getType().convert(init.getToken())));
     }
@@ -228,7 +228,7 @@ public class Accumulator extends Transformer implements Rollbackable {
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_sum(_latestSum);
         return super.postfire();
     }

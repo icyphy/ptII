@@ -188,7 +188,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the base class throws it.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == reflectionCoefficients) {
             ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
             int valueLength = value.length();
@@ -214,7 +214,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         RecursiveLattice newObject = (RecursiveLattice)super.clone(workspace);
         int forwardLength = 0;
         if (_forward == null) {
@@ -276,7 +276,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      * token.  If there is no input, then produce no output.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
             DoubleToken inputValue = (DoubleToken)input.get(0);
@@ -299,7 +299,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
     /**
      * Initialize the state of the filter.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         for (int i = 0; i < _forward.length; i++) {
             $ASSIGN$_forward(i, 0.0);
@@ -315,7 +315,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      * @return False if the number of iterations matches the number requested.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         System.arraycopy($BACKUP$_backwardCache(), 0, $BACKUP$_backward(), 0, _backwardCache.length);
         System.arraycopy($BACKUP$_forwardCache(), 0, $BACKUP$_forward(), 0, _forwardCache.length);
         return super.postfire();
@@ -325,7 +325,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
      * Check to see if this actor is ready to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         System.arraycopy($BACKUP$_backward(), 0, $BACKUP$_backwardCache(), 0, _backwardCache.length);
         System.arraycopy($BACKUP$_forward(), 0, $BACKUP$_forwardCache(), 0, _forwardCache.length);
         return super.prefire();

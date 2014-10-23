@@ -100,7 +100,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
      * If there is no input token, then no output is produced.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
             double newPhase = ((DoubleToken)input.get(0)).doubleValue();
@@ -122,7 +122,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
      * phase is zero.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_previousPhaseInput(0.0);
         $ASSIGN$_previousPhaseOutput(0.0);
@@ -135,7 +135,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
      * for use in the next phase.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_previousPhaseInput(_tempPreviousPhaseInput);
         $ASSIGN$_previousPhaseOutput(_tempPreviousPhaseOutput);
         return super.postfire();

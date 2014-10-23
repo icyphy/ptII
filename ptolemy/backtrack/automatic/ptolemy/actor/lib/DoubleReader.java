@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (liuj)
  * @deprecated Use ExpressionReader instead.
  */
-public class DoubleReader extends URLReader implements Rollbackable {
+@Deprecated public class DoubleReader extends URLReader implements Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -105,7 +105,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
      * Output the data read in the prefire.
      * @exception IllegalActionException If there's no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         for (int i = 0; i < _dataSize; i++) {
             output.send(i, new DoubleToken(_data[i]));
@@ -116,7 +116,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
      * Open the file at the URL, and set the width of the output.
      * @exception IllegalActionException Not thrown in this base class
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_dataSize(output.getWidth());
         $ASSIGN$_data(new double[_dataSize]);
@@ -127,7 +127,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
      * Read one row from the input and prepare for output them.
      * @exception IllegalActionException If an IO error occurs.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         try {
             $ASSIGN$_dataSize(output.getWidth());
             if (_data.length != _dataSize) {

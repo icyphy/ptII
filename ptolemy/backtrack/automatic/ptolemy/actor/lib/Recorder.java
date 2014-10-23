@@ -191,7 +191,7 @@ public class Recorder extends Sink implements Rollbackable {
      * @return An enumeration of Token objects.
      * @deprecated This method is deprecated. Use getHistory().
      */
-    public Enumeration getRecord(int channel) {
+    @Deprecated public Enumeration getRecord(int channel) {
         return Collections.enumeration(getHistory(channel));
     }
 
@@ -208,7 +208,7 @@ public class Recorder extends Sink implements Rollbackable {
      * @return An enumeration of Double objects.
      * @deprecated This method is deprecated. Use getTimeHistory().
      */
-    public Enumeration getTimeRecord() {
+    @Deprecated public Enumeration getTimeRecord() {
         return Collections.enumeration(_timeRecord);
     }
 
@@ -216,7 +216,7 @@ public class Recorder extends Sink implements Rollbackable {
      * Initialize the lists used to record input data.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_records(new LinkedList());
         $ASSIGN$_timeRecord(new LinkedList());
@@ -228,7 +228,7 @@ public class Recorder extends Sink implements Rollbackable {
      * Read at most one token from each input channel and record its value.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         if (!super.postfire()) {
             return false;
         }

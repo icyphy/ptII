@@ -135,7 +135,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
             setPersistent(false);
         }
 
-        public ptolemy.data.Token getToken() throws IllegalActionException  {
+        @Override public ptolemy.data.Token getToken() throws IllegalActionException  {
             IntToken blockSizeValue = (IntToken)blockSize.getToken();
             setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
@@ -230,7 +230,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * @exception CloneNotSupportedException If a derived class contains
      * attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Distributor newObject = (Distributor)super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter)newObject.input.getAttribute("tokenConsumptionRate");
         ((WidthDependentParameter)newObject.input_tokenConsumptionRate).setPort(newObject.output);
@@ -245,7 +245,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * which means that the next consumed input token will be produced
      * on channel zero of the output.
      */
-    public void connectionsChanged(Port port) {
+    @Override public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
         if (port == output) {
             $ASSIGN$_currentOutputPosition(0);
@@ -261,7 +261,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * On the next iteration, the actor will pick up where it left off.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_tentativeOutputPosition(_currentOutputPosition);
         int width = output.getWidth();
@@ -282,7 +282,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * Begin execution by setting the current output channel to zero.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_currentOutputPosition(0);
     }
@@ -294,7 +294,7 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
      * will be sent.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_currentOutputPosition(_tentativeOutputPosition);
         return super.postfire();
     }

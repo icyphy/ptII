@@ -178,7 +178,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * negative; or the argument is the <i>order</i> parameter and the order
      * is not supported by the Interpolation class.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == values) {
             ArrayToken valuesValue = (ArrayToken)values.getToken();
             $ASSIGN$_values(new double[valuesValue.length()]);
@@ -218,7 +218,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Interpolator newObject = (Interpolator)super.clone(workspace);
         newObject.$ASSIGN$_indexes(new int[_indexes.length]);
         System.arraycopy($BACKUP$_indexes(), 0, newObject.$BACKUP$_indexes(), 0, _indexes.length);
@@ -240,7 +240,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * <i>indexes</i> parameters do not contain arrays of the same length,
      * or the period is not 0 and not greater than the largest index.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         double result = _interpolation.interpolate(_iterationCount);
         output.send(0, new DoubleToken(result));
@@ -250,7 +250,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * Set the iteration count to zero.
      * @exception IllegalActionException If the super class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_iterationCount(0);
     }
@@ -260,7 +260,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
      * @return A boolean returned by the super class method.
      * @exception IllegalActionException If the super class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$SPECIAL$_iterationCount(13, _iterationCount);
         return super.postfire();
     }

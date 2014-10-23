@@ -131,7 +131,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
             setPersistent(false);
         }
 
-        public ptolemy.data.Token getToken() throws IllegalActionException  {
+        @Override public ptolemy.data.Token getToken() throws IllegalActionException  {
             IntToken blockSizeValue = (IntToken)blockSize.getToken();
             setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
@@ -220,7 +220,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
      * @exception CloneNotSupportedException If a derived class contains
      * attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Commutator newObject = (Commutator)super.clone(workspace);
         newObject.output_tokenProductionRate = (Parameter)newObject.output.getAttribute("tokenProductionRate");
         ((WidthDependentParameter)newObject.output_tokenProductionRate).setPort(newObject.input);
@@ -238,7 +238,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
      * channels in the input port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_tentativeInputPosition(_currentInputPosition);
         int width = input.getWidth();
@@ -259,7 +259,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
      * Begin execution by setting the current input channel to zero.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_currentInputPosition(0);
     }
@@ -271,7 +271,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
      * will be read.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_currentInputPosition(_tentativeInputPosition);
         return super.postfire();
     }
@@ -282,7 +282,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
      * @return False if the current input position has no token.
      * @exception IllegalActionException If input.hasToken() throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         if (!input.hasToken(_currentInputPosition)) {
             return false;
         }

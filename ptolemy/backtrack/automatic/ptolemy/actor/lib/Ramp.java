@@ -146,7 +146,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * or cannot be converted to the output type, or if the superclass
      * throws it.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == init) {
             Manager manager = getManager();
             if (manager != null) {
@@ -169,7 +169,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Ramp newObject = (Ramp)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.init);
         newObject.output.setTypeAtLeast(newObject.step);
@@ -182,7 +182,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If calling send() or super.fire()
      * throws it.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         init.update();
         super.fire();
         output.send(0, _stateToken);
@@ -194,7 +194,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * parameter on each iteration (in the postfire() method).
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_stateToken(output.getType().convert(init.getToken()));
     }
@@ -219,7 +219,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If iterating cannot be
      * performed.
      */
-    public int iterate(int count) throws IllegalActionException  {
+    @Override public int iterate(int count) throws IllegalActionException  {
         if (count > _resultArray.length) {
             $ASSIGN$_resultArray(new Token[count]);
         }
@@ -258,7 +258,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the firingCountLimit parameter
      * has an invalid expression.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         step.update();
         $ASSIGN$_stateToken(_stateToken.add(step.getToken()));
         return super.postfire();

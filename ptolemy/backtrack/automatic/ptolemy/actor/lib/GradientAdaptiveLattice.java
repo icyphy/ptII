@@ -144,7 +144,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * @exception IllegalActionException If this method is invoked
      * with an unrecognized parameter.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == timeConstant) {
             double timeConstantValue = ((DoubleToken)timeConstant.getToken()).doubleValue();
             $ASSIGN$_oneMinusAlpha((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
@@ -161,7 +161,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         GradientAdaptiveLattice newObject = (GradientAdaptiveLattice)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         newObject.$ASSIGN$_estimatedErrorPower(new double[newObject._order + 1]);
@@ -176,7 +176,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
     /**
      * Initialize the state of the filter.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         for (int i = 0; i <= _order; i++) {
             $ASSIGN$_estimatedErrorPower(i, 0.0);
@@ -195,13 +195,13 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         System.arraycopy($BACKUP$_estimatedErrorPowerCache(), 0, $BACKUP$_estimatedErrorPower(), 0, _order + 1);
         System.arraycopy($BACKUP$_reflectionCoefficientsCache(), 0, _reflectionCoefficients, 0, _order);
         return super.postfire();
     }
 
-    protected void _doFilter() throws IllegalActionException  {
+    @Override protected void _doFilter() throws IllegalActionException  {
         double k;
         for (int i = 0; i < _order; i++) {
             k = _reflectionCoefficients[i];
@@ -232,7 +232,7 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE, outputArray));
     }
 
-    protected void _reallocate() {
+    @Override protected void _reallocate() {
         super._reallocate();
         $ASSIGN$_estimatedErrorPower(new double[_order + 1]);
         $ASSIGN$_estimatedErrorPowerCache(new double[_order + 1]);

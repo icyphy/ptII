@@ -113,7 +113,7 @@ public class IFFT extends SDFTransformer implements Rollbackable {
      * @param attribute The attribute that has changed.
      * @exception IllegalActionException If the parameters are out of range.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == order) {
             $ASSIGN$_orderValue(((IntToken)order.getToken()).intValue());
             if (_orderValue <= 0) {
@@ -131,7 +131,7 @@ public class IFFT extends SDFTransformer implements Rollbackable {
      * Consume the inputs and produce the outputs of the IFFT filter.
      * @exception IllegalActionException If a runtime type error occurs.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         Token[] inTokenArray = input.get(0, _transformSize);
         for (int i = 0; i < _transformSize; i++) {

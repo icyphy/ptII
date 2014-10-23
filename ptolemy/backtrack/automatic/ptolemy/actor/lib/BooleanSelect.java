@@ -216,7 +216,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * if one of the attributes cannot be cloned.
      * @return A new ComponentEntity.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         BooleanSelect newObject = (BooleanSelect)super.clone(workspace);
         newObject.$ASSIGN$_control(null);
         newObject.$ASSIGN$_controlUsed(false);
@@ -234,7 +234,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * case, send nothing to the output.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (_control == null) {
             $ASSIGN$_control((BooleanToken)control.get(0));
@@ -262,7 +262,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(null);
         $ASSIGN$_controlUsed(false);
@@ -277,7 +277,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * @return True if execution can continue into the next iteration.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         if (_controlUsed) {
             $ASSIGN$_control(null);
             trueInput_tokenConsumptionRate.setToken(_zero);
@@ -308,7 +308,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      * @return False if there are not enough tokens to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         boolean result = super.prefire();
         if (_control == null) {
             return result && control.hasToken(0);

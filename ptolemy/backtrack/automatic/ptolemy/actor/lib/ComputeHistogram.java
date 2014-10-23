@@ -181,7 +181,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the bin width is not positive.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == minimumValue || attribute == maximumValue || attribute == numberOfBins) {
             $ASSIGN$_minimumValue(((DoubleToken)minimumValue.getToken()).doubleValue());
             $ASSIGN$_maximumValue(((DoubleToken)maximumValue.getToken()).doubleValue());
@@ -204,7 +204,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         ComputeHistogram newObject = (ComputeHistogram)super.clone(workspace);
         newObject.$ASSIGN$_bins(new int[_numberOfBins]);
         if (_bins != null) {
@@ -218,7 +218,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * and update the histogram.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_bins(new int[_numberOfBins]);
         inputCount.update();
@@ -245,7 +245,7 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
      * <i>blockSize</i> parameter.
      * @exception IllegalActionException If the superclass throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         int count = ((IntToken)inputCount.getToken()).intValue();
         return input.hasToken(0, count) && super.prefire();
     }

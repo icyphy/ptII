@@ -125,7 +125,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * @exception IllegalActionException If there is no director, or if
      * the <i>select</i> input is out of range.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (select.isKnown(0)) {
             if (select.hasToken(0)) {
@@ -156,7 +156,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * Initialize to the default, which is to use channel zero.
      * @exception IllegalActionException If a derived class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_selectChannel(null);
     }
@@ -165,7 +165,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * Return false.
      * @return False.
      */
-    public boolean isStrict() {
+    @Override public boolean isStrict() {
         return false;
     }
 

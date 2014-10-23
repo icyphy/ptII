@@ -83,7 +83,7 @@ public class Differential extends Transformer implements Rollbackable {
      * @exception IllegalActionException If subtraction is not
      * supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
             $ASSIGN$_currentInput(input.get(0));
@@ -99,7 +99,7 @@ public class Differential extends Transformer implements Rollbackable {
      * Reset to indicate that no input has yet been seen.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_lastInput(null);
     }
@@ -108,7 +108,7 @@ public class Differential extends Transformer implements Rollbackable {
      * Record the most recent input as the latest input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_lastInput(_currentInput);
         return super.postfire();
     }

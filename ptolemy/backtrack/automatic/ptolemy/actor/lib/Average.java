@@ -127,7 +127,7 @@ public class Average extends Transformer implements Rollbackable {
      * @exception IllegalActionException If addition or division by an
      * integer are not supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_latestSum(_sum);
         $ASSIGN$_latestCount(_count);
@@ -157,7 +157,7 @@ public class Average extends Transformer implements Rollbackable {
      * Reset the count of inputs.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_count(0);
         $ASSIGN$_sum(null);
@@ -168,7 +168,7 @@ public class Average extends Transformer implements Rollbackable {
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_sum(_latestSum);
         $ASSIGN$_count(_latestCount);
         return super.postfire();

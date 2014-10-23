@@ -155,7 +155,7 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception IllegalActionException If this method is invoked
      * with an unrecognized parameter.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == numerator) {
             ArrayToken numeratorValue = (ArrayToken)numerator.getToken();
             $ASSIGN$_numerator(numeratorValue.arrayValue());
@@ -187,7 +187,7 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         IIR newObject = (IIR)super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.numerator));
@@ -217,7 +217,7 @@ public class IIR extends Transformer implements Rollbackable {
      * filter state.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
             Token savedState = _stateVector[_currentTap];
@@ -233,7 +233,7 @@ public class IIR extends Transformer implements Rollbackable {
      * @exception IllegalActionException If the base class throws
      * it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         _initStateVector();
         $ASSIGN$_currentTap(0);
@@ -243,7 +243,7 @@ public class IIR extends Transformer implements Rollbackable {
      * Return false if the input does not have a token.
      * @exception IllegalActionException
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         boolean result = super.prefire();
         return result && input.hasToken(0);
     }
@@ -252,7 +252,7 @@ public class IIR extends Transformer implements Rollbackable {
      * Update the filter state.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_stateVector(_currentTap, _latestWindow);
         if ($ASSIGN$SPECIAL$_currentTap(14, _currentTap) < 0) {
             $ASSIGN$_currentTap(_stateVector.length - 1);

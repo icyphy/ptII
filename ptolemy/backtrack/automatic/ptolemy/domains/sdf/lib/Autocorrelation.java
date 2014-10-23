@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  * Both biased and unbiased autocorrelation estimates are supported.
  * If the parameter <i>biased</i> is true, then
  * the autocorrelation estimate is
- * <a name="unbiased autocorrelation"></a>
+ * <a name="unbiasedAutocorrelation"></a>
  * <pre>
  * N-1-k
  * 1  ---
@@ -81,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
  * lags to estimate (<i>numberOfLags</i>), and x<sup>*</sup> is the
  * conjugate of the input (if it is complex).
  * This estimate is biased because the outermost lags have fewer than <i>N</i>
- * <a name="biased autocorrelation"></a>
+ * <a name="biasedAutocorrelation"></a>
  * terms in the summation, and yet the summation is still normalized by <i>N</i>.
  * <p>
  * If the parameter <i>biased</i> is false (the default), then the estimate is
@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  * However, note that the unbiased estimate does not guarantee
  * a positive definite sequence, so a power spectral estimate based on this
  * autocorrelation estimate may have negative components.
- * <a name="spectral estimation"></a>
+ * <a name="spectralEstimation"></a>
  * <p>
  * The output will be an array of tokens whose type is at least that
  * of the input. If the parameter <i>symmetricOutput</i> is true,
@@ -195,7 +195,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * Return the function result.
          * @return A Type.
          */
-        public Object getValue() {
+        @Override public Object getValue() {
             Type inputType = _port.getType();
             if (inputType == BaseType.INT) {
                 return BaseType.DOUBLE;
@@ -211,7 +211,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * representing the type of the input port.
          * @return An array of InequalityTerm.
          */
-        public InequalityTerm[] getVariables() {
+        @Override public InequalityTerm[] getVariables() {
             InequalityTerm[] variable = new InequalityTerm[1];
             variable[0] = _port.getTypeTerm();
             return variable;
@@ -291,7 +291,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * @exception IllegalActionException If the type of the
          * associated typeable cannot be determined.
          */
-        public Object getValue() throws IllegalActionException  {
+        @Override public Object getValue() throws IllegalActionException  {
             ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis.getAnalysis(symmetricOutput);
             if (analysis.isConstant(symmetricOutput) && analysis.isConstant(numberOfLags)) {
                 Token symmetricOutputToken = analysis.getConstantValue(symmetricOutput);
@@ -311,7 +311,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
          * input port.
          * @return An array of InequalityTerm.
          */
-        public InequalityTerm[] getVariables() {
+        @Override public InequalityTerm[] getVariables() {
             InequalityTerm[] array = new InequalityTerm[1];
             array[0] = input.getTypeTerm();
             return array;
@@ -428,7 +428,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @param attribute The attribute that has changed.
      * @exception IllegalActionException If the parameters are out of range.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == numberOfInputs || attribute == numberOfLags || attribute == symmetricOutput) {
             $ASSIGN$_numberOfInputs(((IntToken)numberOfInputs.getToken()).intValue());
             $ASSIGN$_numberOfLags(((IntToken)numberOfLags.getToken()).intValue());
@@ -460,7 +460,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class has
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         newObject.output.setTypeAtLeast(newObject.new OutputTypeTerm());
@@ -476,7 +476,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * the parameters of the object, as described in the class comment.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
@@ -515,7 +515,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         if (!input.hasToken(0, _numberOfInputs)) {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");

@@ -127,7 +127,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Sequencer newObject = (Sequencer)super.clone(workspace);
         newObject.$ASSIGN$_pending(new TreeMap());
         return newObject;
@@ -141,7 +141,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * <i>sequenceNumber</i> or <i>input</i> does not have a token.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_sequenceNumberOfInput(((IntToken)sequenceNumber.get(0)).intValue());
         $ASSIGN$_nextToken(input.get(0));
@@ -157,7 +157,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @exception IllegalActionException If accessing the
      * <i>startingSequenceNumber</i> parameter causes an exception.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_fireProducedOutput(false);
         $ASSIGN$_nextSequenceNumber(((IntToken)startingSequenceNumber.getToken()).intValue());
@@ -169,7 +169,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * whether any pending tokens have subsequent sequence numbers.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         if (_fireProducedOutput) {
             $ASSIGN$SPECIAL$_nextSequenceNumber(11, _nextSequenceNumber);
             if (_pending.size() > 0) {
@@ -200,7 +200,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
      * @return False if there are not enough tokens to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         $ASSIGN$_fireProducedOutput(false);
         if (!sequenceNumber.hasToken(0)) {
             return false;

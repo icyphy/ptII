@@ -155,7 +155,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * if one of the attributes cannot be cloned.
      * @return A new ComponentEntity.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         BooleanSwitch newObject = (BooleanSwitch)super.clone(workspace);
         newObject.trueOutput.setTypeAtLeast(newObject.input);
         newObject.falseOutput.setTypeAtLeast(newObject.input);
@@ -171,7 +171,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * otherwise output the token on the <i>falseOutput</i> port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (control.hasToken(0)) {
             $ASSIGN$_control(((BooleanToken)control.get(0)).booleanValue());
@@ -197,7 +197,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * to until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(false);
     }

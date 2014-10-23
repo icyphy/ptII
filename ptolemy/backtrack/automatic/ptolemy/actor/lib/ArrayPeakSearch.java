@@ -244,7 +244,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         ArrayPeakSearch newObject = (ArrayPeakSearch)super.clone(workspace);
         newObject.input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         newObject.peakValues.setTypeAtLeast(newObject.input);
@@ -261,7 +261,7 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
      * @exception IllegalActionException If there is no director, or
      * if sorting is not supported for the input array.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         startIndex.update();
         endIndex.update();

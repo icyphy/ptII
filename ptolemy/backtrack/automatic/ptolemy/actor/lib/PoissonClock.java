@@ -224,7 +224,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * @exception IllegalActionException If the meanTime value is
      * not positive.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == meanTime) {
             double mean = ((DoubleToken)meanTime.getToken()).doubleValue();
             if (mean <= 0.0) {
@@ -262,7 +262,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         PoissonClock newObject = (PoissonClock)super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
@@ -276,7 +276,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * Output the current value.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         boolean triggerInputPresent = false;
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.isKnown() && trigger.hasToken(i)) {
@@ -307,7 +307,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
 @link #getModelStopTime    }
 
      */
-    public double getStopTime() {
+    @Deprecated public double getStopTime() {
         return getModelStopTime().getDoubleValue();
     }
 
@@ -326,7 +326,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * director throws it, or if the director does not
      * agree to fire the actor at the specified time.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         Director director = getDirector();
         if (director == null) {
@@ -357,7 +357,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * scheduling the next firing, or if the director does not
      * agree to fire the actor at the specified time.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         boolean result = super.postfire();
         Time currentTime = getDirector().getModelTime();
         if (_outputProduced) {
@@ -384,7 +384,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * Otherwise, return false.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         if (_debugging) {
             _debug("Called prefire()");
         }
@@ -407,7 +407,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * be invoked after it.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void wrapup() throws IllegalActionException  {
+    @Override public void wrapup() throws IllegalActionException  {
         super.wrapup();
         $ASSIGN$_executing(false);
     }
@@ -416,7 +416,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
      * Generate a new random number.
      * @exception IllegalActionException If parameter values are incorrect.
      */
-    protected void _generateRandomNumber() throws IllegalActionException  {
+    @Override protected void _generateRandomNumber() throws IllegalActionException  {
         double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
         double test = _random.nextDouble();
         $ASSIGN$_current(-Math.log(1 - test) * meanTimeValue);

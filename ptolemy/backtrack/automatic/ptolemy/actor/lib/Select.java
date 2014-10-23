@@ -130,7 +130,7 @@ public class Select extends Transformer implements Rollbackable {
      * it on the output.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(_control)) {
             output.send(0, input.get(_control));
@@ -142,7 +142,7 @@ public class Select extends Transformer implements Rollbackable {
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(0);
     }
@@ -156,7 +156,7 @@ public class Select extends Transformer implements Rollbackable {
      * @return True if the actor is ready to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         if (control.hasToken(0)) {
             $ASSIGN$_control(((IntToken)control.get(0)).intValue());
         }

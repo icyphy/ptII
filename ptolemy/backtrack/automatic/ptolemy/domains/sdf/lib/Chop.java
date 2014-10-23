@@ -227,7 +227,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * @param attribute The attribute that has changed.
      * @exception IllegalActionException If the parameters are out of range.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == numberToRead) {
             $ASSIGN$_numberToRead(((IntToken)numberToRead.getToken()).intValue());
             if (_numberToRead <= 0) {
@@ -272,7 +272,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * the specified number of output tokens.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         int inputIndex = _inputIndex;
         int pastBufferIndex = 0;
@@ -318,7 +318,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
      * gets initialized.
      * @exception IllegalActionException If the superclass throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_pastNeedsInitializing(true);
     }

@@ -206,7 +206,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      * @exception IllegalActionException If the numerator and the
      * denominator matrix is not a row vector.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == A) {
             DoubleMatrixToken token = (DoubleMatrixToken)A.getToken();
             if (token.getRowCount() == 0 || token.getColumnCount() == 0 || token.getRowCount() != token.getColumnCount()) {
@@ -247,7 +247,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      * @exception IllegalActionException If the get() or send() methods
      * of the ports throw this exception.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
             Token u = input.get(0);
@@ -270,7 +270,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      * Update the internal state.
      * @exception IllegalActionException If thrown by the super class.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         if (super.postfire()) {
             $ASSIGN$_x(_xPrime);
             return true;
@@ -286,7 +286,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      * @exception IllegalActionException If <i>initialStates</i>
      * parameter is invalid, or if the base class throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         super.prefire();
         if (_initialStateChanged) {
             $ASSIGN$_x(initialStates.getToken());
@@ -309,7 +309,7 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
      * @exception IllegalActionException If the dimensions do not
      * match.
      */
-    public void preinitialize() throws IllegalActionException  {
+    @Override public void preinitialize() throws IllegalActionException  {
         super.preinitialize();
         DoubleMatrixToken a = (DoubleMatrixToken)A.getToken();
         int n = a.getRowCount();

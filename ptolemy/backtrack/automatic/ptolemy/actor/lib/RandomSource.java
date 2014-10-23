@@ -188,7 +188,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception IllegalActionException If the change is not acceptable
      * to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == seed || attribute == privateSeed) {
             long seedValue;
             Token privateSeedToken = privateSeed.getToken();
@@ -213,7 +213,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         RandomSource newObject = (RandomSource)super.clone(workspace);
         newObject._needNewGenerator = true;
         return newObject;
@@ -224,7 +224,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * of the iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (_needNewGenerator) {
             _createGenerator();
@@ -243,7 +243,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * sure that two identical sequences will not be returned.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         if (_random == null || ((BooleanToken)resetOnEachRun.getToken()).booleanValue()) {
             _createGenerator();
@@ -256,7 +256,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         _needNew = true;
         return super.postfire();
     }

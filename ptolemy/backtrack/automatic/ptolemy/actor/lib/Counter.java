@@ -148,7 +148,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * counter.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_latestCount(_count);
         boolean consumed = false;
@@ -184,7 +184,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * Reset the count of inputs to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_count(0);
     }
@@ -193,7 +193,7 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
      * Record the most recent output count as the actual count.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_count(_latestCount);
         return super.postfire();
     }

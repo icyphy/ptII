@@ -107,7 +107,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * remain constant throughout an iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         mean.update();
         standardDeviation.update();
         super.fire();
@@ -118,7 +118,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * Generate a new random number.
      * @exception IllegalActionException If parameter values are incorrect.
      */
-    protected void _generateRandomNumber() throws IllegalActionException  {
+    @Override protected void _generateRandomNumber() throws IllegalActionException  {
         double meanValue = ((DoubleToken)mean.getToken()).doubleValue();
         double standardDeviationValue = ((DoubleToken)standardDeviation.getToken()).doubleValue();
         double rawNum = _random.nextGaussian();

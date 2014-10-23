@@ -160,7 +160,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Sequence newObject = (Sequence)super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
@@ -177,7 +177,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      * determined by checking the width of the port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (!enable.isOutsideConnected() || enable.hasToken(0) && ((BooleanToken)enable.get(0)).booleanValue()) {
             ArrayToken valuesArray = (ArrayToken)values.getToken();
@@ -192,7 +192,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      * Initialize the actor by resetting to the first output value.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         $ASSIGN$_currentIndex(0);
         $ASSIGN$_outputProduced(false);
         super.initialize();
@@ -203,7 +203,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      * in the <i>values</i> array.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         boolean result = super.postfire();
         if (_outputProduced) {
             $ASSIGN$_outputProduced(false);

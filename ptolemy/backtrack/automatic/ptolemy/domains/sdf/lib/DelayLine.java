@@ -116,7 +116,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * @exception IllegalActionException If type changes are not
      * allowed on the specified attribute.
      */
-    public void attributeTypeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeTypeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
         } else {
@@ -132,7 +132,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         DelayLine newObject = (DelayLine)super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
@@ -149,7 +149,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
      * the delay line.
      * @exception IllegalActionException If not enough tokens are available.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         System.arraycopy($BACKUP$_delayLine(), 0, $BACKUP$_delayLine(), 1, _delayLine.length - 1);
         $ASSIGN$_delayLine(0, input.get(0));
@@ -159,7 +159,7 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
     /**
      * Initialize this actor by reading the value of <i>initialValues</i>.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_delayLine(((ArrayToken)initialValues.getToken()).arrayValue());
     }

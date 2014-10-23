@@ -113,7 +113,7 @@ public class Switch extends Transformer implements Rollbackable {
      * the most recent control token, if it is in range.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (control.hasToken(0)) {
             $ASSIGN$_control(((IntToken)control.get(0)).intValue());
@@ -131,7 +131,7 @@ public class Switch extends Transformer implements Rollbackable {
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(0);
     }

@@ -123,7 +123,7 @@ public class DB extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         DB newObject = (DB)super.clone(workspace);
         newObject.$ASSIGN$_resultArray(new DoubleToken[_resultArray.length]);
         System.arraycopy($BACKUP$_resultArray(), 0, newObject.$BACKUP$_resultArray(), 0, _resultArray.length);
@@ -136,7 +136,7 @@ public class DB extends Transformer implements Rollbackable {
      * do nothing.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
@@ -163,7 +163,7 @@ public class DB extends Transformer implements Rollbackable {
      * @exception IllegalActionException If iterating cannot be
      * performed.
      */
-    public int iterate(int count) throws IllegalActionException  {
+    @Override public int iterate(int count) throws IllegalActionException  {
         if (count > _resultArray.length) {
             $ASSIGN$_resultArray(new DoubleToken[count]);
         }

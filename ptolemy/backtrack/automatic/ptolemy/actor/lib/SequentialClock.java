@@ -95,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (yuhong)
  * @deprecated Use Clock instead.
  */
-public class SequentialClock extends TypedAtomicActor implements SequenceActor, Rollbackable {
+@Deprecated public class SequentialClock extends TypedAtomicActor implements SequenceActor, Rollbackable {
 
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
@@ -202,7 +202,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @exception IllegalActionException If the offsets array is not
      * nondecreasing and nonnegative, or it is not a row vector.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == offsets) {
             ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
             $ASSIGN$_offsets(new double[offsetsValue.length()]);
@@ -233,7 +233,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         SequentialClock newObject = (SequentialClock)super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
@@ -250,7 +250,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * the value in the offsets parameter is encountered that is greater
      * than the period, or if there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         output.send(0, _currentValue);
     }
@@ -262,7 +262,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * fireAt() method of the director throws it, or if the director does not
      * agree to fire the actor at the specified time.
      */
-    public synchronized void initialize() throws IllegalActionException  {
+    @Override public synchronized void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_firstFiring(true);
         $ASSIGN$_phase(0);
@@ -278,7 +278,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * scheduling the next firing, or if the length of the values and
      * offsets parameters don't match.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         if (!super.postfire()) {
             return false;
         }
@@ -305,7 +305,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
      * @return True.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         if (!super.prefire()) {
             return false;
         }

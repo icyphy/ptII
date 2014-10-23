@@ -183,7 +183,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the indexes vector is not
      * increasing and nonnegative, or the indexes is not a row vector.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
+    @Override public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == indexes) {
             ArrayToken indexesValue = (ArrayToken)indexes.getToken();
             $ASSIGN$_indexes(new int[indexesValue.length()]);
@@ -220,7 +220,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+    @Override public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         Pulse newObject = (Pulse)super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
@@ -247,7 +247,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the values and indexes parameters
      * do not have the same length, or if there is no director.
      */
-    public void fire() throws IllegalActionException  {
+    @Override public void fire() throws IllegalActionException  {
         super.fire();
         int currentIndex = 0;
         ArrayToken val = (ArrayToken)values.getToken();
@@ -281,7 +281,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * Set the iteration count to zero.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException  {
+    @Override public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_iterationCount(0);
         $ASSIGN$_indexColCount(0);
@@ -293,7 +293,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the expression of indexes
      * is not valid.
      */
-    public boolean postfire() throws IllegalActionException  {
+    @Override public boolean postfire() throws IllegalActionException  {
         if (_iterationCount <= _indexes[_indexes.length - 1]) {
             $ASSIGN$SPECIAL$_iterationCount(13, _iterationCount);
         }
@@ -307,7 +307,7 @@ public class Pulse extends SequenceSource implements Rollbackable {
      * Start an iteration.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean prefire() throws IllegalActionException  {
+    @Override public boolean prefire() throws IllegalActionException  {
         $ASSIGN$_match(false);
         return super.prefire();
     }
