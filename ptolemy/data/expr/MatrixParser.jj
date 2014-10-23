@@ -10,7 +10,7 @@ options {
 
 PARSER_BEGIN(MatrixParser)
 
-/* Parser for matrices written in matlab format.
+/* Parser for matrices written in matlab format. 
 
  Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
