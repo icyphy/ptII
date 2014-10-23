@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- Used by izPack to create Windows Menu Shortcuts.  See ptIIX_Y_setup_windows.xml -->
+<shortcuts>
+  <skipIfNotSupported/>
+
+  <programGroup defaultName="Ptolemy\ptII11.0.beta"
+                location="applications"/>
+
+  <shortcut
+    name="Vergil -ptiny"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\ptiny.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Ptiny 11.0.beta, the subset of Ptolemy II GUI"
+    iconFile="$INSTALL_PATH\doc\img\ptiny.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Ptiny"/>
+  </shortcut>
+
+   <shortcut
+     name="Ptolemy II $APP_VER Uninstaller"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     workingDirectory="$INSTALL_PATH"
+     target="$INSTALL_PATH\Uninstaller\uninstaller.jar"     
+     commandLine=""
+     iconFile="%SystemRoot%\system32\SHELL32.dll"
+     iconIndex="31" 
+     description="This uninstalls Ptolemy II 11.0.beta">
+     
+     <createForPack name="Ptiny" />
+   </shortcut>
+
+  <shortcut
+    name="Vergil"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\vergil.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Vergil 11.0.beta, the full Ptolemy II GUI"
+    iconFile="$INSTALL_PATH\doc\img\vergil.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+  <shortcut
+    name="HyVisual"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\hyvisual.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="HyVisual 11.0.beta, the Hybrid System GUI"
+    iconFile="$INSTALL_PATH\doc\img\hyvisual.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+  <shortcut
+    name="VisualSense"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\visualsense.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="VisualSense 11.0.beta, the Wireless Design GUI"
+    iconFile="$INSTALL_PATH\doc\img\visualsense.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="Full"/>
+  </shortcut>
+
+
+  <!-- Other places to update the book location: $PTII/adm/gen-X.Y/{makefile,ptIIX_Y_devel_setup_windows.xml} adm/test/Release.tcl -->
+   <shortcut
+     name="Systems Book"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\books\systems\PtolemyII_DigitalV1_02.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to view System Design, Modeling, and Simulation using Ptolemy II (PDF)"
+     >
+     <createForPack name="Docs" />
+   </shortcut>
+
+   <!-- shortcut
+     name="HyVisual Documentation"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\hyvisual.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the HyVisual 11.0.beta (PDF) user documentation"
+     >     
+     <createForPack name="FullDocs" />
+   </shortcut -->
+
+   <!-- shortcut
+     name="VisualSense Documentation"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\visualsense.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print the VisualSense 11.0.beta (PDF) user documentation"
+     >	  
+     <createForPack name="FullDocs" />
+   </shortcut -->
+
+</shortcuts>

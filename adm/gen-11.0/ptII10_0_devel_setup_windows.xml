@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- 
+    A sample installation file.
+    Use it as a base for your own installers :-)
+    
+    To compile it :
+    - go in the bin directory where you installed IzPack
+    - call "compile ../sample/install.xml -b ../sample"
+-->
+
+<installation version="1.0">
+
+    <!-- 
+        The info section.
+        The meaning of the tags should be natural ...
+    -->
+    <info>
+        <appname>Ptolemy II</appname>
+        <appversion>11.0.beta</appversion>
+	<appsubpath>Ptolemy/ptII11.0.beta</appsubpath>
+        <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
+	<javaversion>1.6</javaversion>
+    </info>
+    
+    <!-- 
+        The conditions section
+    -->
+    <conditions>
+      <condition type="variable" id="startPtiny">
+	<name>startPtiny</name>
+	<value>true</value>
+      </condition>
+      <condition type="variable" id="startVergil">
+	<name>startVergil</name>
+	<value>true</value>
+      </condition>
+      <condition type="packselection" id="fullPackSelected">
+        <packid>Full</packid>
+      </condition> 
+    </conditions>
+
+    <!-- 
+        The gui preferences indication.
+    -->
+    <guiprefs width="640" height="500" resizable="yes"/>
+    
+    <!-- 
+        The locale section.
+    -->
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <native type="izpack" name="ShellLink.dll"/>
+
+    <!-- 
+        The resources section.
+        The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
+    -->
+    <resources>
+        <res id="HTMLInfoPanel.info" src="index.htm"/> 
+        <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
+        <res id="InfoPanel.info" src="../dists/ptII11.0.beta/README.txt"/>
+        <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
+	<res id="Installer.image" src="../dists/ptII11.0.beta/doc/img/PtolemyIISmall.gif" />
+	<res id="StyleSheet" src="../dists/ptII11.0.beta/doc/default.css" />
+	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
+ 	<res id="userInputSpec.xml" src="userInputSpec.xml" />
+        <res src="border1.png" id="Installer.image.0"/>
+        <res src="border2.png" id="Installer.image.1"/>
+        <res src="border3.png" id="Installer.image.2"/>
+        <res src="border4.png" id="Installer.image.3"/>
+        <res src="border5.png" id="Installer.image.4"/>
+        <res src="border5.png" id="Installer.image.5"/>
+        <res src="border6.png" id="Installer.image.6"/>
+        <res src="border7.png" id="Installer.image.7"/>
+        <res src="border8.png" id="Installer.image.8"/>
+        <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
+    </resources>
+    
+
+    <!-- 
+        The panels section.
+        We indicate here which panels we want to use. The order will be respected.
+    -->
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="HTMLInfoPanel"/>
+        <panel classname="HTMLLicencePanel"/>
+        <panel classname="TargetPanel"/> 
+        <!-- panel classname="JDKPathPanel"/ -->
+        <panel classname="PacksPanel"/>
+        <panel classname="SummaryPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+ 	<panel classname="UserInputPanel" condition="!fullPackSelected"/>
+ 	<panel classname="UserInputPanel" condition="fullPackSelected"/>
+        <panel classname="ProcessPanel" condition="startPtiny|startVergil"/>
+        <!-- panel classname="SimpleFinishPanel"/ -->
+        <panel classname="FinishPanel"/>
+    </panels>
+    
+    <!-- 
+        The packs section.
+        We specify here our packs.
+    -->
+    <packs>
+        <pack name="Ptiny" required="yes">
+            <description>Ptiny: The common domains: Continuous, DE, DDF, HDF, Modal, PN, Rendezvous, SDF and SR.
+The Ptiny pack is required. 
+</description>
+            <file src="../dists/ptII11.0.beta/README.txt" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/copyright.htm" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/copyright.txt" targetdir="$INSTALL_PATH"/>
+
+<!--/MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/ptiny.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/ptiny.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <file src="../dists/ptII11.0.beta/histogram.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/histogram.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <file src="../dists/ptII11.0.beta/ptplot.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/ptplot.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
+
+	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- Ptiny.app -->
+
+
+	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS)
+		 and then copy the section below and use diff:
+
+		 # Copy the section below to /tmp/p0, then
+		 
+		 grep src= /tmp/p0 | sort > /tmp/p0a
+		 (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS) > /tmp/p1
+		 grep src= /tmp/p1 | sort > /tmp/p1a
+		 diff /tmp/p0a /tmp/p1a
+
+		 Then add missing jars
+	      -->
+            <file src="../dists/ptII11.0.beta/jar_dist/doc/docConfig.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/diva.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/kieler.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/guava.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/ptliblicenses.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/layout/layout.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/layout"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/ptsupport.jar"
+                  targetdir="$INSTALL_PATH/ptolemy"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/vergil.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/imprt/accessor/accessor.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/accessor"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/imprt/fmu/fmu.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/fmu"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/domains.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/parameters/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/parameters/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/matlab/matlab.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/matlab"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/matlab/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/matlab.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+<!--/MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/ptolemy/matlab/ptmatlab.dll"
+                  targetdir="$INSTALL_PATH/ptolemy/matlab"
+		  os="windows"/>
+<!--MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/ptsupport.jar"
+                  targetdir="$INSTALL_PATH/ptolemy"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/doc/design/usingVergil/usingVergil.jar"
+                  targetdir="$INSTALL_PATH/doc/design/usingVergil"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/jython.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/ptcolt.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/jna.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/gt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/aspect/aspect.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/aspect"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/aspect/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/aspect/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/colt/colt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/colt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/comm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/comm/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/conversions/json/json.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/conversions/json"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/fmi/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/fmi/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/hoc/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/hoc/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/javasound/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/javasound/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/python/python.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/python"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/python/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/python/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/security/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/security/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/ptalon/antlr/antlr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/antlr"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/ptalon/ptalon.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/ptalon/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/continuous/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/continuous/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/modal/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/modal/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/modal/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/modal/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/data/type/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/data/type/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/data/unit/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/data/unit/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ddf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ddf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/de/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/de/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/de/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/de/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/hdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/hdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/pn/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pn/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/pn/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pn/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/rendezvous/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/rendezvous/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/rendezvous/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/rendezvous/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sr/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/moml/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/moml/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/kernel/attributes/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/kernel/attributes/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/plot/plotapplication.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/plot"/>
+
+
+            <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
+            <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
+
+        </pack>
+        <pack name="Full" required="no">
+            <description>All of the domains, HyVisual and VisualSense.</description>
+<!--/MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/hyvisual.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/hyvisual.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <file src="../dists/ptII11.0.beta/vergil.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/vergil.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <file src="../dists/ptII11.0.beta/visualsense.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/visualsense.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+
+            <!-- No Viptos, it does not work, it requires ptinyos -->
+            <!-- file src="../dists/ptII11.0.beta/viptos.exe" targetdir="$INSTALL_PATH"/ -->
+            <!-- file src="../dists/ptII11.0.beta/doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
+
+<!--MacOSInclude-->
+
+	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- Vergil.app -->
+
+
+	    <!-- Update this $PTII/mk/jnlp.mk
+		 # Copy the section below to /tmp/f0, then
+		 
+		 grep src= /tmp/f0 | sort > /tmp/f0a
+		 (cd $PTII; make echo_jars JARS=FULL_ONLY_JNLP_JARS) > /tmp/f1
+		 (cd $PTII; make echo_jars JARS=CODEGEN_DOMAIN_JARS) >> /tmp/f1
+		 grep src= /tmp/f1 | sort > /tmp/f1a
+		 diff /tmp/f0a /tmp/f1a
+
+		 Then add missing jars
+	      -->
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/jasminclasses.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/sootclasses.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/copernicus/copernicus.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/copernicus"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/doc/design/design.jar"
+                  targetdir="$INSTALL_PATH/doc/design"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/doc/img/img.jar"
+                  targetdir="$INSTALL_PATH/doc/img"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lbnl/lbnl.jar"
+                  targetdir="$INSTALL_PATH/lbnl"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lbnl/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/lbnl/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/gt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt/demo"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/fmi/fmi.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/fmi"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/fmi/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/fmi/demo"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/io/comm/comm.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/io/comm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/io/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/vendors/misc/rxtx/RXTXcomm.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/rxtx"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/jai/jai.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/jmf/jmf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jmf"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/jmf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jmf/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/joystick/joystick.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/joystick"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/vendors/misc/joystick/Joystick.jar"
+                  targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/js.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/socketio.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/js/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/js/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/js/js.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/js"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/mail/mail.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/javax.mail.jar"
+                  targetdir="$INSTALL_PATH/vendors/lib/javax.mail.jar"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/ptalon/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/gt"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/ptalon/gt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/gt/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/ptCal.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/saxon8.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/saxon8-dom.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/java_cup.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/backtrack/backtrack.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/backtrack"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/backtrack/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/backtrack/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/caltrop/caltrop.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/caltrop"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/caltrop/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/caltrop/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/distributed/distributed.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/distributed"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/distributed/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/distributed/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/experimentalDomains.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/algebraic/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/algebraic/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ca/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ca/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ci/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ci/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ci/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ci/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/csp/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/csp/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/curriculum/curriculum.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/curriculum"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/dde/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dde/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/dde/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dde/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/dt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dt/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/dt/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dt/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/giotto/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/giotto/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/giotto/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/giotto/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/gr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/gr/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/gr/lib/quicktime/quicktime.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr/lib/quicktime"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/petrinet/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/petrinet/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/psdf/psdf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/psdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/psdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/mapss.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ptides/ptides.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptides"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ptides/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptides/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/lib/vq/vq.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/lib/vq/data/data.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq/data"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/optimize/optimize.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/optimize"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/optimize/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/optimize/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/taskpt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/taskpt/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/tester/tester.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tester"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/tdl/tdl.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tdl"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/tm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/tm/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tm/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/verification/verification.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/verification"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/verification/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/verification/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ptera/ptera.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptera"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/export/html/html.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/jsoup-1.7.3.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/export/web/web.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/export/exportFull.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/modal/fmv/fmv.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/modal/fmv"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/gt"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/tdl/tdl.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/tdl"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ptera/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptera/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ptera/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ptera/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/ptera/ptera.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/ptera"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/pdfrenderer/pdfrenderer.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/pdfrenderer"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/PDFRenderer.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/ptera/ptera.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/ptera"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/modal/fmv/fmv.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/modal/fmv"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/gt"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/tdl/tdl.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/tdl"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/cg/cg.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/cg"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/data/ontologies/ontologies.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/data/ontologies"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/data/ontologies/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/data/ontologies/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/ontologies/ontologies.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/ontologies"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sequence/sequence.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sequence"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/pthales/pthales.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pthales"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/pthales/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pthales/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/database/database.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/space/space.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/space"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/com/jgoodies/jgoodies.jar"
+                  targetdir="$INSTALL_PATH/com/jgoodies"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/bsh-2.0b4.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/mlc/mlc.jar"
+                  targetdir="$INSTALL_PATH/org/mlc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/json/json.jar"
+                  targetdir="$INSTALL_PATH/org/json"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/optimization/optimization.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/optimization"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/osc/osc.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/osc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/oscP5.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/ptango/ptango.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/ptango/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/ptango/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/javax.servlet-api-3.0.1.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/smack.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/smackx.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/fmi/fmi.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/fmi"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/gui/run/run.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gui/run"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/wireless/wireless.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/wireless/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/wireless/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless/doc"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ci/ci.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ci"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/continuous/continuous.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/ddf/ddf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/de/de.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/de"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/gr/gr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/gr"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/hdf/hdf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/modal/modal.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/modal"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/pn/pn.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/pn"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sdf/sdf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/sr/sr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/wireless/wireless.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/vergilApplet.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/faultModels/faultModels.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/faultModels"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/machineImprovisation/machineImprovisation.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/machineImprovisation"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/machineImprovisation/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/machineImprovisation/demo"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/machineLearning/machineLearning.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/machineLearning"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/com/cureos/cureos.jar"
+                  targetdir="$INSTALL_PATH/com/cureos"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/terraswarm/terraswarm.jar"
+                  targetdir="$INSTALL_PATH/org/terraswarm"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/org/terraswarm/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/org/terraswarm/demo"/>
+
+
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/lib/protobuf-java-2.4.1.jar"
+                  targetdir="$INSTALL_PATH/lib"/ -->
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/metroII/metroII.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/metroII"/-->
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/metroII/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/metroII/demo"/-->
+
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/openmodelica/openmodelica.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/openmodelica"/ -->
+
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/scr/scr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/scr"/ -->
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/ptolemy/domains/scr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/scr/demo"/-->
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/scr/scr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/scr"/-->
+
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/g4ltl.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl"/>
+            <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl/demo"/>
+
+        </pack>
+
+        <pack name="Docs" required="no">
+            <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
+<!--/MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/ptbook.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.beta/doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/doc/books/systems/PtolemyII_DigitalV1_02.pdf" targetdir="$INSTALL_PATH/doc/books/systems/"/>
+	    <!-- Java 1.7 and later produces html that is not properly rendered by JScrollPane, so we can't use
+		 vergil to view the Javadoc.
+		 If the javadoc output is in a jar file, then copying the file to a temporary file means that
+		 the page fails to display because the style sheet is not present.  Also, the links are bad.
+		 So, the solution is to go copy the contends of $PTII/doc/codeDoc to the install path -->
+
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/doc/codeDoc.jar"
+                  targetdir="$INSTALL_PATH/doc"/ -->
+	    <file src="../dists/ptII11.0.beta/doc/codeDoc" targetdir="$INSTALL_PATH/doc"/>
+
+        </pack>
+
+        <pack name="FullDocs" required="no">
+            <description>The documentation for HyVisual and VisualSense, including user documentation and java documentation.</description>
+<!--/MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
+            <file src="../dists/ptII11.0.beta/jar_dist/doc/codeDocHyVisual.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+            <!-- file src="../dists/ptII11.0.beta/jar_dist/doc/codeDocViptos.jar" targetdir="$INSTALL_PATH/doc"/ -->
+            <file src="../dists/ptII11.0.beta/jar_dist/doc/codeDocVisualSense.jar"
+                  targetdir="$INSTALL_PATH/doc"/>
+
+        </pack>
+
+<!--/MacOSInclude-->
+        <pack name="JRE" required="no">
+            <description>Java Runtime Environment (JRE) v1.5.0_51.  This JRE includes JAI, Java 3D, Joystick,  JMF, and Rxtx.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).  Install the JRE if you want to use the included optional packages.  Alternatively, install optionall packages by hand.  If you plan on recompiling Ptolemy II, you will need a JDK, not a JRE.</description>
+            <file src="jre" targetdir="$INSTALL_PATH"/>
+        </pack>
+<!--MacOSInclude-->
+
+        <pack name="Sources" required="no">
+            <description>The Ptolemy II sources.</description>
+	    <!-- Can't just copy the directory, need to spec files -->
+	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
+	    <file src="src/ptII11.0.beta/README.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/bin" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/build.default.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/build.xml.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/com" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/config" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/configure" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/configure.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/contrib" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/copyright.htm" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/copyright.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/diva" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/doc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/jars.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/lbnl" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/lib" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/makefile" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/mk" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/net" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/org" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/plugin.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/pom.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/ptdb" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/pt-modules" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/ptolemy" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/ptserver" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/thales" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/util" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergil.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilBCVTB.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilDSP.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilHyVisual.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilPtiny.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilPtinyKepler.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilPtinySandbox.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilSpace.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/vergilVisualSense.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/.classpath.default" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/.classpath.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/.cshrc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/.eclipse.epf" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.beta/.glimpse_exclude" targetdir="$INSTALL_PATH"/>
+            <!-- file src="ptII11.0.beta.src.jar" targetdir="$INSTALL_PATH"/ -->
+            <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
+        </pack>
+    </packs>
+
+    <!-- Include ExtractJarFile.class for the Process Panel -->
+    <!-- jar src="ExtractJarFile.jar" stage="install"/-->
+    
+</installation>

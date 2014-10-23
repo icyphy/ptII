@@ -13,7 +13,7 @@
  */
 function demoLink(indent, relativeModelPath, description) {
      // The path to the JNLP and Export-to-Web files.  This will change between releases.
-     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/";
+     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/";
 
      document.write("<br/>" + indent + "<a href=\"" + ptII + relativeModelPath + "\" target =\"_top\">" + description + "</a>\n");
 }
@@ -30,7 +30,7 @@ function demoLink(indent, relativeModelPath, description) {
  */
 function demoLinkNoBR(indent, relativeModelPath, description) {
      // The path to the JNLP and Export-to-Web files.  This will change between releases.
-     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/";
+     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/";
 
      document.write(indent + "<a href=\"" + ptII + relativeModelPath + "\" target =\"_top\">" + description + "</a>");
 }
@@ -43,7 +43,7 @@ function demoLinkNoBR(indent, relativeModelPath, description) {
 
 function demoAndMoMLLink(relativeModelPath, description) {
      // The path to the JNLP and Export-to-Web files.  This will change between releases.
-     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/";
+     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/";
 
      document.write(description + " (<a href=\"" + ptII + relativeModelPath + ".xml\" target =\"_top\">MoML</a>,\n" + "<a href=\"" + ptII + relativeModelPath + "/\" target =\"_top\">HTML</a>)\n");
 }

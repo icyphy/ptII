@@ -64,7 +64,7 @@ if {[string compare test [info procs test]] == 1} then {
 set major_version 10.0
 set minor_version devel
 set version $major_version.$minor_version
-set windows_version 10_0_devel
+set windows_version 11_0_devel
 set gendir $PTII/adm/gen-$major_version
 set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar

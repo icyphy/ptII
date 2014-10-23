@@ -64,7 +64,7 @@ if {[string compare test [info procs test]] == 1} then {
 set major_version 10.0
 set minor_version devel
 set version $major_version.$minor_version
-set windows_version 10_0_devel
+set windows_version 11_0_devel
 set gendir $PTII/adm/gen-$major_version
 set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
@@ -114,7 +114,7 @@ test nightly-1.7 {update_moog} {
     # Check that the files are there.
     set results {}
     set date [exec date +%Y-%m-%d]
-    set files [list ptII10.0.devel-$date.src.tar.gz  ptII10.0.devel.setup.mac-$date.app.tar.gz  ptII10_0_devel_setup_windows-$date.exe  ptII10_0_devel_setup_windows_64-$date.exe ]
+    set files [list ptII11.0.beta-$date.src.tar.gz  ptII11.0.beta.setup.mac-$date.app.tar.gz  ptII11_0_devel_setup_windows-$date.exe  ptII11_0_devel_setup_windows_64-$date.exe ]
     foreach file $files {
     puts $file
 	set url [java::new java.net.URL http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/$file]

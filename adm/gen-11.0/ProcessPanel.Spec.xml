@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<processing>
+  <job name="Execute Ptiny.app" condition="startPtiny">
+    <os family="mac" />
+      <executefile name="/usr/bin/open">
+	<arg>$INSTALL_PATH/bin/Ptiny.app</arg>
+      </executefile>
+  </job>
+  <job name="Execute Vergil.app" condition="startVergil">
+    <executeForPack name="Full"/>
+    <os family="mac" />
+    <executefile name="/usr/bin/open">
+      <arg>$INSTALL_PATH/bin/Vergil.app</arg>
+    </executefile>
+  </job>
+
+
+  <job name="Execute ptiny.exe"  condition="startPtiny">
+    <os family="windows" />
+    <executefile name="$INSTALL_PATH/ptiny.exe">
+    </executefile>
+  </job>
+  <job name="Execute vergil.exe" condition="startVergil">
+    <executeForPack name="Full"/>
+    <os family="windows" />
+    <executefile name="$INSTALL_PATH/vergil.exe">
+    </executefile>
+  </job>
+
+</processing>
+

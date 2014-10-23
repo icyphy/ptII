@@ -1,0 +1,29 @@
+#!/bin/sh
+# $Id$
+# Start Xvfb, save the DOPCenter image, stop Xvfb
+
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X7-lock
+
+echo "Starting Xvfb"
+Xvfb :7 -screen 0 1024x768x24 &
+export DISPLAY=localhost:7.0
+
+echo "Loading DOPCenter model, running it and exporting"
+
+chmod 0400 $HOME/.spacecadet
+
+# Change directories so that the file is created in the same
+# directory as the model.
+cd $PTII/ptolemy/domains/space/demo/DOPCenter
+$PTII/ptolemy/domains/space/demo/DOPCenter/updateDOPCenterImage
+
+ls -l $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
+
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X1-lock
+exit 0
