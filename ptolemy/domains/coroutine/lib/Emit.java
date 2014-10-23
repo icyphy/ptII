@@ -98,7 +98,7 @@ public class Emit extends AtomicContinuationActor {
     ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         addExitLocation(nextExit);
 

@@ -75,7 +75,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  */
 @SuppressWarnings("serial")
 class LayoutTable extends JTable implements DragSourceListener,
-        DragGestureListener, DropTargetListener, Autoscroll {
+DragGestureListener, DropTargetListener, Autoscroll {
     protected DragSource fDragSource = null;
     protected DropTarget fDropTarget = null;
     protected Component dragComponent = null;

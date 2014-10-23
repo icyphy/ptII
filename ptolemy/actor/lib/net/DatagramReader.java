@@ -568,7 +568,7 @@ public class DatagramReader extends TypedAtomicActor {
 
                     if (_multicastSocket != null
                             && newSocketNumber != _multicastSocket
-                                    .getLocalPort()) {
+                            .getLocalPort()) {
                         synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -1204,8 +1204,8 @@ public class DatagramReader extends TypedAtomicActor {
                                     .getToken()).booleanValue()) {
                                 if (_multiCast) {
                                     _multicastSocket
-                                            .setReceiveBufferSize(((IntToken) platformBufferLength
-                                                    .getToken()).intValue());
+                                    .setReceiveBufferSize(((IntToken) platformBufferLength
+                                            .getToken()).intValue());
                                 } else {
                                     _socket.setReceiveBufferSize(((IntToken) platformBufferLength
                                             .getToken()).intValue());

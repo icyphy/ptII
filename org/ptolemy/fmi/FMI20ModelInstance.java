@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
 
 import com.sun.jna.Pointer;
@@ -34,6 +34,7 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import java.util.Arrays;
 import java.util.List;
+
 /**
  * A Java Native Access (JNA) interface to the Functional Mock-up Interface 2.0 ModelInstance struct.
  * @author Christopher Brooks
@@ -60,14 +61,15 @@ public class FMI20ModelInstance extends Structure {
 
     /** Access the structure by reference.
      */
-    public static class ByReference extends FMI20ModelInstance implements Structure.ByReference {
+    public static class ByReference extends FMI20ModelInstance implements
+            Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
-    public static class ByValue extends FMI20ModelInstance implements Structure.ByValue {
+    public static class ByValue extends FMI20ModelInstance implements
+            Structure.ByValue {
     };
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
@@ -104,7 +106,7 @@ public class FMI20ModelInstance extends Structure {
     public PointerByReference GUID;
 
     /** C type : const fmi2CallbackFunctions*. */
-    public Pointer /*org.ptolemy.fmi.fmi2CallbackFunctions.ByReference*/ functions;
+    public Pointer /*org.ptolemy.fmi.fmi2CallbackFunctions.ByReference*/functions;
 
     /** True if logging is on. */
     public int loggingOn;
@@ -131,7 +133,10 @@ public class FMI20ModelInstance extends Structure {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    protected List<? > getFieldOrder() {
-        return Arrays.asList("r", "i", "b", "s", "isPositive", "time", "instanceName", "type", "GUID", "functions", "loggingOn", "logCategories", "componentEnvironment", "state", "eventInfo", "isDirtyValues");
+    protected List<?> getFieldOrder() {
+        return Arrays.asList("r", "i", "b", "s", "isPositive", "time",
+                "instanceName", "type", "GUID", "functions", "loggingOn",
+                "logCategories", "componentEnvironment", "state", "eventInfo",
+                "isDirtyValues");
     }
 }

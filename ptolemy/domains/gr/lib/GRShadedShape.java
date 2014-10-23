@@ -243,10 +243,10 @@ abstract public class GRShadedShape extends GRActor3D {
 
                     if (transparent > 0.0) {
                         _transparencyAttributes
-                                .setTransparencyMode(TransparencyAttributes.NICEST);
+                        .setTransparencyMode(TransparencyAttributes.NICEST);
                     } else {
                         _transparencyAttributes
-                                .setTransparencyMode(TransparencyAttributes.NONE);
+                        .setTransparencyMode(TransparencyAttributes.NONE);
                     }
 
                     _transparencyAttributes.setTransparency(transparent);
@@ -462,15 +462,15 @@ abstract public class GRShadedShape extends GRActor3D {
         // appropriate capabilities.
         if (allowChanges) {
             _transparencyAttributes
-                    .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+            .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
             _transparencyAttributes
-                    .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+            .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
             _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
             _coloringAttributes
-                    .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
+            .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
             _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
             _polygonAttributes
-                    .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
+            .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
 
         _changesAllowedNow = allowChanges;
@@ -522,7 +522,7 @@ abstract public class GRShadedShape extends GRActor3D {
         // attributes even if not needed now.
         if (attributes == null
                 && ((BooleanToken) allowRuntimeChanges.getToken())
-                        .booleanValue()) {
+                .booleanValue()) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
             _appearance.setTextureAttributes(attributes);

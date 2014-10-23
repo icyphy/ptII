@@ -185,7 +185,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -262,7 +262,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                         while (!_areThreadsDeadlocked()
                                 && !_areAllThreadsStopped()
                                 && _getActiveThreadsCount() != _getMetroIIEventBlockedThreadsCount()
-                                        + _getBlockedThreadsCount()) {
+                                + _getBlockedThreadsCount()) {
                             wait(1);
                         }
 
@@ -304,8 +304,8 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                     } finally {
                         if (outsideDirector != null) {
                             ((ProcessDirector) outsideDirector)
-                                    .threadUnblocked(Thread.currentThread(),
-                                            null);
+                            .threadUnblocked(Thread.currentThread(),
+                                    null);
                         }
                     }
                 }

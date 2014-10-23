@@ -220,7 +220,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 A_new = _A0;
                 prior_new = _priors;
                 System.out
-                        .println("Expectation Maximization failed to converge");
+                .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means

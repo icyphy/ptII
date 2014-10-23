@@ -87,7 +87,7 @@ customization is to require a PtolemyFormEditor constructor argument.
 @Pt.AcceptedRating Red (cxh)
  */
 public class PaletteList extends JList implements DragSourceListener,
-        DragGestureListener {
+DragGestureListener {
 
     /** Construct a PaletteList.
      * @param editor The form editor

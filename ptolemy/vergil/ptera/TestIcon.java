@@ -207,13 +207,13 @@ public class TestIcon extends NameIcon {
                 if (array.length() == 4) {
                     Color color = new Color(
                             (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(3))
-                                    .doubleValue());
+                            .doubleValue());
                     return color;
                 }
             }

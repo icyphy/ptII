@@ -252,21 +252,21 @@ public class HierarchicalModeController extends StateController {
                                     && port instanceof IOPort) {
                                 try {
                                     ((RefinementPort) newPort)
-                                            .setMirrorDisable(true);
+                                    .setMirrorDisable(true);
 
                                     if (((IOPort) port).isInput()) {
                                         ((RefinementPort) newPort)
-                                                .setInput(true);
+                                        .setInput(true);
                                     }
 
                                     if (((IOPort) port).isOutput()) {
                                         ((RefinementPort) newPort)
-                                                .setOutput(true);
+                                        .setOutput(true);
                                     }
 
                                     if (((IOPort) port).isMultiport()) {
                                         ((RefinementPort) newPort)
-                                                .setMultiport(true);
+                                        .setMultiport(true);
                                     }
 
                                     /* No longer needed since Yuhong modified
@@ -279,7 +279,7 @@ public class HierarchicalModeController extends StateController {
                                      */
                                 } finally {
                                     ((RefinementPort) newPort)
-                                            .setMirrorDisable(false);
+                                    .setMirrorDisable(false);
                                 }
                             }
                         } finally {

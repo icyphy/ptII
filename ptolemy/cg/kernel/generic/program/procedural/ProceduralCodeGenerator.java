@@ -76,7 +76,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     public ProceduralCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension, templateExtension);
 
         compile = new Parameter(this, "compile");
@@ -198,7 +198,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     public void markFunctionCalled(String name,
             ProceduralTemplateParser templateParser)
-            throws IllegalActionException {
+                    throws IllegalActionException {
     }
 
     ///////////////////////////////////////////////////////////////////

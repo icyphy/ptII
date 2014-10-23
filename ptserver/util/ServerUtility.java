@@ -485,13 +485,13 @@ public class ServerUtility {
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
             System.out
-            .println("_mergeElements() looping "
-                    + attribute.getClass()
-                    + " "
-                    + attribute.getName()
-                    + " "
-                    + (classesToMerge == null ? "null" : classesToMerge
-                            .contains(attribute.getClass()))
+                    .println("_mergeElements() looping "
+                            + attribute.getClass()
+                            + " "
+                            + attribute.getName()
+                            + " "
+                            + (classesToMerge == null ? "null" : classesToMerge
+                                    .contains(attribute.getClass()))
                             + " "
                             + (namedObjectsToMerge == null ? "null"
                                     : namedObjectsToMerge.contains(attribute
@@ -535,7 +535,7 @@ public class ServerUtility {
                     clonedAttribute.setPersistent(true);
                     if (clonedAttribute instanceof Settable) {
                         ((Settable) clonedAttribute)
-                                .setVisibility(Settable.NONE);
+                        .setVisibility(Settable.NONE);
                     }
                 } catch (NameDuplicationException e) {
                     // The attribute already exists. Since deepAttributeList returns all deeply

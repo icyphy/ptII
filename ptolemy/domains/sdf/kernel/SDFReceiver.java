@@ -316,7 +316,7 @@ public class SDFReceiver extends AbstractReceiver {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity of " + _queue.getCapacity()
-                            + ". Cannot put a token.");
+                    + ". Cannot put a token.");
         }
     }
 

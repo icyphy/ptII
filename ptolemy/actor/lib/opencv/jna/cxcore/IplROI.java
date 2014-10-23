@@ -45,7 +45,7 @@ public class IplROI extends Structure {
     }
 
     public static class ByReference extends IplROI implements
-            Structure.ByReference {
+    Structure.ByReference {
     }
 
     /** Return the field names in the proper order.

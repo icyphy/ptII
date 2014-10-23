@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import org.ptolemy.machineImprovisation.MusicSpecs;
@@ -90,7 +90,7 @@ public class NoteToMidiKey extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (letterNote.hasToken(0)) {
-            String letter = ((StringToken)letterNote.get(0)).stringValue();
+            String letter = ((StringToken) letterNote.get(0)).stringValue();
             midiKey.send(0, new IntToken(MusicSpecs.translateNoteToKey(letter)));
         }
     }

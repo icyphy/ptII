@@ -131,7 +131,7 @@ public interface ProcessReceiver extends Receiver {
      *  @see BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException;
+    IllegalActionException;
 
     /** Return true if this receiver is connected to the outside of a
      *  boundary port. A boundary port is an opaque port that is

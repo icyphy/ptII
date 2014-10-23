@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class OracleModel extends ModalRefinement{
+public class OracleModel extends ModalRefinement {
 
     /**
      * Constructs an OracleModel object.
@@ -76,24 +76,24 @@ public class OracleModel extends ModalRefinement{
     }
 
     public OracleModel(CompositeEntity container, String name,
-            Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
-            throws NameDuplicationException, IllegalActionException {
+            Object[] trainingSequence, double repetitionFactor, boolean pitch,
+            boolean validate) throws NameDuplicationException,
+            IllegalActionException {
         super(container, name);
         _init(trainingSequence, repetitionFactor, pitch, validate);
         // TODO Auto-generated constructor stub
     }
 
     /**
-    * Specifies the controller value.
-    */
-    public void setController( FactorOracle f) {
+     * Specifies the controller value.
+     */
+    public void setController(FactorOracle f) {
         _controller = f;
     }
 
-
-///////////////////////////////////////////////////////////////////
-////                         private methods                   ////
-// Initialize the model.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    // Initialize the model.
 
     /**
      * Create a Factor Oracle controller
@@ -105,16 +105,17 @@ public class OracleModel extends ModalRefinement{
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    protected FactorOracle _createController(Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate)
+    protected FactorOracle _createController(Object[] trainingSequence,
+            double repetitionFactor, boolean pitch, boolean validate)
             throws IllegalActionException, NameDuplicationException {
         //return new FactorOracle(this, "_Controller");
         return new FactorOracle(this, "_Controller", trainingSequence,
                 repetitionFactor, pitch, validate);
     }
 
-
-    private void _init(Object[] trainingSequence, double repetitionFactor, boolean pitch, boolean validate) throws IllegalActionException,
-            NameDuplicationException {
+    private void _init(Object[] trainingSequence, double repetitionFactor,
+            boolean pitch, boolean validate) throws IllegalActionException,
+    NameDuplicationException {
 
         // Set the director before changing directorClass, because changing the
         // latter causes a ChangeRequest to be issued (in superclass'
@@ -126,7 +127,7 @@ public class OracleModel extends ModalRefinement{
         if (controller != null) {
             controller.setContainer(null);
         }
-        _controller = _createController(trainingSequence,
-                repetitionFactor, pitch, validate);
+        _controller = _createController(trainingSequence, repetitionFactor,
+                pitch, validate);
     }
-        }
+}

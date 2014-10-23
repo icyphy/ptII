@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
-        Placeable {
+Placeable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

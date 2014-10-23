@@ -177,7 +177,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      */
     @Override
     public void initWindowAndSizeProperties() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute) _plotterBase
                 .getAttribute("_windowProperties",
                         WindowPropertiesAttribute.class);

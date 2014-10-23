@@ -101,9 +101,10 @@ public class FactorOracle extends ModalController {
      */
     public FactorOracle(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor)
-                    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         this(container, name, trainingSequence, repetitionFactor, false, false);
     }
+
     /**
      * Constructs a FactorOracle object.
      *
@@ -114,7 +115,7 @@ public class FactorOracle extends ModalController {
      */
     public FactorOracle(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        this(container, name, null, 1.0 );
+        this(container, name, null, 1.0);
     }
 
     /**
@@ -130,8 +131,9 @@ public class FactorOracle extends ModalController {
      * @exception NameDuplicationException
      */
     public FactorOracle(CompositeEntity container, String name,
-            Object[] trainingSequence, double repetitionFactor, boolean symbolicOutput, boolean validateSymbols)
-                    throws IllegalActionException, NameDuplicationException {
+            Object[] trainingSequence, double repetitionFactor,
+            boolean symbolicOutput, boolean validateSymbols)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setClassName("org.ptolemy.machineImprovisation.FactorOracle");
 
@@ -158,7 +160,6 @@ public class FactorOracle extends ModalController {
         }
         _symbolic = symbolicOutput;
 
-
         _validatePitch = validateSymbols;
 
         _learnFactorOracle();
@@ -169,7 +170,6 @@ public class FactorOracle extends ModalController {
         validatePitch.setToken(new ChordFunctionToken());
         validatePitch.setVisibility(Settable.EXPERT);
         validatePitch.setPersistent(false);
-
 
     }
 
@@ -204,7 +204,7 @@ public class FactorOracle extends ModalController {
 
         try {
             newObject.validatePitch
-            .setToken(newObject.new ChordFunctionToken());
+                    .setToken(newObject.new ChordFunctionToken());
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
             throw new CloneNotSupportedException(e.getMessage());
@@ -216,11 +216,11 @@ public class FactorOracle extends ModalController {
     ////                         public methods                    ////
 
     private void _buildFactorOracle() throws NameDuplicationException,
-    IllegalActionException {
+            IllegalActionException {
 
         // create factor oracle transitions including the suffix links.
         _stateList = new HashMap();
-        if (_adjacencyList.size() > 0 ) {
+        if (_adjacencyList.size() > 0) {
             for (int i = 0; i <= _adjacencyList.size(); i++) {
                 _createNewState(i); //add state to the FO
             }
@@ -228,21 +228,20 @@ public class FactorOracle extends ModalController {
         }
     }
 
-    private void _createNewState(final int i)
-            throws IllegalActionException, NameDuplicationException {
+    private void _createNewState(final int i) throws IllegalActionException,
+            NameDuplicationException {
         final Double horizontal = i * HORIZONTAL_SPACING_PIXELS;
-        final Double vertical   = i * VERTICAL_SPACING_PIXELS;
+        final Double vertical = i * VERTICAL_SPACING_PIXELS;
         try {
             String name = (STATE_PREFIX + i);
             State s = new State(FactorOracle.this, name);
             // set location
-            Location stateLocation = (Location) s
-                    .getAttribute("_location");
+            Location stateLocation = (Location) s.getAttribute("_location");
             if (stateLocation == null) {
                 stateLocation = new Location(s, "_location");
             }
-            stateLocation.setExpression("{" + horizontal.toString()
-                    + "," + vertical.toString() + "}");
+            stateLocation.setExpression("{" + horizontal.toString() + ","
+                    + vertical.toString() + "}");
 
             if (i == 0) {
                 s.isInitialState.setExpression("true");
@@ -253,7 +252,8 @@ public class FactorOracle extends ModalController {
         } catch (IllegalActionException e) {
             throw new IllegalActionException(this);
         } catch (NameDuplicationException e) {
-            throw new NameDuplicationException(this,"Element with name already exists in Factor Oracle");
+            throw new NameDuplicationException(this,
+                    "Element with name already exists in Factor Oracle");
         }
     }
 
@@ -284,7 +284,7 @@ public class FactorOracle extends ModalController {
             Object wiSon = _inputSequence[i - 1];
             while (l != -1
                     && ((List) _adjacencyListSymbols.get(l)).contains(wiSon) == false) {
-                List prevList = (List<Integer>) _getTransitionsFrom(l);
+                List prevList = _getTransitionsFrom(l);
                 prevList.add(i);
                 List prevSymbols = (List<Character>) _adjacencyListSymbols
                         .get(l);
@@ -305,7 +305,8 @@ public class FactorOracle extends ModalController {
         }
     }
 
-    private void _setTransitions() throws IllegalActionException, NameDuplicationException {
+    private void _setTransitions() throws IllegalActionException,
+            NameDuplicationException {
 
         String exitAngle;
         String outputExpression;
@@ -336,11 +337,10 @@ public class FactorOracle extends ModalController {
                 } else {
                     // divide the improvisation probability amongst the other transitions
                     int numberOfBranches = nTransitions - (1 - suffixCount);
-                    _probability = (1.0 - _repetitionFactor)
-                            / numberOfBranches;
+                    _probability = (1.0 - _repetitionFactor) / numberOfBranches;
                     // lose the higher digits to avoid overflow probability
-                    _probability = (Math.round(_probability
-                            * precisionFactor - 1))
+                    _probability = (Math.round(_probability * precisionFactor
+                            - 1))
                             / precisionFactor;
                     exitAngle = SKIP_EXIT_ANGLE;
                 }
@@ -354,9 +354,8 @@ public class FactorOracle extends ModalController {
 
                     String outputChar = " ";
                     // get the symbol to be produced, when this transition is taken
-                    outputChar = ((List) (_adjacencyListSymbols.get(i)))
-                            .get(k).toString();
-
+                    outputChar = ((List) (_adjacencyListSymbols.get(i))).get(k)
+                            .toString();
 
                     // if chord progression specification exists, a check will be added in conjunction with the guard expression
                     String pitchValidationExpression = "validatePitch(\""
@@ -380,10 +379,12 @@ public class FactorOracle extends ModalController {
                     (t.exitAngle).setExpression(exitAngle);
                     (t.outputActions).setExpression(outputExpression);
                     if (_validatePitch) {
-                        (t.guardExpression).setExpression(transitionProbabilityExpression
-                                + "&" + pitchValidationExpression);
+                        (t.guardExpression)
+                                .setExpression(transitionProbabilityExpression
+                                        + "&" + pitchValidationExpression);
                     } else {
-                        (t.guardExpression).setExpression(transitionProbabilityExpression);
+                        (t.guardExpression)
+                                .setExpression(transitionProbabilityExpression);
                     }
                     ((State) _stateList.get(i)).outgoingPort.link(t);
                     ((State) _stateList.get(j)).incomingPort.link(t);
@@ -395,8 +396,7 @@ public class FactorOracle extends ModalController {
             int destination = (Integer) _suffixLinks.get(i);
             String relationName = "relation" + i + destination;
             if (destination >= 0) {
-                Transition t = new Transition(FactorOracle.this,
-                        relationName);
+                Transition t = new Transition(FactorOracle.this, relationName);
                 (t.exitAngle).setExpression(exitAngle);
                 (t.defaultTransition).setExpression("true");
                 (t.guardExpression).setExpression("input_isPresent");
@@ -471,8 +471,7 @@ public class FactorOracle extends ModalController {
     private static final String STRAIGHT_EXIT_ANGLE = "0.0";
 
     private static Type[] _CHORD_FUNCTION_ARG_TYPE = { BaseType.STRING,
-        BaseType.STRING };
-
+            BaseType.STRING };
 
     /**
      * An inner class that defines a Chord Function Token,  which is used in
@@ -494,7 +493,8 @@ public class FactorOracle extends ModalController {
         @Override
         public Token apply(Token[] arguments) throws IllegalActionException {
 
-            if (arguments==null || arguments.length!=this.getNumberOfArguments()) {
+            if (arguments == null
+                    || arguments.length != this.getNumberOfArguments()) {
                 throw new IllegalArgumentException("Invalid arguments.");
             }
             if (arguments[0] instanceof StringToken
@@ -503,8 +503,7 @@ public class FactorOracle extends ModalController {
                 String pureNote = noteToTest.substring(0,
                         noteToTest.length() - 1);
                 String chordName = ((StringToken) arguments[1]).stringValue();
-                List chordTones = MusicSpecs.getChordPitches(
-                        chordName, true);
+                List chordTones = MusicSpecs.getChordPitches(chordName, true);
 
                 if (chordTones != null) {
                     System.out.println("Chord: " + chordName + " Tones:"
@@ -520,8 +519,6 @@ public class FactorOracle extends ModalController {
             }
             return BooleanToken.FALSE;
         }
-
-
 
         @Override
         public int getNumberOfArguments() {

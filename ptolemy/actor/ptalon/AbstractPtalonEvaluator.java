@@ -137,7 +137,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -201,7 +201,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
@@ -261,7 +261,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -321,7 +321,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -382,7 +382,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
 
             _currentIfTree.mapName(name, uniqueName);
@@ -447,7 +447,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
             if (_resetParameters || !parameter.hasValue()) {
@@ -508,7 +508,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -558,7 +558,7 @@ public abstract class AbstractPtalonEvaluator {
                 }
             } else {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -609,7 +609,7 @@ public abstract class AbstractPtalonEvaluator {
         if (_inNewWhileIteration()) {
             if (_currentIfTree.isForStatement) {
                 _currentIfTree
-                .setEnteredIteration(name, _currentIfTree.entered);
+                        .setEnteredIteration(name, _currentIfTree.entered);
             } else {
                 IfTree tree = _currentIfTree;
                 while (!tree.isForStatement) {

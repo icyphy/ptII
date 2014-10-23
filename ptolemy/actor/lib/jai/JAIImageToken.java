@@ -193,10 +193,10 @@ public class JAIImageToken extends ImageToken {
         // FIXME: return a value that can be parsed by the expression language.
         _bufferedImage = _renderedOp.getRendering().getAsBufferedImage();
         return "{type=\"" + getClass() + "\" width=\""
-                + _bufferedImage.getWidth(null) + "\" height=\""
-                + _bufferedImage.getHeight(null) + "\" bands=\""
-                + _renderedOp.getNumBands() + "\" toString=\""
-                + _renderedOp.toString() + "\"}";
+        + _bufferedImage.getWidth(null) + "\" height=\""
+        + _bufferedImage.getHeight(null) + "\" bands=\""
+        + _renderedOp.getNumBands() + "\" toString=\""
+        + _renderedOp.toString() + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////

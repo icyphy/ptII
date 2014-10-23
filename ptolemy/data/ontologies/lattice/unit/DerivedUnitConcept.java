@@ -115,7 +115,7 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap,
             ScalarToken newUnitFactor, Ontology unitOntology)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         if (_isDimensionMapEmpty(dimensionMap)) {
             return _getDimensionlessConcept(unitOntology);
@@ -297,7 +297,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private void _setComponentUnitsMap(RecordToken derivedUnitRecord,
             DerivedDimensionRepresentativeConcept unitDimensionRepresentative)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions = unitDimensionRepresentative
                 .getComponentDimensions();
 
@@ -391,7 +391,7 @@ public class DerivedUnitConcept extends UnitConcept {
     private static void _addBaseUnit(
             Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseComponentUnits,
             BaseUnitConcept baseUnit, int exponentValue)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         BaseDimensionRepresentativeConcept baseDimension = (BaseDimensionRepresentativeConcept) baseUnit
                 .getDimension();
@@ -484,7 +484,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static boolean _anyUnitHasANonZeroOffset(
             Map<? extends DimensionRepresentativeConcept, ? extends List<? extends UnitConcept>> componentUnitsMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         for (List<? extends UnitConcept> unitList : componentUnitsMap.values()) {
             for (UnitConcept unit : unitList) {
@@ -514,7 +514,7 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap,
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>> baseComponentUnits = new HashMap<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>>();
 
@@ -577,7 +577,7 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap,
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseComponentUnitsSeparateExponents = new HashMap<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]>();
 
@@ -600,7 +600,7 @@ public class DerivedUnitConcept extends UnitConcept {
                             ((DerivedUnitConcept) unit).getComponentUnits(),
                             unitDimensionMap,
                             DerivedDimensionRepresentativeConcept
-                                    .deriveComponentBaseDimensionsMap(unitDimensionMap));
+                            .deriveComponentBaseDimensionsMap(unitDimensionMap));
                     _addDerivedUnit(baseComponentUnitsSeparateExponents,
                             derivedUnitBaseComponentSeparateExponents, exponent);
                 } else {
@@ -626,7 +626,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static List<UnitConcept> _findEquivalentUnitConcepts(
             DimensionRepresentativeConcept dimension, ScalarToken newUnitFactor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         // Create an epsilon for testing unit factor closeness that is small
         // relative to the value of the unit factor.
@@ -653,7 +653,7 @@ public class DerivedUnitConcept extends UnitConcept {
             }
             if (noUnitOffsets
                     && newUnitFactor.isCloseTo(unitFactor, unitFactorEpsilon)
-                            .booleanValue()) {
+                    .booleanValue()) {
                 matchingUnits.add(unit);
             }
         }
@@ -757,7 +757,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static Concept _getSingleUnitConceptInComponentUnitsMap(
             Map<? extends DimensionRepresentativeConcept, ? extends List<? extends UnitConcept>> componentUnitsMap,
-            ScalarToken newUnitFactor) throws IllegalActionException {
+                    ScalarToken newUnitFactor) throws IllegalActionException {
 
         if (componentUnitsMap.values().size() != 1) {
             throw new IllegalActionException("The component units map does "
@@ -860,7 +860,7 @@ public class DerivedUnitConcept extends UnitConcept {
     private static List<BaseUnitConcept> _removeMatchingListElements(
             List<BaseUnitConcept> originalList,
             List<BaseUnitConcept> elementsToBeRemoved)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (originalList == null) {
             throw new IllegalActionException("Original list is null so no "
                     + "elements can be removed from it.");

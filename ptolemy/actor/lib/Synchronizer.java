@@ -93,7 +93,7 @@ public class Synchronizer extends Transformer {
         if (inWidth != outWidth) {
             throw new IllegalActionException(this,
                     "Unequal synchronizer channels: " + inWidth
-                            + " inputs and " + outWidth + " outputs.");
+                    + " inputs and " + outWidth + " outputs.");
         } else {
             for (int i = 0; i < inWidth; i++) {
                 output.send(i, input.get(i));

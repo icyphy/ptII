@@ -252,7 +252,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      */
     protected FlatTokenInfiniteConcept(Ontology ontology,
             FlatTokenRepresentativeConcept representative, Token value)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(ontology);
         _representative = representative;
         _tokenValue = value;

@@ -229,7 +229,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
             HighlightDependents prerequisites = new HighlightDependents(
                     "Highlight prerequisites", false, false, false);
             _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(prerequisites));
+            .addMenuItemFactory(new MenuActionFactory(prerequisites));
 
             HighlightDependents clear2 = new HighlightDependents(
                     "Clear prerequisites", false, true, false);

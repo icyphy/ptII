@@ -141,8 +141,8 @@ public class SoundWriter {
             System.out.println("SoundWriter: constructor : channels = "
                     + channels);
             System.out
-                    .println("SoundWriter: constructor : putSamplesArraySize = "
-                            + putSamplesArraySize);
+            .println("SoundWriter: constructor : putSamplesArraySize = "
+                    + putSamplesArraySize);
         }
     }
 
@@ -271,7 +271,7 @@ public class SoundWriter {
 
         AudioInputStream audioInputStream = new AudioInputStream(
                 byteInputArrayStream, _playToFileFormat, audioBytes.length
-                        / _frameSizeInBytes);
+                / _frameSizeInBytes);
 
         outFile = new File(_fileName);
 
@@ -387,7 +387,7 @@ public class SoundWriter {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp * bytesPerSample * channels
-                            + bytesPerSample * currChannel + i] = b[i];
+                              + bytesPerSample * currChannel + i] = b[i];
                 }
             }
         }

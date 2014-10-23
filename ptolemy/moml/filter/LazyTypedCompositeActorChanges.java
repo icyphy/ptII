@@ -85,7 +85,7 @@ public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
                     && container != null) {
                 if (container instanceof InstantiableNamedObj
                         && !((InstantiableNamedObj) container)
-                                .isWithinClassDefinition()) {
+                        .isWithinClassDefinition()) {
                     // We found a class outside of a class change.
                     MoMLParser.setModified(true);
                     return "ptolemy.actor.LazyTypedCompositeActor";

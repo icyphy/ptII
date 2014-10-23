@@ -327,18 +327,17 @@ public class WebServerUtilities {
                 // TODO:  Update for WebContextHandler
                 if (handler instanceof ServletContextHandler
                         && ((ServletContextHandler) handler)
-                                .getContextPath()
-                                .equalsIgnoreCase(
-                                        appInfo.getApplicationPath().toString())) {
+                        .getContextPath()
+                        .equalsIgnoreCase(
+                                appInfo.getApplicationPath().toString())) {
 
                     // Check for matching HTTP request and WebSocket servlets
-                    Set<URI> keySet =
-                            new HashSet(appInfo.getServletInfo().keySet());
+                    Set<URI> keySet = new HashSet(appInfo.getServletInfo()
+                            .keySet());
                     keySet.addAll(appInfo.getWebSocketInfo().keySet());
 
                     for (URI servletPath : keySet) {
-                        ServletHandler servletHandler =
-                                ((ServletContextHandler) handler)
+                        ServletHandler servletHandler = ((ServletContextHandler) handler)
                                 .getServletHandler();
                         for (ServletMapping mapping : servletHandler
                                 .getServletMappings()) {
@@ -427,10 +426,8 @@ public class WebServerUtilities {
 
         // Add handlers for standard HTTP services
         for (URI path : appInfo.getServletInfo().keySet()) {
-            servletHandler
-                    .addServlet(
-                            new ServletHolder(appInfo.getServletInfo().get(
-                                    path)), path.toString());
+            servletHandler.addServlet(new ServletHolder(appInfo
+                    .getServletInfo().get(path)), path.toString());
         }
 
         // Add handlers for WebSockets
@@ -443,12 +440,12 @@ public class WebServerUtilities {
 
         for (URI path : appInfo.getWebSocketInfo().keySet()) {
             PtolemyWebSocketServlet servlet = new PtolemyWebSocketServlet();
-            servletHandler.addServlet(new ServletHolder(
-                    servlet), path.toString());
+            servletHandler.addServlet(new ServletHolder(servlet),
+                    path.toString());
         }
 
         ((ContextHandlerCollection) _server.getHandler())
-                .addHandler(servletHandler);
+        .addHandler(servletHandler);
 
         // Need to explicitly start the handler since it is added to the
         // server's handler list AFTER the server has already started
@@ -504,11 +501,11 @@ public class WebServerUtilities {
                             // Add the new resource locations (if any)
                             // FIXME:  Check if this cast is OK.  Otherwise
                             // will have to manually remember the resources
-                            ResourceCollection resources = (ResourceCollection)
-                                    handler.getBaseResource();
+                            ResourceCollection resources = (ResourceCollection) handler
+                                    .getBaseResource();
 
-                            for (Resource resource : appInfo
-                                    .getResourceInfo().get(path)) {
+                            for (Resource resource : appInfo.getResourceInfo()
+                                    .get(path)) {
                                 if (!resource.isContainedIn(resources)) {
                                     // Jetty doesn't seem to offer a method
                                     // to add a resource to a
@@ -520,10 +517,9 @@ public class WebServerUtilities {
                                             Arrays.asList(resources
                                                     .getResources()));
                                     newResources.add(resource);
-                                    resources
-                                            .setResources(newResources
-                                                    .toArray(new Resource[newResources
-                                                            .size()]));
+                                    resources.setResources(newResources
+                                            .toArray(new Resource[newResources
+                                                    .size()]));
 
                                 }
                             }
@@ -533,19 +529,18 @@ public class WebServerUtilities {
 
                             if (appInfo.getTemporaryFileLocation() != null
                                     && !appInfo.getTemporaryFileLocation()
-                                            .toString().isEmpty()) {
+                                    .toString().isEmpty()) {
                                 FileResource tempResource = new FileResource(
                                         appInfo.getTemporaryFileLocation()
-                                                .asURL());
+                                        .asURL());
                                 if (!tempResource.isContainedIn(resources)) {
                                     ArrayList<Resource> newResources = new ArrayList<Resource>(
                                             Arrays.asList(resources
                                                     .getResources()));
                                     newResources.add(tempResource);
-                                    resources
-                                            .setResources(newResources
-                                                    .toArray(new Resource[newResources
-                                                            .size()]));
+                                    resources.setResources(newResources
+                                            .toArray(new Resource[newResources
+                                                    .size()]));
                                 }
                             }
 
@@ -586,8 +581,8 @@ public class WebServerUtilities {
                     if (appInfo.getTemporaryFileLocation() != null
                             && (appInfo.getTemporaryFileLocation()
                                     .getExpression() != null)
-                            && (!appInfo.getTemporaryFileLocation()
-                                    .getExpression().isEmpty())) {
+                                    && (!appInfo.getTemporaryFileLocation()
+                                            .getExpression().isEmpty())) {
 
                         try {
                             resources.add(new FileResource(appInfo
@@ -614,8 +609,7 @@ public class WebServerUtilities {
                         // setBaseResource(ResourceCollection) that only allows
                         // one location.
 
-                        ResourceCollection collection
-                            = new ResourceCollection();
+                        ResourceCollection collection = new ResourceCollection();
                         collection.setResources(resources
                                 .toArray(new Resource[resources.size()]));
 
@@ -630,7 +624,7 @@ public class WebServerUtilities {
 
         for (ContextHandler handler : handlers) {
             ((ContextHandlerCollection) _server.getHandler())
-                    .addHandler(handler);
+            .addHandler(handler);
 
             // Need to explicitly start each new handler since they are added to
             // the server's handler list AFTER the server has already started
@@ -741,10 +735,10 @@ public class WebServerUtilities {
                                 + _maxDynamicPortNumber);
                     }
                 } else {
-                throw new Exception("The web server attempted to start on"
-                        + " port " + _portNumber + ", but this port is "
-                        + "already in use.  Perhaps another instance of "
-                        + "Ptolemy is running a web server on this port?");
+                    throw new Exception("The web server attempted to start on"
+                            + " port " + _portNumber + ", but this port is "
+                            + "already in use.  Perhaps another instance of "
+                            + "Ptolemy is running a web server on this port?");
                 }
             } else {
                 throw new Exception(_exception);

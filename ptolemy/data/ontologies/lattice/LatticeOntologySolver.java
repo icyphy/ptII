@@ -221,7 +221,7 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
             ptolemy.graph.InequalityTerm updateTerm)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _conceptTermManager.getAffectedTerms(updateTerm);
     }
 
@@ -516,17 +516,17 @@ public class LatticeOntologySolver extends OntologySolver {
                             && !trainedConceptString.equals("")) {
                         throw new IllegalActionException(conceptable,
                                 "Testing failure at " + conceptable.toString()
-                                        + '\n' + "Expected '"
-                                        + trainedConceptString
-                                        + "' but did not infer anything.");
+                                + '\n' + "Expected '"
+                                + trainedConceptString
+                                + "' but did not infer anything.");
                     }
                 } else if (!inferredConcept.toString().equals(
                         trainedConceptString)) {
                     throw new IllegalActionException(conceptable,
                             "Testing failure at " + conceptable.toString()
-                                    + '\n' + "Expected '"
-                                    + trainedConceptString + "' but got '"
-                                    + inferredConcept.toString() + "' instead.");
+                            + '\n' + "Expected '"
+                            + trainedConceptString + "' but got '"
+                            + inferredConcept.toString() + "' instead.");
                 }
             }
 
@@ -572,7 +572,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 trainedConcepts[index++] = conceptRecord;
             }
             _trainedConceptRecordArray
-                    .setToken(new ArrayToken(trainedConcepts));
+            .setToken(new ArrayToken(trainedConcepts));
         } finally {
             workspace().doneWriting();
         }
@@ -718,7 +718,7 @@ public class LatticeOntologySolver extends OntologySolver {
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) adapterDefinitionAttribute.actorClassName
                         .getToken()).stringValue().equals(
-                        component.getClass().getName())) {
+                                component.getClass().getName())) {
                     adapter = adapterDefinitionAttribute.createAdapter(
                             (ComponentEntity) component, this);
                     break;
@@ -1019,5 +1019,5 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The array of labels for the trained concept records. */
     private static final String[] _trainedConceptRecordLabels = new String[] {
-            _namedObjLabel, _conceptLabel };
+        _namedObjLabel, _conceptLabel };
 }

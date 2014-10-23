@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  */
 public abstract class MapTypeInfiniteConcept<C extends Concept> extends
-        InfiniteConcept {
+InfiniteConcept {
 
     /** Create a new MapTypeInfiniteConcept contained in the given ontology,
      *  with the given default concept.

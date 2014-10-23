@@ -98,7 +98,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *   inside director throws it.
      */
     public EnabledComposite(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
 
         _init();
@@ -179,7 +179,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  @exception NameDuplicationException If creating these things throws it.
      */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
 
@@ -204,7 +204,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  input port.
      */
     private class CausalityInterfaceForEnabledComposite extends
-            CausalityInterfaceForComposites {
+    CausalityInterfaceForComposites {
         public CausalityInterfaceForEnabledComposite(Actor actor)
                 throws IllegalArgumentException {
             super(actor, BooleanDependency.OTIMES_IDENTITY);

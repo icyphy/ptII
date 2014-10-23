@@ -315,8 +315,8 @@ public class TaskReceiver extends Source {
 
             if (_coordinator != null) {
                 _coordinator
-                        .register(((StringToken) thisClientName.getToken())
-                                .stringValue(), _client);
+                .register(((StringToken) thisClientName.getToken())
+                        .stringValue(), _client);
             }
 
             //registe the consumer with the given name

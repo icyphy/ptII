@@ -267,7 +267,7 @@ public class MatchResultViewer extends GTFrame {
                 try {
                     new MatchResultTableau.Factory(entity,
                             entity.uniqueName("_tableauFactory"))
-                            .setPersistent(false);
+                    .setPersistent(false);
                 } catch (KernelException e) {
                     throw new KernelRuntimeException(e, "Unexpected exception");
                 }
@@ -339,7 +339,7 @@ public class MatchResultViewer extends GTFrame {
     }
 
     protected class MatchResultActorGraphController extends
-            ActorEditorGraphController {
+    ActorEditorGraphController {
 
         @Override
         protected void _createControllers() {
@@ -354,7 +354,7 @@ public class MatchResultViewer extends GTFrame {
     }
 
     protected class MatchResultExternalPortController extends
-            ExternalIOPortController {
+    ExternalIOPortController {
 
         MatchResultExternalPortController(GraphController controller) {
             super(controller);
@@ -488,7 +488,7 @@ public class MatchResultViewer extends GTFrame {
     }
 
     protected class MatchResultTransitionController extends
-            TransitionController {
+    TransitionController {
 
         public MatchResultTransitionController(GraphController controller) {
             super(controller);
@@ -603,8 +603,8 @@ public class MatchResultViewer extends GTFrame {
         }
         if (_transformUntilFixpointButton != null && _results != null) {
             _transformUntilFixpointButton
-                    .setEnabled(_currentPosition < _results.size()
-                            && _rule != null);
+            .setEnabled(_currentPosition < _results.size()
+                    && _rule != null);
         }
     }
 
@@ -752,7 +752,7 @@ public class MatchResultViewer extends GTFrame {
                 float padding = _HIGHLIGHT_PADDING;
                 BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
                         bounds.getY() - padding, bounds.getWidth() + padding
-                                * 2.0, bounds.getHeight() + padding * 2.0,
+                        * 2.0, bounds.getHeight() + padding * 2.0,
                         _HIGHLIGHT_THICKNESS);
                 bf.setStrokePaint(color);
 
@@ -943,19 +943,19 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/close.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/close_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/close_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/close_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/close_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/close_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/close_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Close the current view and open the model in "
                     + "model editor");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_K, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -977,18 +977,18 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/next.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/next_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/next_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/next_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/next_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/next_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/next_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Highlight next match (Ctrl+->)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_RIGHT, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1010,18 +1010,18 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/nextfile.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/nextfile_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/nextfile_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/nextfile_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/nextfile_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/nextfile_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/nextfile_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match next file (Ctrl+.)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_PERIOD, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1043,18 +1043,18 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/previous.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/previous_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/previous_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/previous_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/previous_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/previous_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/previous_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Highlight previous match (Ctrl+<-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1077,18 +1077,18 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/previousfile.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/previousfile_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/previousfile_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/previousfile_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/previousfile_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/previousfile_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/previousfile_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match previous file (Ctrl+,)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_COMMA, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1110,19 +1110,19 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/transform.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/transform_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/transform_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/transform_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/transform_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/transform_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/transform_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Transform the current highlighted occurrence "
                     + "(Ctrl+/)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_SLASH, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1145,19 +1145,19 @@ public class MatchResultViewer extends GTFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/transformfixpoint.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/transformfixpoint_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/transformfixpoint_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/transformfixpoint_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/transformfixpoint_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/transformfixpoint_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/transformfixpoint_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Transform a random occurrence of the pattern "
                     + "until no more matches can be found (Ctrl+\\)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_BACK_SLASH, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         @Override

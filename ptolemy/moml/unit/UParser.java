@@ -163,7 +163,7 @@ public class UParser implements UParserConstants {
                         if (true) {
                             throw new ParseException(
                                     unitLabel
-                                            + " is a not variable and is not grounded in the Units Library");
+                                    + " is a not variable and is not grounded in the Units Library");
                         }
                     }
                 }
@@ -194,7 +194,7 @@ public class UParser implements UParserConstants {
                             if (true) {
                                 throw new ParseException(
                                         unitLabel
-                                                + " is a not variable and is not grounded in the Units Library");
+                                        + " is a not variable and is not grounded in the Units Library");
                             }
                         }
                     }

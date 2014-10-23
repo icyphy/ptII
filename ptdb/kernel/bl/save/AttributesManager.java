@@ -152,7 +152,7 @@ public class AttributesManager {
      *
      */
     public List<XMLDBAttribute> getDBAttributes() throws DBExecutionException,
-            DBConnectionException {
+    DBConnectionException {
 
         List<XMLDBAttribute> attributesList = null;
 

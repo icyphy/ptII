@@ -58,9 +58,9 @@ public class Main extends KernelMain {
         // Generate the makefile files in outputDirectory
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
-                        + " targetPackage:" + _targetPackage
-                        + " templateDirectory:" + _templateDirectory
-                        + " outputDirectory:" + _outputDirectory);
+                + " targetPackage:" + _targetPackage
+                + " templateDirectory:" + _templateDirectory
+                + " outputDirectory:" + _outputDirectory);
 
         // Generate the interpreted files in outputDirectory
         addTransform(pack, "wjtp.interpretedWriter",

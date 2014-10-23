@@ -123,7 +123,7 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
         String[] args = argumentsList.toArray(new String[argumentsList.size()]);
 
         System.out
-        .print("----------------- (Known Failure) AutoCG $PTII/bin/ptcg");
+                .print("----------------- (Known Failure) AutoCG $PTII/bin/ptcg");
         for (int i = 0; i < args.length; i++) {
             System.out.print(" " + args[i]);
         }
@@ -133,8 +133,8 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
                     (Object) args)).intValue();
             if (returnValue != 0) {
                 System.out
-                        .println("Known Failure: Return value of the last command executed was not zero, it was: "
-                                + returnValue);
+                .println("Known Failure: Return value of the last command executed was not zero, it was: "
+                        + returnValue);
             }
         } catch (Throwable throwable) {
             System.out.println("Known Failure: " + throwable);

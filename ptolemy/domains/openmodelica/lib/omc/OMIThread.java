@@ -139,7 +139,7 @@ public class OMIThread extends Thread {
                     // The setfilter message is sent to the server to set the filter for variable(s) and parameter(s)
                     // which should send from OMI to Ptolemy II.
                     _toServer
-                            .write("setfilter#3#" + parameterSequence + "#end");
+                    .write("setfilter#3#" + parameterSequence + "#end");
                     _toServer.flush();
                 } else if (parameters.length == 1) {
                     _toServer.write("setfilter#3#" + parameters[0] + "#end");
@@ -218,7 +218,7 @@ public class OMIThread extends Thread {
                             .read(transferServerBuffer)) != -1) {
 
                         wholeSimulationResult = new String(transferServerBuffer)
-                                .trim();
+                        .trim();
                         lineSplitResult = wholeSimulationResult
                                 .split(lineDelimiter);
                         for (int i = 0; i < lineSplitResult.length - 1; i++) {
@@ -249,13 +249,13 @@ public class OMIThread extends Thread {
                             outputResult += "\n";
                         }
                     }
-                    try {
-                        _outputPort.send(0, new StringToken(outputResult));
-                    } catch (NoRoomException e) {
-                        new IOException(e.getMessage()).printStackTrace();
-                    } catch (IllegalActionException e) {
-                        new IOException(e.getMessage()).printStackTrace();
-                    }
+                try {
+                    _outputPort.send(0, new StringToken(outputResult));
+                } catch (NoRoomException e) {
+                    new IOException(e.getMessage()).printStackTrace();
+                } catch (IllegalActionException e) {
+                    new IOException(e.getMessage()).printStackTrace();
+                }
                 } catch (IOException e) {
                     new IOException(e.getMessage()).printStackTrace();
                 }

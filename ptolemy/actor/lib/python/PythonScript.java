@@ -557,10 +557,10 @@ public class PythonScript extends TypedAtomicActor {
                             "Failed to cast _interpreter.get(jythonClassName.getExpression()) "
                                     + " which is of type "
                                     + _interpreter
-                                            .get(jythonClassName
-                                                    .getExpression())
+                                    .get(jythonClassName
+                                            .getExpression())
                                             .getClass().getName()
-                                    + " to PyClass.");
+                                            + " to PyClass.");
                 }
             }
 
@@ -739,7 +739,7 @@ public class PythonScript extends TypedAtomicActor {
         } catch (Exception ex) {
             // Ignore, we are probably under an an applet
             System.err
-            .println("Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
+                    .println("Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
             ex.printStackTrace();
         }
 
@@ -754,7 +754,7 @@ public class PythonScript extends TypedAtomicActor {
             String[] propertyNames = { "file.separator", "line.separator",
                     "path.separator", "java.class.version", "java.vendor",
                     "java.vendor.url", "java.version", "os.name", "os.arch",
-                    "os.version" };
+            "os.version" };
             Properties preProperties = new Properties();
 
             for (String propertyName : propertyNames) {
@@ -805,6 +805,6 @@ public class PythonScript extends TypedAtomicActor {
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES = { "fire", "initialize",
-            "postfire", "prefire", "preinitialize", "stop", "stopFire",
-            "terminate", "wrapup" };
+        "postfire", "prefire", "preinitialize", "stop", "stopFire",
+        "terminate", "wrapup" };
 }

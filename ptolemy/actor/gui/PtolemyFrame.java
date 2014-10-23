@@ -159,14 +159,14 @@ public abstract class PtolemyFrame extends TableauFrame {
             if (!getTableau().isMaster()
                     && !originalEffigy.masterEffigy().equals(
                             originalEffigy.topEffigy())
-                    // GT View can set the Effigy as non-persistent so
-                    // that the model can be run and the user is not
-                    // prompted to save the optimized version.  To
-                    // replicate, run $PTII/bin/vergil
-                    // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
-                    // and then close the optimized model.  You should
-                    // not be prompted for save.
-                    && originalEffigy.isPersistent()) {
+                            // GT View can set the Effigy as non-persistent so
+                            // that the model can be run and the user is not
+                            // prompted to save the optimized version.  To
+                            // replicate, run $PTII/bin/vergil
+                            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+                            // and then close the optimized model.  You should
+                            // not be prompted for save.
+                            && originalEffigy.isPersistent()) {
                 // The tableau is no longer the master, perhaps there
                 // was a deletion.  Hence, the original effigy should
                 // no longer be the associated effigy.

@@ -240,7 +240,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     @Override
     public void broadcast(Token token) throws IllegalActionException,
-            NoRoomException {
+    NoRoomException {
         _checkType(token);
         super.broadcast(token);
     }
@@ -989,7 +989,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     /** Exception class for run-time type errors.
      */
     public static class RunTimeTypeCheckException extends
-    IllegalActionException {
+            IllegalActionException {
         /** Create an run-time type error exception.
          *  @param port The port where the error occurred.
          *  @param token The token that caused the error.
@@ -1152,7 +1152,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             } else {
                 // _declaredType is a StructuredType
                 ((StructuredType) _resolvedType)
-                        .updateType((StructuredType) type);
+                .updateType((StructuredType) type);
             }
 
             if (!oldType.equals(type)) {

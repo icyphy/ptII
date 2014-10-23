@@ -507,7 +507,7 @@ public class IOPortController extends AttributeController {
                                 infoString = infoString.replace(aspectInfo, "");
                                 infoString = infoString.trim();
                                 ((StringAttribute) info)
-                                        .setExpression(infoString);
+                                .setExpression(infoString);
                             }
                         }
                     }

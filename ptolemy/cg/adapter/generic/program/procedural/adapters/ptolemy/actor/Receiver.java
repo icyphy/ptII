@@ -154,7 +154,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      */
     abstract protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source)
-            throws IllegalActionException;
+                    throws IllegalActionException;
 
     /** Given a String that is an assignment operation, return the
      *  right hand side (the source).

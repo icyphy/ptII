@@ -67,7 +67,7 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
         for (int index = 0; index < size; index++) {
             Token elementToken = token.getElement(index);
             TokenParser.getInstance()
-                    .convertToBytes(elementToken, outputStream);
+            .convertToBytes(elementToken, outputStream);
         }
     }
 

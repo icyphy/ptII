@@ -173,10 +173,10 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                             stringParameter = new StringParameter(
                                     new NamedObj(),
                                     ((ModelAttributePanel) element2)
-                                            .getAttributeName());
+                                    .getAttributeName());
                             stringParameter
-                                    .setExpression(((ModelAttributePanel) element2)
-                                            .getValue());
+                            .setExpression(((ModelAttributePanel) element2)
+                                    .getValue());
                             returnList.add(stringParameter);
 
                         } catch (NameDuplicationException e) {
@@ -211,19 +211,19 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                             if (((GenericAttributePanel) element2)
                                     .getAttributeClass().length() > 0) {
                                 attribute
-                                        .setGenericClassName(((GenericAttributePanel) element2)
-                                                .getAttributeClass());
+                                .setGenericClassName(((GenericAttributePanel) element2)
+                                        .getAttributeClass());
                             }
 
                             attribute
-                                    .setName(((GenericAttributePanel) element2)
-                                            .getAttributeName());
+                            .setName(((GenericAttributePanel) element2)
+                                    .getAttributeName());
 
                             //if ((((GenericAttributePanel) componentArray2[j])
                             //        .getValue()).length()>0) {
                             attribute
-                                    .setExpression(((GenericAttributePanel) element2)
-                                            .getValue());
+                            .setExpression(((GenericAttributePanel) element2)
+                                    .getValue());
                             //}
 
                             returnList.add(attribute);

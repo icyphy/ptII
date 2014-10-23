@@ -93,7 +93,7 @@ public class UserPrefs {
         Rectangle r = new Rectangle(prefStore.getInt(winname + "_WinX", 0),
                 prefStore.getInt(winname + "_WinY", 0), prefStore.getInt(
                         winname + "_WinW", 800), prefStore.getInt(winname
-                        + "_WinH", 600));
+                                + "_WinH", 600));
         return r;
     }
 

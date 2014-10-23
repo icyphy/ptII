@@ -44,7 +44,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ ptolemy.util.test.junit.AutoCGCKnownFailedTests.class,
-    /*ptolemy.util.test.junit.AutoCGCInlineTests.class,*/
-    ptolemy.util.test.junit.AutoCGCNoInlineTests.class })
+/*ptolemy.util.test.junit.AutoCGCInlineTests.class,*/
+ptolemy.util.test.junit.AutoCGCNoInlineTests.class })
 public class JUnitCGCTestBase {
 }

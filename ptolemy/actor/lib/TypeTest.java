@@ -178,10 +178,10 @@ public class TypeTest extends Discard {
             if (portNames.size() > 0) {
                 portActorNameList.add(entity.getName());
                 portAssignments
-                        .add(new RecordToken((String[]) portNames
-                                .toArray(new String[portNames.size()]),
-                                (Token[]) portTypes.toArray(new Token[portTypes
-                                        .size()])));
+                .add(new RecordToken((String[]) portNames
+                        .toArray(new String[portNames.size()]),
+                        (Token[]) portTypes.toArray(new Token[portTypes
+                                                              .size()])));
             }
 
             ArrayList paramNames = new ArrayList();
@@ -198,20 +198,20 @@ public class TypeTest extends Discard {
                 parameterAssignments.add(new RecordToken((String[]) paramNames
                         .toArray(new String[paramNames.size()]),
                         (Token[]) paramTypes.toArray(new Token[paramTypes
-                                .size()])));
+                                                               .size()])));
             }
         }
 
         RecordToken actualPortTypes = new RecordToken(
                 (String[]) portActorNameList.toArray(new String[portActorNameList
-                        .size()]),
-                (Token[]) portAssignments.toArray(new Token[portAssignments
-                        .size()]));
+                                                                .size()]),
+                                                                (Token[]) portAssignments.toArray(new Token[portAssignments
+                                                                                                            .size()]));
         RecordToken actualParameterTypes = new RecordToken(
                 (String[]) parameterActorNameList.toArray(new String[parameterActorNameList
-                        .size()]),
-                (Token[]) parameterAssignments
-                        .toArray(new Token[parameterAssignments.size()]));
+                                                                     .size()]),
+                                                                     (Token[]) parameterAssignments
+                                                                     .toArray(new Token[parameterAssignments.size()]));
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
             if (MessageHandler.isRunningNightlyBuild()) {
@@ -241,7 +241,7 @@ public class TypeTest extends Discard {
 
             if ((correctPortTypes == null || correctPortTypes.labelSet().size() == 0)
                     && (correctParameterTypes == null || correctParameterTypes
-                            .labelSet().size() == 0)) {
+                    .labelSet().size() == 0)) {
                 throw new IllegalActionException(this,
                         "TypeTest actor has no training data.");
             }
@@ -273,8 +273,8 @@ public class TypeTest extends Discard {
                                     this,
                                     "Type of port "
                                             + ((CompositeEntity) getContainer())
-                                                    .getEntity(actorName)
-                                                    .getFullName() + "." + name
+                                            .getEntity(actorName)
+                                            .getFullName() + "." + name
                                             + " should have been " + value
                                             + " but was " + actualValue + ".");
                         }
@@ -299,8 +299,8 @@ public class TypeTest extends Discard {
                                     this,
                                     "Type of parameter "
                                             + ((CompositeEntity) getContainer())
-                                                    .getEntity(actorName)
-                                                    .getFullName() + "." + name
+                                            .getEntity(actorName)
+                                            .getFullName() + "." + name
                                             + " should have been " + value
                                             + " but was " + actualValue + ".");
                         }

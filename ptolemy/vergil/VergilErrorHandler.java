@@ -149,7 +149,7 @@ public class VergilErrorHandler implements ErrorHandler {
             } else {
                 // Skipping is not enabled.
                 Object[] options = { "Skip element", "Display stack trace",
-                        "Cancel" };
+                "Cancel" };
 
                 // Show the MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -218,7 +218,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
         if (skippingEnabled) {
             options = new Object[] { "Skip element", "Skip remaining errors",
-                    "Cancel" };
+            "Cancel" };
         } else {
             if (skipElement) {
                 options = new Object[] { "Skip element", "Cancel" };

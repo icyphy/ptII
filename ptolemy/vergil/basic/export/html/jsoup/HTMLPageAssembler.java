@@ -254,7 +254,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 if (elements == null || elements.isEmpty()) {
                     throw new IllegalActionException(this,
                             "Cannot find an element with id = '" + id
-                                    + "' in the template file.");
+                            + "' in the template file.");
                 }
 
                 // Throw exception if multiple elements with this id are found

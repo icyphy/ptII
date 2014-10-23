@@ -115,7 +115,7 @@ public class ProxyModelBuilder {
      * @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
     public void build() throws IllegalActionException, TypeConflictException,
-            NameDuplicationException, CloneNotSupportedException {
+    NameDuplicationException, CloneNotSupportedException {
         _proxySinkMap.clear();
         _proxySourceMap.clear();
         _remoteAttributesMap.clear();
@@ -206,7 +206,7 @@ public class ProxyModelBuilder {
                         if (dummyAttribute == null) {
                             dummyAttribute = new StringAttribute(
                                     container.getContainer(), container
-                                            .getContainer().uniqueName("dummy"));
+                                    .getContainer().uniqueName("dummy"));
                             dummyAttribute.setPersistent(true);
                             containerToDummyAttributeMap.put(container,
                                     dummyAttribute);
@@ -336,24 +336,24 @@ public class ProxyModelBuilder {
     private void _captureModelTypes(HashSet<ComponentEntity> entities)
             throws IllegalActionException {
         System.out
-        .println("ProxyModelBuilder._captureModelTypes() start. # of entities: "
-                + entities.size());
+                .println("ProxyModelBuilder._captureModelTypes() start. # of entities: "
+                        + entities.size());
         for (ComponentEntity entity : entities) {
             System.out.println("ProxyModelBuilder._captureModelTypes() entity "
                     + entity.getFullName());
             for (Object portObject : entity.portList()) {
                 Port port = (Port) portObject;
                 System.out
-                .println("ProxyModelBuilder._captureModelTypes() port "
-                        + port.getFullName());
+                        .println("ProxyModelBuilder._captureModelTypes() port "
+                                + port.getFullName());
                 if (port instanceof IOPort) {
                     // If it's TypedIOPort, capture its types.
                     if (port instanceof TypedIOPort) {
                         System.out
-                        .println("ProxyModelBuilder._captureModelTypes() port "
-                                + port.getFullName()
-                                + " type: "
-                                + ((TypedIOPort) port).getType());
+                                .println("ProxyModelBuilder._captureModelTypes() port "
+                                        + port.getFullName()
+                                        + " type: "
+                                        + ((TypedIOPort) port).getType());
                         // Note: using toString on Type is not elegant
                         // and could break but this is the only way to serialize port information
                         // for all types.
@@ -380,7 +380,7 @@ public class ProxyModelBuilder {
             if (_proxySourceMap.containsKey(container.getFullName())
                     || _proxySinkMap.containsKey(container.getFullName())
                     || _remoteAttributesMap
-                            .containsKey(container.getFullName())) {
+                    .containsKey(container.getFullName())) {
                 return true;
             }
             container = container.getContainer();

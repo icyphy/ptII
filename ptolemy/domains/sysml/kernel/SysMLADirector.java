@@ -963,7 +963,7 @@ public class SysMLADirector extends ProcessDirector {
                         + channel + "]";
             }
             return "[" + token + " for port " + port.getName() + " channel "
-                    + channel + "]";
+            + channel + "]";
         }
     }
 
@@ -1044,8 +1044,8 @@ public class SysMLADirector extends ProcessDirector {
                             } catch (InterruptedException e) {
                                 if (SysMLADirector.this._debugging) {
                                     SysMLADirector.this
-                                            ._debug(_actor.getFullName()
-                                                    + " thread interrupted. Requesting stop.");
+                                    ._debug(_actor.getFullName()
+                                            + " thread interrupted. Requesting stop.");
                                 }
                                 SysMLADirector.this.stop();
                             }
@@ -1067,14 +1067,14 @@ public class SysMLADirector extends ProcessDirector {
                         } catch (InterruptedException e) {
                             if (SysMLADirector.this._debugging) {
                                 SysMLADirector.this
-                                        ._debug(_actor.getFullName()
-                                                + " thread interrupted. Requesting stop.");
+                                ._debug(_actor.getFullName()
+                                        + " thread interrupted. Requesting stop.");
                             }
                             SysMLADirector.this.stop();
                         }
                     }
                 } // while (inputQueue.size() == 0).
-                  // Either queue is non-empty, or time has passed.
+                // Either queue is non-empty, or time has passed.
                 if (SysMLADirector.this._debugging) {
                     SysMLADirector.this._debug(_actor.getFullName()
                             + " unblocked at time " + getModelTime() + ".");
@@ -1109,10 +1109,10 @@ public class SysMLADirector extends ProcessDirector {
                             int channel = port
                                     .getChannelForReceiver(input.receiver);
                             SysMLADirector.this
-                                    ._debug(_actor.getFullName()
-                                            + ": Providing change event to port "
-                                            + port.getName() + " on channel "
-                                            + channel);
+                            ._debug(_actor.getFullName()
+                                    + ": Providing change event to port "
+                                    + port.getName() + " on channel "
+                                    + channel);
                         }
                     }
                 }
@@ -1146,8 +1146,8 @@ public class SysMLADirector extends ProcessDirector {
                     synchronized (SysMLADirector.this) {
                         if (SysMLADirector.this._debugging) {
                             SysMLADirector.this
-                                    ._debug(_actor.getFullName()
-                                            + " postfire() returns false. Ending thread.");
+                            ._debug(_actor.getFullName()
+                                    + " postfire() returns false. Ending thread.");
                         }
                         removeThread(this);
                         _actorData.remove(_actor);

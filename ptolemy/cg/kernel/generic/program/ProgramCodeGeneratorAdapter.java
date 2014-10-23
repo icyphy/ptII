@@ -166,10 +166,10 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
                 codeStream.insert(
                         0,
                         _eol
-                                + getCodeGenerator().comment(
-                                        shortBlockName
-                                                + ((Nameable) getComponent())
-                                                        .getName()));
+                        + getCodeGenerator().comment(
+                                shortBlockName
+                                + ((Nameable) getComponent())
+                                .getName()));
             }
         }
         return processCode(codeStream.toString());
@@ -187,7 +187,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * with the code block name (String) as key.
      */
     protected static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+        "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate

@@ -46,8 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
 @since Ptolemy II 10.0
  */
 public class TimeDelay
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.TimeDelay {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.TimeDelay {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.

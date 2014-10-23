@@ -126,7 +126,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                             + " found by findEffigy() is "
                             + (firstFrame == null ? "null" : "a \""
                                     + firstFrame.getClass().getName() + "\"")
-                            + ", which is not an ActorGraphFrame or FSMGraphFrame.";
+                                    + ", which is not an ActorGraphFrame or FSMGraphFrame.";
                 }
                 throw new InternalErrorException(model, null,
                         "For now only actor models and modal models are supported by KIELER layout. "

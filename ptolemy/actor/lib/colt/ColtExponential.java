@@ -85,7 +85,7 @@ public class ColtExponential extends ColtRandomSource {
         lambda = new PortParameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(lambda.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         lambda.moveToFirst();
     }

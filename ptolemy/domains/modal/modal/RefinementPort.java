@@ -90,7 +90,7 @@ public class RefinementPort extends ModalBasePort {
      *   a port already in the container.
      */
     public RefinementPort(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _checkWhetherMirrorIsInput();
         _init();
@@ -431,7 +431,7 @@ public class RefinementPort extends ModalBasePort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -603,7 +603,7 @@ public class RefinementPort extends ModalBasePort {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -808,7 +808,7 @@ public class RefinementPort extends ModalBasePort {
     }
 
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // Need to check whether there is a containing ModalModel,
         // and whether its mirror port is also an input.
         Nameable container = getContainer();

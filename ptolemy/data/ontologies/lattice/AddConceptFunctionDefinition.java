@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class AddConceptFunctionDefinition extends
-        BinaryOperationMonotonicFunctionDefinition {
+BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the AddConceptFunctionDefinition attribute
      *  with the given container and name.

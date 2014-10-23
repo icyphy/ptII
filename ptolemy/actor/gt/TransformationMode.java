@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationMode extends ChoiceParameter implements
-        MatchCallback {
+MatchCallback {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -367,7 +367,7 @@ public class TransformationMode extends ChoiceParameter implements
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class WorkingCopyScopeExtender extends Attribute implements
-            ScopeExtender {
+    ScopeExtender {
 
         /** Return a list of the attributes contained by this object.
          *  If there are no attributes, return an empty list.

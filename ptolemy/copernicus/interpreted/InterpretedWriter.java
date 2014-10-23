@@ -59,7 +59,7 @@ import soot.SceneTransformer;
  @Pt.AcceptedRating Red (cxh)
  */
 public class InterpretedWriter extends SceneTransformer implements
-        HasPhaseOptions {
+HasPhaseOptions {
     /** Construct a new transformer
      */
     private InterpretedWriter(CompositeActor model) {
@@ -136,7 +136,7 @@ public class InterpretedWriter extends SceneTransformer implements
             if (!outputDirectoryFile.mkdirs()) {
                 throw new InternalErrorException(
                         "Failed to create directory \"" + outputDirectoryFile
-                                + "\"");
+                        + "\"");
             }
         }
 

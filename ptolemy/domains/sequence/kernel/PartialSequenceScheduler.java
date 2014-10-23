@@ -84,7 +84,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
      */
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         // FIXME: It may occur that the _actorGraph is null.
         // If this is the case and the graph is not acyclic, this
         // method will hang in an infinite while loop.

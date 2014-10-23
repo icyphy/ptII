@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 /* A CORBA compatible interface for a push consumer.
  */
 public final class pushConsumerHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.CorbaIOUtil.pushConsumer value = null;
 
     public pushConsumerHolder() {

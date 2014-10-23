@@ -168,7 +168,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
             }
 
             output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
-            likelihood.send( 0, new DoubleToken(_likelihood));
+            likelihood.send(0, new DoubleToken(_likelihood));
         }
     }
 

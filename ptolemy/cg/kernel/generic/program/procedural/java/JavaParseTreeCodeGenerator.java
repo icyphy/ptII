@@ -58,7 +58,7 @@ import ptolemy.cg.kernel.generic.program.procedural.ProceduralParseTreeCodeGener
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class JavaParseTreeCodeGenerator extends
-ProceduralParseTreeCodeGenerator {
+        ProceduralParseTreeCodeGenerator {
 
     /**
      * Create a JavaParseTreeCodeGenerator that is used by

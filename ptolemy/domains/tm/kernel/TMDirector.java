@@ -154,7 +154,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public TMDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -326,7 +326,7 @@ public class TMDirector extends Director {
                 if (_debugging) {
                     _debug(getName(), "put trigger event ", event.toString(),
                             " into " + ((NamedObj) event.actor()).getName()
-                                    + " and processing");
+                            + " and processing");
                 }
 
                 event.receiver()._triggerEvent(event.token());
@@ -602,7 +602,7 @@ public class TMDirector extends Director {
                 if (_debugging) {
                     _debug("deduct "
                             + getModelTime().subtract(cachedCurrentTime)
-                                    .getDoubleValue(),
+                            .getDoubleValue(),
                             " from processing time of event", event.toString());
                 }
 

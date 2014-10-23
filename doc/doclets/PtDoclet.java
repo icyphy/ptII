@@ -82,7 +82,7 @@ public class PtDoclet {
      *  the class of one of the fields.
      */
     public static boolean start(RootDoc root) throws IOException,
-            ClassNotFoundException {
+    ClassNotFoundException {
         System.out.println("Ptolemy version of PtDoc, with Kepler extensions");
         if (!StringUtilities.getProperty("KEPLER").equals("")) {
             System.out.println("PtDoclet: KEPLER = "
@@ -122,13 +122,13 @@ public class PtDoclet {
                     _writeDoc(
                             className,
                             _generateClassLevelDocumentation(classe)
-                                    + _generateFieldDocumentation(classe,
-                                            typedIOPortClass, "port")
+                            + _generateFieldDocumentation(classe,
+                                    typedIOPortClass, "port")
                                     + _generateFieldDocumentation(classe,
                                             parameterClass, "property")
-                                    + _generateFieldDocumentation(classe,
-                                            stringAttributeClass, "property")
-                                    + "</doc>\n");
+                                            + _generateFieldDocumentation(classe,
+                                                    stringAttributeClass, "property")
+                                                    + "</doc>\n");
 
                     allNamedObjsWriter.write(className + "\n");
                 }
@@ -226,7 +226,7 @@ public class PtDoclet {
                 }
                 if (seeTag.referencedMember() != null) {
                     documentation
-                            .append("#" + seeTag.referencedMember().name());
+                    .append("#" + seeTag.referencedMember().name());
                 }
                 documentation.append("\">" + target + "</a>");
             } else {
@@ -262,7 +262,7 @@ public class PtDoclet {
         // Handle other class tags.
         String[] classTags = { "author", "version", "since",
                 "Pt.ProposedRating", "Pt.AcceptedRating",
-                "UserLevelDocumentation" };
+        "UserLevelDocumentation" };
         for (String classTag : classTags) {
             tags = classDoc.tags(classTag);
             if (tags.length > 0) {
@@ -301,7 +301,7 @@ public class PtDoclet {
             try {
                 if (className.equals("javax.media.j3d.Canvas3D")
                         || className
-                                .equals("com.sun.j3d.utils.universe.SimpleUniverse")) {
+                        .equals("com.sun.j3d.utils.universe.SimpleUniverse")) {
                     throw new Exception("Skipping " + className
                             + ",it starts up X11 and interferes with the "
                             + "nightly build");
@@ -317,7 +317,7 @@ public class PtDoclet {
                             + field.name()
                             + "\">"
                             + StringUtilities
-                                    .escapeForXML(_inlineTagCommentText(field))
+                            .escapeForXML(_inlineTagCommentText(field))
                             + _customTagCommentText(field) + "</" + element
                             + ">\n");
                 }

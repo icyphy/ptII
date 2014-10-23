@@ -84,8 +84,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (beth)
  * @see SendMail
  */
-public class ExceptionEmailer extends AbstractInitializableAttribute
-    implements ExceptionSubscriber {
+public class ExceptionEmailer extends AbstractInitializableAttribute implements
+        ExceptionSubscriber {
     /** Invoked by an exception handler (e.g. CatchExceptionAttribute) when an
      *  exception occurs.  Some subscribers may need to set up access to
      *  resources (such as opening a file) prior to being notified of an
@@ -114,7 +114,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        to = new StringParameter(this,"to");
+        to = new StringParameter(this, "to");
         to.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
 
         cc = new StringParameter(this, "cc");
@@ -243,7 +243,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ExceptionEmailer newObject = (ExceptionEmailer) super.clone(workspace);
 
-        newObject._newline = (Parameter)newObject.getAttribute("_newline");
+        newObject._newline = (Parameter) newObject.getAttribute("_newline");
         newObject._newline.setExpression("property(\"line.separator\")");
 
         newObject._password = null;
@@ -282,15 +282,16 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         boolean enableSSLValue = false;
         try {
-            enableSSLValue =
-                    ((BooleanToken) enableSSL.getToken()).booleanValue();
+            enableSSLValue = ((BooleanToken) enableSSL.getToken())
+                    .booleanValue();
         } catch (IllegalActionException e) {
             statusMessage.setExpression("Failed to enable SSL");
             try {
                 statusMessage.validate();
             } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -342,21 +343,23 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 statusMessage.validate();
             } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         } finally {
             if (passwordFile != null) {
                 try {
                     passwordFile.close();
                 } catch (IllegalActionException e) {
-                   statusMessage.setExpression("Failed to close password "
-                                   + "file.");
-                   try {
-                       statusMessage.validate();
-                   } catch (IllegalActionException e2) {
-                       // Should not happen since expression is legal
-                   };
-                   return false;
+                    statusMessage.setExpression("Failed to close password "
+                            + "file.");
+                    try {
+                        statusMessage.validate();
+                    } catch (IllegalActionException e2) {
+                        // Should not happen since expression is legal
+                    }
+                    ;
+                    return false;
                 }
             }
         }
@@ -375,8 +378,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         NamedObj toplevel;
 
         // If contained by an ExceptionManager, get toplevel of container
-        if (getContainer() != null &&
-                getContainer() instanceof ExceptionManagerModel) {
+        if (getContainer() != null
+                && getContainer() instanceof ExceptionManagerModel) {
             toplevel = ((ExceptionManagerModel) getContainer())
                     .getModelContainer().toplevel();
         } else {
@@ -396,11 +399,11 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         String subject = modelName + " " + policyAction + " at "
                 + dateFormat.format(date);
         String message = "An exception occurred in model " + modelName + " at "
-                + dateFormat.format(date) + ".  The model was "
-                + policyAction + ".";
+                + dateFormat.format(date) + ".  The model was " + policyAction
+                + ".";
 
-        StringTokenizer tokenizer =
-                new StringTokenizer(to.getValueAsString(), ",");
+        StringTokenizer tokenizer = new StringTokenizer(to.getValueAsString(),
+                ",");
         while (tokenizer.hasMoreTokens()) {
             result.append("To: " + tokenizer.nextToken().trim() + "\n");
         }
@@ -424,16 +427,17 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
 
         Boolean reallySendMailValue = false;
         try {
-            reallySendMailValue =
-                    ((BooleanToken) reallySendMail.getToken()).booleanValue();
+            reallySendMailValue = ((BooleanToken) reallySendMail.getToken())
+                    .booleanValue();
         } catch (IllegalActionException e) {
             statusMessage.setExpression("Failed to read reallySendMail "
-                            + "parameter.");
+                    + "parameter.");
             try {
                 statusMessage.validate();
             } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -447,7 +451,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 statusMessage.validate();
             } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return true;
         }
 
@@ -471,13 +476,13 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
             mimeMessage.setFrom(new InternetAddress(from.getValueAsString()));
 
             if (!replyTo.getValueAsString().equals("")) {
-               ArrayList<Address> replyToAddresses = new ArrayList<Address>();
-               tokenizer = new StringTokenizer(replyTo.getValueAsString(), ",");
-               while (tokenizer.hasMoreTokens()) {
+                ArrayList<Address> replyToAddresses = new ArrayList<Address>();
+                tokenizer = new StringTokenizer(replyTo.getValueAsString(), ",");
+                while (tokenizer.hasMoreTokens()) {
                     replyToAddresses.add(new InternetAddress(tokenizer
                             .nextToken().trim()));
-               }
-               mimeMessage.setReplyTo(replyToAddresses
+                }
+                mimeMessage.setReplyTo(replyToAddresses
                         .toArray(new Address[replyToAddresses.size()]));
             }
 
@@ -507,7 +512,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                     statusMessage.validate();
                 } catch (IllegalActionException e) {
                     // Should not happen since expression is legal
-                };
+                }
+                ;
                 return false;
             }
 
@@ -521,7 +527,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
                 statusMessage.validate();
             } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -595,5 +602,3 @@ public class ExceptionEmailer extends AbstractInitializableAttribute
         }
     }
 }
-
-

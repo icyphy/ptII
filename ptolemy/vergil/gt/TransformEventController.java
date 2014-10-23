@@ -58,7 +58,7 @@ public class TransformEventController extends StateController {
         super(controller, access);
 
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
     }
 
     public static class Factory extends NodeControllerFactory {

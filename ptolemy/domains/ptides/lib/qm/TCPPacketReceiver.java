@@ -146,7 +146,7 @@ public class TCPPacketReceiver extends InputDevice {
                         .get(singleEventLabel);
                 new Time(getDirector(),
                         ((DoubleToken) singleEventRecord.get(timestamp))
-                                .doubleValue());
+                        .doubleValue());
 
                 ((IntToken) singleEventRecord.get(microstep)).intValue();
 

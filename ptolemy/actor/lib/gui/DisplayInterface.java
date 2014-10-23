@@ -68,7 +68,7 @@ public interface DisplayInterface {
      * actor with this name.
      */
     public void init(Display display) throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
     /** Open the display window if it has not been opened.
      *  @exception IllegalActionException If there is a problem creating

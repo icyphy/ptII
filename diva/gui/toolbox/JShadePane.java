@@ -380,7 +380,7 @@ public class JShadePane extends JPanel {
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
     private static class Shade extends AccessibleContext implements
-            Serializable, Accessible, AccessibleComponent {
+    Serializable, Accessible, AccessibleComponent {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.

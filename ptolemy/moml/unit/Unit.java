@@ -143,19 +143,19 @@ public class Unit implements UnitPresentation {
                 for (int i = 1; i < numerator.size(); i++) {
                     retv.append(" "
                             + ((UnitTerm) numerator.elementAt(i)).getUnit()
-                                    .getPrimaryLabel());
+                            .getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
                 retv.append("/"
                         + ((UnitTerm) denominator.elementAt(0)).getUnit()
-                                .getPrimaryLabel());
+                        .getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
                     retv.append(" "
                             + ((UnitTerm) denominator.elementAt(i)).getUnit()
-                                    .getPrimaryLabel());
+                            .getPrimaryLabel());
                 }
             }
 

@@ -839,7 +839,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount() * columnCount];
+                                                                           .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -1344,11 +1344,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     protected ptolemy.data.Token _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, ptolemy.data.Token index)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (!(value instanceof ArrayToken)) {
             throw new IllegalActionException(
                     "Array indexing cannot be applied to '" + value.toString()
-                            + "' because its value is not an array.");
+                    + "' because its value is not an array.");
         }
 
         if (!(index instanceof IntToken)) {
@@ -1394,7 +1394,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (!(value instanceof MatrixToken)) {
             throw new IllegalActionException(
                     "Matrix indexing cannot be applied to '" + value.toString()
-                            + "' because its value is not a matrix.");
+                    + "' because its value is not a matrix.");
         }
 
         if (!(rowIndex instanceof IntToken)) {
@@ -1606,7 +1606,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     private ptolemy.data.Token _invokeMethod(Class<?> clazz, Object object,
             String methodName, Type[] argTypes, Object[] argValues)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Object result = null;
 
         if (object != null && argTypes.length == 1) {

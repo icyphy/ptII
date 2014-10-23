@@ -224,9 +224,9 @@ public class FixPointQuantization extends Quantization {
     public String toString() {
         // TODO: check for null precision
         return "(" + _precision.getIntegerBitLength() + "."
-                + _precision.getFractionBitLength() + ","
-                + getOverflow().toString() + "," + getRounding().toString()
-                + ")";
+        + _precision.getFractionBitLength() + ","
+        + getOverflow().toString() + "," + getRounding().toString()
+        + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

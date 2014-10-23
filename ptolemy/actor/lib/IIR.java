@@ -137,8 +137,8 @@ public class IIR extends Transformer {
                     .booleanValue()) {
                 try {
                     MessageHandler
-                            .warning("First denominator value is required to be 1. "
-                                    + "Using 1.");
+                    .warning("First denominator value is required to be 1. "
+                            + "Using 1.");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(this,
                             "Canceled parameter change.");
@@ -268,7 +268,7 @@ public class IIR extends Transformer {
         for (int j = 1; j < _denominator.length; j++) {
             xCurrent = xCurrent.subtract(_denominator[j]
                     .multiply(_stateVector[(_currentTap + j)
-                            % _stateVector.length]));
+                                           % _stateVector.length]));
         }
 
         _stateVector[_currentTap] = xCurrent;
@@ -278,7 +278,7 @@ public class IIR extends Transformer {
         for (int k = 0; k < _numerator.length; k++) {
             yCurrent = yCurrent.add(_numerator[k]
                     .multiply(_stateVector[(_currentTap + k)
-                            % _stateVector.length]));
+                                           % _stateVector.length]));
         }
 
         return yCurrent;

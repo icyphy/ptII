@@ -229,10 +229,10 @@ public class FixedPointReceiver extends AbstractReceiver {
     public boolean isKnown() {
         IOPort container = getContainer();
         if (container != null && container.sourcePortList().size() == 0
-                        && container.insideSourcePortList().size() == 0) {
-                // There are no sources connected to the container port,
-                // so the port is presumably empty and known.
-                return true;
+                && container.insideSourcePortList().size() == 0) {
+            // There are no sources connected to the container port,
+            // so the port is presumably empty and known.
+            return true;
         }
         return _known;
     }

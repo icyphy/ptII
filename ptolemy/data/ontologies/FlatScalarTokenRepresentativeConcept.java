@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (blickly)
  */
 public class FlatScalarTokenRepresentativeConcept extends
-        FlatTokenRepresentativeConcept {
+FlatTokenRepresentativeConcept {
 
     /** Create a new FlatScalarTokenRepresentativeConcept with the specified
      *  name and ontology.
@@ -241,7 +241,7 @@ public class FlatScalarTokenRepresentativeConcept extends
         if (value.isEqualTo(new DoubleToken(Double.POSITIVE_INFINITY))
                 .booleanValue()
                 || value.isEqualTo(new DoubleToken(Double.NEGATIVE_INFINITY))
-                        .booleanValue()) {
+                .booleanValue()) {
             return true;
         } else {
             return false;

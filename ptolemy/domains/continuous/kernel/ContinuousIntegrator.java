@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (yuhong)
  */
 public class ContinuousIntegrator extends TypedAtomicActor implements
-        ContinuousStatefulComponent, ContinuousStepSizeController {
+ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
@@ -380,7 +380,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the input.
      */
     public double getDerivative() throws NoTokenException,
-            IllegalActionException {
+    IllegalActionException {
         double result = ((DoubleToken) derivative.get(0)).doubleValue();
         if (_debugging) {
             _debug("Read input: " + result);
@@ -415,8 +415,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     @Override
     public void initialize() throws IllegalActionException {
         if (!(getDirector() instanceof ContinuousDirector)) {
-            throw new IllegalActionException(this, "This actor can only be run in"
-                    + " a ContinuousDirector.");
+            throw new IllegalActionException(this,
+                    "This actor can only be run in" + " a ContinuousDirector.");
         }
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
@@ -502,7 +502,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         boolean result = super.prefire();
         if ((impulse.getWidth() == 0 || impulse.isKnown(0))
                 && (initialState.getPort().getWidth() == 0 || initialState
-                        .getPort().isKnown(0))) {
+                .getPort().isKnown(0))) {
             return result;
         }
         return false;
@@ -621,7 +621,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the initialState input is a ParameterPort).
      */
     private static class IntegratorCausalityInterface extends
-            DefaultCausalityInterface {
+    DefaultCausalityInterface {
         public IntegratorCausalityInterface(ContinuousIntegrator actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);

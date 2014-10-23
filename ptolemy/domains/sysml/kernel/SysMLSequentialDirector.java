@@ -117,7 +117,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (eal)
  */
 public class SysMLSequentialDirector extends Director implements
-        SuperdenseTimeDirector {
+SuperdenseTimeDirector {
 
     /** Construct a director in the given container with the given name.
      *  @param container Container of the director.
@@ -290,8 +290,8 @@ public class SysMLSequentialDirector extends Director implements
         if (time.compareTo(currentTime) < 0) {
             throw new IllegalActionException(actor,
                     "Requesting firing at time " + time
-                            + ", which is in the past. Current time is "
-                            + currentTime);
+                    + ", which is in the past. Current time is "
+                    + currentTime);
         }
 
         if (time.compareTo(currentTime) == 0 && microstep <= _microstep
@@ -821,7 +821,7 @@ public class SysMLSequentialDirector extends Director implements
                         + channel + "]";
             }
             return "[" + token + " for port " + port.getName() + " channel "
-                    + channel + "]";
+            + channel + "]";
         }
     }
 
@@ -936,9 +936,9 @@ public class SysMLSequentialDirector extends Director implements
             if (SysMLSequentialDirector.this._debugging) {
                 Actor actor = (Actor) port.getContainer();
                 SysMLSequentialDirector.this
-                        ._debug("Adding to queue event destined for "
-                                + actor.getName() + " at time "
-                                + getModelTime() + ": " + input);
+                ._debug("Adding to queue event destined for "
+                        + actor.getName() + " at time "
+                        + getModelTime() + ": " + input);
                 SysMLSequentialDirector.this._debug("input queue: "
                         + _inputQueue);
             }

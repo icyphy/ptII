@@ -186,7 +186,7 @@ public class FIR extends SDFTransformer {
             if (_interpolationValue <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid interpolation: " + _interpolationValue
-                                + ". Must be positive.");
+                        + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
@@ -207,7 +207,7 @@ public class FIR extends SDFTransformer {
             if (_decimationPhaseValue < 0) {
                 throw new IllegalActionException(this,
                         "Invalid decimationPhase: " + _decimationPhaseValue
-                                + ". Must be nonnegative.");
+                        + ". Must be nonnegative.");
             }
 
             _reinitializeNeeded = true;

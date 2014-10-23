@@ -242,8 +242,8 @@ public class RunTableau extends Tableau {
                     } catch (KernelException ex) {
                         try {
                             MessageHandler
-                                    .warning("Failed to create debug listener: "
-                                            + ex);
+                            .warning("Failed to create debug listener: "
+                                    + ex);
                         } catch (CancelException exception) {
                         }
                     }

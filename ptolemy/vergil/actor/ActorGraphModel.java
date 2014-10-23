@@ -877,7 +877,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that contains ports.
      */
     public static class IconModel extends NamedObjNodeModel implements
-            CompositeNodeModel {
+    CompositeNodeModel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -1115,8 +1115,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 int headRelationIndex = oldHeadSemantic instanceof IOPort ? IOPort
                         .getRelationIndex((IOPort) oldHeadSemantic, relation,
                                 headIsActorPort) : -1;
-                _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
-                        headRelationIndex, newRelationName);
+                        _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
+                                headRelationIndex, newRelationName);
             }
 
             NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
@@ -1126,8 +1126,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         .getRelationIndex((IOPort) oldTailSemantic, relation,
                                 tailIsActorPort) : -1;
 
-                _linkWithRelation(moml, failmoml, container, oldTailSemantic,
-                        tailRelationIndex, newRelationName);
+                        _linkWithRelation(moml, failmoml, container, oldTailSemantic,
+                                tailRelationIndex, newRelationName);
             }
         }
 
@@ -1261,7 +1261,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         private String _linkMoML(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail)
-                throws Exception {
+                        throws Exception {
             if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
@@ -1476,37 +1476,37 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         boolean headIsActorPort = oldHeadSemantic != null ? oldLink
                                 .getHead() instanceof IOPort
                                 : linkTail instanceof IOPort;
-                        boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
+                                boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
 
-                        final NamedObj toplevel = getPtolemyModel();
-                        String newRelationName = toplevel
-                                .uniqueName("relation");
+                                final NamedObj toplevel = getPtolemyModel();
+                                String newRelationName = toplevel
+                                        .uniqueName("relation");
 
-                        double[] newLocation = _getNewLocation(
-                                oldHeadSemantic != null ? oldHeadSemantic
-                                        : (NamedObj) getSemanticObject(linkTail),
-                                oldTailSemantic, headIsActorPort,
-                                tailIsActorPort);
+                                double[] newLocation = _getNewLocation(
+                                        oldHeadSemantic != null ? oldHeadSemantic
+                                                : (NamedObj) getSemanticObject(linkTail),
+                                                oldTailSemantic, headIsActorPort,
+                                                tailIsActorPort);
 
-                        relationName = newRelationName;
+                                relationName = newRelationName;
 
-                        addNewVertexToLink(moml, failmoml, container, oldLink,
-                                newRelationName, newLocation[0], newLocation[1]);
+                                addNewVertexToLink(moml, failmoml, container, oldLink,
+                                        newRelationName, newLocation[0], newLocation[1]);
 
-                        if (isHead) {
-                            _linkWithRelation(moml, failmoml, container,
-                                    (NamedObj) getSemanticObject(linkTail), -1,
-                                    newRelationName);
-                        } else {
-                            _linkWithRelation(moml, failmoml, container,
-                                    (NamedObj) getSemanticObject(linkHead), -1,
-                                    newRelationName);
-                        }
+                                if (isHead) {
+                                    _linkWithRelation(moml, failmoml, container,
+                                            (NamedObj) getSemanticObject(linkTail), -1,
+                                            newRelationName);
+                                } else {
+                                    _linkWithRelation(moml, failmoml, container,
+                                            (NamedObj) getSemanticObject(linkHead), -1,
+                                            newRelationName);
+                                }
 
-                        failmoml.append("<deleteRelation name=\""
-                                + newRelationName + "\"/>\n");
+                                failmoml.append("<deleteRelation name=\""
+                                        + newRelationName + "\"/>\n");
 
-                        appendedMoML = true;
+                                appendedMoML = true;
                     }
                 } else {
                     // create moml to make the new links.

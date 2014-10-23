@@ -599,7 +599,7 @@ public class HomerMainFrame extends JFrame {
         _graphPanel.add(
                 new JCanvasPanner(new JGraph(new BasicGraphPane(controller,
                         new ActorGraphModel(topLevelActor), topLevelActor))),
-                BorderLayout.CENTER);
+                        BorderLayout.CENTER);
         _graphPanel.revalidate();
     }
 

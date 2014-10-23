@@ -210,7 +210,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         } catch (IOException e) {
             throw new IllegalActionException(
                     "I/O exception caused by the pipe file: " + _pipePath
-                            + _pipe2server);
+                    + _pipe2server);
         }
 
         _debugger.printTitle("Pushing events: ");
@@ -260,7 +260,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         } catch (IOException e) {
             throw new IllegalActionException(
                     "I/O exception caused by the pipe file: " + _pipePath
-                            + _pipe2client);
+                    + _pipe2client);
         }
 
         for (Event e : ev.getEventList()) {
@@ -310,7 +310,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                         throw new IllegalActionException(
                                                 "The value of the modelFileName parameter \""
                                                         + modelFileNameToken
-                                                                .stringValue()
+                                                        .stringValue()
                                                         + "\" does not exist?");
                                     }
 
@@ -318,8 +318,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                             + " "
                                             + configFileNameToken.stringValue();
                                     System.out
-                                            .println("The MetroII command is: "
-                                                    + command);
+                                    .println("The MetroII command is: "
+                                            + command);
                                     // Using the Runtime exec method:
                                     _process = Runtime.getRuntime().exec(
                                             command);
@@ -343,9 +343,9 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                                         stdInput.close();
                                     } catch (IOException ex) {
                                         System.err
-                                                .println("Hmm, failed to close the stdInput stream of the subprocess \""
-                                                        + (command == null ? "null?"
-                                                                : command)
+                                        .println("Hmm, failed to close the stdInput stream of the subprocess \""
+                                                + (command == null ? "null?"
+                                                        : command)
                                                         + "\"");
                                     }
                                 }
@@ -387,8 +387,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException,
-                            IllegalActionException {
+                                    throws CollectionAbortedException,
+                                    IllegalActionException {
                         getfire(resultHandler);
                     }
                 });
@@ -433,13 +433,13 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         if (!pipe1.exists()) {
             throw new IllegalActionException(this,
                     "Failed to create a pipe named \"" + m2event_out_pipe_name
-                            + "\".");
+                    + "\".");
         }
         File pipe2 = new File(m2event_in_pipe_name);
         if (!pipe2.exists()) {
             throw new IllegalActionException(this,
                     "Failed to create a pipe named \"" + m2event_in_pipe_name
-                            + "\".");
+                    + "\".");
         }
 
         _events = new LinkedList<Event.Builder>();
@@ -479,7 +479,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         startTime.setVisibility(Settable.NONE);
         stopTime.setVisibility(Settable.NONE);
         localClock.setVisibility(Settable.NONE);

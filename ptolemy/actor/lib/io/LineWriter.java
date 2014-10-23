@@ -96,7 +96,7 @@ public class LineWriter extends Sink {
         fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
         new SingletonParameter(fileName.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         append = new Parameter(this, "append");
         append.setTypeEquals(BaseType.BOOLEAN);

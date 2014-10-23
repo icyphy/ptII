@@ -43,6 +43,6 @@ package ptolemy.domains.sdf.lib.vq;
  * @Pt.AcceptedRating
  */
 public interface ImageDisplayInterface extends
-        ptolemy.actor.lib.image.ImageDisplayInterface {
+ptolemy.actor.lib.image.ImageDisplayInterface {
 
 }

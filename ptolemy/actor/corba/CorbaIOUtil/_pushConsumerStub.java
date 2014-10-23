@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 /* A CORBA compatible interface for a push consumer.
  */
 public class _pushConsumerStub extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.CorbaIOUtil.pushConsumer {
+implements ptolemy.actor.corba.CorbaIOUtil.pushConsumer {
     /* this method is intended to be called remotely by a push publisher,
      * so that data can be delived over the network to a push consumer.
      */
@@ -30,7 +30,7 @@ public class _pushConsumerStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CorbaIOUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }

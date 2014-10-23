@@ -12,7 +12,7 @@ package ptolemy.actor.corba.util;
  */
 @SuppressWarnings("serial")
 public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.util.CorbaActor {
+implements ptolemy.actor.corba.util.CorbaActor {
     // Constructors
     // NOTE:  If the default constructor is used, the
     //        object is useless until _set_delegate (...)
@@ -47,7 +47,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -86,10 +86,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownParamException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownParamExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -121,7 +121,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -163,13 +163,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIndexOutofBoundException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -270,10 +270,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -308,7 +308,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -342,7 +342,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -377,7 +377,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -418,13 +418,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownParamException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownParamExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIllegalValueException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalValueExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -456,7 +456,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -488,7 +488,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -515,10 +515,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
     @Override
     public void transferInput(String portName, short portIndex,
             String tokenValue)
-            throws ptolemy.actor.corba.util.CorbaIllegalActionException,
-            ptolemy.actor.corba.util.CorbaUnknownPortException,
-            ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
-            ptolemy.actor.corba.util.CorbaIllegalValueException {
+                    throws ptolemy.actor.corba.util.CorbaIllegalActionException,
+                    ptolemy.actor.corba.util.CorbaUnknownPortException,
+                    ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
+                    ptolemy.actor.corba.util.CorbaIllegalValueException {
         org.omg.CORBA.portable.InputStream _in = null;
 
         try {
@@ -535,16 +535,16 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIndexOutofBoundException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIllegalValueException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalValueExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -588,13 +588,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIndexOutofBoundException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -625,7 +625,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }

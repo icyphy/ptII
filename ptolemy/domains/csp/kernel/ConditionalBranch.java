@@ -155,7 +155,7 @@ public abstract class ConditionalBranch implements Debuggable {
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID,
             ConditionalBranchController controller)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
         _controller = controller;

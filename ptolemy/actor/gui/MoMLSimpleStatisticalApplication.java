@@ -73,7 +73,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (eal)
  */
 public class MoMLSimpleStatisticalApplication extends
-        ptolemy.moml.MoMLSimpleApplication {
+ptolemy.moml.MoMLSimpleApplication {
     /** Parse the xml file and run it.
      *  @param args The command line arguments
      *  @exception Exception If there was a problem parsing
@@ -182,9 +182,9 @@ public class MoMLSimpleStatisticalApplication extends
             _test = true;
         } else if (arg.equals("-version")) {
             System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION
-                            + ", Build $Id$");
+            .println("Version "
+                    + VersionAttribute.CURRENT_VERSION
+                    + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             StringUtilities.exit(0);

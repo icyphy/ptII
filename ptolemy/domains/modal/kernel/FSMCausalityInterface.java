@@ -210,7 +210,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                     } catch (IllegalActionException ex) {
                         throw new IllegalActionException(actor, ex,
                                 "Failed to parse guard expression \"" + guard
-                                        + "\"");
+                                + "\"");
                     }
                     if (inputs.isEmpty()) {
                         continue;

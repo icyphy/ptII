@@ -166,9 +166,9 @@ public class RatingTaglet implements Taglet {
         }
 
         return "<DT><B>" + _tagName + ":</B><DD>"
-                + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-                + color.toLowerCase() + "\">" + tag.text()
-                + "</td></tr></table></DD>\n";
+        + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+        + color.toLowerCase() + "\">" + tag.text()
+        + "</td></tr></table></DD>\n";
     }
 
     /**

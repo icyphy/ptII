@@ -42,8 +42,8 @@ Code generator helper for FSMDirector.
 @Pt.AcceptedRating red (sssf)
  */
 public class FSMDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator adapter associated with the given
      *  FSMDirector.

@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.IOPort
  */
 public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
-        Actor, FiringsRecordable {
+Actor, FiringsRecordable {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.

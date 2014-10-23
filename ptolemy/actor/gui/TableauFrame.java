@@ -354,7 +354,7 @@ public class TableauFrame extends Top {
                     if (topPackClass == null) {
                         throw new ClassNotFoundException(
                                 "Failed to find class \"" + topPackClass
-                                        + "\", Class.forName() returned null.");
+                                + "\", Class.forName() returned null.");
                     }
                     _topPack = (TopPack) topPackClass.newInstance();
                     // Do the alternate pack
@@ -500,7 +500,7 @@ public class TableauFrame extends Top {
             final Configuration configuration = getConfiguration();
             if (configuration == null) {
                 System.out
-                        .println("TableauFrame._addMenus: configuration == null?");
+                .println("TableauFrame._addMenus: configuration == null?");
                 return;
             }
             EffigyFactory effigyFactory = (EffigyFactory) configuration
@@ -553,7 +553,7 @@ public class TableauFrame extends Top {
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(KeyStroke.getKeyStroke(
                                 KeyEvent.VK_N, Toolkit.getDefaultToolkit()
-                                        .getMenuShortcutKeyMask()));
+                                .getMenuShortcutKeyMask()));
                     }
                     ((JMenu) _fileMenuItems[_NEW_MENU_INDEX]).add(item);
                 }
@@ -681,11 +681,11 @@ public class TableauFrame extends Top {
                     if (_debugClosing) {
                         NamedObj model = ((PtolemyEffigy) effigy).getModel();
                         System.out
-                                .println("TableauFrame._close(): model "
-                                        + model.getFullName()
-                                        + " has Effigy "
-                                        + effigy
-                                        + ", which is not persistent, so it will not be saved.");
+                        .println("TableauFrame._close(): model "
+                                + model.getFullName()
+                                + " has Effigy "
+                                + effigy
+                                + ", which is not persistent, so it will not be saved.");
                     }
                     dispose();
                     return true;
@@ -1571,7 +1571,7 @@ public class TableauFrame extends Top {
      */
     @Deprecated
     protected static class ExtensionFileFilter extends
-            diva.gui.ExtensionFileFilter {
+    diva.gui.ExtensionFileFilter {
         // NetBeans wants this protected.  If it is package visibility,
         // then there are problems accessing it from the same package
         // but a different jar.
@@ -1631,7 +1631,7 @@ public class TableauFrame extends Top {
                                 .createTableau(tableauContainer);
                         if (tableau == null) {
                             MessageHandler
-                                    .warning("Cannot create view. Perhaps the model needs to be saved first?");
+                            .warning("Cannot create view. Perhaps the model needs to be saved first?");
                         } else {
                             tableau.show();
                         }

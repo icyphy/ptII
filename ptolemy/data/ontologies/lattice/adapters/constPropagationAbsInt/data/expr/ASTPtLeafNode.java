@@ -100,7 +100,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         setAtLeast(
                                 node,
                                 positiveRepresentative
-                                        .getFlatTokenInfiniteConceptByToken(nodeToken));
+                                .getFlatTokenInfiniteConceptByToken(nodeToken));
                     } else {
                         FlatScalarTokenRepresentativeConcept negativeRepresentative = (FlatScalarTokenRepresentativeConcept) getSolver()
                                 .getOntology().getConceptByString(
@@ -108,7 +108,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         setAtLeast(
                                 node,
                                 negativeRepresentative
-                                        .getFlatTokenInfiniteConceptByToken(nodeToken));
+                                .getFlatTokenInfiniteConceptByToken(nodeToken));
                     }
                 } else {
                     setAtLeast(node, getSolver().getOntology()

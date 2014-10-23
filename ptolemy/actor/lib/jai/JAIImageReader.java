@@ -161,7 +161,7 @@ public class JAIImageReader extends Source {
                 } catch (Throwable throwable2) {
                     throw new IllegalActionException(this, throwable2,
                             "Unable to close SeekableStream for '" + _fileURL
-                                    + "'");
+                            + "'");
                 }
             }
 
@@ -171,7 +171,7 @@ public class JAIImageReader extends Source {
                 } catch (Throwable throwable3) {
                     throw new IllegalActionException(this, throwable3,
                             "Unable to close InputStream for '" + _fileURL
-                                    + "'");
+                            + "'");
                 }
             }
         }

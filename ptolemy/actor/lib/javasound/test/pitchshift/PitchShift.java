@@ -130,7 +130,7 @@ public class PitchShift {
             //inputRingBuf[inputRingBufWritePos] = in[curInSamp];
             // Add some delay, to compensate for the pitch detector.
             _inputRingBuf[(_inputRingBufWritePos + _pitchDetectorDelay)
-                    % ringBufSize] = in[curInSamp];
+                          % ringBufSize] = in[curInSamp];
 
             //////////////////////////////////////////////////////
             //////////////////////////////////////////////////////
@@ -206,11 +206,11 @@ public class PitchShift {
                                 / inputPeriodLength)) * 0.5;
 
                         _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos + ringBufSize)
-                                % ringBufSize] += windowVal
-                                * _inputRingBuf[(olaIndex
-                                        + _inputRingBufWritePos
-                                        - minimumPitchSamps + ringBufSize)
-                                        % ringBufSize];
+                                       % ringBufSize] += windowVal
+                                       * _inputRingBuf[(olaIndex
+                                               + _inputRingBufWritePos
+                                               - minimumPitchSamps + ringBufSize)
+                                               % ringBufSize];
                     }
 
                     // Update loop condition variable.

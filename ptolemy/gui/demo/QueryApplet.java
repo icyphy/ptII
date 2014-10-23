@@ -62,8 +62,8 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         } catch (Exception ex) {
             // Ignore exceptions, which only result in the wrong look and feel.
             System.err
-            .println("Failed to set the look and feel? Exception was: "
-                    + ex);
+                    .println("Failed to set the look and feel? Exception was: "
+                            + ex);
         }
     }
 

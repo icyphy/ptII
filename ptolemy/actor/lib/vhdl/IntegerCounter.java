@@ -151,7 +151,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
         super.fire();
         if (reset.isKnown()
                 && (enable.getContainer() == null || enable.getContainer() != null
-                        && enable.isKnown())) {
+                && enable.isKnown())) {
 
             _currentCount = _previousCount;
 

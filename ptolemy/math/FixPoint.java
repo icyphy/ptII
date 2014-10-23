@@ -428,13 +428,13 @@ public class FixPoint implements Cloneable {
             BigInteger infinity = _value.signum() >= 0 ? anOverflow
                     .plusInfinity(quant) : anOverflow.minusInfinity(quant);
 
-            if (infinity != null) {
-                return new FixPoint(infinity, quant.getPrecision());
-            }
+                    if (infinity != null) {
+                        return new FixPoint(infinity, quant.getPrecision());
+                    }
 
-            throw new IllegalArgumentException("ArithmeticException "
-                    + "while dividing " + toString() + " by " + arg.toString()
-                    + '.');
+                    throw new IllegalArgumentException("ArithmeticException "
+                            + "while dividing " + toString() + " by " + arg.toString()
+                            + '.');
         }
     }
 

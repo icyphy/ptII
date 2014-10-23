@@ -252,7 +252,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
 
                 if (this.getClass() == SequenceAttribute.class
                         && ((CompositeActor) container.getContainer())
-                                .getDirector().getClass() == ProcessDirector.class) {
+                        .getDirector().getClass() == ProcessDirector.class) {
 
                     sbf.append("Warning: " + container.getName()
                             + "'s Sequence Attribute will be ignored");
@@ -260,7 +260,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 }
                 if (this.getClass() == ProcessAttribute.class
                         && ((CompositeActor) container.getContainer())
-                                .getDirector().getClass() == SequenceDirector.class) {
+                        .getDirector().getClass() == SequenceDirector.class) {
                     sbf.append("Warning: " + container.getName()
                             + "'s Process Attribute will be ignored");
                     System.out.println(sbf);
@@ -282,10 +282,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
                         // Want to allow any non-whitespace character as a process name
                         if (i == 0 && !Pattern.matches("[^\\s]+", token)) {
                             System.out
-                                    .println("Warning for actor "
-                                            + container.getName()
-                                            + ": A process name must have at least one character; please change atrribute: "
-                                            + this.getToken().toString());
+                            .println("Warning for actor "
+                                    + container.getName()
+                                    + ": A process name must have at least one character; please change atrribute: "
+                                    + this.getToken().toString());
                         }
 
                         // Beth changed 01/19/09
@@ -294,10 +294,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
                         // expression, i.e. an empty string)
                         if (i == 1 && !Pattern.matches("[\\d]+", token)) {
                             System.out
-                                    .println("Warning for actor "
-                                            + container.getName()
-                                            + ": A sequence number must be at least one digit; please change atrribute: "
-                                            + this.getToken().toString());
+                            .println("Warning for actor "
+                                    + container.getName()
+                                    + ": A sequence number must be at least one digit; please change atrribute: "
+                                    + this.getToken().toString());
                         }
 
                     }

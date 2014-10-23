@@ -103,7 +103,7 @@ public class AudioReader extends Source {
         // We use voice.wav so that we can include the voice.wav file
         // in the jar file for use under Web Start.
         fileOrURL
-                .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         // Set the type of the output port.
         output.setMultiport(true);

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  */
 public class FlatTokenRepresentativeConcept extends
-        InfiniteConceptRepresentative {
+InfiniteConceptRepresentative {
 
     /** Create a new FlatTokenRepresentativeConcept with the specified name and
      *  ontology.

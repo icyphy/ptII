@@ -235,7 +235,7 @@ public class CompositeOptimizer extends ReflectComposite {
     }
 
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         setClassName("org.ptolemy.optimization.CompositeOptimizer");
         OptimizerDirector director = new OptimizerDirector(workspace());
         director.setContainer(this);
@@ -307,7 +307,7 @@ public class CompositeOptimizer extends ReflectComposite {
      *  connections being made.
      */
     public static class OptimizerComposite extends
-    ReflectComposite.ReflectCompositeContents {
+            ReflectComposite.ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -330,7 +330,7 @@ public class CompositeOptimizer extends ReflectComposite {
         }
 
         private void _init() throws IllegalActionException,
-        NameDuplicationException {
+                NameDuplicationException {
 
             MirrorPort intermediate = new MirrorPort(workspace());
             intermediate.setContainer(this);
@@ -436,7 +436,7 @@ public class CompositeOptimizer extends ReflectComposite {
                     if (xPort == null) {
                         throw new IllegalActionException(getContainer(),
                                 OPTIMIZATION_VARIABLE_NAME
-                                + " port could not be found.");
+                                        + " port could not be found.");
                     }
                     // send x value to the inside port for the new execution
                     xPort.sendInside(0, xAsToken);

@@ -652,19 +652,19 @@ public class JavaScript extends TypedAtomicActor {
                     { String.class }, // error
                     { NativeJavaObject.class, Double.class }, // get
                     { String.class, String.class, NativeObject.class,
-                        String.class, Integer.class }, // httpRequest
-                        {}, // localHostAddress
-                        { String.class }, // openBrowser
-                        { String.class }, // print
-                        { String.class, String.class }, // readProtectedURL
-                        { String.class }, // readURL
-                        { String.class, String.class, String.class, String.class,
+                            String.class, Integer.class }, // httpRequest
+                    {}, // localHostAddress
+                    { String.class }, // openBrowser
+                    { String.class }, // print
+                    { String.class, String.class }, // readProtectedURL
+                    { String.class }, // readURL
+                    { String.class, String.class, String.class, String.class,
                             String.class }, // requestAccess
-                            { String.class, String.class, String.class, Boolean.class }, // requestAuth
-                            { Object.class, NativeJavaObject.class, Double.class }, // send
-                            { Function.class, Integer.class }, // setTimeout
-                            { String.class, NativeObject.class, NativeJavaObject.class }, // socketX
-                            { NativeJavaObject.class }, // valueOf
+                    { String.class, String.class, String.class, Boolean.class }, // requestAuth
+                    { Object.class, NativeJavaObject.class, Double.class }, // send
+                    { Function.class, Integer.class }, // setTimeout
+                    { String.class, NativeObject.class, NativeJavaObject.class }, // socketX
+                    { NativeJavaObject.class }, // valueOf
 
             };
             int count = 0;
@@ -758,16 +758,16 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
-        "abstract", "as", "boolean", "break", "byte", "case", "catch",
-        "char", "class", "continue", "const", "debugger", "default",
-        "delete", "do", "double", "else", "enum", "export", "extends",
-        "false", "final", "finally", "float", "for", "function", "goto",
-        "if", "implements", "import", "in", "instanceof", "int",
-        "interface", "is", "long", "namespace", "native", "new", "null",
-        "package", "private", "protected", "public", "return", "short",
-        "static", "super", "switch", "synchronized", "this", "throw",
-        "throws", "transient", "true", "try", "typeof", "use", "var",
-        "void", "volatile", "while", "with" };
+            "abstract", "as", "boolean", "break", "byte", "case", "catch",
+            "char", "class", "continue", "const", "debugger", "default",
+            "delete", "do", "double", "else", "enum", "export", "extends",
+            "false", "final", "finally", "float", "for", "function", "goto",
+            "if", "implements", "import", "in", "instanceof", "int",
+            "interface", "is", "long", "namespace", "native", "new", "null",
+            "package", "private", "protected", "public", "return", "short",
+            "static", "super", "switch", "synchronized", "this", "throw",
+            "throws", "transient", "true", "try", "typeof", "use", "var",
+            "void", "volatile", "while", "with" };
 
     /** Keywords as a Set. */
     protected static final Set<String> _KEYWORDS = new HashSet<String>(
@@ -906,10 +906,10 @@ public class JavaScript extends TypedAtomicActor {
          *  @return The buffered inputs.
          */
         public Object get(NativeJavaObject portWrapper, Double channel) {
-                if (portWrapper == null) {
+            if (portWrapper == null) {
                 throw new InternalErrorException(JavaScript.this, null,
                         "Invalid (null) port argument to get(port, channel).");
-                }
+            }
             // In JavaScript, all numbers are doubles. So we have to convert
             // to an integer.
             int channelNumber = 0;
@@ -942,7 +942,7 @@ public class JavaScript extends TypedAtomicActor {
                 if (!port.isInput()) {
                     throw new InternalErrorException(JavaScript.this, null,
                             "Cannot get from " + port.getName()
-                            + ", which is not an input port.");
+                                    + ", which is not an input port.");
                 }
                 try {
                     if (port.getWidth() < 1) {
@@ -999,7 +999,7 @@ public class JavaScript extends TypedAtomicActor {
          */
         public String httpRequest(String url, String method,
                 NativeObject properties, String body, Integer timeout)
-                        throws IOException {
+                throws IOException {
             // FIXME: Should have a version that takes a callback function for the response,
             // and where the response gives access to the return stream.  See Node.js http object.
             StringBuffer response = new StringBuffer();
@@ -1079,7 +1079,7 @@ public class JavaScript extends TypedAtomicActor {
          *  @exception SecurityException If this actor is in restricted mode.
          */
         public String localHostAddress() throws UnknownHostException,
-        SecurityException {
+                SecurityException {
             if (_restricted) {
                 throw new SecurityException(
                         "Actor is restricted. Cannot invoke localHostAddress().");
@@ -1143,7 +1143,7 @@ public class JavaScript extends TypedAtomicActor {
                 @Override
                 public void on(String event, IOAcknowledge ack, Object... args) {
                     System.out
-                    .println("Server triggered event '" + event + "'");
+                            .println("Server triggered event '" + event + "'");
                     IOPort port = (IOPort) getPort(event);
                     if (port == null) {
                         return;
@@ -1198,7 +1198,7 @@ public class JavaScript extends TypedAtomicActor {
                                 }
                                 // Request a firing at the current time.
                                 getDirector()
-                                .fireAtCurrentTime(JavaScript.this);
+                                        .fireAtCurrentTime(JavaScript.this);
                             }
                         }
                     } catch (IllegalActionException e) {
@@ -1240,9 +1240,10 @@ public class JavaScript extends TypedAtomicActor {
 
             HttpResponse response = request.execute();
             if (!response.isSuccessful()) {
-                    throw new IOException("Failed to read URL: " + url +
-                                    "\nResponse code: " + response.getResponseCode() +
-                                    "\nResponse message: " + response.getResponseMessage());
+                throw new IOException("Failed to read URL: " + url
+                        + "\nResponse code: " + response.getResponseCode()
+                        + "\nResponse message: "
+                        + response.getResponseMessage());
             }
             return response.getBody();
         }
@@ -1292,7 +1293,7 @@ public class JavaScript extends TypedAtomicActor {
                 if (!port.isOutput()) {
                     throw new InternalErrorException(JavaScript.this, null,
                             "Cannot send via " + port.getName()
-                            + ", which is not an output port.");
+                                    + ", which is not an output port.");
                 }
                 if (data instanceof NativeJavaObject) {
                     data = ((NativeJavaObject) data).unwrap();
@@ -1346,7 +1347,7 @@ public class JavaScript extends TypedAtomicActor {
                 } catch (KernelException e) {
                     throw new InternalErrorException(JavaScript.this, e,
                             "Failed to send output via port " + port.getName()
-                            + ".");
+                                    + ".");
                 }
             } else {
                 throw new InternalErrorException(JavaScript.this, null,
@@ -1456,7 +1457,7 @@ public class JavaScript extends TypedAtomicActor {
          */
         public String requestAuth(String providerName, String clientId,
                 String redirectUrl, Boolean openBrowser)
-                        throws IllegalActionException {
+                throws IllegalActionException {
             OAuthProviderType oauthProvider;
             if ("google".equals(providerName.toLowerCase())) {
                 oauthProvider = OAuthProviderType.GOOGLE;
@@ -1498,7 +1499,7 @@ public class JavaScript extends TypedAtomicActor {
          */
         public String requestAccess(String providerName, String clientId,
                 String clientSecret, String redirectUrl, String authCode)
-                        throws IllegalActionException {
+                throws IllegalActionException {
             OAuthProviderType oauthProvider;
             if ("google".equals(providerName.toLowerCase())) {
                 oauthProvider = OAuthProviderType.GOOGLE;

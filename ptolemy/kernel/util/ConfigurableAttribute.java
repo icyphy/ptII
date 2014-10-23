@@ -62,7 +62,7 @@ import java.util.List;
  @Pt.AcceptedRating Green (janneck)
  */
 public class ConfigurableAttribute extends Attribute implements Configurable,
-        Settable {
+Settable {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  default workspace directory.

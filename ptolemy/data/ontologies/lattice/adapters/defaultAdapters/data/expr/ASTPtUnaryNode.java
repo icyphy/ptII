@@ -61,7 +61,7 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtUnaryNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtUnaryNode node)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, node, false);
     }
 

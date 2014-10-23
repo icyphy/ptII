@@ -298,8 +298,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this, "Offset number " + _phase
                     + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is "
-                    + periodValue);
+                            + " must be less than the " + "period, which is "
+                            + periodValue);
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);

@@ -103,7 +103,7 @@ public class FileUtilities {
                 // IOException constructor does not take a cause
                 IOException ioException = new IOException(
                         "Cannot find canonical file name of '" + sourceFile
-                                + "'");
+                        + "'");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -826,7 +826,7 @@ public class FileUtilities {
                     // IOException constructor does not take a cause
                     IOException ioException = new IOException(
                             "Cannot look up class \"" + referenceClassName
-                                    + "\" or get its ClassLoader.");
+                            + "\" or get its ClassLoader.");
                     ioException.initCause(ex);
                     throw ioException;
                 }

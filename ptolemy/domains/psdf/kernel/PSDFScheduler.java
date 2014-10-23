@@ -134,7 +134,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *   an entity with the specified name.
      */
     public PSDFScheduler() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -152,7 +152,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *   an entity with the specified name.
      */
     public PSDFScheduler(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -230,7 +230,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     @Override
     @SuppressWarnings("unused")
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         PSDFDirector director = (PSDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -614,7 +614,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  a symbolic expression.
      */
     private class SymbolicFiring extends Firing implements
-            SymbolicScheduleElement {
+    SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor is assumed to fire the number
          *  of times determined by evaluating the given expression.
@@ -704,7 +704,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** A schedule whose iteration count is given by an expression.
      */
     private class SymbolicSchedule extends Schedule implements
-            SymbolicScheduleElement {
+    SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.

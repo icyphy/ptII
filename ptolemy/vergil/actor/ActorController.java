@@ -133,7 +133,7 @@ public abstract class ActorController extends AttributeController {
         // get the "Look Inside" menu to work for composite actors in
         // Kepler, we create these menu items now.
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _openInstanceAction));
 
@@ -366,7 +366,7 @@ public abstract class ActorController extends AttributeController {
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null && _tableauFrame == null) {
                 MessageHandler
-                        .error("Cannot listen to actor without a configuration.");
+                .error("Cannot listen to actor without a configuration.");
                 return;
             }
 

@@ -119,7 +119,7 @@ public class StreamExec implements ExecuteCommands {
             }
             _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
-                            + File.pathSeparatorChar);
+                    + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
@@ -490,7 +490,7 @@ public class StreamExec implements ExecuteCommands {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _streamExec.stderr("IOException: " + ioe);

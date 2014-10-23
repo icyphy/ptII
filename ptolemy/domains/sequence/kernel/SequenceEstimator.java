@@ -71,7 +71,7 @@ public abstract class SequenceEstimator {
      */
     public abstract Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException;
+                    throws NotSchedulableException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

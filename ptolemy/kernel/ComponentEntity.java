@@ -424,7 +424,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      */
     @Override
     public Port newPort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -612,7 +612,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }

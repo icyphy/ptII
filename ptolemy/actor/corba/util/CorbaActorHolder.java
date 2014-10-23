@@ -11,7 +11,7 @@ package ptolemy.actor.corba.util;
  * methods of Ptolemy II.
  */
 public final class CorbaActorHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaActor value = null;
 
     public CorbaActorHolder() {

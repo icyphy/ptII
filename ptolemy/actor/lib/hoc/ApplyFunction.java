@@ -75,12 +75,12 @@ public class ApplyFunction extends TypedAtomicActor {
      *   actor with this name.
      */
     public ApplyFunction(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
         new SingletonParameter(function, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     /** Construct a ApplyFunction with a name and a container.

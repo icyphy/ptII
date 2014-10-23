@@ -68,8 +68,7 @@ import ptolemy.moml.MoMLModelAttribute;
  */
 
 public class ExceptionManager extends MoMLModelAttribute implements
-        ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
-
+ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
 
     /** Create a model attribute with the specified container and name.
      *  @param container The specified container.
@@ -151,7 +150,6 @@ public class ExceptionManager extends MoMLModelAttribute implements
         }
         _initializables.add(initializable);
     }
-
 
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -318,121 +316,122 @@ public class ExceptionManager extends MoMLModelAttribute implements
 
         // Handle the exception according to the policy
 
-         // Save the exception message.  Only informational at the moment.
-         exceptionMessage.setExpression(exception.getMessage());
+        // Save the exception message.  Only informational at the moment.
+        exceptionMessage.setExpression(exception.getMessage());
 
-         Date date = new Date(System.currentTimeMillis());
-         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-         // Handle the exception according to the specified policy
+        // Handle the exception according to the specified policy
 
-         String policyValue = policy.stringValue();
+        String policyValue = policy.stringValue();
 
-         // Set initialized to false here, unless policy is to restart, in
-         // which case set it after the current value is checked
-         if (!policyValue.equals(CatchExceptionAttribute.RESTART)) {
-             // Set _initialized here instead of in wrapup(), since
-             // wrapup() is called prior to handleException()
-             _initialized = false;
-         }
+        // Set initialized to false here, unless policy is to restart, in
+        // which case set it after the current value is checked
+        if (!policyValue.equals(CatchExceptionAttribute.RESTART)) {
+            // Set _initialized here instead of in wrapup(), since
+            // wrapup() is called prior to handleException()
+            _initialized = false;
+        }
 
-          if (policyValue.equals(CatchExceptionAttribute.RESTART)) {
-             // Restarts the model in a new thread
+        if (policyValue.equals(CatchExceptionAttribute.RESTART)) {
+            // Restarts the model in a new thread
 
-             // Check if the model made it through initialize().  If not, return
-             // false (thereby leaving exception unhandled)
-             if (!_initialized) {
+            // Check if the model made it through initialize().  If not, return
+            // false (thereby leaving exception unhandled)
+            if (!_initialized) {
 
-                 // Return false if an exception is thrown, since this attribute
-                 // did not resolve the exception.
-                 statusMessage.setExpression("Cannot restart: Error before " +
-                                 "or during intialize()");
-                 for (ExceptionSubscriber subscriber : _subscribers) {
-                     subscriber.exceptionHandled(false, policyValue);
-                 }
-                 return false;
-             }
+                // Return false if an exception is thrown, since this attribute
+                // did not resolve the exception.
+                statusMessage.setExpression("Cannot restart: Error before "
+                        + "or during intialize()");
+                for (ExceptionSubscriber subscriber : _subscribers) {
+                    subscriber.exceptionHandled(false, policyValue);
+                }
+                return false;
+            }
 
-             // Set _initialized here, instead of in wrapup(), since
-             // wrapup() is called prior to handleException()
-             _initialized = false;
+            // Set _initialized here, instead of in wrapup(), since
+            // wrapup() is called prior to handleException()
+            _initialized = false;
 
-             // Find an actor in the model; use the actor to get the manager.
-             Manager manager = null;
+            // Find an actor in the model; use the actor to get the manager.
+            Manager manager = null;
 
-             NamedObj toplevel = toplevel();
-             if (toplevel != null) {
-                 Iterator iterator = toplevel.containedObjectsIterator();
-                 while (iterator.hasNext()) {
-                     Object obj = iterator.next();
-                     if (obj instanceof Actor) {
-                         manager = ((Actor) obj).getManager();
-                     }
-                 }
-             }
+            NamedObj toplevel = toplevel();
+            if (toplevel != null) {
+                Iterator iterator = toplevel.containedObjectsIterator();
+                while (iterator.hasNext()) {
+                    Object obj = iterator.next();
+                    if (obj instanceof Actor) {
+                        manager = ((Actor) obj).getManager();
+                    }
+                }
+            }
 
-             if (manager != null) {
-                 // End execution
-                 manager.finish();
+            if (manager != null) {
+                // End execution
+                manager.finish();
 
-                 // Wait until the manager notifies listeners of successful
-                 // completion before restarting.  Manager will call
-                 // _executionFinished().  Set a flag here indicating to restart
-                 _restartDesired = true;
+                // Wait until the manager notifies listeners of successful
+                // completion before restarting.  Manager will call
+                // _executionFinished().  Set a flag here indicating to restart
+                _restartDesired = true;
 
-             } else {
-                 statusMessage.setExpression("Cannot restart model since " +
-                    "there is no model Manager.  Perhaps the model has no " +
-                    "actors?");
-                 for (ExceptionSubscriber subscriber : _subscribers) {
-                     subscriber.exceptionHandled(false, policyValue);
-                 }
-                 return false;
-             }
+            } else {
+                statusMessage
+                        .setExpression("Cannot restart model since "
+                                + "there is no model Manager.  Perhaps the model has no "
+                                + "actors?");
+                for (ExceptionSubscriber subscriber : _subscribers) {
+                    subscriber.exceptionHandled(false, policyValue);
+                }
+                return false;
+            }
 
-         } else if (policyValue.equals(CatchExceptionAttribute.STOP)) {
-             statusMessage.setExpression("Model stopped at "
-                     + dateFormat.format(date));
+        } else if (policyValue.equals(CatchExceptionAttribute.STOP)) {
+            statusMessage.setExpression("Model stopped at "
+                    + dateFormat.format(date));
 
-             // Call validate() to notify listeners of these changes
-             exceptionMessage.validate();
-             statusMessage.validate();
+            // Call validate() to notify listeners of these changes
+            exceptionMessage.validate();
+            statusMessage.validate();
 
-             // wrapup() is automatically called prior to handleException(),
-             // so don't need to call it again
-         } else if (policyValue.equals(CatchExceptionAttribute.THROW)) {
-             statusMessage.setExpression("Exception thrown at "
-                     + dateFormat.format(date));
+            // wrapup() is automatically called prior to handleException(),
+            // so don't need to call it again
+        } else if (policyValue.equals(CatchExceptionAttribute.THROW)) {
+            statusMessage.setExpression("Exception thrown at "
+                    + dateFormat.format(date));
 
-             // Return false if an exception is thrown, since this attribute
-             // did not resolve the exception.
-             for (ExceptionSubscriber subscriber : _subscribers) {
-                 subscriber.exceptionHandled(false, policyValue);
-             }
-             return false;
+            // Return false if an exception is thrown, since this attribute
+            // did not resolve the exception.
+            for (ExceptionSubscriber subscriber : _subscribers) {
+                subscriber.exceptionHandled(false, policyValue);
+            }
+            return false;
 
-         } else {
-             statusMessage.setExpression("Illegal policy encountered at: "
-                     + dateFormat.format(date));
+        } else {
+            statusMessage.setExpression("Illegal policy encountered at: "
+                    + dateFormat.format(date));
 
-             for (ExceptionSubscriber subscriber : _subscribers) {
-                 subscriber.exceptionHandled(false, policyValue);
-             }
-             // Throw an exception here instead of just returning false, since
-             // this is a problem with CatchExceptionAttribute
-             throw new IllegalActionException(this,
-                     "Illegal exception handling policy.");
-         }
+            for (ExceptionSubscriber subscriber : _subscribers) {
+                subscriber.exceptionHandled(false, policyValue);
+            }
+            // Throw an exception here instead of just returning false, since
+            // this is a problem with CatchExceptionAttribute
+            throw new IllegalActionException(this,
+                    "Illegal exception handling policy.");
+        }
 
-         // Call validate() to notify listeners of these changes
-         exceptionMessage.validate();
-         statusMessage.validate();
+        // Call validate() to notify listeners of these changes
+        exceptionMessage.validate();
+        statusMessage.validate();
 
-         _resetMessages = false;
+        _resetMessages = false;
 
-         for (ExceptionSubscriber subscriber : _subscribers) {
-             subscriber.exceptionHandled(true, policyValue);
-         }
+        for (ExceptionSubscriber subscriber : _subscribers) {
+            subscriber.exceptionHandled(true, policyValue);
+        }
 
         return true;
     }
@@ -531,7 +530,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         super.setContainer(container);
@@ -627,5 +626,5 @@ public class ExceptionManager extends MoMLModelAttribute implements
     /** A list of all ExceptionSusbcribers, to be notified when an exception is
      *  caught by this class.
      */
-     private ArrayList<ExceptionSubscriber> _subscribers;
+    private ArrayList<ExceptionSubscriber> _subscribers;
 }

@@ -99,7 +99,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      */
     @Override
     public Port newPort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -168,7 +168,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (!(port instanceof MethodCallPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this entity.");

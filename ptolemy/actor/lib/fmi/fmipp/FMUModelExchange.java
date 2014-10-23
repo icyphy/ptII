@@ -199,10 +199,10 @@ public class FMUModelExchange extends Transformer {
                                 + (_fmiModelDescription.files.size() <= 0 ? "No files were unzipped from the FMU file "
                                         + fmuFileName + "."
                                         : "The first file in the fmuFile "
-                                                + fmuFileName
-                                                + " was "
-                                                + _fmiModelDescription.files
-                                                        .get(0) + "."));
+                                        + fmuFileName
+                                        + " was "
+                                        + _fmiModelDescription.files
+                                        .get(0) + "."));
             }
 
             //             try { // make the error handling better, because if the file is not valid, its not possible to cancel the error message, one has to use ok instead ;)
@@ -593,12 +593,12 @@ public class FMUModelExchange extends Transformer {
             _fmu = null;
         } else {
             System.out
-                    .println("FMUModelExchange: not calling _fmu.delete because fmu is null");
+            .println("FMUModelExchange: not calling _fmu.delete because fmu is null");
 
         }
         System.out
-                .format("-FMUModelExchange::wrapup: %d times fired with and %d times without input%n",
-                        _some, _none);
+        .format("-FMUModelExchange::wrapup: %d times fired with and %d times without input%n",
+                _some, _none);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -358,7 +358,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         _setTitle(name);

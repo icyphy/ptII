@@ -245,6 +245,6 @@ public class RemoveProperties extends MoMLFilterSimple {
                 null);
 
         _propertiesToBeRemoved
-                .put("directorClass", removePropertyDirectorClass);
+        .put("directorClass", removePropertyDirectorClass);
     }
 }

@@ -155,7 +155,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         boolean postfireReturn = super.postfire();
 
         input_tokenConsumptionRate
-                .setToken(_rateArray[_getCurrentInputPosition()]);
+        .setToken(_rateArray[_getCurrentInputPosition()]);
 
         return postfireReturn;
     }

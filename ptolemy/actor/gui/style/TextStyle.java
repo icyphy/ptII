@@ -157,7 +157,7 @@ public class TextStyle extends ParameterEditorStyle {
     // Initialize height and width.  This method is called by the
     // constructors so as to avoid code duplication.
     private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         height = new Parameter(this, "height");
         height.setToken("10");
         height.setTypeEquals(BaseType.INT);

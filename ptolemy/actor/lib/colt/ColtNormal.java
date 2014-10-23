@@ -76,13 +76,13 @@ public class ColtNormal extends ColtRandomSource {
         mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(mean.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         standardDeviation = new PortParameter(this, "standardDeviation",
                 new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(standardDeviation.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         standardDeviation.moveToFirst();
         mean.moveToFirst();

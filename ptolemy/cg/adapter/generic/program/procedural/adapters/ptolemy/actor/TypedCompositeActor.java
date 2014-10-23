@@ -60,7 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
+ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
 
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
@@ -539,7 +539,7 @@ public class TypedCompositeActor extends
             code.append(CodeStream.indent(getCodeGenerator()
                     .comment(
                             "Update " + getComponent().getName()
-                                    + "'s port parameters")));
+                            + "'s port parameters")));
             code.append(tempCode);
         }
 
@@ -563,7 +563,7 @@ public class TypedCompositeActor extends
 
         if (getComponent() instanceof ModularCodeGenTypedCompositeActor
                 && ((ptolemy.actor.CompositeActor) getComponent())
-                        .outputPortList().size() > 0) {
+                .outputPortList().size() > 0) {
             code.append("if (export) {" + _eol);
         }
 

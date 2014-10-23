@@ -274,8 +274,8 @@ public class TMReceiver extends AbstractReceiver {
                 } catch (ClassCastException ex) {
                     throw new InternalErrorException(null, ex,
                             "priorityValue '" + priority.getToken()
-                                    + "' must be an integer in "
-                                    + getContainer());
+                            + "' must be an integer in "
+                            + getContainer());
                 }
             }
 

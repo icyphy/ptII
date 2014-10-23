@@ -121,7 +121,7 @@ public class ConceptTermManager implements ConceptTermFactory {
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
             ptolemy.graph.InequalityTerm updateTerm)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return new ArrayList<ptolemy.graph.InequalityTerm>();
     }
 

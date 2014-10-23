@@ -190,7 +190,8 @@ public class QSSIntegrator extends TypedAtomicActor {
                 _previousSlope = _derivative(((DoubleToken) _previousInput)
                         .doubleValue());
                 // Compute the new slope.
-                _currentSlope = _derivative(((DoubleToken) newInput).doubleValue());
+                _currentSlope = _derivative(((DoubleToken) newInput)
+                        .doubleValue());
                 // Save the previous input
                 _previousInput = newInput;
                 // Set the received flag to true
@@ -212,11 +213,11 @@ public class QSSIntegrator extends TypedAtomicActor {
             // another firing. Note that DE needs this because
             // of the way it handles feedback loops. It may invoke fire and
             // postfire more than once in each iteration.
-            _nextOutputTime = _nextCrossingTime(_currentSlope, 0.0, 0.0, quantumValue,
-                    currentTime);
+            _nextOutputTime = _nextCrossingTime(_currentSlope, 0.0, 0.0,
+                    quantumValue, currentTime);
             // Calculate the next output value
-            _nextOutputValue = _nextOutputValue(_currentSlope, _previousOutputValue,
-                    quantumValue);
+            _nextOutputValue = _nextOutputValue(_currentSlope,
+                    _previousOutputValue, quantumValue);
         } else {
             // The fire method did not send an output.
             // If we did not receive a new input, there is nothing to do.
@@ -226,7 +227,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 // Update the current state.
                 _x += _previousSlope
                         * (currentTime.subtract(_previousStateUpdateTime))
-                        .getDoubleValue();
+                                .getDoubleValue();
                 // Update the time of the next output, which is the time it will take to
                 // get from the current state to previous output value plus or minus the quantum
                 // at the updated slope.
@@ -235,11 +236,10 @@ public class QSSIntegrator extends TypedAtomicActor {
                 // Calculate the next output value
                 _nextOutputValue = _nextOutputValue(_currentSlope,
                         _previousOutputValue, quantumValue);
-            }
-            else {
-            // Calculate the next output value
-            _nextOutputValue = _nextOutputValue(_previousSlope,
-                    _previousOutputValue, quantumValue);
+            } else {
+                // Calculate the next output value
+                _nextOutputValue = _nextOutputValue(_previousSlope,
+                        _previousOutputValue, quantumValue);
             }
         }
 
@@ -253,7 +253,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 _debug("Requesting a refiring at: " + _nextOutputTime);
             }
         } else if (_debugging) {
-                _debug("Next output time is infinite, so not calling fireAt().");
+            _debug("Next output time is infinite, so not calling fireAt().");
         }
         return super.postfire();
     }

@@ -97,7 +97,7 @@ public class SingletonParameter extends Parameter {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

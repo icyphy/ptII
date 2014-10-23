@@ -109,13 +109,13 @@ public class ColtBeta extends ColtRandomSource {
         alpha.setExpression("2.0");
         alpha.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(alpha.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         beta = new PortParameter(this, "beta");
         beta.setExpression("2.0");
         beta.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(beta.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         beta.moveToFirst();
         alpha.moveToFirst();

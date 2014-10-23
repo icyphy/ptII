@@ -135,7 +135,7 @@ public class IntToken extends ScalarToken {
             IntToken result = new IntToken(shortToken.intValue());
             if (shortToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(shortToken._unitCategoryExponents)) {
+                    .isUnitless(shortToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
             }

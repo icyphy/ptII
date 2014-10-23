@@ -58,9 +58,9 @@ with {@link ptolemy.actor.lib.ExceptionManager}.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (beth)
 @Pt.AcceptedRating Red (beth)
-*/
+ */
 
-public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
+public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -77,13 +77,13 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
      */
     public ExceptionAnalyzer(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-            super(container, name, true);
+        super(container, name, true);
 
-            statusMessage = new StringParameter(this, "statusMessage");
-            statusMessage.setExpression("No analysis performed yet");
-            statusMessage.setVisibility(Settable.NOT_EDITABLE);
+        statusMessage = new StringParameter(this, "statusMessage");
+        statusMessage.setExpression("No analysis performed yet");
+        statusMessage.setVisibility(Settable.NOT_EDITABLE);
 
-            _annotations = new ArrayList();
+        _annotations = new ArrayList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,8 +105,8 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ExceptionAnalyzer newObject =
-                (ExceptionAnalyzer) super.clone(workspace);
+        ExceptionAnalyzer newObject = (ExceptionAnalyzer) super
+                .clone(workspace);
         newObject._annotations = new ArrayList<OntologyAnnotationAttribute>();
         return newObject;
     }
@@ -128,8 +128,8 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
         NamedObj toplevel;
 
         // If contained by an ExceptionManager, get toplevel of container
-        if (getContainer() != null &&
-                getContainer() instanceof ExceptionManagerModel) {
+        if (getContainer() != null
+                && getContainer() instanceof ExceptionManagerModel) {
             toplevel = ((ExceptionManagerModel) getContainer())
                     .getModelContainer().toplevel();
         } else {
@@ -155,12 +155,12 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
 
         while (iterator.hasNext()) {
             object = iterator.next();
-            if (object instanceof LatticeOntologySolver &&
-                   ((NamedObj) object).getName().equals("ErrorOntologySolver")) {
+            if (object instanceof LatticeOntologySolver
+                    && ((NamedObj) object).getName().equals(
+                            "ErrorOntologySolver")) {
                 solver = (LatticeOntologySolver) object;
             }
         }
-
 
         if (solver == null) {
             // Return false if the ontology solver cannot be found,
@@ -171,7 +171,8 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                 statusMessage.validate();
             } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -184,13 +185,14 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
         // and annotate these with an "error" concept
 
         if (!(exception instanceof KernelException)) {
-            statusMessage.setExpression("Cannot analyze: Not a " +
-                            "KernelException or subclass");
+            statusMessage.setExpression("Cannot analyze: Not a "
+                    + "KernelException or subclass");
             try {
                 statusMessage.validate();
             } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -201,15 +203,15 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
 
         // TODO:  Handle other objects that can be assigned ontology
         // concepts, such as Parameter?
-        if (!((nameable1 != null && nameable1 instanceof Actor) ||
-                (nameable2 != null && nameable2 instanceof Actor))) {
+        if (!((nameable1 != null && nameable1 instanceof Actor) || (nameable2 != null && nameable2 instanceof Actor))) {
             statusMessage.setExpression("Cannot analyze: No source actor "
-                + "identified");
+                    + "identified");
             try {
                 statusMessage.validate();
             } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -238,7 +240,8 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                 statusMessage.validate();
             } catch (IllegalActionException e2) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -271,7 +274,8 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                 statusMessage.validate();
             } catch (IllegalActionException e) {
                 // Should not happen since expression is legal
-            };
+            }
+            ;
             return false;
         }
 
@@ -286,79 +290,80 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
                 String constraintText = nameable.getFullName();
                 int period = constraintText.indexOf('.');
                 if ((period != -1) && (period != constraintText.length() - 1)) {
-                     period = constraintText.indexOf('.', period + 1);
+                    period = constraintText.indexOf('.', period + 1);
                 }
 
-                if ((period != -1) &&(period != constraintText.length() - 1)) {
-                     constraintText = constraintText.substring(period + 1);
+                if ((period != -1) && (period != constraintText.length() - 1)) {
+                    constraintText = constraintText.substring(period + 1);
                 }
 
                 // The constraint itself is named after the actor
                 // to avoid name duplications and to help with
                 // traceability.  Underscores replace periods.
-                String actorName = constraintText.replace('.','_');
+                String actorName = constraintText.replace('.', '_');
 
                 try {
-                    OntologyAnnotationAttribute attribute =
-                            new OntologyAnnotationAttribute(toplevel,
-                            "ErrorOntologySolver::" + actorName + "_" +
-                            port.getName());
+                    OntologyAnnotationAttribute attribute = new OntologyAnnotationAttribute(
+                            toplevel, "ErrorOntologySolver::" + actorName + "_"
+                                    + port.getName());
 
-                    attribute.setExpression(constraintText + "." +
-                            port.getName() + ">= Error");
+                    attribute.setExpression(constraintText + "."
+                            + port.getName() + ">= Error");
                     _annotations.add(attribute);
                 } catch (NameDuplicationException e) {
                     // If one exists already, assume the previous one
                     // can be overwritten.  This can occur if the model
                     // is saved after an exception is caught.
-                    OntologyAnnotationAttribute attribute =
-                            (OntologyAnnotationAttribute) toplevel()
-                            .getAttribute("ErrorOntologySolver::" +
-                            actorName + "_" + port.getName());
+                    OntologyAnnotationAttribute attribute = (OntologyAnnotationAttribute) toplevel()
+                            .getAttribute(
+                                    "ErrorOntologySolver::" + actorName + "_"
+                                            + port.getName());
 
                     if (attribute != null) {
                         try {
                             attribute.setExpression(constraintText + "."
                                     + port.getName() + ">= Error");
-                             _annotations.add(attribute);
+                            _annotations.add(attribute);
                         } catch (IllegalActionException e2) {
                             statusMessage.setExpression("Cannot analyze: "
                                     + "Cannot annotate port "
-                                    + port.getContainer().getFullName()
-                                    + "." + port.getName());
+                                    + port.getContainer().getFullName() + "."
+                                    + port.getName());
                             try {
                                 statusMessage.validate();
                             } catch (IllegalActionException e3) {
                                 // Should not happen since expression is legal
-                            };
-                                    return false;
+                            }
+                            ;
+                            return false;
                         }
-                   } else {
-                       statusMessage.setExpression("Cannot analyze: Cannot "
-                               + "annotate port "
-                               + port.getContainer().getFullName() + "."
-                               + port.getName());
-                       try {
-                           statusMessage.validate();
-                       } catch (IllegalActionException e2) {
-                           // Should not happen since expression is legal
-                       };
-                       return false;
-                   }
+                    } else {
+                        statusMessage.setExpression("Cannot analyze: Cannot "
+                                + "annotate port "
+                                + port.getContainer().getFullName() + "."
+                                + port.getName());
+                        try {
+                            statusMessage.validate();
+                        } catch (IllegalActionException e2) {
+                            // Should not happen since expression is legal
+                        }
+                        ;
+                        return false;
+                    }
                 } catch (IllegalActionException e) {
                     statusMessage.setExpression("Cannot create annotations.");
                     try {
                         statusMessage.validate();
                     } catch (IllegalActionException e2) {
                         // Should not happen since expression is legal
-                    };
+                    }
+                    ;
                     return false;
                 }
             }
         }
         return true;
     }
-
 
     /** Nothing to do after exception is handled.
      *
@@ -367,7 +372,6 @@ public class ExceptionAnalyzer extends Attribute implements ExceptionSubscriber{
     public boolean exceptionHandled(boolean succesful, String message) {
         return true;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

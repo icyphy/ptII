@@ -105,7 +105,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class PlotFrame extends JFrame implements PropertyChangeListener,
-        ImageExportable {
+ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -329,18 +329,18 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     /** Display a menu that describes the Plotter. */
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotFrame class\n"
-                                + "By: Edward A. Lee "
-                                + "and Christopher Brooks\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2014, "
-                                + "The Regents of the University of California.",
+        .showMessageDialog(
+                this,
+                "PlotFrame class\n"
+                        + "By: Edward A. Lee "
+                        + "and Christopher Brooks\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -441,7 +441,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
                 "PlotFrame is a plot in a top-level window.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file and plot its data.
@@ -586,9 +586,9 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         job.print(aset);
         if (foundPDFPrinter) {
             System.out
-                    .println("Plot printed from command line. "
-                            + "Under MacOSX, look for "
-                            + "~/Desktop/Java Printing.pdf");
+            .println("Plot printed from command line. "
+                    + "Under MacOSX, look for "
+                    + "~/Desktop/Java Printing.pdf");
         }
     }
 

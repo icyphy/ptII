@@ -141,7 +141,7 @@ public class Exec extends LimitedFiringSource {
 
         // An array of records {{name = "", value = ""}}
         environment
-                .setTypeEquals(new ArrayType(new RecordType(labels, values)));
+        .setTypeEquals(new ArrayType(new RecordType(labels, values)));
 
         // Array with an empty name and value means
         // default environment of the calling process.
@@ -394,7 +394,7 @@ public class Exec extends LimitedFiringSource {
                                 this,
                                 "Executing command \""
                                         + ((StringToken) command.getToken())
-                                                .stringValue()
+                                        .stringValue()
                                         + "\" returned a non-zero return value of "
                                         + processReturnCode
                                         + ".\nThe last input was: " + line
@@ -589,7 +589,7 @@ public class Exec extends LimitedFiringSource {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem executing the command '" + command.getExpression()
-                            + "'\n" + "in the directory: " + directoryAsFile);
+                    + "'\n" + "in the directory: " + directoryAsFile);
         }
     }
 
@@ -729,9 +729,9 @@ public class Exec extends LimitedFiringSource {
                             _actor,
                             ex,
                             getName()
-                                    + ": Could not get the value of the ignoreIOExceptionReadErrors "
-                                    + "parameter while trying to throw "
-                                    + throwable);
+                            + ": Could not get the value of the ignoreIOExceptionReadErrors "
+                            + "parameter while trying to throw "
+                            + throwable);
                 }
                 if (ignoreIOExceptionReadErrorsValue
                         && throwable instanceof IOException) {
@@ -741,16 +741,16 @@ public class Exec extends LimitedFiringSource {
                                     + " had an exception, but "
                                     + "ignoreIOExceptionReadErrors was true and the exception was an "
                                     + "IOException, so it is being skipped.",
-                            throwable).printStackTrace();
+                                    throwable).printStackTrace();
                 } else {
                     throw new InternalErrorException(
                             _actor,
                             throwable,
                             getName()
-                                    + ": Failed while reading from "
-                                    + _inputStream
-                                    + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
-                                    + throwable.getCause());
+                            + ": Failed while reading from "
+                            + _inputStream
+                            + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
+                            + throwable.getCause());
                 }
             }
         }

@@ -167,9 +167,11 @@ public class Server {
      */
     private void _write(StringBuffer strBuf) throws IOException {
         if (cliSoc == null) {
-            System.out.println("lbnl.actor.lib.net.Server._write(\"" + strBuf
-                    + "\"): the client socket is null, this can happen if _write() "
-                    + "is called before _read(), such as when exporting to JNLP.");
+            System.out
+                    .println("lbnl.actor.lib.net.Server._write(\""
+                            + strBuf
+                            + "\"): the client socket is null, this can happen if _write() "
+                            + "is called before _read(), such as when exporting to JNLP.");
             return;
         }
         BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(

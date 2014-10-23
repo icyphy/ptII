@@ -173,7 +173,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
     public int triggerTimerEvent() {
         System.out
-                .println("about to call the native method to signal an event");
+        .println("about to call the native method to signal an event");
 
         int r = signalTimerEvent();
         System.out.println("return from the native method");

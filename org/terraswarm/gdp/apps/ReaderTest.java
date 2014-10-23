@@ -24,10 +24,9 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.terraswarm.gdp.apps;
-
 
 import java.nio.ByteBuffer;
 
@@ -59,7 +58,7 @@ import com.sun.jna.ptr.PointerByReference;
     @since Ptolemy II 10.0
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class ReaderTest {
     // This code follows the naming conventions of the original .c file.
 
@@ -68,10 +67,10 @@ public class ReaderTest {
      *  @param firstrec the record number of the first record.
      *  @return the status.
      */
-    public static EP_STAT do_read(Pointer gclh, long /*gdp_recno_t*/ firstrec) {
+    public static EP_STAT do_read(Pointer gclh, long /*gdp_recno_t*/firstrec) {
         // Was: EP_STAT do_read(gdp_gcl_t *gclh, gdp_recno_t firstrec)
         EP_STAT estat;
-        long /*gdp_recno_t*/ recno = firstrec;
+        long /*gdp_recno_t*/recno = firstrec;
         // Was: gdp_datum_t *datum = gdp_datum_new();
         PointerByReference datum = Gdp10Library.INSTANCE.gdp_datum_new();
 
@@ -93,12 +92,14 @@ public class ReaderTest {
 
             // flush any left over data
             // Was: if (gdp_buf_reset(gdp_datum_getbuf(datum)) < 0)
-            if (Gdp10Library.INSTANCE.gdp_buf_reset(Gdp10Library.INSTANCE.gdp_datum_getbuf(datum)) < 0) {
+            if (Gdp10Library.INSTANCE.gdp_buf_reset(Gdp10Library.INSTANCE
+                    .gdp_datum_getbuf(datum)) < 0) {
                 //char nbuf[40];
                 //strerror_r(errno, nbuf, sizeof nbuf);
                 //printf("*** WARNING: buffer reset failed: %s\n",
                 //  nbuf);
-                System.out.println("*** WARNING: buffer reset failed: FIXME: get errno?");
+                System.out
+                        .println("*** WARNING: buffer reset failed: FIXME: get errno?");
             }
         }
         // if we've reached the end of file, that's not an error, at least
@@ -123,7 +124,6 @@ public class ReaderTest {
         return estat;
     }
 
-
     /**
      * Subscribe or multiread from a GCL.
      * "This routine handles calls that return multiple values via the
@@ -135,9 +135,8 @@ public class ReaderTest {
      *  is a multiread.
      *  @return the status.
      */
-    static EP_STAT do_subscribe(Pointer gclh,
-            long /*gdp_recno_t*/ firstrec,
-            int /*int32_t*/ numrecs, boolean subscribe) {
+    static EP_STAT do_subscribe(Pointer gclh, long /*gdp_recno_t*/firstrec,
+            int /*int32_t*/numrecs, boolean subscribe) {
         EP_STAT estat;
 
         if (numrecs < 0) {
@@ -147,12 +146,14 @@ public class ReaderTest {
         if (subscribe) {
             // Was: estat = gdp_gcl_subscribe(gclh, firstrec, numrecs, NULL, NULL, NULL);
             //PointerByReference gclhByReference = new PointerByReference(gclh);
-            estat = Gdp10Library.INSTANCE.gdp_gcl_subscribe(gclh, firstrec, numrecs, null, null, null);
+            estat = Gdp10Library.INSTANCE.gdp_gcl_subscribe(gclh, firstrec,
+                    numrecs, null, null, null);
             //gclh = gclhByReference.getValue();
         } else {
             // Was: estat = gdp_gcl_multiread(gclh, firstrec, numrecs, NULL, NULL);
             //PointerByReference gclhByReference = new PointerByReference();
-            estat = Gdp10Library.INSTANCE.gdp_gcl_multiread(gclh, firstrec, numrecs, null, null);
+            estat = Gdp10Library.INSTANCE.gdp_gcl_multiread(gclh, firstrec,
+                    numrecs, null, null);
             //gclh = gclhByReference.getValue();
         }
 
@@ -163,24 +164,29 @@ public class ReaderTest {
             //                        subscribe ? "subscribe" : "multiread",
             //                        ep_stat_tostr(estat, ebuf, sizeof ebuf));
             // I have no idea what to do with ep_stat_tostr(), so we just print
-            System.err.println("Cannot " + (subscribe ? "subscribe" : "multiread")
-                    + ": " + estat.code);
+            System.err.println("Cannot "
+                    + (subscribe ? "subscribe" : "multiread") + ": "
+                    + estat.code);
         }
 
         for (;;) {
             // Was: gdp_event_t *gev = gdp_event_next(true);
-            PointerByReference gev = Gdp10Library.INSTANCE.gdp_event_next(true ? (byte)1 : (byte)0);
+            PointerByReference gev = Gdp10Library.INSTANCE
+                    .gdp_event_next(true ? (byte) 1 : (byte) 0);
             switch (Gdp10Library.INSTANCE.gdp_event_gettype(gev)) {
             case GdpUtilities.GDP_EVENT_DATA:
-                System.out.print( " >>> ");
+                System.out.print(" >>> ");
                 // Was: gdp_datum_print(gdp_event_getdatum(gev), stdout);
-                GdpUtilities.gdp_datum_print(Gdp10Library.INSTANCE.gdp_event_getdatum(gev)/*, stdout*/);
+                GdpUtilities.gdp_datum_print(Gdp10Library.INSTANCE
+                        .gdp_event_getdatum(gev)/*, stdout*/);
                 break;
             case GdpUtilities.GDP_EVENT_EOS:
-                System.err.println("End of " + (subscribe ? "Subscription" : "Multiread"));
+                System.err.println("End of "
+                        + (subscribe ? "Subscription" : "Multiread"));
                 return estat;
             default:
-                System.err.print("Unknown event type" + Gdp10Library.INSTANCE.gdp_event_gettype(gev));
+                System.err.print("Unknown event type"
+                        + Gdp10Library.INSTANCE.gdp_event_gettype(gev));
                 //sleep(1);
                 break;
             }
@@ -190,7 +196,6 @@ public class ReaderTest {
         // should never get here
         //return estat;
     }
-
 
     /** Read from a GCL
      *  <p>The arguments below are optional:</p>
@@ -223,7 +228,7 @@ public class ReaderTest {
      *
      * @param argv An array of command line arguments, see above for the format.
      */
-    public static void main(String [] argv) {
+    public static void main(String[] argv) {
         // See
         // https://twall.github.io/jna/4.1.0/overview-summary.html#crash-protection
         // "It is not uncommon when defining a new library and writing
@@ -243,9 +248,6 @@ public class ReaderTest {
         Pointer gclh = null;
 
         EP_STAT estat;
-        // Was: char buf[200];
-        String buf = "";
-
         // Was: gcl_name_t gclname;
         // gdp.h: the internal name of a GCL
         // gdp.h: typedef uint8_t                                gcl_name_t[32];
@@ -260,11 +262,10 @@ public class ReaderTest {
         // default of 127.0.0.1:2468.  This value can be set by the -G command line argument.
         String gdpd_addr = null;
 
-        int opt;
         boolean subscribe = false;
         boolean multiread = false;
-        int /*int32_t*/ numrecs = -1;
-        long /*gdp_recno_t*/ firstrec = 1;
+        int /*int32_t*/numrecs = -1;
+        long /*gdp_recno_t*/firstrec = 1;
 
         int argc = argv.length;
         //while ((opt = getopt(argc, argv, "D:f:mn:s")) > 0)
@@ -272,16 +273,16 @@ public class ReaderTest {
             if (argv[i].equals("-D")) {
                 // Was: ep_dbg_set(optarg);
                 argc--;
-                Gdp10Library.INSTANCE.ep_dbg_set(argv[i+1]);
+                Gdp10Library.INSTANCE.ep_dbg_set(argv[i + 1]);
                 argc--;
             } else if (argv[i].equals("-G")) {
                 argc--;
-                gdpd_addr = argv[i+1];
+                gdpd_addr = argv[i + 1];
                 argc--;
             } else if (argv[i].equals("-f")) {
                 // Was: firstrec = atol(optarg);
                 argc--;
-                firstrec = Long.valueOf(argv[i+1]);
+                firstrec = Long.valueOf(argv[i + 1]);
                 argc--;
             } else if (argv[i].equals("-m")) {
                 argc--;
@@ -289,7 +290,7 @@ public class ReaderTest {
             } else if (argv[i].equals("-n")) {
                 // Was: numrecs = atol(optarg);
                 argc--;
-                numrecs = Integer.valueOf(argv[i+1]);
+                numrecs = Integer.valueOf(argv[i + 1]);
                 argc--;
             } else if (argv[i].equals("-s")) {
                 argc--;
@@ -299,8 +300,9 @@ public class ReaderTest {
         //argc -= optind;
         //argv += optind;
 
-        if (argc <= 0 ) {
-            System.err.println(        "Usage: %s [-D dbgspec] [-f firstrec] [-m] [-n nrecs] [-s] <gcl_name>\n");
+        if (argc <= 0) {
+            System.err
+                    .println("Usage: %s [-D dbgspec] [-f firstrec] [-m] [-n nrecs] [-s] <gcl_name>\n");
             System.exit(64 /* EX_USAGE from /usr/includes/sysexits.h */);
 
         }
@@ -316,10 +318,12 @@ public class ReaderTest {
         // allow thread to settle to avoid interspersed debug output
         //sleep(1);
 
-        System.out.println("firstrec: " + firstrec + ", multiread: " + multiread + ", numrecs: " + numrecs
-                + ", subscribe: " + subscribe + " name: " + argv[argv.length -1]);
+        System.out.println("firstrec: " + firstrec + ", multiread: "
+                + multiread + ", numrecs: " + numrecs + ", subscribe: "
+                + subscribe + " name: " + argv[argv.length - 1]);
         // Was estat = gdp_gcl_parse_name(argv[0], gclname);
-        estat = Gdp10Library.INSTANCE.gdp_gcl_parse_name(argv[argv.length - 1], gclname);
+        estat = Gdp10Library.INSTANCE.gdp_gcl_parse_name(argv[argv.length - 1],
+                gclname);
 
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             // Was: ep_app_abort("illegal GCL name syntax:\n\t%s", argv[0]);
@@ -333,14 +337,16 @@ public class ReaderTest {
 
         // Was: estat = gdp_gcl_open(gclname, GDP_MODE_RO, &gclh);
         PointerByReference gclhByReference = new PointerByReference();
-        estat = Gdp10Library.INSTANCE.gdp_gcl_open(gclname, Gdp10Library.gdp_iomode_t.GDP_MODE_RO, gclhByReference);
+        estat = Gdp10Library.INSTANCE.gdp_gcl_open(gclname,
+                Gdp10Library.gdp_iomode_t.GDP_MODE_RO, gclhByReference);
         gclh = gclhByReference.getValue();
 
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             //Was: char sbuf[100];
             //Was: ep_app_error("Cannot open GCL:\n    %s",
             //                ep_stat_tostr(estat, sbuf, sizeof sbuf));
-            System.err.println("Cannot open GCL:  FIXME, estate: " + estat + ", code: " + estat.code);
+            System.err.println("Cannot open GCL:  FIXME, estate: " + estat
+                    + ", code: " + estat.code);
             //Was: goto fail0;
             _fail0(estat);
         }
@@ -364,7 +370,8 @@ public class ReaderTest {
         // fprintf(stderr, "exiting with status %s\n",
         //                ep_stat_tostr(estat, buf, sizeof buf));
         // I have no idea what to do with ep_stat_tostr(), so we just print
-        System.err.println("exiting with status " + estat + ", code: " + estat.code);
+        System.err.println("exiting with status " + estat + ", code: "
+                + estat.code);
 
         System.exit(GdpUtilities.EP_STAT_ISOK(estat) ? 0 : 1);
     }

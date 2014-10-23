@@ -1563,7 +1563,7 @@ public class SignalProcessing {
      *  depending on the direction specified.
      */
     public static class PolynomialSampleGenerator implements
-            DoubleUnaryOperation {
+    DoubleUnaryOperation {
         /** Construct a PolynomialSampleGenerator. The input argument is
          *  an array of doubles
          *  a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute
@@ -1709,7 +1709,7 @@ public class SignalProcessing {
      *
      */
     public static class RaisedCosineSampleGenerator implements
-            DoubleUnaryOperation {
+    DoubleUnaryOperation {
         /** Construct a RaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing,
          *  after time zero. This would be the symbol interval in a
@@ -1791,7 +1791,7 @@ public class SignalProcessing {
      *  that are independent of time.
      */
     public static class SqrtRaisedCosineSampleGenerator implements
-            DoubleUnaryOperation {
+    DoubleUnaryOperation {
         /** Construct a SqrtRaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing of
          *  the corresponding raised cosine pulse.
@@ -1865,7 +1865,7 @@ public class SignalProcessing {
             return _fourExcessOverPISqrtFZC
                     * (Math.cos(onePlusTime) + Math.sin(oneMinusTime)
                             / (x * _fourExcess))
-                    / (1.0 - _sixteenExcessSquared * x * x);
+                            / (1.0 - _sixteenExcessSquared * x * x);
         }
 
         private final double _oneOverFZC;
@@ -2039,37 +2039,37 @@ public class SignalProcessing {
         int halfN = size >> 1;
         int quarterN = size >> 2;
 
-        double[] x1 = new double[halfN];
+            double[] x1 = new double[halfN];
 
-        for (int k = 0; k < halfN; k++) {
-            x1[k] = x[k << 1];
-        }
+            for (int k = 0; k < halfN; k++) {
+                x1[k] = x[k << 1];
+            }
 
-        double[] x3 = new double[quarterN];
+            double[] x3 = new double[quarterN];
 
-        for (int k = 0; k < quarterN; k++) {
-            int twoIp = (k << 1) + 1;
-            x3[k] = (k & 1) == 1 ? x[size - twoIp] - x[twoIp] : x[twoIp]
-                    - x[size - twoIp];
-        }
+            for (int k = 0; k < quarterN; k++) {
+                int twoIp = (k << 1) + 1;
+                x3[k] = (k & 1) == 1 ? x[size - twoIp] - x[twoIp] : x[twoIp]
+                        - x[size - twoIp];
+            }
 
-        double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
-        double[] quarterDCT = _DCT(x3, quarterN, order - 2);
+            double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
+            double[] quarterDCT = _DCT(x3, quarterN, order - 2);
 
-        double[] returnValue = new double[halfN];
+            double[] returnValue = new double[halfN];
 
-        // returnValue[0] = 0.0; // not necessary in Java
-        for (int k = 1; k < quarterN; k++) {
-            returnValue[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
-        }
+            // returnValue[0] = 0.0; // not necessary in Java
+            for (int k = 1; k < quarterN; k++) {
+                returnValue[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
+            }
 
-        returnValue[quarterN] = quarterDCT[0];
+            returnValue[quarterN] = quarterDCT[0];
 
-        for (int k = quarterN + 1; k < halfN; k++) {
-            returnValue[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
-        }
+            for (int k = quarterN + 1; k < halfN; k++) {
+                returnValue[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
+            }
 
-        return returnValue;
+            return returnValue;
     }
 
     private static double[] _DCT(double[] x, int size, int order) {
@@ -2090,47 +2090,47 @@ public class SignalProcessing {
 
         int halfN = size >> 1;
 
-        double[] x4 = new double[size];
+            double[] x4 = new double[size];
 
-        for (int n = 0; n < halfN; n++) {
-            int twoN = n << 1;
+            for (int n = 0; n < halfN; n++) {
+                int twoN = n << 1;
 
-            // Do zero padding here
-            if (twoN >= x.length) {
-                x4[n] = 0.0;
-            } else {
-                x4[n] = x[twoN];
+                // Do zero padding here
+                if (twoN >= x.length) {
+                    x4[n] = 0.0;
+                } else {
+                    x4[n] = x[twoN];
+                }
+
+                if (twoN + 1 >= x.length) {
+                    x4[size - n - 1] = 0.0;
+                } else {
+                    x4[size - n - 1] = x[twoN + 1];
+                }
             }
 
-            if (twoN + 1 >= x.length) {
-                x4[size - n - 1] = 0.0;
-            } else {
-                x4[size - n - 1] = x[twoN + 1];
+            double[] cosDFTarray = _cosDFT(x4, size, order);
+            double[] sinDFTarray = _sinDFT(x4, size, order);
+
+            double[] p1tab = _P1Table[order];
+            double[] p2tab = _P2Table[order];
+            double[] ctab = _CTable[order];
+
+            returnValue = new double[size];
+
+            returnValue[0] = cosDFTarray[0];
+
+            for (int k = 1; k < halfN; k++) {
+                double m1 = (cosDFTarray[k] + sinDFTarray[k]) * ctab[k];
+                double m2 = sinDFTarray[k] * p1tab[k];
+                double m3 = cosDFTarray[k] * p2tab[k];
+                returnValue[k] = m1 - m2;
+                returnValue[size - k] = m1 + m3;
             }
-        }
 
-        double[] cosDFTarray = _cosDFT(x4, size, order);
-        double[] sinDFTarray = _sinDFT(x4, size, order);
+            returnValue[halfN] = ExtendedMath.ONE_OVER_SQRT_2 * cosDFTarray[halfN];
 
-        double[] p1tab = _P1Table[order];
-        double[] p2tab = _P2Table[order];
-        double[] ctab = _CTable[order];
-
-        returnValue = new double[size];
-
-        returnValue[0] = cosDFTarray[0];
-
-        for (int k = 1; k < halfN; k++) {
-            double m1 = (cosDFTarray[k] + sinDFTarray[k]) * ctab[k];
-            double m2 = sinDFTarray[k] * p1tab[k];
-            double m3 = cosDFTarray[k] * p2tab[k];
-            returnValue[k] = m1 - m2;
-            returnValue[size - k] = m1 + m3;
-        }
-
-        returnValue[halfN] = ExtendedMath.ONE_OVER_SQRT_2 * cosDFTarray[halfN];
-
-        return returnValue;
+            return returnValue;
     }
 
     private synchronized static void _FFCTTableGen(int limit) {

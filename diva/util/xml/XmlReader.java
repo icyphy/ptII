@@ -193,7 +193,7 @@ public class XmlReader extends LoggableOp {
      */
     private void parse(XmlDocument document, URL systemId, URL publicId,
             Reader reader, InputStream stream, String encoding)
-            throws Exception {
+                    throws Exception {
         String pubString;
         String sysString;
 

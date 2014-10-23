@@ -53,7 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class CollectLatticeOntologySolverDetails extends Attribute implements
-        Testable {
+Testable {
 
     /** Construct the CollectLatticeOntologySolverDetails attribute
      *  with the given container and name.
@@ -147,8 +147,8 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                 .get("initialSolverConstraints");
         if (currentInitialSolverConstraintsString == null
                 || !currentInitialSolverConstraintsString
-                        .equals(trainedInitialSolverConstraints
-                                .getValueAsString())) {
+                .equals(trainedInitialSolverConstraints
+                        .getValueAsString())) {
             throw new IllegalActionException(
                     this,
                     _solver,
@@ -157,7 +157,7 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                             + " LatticeOntologySolver does not match the trained value.\n"
                             + "Trained value:\n"
                             + trainedInitialSolverConstraints
-                                    .getValueAsString() + "\nCurrent value:\n"
+                            .getValueAsString() + "\nCurrent value:\n"
                             + currentInitialSolverConstraintsString);
         }
 
@@ -165,8 +165,8 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                 .get("resolvedSolverConstraints");
         if (currentResolvedSolverConstraintsString == null
                 || !currentResolvedSolverConstraintsString
-                        .equals(trainedResolvedSolverConstraints
-                                .getValueAsString())) {
+                .equals(trainedResolvedSolverConstraints
+                        .getValueAsString())) {
             throw new IllegalActionException(
                     this,
                     _solver,
@@ -175,7 +175,7 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                             + " LatticeOntologySolver does not match the trained value.\n"
                             + "Trained value:\n"
                             + trainedResolvedSolverConstraints
-                                    .getValueAsString() + "\nCurrent value:\n"
+                            .getValueAsString() + "\nCurrent value:\n"
                             + currentResolvedSolverConstraintsString);
         }
     }

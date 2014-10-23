@@ -467,7 +467,7 @@ public class MetroIIDirector extends Director {
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Failed to open mapping file \"" + filename
-                                        + "\".");
+                                + "\".");
                     }
                     if (_debugging) {
                         _debug(_mappingConstraintSolver.toString());
@@ -484,7 +484,7 @@ public class MetroIIDirector extends Director {
      * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         startTime.setVisibility(Settable.NOT_EDITABLE);
         startTime.setExpression("0.0");
         mappingFileName = new FileParameter(this, "mappingFileName");

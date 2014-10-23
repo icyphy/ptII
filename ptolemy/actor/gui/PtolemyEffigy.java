@@ -455,32 +455,32 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                         + Manager.minimumStatisticsTime)
                                         && model instanceof CompositeEntity) {
                                     System.out
-                                            .println("Opened "
-                                                    + input
-                                                    + " in "
-                                                    + (System
-                                                            .currentTimeMillis() - startTime)
+                                    .println("Opened "
+                                            + input
+                                            + " in "
+                                            + (System
+                                                    .currentTimeMillis() - startTime)
                                                     + " ms.");
 
                                     long statisticsStartTime = System
                                             .currentTimeMillis();
                                     System.out
-                                            .println(((CompositeEntity) model)
-                                                    .statistics(entityClassName));
+                                    .println(((CompositeEntity) model)
+                                            .statistics(entityClassName));
                                     long statisticsEndTime = System
                                             .currentTimeMillis();
                                     if (statisticsEndTime - statisticsStartTime > Manager.minimumStatisticsTime) {
                                         System.out
-                                                .println("Generating statistics took"
-                                                        + (statisticsEndTime - statisticsStartTime)
-                                                        + " ms. ");
+                                        .println("Generating statistics took"
+                                                + (statisticsEndTime - statisticsStartTime)
+                                                + " ms. ");
                                     }
                                 }
                             } catch (SecurityException ex) {
                                 System.err
-                                        .println("Warning, while trying to print timing statistics,"
-                                                + " failed to read the entityClassName"
-                                                + " property (-sandbox always causes this)");
+                                .println("Warning, while trying to print timing statistics,"
+                                        + " failed to read the entityClassName"
+                                        + " property (-sandbox always causes this)");
                             }
                             effigy.setModel(model);
 

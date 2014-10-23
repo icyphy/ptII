@@ -57,7 +57,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @see ContainerIgnoringAttribute
  */
 public class HierarchyFlatteningAttribute extends Parameter implements
-        GTAttribute {
+GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -113,7 +113,7 @@ public class HierarchyFlatteningAttribute extends Parameter implements
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, true);

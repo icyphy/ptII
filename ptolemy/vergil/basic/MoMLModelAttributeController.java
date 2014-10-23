@@ -62,7 +62,7 @@ public class MoMLModelAttributeController extends AttributeController {
         super(controller, access);
 
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
 
     }
 

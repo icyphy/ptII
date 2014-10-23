@@ -137,14 +137,14 @@ public class DEDirector extends PortDirector {
                 + _sanitizedDirectorName
                 + "->isCQAdaptive = "
                 + ((BooleanToken) director.isCQAdaptive.getToken())
-                        .booleanValue() + ";");
+                .booleanValue() + ";");
         result.append(_eol + _sanitizedDirectorName + "->minBinCount = "
                 + ((IntToken) director.minBinCount.getToken()).intValue() + ";");
         result.append(_eol
                 + _sanitizedDirectorName
                 + "->stopWhenQueueIsEmpty = "
                 + ((BooleanToken) director.stopWhenQueueIsEmpty.getToken())
-                        .booleanValue() + ";");
+                .booleanValue() + ";");
         result.append(_eol + _sanitizedDirectorName
                 + "->localClock->container = (struct Director*)"
                 + _sanitizedDirectorName + ";");
@@ -545,7 +545,7 @@ public class DEDirector extends PortDirector {
                         + _sanitizedDirectorName
                         + ".currentMicrostep = "
                         + ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + ";");
+                        .getIndex() + ";");
             }
         }
 
@@ -584,7 +584,7 @@ public class DEDirector extends PortDirector {
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
-                        .comment("End of the Initialization of the director"));
+                .comment("End of the Initialization of the director"));
 
         return code.toString();
     }
@@ -1125,7 +1125,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1182,7 +1182,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1228,7 +1228,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -1254,7 +1254,7 @@ public class DEDirector extends PortDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                                + " is not a Parameter.");
+                        + " is not a Parameter.");
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
@@ -1374,7 +1374,7 @@ public class DEDirector extends PortDirector {
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
-                                    .generateVariableName(parameter) + ";"
+                            .generateVariableName(parameter) + ";"
                             + _eol);
                 }
             }

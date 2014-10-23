@@ -280,7 +280,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 

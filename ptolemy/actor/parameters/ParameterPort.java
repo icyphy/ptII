@@ -121,7 +121,7 @@ public class ParameterPort extends TypedIOPort {
      */
     @Override
     public void setContainer(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
 
@@ -188,7 +188,7 @@ public class ParameterPort extends TypedIOPort {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_settingName || _parameter == null) {
             super.setName(name);
         } else {

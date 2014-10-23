@@ -286,7 +286,7 @@ public class AudioReadBuffer extends Transformer {
      *   the audio reader.
      */
     private synchronized void _initializeReader() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         if (_soundReader != null) {
             _soundReader.closeFile();
         }

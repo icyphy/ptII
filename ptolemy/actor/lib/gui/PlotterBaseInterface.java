@@ -94,7 +94,7 @@ public interface PlotterBaseInterface {
      * @exception NameDuplicationException if there is a problem creating the attributes.
      */
     public void initWindowAndSizeProperties() throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
     /**
      * Create a new instance of the PlotBoxInterface implementation.

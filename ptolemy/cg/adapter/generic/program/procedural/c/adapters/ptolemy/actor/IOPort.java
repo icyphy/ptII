@@ -65,8 +65,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 
 public class IOPort
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
     /**
      * Construct the code generator adapter for the given IOPort.
@@ -220,17 +220,17 @@ public class IOPort
                         + portName
                         + ")->deviceDelay = "
                         + ((DoubleToken) ptidesPort.deviceDelay.getToken())
-                                .doubleValue() + ";" + _eol);
+                        .doubleValue() + ";" + _eol);
                 result.append("((struct PtidesPort*)"
                         + portName
                         + ")->deviceDelayBound = "
                         + ((DoubleToken) ptidesPort.deviceDelayBound.getToken())
-                                .doubleValue() + ";" + _eol);
+                        .doubleValue() + ";" + _eol);
                 result.append("((struct PtidesPort*)"
                         + portName
                         + ")->isNetworkPort = "
                         + ((BooleanToken) ptidesPort.isNetworkPort.getToken())
-                                .booleanValue() + ";" + _eol);
+                        .booleanValue() + ";" + _eol);
                 if (ptidesPort.isNetworkReceiverPort()
                         || ptidesPort.isNetworkTransmitterPort()) {
                     result.append("((struct PtidesPort*)"
@@ -289,7 +289,7 @@ public class IOPort
         if (port instanceof PtidesPort) {
             directorCall = (!port.isInput() && actor instanceof CompositeActor
                     && ((CompositeActor) actor).isOpaque() ? "getDirector"
-                    : "getExecutiveDirector");
+                            : "getExecutiveDirector");
         }
         String localReceiver = (port.isInput() ? "_localReceivers"
                 : "_localInsideReceivers");

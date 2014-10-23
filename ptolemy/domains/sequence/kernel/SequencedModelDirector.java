@@ -73,7 +73,7 @@ public abstract class SequencedModelDirector extends Director {
      *   an entity with the specified name.
      */
     public SequencedModelDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -311,7 +311,7 @@ public abstract class SequencedModelDirector extends Director {
                         if (userDefinedDefaultOutputInitialValue.getToken() != null) {
                             port.send(channel,
                                     userDefinedDefaultOutputInitialValue
-                                            .getToken());
+                                    .getToken());
                         } else {
                             initialValueParameter = new Parameter();
                             initialValueParameter.setExpression(port.getType()
@@ -687,7 +687,7 @@ public abstract class SequencedModelDirector extends Director {
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
-                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -776,7 +776,7 @@ public abstract class SequencedModelDirector extends Director {
                     && ((MultipleFireMethodsInterface) actor).numFireMethods() > 1) {
                 String methodName = firing.getMethodName();
                 ((MultipleFireMethodsInterface) actor)
-                        .setFireMethod(methodName);
+                .setFireMethod(methodName);
             }
 
             int iterationCount = firing.getIterationCount();
@@ -815,7 +815,7 @@ public abstract class SequencedModelDirector extends Director {
      *   the director's parameters.
      */
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // Create a new SequenceScheduler object
         // This sets the container at the same time
         SequenceScheduler scheduler = new SequenceScheduler(this,

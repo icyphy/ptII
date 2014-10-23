@@ -554,7 +554,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * internal frames and generates other events and does useful stuff.
      */
     private class FrameManager extends InternalFrameAdapter implements
-            ComponentListener, PropertyChangeListener, ActionListener {
+    ComponentListener, PropertyChangeListener, ActionListener {
         // Update when the pseudo-frame has things done to it
         @Override
         public void actionPerformed(ActionEvent e) {

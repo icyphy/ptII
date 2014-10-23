@@ -83,17 +83,17 @@ public class ColtBreitWigner extends ColtRandomSource {
         mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(mean.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         gamma = new PortParameter(this, "gamma", new DoubleToken(1.0));
         gamma.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(gamma.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         cut = new PortParameter(this, "cut", new DoubleToken(1.0));
         cut.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(cut.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         cut.moveToFirst();
         gamma.moveToFirst();

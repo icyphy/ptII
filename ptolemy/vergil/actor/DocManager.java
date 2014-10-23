@@ -395,24 +395,24 @@ public class DocManager extends HandlerBase {
                     "doc/codeDoc"
                             + (applicationName.equals("") ? "/"
                                     : applicationName + "/doc/codeDoc/")
-                            + className.replace('.', '/') + ".xml",
+                                    + className.replace('.', '/') + ".xml",
 
-                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
+                                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
 
-                    "doc/codeDoc"
-                            + (applicationName.equals("") ? "/"
-                                    : applicationName + "/doc/codeDoc/")
-                            + className.replace('.', '/') + ".html",
+                                    "doc/codeDoc"
+                                            + (applicationName.equals("") ? "/"
+                                                    : applicationName + "/doc/codeDoc/")
+                                                    + className.replace('.', '/') + ".html",
 
-                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
+                                                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
 
-                    className.replace('.', '/') + ".java",
+                                                    className.replace('.', '/') + ".java",
 
-                    "doc/codeDoc"
-                            + (applicationName.equals("") ? "/"
-                                    : applicationName + "/doc/codeDoc/")
+                                                    "doc/codeDoc"
+                                                            + (applicationName.equals("") ? "/"
+                                                                    : applicationName + "/doc/codeDoc/")
 
-                            + className.replace('.', '/') + "Idx.htm" };
+                                                                    + className.replace('.', '/') + "Idx.htm" };
 
             // List of docNames we use if we don't find anything locally.
             List docNameList = new LinkedList();
@@ -451,24 +451,20 @@ public class DocManager extends HandlerBase {
 
                 try {
 
-                    Class targetClass = Class.forName(className);
-                    // Commented out the conditional below so that
-                    // ptdoc:ptolemy.actor.LazyTypedCompositeActor
-                    // worked in whatsNew8.0.htm
+                    Class.forName(className);
 
                     //if (!_namedObjClass.isAssignableFrom(targetClass)
                     //|| !lookForPtDoc) {
 
-                        // Look in the Application specific codeDoc directory.
-                        docNameList.add(docNames[2]);
-                        toRead = referenceClassLoader.getResource(docNames[2]);
-                        if (toRead == null) {
-                            // Try looking in the documentation for vergil.
-                            docNameList.add(docNames[3]);
-                            toRead = referenceClassLoader
-                                    .getResource(docNames[3]);
-                        }
-                        //}
+                    // Look in the Application specific codeDoc directory.
+                    docNameList.add(docNames[2]);
+                    toRead = referenceClassLoader.getResource(docNames[2]);
+                    if (toRead == null) {
+                        // Try looking in the documentation for vergil.
+                        docNameList.add(docNames[3]);
+                        toRead = referenceClassLoader.getResource(docNames[3]);
+                    }
+                    //}
                 } catch (ClassNotFoundException ex) {
                     // Ignore, we could have the Sinewave Actor oriented class.
                 }
@@ -807,7 +803,8 @@ public class DocManager extends HandlerBase {
         String className;
         if (_target == null) {
             if (_targetClass == null) {
-                throw new NullPointerException("Both _target and _targetClass are null?");
+                throw new NullPointerException(
+                        "Both _target and _targetClass are null?");
             }
             className = _targetClass.getName();
         } else {
@@ -822,7 +819,7 @@ public class DocManager extends HandlerBase {
             if (_target instanceof Instantiable
                     && ((Instantiable) _target).getParent() != null
                     && ((NamedObj) ((Instantiable) _target).getParent())
-                            .attributeList(DocAttribute.class).size() > 0) {
+                    .attributeList(DocAttribute.class).size() > 0) {
                 result.append("<li><a href=\"#parentClass\">Class documentation</a></li>");
             }
             // Get either the PtDoc, javadoc, or source.
@@ -856,13 +853,13 @@ public class DocManager extends HandlerBase {
                 if (toRead != null) {
                     docURL = toRead;
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                    // Sadly, Javadoc from Java 1.7 cannot be
-                    // displayed using a JEditorPane, so we open
-                    // javadoc in an external browser.  To test this
-                    // out, see
-                    // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
-                    // and modify the example so that it tries to view
-                    // the Javadoc for Object.
+                            // Sadly, Javadoc from Java 1.7 cannot be
+                            // displayed using a JEditorPane, so we open
+                            // javadoc in an external browser.  To test this
+                            // out, see
+                            // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                            // and modify the example so that it tries to view
+                            // the Javadoc for Object.
                             + "#in_browser\">Javadoc Documentation</a></li>");
                 } else {
                     // FIXME: Make this a hyperlink to a doc on how
@@ -893,8 +890,8 @@ public class DocManager extends HandlerBase {
                 } else if (toRead != null
                         && toRead.toExternalForm().endsWith(".html")) {
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            + "#in_browser\">Base class Javadoc (" + baseClassName
-                            + ")</a></li>");
+                            + "#in_browser\">Base class Javadoc ("
+                            + baseClassName + ")</a></li>");
                 } else if (toRead != null
                         && toRead.toExternalForm().endsWith(".java")) {
                     result.append("<li><a href=\"" + toRead.toExternalForm()
@@ -925,10 +922,10 @@ public class DocManager extends HandlerBase {
                                         + "may be out of date when compared to source.</font> "
                                         + "<br/>The source was last modified on <br/>"
                                         + new Date(sourceFile.lastModified())
-                                        + ",<br/> documentation was last modified on <br/>"
-                                        + new Date(docFile.lastModified())
-                                        + ".<br/> To rebuild the documentation use the "
-                                        + "Build menu choice.";
+                                + ",<br/> documentation was last modified on <br/>"
+                                + new Date(docFile.lastModified())
+                                + ".<br/> To rebuild the documentation use the "
+                                + "Build menu choice.";
                             }
                         }
                     } catch (Exception ex) {

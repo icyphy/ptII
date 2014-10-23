@@ -103,7 +103,7 @@ public class PteraController extends ModalController {
      *   already in the container.
      */
     public PteraController(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -501,7 +501,7 @@ public class PteraController extends ModalController {
      *  coincides with a director already in the controller.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         director = new PteraDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
 

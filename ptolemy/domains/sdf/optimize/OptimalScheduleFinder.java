@@ -136,7 +136,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.exclusiveBuffers,
+                                        + actor.exclusiveBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -156,7 +156,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.sharedBuffers,
+                                        + actor.sharedBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -233,7 +233,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.exclusiveBuffers,
+                                        + actor.exclusiveBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -253,7 +253,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.sharedBuffers,
+                                        + actor.sharedBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -960,7 +960,7 @@ public class OptimalScheduleFinder {
      */
     @SuppressWarnings("serial")
     protected static abstract class _StateComparator implements Comparator,
-            Serializable {
+    Serializable {
     }
 
     /**
@@ -1009,7 +1009,7 @@ public class OptimalScheduleFinder {
      */
     @SuppressWarnings("serial")
     protected static class _StateComparatorMaximumProgress extends
-            _StateComparator {
+    _StateComparator {
 
         /**
          * Construct an instance of StateComparatorMaximumProgress. It creates

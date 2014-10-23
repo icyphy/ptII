@@ -249,7 +249,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                         .getResource("ptolemy/cg/README.html");
 
                 configuration
-                        .openModel(null, infoURL, infoURL.toExternalForm());
+                .openModel(null, infoURL, infoURL.toExternalForm());
             } catch (Exception ex) {
                 throw new InternalErrorException(getModel(), ex,
                         "Failed to open doc/codegen.htm: ");

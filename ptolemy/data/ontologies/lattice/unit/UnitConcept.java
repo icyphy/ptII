@@ -125,7 +125,7 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
      */
     protected UnitConcept(Ontology ontology,
             DimensionRepresentativeConcept representative, RecordToken unitInfo)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
 
         Token unitName = unitInfo.get(UnitConversionInfo.unitNameLabel);

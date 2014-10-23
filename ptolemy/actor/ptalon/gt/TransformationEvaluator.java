@@ -295,7 +295,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     ////                         private methods                   ////
 
     private NamedObj _getObject(String name) throws PtalonScopeException,
-            PtalonRuntimeException {
+    PtalonRuntimeException {
         String type = _getType(name);
         String uniqueId = _actor.getMappedName(name);
         NamedObj object = null;

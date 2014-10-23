@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (tfeng)
  */
 public abstract class ActionGUIProperty extends GUIProperty implements
-        Configurable {
+Configurable {
 
     /** Construct a GUI property with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -175,7 +175,7 @@ public abstract class ActionGUIProperty extends GUIProperty implements
      *   an attribute already in the container.
      */
     protected GUIAction _createAction() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new GUIAction(this, "_actionHandler");
     }
 

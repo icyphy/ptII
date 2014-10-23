@@ -85,7 +85,7 @@ public class WirelessToWired extends TypedAtomicActor {
 
         properties = new TypedIOPort(this, "properties", false, true);
         new SingletonParameter(properties, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
@@ -98,7 +98,7 @@ public class WirelessToWired extends TypedAtomicActor {
         payload = new TypedIOPort(this, "payload", false, true);
         payload.setTypeSameAs(input);
         new SingletonParameter(payload, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "

@@ -38,8 +38,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 @since Ptolemy II 10.0
  */
 public class Comparator
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.Comparator {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.Comparator {
     /**
      *  Construct a Comparator adapter.
      *  @param actor The given ptolemy.actor.lib.logic.Comparator actor.

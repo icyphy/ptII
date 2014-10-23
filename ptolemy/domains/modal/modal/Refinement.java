@@ -109,7 +109,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
     @Override
     public void addRefinement(State state, String name, Entity template,
             String className, InstanceOpener instanceOpener)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         throw new IllegalActionException(this, "Unable to create a "
                 + "refinement within a CompositeActor.");
     }
@@ -233,7 +233,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // If mirroring is disabled, then the port is being added by the
         // container, which is surely OK.
         if (!_mirrorDisable) {

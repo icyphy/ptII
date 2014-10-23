@@ -148,7 +148,7 @@ will simply result in the expression failing to evaluate.
  */
 
 public abstract class ModularCodeGenLazyTypedCompositeActor extends
-        LazyTypedCompositeActor {
+LazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -329,96 +329,96 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
             int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
                     .getWidth() : port.getWidthInside();
 
-                    if (type == BaseType.INT) {
-                        tokenHolder = new int[numberOfChannels][];
-                    } else if (type == BaseType.DOUBLE) {
-                        tokenHolder = new double[numberOfChannels][];
-                        /*} else if (type == PointerToken.POINTER) {
-                    tokenHolder = new int[numberOfChannels][];*/
-                    } else if (type == BaseType.BOOLEAN) {
-                        tokenHolder = new boolean[numberOfChannels][];
-                    } else {
-                        // FIXME: need to deal with other types
-                    }
+            if (type == BaseType.INT) {
+                tokenHolder = new int[numberOfChannels][];
+            } else if (type == BaseType.DOUBLE) {
+                tokenHolder = new double[numberOfChannels][];
+                /*} else if (type == PointerToken.POINTER) {
+                tokenHolder = new int[numberOfChannels][];*/
+            } else if (type == BaseType.BOOLEAN) {
+                tokenHolder = new boolean[numberOfChannels][];
+            } else {
+                // FIXME: need to deal with other types
+            }
 
-                    for (int i = 0; i < port.getWidth(); i++) {
-                        try {
-                            if (i < port.getWidthInside()) {
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (i < port.getWidthInside()) {
 
-                                if (port.hasToken(i, rate)) {
-                                    Token[] tokens = port.get(i, rate);
+                        if (port.hasToken(i, rate)) {
+                            Token[] tokens = port.get(i, rate);
 
-                                    if (_debugging) {
-                                        _debug(getName(), "transferring input from "
-                                                + port.getName());
+                            if (_debugging) {
+                                _debug(getName(), "transferring input from "
+                                        + port.getName());
+                            }
+
+                            if (type == BaseType.INT) {
+                                if (rate > 1) {
+                                    int[] intTokens = new int[rate];
+                                    for (int k = 0; k < rate; k++) {
+                                        intTokens[k] = ((IntToken) tokens[k])
+                                                .intValue();
                                     }
-
-                                    if (type == BaseType.INT) {
-                                        if (rate > 1) {
-                                            int[] intTokens = new int[rate];
-                                            for (int k = 0; k < rate; k++) {
-                                                intTokens[k] = ((IntToken) tokens[k])
-                                                        .intValue();
-                                            }
-                                            tokenHolder = intTokens;
-                                        } else {
-                                            tokenHolder = ((IntToken) tokens[0])
-                                                    .intValue();
-                                        }
-                                    } else if (type == BaseType.DOUBLE) {
-                                        if (rate > 1) {
-                                            for (int k = 0; k < rate; k++) {
-                                                double[] doubleTokens = new double[rate];
-                                                doubleTokens[k] = ((DoubleToken) tokens[k])
-                                                        .doubleValue();
-                                                tokenHolder = doubleTokens;
-                                            }
-                                        } else {
-                                            tokenHolder = ((DoubleToken) tokens[0])
-                                                    .doubleValue();
-                                        }
-                                    } else if (type == BaseType.BOOLEAN) {
-                                        if (rate > 1) {
-                                            boolean[] booleanTokens = new boolean[rate];
-                                            for (int k = 0; k < rate; k++) {
-                                                booleanTokens[k] = ((BooleanToken) tokens[k])
-                                                        .booleanValue();
-                                            }
-                                            tokenHolder = booleanTokens;
-                                        } else {
-                                            tokenHolder = ((BooleanToken) tokens[0])
-                                                    .booleanValue();
-                                        }
-
-                                    } else {
-                                        // FIXME: need to deal with other types
-                                    }
-                                    argList.add(tokenHolder);
+                                    tokenHolder = intTokens;
                                 } else {
-                                    throw new IllegalActionException(this, port,
-                                            "Port should consume " + rate
-                                            + " tokens, but there were not "
-                                            + " enough tokens available.");
+                                    tokenHolder = ((IntToken) tokens[0])
+                                            .intValue();
+                                }
+                            } else if (type == BaseType.DOUBLE) {
+                                if (rate > 1) {
+                                    for (int k = 0; k < rate; k++) {
+                                        double[] doubleTokens = new double[rate];
+                                        doubleTokens[k] = ((DoubleToken) tokens[k])
+                                                .doubleValue();
+                                        tokenHolder = doubleTokens;
+                                    }
+                                } else {
+                                    tokenHolder = ((DoubleToken) tokens[0])
+                                            .doubleValue();
+                                }
+                            } else if (type == BaseType.BOOLEAN) {
+                                if (rate > 1) {
+                                    boolean[] booleanTokens = new boolean[rate];
+                                    for (int k = 0; k < rate; k++) {
+                                        booleanTokens[k] = ((BooleanToken) tokens[k])
+                                                .booleanValue();
+                                    }
+                                    tokenHolder = booleanTokens;
+                                } else {
+                                    tokenHolder = ((BooleanToken) tokens[0])
+                                            .booleanValue();
                                 }
 
                             } else {
-                                // No inside connection to transfer tokens to.
-                                // In this case, consume one input token if there is one.
-                                if (_debugging) {
-                                    _debug(getName(), "Dropping single input from "
-                                            + port.getName());
-                                }
-
-                                if (port.hasToken(i)) {
-                                    port.get(i);
-                                }
+                                // FIXME: need to deal with other types
                             }
-                        } catch (NoTokenException ex) {
-                            // this shouldn't happen.
-                            throw new InternalErrorException(this, ex, null);
+                            argList.add(tokenHolder);
+                        } else {
+                            throw new IllegalActionException(this, port,
+                                    "Port should consume " + rate
+                                            + " tokens, but there were not "
+                                            + " enough tokens available.");
                         }
 
+                    } else {
+                        // No inside connection to transfer tokens to.
+                        // In this case, consume one input token if there is one.
+                        if (_debugging) {
+                            _debug(getName(), "Dropping single input from "
+                                    + port.getName());
+                        }
+
+                        if (port.hasToken(i)) {
+                            port.get(i);
+                        }
                     }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
+
+            }
         }
 
         Object[] tokensToAllOutputPorts;
@@ -655,7 +655,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
 
     /** Initialize the parameters. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         recompileHierarchy = new Parameter(this, "recompileHierarchy");
         recompileHierarchy.setExpression("true");
         recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);

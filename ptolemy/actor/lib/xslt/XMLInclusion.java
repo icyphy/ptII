@@ -104,7 +104,7 @@ public class XMLInclusion extends Transformer {
 
         headerParameter = new StringParameter(this, "headerParameter");
         headerParameter
-                .setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
+        .setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
 
         // Set the type of the output port.
         output.setTypeEquals(BaseType.XMLTOKEN);

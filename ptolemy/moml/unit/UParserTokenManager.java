@@ -346,12 +346,12 @@ public class UParserTokenManager implements UParserConstants {
     }
 
     static final int[] jjnextStates = { 14, 15, 20, 21, 24, 25, 7, 3, 4, 7, 16,
-            17, 7, 24, 25, 7, 5, 6, 18, 19, 22, 23, 26, 27, };
+        17, 7, 24, 25, 7, 5, 6, 18, 19, 22, 23, 26, 27, };
 
     /** Token literal values. */
     public static final String[] jjstrLiteralImages = { "", null, null, null,
-            null, "\53", "\55", "\52", "\57", "\136", "\75", "\74", "\44",
-            "\73", null, null, null, null, null, null, "\50", "\51", };
+        null, "\53", "\55", "\52", "\57", "\136", "\75", "\74", "\44",
+        "\73", null, null, null, null, null, null, "\50", "\51", };
 
     /** Lexer state names. */
     public static final String[] lexStateNames = { "DEFAULT", };

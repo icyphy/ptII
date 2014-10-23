@@ -205,11 +205,11 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
 
                 StringBuffer declBuffer = new StringBuffer();
                 declBuffer
-                        .append("// here are declarations for the controls you created\n");
+                .append("// here are declarations for the controls you created\n");
 
                 StringBuffer addBuffer2 = new StringBuffer();
                 addBuffer2
-                        .append("// here we add the controls to the container.\n");
+                .append("// here we add the controls to the container.\n");
 
                 StringBuffer confBuffer = new StringBuffer();
                 confBuffer.append("// control configuration\n");
@@ -249,7 +249,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                 _decl = component.getClass().getName()
                                         + " "
                                         + containerLayout
-                                                .getComponentName(component)
+                                        .getComponentName(component)
                                         + " = new "
                                         + component.getClass().getName() + "("
                                         + constructorArg + ");\n";
@@ -298,7 +298,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                     .getName()
                                     + " "
                                     + containerLayout
-                                            .getComponentName(component)
+                                    .getComponentName(component)
                                     + " = new "
                                     + component.getClass().getName()
                                     + "("
@@ -542,7 +542,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     UserPrefs.getPrefs()
-                            .saveWinLoc("codeview", CodeDialog.this);
+                    .saveWinLoc("codeview", CodeDialog.this);
                 }
             });
         }
@@ -607,7 +607,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         lcm.setLayout("panel", fdp);
         debugFrame.getContentPane().add(fdp, BorderLayout.CENTER);
         debugFrame
-                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         return debugFrame;
     }
 
@@ -626,7 +626,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         //    layoutFrame.setSize(r.width, r.height);
         layoutFrame.setVisible(true);
         layoutFrame
-                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         layoutFrame.setPreviewFrame(constraintsManager, frame);
         layoutFrame.enableDebugPreview(UserPrefs.getPrefs().showDebugPanel());
     }

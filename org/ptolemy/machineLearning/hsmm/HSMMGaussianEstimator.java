@@ -240,7 +240,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 _D = _D0;
                 _durationPriors = _dPriors0;
                 System.out
-                        .println("Expectation Maximization failed to converge");
+                .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means

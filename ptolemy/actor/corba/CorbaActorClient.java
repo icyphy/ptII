@@ -216,7 +216,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                 //resolve the remote actor reference in Naming
                 NameComponent namecomp = new NameComponent(
                         ((StringToken) remoteActorName.getToken())
-                                .stringValue(),
+                        .stringValue(),
                         "");
                 _debug(getName(), " looking for name: ", remoteActorName
                         .getToken().toString());
@@ -273,7 +273,7 @@ public class CorbaActorClient extends TypedAtomicActor {
 
                 try {
                     _remoteActor
-                            .setPortWidth(p.getName(), (short) p.getWidth());
+                    .setPortWidth(p.getName(), (short) p.getWidth());
                 } catch (UserException ex) {
                     _debug("Port: " + p.getName() + " does not support width");
                     throw new IllegalActionException(this, "Port: "

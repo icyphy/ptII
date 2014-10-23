@@ -76,8 +76,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -327,7 +327,7 @@ public class SDFDirector
                         + _sanitizedDirectorName
                         + ".currentMicrostep = "
                         + ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + ";");
+                        .getIndex() + ";");
             }
         }
 
@@ -356,7 +356,7 @@ public class SDFDirector
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
-                        .comment("End of the Initialization of the director"));
+                .comment("End of the Initialization of the director"));
 
         return code.toString();
     }
@@ -422,7 +422,7 @@ public class SDFDirector
         code.append("void " + _sanitizedDirectorName + "_Fire() {" + _eol);
         String[] splitFireCode = getCodeGenerator()._splitBody(
                 "_" + CodeGeneratorAdapter.generateName(getComponent())
-                        + "_run_", generateFireCode());
+                + "_run_", generateFireCode());
         code.append(splitFireCode[1]);
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
@@ -672,7 +672,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniGetObjectArrayElement(
                                     portName, String.valueOf(i), targetCpp)
-                            + ";" + _eol);
+                                    + ";" + _eol);
 
                     if (type == BaseType.INT) {
                         code.append("jint * "
@@ -680,7 +680,7 @@ public class SDFDirector
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
                                         tokensFromOneChannel, targetCpp) + ";"
-                                + _eol);
+                                        + _eol);
                     } else if (type == BaseType.DOUBLE) {
                         code.append("jdouble * "
                                 + pointerToTokensFromOneChannel
@@ -694,7 +694,7 @@ public class SDFDirector
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
                                         tokensFromOneChannel, targetCpp) + ";"
-                                + _eol);
+                                        + _eol);
                     } else if (type == BaseType.BOOLEAN) {
                         code.append("jboolean * "
                                 + pointerToTokensFromOneChannel
@@ -998,7 +998,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Int",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1010,7 +1010,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Double",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Double",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1022,7 +1022,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Int",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1034,7 +1034,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Boolean",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Boolean",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1175,7 +1175,7 @@ public class SDFDirector
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1360,7 +1360,7 @@ public class SDFDirector
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
-                                    .generateVariableName(parameter) + ";"
+                            .generateVariableName(parameter) + ";"
                             + _eol);
                 }
             }

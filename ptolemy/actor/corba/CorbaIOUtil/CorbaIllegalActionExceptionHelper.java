@@ -47,7 +47,7 @@ abstract public class CorbaIllegalActionExceptionHelper {
                             .init()
                             .create_exception_tc(
                                     ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                                            .id(),
+                                    .id(),
                                     "CorbaIllegalActionException", _members0);
                     __active = false;
                 }

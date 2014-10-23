@@ -133,7 +133,7 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      */
     private FlatTokenInfiniteConcept _getMathOperationResultConcept(
             FlatTokenInfiniteConcept concept1, FlatTokenInfiniteConcept concept2)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         if (concept1.getRepresentative().equals(concept2.getRepresentative())) {
             Token token1 = concept1.getTokenValue();

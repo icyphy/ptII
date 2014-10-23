@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class LevelCrossingDetector extends TypedAtomicActor implements
-        ContinuousStepSizeController {
+ContinuousStepSizeController {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a

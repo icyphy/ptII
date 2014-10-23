@@ -156,7 +156,7 @@ public class Configure extends Event {
                     options = new JOptionPane(query,
                             JOptionPane.QUESTION_MESSAGE,
                             JOptionPane.YES_NO_OPTION, null, new String[] {
-                                    "Set", "Default" }, "Set");
+                            "Set", "Default" }, "Set");
                 } else {
                     options = new JOptionPane(query,
                             JOptionPane.INFORMATION_MESSAGE,
@@ -282,7 +282,7 @@ public class Configure extends Event {
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class Listener extends KeyAdapter implements
-            PropertyChangeListener {
+    PropertyChangeListener {
 
         /** React to a key being pressed in the dialog.
          *

@@ -108,7 +108,7 @@ public class LineReader extends Source {
         fileOrURL = new FilePortParameter(this, "fileOrURL");
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(fileOrURL.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip");
         numberOfLinesToSkip.setExpression("0");

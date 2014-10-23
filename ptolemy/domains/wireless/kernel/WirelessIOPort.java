@@ -109,7 +109,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  of this port throws it.
      */
     public WirelessIOPort(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");

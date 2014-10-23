@@ -41,7 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Algorithms {
 
-
     /** Return the probability mass function P(x=k) ~ Poisson(mean)
      * value at k, for the Poisson distribution with parameter mean
      *  @param k The value at which the probability mass function will be computed
@@ -50,18 +49,20 @@ public class Algorithms {
      * @exception IllegalActionException
      *  @exception Exception If k < 0
      */
-    public static double poissonPmf(int k, double mean) throws IllegalActionException {
+    public static double poissonPmf(int k, double mean)
+            throws IllegalActionException {
         // p(x=k) = (exp(-mean)*mean^k)/(k!)
         // log p  = -mean + k*log(mean) - log(k!)
         // compute the log and then take exponential, to avoid numerical errors
-        if ( k < 0) {
-            throw new IllegalActionException("Poisson distribution is only defined over nonnegative integer values!");
+        if (k < 0) {
+            throw new IllegalActionException(
+                    "Poisson distribution is only defined over nonnegative integer values!");
         }
         double logFactorial = 0.0;
-        for (int i=1; i <= k ; i++) {
+        for (int i = 1; i <= k; i++) {
             logFactorial += Math.log(i);
         }
-        double logTerm = -mean + k*Math.log(mean) - logFactorial;
+        double logTerm = -mean + k * Math.log(mean) - logFactorial;
         return Math.exp(logTerm);
     }
 
@@ -73,14 +74,16 @@ public class Algorithms {
      * @exception IllegalActionException
      *  @exception Exception If k < 0
      */
-    public static double poissonPmf(int k, double mean, double logFactorial) throws IllegalActionException{
+    public static double poissonPmf(int k, double mean, double logFactorial)
+            throws IllegalActionException {
         // p(x=k) = (exp(-mean)*mean^k)/(k!)
         // log p  = -mean + k*log(mean) - log(k!)
         // compute the log and then take exponential, to avoid numerical errors
-        if ( k < 0) {
-            throw new IllegalActionException("Poisson distribution is only defined over nonnegative integer values!");
+        if (k < 0) {
+            throw new IllegalActionException(
+                    "Poisson distribution is only defined over nonnegative integer values!");
         }
-        double logTerm = -mean + k*Math.log(mean) - logFactorial;
+        double logTerm = -mean + k * Math.log(mean) - logFactorial;
         return Math.exp(logTerm);
     }
 

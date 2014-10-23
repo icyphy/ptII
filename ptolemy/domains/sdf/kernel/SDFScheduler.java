@@ -519,7 +519,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @Override
     @SuppressWarnings("unused")
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -802,8 +802,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         if (!portParametersFound.contains(portParameter)) {
                             portParametersFound.add(portParameter);
                             portParameterMessageBuffer
-                                    .append(((PortParameter) portParameter)
-                                            .getFullName() + " ");
+                            .append(((PortParameter) portParameter)
+                                    .getFullName() + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -813,14 +813,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
             if (portParameterMessageBuffer.length() > 0) {
                 messageBuffer
-                        .append("Note that some of the unreached actors are in "
-                                + "transparent composite actors that have PortParameters.  "
-                                + "A transparent composite actor is composite actor that has "
-                                + "no local director.  Transparent composite actors and "
-                                + "PortParameters are not compatible, the workaround is to "
-                                + "insert a director or remove the PortParameter.  "
-                                + "\nThe PortParameters:\n"
-                                + portParameterMessageBuffer.toString());
+                .append("Note that some of the unreached actors are in "
+                        + "transparent composite actors that have PortParameters.  "
+                        + "A transparent composite actor is composite actor that has "
+                        + "no local director.  Transparent composite actors and "
+                        + "PortParameters are not compatible, the workaround is to "
+                        + "insert a director or remove the PortParameter.  "
+                        + "\nThe PortParameters:\n"
+                        + portParameterMessageBuffer.toString());
                 if (count >= 99) {
                     messageBuffer.append("...");
                 }
@@ -1130,7 +1130,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Map entityToFiringsPerIteration, Map externalRates,
             LinkedList remainingActors, LinkedList pendingActors,
             Set clusteredActors, Set clusteredExternalPorts)
-            throws NotSchedulableException, IllegalActionException {
+                    throws NotSchedulableException, IllegalActionException {
         ComponentEntity currentActor = (ComponentEntity) currentPort
                 .getContainer();
 
@@ -1362,14 +1362,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                     + currentPort.getFullName()
                                     + (((Entity) currentPort.getContainer())
                                             .isWithinClassDefinition() ? " is"
-                                            : " is not")
-                                    + " within an actor oriented class definition. "
-                                    + "The container of "
-                                    + connectedPort.getFullName()
-                                    + (((Entity) connectedPort.getContainer())
-                                            .isWithinClassDefinition() ? " is"
-                                            : " is not")
-                                    + " within an actor oriented class definition.");
+                                                    : " is not")
+                                                    + " within an actor oriented class definition. "
+                                                    + "The container of "
+                                                    + connectedPort.getFullName()
+                                                    + (((Entity) connectedPort.getContainer())
+                                                            .isWithinClassDefinition() ? " is"
+                                                                    : " is not")
+                                                                    + " within an actor oriented class definition.");
 
                 }
 
@@ -1448,7 +1448,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     private Schedule _scheduleConnectedActors(Map externalRates,
             List actorList, CompositeActor container)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 
@@ -1844,7 +1844,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     protected void _simulateExternalInputs(IOPort port, int count,
             List actorList, LinkedList readyToScheduleActorList)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Receiver[][] receivers = port.deepGetReceivers();
 
         if (_debugging && VERBOSE) {
@@ -1973,7 +1973,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     private void _simulateTokensCreated(IOPort outputPort, int createdTokens,
             List actorList, LinkedList readyToScheduleActorList)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // FIXME: Why are the actor lists lists rather than sets?
         Receiver[][] receivers = outputPort.getRemoteReceivers();
 
@@ -2059,7 +2059,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     private void _simulateInitialTokens(IOPort inputPort, int initialTokens,
             List actorList, LinkedList readyToScheduleActorList)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Receiver[][] receivers = inputPort.getReceivers();
 
         if (_debugging && VERBOSE) {

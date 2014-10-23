@@ -60,7 +60,7 @@ public class TestTypeLattice {
                 public void run() {
                     try {
                         ((DirectedAcyclicGraph) TypeLattice.basicLattice())
-                                .bottom();
+                        .bottom();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

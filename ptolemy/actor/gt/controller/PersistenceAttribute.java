@@ -116,7 +116,7 @@ public class PersistenceAttribute extends SingletonAttribute {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer;
         if (_oldPersistence != null && (oldContainer = getContainer()) != null) {
             oldContainer.setPersistent(_oldPersistence);

@@ -92,7 +92,7 @@ public class WebAttribute extends StringAttribute {
      */
     public static WebAttribute appendToWebAttribute(NamedObj container,
             String id, String webName, String content)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         WebAttribute webAttribute = createWebAttribute(container, id, webName);
 
         String previousValue = webAttribute.getExpression();

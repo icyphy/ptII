@@ -199,13 +199,13 @@ public class ModelAttributePanel extends JPanel {
 
             if (((XMLDBAttribute) _attributeMap.get(_attributeName
                     .getSelectedItem().toString())).getAttributeType().equals(
-                    XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
+                            XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
                 return _textValue.getText();
 
             } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                     .getSelectedItem().toString())).getAttributeType().equals(
-                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                            XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
                 if (_listValue.getSelectedItem() != null) {
 
@@ -219,7 +219,7 @@ public class ModelAttributePanel extends JPanel {
 
             } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                     .getSelectedItem().toString())).getAttributeType().equals(
-                    XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
+                            XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
 
                 if (_booleanValue.isSelected()) {
 
@@ -294,20 +294,20 @@ public class ModelAttributePanel extends JPanel {
 
         } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                 .getSelectedItem().toString())).getAttributeType().equals(
-                XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
+                        XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
             _textValue.setText(value);
             _currentText = _textValue.getText();
 
         } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                 .getSelectedItem().toString())).getAttributeType().equals(
-                XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
             _listValue.setSelectedItem(value);
 
         } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                 .getSelectedItem().toString())).getAttributeType().equals(
-                XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
+                        XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
 
             if (value.equals("TRUE")) {
 
@@ -341,7 +341,7 @@ public class ModelAttributePanel extends JPanel {
 
         } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                 .getSelectedItem().toString())).getAttributeType().equals(
-                XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
+                        XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
 
             _booleanValue.setEnabled(true);
             _listValue.setEnabled(false);
@@ -350,7 +350,7 @@ public class ModelAttributePanel extends JPanel {
             _textValue.setText("");
         } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                 .getSelectedItem().toString())).getAttributeType().equals(
-                XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
+                        XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
             _textValue.setEnabled(true);
             _booleanValue.setEnabled(false);
@@ -360,7 +360,7 @@ public class ModelAttributePanel extends JPanel {
 
         } else if (((XMLDBAttribute) _attributeMap.get(_attributeName
                 .getSelectedItem().toString())).getAttributeType().equals(
-                XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
             _listValue.setEnabled(true);
             _textValue.setEnabled(false);

@@ -169,7 +169,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
         return new Point.Double(center.getX()
                 + ((DoubleToken) width.getToken()).doubleValue() / 2.0,
                 center.getY() + ((DoubleToken) height.getToken()).doubleValue()
-                        / 2.0);
+                / 2.0);
     }
 
     /** Update the figure's position and size when the user changes

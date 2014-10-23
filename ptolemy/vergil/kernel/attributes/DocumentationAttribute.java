@@ -170,7 +170,7 @@ public class DocumentationAttribute extends VisibleAttribute {
                         background = jFileChooserBugFix.saveBackground();
                         JFileChooser fileDialog = new JFileChooser();
                         fileDialog
-                                .setDialogTitle("Select a documentation file.");
+                        .setDialogTitle("Select a documentation file.");
 
                         //File _directory = null;
 

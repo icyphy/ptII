@@ -70,11 +70,11 @@ public class WiredToWireless extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", true, false);
         new SingletonParameter(payload, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
         new SingletonParameter(properties, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // FIXME: This should be constrained to be a record token.
         // How to do that?

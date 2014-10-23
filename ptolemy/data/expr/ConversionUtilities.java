@@ -553,7 +553,7 @@ public class ConversionUtilities {
                             .newInstance(
                                     convertTokenTypeToJavaType(arrayType
                                             .getElementType()),
-                                    0).getClass();
+                                            0).getClass();
                 }
             } else {
                 // Bailout.  The type is not recognized, so defer to

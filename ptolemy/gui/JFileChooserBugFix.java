@@ -144,8 +144,8 @@ public class JFileChooserBugFix {
             if (!_printedMessage) {
                 _printedMessage = true;
                 System.out
-                        .println("Failed to set the background of the file dialog:"
-                                + ex);
+                .println("Failed to set the background of the file dialog:"
+                        + ex);
 
             }
         }

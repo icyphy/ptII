@@ -1022,7 +1022,7 @@ public class OracleXMLDBConnection implements DBConnection {
                                                 actor, portAttached,
                                                 portConnected,
                                                 (ComponentEntity) portConnected
-                                                        .getContainer(),
+                                                .getContainer(),
                                                 evaluatedPairs);
 
                                         if (componentQuery != null) {
@@ -1158,7 +1158,7 @@ public class OracleXMLDBConnection implements DBConnection {
     @Override
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
-            throws DBExecutionException {
+                    throws DBExecutionException {
 
         String modelNameSearchQuery = "for $entity in collection(\""
                 + _params.getContainerName()
@@ -1312,7 +1312,7 @@ public class OracleXMLDBConnection implements DBConnection {
         try {
             if (existingModelDocument == null
                     || (existingModelContent = existingModelDocument
-                            .getContentAsString()) == null) {
+                    .getContentAsString()) == null) {
                 throw new DBModelNotFoundException(
                         "The existing model was not found in the database - "
                                 + existingModelName);
@@ -1338,7 +1338,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         ArrayList<XMLDBModel> removeModelsList = new ArrayList<XMLDBModel>();
         removeModelsList
-                .add(new XMLDBModel(existingModelName, existingModelId));
+        .add(new XMLDBModel(existingModelName, existingModelId));
         RemoveModelsTask removeModelsTask = new RemoveModelsTask(
                 removeModelsList);
 
@@ -1695,7 +1695,7 @@ public class OracleXMLDBConnection implements DBConnection {
             if (hasReferences == true) {
 
                 _xmlModelHierarchyMap
-                        .put(currentModelName, currentModelContent);
+                .put(currentModelName, currentModelContent);
             }
 
             return currentModelContent;
@@ -1746,7 +1746,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private void _checkXMLDBConnectionObjects(boolean checkContainer,
             boolean checkManager, boolean checkTransaction)
-            throws DBExecutionException {
+                    throws DBExecutionException {
 
         if (checkContainer && _xmlContainer == null) {
             throw new DBExecutionException("The XmlContainer object was not "
@@ -1869,7 +1869,7 @@ public class OracleXMLDBConnection implements DBConnection {
         if (attribute.getAttributeName() != null
                 && !"".equals(attribute.getAttributeName().trim())) {
             attributesQuery.append("$const/@name=\"")
-                    .append(attribute.getAttributeName()).append("\"");
+            .append(attribute.getAttributeName()).append("\"");
             isPreviousClauseSet = true;
         }
 
@@ -1923,7 +1923,7 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             attributesQuery.append("$const/@class=\"").append(attributeClass)
-                    .append("\"");
+            .append("\"");
         }
 
         return attributesQuery.toString();
@@ -2010,7 +2010,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private void _createParentHierarchy(Node currentNode, String parentNodeId,
             HashMap<String, DBModel> dBModelsMap, XMLDBModel baseModel)
-            throws DBExecutionException {
+                    throws DBExecutionException {
         /*
          * If the currentNode is not already visited
          * and it is not the base model,
@@ -2058,9 +2058,9 @@ public class OracleXMLDBConnection implements DBConnection {
         StringBuffer portSearchQuery = new StringBuffer();
 
         portSearchQuery
-                .append(" for $x in collection(\"")
-                .append(_params.getContainerName())
-                .append("\")/entity/port[@class = \"ptolemy.actor.TypedIOPort\"] where ");
+        .append(" for $x in collection(\"")
+        .append(_params.getContainerName())
+        .append("\")/entity/port[@class = \"ptolemy.actor.TypedIOPort\"] where ");
         boolean isFirstClause = true;
         /*
          * If the port is an output port,
@@ -2122,10 +2122,10 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
         referenceString.append("<entity ").append(XMLDBModel.DB_MODEL_ID_ATTR)
-                .append("=").append("\"").append(modelId).append("\" ");
+        .append("=").append("\"").append(modelId).append("\" ");
 
         referenceString.append(XMLDBModel.DB_MODEL_NAME).append("=")
-                .append("\"").append(modelName).append("\">");
+        .append("\"").append(modelName).append("\">");
 
         HashMap<String, String> modelReferencesMap = new HashMap<String, String>();
         for (String dbModelId : xmlDBModel.getReferencedChildren()) {
@@ -2926,10 +2926,10 @@ public class OracleXMLDBConnection implements DBConnection {
         ArrayList<DBModel> _parentsList;
 
         /* *//**
-                   * Match the given DBModel to the current model
-                   * @param model Model to be compared.
-                   * @return True if the names are same, false otherwise.
-                   */
+                    * Match the given DBModel to the current model
+                    * @param model Model to be compared.
+                    * @return True if the names are same, false otherwise.
+                    */
         /*
         public boolean equals(DBModel model) {
          if (model instanceof DBModel) {
@@ -2943,11 +2943,11 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
          *//**
-           * Return the hash code of the modelName as two models are equal if
-           * their model names are equal. So their has codes are also derived from
-           * model name.
-           * @return Hash code of the model name.
-           */
+         * Return the hash code of the modelName as two models are equal if
+         * their model names are equal. So their has codes are also derived from
+         * model name.
+         * @return Hash code of the model name.
+         */
         /*
         public int hashCode() {
          return _modelName.hashCode();

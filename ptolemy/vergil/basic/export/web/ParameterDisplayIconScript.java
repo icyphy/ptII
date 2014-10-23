@@ -236,17 +236,17 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                 "afterImageWebElement", "afterImage");
         webElement.setParent(WebElement.END);
         webElement
-                .setExpression("<div id=\"afterImage\">\n"
-                        + "  <script type=\"text/javascript\">\n"
-                        + "     writeText('Mouse over the icons to see their parameters. "
-                        + "Click on composites and plotters to reveal their contents (if provided).');\n"
-                        + "  </script>\n"
-                        + "  <noscript>\n"
-                        + "     Your browser does not support JavaScript so moving the mouse\n"
-                        + "     over the actors will not display their parameters. To enable\n"
-                        + "     JavaScript, consult the security preferences of your browser.\n"
-                        + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
-                        + "  </noscript>\n" + "</div>");
+        .setExpression("<div id=\"afterImage\">\n"
+                + "  <script type=\"text/javascript\">\n"
+                + "     writeText('Mouse over the icons to see their parameters. "
+                + "Click on composites and plotters to reveal their contents (if provided).');\n"
+                + "  </script>\n"
+                + "  <noscript>\n"
+                + "     Your browser does not support JavaScript so moving the mouse\n"
+                + "     over the actors will not display their parameters. To enable\n"
+                + "     JavaScript, consult the security preferences of your browser.\n"
+                + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
+                + "  </noscript>\n" + "</div>");
         exporter.defineElement(webElement, true);
     }
 }

@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (eal)
  */
 public class VariableRecursiveLattice extends RecursiveLattice implements
-        ExplicitChangeContext {
+ExplicitChangeContext {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -160,7 +160,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
                 .clone(workspace);
 
         newObject.newCoefficients
-                .setTypeSameAs(newObject.reflectionCoefficients);
+        .setTypeSameAs(newObject.reflectionCoefficients);
 
         // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);

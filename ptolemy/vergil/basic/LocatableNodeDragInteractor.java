@@ -152,8 +152,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
                         System.out
-                                .println("Object with no semantic object , class: "
-                                        + userObject.getClass().getName());
+                        .println("Object with no semantic object , class: "
+                                + userObject.getClass().getName());
                     }
                 }
             }

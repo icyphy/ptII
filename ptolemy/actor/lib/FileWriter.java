@@ -89,7 +89,7 @@ public class FileWriter extends Sink {
         filename.setExpression("");
         filename.setTypeEquals(BaseType.STRING);
         new SingletonParameter(filename.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 

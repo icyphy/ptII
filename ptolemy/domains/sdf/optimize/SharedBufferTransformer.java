@@ -55,7 +55,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
  */
 
 public abstract class SharedBufferTransformer extends Transformer implements
-        BufferingProfile {
+BufferingProfile {
 
     /**
      * Construct an instance of a SharedBufferTransformer. Should not be used

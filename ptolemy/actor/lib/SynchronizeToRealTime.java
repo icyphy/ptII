@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SynchronizeToRealTime extends AbstractInitializableAttribute
-        implements TimeRegulator {
+implements TimeRegulator {
 
     /** Construct an instance of the attribute.
      * @param container The container.

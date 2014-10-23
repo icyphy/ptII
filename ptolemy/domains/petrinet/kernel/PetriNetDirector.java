@@ -1103,7 +1103,7 @@ public class PetriNetDirector extends Director {
      *              If the parameter name for iterations already exists.
      */
     private void _initParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setExpression("0");
         iterations.setTypeEquals(BaseType.INT);

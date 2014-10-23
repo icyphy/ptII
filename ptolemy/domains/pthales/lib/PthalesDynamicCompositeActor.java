@@ -71,7 +71,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      *   actor with this name.
      */
     public PthalesDynamicCompositeActor() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         // FIXME: Don't you want to call super() here?
     }
 
@@ -225,7 +225,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                             // safe?  Depends on the Java
                             // implementation of LinkedHashMap.
                             ((PthalesReceiver) receiver)
-                                    .setReadParameters(_repetitions);
+                            .setReadParameters(_repetitions);
                         }
                     }
                 }

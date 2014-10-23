@@ -232,7 +232,7 @@ public class PteraDirector extends Director implements ValueListener {
                     // FindBugs: GC: Suspicious calls to generic collection methods
                     && timedEvent instanceof TypedActor
                     && (timedEvent.contents == event || refinementSet
-                            .contains(timedEvent.contents))) {
+                    .contains(timedEvent.contents))) {
                 return timedEvent;
             }
         }
@@ -406,7 +406,7 @@ public class PteraDirector extends Director implements ValueListener {
      */
     public void fireAt(Event event, Time time, Token arguments,
             List<NamedObj> triggers, boolean reset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         fireAt(new TimedEvent(event, time, arguments, null, reset), triggers);
     }
 

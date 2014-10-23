@@ -227,7 +227,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         + getCodeGenerator().comment(
                                 1,
                                 actor.getName()
-                                        + "'s input offset initialization"));
+                                + "'s input offset initialization"));
                 code.append(resetCode);
             }
         }
@@ -238,7 +238,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append(_eol
                     + getCodeGenerator().comment(
                             getComponent().getName()
-                                    + "'s output offset initialization"));
+                            + "'s output offset initialization"));
             code.append(resetCode);
         }
 
@@ -441,7 +441,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 for (int i = 0; i < port.getWidth(); i++) {
                     int bufferSize = this
-                    /*called on the director*/.getBufferSize(port, i);
+                            /*called on the director*/.getBufferSize(port, i);
                     ports.setBufferSize(port, i, bufferSize);
                 }
 
@@ -472,7 +472,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     protected String _createOffsetVariablesIfNeeded(IOPort port,
             int channelNumber, int readTokens, int writeTokens)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         boolean padBuffers = padBuffers();
@@ -545,7 +545,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     @Override
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -592,7 +592,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -618,7 +618,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                                + " is not a Parameter.");
+                        + " is not a Parameter.");
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
@@ -871,7 +871,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // the buffer size will be updated later on with the maximum
                 // for all possible schedules.
                 int bufferSize = this
-                /*directorAdapter*/.getBufferSize(port, i);
+                        /*directorAdapter*/.getBufferSize(port, i);
                 ports.setBufferSize(port, i, bufferSize);
             }
 

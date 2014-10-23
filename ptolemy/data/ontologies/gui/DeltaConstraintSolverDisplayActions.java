@@ -89,7 +89,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
      *  DeltaConstraintSolver ontology solver.
      */
     private static class DeltaConstraintSolverHighlighterController extends
-            HighlighterController {
+    HighlighterController {
 
         /** Create a DeltaConstraintSolverHighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.

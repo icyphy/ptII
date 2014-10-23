@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PetriNetRecorder extends TypedAtomicActor implements
-        PetriNetDisplayer {
+PetriNetDisplayer {
     /** Construct an actor that accepts descriptions from the
      *  PetriNetDirector.
      *  @param container The container.

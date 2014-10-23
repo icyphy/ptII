@@ -98,7 +98,7 @@ public class PlotFormatter extends JPanel {
                 + _originalYRange[1]);
 
         String[] marks = { "none", "points", "dots", "various", "bigdots",
-                "pixels" };
+        "pixels" };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {

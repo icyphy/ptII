@@ -51,7 +51,7 @@ import ptdb.common.exception.DBExecutionException;
  *
  */
 public class XQueryGraphSearcher extends GraphSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the XQueryGraphSearcher from the search criteria.

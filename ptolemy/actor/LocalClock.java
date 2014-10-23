@@ -247,9 +247,9 @@ public class LocalClock extends AbstractSettableAttribute {
         if (time.compareTo(_lastCommitLocalTime) < 0) {
             throw new IllegalActionException(
                     "Cannot compute environment time for local time " + time
-                            + " because "
-                            + "the last commit of the local time occurred at "
-                            + "local time " + _lastCommitLocalTime);
+                    + " because "
+                    + "the last commit of the local time occurred at "
+                    + "local time " + _lastCommitLocalTime);
         }
         Time localTimePassedSinceCommit = time.subtract(_lastCommitLocalTime);
         Time environmentTimePassedSinceCommit = localTimePassedSinceCommit;
@@ -318,11 +318,11 @@ public class LocalClock extends AbstractSettableAttribute {
                 || time.compareTo(_lastCommitEnvironmentTime) < 0) {
             throw new IllegalActionException(
                     "Cannot compute local time for environment time " + time
-                            + " because "
-                            + "the last commit of the local time occurred at "
-                            + "local time " + _lastCommitLocalTime + " which "
-                            + "corresponds to environment time "
-                            + _lastCommitEnvironmentTime);
+                    + " because "
+                    + "the last commit of the local time occurred at "
+                    + "local time " + _lastCommitLocalTime + " which "
+                    + "corresponds to environment time "
+                    + _lastCommitEnvironmentTime);
         }
 
         Time environmentTimePassedSinceCommit = time
@@ -410,7 +410,7 @@ public class LocalClock extends AbstractSettableAttribute {
         if (drift <= 0.0) {
             throw new IllegalActionException(getContainer(),
                     "Illegal clock drift: " + drift
-                            + ". Clock drift is required to be positive.");
+                    + ". Clock drift is required to be positive.");
         }
         _drift = drift;
         _commit();

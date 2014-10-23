@@ -263,7 +263,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      */
     @Override
     public void put(HashMap data) throws RemoteException,
-            IllegalActionException {
+    IllegalActionException {
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
 
@@ -338,7 +338,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                             + portName
                             + "\n"
                             + DistributedUtilities
-                                    .integersArrayToString(integerReceivers));
+                            .integersArrayToString(integerReceivers));
                 }
 
                 for (Integer[] integerReceiver : integerReceivers) {

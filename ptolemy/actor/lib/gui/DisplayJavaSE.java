@@ -83,7 +83,7 @@ to use this actor to log large output streams.</p>
  */
 
 public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
-        DisplayInterface {
+DisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -170,7 +170,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      */
     @Override
     public void init(Display displayActor) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _display = displayActor;
         super.init(displayActor);
     }
@@ -305,7 +305,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
 
                 // Always have a vertical scrollbar so that we don't get a horizontal scrollbar when it appers.
                 _scrollPane
-                .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
                 container.add(_scrollPane);
                 textArea.setBackground(Color.white);
@@ -383,8 +383,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
                         MessageHandler
-                                .error("Unexpected error: Unable to unset previous pane size.",
-                                        e);
+                        .error("Unexpected error: Unable to unset previous pane size.",
+                                e);
                     }
                     setFrame(_frame);
 
@@ -417,8 +417,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
                         MessageHandler
-                                .error("Unexpected error: Unable to unset previous pane size.",
-                                        e);
+                        .error("Unexpected error: Unable to unset previous pane size.",
+                                e);
                     }
                     setFrame(_frame);
 

@@ -531,8 +531,8 @@ public class EPSGraphics extends Graphics {
     // Default line patterns.
     // FIXME: Need at least 11 of these.
     static private String[] _patterns = { "[]", "[1 1]", "[4 4]", "[4 4 1 4]",
-            "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
-            "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
+        "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
+        "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
 
     private int _patternIndex = 0;
 }

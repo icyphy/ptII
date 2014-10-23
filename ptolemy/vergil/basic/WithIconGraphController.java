@@ -165,7 +165,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
         //GraphPane pane = getGraphPane();
         _menuFactory.addMenuItemFactory(new MenuActionFactory(_editIconAction));
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
+        .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
     }
 
     ///////////////////////////////////////////////////////////////////

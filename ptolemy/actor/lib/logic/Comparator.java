@@ -224,7 +224,7 @@ public class Comparator extends TypedAtomicActor {
         case _EQ:
 
             if (leftIn <= rightIn + _tolerance
-                    && leftIn >= rightIn - _tolerance) {
+            && leftIn >= rightIn - _tolerance) {
                 result = BooleanToken.TRUE;
             }
 

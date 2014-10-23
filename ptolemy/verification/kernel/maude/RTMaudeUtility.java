@@ -84,7 +84,7 @@ public class RTMaudeUtility {
      */
     public static StringBuffer generateRTMDescription(CompositeActor model,
             String formula, boolean inlineFilesIfPossible)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
 
         // RTM initial state for current Ptolemy model (DE)
         RTMList topconf = _translateCompositeEntity(model, null);
@@ -115,7 +115,7 @@ public class RTMaudeUtility {
      */
     public static StringBuffer generateRTMDescription(BufferedReader template,
             CompositeActor model, String formula)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
 
         // RTM initial state for current Ptolemy model (DE)
         RTMList topconf = _translateCompositeEntity(model, null);
@@ -140,7 +140,7 @@ public class RTMaudeUtility {
                                 line = template.readLine();
                                 if (line == null
                                         || line.replace("-", "").trim()
-                                                .equals("")) {
+                                        .equals("")) {
                                     break;
                                 }
                             } while (true);
@@ -167,13 +167,13 @@ public class RTMaudeUtility {
                     } else if (lineTrimed.startsWith("---")
                             && lineTrimed.endsWith("---")
                             && lineTrimed.substring(3, lineTrimed.length() - 3)
-                                    .trim().equalsIgnoreCase("Model Begin")) {
+                            .trim().equalsIgnoreCase("Model Begin")) {
                         beginModel = true;
                         beginFormula = false;
                     } else if (lineTrimed.startsWith("---")
                             && lineTrimed.endsWith("---")
                             && lineTrimed.substring(3, lineTrimed.length() - 3)
-                                    .trim().equalsIgnoreCase("Formula Begin")) {
+                            .trim().equalsIgnoreCase("Formula Begin")) {
                         beginModel = false;
                         beginFormula = true;
                     }
@@ -301,7 +301,7 @@ public class RTMaudeUtility {
             ret.setClass("Clock");
             ret.addStrAttr("period",
                     new RTMPtExp(((Clock) act).period.getExpression(), true)
-                            .getValue());
+            .getValue());
         } else if (act instanceof TimeDelay) {
             ret.setClass("Delay");
             // BoundedBufferNondeterministicDelay did not PROPERLY override "delay"
@@ -310,7 +310,7 @@ public class RTMaudeUtility {
                         "delay",
                         new RTMPtExp(
                                 ((BoundedBufferNondeterministicDelay) act).delay
-                                        .getExpression(), true).getValue());
+                                .getExpression(), true).getValue());
             } else {
                 ret.addStrAttr("delay",
                         new RTMPtExp(((TimeDelay) act).delay.getExpression(),
@@ -488,7 +488,7 @@ public class RTMaudeUtility {
                 new RTMFragment(RTMTerm.transId(tr.sourceState().getName())),
                 new RTMFragment(RTMTerm
                         .transId(tr.destinationState().getName())),
-                new RTMPtExp(tr.getGuardExpression(), false), os, ss);
+                        new RTMPtExp(tr.getGuardExpression(), false), os, ss);
     }
 
     private static RTMTerm portName(NamedObj upper, Port p) {
@@ -503,7 +503,7 @@ public class RTMaudeUtility {
 
     private static RTMTerm procRefinements(String name, Actor[] rfs,
             String identifier, HashSet<Actor> inact)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         RTMOpTermGenerator refineAct = new RTMOpTermGenerator("(", "["
                 + identifier + ",false]: (", "))");
         RTMList rrf = new RTMList("", "none");

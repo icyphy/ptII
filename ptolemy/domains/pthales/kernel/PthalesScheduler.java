@@ -101,7 +101,7 @@ public class PthalesScheduler extends SDFScheduler {
                     DFUtilities.setTokenConsumptionRate(
                             port,
                             PthalesIOPort.getArraySize(port)
-                                    * PthalesIOPort.getNbTokenPerData(port));
+                            * PthalesIOPort.getNbTokenPerData(port));
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
                 }
@@ -124,7 +124,7 @@ public class PthalesScheduler extends SDFScheduler {
                                     size = PthalesIOPort
                                             .getArraySize(outputPort)
                                             * PthalesIOPort
-                                                    .getNbTokenPerData(outputPort);
+                                            .getNbTokenPerData(outputPort);
                                 }
                             }
                         }
@@ -151,7 +151,7 @@ public class PthalesScheduler extends SDFScheduler {
      */
     @Override
     protected Schedule _getSchedule() throws IllegalActionException,
-            NotSchedulableException {
+    NotSchedulableException {
         // Context of this scheduler.
         PthalesDirector director = (PthalesDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) director
@@ -208,7 +208,7 @@ public class PthalesScheduler extends SDFScheduler {
                                 //FIXME: Should we do this?
                                 if (receiver instanceof PthalesReceiver) {
                                     ((PthalesReceiver) receiver)
-                                            .setOutputArray(port, actor);
+                                    .setOutputArray(port, actor);
                                 }
                             }
                         }

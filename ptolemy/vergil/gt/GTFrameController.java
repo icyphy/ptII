@@ -181,7 +181,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     public static class GTActorGraphModel extends ActorGraphModel implements
-            UpdateController {
+    UpdateController {
 
         public GTActorGraphModel(NamedObj composite) {
             super(composite);
@@ -210,7 +210,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     public static class GTFSMGraphModel extends FSMGraphModel implements
-            UpdateController {
+    UpdateController {
 
         public GTFSMGraphModel(CompositeEntity composite) {
             super(composite);

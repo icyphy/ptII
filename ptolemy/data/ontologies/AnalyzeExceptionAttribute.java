@@ -264,7 +264,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                     try {
                         OntologyAnnotationAttribute attribute = new OntologyAnnotationAttribute(
                                 toplevel, "ErrorOntologySolver::" + actorName
-                                + "_" + port.getName());
+                                        + "_" + port.getName());
 
                         attribute.setExpression(constraintText + "."
                                 + port.getName() + ">= Error");
@@ -276,7 +276,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                         OntologyAnnotationAttribute attribute = (OntologyAnnotationAttribute) toplevel()
                                 .getAttribute(
                                         "ErrorOntologySolver::" + actorName
-                                        + "_" + port.getName());
+                                                + "_" + port.getName());
 
                         if (attribute != null) {
                             try {

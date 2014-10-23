@@ -204,7 +204,7 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
                     + actor
                     + "\n"
                     + (String) _actorsWithMultiPortToSinglePortChanges
-                            .get(actor));
+                    .get(actor));
         }
 
         return results.toString();

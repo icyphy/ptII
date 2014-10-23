@@ -74,7 +74,7 @@ public class Mutate {
         ChangeRequest change = new ChangeRequest(_top, "test2") {
             @Override
             public void _execute() throws IllegalActionException,
-                    NameDuplicationException {
+            NameDuplicationException {
                 _clock.output.unlinkAll();
                 _rec.input.unlinkAll();
 

@@ -411,7 +411,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
             if (!addedDirectorComment
                     && ProgramCodeGenerator
-                            .containsCode(adapterObjectPreinitializationCode)) {
+                    .containsCode(adapterObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(getCodeGenerator().comment(0,
                         "The preinitialization of the director."));
@@ -454,7 +454,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
             if (!addedDirectorComment
                     && ProgramCodeGenerator
-                            .containsCode(adapterObjectPreinitializationCode)) {
+                    .containsCode(adapterObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(getCodeGenerator().comment(0,
                         "The preinitialization method of the director."));
@@ -631,7 +631,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter adapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _generateVariableDeclaration(adapter);
     }
 
@@ -675,7 +675,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter adapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _generateVariableInitialization(adapter);
     }
 
@@ -724,7 +724,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // FIXME: need documentation on the input string format.
         return "";
     }
@@ -804,7 +804,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _getParameter(target, attribute, channelAndOffset);
     }
 
@@ -843,7 +843,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 
@@ -856,7 +856,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 
@@ -873,7 +873,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 

@@ -199,8 +199,8 @@ public class Cobyla {
 
         if (iprint >= 2) {
             System.out
-            .format("%nThe initial value of RHO is %13.6f and PARMU is set to zero.%n",
-                    rho);
+                    .format("%nThe initial value of RHO is %13.6f and PARMU is set to zero.%n",
+                            rho);
         }
 
         int nfvals = 0;
@@ -610,53 +610,53 @@ public class Cobyla {
                     }
                 } while (false);
 
-            if (!iflag) {
-                    ibrnch = false;
-                    continue L_140;
-                }
+                if (!iflag) {
+                ibrnch = false;
+                continue L_140;
+            }
 
-                if (rho <= rhoend) {
-                    status = CobylaExitStatus.Normal;
-                    break L_40;
-                }
+            if (rho <= rhoend) {
+                status = CobylaExitStatus.Normal;
+                break L_40;
+            }
 
-                //     Otherwise reduce RHO if it is not at its least value and reset PARMU.
+            //     Otherwise reduce RHO if it is not at its least value and reset PARMU.
 
-                double cmin = 0.0, cmax = 0.0;
+            double cmin = 0.0, cmax = 0.0;
 
-                rho *= 0.5;
-                if (rho <= 1.5 * rhoend) {
-                    rho = rhoend;
-                }
-                if (parmu > 0.0) {
-                    double denom = 0.0;
-                    for (int k = 1; k <= mp; ++k) {
-                        cmin = datmat[k][np];
-                        cmax = cmin;
-                        for (int i = 1; i <= n; ++i) {
-                            cmin = Math.min(cmin, datmat[k][i]);
-                            cmax = Math.max(cmax, datmat[k][i]);
-                        }
-                        if (k <= m && cmin < 0.5 * cmax) {
-                            temp = Math.max(cmax, 0.0) - cmin;
-                            denom = denom <= 0.0 ? temp : Math.min(denom, temp);
-                        }
+            rho *= 0.5;
+            if (rho <= 1.5 * rhoend) {
+                rho = rhoend;
+            }
+            if (parmu > 0.0) {
+                double denom = 0.0;
+                for (int k = 1; k <= mp; ++k) {
+                    cmin = datmat[k][np];
+                    cmax = cmin;
+                    for (int i = 1; i <= n; ++i) {
+                        cmin = Math.min(cmin, datmat[k][i]);
+                        cmax = Math.max(cmax, datmat[k][i]);
                     }
-                    if (denom == 0.0) {
-                        parmu = 0.0;
-                    } else if (cmax - cmin < parmu * denom) {
-                        parmu = (cmax - cmin) / denom;
+                    if (k <= m && cmin < 0.5 * cmax) {
+                        temp = Math.max(cmax, 0.0) - cmin;
+                        denom = denom <= 0.0 ? temp : Math.min(denom, temp);
                     }
                 }
-                if (iprint >= 2) {
-                    System.out
-                .format("%nReduction in RHO to %1$13.6f  and PARMU = %2$13.6f%n",
-                rho, parmu);
+                if (denom == 0.0) {
+                    parmu = 0.0;
+                } else if (cmax - cmin < parmu * denom) {
+                    parmu = (cmax - cmin) / denom;
                 }
-                if (iprint == 2) {
-                    PrintIterationResult(nfvals, datmat[mp][np],
-                        datmat[mpp][np], COL(sim, np), n);
-                }
+            }
+            if (iprint >= 2) {
+                System.out
+                            .format("%nReduction in RHO to %1$13.6f  and PARMU = %2$13.6f%n",
+                                    rho, parmu);
+            }
+            if (iprint == 2) {
+                PrintIterationResult(nfvals, datmat[mp][np],
+                            datmat[mpp][np], COL(sim, np), n);
+            }
 
             } while (true);
         } while (true);
@@ -676,19 +676,19 @@ public class Cobyla {
         case MaxIterationsReached:
             if (iprint >= 1) {
                 System.out
-                .format("%nReturn from subroutine COBYLA because the MAXFUN limit has been reached.%n");
+                        .format("%nReturn from subroutine COBYLA because the MAXFUN limit has been reached.%n");
             }
             break;
         case DivergingRoundingErrors:
             if (iprint >= 1) {
                 System.out
-                .format("%nReturn from subroutine COBYLA because rounding errors are becoming damaging.%n");
+                        .format("%nReturn from subroutine COBYLA because rounding errors are becoming damaging.%n");
             }
             break;
         case TerminateRequested:
             if (iprint >= 1) {
                 System.out
-                .format("%nReturn from subroutine COBYLA because termination requested by user.%n");
+                        .format("%nReturn from subroutine COBYLA because termination requested by user.%n");
             }
 
         }
@@ -1228,8 +1228,8 @@ public class Cobyla {
 
             } while (true);
 
-            //     We employ any freedom that may be available to reduce the objective
-            //     function before returning a DX whose length is less than RHO.
+        //     We employ any freedom that may be available to reduce the objective
+        //     function before returning a DX whose length is less than RHO.
 
         } while (mcon == m);
 

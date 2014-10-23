@@ -165,7 +165,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     public ConditionalReceive(boolean guard, IOPort port, int channel,
             int branch, ConditionalBranchController cbc)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(guard, port, branch, cbc);
         _init(port, channel);
     }
@@ -210,9 +210,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // is already at the receiver.
                     throw new InvalidStateException(
                             ((Nameable) controller.getParent()).getName()
-                                    + ": ConditionalReceive branch trying to "
-                                    + " rendezvous with a receiver that already "
-                                    + " has a get or a ConditionalReceive waiting.");
+                            + ": ConditionalReceive branch trying to "
+                            + " rendezvous with a receiver that already "
+                            + " has a get or a ConditionalReceive waiting.");
                 }
 
                 // Loop until either the rendezvous succeeds or the branch fails.
@@ -319,7 +319,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             for (int i = 0; i < receivers.length; i++) {
                 if (!((CSPReceiver) receivers[i])._isPutWaiting()
                         && !((CSPReceiver) receivers[i])
-                                ._isConditionalSendWaiting()) {
+                        ._isConditionalSendWaiting()) {
                     return false;
                 }
             }

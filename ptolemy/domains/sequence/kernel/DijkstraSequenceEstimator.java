@@ -88,7 +88,7 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
     @Override
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
 
         _init();
 

@@ -307,15 +307,15 @@ public class AttributesListPanel extends JPanel {
                         try {
                             stringParameter = new StringParameter(_model,
                                     ((ModelAttributePanel) element2)
-                                            .getAttributeName());
+                                    .getAttributeName());
                         } catch (NameDuplicationException e) {
                             stringParameter = (StringParameter) _model
                                     .getAttribute(((ModelAttributePanel) element2)
                                             .getAttributeName());
                         }
                         stringParameter
-                                .setExpression(((ModelAttributePanel) element2)
-                                        .getValue());
+                        .setExpression(((ModelAttributePanel) element2)
+                                .getValue());
                         returnList.add(stringParameter);
 
                     }
@@ -552,7 +552,7 @@ public class AttributesListPanel extends JPanel {
 
                         if (panelsModified
                                 || ((ModelAttributePanel) element2)
-                                        .isModified()) {
+                                .isModified()) {
                             panelsModified = true;
                         }
 
@@ -604,7 +604,7 @@ public class AttributesListPanel extends JPanel {
                     } else if (element2 instanceof GenericAttributePanel) {
 
                         orderedListGeneric
-                                .add((GenericAttributePanel) element2);
+                        .add((GenericAttributePanel) element2);
 
                     }
 
@@ -649,7 +649,7 @@ public class AttributesListPanel extends JPanel {
                         .getAttributeName()
                         .compareToIgnoreCase(
                                 orderedListGeneric.get(i + 1)
-                                        .getAttributeName()) > 0) {
+                                .getAttributeName()) > 0) {
 
                     changeRequiredGeneric = true;
                     GenericAttributePanel temp = orderedListGeneric.get(i);

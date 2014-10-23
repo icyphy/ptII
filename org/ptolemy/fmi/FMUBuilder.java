@@ -238,7 +238,7 @@ public class FMUBuilder {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _fmuBuilder.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _fmuBuilder.stderr("IOException: " + ioe);

@@ -144,19 +144,19 @@ public class PxgraphApplication extends PlotApplication {
     @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "               pxgraph\n"
-                                + "        A Java Plotting Tool\n\n"
-                                + "By: Edward A. Lee and\n"
-                                + "    Christopher Brooks\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For help, type 'pxgraph -help', or see \n"
-                                + "the class documentation in the plot.compat package.\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+        .showMessageDialog(
+                this,
+                "               pxgraph\n"
+                        + "        A Java Plotting Tool\n\n"
+                        + "By: Edward A. Lee and\n"
+                        + "    Christopher Brooks\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For help, type 'pxgraph -help', or see \n"
+                        + "the class documentation in the plot.compat package.\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                         "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -172,7 +172,7 @@ public class PxgraphApplication extends PlotApplication {
      */
     @Override
     protected int _parseArgs(String[] args) throws CmdLineArgException,
-            FileNotFoundException, IOException {
+    FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -202,9 +202,9 @@ public class PxgraphApplication extends PlotApplication {
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
                 System.out
-                        .println("Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build $Id$");
+                .println("Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build $Id$");
                 StringUtilities.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {

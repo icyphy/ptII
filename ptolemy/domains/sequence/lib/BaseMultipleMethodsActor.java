@@ -52,7 +52,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public abstract class BaseMultipleMethodsActor extends
-        SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
+SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
 
     /** Create a new instance of an ASCETClassActor with the given
      *  name and container.
@@ -173,7 +173,7 @@ public abstract class BaseMultipleMethodsActor extends
         if (!_methodList.contains(methodName)) {
             throw new IllegalActionException(this,
                     "Unrecognized fire method name: " + methodName
-                            + " for actor " + getName() + ".");
+                    + " for actor " + getName() + ".");
         } else {
             _fireMethodName = methodName;
         }

@@ -8,7 +8,7 @@ package ptolemy.actor.corba.util;
  */
 @SuppressWarnings("serial")
 public final class CorbaUnknownPortException extends
-        org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
+org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
     public String portName = null;
 
     public String message = null;

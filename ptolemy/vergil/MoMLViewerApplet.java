@@ -261,7 +261,7 @@ public class MoMLViewerApplet extends MoMLApplet {
 
         if (panelFlag != null
                 && panelFlag.trim().toLowerCase(Locale.getDefault())
-                        .equals("true")) {
+                .equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.
             super._createView();

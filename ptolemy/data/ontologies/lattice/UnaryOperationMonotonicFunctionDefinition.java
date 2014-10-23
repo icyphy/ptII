@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class UnaryOperationMonotonicFunctionDefinition extends
-        ExpressionConceptFunctionDefinitionAttribute {
+ExpressionConceptFunctionDefinitionAttribute {
 
     /** Construct the UnaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -84,7 +84,7 @@ public class UnaryOperationMonotonicFunctionDefinition extends
         // Constrain argument list to have only 1 argument.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies
-                .setTypeEquals(new ArrayType(BaseType.STRING, 1));
+        .setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies.setVisibility(Settable.NONE);
 
         Token[] argNamesArray = new Token[] { new StringToken("arg") };

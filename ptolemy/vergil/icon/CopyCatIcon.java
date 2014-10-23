@@ -231,7 +231,7 @@ public class CopyCatIcon extends XMLIcon {
             BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 5.0
                     * i - _MARGIN, bounds.getY() + 5.0 * i - _MARGIN,
                     bounds.getWidth() + 2 * _MARGIN, bounds.getHeight() + 2
-                            * _MARGIN, echoBoxColor.asColor());
+                    * _MARGIN, echoBoxColor.asColor());
             composite.add(rectangle);
         }
         BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,

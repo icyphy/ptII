@@ -107,13 +107,13 @@ public abstract class GraphSearcher extends AbstractSearcher {
 
         if (_dbGraphSearchCriteria != null
                 && (_dbGraphSearchCriteria.getPortsList() != null
-                        && !_dbGraphSearchCriteria.getPortsList().isEmpty()
-                        || _dbGraphSearchCriteria.getComponentEntitiesList() != null
-                        && !_dbGraphSearchCriteria.getComponentEntitiesList()
-                                .isEmpty() || _dbGraphSearchCriteria
-                        .getCompositeEntities() != null
-                        && !_dbGraphSearchCriteria.getCompositeEntities()
-                                .isEmpty())) {
+                && !_dbGraphSearchCriteria.getPortsList().isEmpty()
+                || _dbGraphSearchCriteria.getComponentEntitiesList() != null
+                && !_dbGraphSearchCriteria.getComponentEntitiesList()
+                .isEmpty() || _dbGraphSearchCriteria
+                .getCompositeEntities() != null
+                && !_dbGraphSearchCriteria.getCompositeEntities()
+                .isEmpty())) {
             return true;
         }
 

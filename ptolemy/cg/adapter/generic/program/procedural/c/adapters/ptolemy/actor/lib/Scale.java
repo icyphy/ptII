@@ -46,8 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (rodiers)
  */
 public class Scale
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
 
     /**
      *  Construct a Scale adapter.

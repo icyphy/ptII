@@ -80,7 +80,7 @@ import ptolemy.util.MessageHandler;
 
 @SuppressWarnings("serial")
 public class SearchResultsFrame extends JFrame implements Observer,
-        PTDBBasicFrame {
+PTDBBasicFrame {
 
     /**
      * Construct a panel associated with a search result.

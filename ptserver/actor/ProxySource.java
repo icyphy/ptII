@@ -89,8 +89,8 @@ public class ProxySource extends ProxyActor {
      */
     public ProxySource(CompositeEntity container, ComponentEntity targetSource,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException {
         super(container, targetSource, replaceTargetEntity, portTypes);
     }
 

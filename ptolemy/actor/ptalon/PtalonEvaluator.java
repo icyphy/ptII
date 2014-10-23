@@ -940,7 +940,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                 if (variable instanceof String) {
                                     if (!scopeVariables.contains(variable)) {
                                         excludedVariables
-                                        .add((String) variable);
+                                                .add((String) variable);
                                     }
                                 }
                             }
@@ -1165,8 +1165,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 }
                 if (connectType.equals("transparent")
                         && !_transparentRelations
-                        .containsKey(_transparentLeftHandSides
-                                .get(transparency))) {
+                                .containsKey(_transparentLeftHandSides
+                                        .get(transparency))) {
                     return false;
                 }
             }

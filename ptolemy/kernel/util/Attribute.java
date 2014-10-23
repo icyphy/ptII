@@ -379,7 +379,7 @@ public class Attribute extends NamedObj {
      *  @see #getContainer()
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
@@ -461,7 +461,7 @@ public class Attribute extends NamedObj {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }

@@ -158,7 +158,7 @@ public abstract class AbstractReceiver implements Receiver {
                 }
                 throw new NoTokenException(getContainer(), ex,
                         "Failed to get the " + (i + 1) + cardinality
-                                + " token of " + numberOfTokens);
+                        + " token of " + numberOfTokens);
 
             }
         }
@@ -268,7 +268,7 @@ public abstract class AbstractReceiver implements Receiver {
      */
     @Override
     public abstract void put(Token token) throws NoRoomException,
-            IllegalActionException;
+    IllegalActionException;
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
@@ -445,8 +445,8 @@ public abstract class AbstractReceiver implements Receiver {
     public String toString() {
         IOPort container = getContainer();
         return getClass().getName() + " {"
-                + (container != null ? container.getFullName() : "")
-                + ".receiver }";
+        + (container != null ? container.getFullName() : "")
+        + ".receiver }";
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -101,7 +101,7 @@ public class ModelTests {
             if (modelFiles.length > 0) {
                 for (String modelFile : modelFiles) {
                     data[i++][0] = new File(directory + modelFile)
-                            .getCanonicalPath();
+                    .getCanonicalPath();
                 }
                 // Sort the files so that we execute the tests in
                 // a predictable order.  Tests in ptolemy/actor/lib/test/auto

@@ -76,7 +76,7 @@ public class RemoteEventTokenHandler implements TokenHandler<RemoteEventToken> {
 
         // Initialize values.
         EventType eventType = EventType.class.getEnumConstants()[inputStream
-                .readInt()];
+                                                                 .readInt()];
         String message = "";
 
         // Try to read the message if available.

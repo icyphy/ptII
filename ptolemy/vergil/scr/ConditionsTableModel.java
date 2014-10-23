@@ -180,7 +180,7 @@ public class ConditionsTableModel extends AbstractTableModel {
                             state,
                             ((CompositeEntity) _model).uniqueName(state
                                     .getName() + "_refinement"), null,
-                            Refinement.class.getName(), null);
+                                    Refinement.class.getName(), null);
                 }
                 CompositeEntity entity = (CompositeEntity) state
                         .getRefinement()[0];

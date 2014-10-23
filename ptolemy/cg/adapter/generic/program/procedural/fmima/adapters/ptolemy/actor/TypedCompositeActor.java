@@ -89,7 +89,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             directorAdapter = (Director) director;
         } catch (ClassCastException ex) {
             throw new IllegalActionException(
-                    // Extending ProceduralCodeGenerator start.
+            // Extending ProceduralCodeGenerator start.
                     adapter.getComponent(),
                     // Extending ProceduralCodeGenerator end.
 

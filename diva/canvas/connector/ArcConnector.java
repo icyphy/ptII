@@ -151,11 +151,11 @@ public class ArcConnector extends AbstractConnector {
         // Hm... I don't know why I need the PI/2 here -- johnr
         return new Point2D.Double(
                 _centerX
-                        + _radius
-                        * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
+                + _radius
+                * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
                 _centerY
-                        + _radius
-                        * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
+                + _radius
+                * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
     }
 
     /** Get the site that marks the midpoint of the connector.

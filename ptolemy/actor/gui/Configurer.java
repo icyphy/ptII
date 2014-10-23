@@ -300,7 +300,7 @@ public class Configurer extends JPanel implements CloseListener {
                                     // this object overrides some
                                     // inherited value.
                                     ((NamedObj) parameter)
-                                            .setDerivedLevel(derivedLevel);
+                                    .setDerivedLevel(derivedLevel);
                                 }
                             }
                         }

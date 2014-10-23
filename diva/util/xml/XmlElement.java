@@ -202,11 +202,11 @@ public class XmlElement {
     public XmlElement getElement(final String type) {
         return (XmlElement) IteratorUtilities.firstMatch(elements(),
                 new Filter() {
-                    @Override
-                    public boolean accept(Object o) {
-                        return ((XmlElement) o)._type.equals(type);
-                    }
-                });
+            @Override
+            public boolean accept(Object o) {
+                return ((XmlElement) o)._type.equals(type);
+            }
+        });
     }
 
     /**
@@ -216,13 +216,13 @@ public class XmlElement {
     public XmlElement getElement(final String type, final String name) {
         return (XmlElement) IteratorUtilities.firstMatch(elements(),
                 new Filter() {
-                    @Override
-                    public boolean accept(Object o) {
-                        XmlElement elt = (XmlElement) o;
-                        return elt._type.equals(type)
-                                && elt.getAttribute("name").equals(name);
-                    }
-                });
+            @Override
+            public boolean accept(Object o) {
+                XmlElement elt = (XmlElement) o;
+                return elt._type.equals(type)
+                        && elt.getAttribute("name").equals(name);
+            }
+        });
     }
 
     /** Return the type of this XmlElement.  The type is immutably set when

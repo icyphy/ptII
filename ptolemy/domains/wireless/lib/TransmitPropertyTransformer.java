@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (pjb2e)
  */
 public class TransmitPropertyTransformer extends LifeCycleManager implements
-        PropertyTransformer {
+PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -347,7 +347,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
     @Override
     public RecordToken transformProperties(RecordToken initialProperties,
             WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
 
@@ -440,7 +440,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + ".");
+                    + ".");
         }
 
         return location.getLocation();

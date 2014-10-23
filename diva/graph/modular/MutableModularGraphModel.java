@@ -42,7 +42,7 @@ import diva.graph.MutableGraphModel;
  * @Pt.AcceptedRating Red
  */
 public abstract class MutableModularGraphModel extends ModularGraphModel
-        implements MutableGraphModel {
+implements MutableGraphModel {
     /**
      * Construct an empty graph model whose
      * root is the given semantic object.

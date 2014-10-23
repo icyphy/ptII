@@ -66,7 +66,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
      *   actor with this name.
      */
     public PthalesAddHeaderActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -158,7 +158,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
 
     @Override
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._initialize();
 
         // input port

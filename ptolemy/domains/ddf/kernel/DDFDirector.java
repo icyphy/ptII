@@ -158,7 +158,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -173,7 +173,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -534,7 +534,7 @@ public class DDFDirector extends Director {
     public void merge(DDFDirector insideDirector) {
         _disabledActors.addAll(insideDirector._disabledActors);
         _actorsToCheckNumberOfFirings
-                .addAll(insideDirector._actorsToCheckNumberOfFirings);
+        .addAll(insideDirector._actorsToCheckNumberOfFirings);
         _actorsInfo.putAll(insideDirector._actorsInfo);
     }
 
@@ -660,7 +660,7 @@ public class DDFDirector extends Director {
                         _debug("Channel " + i + " of port "
                                 + inputPort.getFullName()
                                 + " does not have enough tokens: " + rate[i]
-                                + ". Prefire returns false.");
+                                        + ". Prefire returns false.");
                     }
                     if (_debugging) {
                         _debug("DDFDirector.prefire() returns false.");
@@ -696,7 +696,7 @@ public class DDFDirector extends Director {
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector",
                 "ptolemy.domains.modal.kernel.FSMDirector",
-                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -750,8 +750,8 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring input from channel " + i
-                                                + " of input port "
-                                                + port.getName());
+                                        + " of input port "
+                                        + port.getName());
                             }
 
                             port.sendInside(i, t);
@@ -764,10 +764,10 @@ public class DDFDirector extends Director {
                                             + i
                                             + "should consume "
                                             + rate[i]
-                                            + " tokens, but there were only "
-                                            + k
-                                            + " tokens available. Maybe the rate"
-                                            + " is set wrong?");
+                                                    + " tokens, but there were only "
+                                                    + k
+                                                    + " tokens available. Maybe the rate"
+                                                    + " is set wrong?");
                         }
                     }
 
@@ -783,7 +783,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring input from channel " + i
-                                            + " of port " + port.getName());
+                                    + " of port " + port.getName());
                         }
 
                         port.sendInside(i, token);
@@ -860,7 +860,7 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring output from channel " + i
-                                                + " of port " + port.getName());
+                                        + " of port " + port.getName());
                             }
 
                             port.send(i, token);
@@ -873,10 +873,10 @@ public class DDFDirector extends Director {
                                             + i
                                             + " should produce "
                                             + rate[i]
-                                            + " tokens, but there were only "
-                                            + k
-                                            + " tokens available. Maybe the rate"
-                                            + " is set wrong?");
+                                                    + " tokens, but there were only "
+                                                    + k
+                                                    + " tokens available. Maybe the rate"
+                                                    + " is set wrong?");
                         }
                     }
 
@@ -890,7 +890,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring output from channel " + i
-                                            + " of port " + port.getName());
+                                    + " of port " + port.getName());
                         }
 
                         port.send(i, token);
@@ -1345,7 +1345,7 @@ public class DDFDirector extends Director {
      *  value false.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));

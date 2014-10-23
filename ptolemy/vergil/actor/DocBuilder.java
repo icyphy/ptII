@@ -248,15 +248,15 @@ public class DocBuilder extends Attribute {
                         + codeDocDirectory + "\".");
                 if (!FileUtilities.deleteDirectory(codeDocDirectory)) {
                     _executeCommands
-                    .stderr("Warning: Could not delete some of the files in \""
-                            + codeDocDirectory + "\".");
+                            .stderr("Warning: Could not delete some of the files in \""
+                                    + codeDocDirectory + "\".");
                 }
             }
 
             if (applicationName == null) {
                 File ptIImk = new File(
                         StringUtilities.getProperty("ptolemy.ptII.dir")
-                                + "/mk/ptII.mk");
+                        + "/mk/ptII.mk");
                 // If the user has run configure, then we run make,
                 // otherwise we run the javadoc command.
                 if (ptIImk.exists()) {
@@ -268,7 +268,7 @@ public class DocBuilder extends Attribute {
                             StringUtilities.getProperty("ptolemy.ptII.dir"));
                     _executeCommands.setWorkingDirectory(ptII);
                     _executeCommands
-                            .updateStatusBar("When creating docs, warnings are ok.");
+                    .updateStatusBar("When creating docs, warnings are ok.");
 
                     commands.add(_compilePtDoclet(ptII));
 

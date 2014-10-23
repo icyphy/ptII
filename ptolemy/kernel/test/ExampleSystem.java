@@ -62,7 +62,7 @@ public class ExampleSystem implements Serializable {
      *  be built.
      */
     public ExampleSystem() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
 
         // Create composite entities
@@ -238,7 +238,7 @@ public class ExampleSystem implements Serializable {
      *  be built.
      */
     public static void main(String[] args) throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
     }

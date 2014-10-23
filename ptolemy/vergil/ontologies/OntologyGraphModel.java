@@ -975,7 +975,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     // called request or we get a compile error.
                     MoMLChangeRequest requestChange = new MoMLChangeRequest(
                             OntologyGraphModel.this, container, failmoml
-                                    .toString());
+                            .toString());
 
                     // Fail moml execution not undoable
                     container.requestChange(requestChange);

@@ -68,8 +68,8 @@ public class ThreadSynchronizer {
             try {
                 if (VERBOSE) {
                     System.out
-                            .println("commandsEmpty: waiting for readyMap to "
-                                    + "be empty");
+                    .println("commandsEmpty: waiting for readyMap to "
+                            + "be empty");
                 }
 
                 wait();

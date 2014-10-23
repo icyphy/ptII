@@ -384,11 +384,11 @@ public abstract class AbstractNotConvertibleToken extends Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " method not supported between "
-                + firstToken.getClass().getName() + " '"
-                + firstToken.toString() + "' and "
-                + secondToken.getClass().getName() + " '"
-                + secondToken.toString()
-                + "' because the tokens have different classes.";
+        + firstToken.getClass().getName() + " '"
+        + firstToken.toString() + "' and "
+        + secondToken.getClass().getName() + " '"
+        + secondToken.toString()
+        + "' because the tokens have different classes.";
     }
 
     /** Return a new token whose value is the value of the argument token

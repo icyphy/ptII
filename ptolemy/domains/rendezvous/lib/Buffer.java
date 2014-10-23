@@ -182,7 +182,7 @@ public class Buffer extends TypedAtomicActor {
                                         director.threadBlocked(_readThread,
                                                 null);
                                         RendezvousReceiver
-                                                .waitForChange(director);
+                                        .waitForChange(director);
                                     } finally {
                                         director.threadUnblocked(_readThread,
                                                 null);

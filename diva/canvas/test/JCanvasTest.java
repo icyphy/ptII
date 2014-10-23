@@ -84,9 +84,9 @@ public class JCanvasTest extends TestSuite {
                 assertExpr(pane != null, "pane != null");
                 assertExpr(
                         pane.getClass().getName()
-                                .equals("diva.canvas.GraphicsPane"), pane
-                                .getClass().getName()
-                                + " != diva.canvas.GraphicsPane");
+                        .equals("diva.canvas.GraphicsPane"), pane
+                        .getClass().getName()
+                        + " != diva.canvas.GraphicsPane");
             }
         });
     }

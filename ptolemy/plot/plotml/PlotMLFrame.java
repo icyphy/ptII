@@ -113,16 +113,16 @@ public class PlotMLFrame extends PlotFrame {
     @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "Ptolemy plot frame\n"
-                                + "By: Edward A. Lee\n"
-                                + "and Christopher Hylands\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+        .showMessageDialog(
+                this,
+                "Ptolemy plot frame\n"
+                        + "By: Edward A. Lee\n"
+                        + "and Christopher Hylands\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 

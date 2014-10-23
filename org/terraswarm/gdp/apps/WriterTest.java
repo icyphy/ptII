@@ -24,10 +24,9 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.terraswarm.gdp.apps;
-
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,7 +57,7 @@ import com.sun.jna.ptr.PointerByReference;
     @since Ptolemy II 10.0
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class WriterTest {
     // This code follows the naming conventions of the original .c file.
 
@@ -81,7 +80,7 @@ public class WriterTest {
      *  <p><code><i>gcl_name</i></code> The name of the gcl.  This string is used with ReaderTest</p>
      *  @param argv The command line arguments, documented above.
      */
-    public static void main(String [] argv) throws Throwable {
+    public static void main(String[] argv) throws Throwable {
         // See
         // https://twall.github.io/jna/4.1.0/overview-summary.html#crash-protection
         // "It is not uncommon when defining a new library and writing
@@ -103,23 +102,18 @@ public class WriterTest {
         //gdp_gcl_t gclhReally = new gdp_gcl_t(gclh.getValue());
         Pointer gclh = null;
 
-
         // Was: gcl_name_t gcliname;
         // BTW - gcl_name_t is defined in gdp/gdp/gdp.h:
         // typedef uint8_t                            gcl_name_t[32];
         ByteBuffer gcliname = ByteBuffer.allocate(32);
 
-        int opt;
         EP_STAT estat;
         boolean append = false;
-        String buf = "";
-
         // The address of the gdp daemon (gdpd), null means to use the
         // default of 127.0.0.1:2468.  This value can be set by the -G command line argument.
         String gdpd_addr = null;
 
         String xname = null;
-
 
         int argc = argv.length;
         for (int i = 0; i < argv.length; i++) {
@@ -128,25 +122,27 @@ public class WriterTest {
                 argc--;
             } else if (argv[i].equals("-D")) {
                 argc--;
-                Gdp10Library.INSTANCE.ep_dbg_set(argv[i+1]);
+                Gdp10Library.INSTANCE.ep_dbg_set(argv[i + 1]);
                 argc--;
             } else if (argv[i].equals("-G")) {
                 argc--;
-                gdpd_addr = argv[i+1];
+                gdpd_addr = argv[i + 1];
                 argc--;
             }
         }
 
-         _debug("WriterTest: argv.length: " + argv.length + ", argc: " + argc);
+        _debug("WriterTest: argv.length: " + argv.length + ", argc: " + argc);
 
         if (argc > 0) {
             xname = argv[argv.length - 1];
             argc--;
         }
         if (argc != 0 || (append && xname == null)) {
-            System.err.println("Usage: WriterTest [-D dbgspec] [-G gdpdAddress] [-a] [<gcl_name>]\n"
-                    + "  (name is required for -a)");
-            _debug("argc: " + argc + ", append: " + append + ", xname: " + (xname == null ? "null" : xname));
+            System.err
+                    .println("Usage: WriterTest [-D dbgspec] [-G gdpdAddress] [-a] [<gcl_name>]\n"
+                            + "  (name is required for -a)");
+            _debug("argc: " + argc + ", append: " + append + ", xname: "
+                    + (xname == null ? "null" : xname));
             System.exit(64 /* EX_USAGE from /usr/includes/sysexits.h */);
         }
 
@@ -166,7 +162,8 @@ public class WriterTest {
             // gdp.h declared: extern EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t **);
             //estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
             PointerByReference gclhByReference = new PointerByReference();
-            estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclhByReference);
+            estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer) null,
+                    gclhByReference);
             gclh = gclhByReference.getValue();
             _debug("Handle created: " + estat);
             _debug("2 gclh: " + gclh);
@@ -177,12 +174,14 @@ public class WriterTest {
                 _debug("About to call gdp_gcl_open()");
                 //estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
                 PointerByReference gclhByReference = new PointerByReference();
-                estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclhByReference);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname,
+                        Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclhByReference);
                 gclh = gclhByReference.getValue();
             } else {
                 _debug("About to call gdp_gcl_create()");
                 PointerByReference gclhByReference = new PointerByReference();
-                estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname, gclhByReference);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname,
+                        gclhByReference);
                 gclh = gclhByReference.getValue();
             }
         }
@@ -199,7 +198,6 @@ public class WriterTest {
         // Gdp10Library.INSTANCE.gdp_gcl_printable_name(gclh, nbuf);
         // Print nbuf
 
-
         System.out.println("Starting to read input.");
 
         _debug("About to create a gdp_datum.");
@@ -210,12 +208,13 @@ public class WriterTest {
 
         BufferedReader bufferedReader = null;
         try {
-           bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-           String line;
-           // 200 is a magic number from writer-test and seems wrong.
-           final int bufferLength = 200;
-           while ((line = bufferedReader.readLine())!=null) {
-                System.out.println("Got input \"" +  line + "\"");
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(System.in));
+            String line;
+            // 200 is a magic number from writer-test and seems wrong.
+            final int bufferLength = 200;
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println("Got input \"" + line + "\"");
 
                 // FIXME: gdp/gdp_buf.h has
                 // #define gdp_buf_write(b, i, z)        evbuffer_add(b, i, z)
@@ -226,7 +225,7 @@ public class WriterTest {
                 // FIXME: we should probably have alloc and free methods and avoid lieaks.
                 if (line.length() > bufferLength) {
                     throw new Exception("The length of the line \"" + line
-                            + "\" is greater than " + bufferLength );
+                            + "\" is greater than " + bufferLength);
                 }
                 Memory memory = new Memory(bufferLength);
                 // FIXME: not sure about alignment.
@@ -236,9 +235,12 @@ public class WriterTest {
                 pointer.setString(0, line);
 
                 _debug("About to call gdp_datum_getbuf()");
-                PointerByReference dbuf = Gdp10Library.INSTANCE.gdp_datum_getbuf(datum);
-                _debug("About to call gdp_buf_write(): pointer: " + pointer + "pointer.getString(): " + pointer.getString(0));
-                Gdp10Library.INSTANCE.gdp_buf_write(dbuf, pointer, new NativeSizeT(line.length()));
+                PointerByReference dbuf = Gdp10Library.INSTANCE
+                        .gdp_datum_getbuf(datum);
+                _debug("About to call gdp_buf_write(): pointer: " + pointer
+                        + "pointer.getString(): " + pointer.getString(0));
+                Gdp10Library.INSTANCE.gdp_buf_write(dbuf, pointer,
+                        new NativeSizeT(line.length()));
 
                 _debug("About to call gdp_gcl_publish()");
                 _debug("gclh: " + gclh);
@@ -265,7 +267,6 @@ public class WriterTest {
         _fail0(estat);
     }
 
-
     /** Close the GCL handle and call exit.
      *  @parameter estat The libep Enhanced Portability status code.
      *  @parameter gclh The GCL handle.
@@ -291,7 +292,8 @@ public class WriterTest {
         // fprintf(stderr, "exiting with status %s\n",
         //                ep_stat_tostr(estat, buf, sizeof buf));
         // I have no idea what to do with ep_stat_tostr(), so we just print
-        System.err.println("exiting with status " + estat + ", code: " + estat.code);
+        System.err.println("exiting with status " + estat + ", code: "
+                + estat.code);
 
         System.exit(GdpUtilities.EP_STAT_ISOK(estat) ? 0 : 1);
     }

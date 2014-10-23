@@ -90,7 +90,7 @@ public class PSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public PSDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -107,7 +107,7 @@ public class PSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public PSDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -169,7 +169,7 @@ public class PSDFDirector extends SDFDirector {
      *  default scheduler of the class PSDFScheduler.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         /* PSDFScheduler scheduler = */new PSDFScheduler(this,
                 uniqueName("Scheduler"));
     }

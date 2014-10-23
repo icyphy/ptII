@@ -61,7 +61,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
      * @param workspace The workspace for this ZenoDelay actor.
      */
     public ZenoDelay(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 

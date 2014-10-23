@@ -115,7 +115,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
     /** Return the row count.
      *  @return the row count
      */
-       @Override
+    @Override
     public int getRowCount() {
         _initializeTableContent();
         return _tableContent.size() / getColumnCount();
@@ -154,7 +154,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
      *  @exception NameDuplicationException  If thrown while saving the model.
      */
     public void saveModel() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         Set<State> states = new HashSet<State>();
 
         for (int i = 0; i < _tableContent.size(); i = i + 3) {

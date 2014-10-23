@@ -57,7 +57,7 @@ public class UnitsConverter extends LatticeOntologyAdapter {
      */
     public UnitsConverter(LatticeOntologySolver solver,
             ptolemy.domains.ontologies.lib.UnitsConverter actor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, actor, false);
 
         if (!_solver.equals(actor.getUnitOntologySolver())) {

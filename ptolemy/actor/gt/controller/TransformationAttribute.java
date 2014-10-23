@@ -76,7 +76,7 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationAttribute extends Attribute implements Configurable,
-        GTAttribute {
+GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -143,7 +143,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
             newObject._configurer.setName("Configurer");
             new DEDirector(newObject._configurer, "_director");
             newObject._configurer
-                    .setManager(new Manager(workspace, "_manager"));
+            .setManager(new Manager(workspace, "_manager"));
             newObject._configurer.setConfiguredObject(newObject);
             newObject._executionListeners = new LinkedList<ExecutionListener>();
             newObject._modelUpdater = (PteraModalModel) _modelUpdater
@@ -375,7 +375,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *   parameters.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         condition = new Parameter(this, "condition");
         condition.setExpression("true");
 
@@ -436,7 +436,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      @Pt.AcceptedRating Red (tfeng)
      */
     private class TransformationListener extends Attribute implements
-            ExecutionListener {
+    ExecutionListener {
 
         /** Construct an attribute with the given name contained by the specified
          *  entity. The container argument must not be null, or a

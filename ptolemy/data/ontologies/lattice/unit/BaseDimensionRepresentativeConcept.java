@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cshelton)
  */
 public class BaseDimensionRepresentativeConcept extends
-        DimensionRepresentativeConcept {
+DimensionRepresentativeConcept {
 
     /** Create a new BaseUnitRepresentativeConcept with the specified name and
      *  ontology.

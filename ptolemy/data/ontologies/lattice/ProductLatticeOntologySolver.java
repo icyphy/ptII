@@ -161,7 +161,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {
                 innerSolver
-                        .setOntologySolverUtilities(productLatticeSolverUtilities);
+                .setOntologySolverUtilities(productLatticeSolverUtilities);
             }
         }
 
@@ -247,7 +247,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) adapterDefinitionAttribute.actorClassName
                         .getToken()).stringValue().equals(
-                        component.getClass().getName())) {
+                                component.getClass().getName())) {
                     adapter = adapterDefinitionAttribute.createAdapter(
                             (ComponentEntity) component, this);
                     break;

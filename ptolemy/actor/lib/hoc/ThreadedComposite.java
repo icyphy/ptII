@@ -611,7 +611,7 @@ public class ThreadedComposite extends MirrorComposite {
                     while (_outputFrames.isEmpty() && !_stopRequested) {
                         if (ThreadedComposite.this._debugging) {
                             ThreadedComposite.this
-                                    ._debug("Waiting for outputs from inside thread.");
+                            ._debug("Waiting for outputs from inside thread.");
                         }
                         // The timeout allows this to respond to stop()
                         // even if we have a deadlock for some reason.
@@ -680,8 +680,8 @@ public class ThreadedComposite extends MirrorComposite {
             if (director != null) {
                 if (ThreadedComposite.this._debugging) {
                     ThreadedComposite.this
-                            ._debug("---- Request refiring at time " + time
-                                    + " for actor: " + actor.getFullName());
+                    ._debug("---- Request refiring at time " + time
+                            + " for actor: " + actor.getFullName());
                 }
                 try {
                     result = director.fireAt(ThreadedComposite.this, time,
@@ -810,10 +810,10 @@ public class ThreadedComposite extends MirrorComposite {
             if (refireRequested || !_inputTokens.isEmpty()) {
                 if (ThreadedComposite.this._debugging) {
                     ThreadedComposite.this
-                            ._debug("Queueing input tokens for the inside thread: "
-                                    + _inputTokens.toString()
-                                    + " to be processed at time "
-                                    + environmentTime);
+                    ._debug("Queueing input tokens for the inside thread: "
+                            + _inputTokens.toString()
+                            + " to be processed at time "
+                            + environmentTime);
                 }
                 synchronized (this) {
                     _inputFrames.add(new TokenFrame(environmentTime,
@@ -859,8 +859,8 @@ public class ThreadedComposite extends MirrorComposite {
                     .getExecutiveDirector().getModelTime();
             if (ThreadedComposite.this._debugging) {
                 ThreadedComposite.this
-                        ._debug("Queueing a stop-frame token for the inside thread with time: "
-                                + environmentTime);
+                ._debug("Queueing a stop-frame token for the inside thread with time: "
+                        + environmentTime);
             }
             synchronized (this) {
                 _inputFrames.add(new TokenFrame(environmentTime, null,
@@ -891,8 +891,8 @@ public class ThreadedComposite extends MirrorComposite {
                             _inputTokens.add(new QueuedToken(port, i, token));
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this
-                                        ._debug("Transferring input from "
-                                                + port.getName());
+                                ._debug("Transferring input from "
+                                        + port.getName());
                             }
                             result = true;
                         }
@@ -951,12 +951,12 @@ public class ThreadedComposite extends MirrorComposite {
                 try {
                     if (ThreadedComposite.this._debugging) {
                         ThreadedComposite.this
-                                ._debug("Waiting for inside thread to stop.");
+                        ._debug("Waiting for inside thread to stop.");
                     }
                     _thread.join();
                     if (ThreadedComposite.this._debugging) {
                         ThreadedComposite.this
-                                ._debug("Inside thread has stopped.");
+                        ._debug("Inside thread has stopped.");
                     }
                     if (_exception != null) {
                         throw new IllegalActionException(
@@ -1050,7 +1050,7 @@ public class ThreadedComposite extends MirrorComposite {
                     try {
                         if (ThreadedComposite.this._debugging) {
                             ThreadedComposite.this
-                                    ._debug("---- Waiting for inputs in the inside thread.");
+                            ._debug("---- Waiting for inputs in the inside thread.");
                         }
                         TokenFrame frame = null;
                         synchronized (ThreadedDirector.this) {
@@ -1070,16 +1070,16 @@ public class ThreadedComposite extends MirrorComposite {
                         if (frame.type == TokenFrame.STOP) {
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this
-                                        ._debug("---- Read a stop frame in inside thread.");
+                                ._debug("---- Read a stop frame in inside thread.");
                             }
                             break;
                         }
                         if (ThreadedComposite.this._debugging) {
                             ThreadedComposite.this
-                                    ._debug("---- Reading input tokens in inside thread with time "
-                                            + frame.time
-                                            + " and value "
-                                            + frame.tokens);
+                            ._debug("---- Reading input tokens in inside thread with time "
+                                    + frame.time
+                                    + " and value "
+                                    + frame.tokens);
                         }
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.
@@ -1137,10 +1137,10 @@ public class ThreadedComposite extends MirrorComposite {
                                     outputTokens.add(tokenBundle);
                                     if (ThreadedComposite.this._debugging) {
                                         ThreadedComposite.this
-                                                ._debug("---- Inside actor produced token "
-                                                        + token
-                                                        + " for port "
-                                                        + port.getName());
+                                        ._debug("---- Inside actor produced token "
+                                                + token
+                                                + " for port "
+                                                + port.getName());
                                     }
                                 }
                             }
@@ -1178,7 +1178,7 @@ public class ThreadedComposite extends MirrorComposite {
                             _outputFrames.add(outputFrame);
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this
-                                        ._debug("---- Inside thread posted output frame.");
+                                ._debug("---- Inside thread posted output frame.");
                             }
                             ThreadedDirector.this.notifyAll();
                             // Give the director thread a chance to react.

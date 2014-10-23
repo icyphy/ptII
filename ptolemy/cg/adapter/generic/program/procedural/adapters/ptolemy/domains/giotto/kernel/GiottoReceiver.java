@@ -141,7 +141,7 @@ public class GiottoReceiver extends Receiver {
         if (!(sourcePort instanceof TypedIOPort)) {
             throw new InternalErrorException(sourcePort, null,
                     "Could not cast " + sourcePort.getFullName()
-                            + " to a TypedIOPort.");
+                    + " to a TypedIOPort.");
         } else {
             //TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
             try {

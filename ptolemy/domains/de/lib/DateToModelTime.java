@@ -28,9 +28,6 @@
 
 package ptolemy.domains.de.lib;
 
-import java.util.Collections;
-import java.util.HashSet;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
@@ -103,12 +100,11 @@ public class DateToModelTime extends Transformer {
                 Time fireTime = new Time(
                         _director,
                         (token.getCalendarInstance().getTimeInMillis() - _director
-                        .getRealStartTimeMillis())
-                        * _director.localClock.getTimeResolution());
+                                .getRealStartTimeMillis())
+                                * _director.localClock.getTimeResolution());
                 output.send(0, new DoubleToken(fireTime.getDoubleValue()));
             }
         }
-
 
     }
 

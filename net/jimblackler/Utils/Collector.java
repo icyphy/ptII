@@ -16,5 +16,5 @@ public interface Collector<T> {
      * @exception IllegalActionException
      */
     void collect(ResultHandler<T> handler) throws CollectionAbortedException,
-    IllegalActionException;
+            IllegalActionException;
 }

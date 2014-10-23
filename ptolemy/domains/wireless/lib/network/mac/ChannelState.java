@@ -370,8 +370,8 @@ public class ChannelState extends MACActorBase {
             // new NAV
             Time tNew = new Time(getDirector(),
                     ((DoubleToken) _inputMessage.get("tRef")).doubleValue()
-                            + ((IntToken) _inputMessage.get("dNav")).intValue()
-                            * 1e-6);
+                    + ((IntToken) _inputMessage.get("dNav")).intValue()
+                    * 1e-6);
 
             // if the new NAV is larger than the existing one, use it instead
             if (tNew.compareTo(_NavTimer.expirationTime) > 0) {
@@ -402,8 +402,8 @@ public class ChannelState extends MACActorBase {
     private boolean _setNav() throws IllegalActionException {
         Time expirationTime = new Time(getDirector(),
                 ((DoubleToken) _inputMessage.get("tRef")).doubleValue()
-                        + ((IntToken) _inputMessage.get("dNav")).intValue()
-                        * 1e-6);
+                + ((IntToken) _inputMessage.get("dNav")).intValue()
+                * 1e-6);
         _setAttribute(_tNavEnd,
                 new DoubleToken(expirationTime.getDoubleValue()));
 

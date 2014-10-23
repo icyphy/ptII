@@ -91,7 +91,7 @@ public class KielerJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
+        .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
     /**
@@ -273,8 +273,8 @@ public class KielerJUnitTest {
             String undoMoML = model[0].exportMoML();
             if (_debug || !baseMoML.equals(undoMoML)) {
                 System.out
-                        .println("Difference between original MoML"
-                                + " and the exported MoML after Kieler Layout and then undo:");
+                .println("Difference between original MoML"
+                        + " and the exported MoML after Kieler Layout and then undo:");
                 System.out.println(Diff.diff(baseMoML, undoMoML));
             }
 
@@ -295,8 +295,8 @@ public class KielerJUnitTest {
             String redoMoML = model[0].exportMoML();
             if (_debug || !laidOutMoML.equals(redoMoML)) {
                 System.out
-                        .println("Difference between laid out MoML"
-                                + " and the exported MoML after Kieler Layout and then undo, then redo:");
+                .println("Difference between laid out MoML"
+                        + " and the exported MoML after Kieler Layout and then undo, then redo:");
                 System.out.println(Diff.diff(laidOutMoML, redoMoML));
             }
 
@@ -316,7 +316,7 @@ public class KielerJUnitTest {
             public void run() {
                 try {
                     ConfigurationApplication
-                            .closeModelWithoutSavingOrExiting(model[0]);
+                    .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);

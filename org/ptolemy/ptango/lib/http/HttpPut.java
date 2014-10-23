@@ -26,6 +26,7 @@
  COPYRIGHTENDKEY
  */
 package org.ptolemy.ptango.lib.http;
+
 import org.ptolemy.ptango.lib.HttpGet;
 import org.ptolemy.ptango.lib.HttpRequest.Method;
 

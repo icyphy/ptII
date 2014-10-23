@@ -59,8 +59,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating red (derler)
  */
 public class PtidesPreemptiveEDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesDirector.
@@ -323,9 +323,9 @@ public class PtidesPreemptiveEDFDirector
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) actuator);
             switchstatement
-                    .append("case " + _deviceIds.get(actuator) + ":\n"
-                            + "    newEvent->fire = " + deviceName + ";\n"
-                            + "break;\n");
+            .append("case " + _deviceIds.get(actuator) + ":\n"
+                    + "    newEvent->fire = " + deviceName + ";\n"
+                    + "break;\n");
             if (actuatorIds.length() > 0) {
                 actuatorIds.append(", ");
             }
@@ -483,13 +483,13 @@ public class PtidesPreemptiveEDFDirector
                     + " = " + _devicePortIds.get(actuator) + ";\n");
 
             doActuation
-                    .append("void "
-                            + deviceName
-                            + "_Actuation() {\n"
-                            + "timer time;\n uint32 count;\n"
-                            + deviceName
-                            + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                            + deviceName + " <: 0;\n}\n");
+            .append("void "
+                    + deviceName
+                    + "_Actuation() {\n"
+                    + "timer time;\n uint32 count;\n"
+                    + deviceName
+                    + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
+                    + deviceName + " <: 0;\n}\n");
 
             initActuatorString.append(deviceName + " <: 0;\n");
         }

@@ -133,7 +133,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
         }
         if (dependents) {
             BasicGraphFrame
-                    .report(_owner, "Generating dependency information.");
+            .report(_owner, "Generating dependency information.");
             result.addAll(ActorDependencies.dependents(actor, clazz));
             BasicGraphFrame.report(_owner, "");
         }
@@ -155,7 +155,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
 
     /** Default renderer for results table. */
     private static class DependencyResultsNamedObjRenderer extends
-            DefaultTableCellRenderer {
+    DefaultTableCellRenderer {
         // FindBugs indicates that this should be a static class.
 
         @Override

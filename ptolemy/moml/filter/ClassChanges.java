@@ -267,8 +267,8 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.modal.modal.ModalModel");
 
         _classChanges
-                .put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
-                        "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
+        .put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+                "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put(

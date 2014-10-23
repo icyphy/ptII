@@ -730,11 +730,11 @@ public class KielerLayout extends AbstractGlobalLayout {
                 labelLayout.setWidth((float) bounds.getWidth());
                 labelLayout.setHeight((float) bounds.getHeight());
                 labelLayout
-                        .setXpos((edgeLayout.getSourcePoint().getX() + edgeLayout
-                                .getTargetPoint().getX()) / 2);
+                .setXpos((edgeLayout.getSourcePoint().getX() + edgeLayout
+                        .getTargetPoint().getX()) / 2);
                 labelLayout
-                        .setYpos((edgeLayout.getSourcePoint().getY() + edgeLayout
-                                .getTargetPoint().getY()) / 2);
+                .setYpos((edgeLayout.getSourcePoint().getY() + edgeLayout
+                        .getTargetPoint().getY()) / 2);
                 kedge.getLabels().add(label);
             }
         }
@@ -1298,27 +1298,27 @@ public class KielerLayout extends AbstractGlobalLayout {
                     }
 
                 } else
-                // See if one of the endpoints is source or target of other edges.
-                if (_divaEdgeTarget.containsValue(simpleEndpoint1)) {
-                    _divaEdgeTarget.put(edge, simpleEndpoint2);
-                    _divaEdgeSource.put(edge, simpleEndpoint1);
-                    progress = true;
-                } else if (_divaEdgeTarget.containsValue(simpleEndpoint2)) {
-                    _divaEdgeTarget.put(edge, simpleEndpoint1);
-                    _divaEdgeSource.put(edge, simpleEndpoint2);
-                    progress = true;
-                } else if (_divaEdgeSource.containsValue(simpleEndpoint1)) {
-                    _divaEdgeTarget.put(edge, simpleEndpoint1);
-                    _divaEdgeSource.put(edge, simpleEndpoint2);
-                    progress = true;
-                } else if (_divaEdgeSource.containsValue(simpleEndpoint2)) {
-                    _divaEdgeTarget.put(edge, simpleEndpoint2);
-                    _divaEdgeSource.put(edge, simpleEndpoint1);
-                    progress = true;
-                } else {
-                    // Now we can't deduce any information about this edge.
-                    allDirectionsSet = false;
-                }
+                    // See if one of the endpoints is source or target of other edges.
+                    if (_divaEdgeTarget.containsValue(simpleEndpoint1)) {
+                        _divaEdgeTarget.put(edge, simpleEndpoint2);
+                        _divaEdgeSource.put(edge, simpleEndpoint1);
+                        progress = true;
+                    } else if (_divaEdgeTarget.containsValue(simpleEndpoint2)) {
+                        _divaEdgeTarget.put(edge, simpleEndpoint1);
+                        _divaEdgeSource.put(edge, simpleEndpoint2);
+                        progress = true;
+                    } else if (_divaEdgeSource.containsValue(simpleEndpoint1)) {
+                        _divaEdgeTarget.put(edge, simpleEndpoint1);
+                        _divaEdgeSource.put(edge, simpleEndpoint2);
+                        progress = true;
+                    } else if (_divaEdgeSource.containsValue(simpleEndpoint2)) {
+                        _divaEdgeTarget.put(edge, simpleEndpoint2);
+                        _divaEdgeSource.put(edge, simpleEndpoint1);
+                        progress = true;
+                    } else {
+                        // Now we can't deduce any information about this edge.
+                        allDirectionsSet = false;
+                    }
 
                 // Guarantee progress by just setting the direction if it cannot be deduced.
                 if (!edgeIter.hasNext() && !progress) {

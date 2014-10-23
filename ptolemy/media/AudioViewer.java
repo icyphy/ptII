@@ -143,15 +143,15 @@ public class AudioViewer extends PlotApplication {
     @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "Ptolemy AudioViewer (ptaudio program)\n"
-                                + "By: Edward A. Lee\n"
-                                + "Version 2.0, Build: "
-                                + "$Id$"
-                                + "\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
+        .showMessageDialog(
+                this,
+                "Ptolemy AudioViewer (ptaudio program)\n"
+                        + "By: Edward A. Lee\n"
+                        + "Version 2.0, Build: "
+                        + "$Id$"
+                        + "\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
                         "About Ptolemy AudioViewer",
                         JOptionPane.INFORMATION_MESSAGE);
     }
@@ -161,9 +161,9 @@ public class AudioViewer extends PlotApplication {
     @Override
     protected void _help() {
         JOptionPane
-                .showMessageDialog(this, "Use Control-P to play the sound",
-                        "Usage of Ptolemy AudioViewer",
-                        JOptionPane.INFORMATION_MESSAGE);
+        .showMessageDialog(this, "Use Control-P to play the sound",
+                "Usage of Ptolemy AudioViewer",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether

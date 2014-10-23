@@ -52,7 +52,7 @@ import diva.graph.GraphPane;
  */
 @SuppressWarnings("serial")
 public class OntologyGraphFrame extends ExtendedGraphFrame implements
-        ActionListener {
+ActionListener {
 
     /** Construct a frame associated with the specified ontology model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -230,8 +230,8 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
             if (actionCommand.equals(CHECK_LATTICE)) {
                 Ontology ontologyModel = (Ontology) getModel();
                 ReportOntologyLatticeStatus
-                        .showStatusAndHighlightCounterExample(ontologyModel,
-                                _controller);
+                .showStatusAndHighlightCounterExample(ontologyModel,
+                        _controller);
             } else if (actionCommand.equals(CLEAR_LATTICE_ERRORS)) {
                 _controller.clearAllErrorHighlights();
             }

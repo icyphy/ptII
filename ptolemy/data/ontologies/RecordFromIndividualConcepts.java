@@ -52,7 +52,7 @@ public class RecordFromIndividualConcepts extends ConceptFunction {
      */
     public RecordFromIndividualConcepts(String name,
             SortedSet<String> fieldLabels, Ontology ontology)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(name, fieldLabels.size(), ontology);
         _fieldLabels = new TreeSet<String>(fieldLabels);
     }

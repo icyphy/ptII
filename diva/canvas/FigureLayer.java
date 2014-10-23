@@ -54,7 +54,7 @@ import diva.util.Filter;
  * @Pt.AcceptedRating Yellow
  */
 public class FigureLayer extends CanvasLayer implements FigureContainer,
-        EventAcceptor {
+EventAcceptor {
     /** The figures contained in this layer.
      */
     private ZList _zlist = null;
@@ -742,11 +742,11 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
             _pointerGrabber = null;
             break;
 
-        // Process a click event only. This code ignores the
-        // grab, as it should have already been cleared by a
-        // preceding MOUSE_RELEASED event. I'm not entirely
-        // sure if this is actually correct or not.
-        //
+            // Process a click event only. This code ignores the
+            // grab, as it should have already been cleared by a
+            // preceding MOUSE_RELEASED event. I'm not entirely
+            // sure if this is actually correct or not.
+            //
         case MouseEvent.MOUSE_CLICKED:
 
             // Get the figure that the mouse hit, if any

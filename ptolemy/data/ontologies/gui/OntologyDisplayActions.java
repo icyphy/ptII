@@ -94,7 +94,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     /** The controller that adds commands to the context menu.
      */
     protected static class HighlighterController extends
-            MoMLModelAttributeController {
+    MoMLModelAttributeController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.

@@ -211,7 +211,7 @@ public class ChicController extends AttributeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                .error("Cannot look inside without a configuration.");
                 return;
             }
 

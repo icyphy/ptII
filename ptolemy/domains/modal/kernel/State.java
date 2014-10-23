@@ -94,7 +94,7 @@ import ptolemy.moml.MoMLParser;
  @see FSMDirector
  */
 public class State extends ComponentEntity implements ConfigurableEntity,
-        DropTargetHandler, Flowable {
+DropTargetHandler, Flowable {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -257,7 +257,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                     if (((FSMActor) container)._initialState != null
                             && ((FSMActor) container)._initialState != this) {
                         ((FSMActor) container)._initialState.isInitialState
-                                .setToken("false");
+                        .setToken("false");
                     }
                     ((FSMActor) container)._initialState = this;
                     // If the initial state name of the container is set,
@@ -266,7 +266,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                             .getExpression();
                     if (!name.equals("")) {
                         ((FSMActor) container).initialStateName
-                                .setExpression("");
+                        .setExpression("");
                     }
                 }
             }
@@ -670,7 +670,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         CompositeEntity modalModel = (CompositeEntity) container.getContainer();
         boolean isModalModelInvisible = modalModel != null
                 && !modalModel.attributeList(InvisibleModalModel.class)
-                        .isEmpty();
+                .isEmpty();
         if (!(modalModel instanceof TypedCompositeActor)
                 || isModalModelInvisible) {
             if (modalModel == null || isModalModelInvisible) {

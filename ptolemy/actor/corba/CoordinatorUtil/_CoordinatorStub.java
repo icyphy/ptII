@@ -10,14 +10,14 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a coordinator.
  */
 public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.CoordinatorUtil.Coordinator {
+implements ptolemy.actor.corba.CoordinatorUtil.Coordinator {
     /* this method is intended to be called remotely by the client
      * to register with the coordinator.
      */
     @Override
     public void register(String clientName,
             ptolemy.actor.corba.CoordinatorUtil.Client clientRef)
-            throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
+                    throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream $in = null;
 
         try {
@@ -35,7 +35,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -67,7 +67,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -99,7 +99,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }

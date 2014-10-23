@@ -129,7 +129,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         } else if (_currentlyProcessingAnnotation) {
             if (attributeName.equals("class")
                     && attributeValue
-                            .equals("ptolemy.vergil.kernel.attributes.TextAttribute")
+                    .equals("ptolemy.vergil.kernel.attributes.TextAttribute")
                     && container.getFullName().equals(
                             _currentAnnotationContainerFullName)) {
                 // We have an annotation, but it is a TextAttribute, so we are done.
@@ -236,20 +236,20 @@ public class UpdateAnnotations extends MoMLFilterSimple {
             if (charData.contains(" fill:")) {
                 if (charData.contains(" fill:black")) {
                     _textAttribute.textColor
-                            .setExpression("{0.0, 0.0, 0.0, 1.0}");
+                    .setExpression("{0.0, 0.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:darkgray")
                         || charData.contains(" fill:gray")) {
                     _textAttribute.textColor
-                            .setExpression("{0.2, 0.2, 0.2, 1.0}");
+                    .setExpression("{0.2, 0.2, 0.2, 1.0}");
                 }
                 if (charData.contains(" fill:green")) {
                     _textAttribute.textColor
-                            .setExpression("{0.0, 1.0, 0.0, 1.0}");
+                    .setExpression("{0.0, 1.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:red")) {
                     _textAttribute.textColor
-                            .setExpression("{1.0, 0.0, 0.0, 1.0}");
+                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
                 }
             }
 

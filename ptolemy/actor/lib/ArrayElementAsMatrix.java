@@ -86,14 +86,14 @@ public class ArrayElementAsMatrix extends Transformer {
         xOffset.setExpression("1");
         new Parameter(xOffset.getPort(), "_showName", BooleanToken.TRUE);
         new StringAttribute(xOffset.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         yOffset = new PortParameter(this, "yOffset");
         yOffset.setTypeEquals(BaseType.INT);
         yOffset.setExpression("1");
         new Parameter(yOffset.getPort(), "_showName", BooleanToken.TRUE);
         new StringAttribute(yOffset.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         x = new PortParameter(this, "x");
         x.setTypeEquals(BaseType.INT);
@@ -188,7 +188,7 @@ public class ArrayElementAsMatrix extends Transformer {
                     || xValue < 0
                     || yValue < 0
                     || xValue * xOffsetValue + yValue * yOffsetValue >= token
-                            .length()) {
+                    .length()) {
                 throw new IllegalActionException(this, "xValue (" + xValue
                         + ") * xOffsetValue *(" + xOffsetValue
                         + " ) + yValue (" + yValue + ") * yOffsetValue ("

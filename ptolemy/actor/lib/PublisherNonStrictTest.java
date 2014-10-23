@@ -310,8 +310,8 @@ public class PublisherNonStrictTest extends Publisher {
                         && !referenceToken.isNil()
                         && !NonStrictTest._isCloseToIfNilArrayElement(token,
                                 referenceToken, _tolerance)
-                        && !NonStrictTest._isCloseToIfNilRecordElement(token,
-                                referenceToken, _tolerance)) {
+                                && !NonStrictTest._isCloseToIfNilRecordElement(token,
+                                        referenceToken, _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
                                     + "Value was: " + token
@@ -489,15 +489,15 @@ public class PublisherNonStrictTest extends Publisher {
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
                     System.out
-                            .println("PublisherNonStrictTest: "
-                                    + getFullName()
-                                    + ": exponent of "
-                                    + newValue
-                                    + " is "
-                                    + log
-                                    + ", which cannot be compared with the previous tolerance."
-                                    + " The new tolerance is "
-                                    + tolerance.getExpression() + ".");
+                    .println("PublisherNonStrictTest: "
+                            + getFullName()
+                            + ": exponent of "
+                            + newValue
+                            + " is "
+                            + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is "
+                            + tolerance.getExpression() + ".");
                 }
             }
         }

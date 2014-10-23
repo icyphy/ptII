@@ -99,7 +99,7 @@ public class AttributeController extends IconController {
             Action[] appearanceActions = {
                     new MoveAction(_moveToFirstDescription(),
                             MoveAction.TO_FIRST),
-                    new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
+                            new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);

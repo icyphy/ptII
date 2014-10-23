@@ -63,7 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
 @Pt.AcceptedRating Red (cshelton)
  */
 public class SIDerivedDimensionRepresentativeConcept extends
-        DerivedDimensionRepresentativeConcept {
+DerivedDimensionRepresentativeConcept {
 
     /** Create a new SIDerivedUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -130,7 +130,7 @@ public class SIDerivedDimensionRepresentativeConcept extends
         // unitFullName parameter.
         if ((attribute.equals(useAbbreviation)
                 || attribute.equals(unitFullName) || attribute
-                    .equals(baseUnitRecord))
+                .equals(baseUnitRecord))
                 && !useUnitAbbreviation
                 && baseUnitRecordToken != null) {
 
@@ -142,7 +142,7 @@ public class SIDerivedDimensionRepresentativeConcept extends
             // unitAbbreviation parameter.
         } else if ((attribute.equals(useAbbreviation)
                 || attribute.equals(unitAbbreviation) || attribute
-                    .equals(baseUnitRecord))
+                .equals(baseUnitRecord))
                 && useUnitAbbreviation
                 && baseUnitRecordToken != null) {
 

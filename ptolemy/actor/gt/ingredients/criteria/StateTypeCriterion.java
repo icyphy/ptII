@@ -255,8 +255,8 @@ public class StateTypeCriterion extends Criterion {
     /** The elements.
      */
     private static final CriterionElement[] _ELEMENTS = {
-            new BooleanCriterionElement("isInit", true),
-            new BooleanCriterionElement("isFinal", true) };
+        new BooleanCriterionElement("isInit", true),
+        new BooleanCriterionElement("isFinal", true) };
 
     /** Value of the isFinal element.
      */

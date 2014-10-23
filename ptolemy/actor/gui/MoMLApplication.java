@@ -96,7 +96,7 @@ public class MoMLApplication extends ConfigurationApplication {
      */
     public MoMLApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-            throws Exception {
+                    throws Exception {
         super(basePath, args, messageHandler, errorHandler);
     }
 

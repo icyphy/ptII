@@ -194,9 +194,9 @@ public class PtolemyFormEditor extends JPanel {
         rowSpanLabel.setDisplayedMnemonic(KeyEvent.VK_R);
 
         _columnInsertAfterButton
-                .setToolTipText("Insert a column after this column");
+        .setToolTipText("Insert a column after this column");
         _columnInsertBeforeButton
-                .setToolTipText("Insert a column before this column");
+        .setToolTipText("Insert a column before this column");
         _columnDeleteButton.setToolTipText("Delete this column");
         _rowInsertBeforeButton.setToolTipText("Insert a row before this row");
         _rowInsertAfterButton.setToolTipText("Insert a row after this row");
@@ -605,7 +605,7 @@ public class PtolemyFormEditor extends JPanel {
         // we don't want to update the selection interval if nothing changed...
         _table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
         _table.getColumnModel().getSelectionModel()
-                .setSelectionInterval(columnIndex, columnIndex);
+        .setSelectionInterval(columnIndex, columnIndex);
 
         if (forceVisible) {
             // let's make sure the cell is in the visible range...
@@ -695,7 +695,7 @@ public class PtolemyFormEditor extends JPanel {
                     CellConstraints constraints = _getComponentConstraints(component);
                     Insets insets = new Insets(constraints.insets.top,
                             constraints.insets.left, _bottomInsetSpinnerModel
-                                    .getNumber().intValue(),
+                            .getNumber().intValue(),
                             constraints.insets.right);
                     constraints.insets = insets;
                     updateLayout(component);
@@ -765,8 +765,8 @@ public class PtolemyFormEditor extends JPanel {
             }
             Integer next = constraints.gridX + constraints.gridWidth - 1 < _containerLayout
                     .getColumnCount() ? Integer
-                    .valueOf(constraints.gridWidth + 1) : null;
-            return next;
+                            .valueOf(constraints.gridWidth + 1) : null;
+                            return next;
         }
 
         @Override
@@ -776,7 +776,7 @@ public class PtolemyFormEditor extends JPanel {
             } else {
                 Integer previous = constraints.gridWidth > 1 ? Integer
                         .valueOf(constraints.gridWidth - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
@@ -859,7 +859,7 @@ public class PtolemyFormEditor extends JPanel {
 
     /** Renderer for the palette items. */
     private static class ComponentPaletteListRenderer extends JLabel implements
-            ListCellRenderer {
+    ListCellRenderer {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -1061,10 +1061,10 @@ public class PtolemyFormEditor extends JPanel {
                     }
                     if (columnIndex >= constraints.gridX
                             && columnIndex < constraints.gridX
-                                    + constraints.gridWidth
+                            + constraints.gridWidth
                             && rowIndex >= constraints.gridY
                             && rowIndex < constraints.gridY
-                                    + constraints.gridHeight) {
+                            + constraints.gridHeight) {
                         component = thisComponent;
                         if (component == topComponent) {
                             break;
@@ -1243,8 +1243,8 @@ public class PtolemyFormEditor extends JPanel {
             } else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < _containerLayout
                         .getRowCount() ? Integer
-                        .valueOf(constraints.gridHeight + 1) : null;
-                return next;
+                                .valueOf(constraints.gridHeight + 1) : null;
+                                return next;
             }
         }
 
@@ -1255,7 +1255,7 @@ public class PtolemyFormEditor extends JPanel {
             } else {
                 Integer previous = constraints.gridHeight > 1 ? Integer
                         .valueOf(constraints.gridHeight - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 

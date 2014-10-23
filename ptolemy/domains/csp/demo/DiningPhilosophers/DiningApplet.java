@@ -71,7 +71,7 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 @SuppressWarnings("serial")
 public class DiningApplet extends Applet implements Runnable,
-        PhilosopherListener {
+PhilosopherListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

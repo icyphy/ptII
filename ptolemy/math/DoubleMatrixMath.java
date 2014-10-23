@@ -1149,7 +1149,7 @@ public class DoubleMatrixMath {
      */
     protected static final void _checkSameDimension(final String caller,
             final double[][] matrix1, final double[][] matrix2)
-            throws IllegalArgumentException {
+                    throws IllegalArgumentException {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 

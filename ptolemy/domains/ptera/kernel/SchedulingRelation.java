@@ -288,8 +288,8 @@ public class SchedulingRelation extends Transition {
             boolean emptyArguments = trimmedArguments.startsWith("{")
                     && trimmedArguments.endsWith("}")
                     && trimmedArguments
-                            .substring(1, trimmedArguments.length() - 1).trim()
-                            .equals("");
+                    .substring(1, trimmedArguments.length() - 1).trim()
+                    .equals("");
             if (!emptyArguments) {
                 if (buffer.length() > 0) {
                     buffer.append("\n");
@@ -463,7 +463,7 @@ public class SchedulingRelation extends Transition {
 
     /** An array of all recognizable constant values that equal to 0.0d. */
     private static final String[] _ZERO_CONSTS = new String[] { "0", "0.0",
-            "0l", "0s", "0ub", "0.0d", "0.0f" };
+        "0l", "0s", "0ub", "0.0d", "0.0f" };
 
     /** The parse tree of arguments. */
     private ASTPtRootNode _argumentsTree;

@@ -112,7 +112,7 @@ public class TclTests {
                 Integer completionCode = (Integer) _getCompletionCodeMethod
                         .invoke(throwable.getCause(), new Object[] {});
                 if (completionCode.intValue() == 1 /** TCL.ERROR */
-                ) {
+                        ) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
@@ -120,7 +120,7 @@ public class TclTests {
                     // about what went wrong.
                     Object errorInfoTclObject = _getVarMethod.invoke(_interp,
                             new Object[] { "errorInfo", null, 1 /*TCL.GLOBAL_ONLY*/
-                            });
+                    });
                     throw new Exception(
                             "Evaluating the Tcl method \"doneTests\" "
                                     + "resulted in a TclException being thrown.\nThe Tcl "
@@ -236,7 +236,7 @@ public class TclTests {
                 Integer completionCode = (Integer) _getCompletionCodeMethod
                         .invoke(throwable.getCause(), new Object[] {});
                 if (completionCode.intValue() == 1 /** TCL.ERROR */
-                ) {
+                        ) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
@@ -246,7 +246,7 @@ public class TclTests {
                     try {
                         errorInfoTclObject = _getVarMethod.invoke(_interp,
                                 new Object[] { "errorInfo", null, 1 /*TCL.GLOBAL_ONLY*/
-                                });
+                        });
                         throw new Exception(
                                 "Evaluating the Tcl file \""
                                         + tclFile
@@ -270,7 +270,7 @@ public class TclTests {
         // We check for non-zero results for *each* .tcl file.
         Object newFailedCountTclObject = _getVarMethod.invoke(_interp,
                 new Object[] { "FAILED", null, 1 /*TCL.GLOBAL_ONLY*/
-                });
+        });
         int newFailed = Integer.parseInt(newFailedCountTclObject.toString());
         int lastFailed = Integer.parseInt(_failedTestCount.toString());
 

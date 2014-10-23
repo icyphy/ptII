@@ -114,7 +114,7 @@ public class Multiplexor extends SynchronousFixTransformer {
 
             Precision outputPrecision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
 
             FixToken tokenA = null;
             FixToken tokenB = null;

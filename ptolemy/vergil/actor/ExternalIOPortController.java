@@ -139,30 +139,30 @@ public class ExternalIOPortController extends AttributeController {
 
     /** Polygon coordinates for input output port. */
     public static Integer[] IOPORT_COORDINATES = new Integer[] { 0, 4, 0, 9, 6,
-            4, 12, 4, 12, -4, 6, -4, 0, -9, 0, -4, -8, -4 };
+        4, 12, 4, 12, -4, 6, -4, 0, -9, 0, -4, -8, -4 };
 
     /** Polygon coordinates for input port. */
     public static Integer[] IPORT_COORDINATES = new Integer[] { 0, 4, 0, 9, 12,
-            0, 0, -9, 0, -4, -8, -4 };
+        0, 0, -9, 0, -4, -8, -4 };
 
     /** Polygon coordinates for output port. */
     public static Integer[] OPORT_COORDINATES = new Integer[] { -8, 9, -2, 4,
-            12, 4, 12, -4, -2, -4, -8, -9 };
+        12, 4, 12, -4, -2, -4, -8, -9 };
 
     /** Polygon coordinates for input output multiport. */
     public static Integer[] MULTI_IPORT_COORDINATES = new Integer[] { -5, 4,
-            -5, 9, 1, 4, 1, 9, 7, 4, 12, 0, 7, -4, 1, -9, 1, -4, -5, -9, -5,
-            -4, -8, -4 };
+        -5, 9, 1, 4, 1, 9, 7, 4, 12, 0, 7, -4, 1, -9, 1, -4, -5, -9, -5,
+        -4, -8, -4 };
 
     /** Polygon coordinates for output multiport. */
     public static Integer[] MULTI_OPORT_COORDINATES = new Integer[] { -8, 4,
-            -8, 9, -2, 4, -2, 9, 4, 4, 12, 4, 12, -4, 4, -4, -2, -9, -2, -4,
-            -8, -9 };
+        -8, 9, -2, 4, -2, 9, 4, 4, 12, 4, 12, -4, 4, -4, -2, -9, -2, -4,
+        -8, -9 };
 
     /** Polygon coordinates for input multiport. */
     public static Integer[] MULTI_IOPORT_COORDINATES = new Integer[] { -4, 4,
-            -4, 9, 2, 4, 2, 9, 8, 4, 12, 4, 12, -4, 8, -4, 2, -9, 2, -4, -4,
-            -9, -4, -4, -8, -4 };
+        -4, 9, 2, 4, 2, 9, 8, 4, 12, 4, 12, -4, 8, -4, 2, -9, 2, -4, -4,
+        -9, -4, -4, -8, -4 };
 
     // Static initializer.
     static {
@@ -241,7 +241,7 @@ public class ExternalIOPortController extends AttributeController {
                                             .size() * 40;
                                     location[1] = 380.0;
                                     _inoutputPortLocations
-                                            .put(ioPort, location);
+                                    .put(ioPort, location);
                                 }
                             } else if (ioPort.isInput()) {
                                 double[] newLocation = _inputPortLocations

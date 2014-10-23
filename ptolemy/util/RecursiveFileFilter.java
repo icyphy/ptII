@@ -288,7 +288,8 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  @param name The name to check.
      *  @param file The file to be added if there is a match.
      */
-    private boolean _match(boolean isDirectory, boolean isFile, String name, File file) {
+    private boolean _match(boolean isDirectory, boolean isFile, String name,
+            File file) {
         if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles) || (isDirectory && _includeDirectories)))
                 || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.

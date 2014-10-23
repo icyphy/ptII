@@ -96,7 +96,7 @@ public class VisualSequenceDirector extends SequenceDirector {
 
         scheduleText = new Parameter(this, "scheduleText");
         scheduleText
-                .setExpression("{{actor=\"(double-click to\n edit schedule)\",sequenceNumber=\"\"}}");
+        .setExpression("{{actor=\"(double-click to\n edit schedule)\",sequenceNumber=\"\"}}");
 
         // The following attribute provides a custom icon that
         // displays the current schedule information.

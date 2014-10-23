@@ -341,15 +341,15 @@ public class AttributeOperation extends Operation {
      */
     protected void _reparse() throws IllegalActionException {
         _valueParseTree = new PtParser()
-                .generateStringParseTree(_attributeValue.get());
+        .generateStringParseTree(_attributeValue.get());
     }
 
     /** The elements.
      */
     private static final OperationElement[] _ELEMENTS = {
-            new StringOperationElement("name", false, false),
-            new StringOperationElement("type", true, false),
-            new StringOperationElement("value", false, true) };
+        new StringOperationElement("name", false, false),
+        new StringOperationElement("type", true, false),
+        new StringOperationElement("value", false, true) };
 
     /** Value of the attributeClass element.
      */

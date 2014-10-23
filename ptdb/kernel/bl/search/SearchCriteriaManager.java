@@ -166,8 +166,8 @@ public class SearchCriteriaManager {
 
                             StringParameter attribute = new StringParameter(
                                     new NamedObj(), attributeInfoMap
-                                            .getNamedItem("name")
-                                            .getNodeValue());
+                                    .getNamedItem("name")
+                                    .getNodeValue());
 
                             attribute.setToken(attributeInfoMap.getNamedItem(
                                     "value").getNodeValue());

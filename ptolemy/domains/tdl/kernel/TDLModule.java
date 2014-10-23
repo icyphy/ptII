@@ -73,7 +73,7 @@ public class TDLModule extends ModalModel {
      *                specified name.
      */
     public TDLModule(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -305,11 +305,11 @@ public class TDLModule extends ModalModel {
      * Initialize the model.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         setClassName("ptolemy.domains.tdl.kernel.TDLModule");
         directorClass
-                .setExpression("ptolemy.domains.tdl.kernel.TDLModuleDirector");
+        .setExpression("ptolemy.domains.tdl.kernel.TDLModuleDirector");
         _controller.removeAllEntities();
         _controller.removeAllPorts();
         _controller.removeAllRelations();
@@ -326,7 +326,7 @@ public class TDLModule extends ModalModel {
         _controller = new TDLController(this, "_Controller");
 
         _controller.stateDependentCausality
-                .setExpression("stateDependentCausality");
+        .setExpression("stateDependentCausality");
 
     }
 

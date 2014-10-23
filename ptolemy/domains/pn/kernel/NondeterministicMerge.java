@@ -243,7 +243,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
     /** Construct a NondeterministicMerge. */
     private void _constructor() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -348,8 +348,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
                         && input.hasToken(_channelIndex)) {
                     if (_debugging) {
                         NondeterministicMerge.this
-                                ._debug("Waiting for input from channel "
-                                        + _channelIndex);
+                        ._debug("Waiting for input from channel "
+                                + _channelIndex);
                     }
 
                     // NOTE: Writing to the port of the host actor.

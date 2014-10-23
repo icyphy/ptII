@@ -48,7 +48,7 @@ import java.util.List;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public abstract class AbstractSettableAttribute extends Attribute implements
-        Settable {
+Settable {
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.

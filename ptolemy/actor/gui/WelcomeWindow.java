@@ -193,7 +193,7 @@ public class WelcomeWindow extends HTMLViewer {
                 && !_startupCheck.isSelected()
                 || _showWelcomeWindowAtStartup != null
                 && _showWelcomeWindowAtStartup.booleanValue() != _startupCheck
-                        .isSelected()) {
+                .isSelected()) {
             // Update the preferences if there is no preference and
             // the user unchecked the "Show this dialog on startup"
             // or if the value of the preference and the checkbox differ.

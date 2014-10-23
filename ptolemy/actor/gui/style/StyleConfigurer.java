@@ -152,7 +152,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                         && _parameterStyles[i] != null; i++) {
                     if (foundOne
                             && _parameterStyles[i].getClass() == foundStyle
-                                    .getClass()) {
+                            .getClass()) {
                         defaultIndex = count;
 
                         if (foundStyle.acceptable(param)) {

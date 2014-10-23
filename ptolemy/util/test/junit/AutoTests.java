@@ -110,8 +110,9 @@ public class AutoTests extends ModelTests {
 
             System.out.println("----------------- testing again " + fullPath);
             System.out.flush();
-            Method rerunMethod = _applicationClass.getMethod("rerun", (Class<?>[])null);
-            rerunMethod.invoke(instance, (Object[])null);
+            Method rerunMethod = _applicationClass.getMethod("rerun",
+                    (Class<?>[]) null);
+            rerunMethod.invoke(instance, (Object[]) null);
         } else {
             System.err.println("----------------- *** Skipping testing of "
                     + fullPath);
@@ -131,7 +132,7 @@ public class AutoTests extends ModelTests {
                 && !StringUtilities.getProperty(
                         "net.sourceforge.cobertura.datafile").equals("")) {
             System.err
-                    .println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
+            .println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
             return false;
         }
         return true;

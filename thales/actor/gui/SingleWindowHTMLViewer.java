@@ -73,7 +73,7 @@ import thales.vergil.navigable.NavigationPTree;
  */
 @SuppressWarnings("serial")
 public class SingleWindowHTMLViewer extends HTMLViewer implements
-        ChangeListener {
+ChangeListener {
     /**
      * Main panel
      */

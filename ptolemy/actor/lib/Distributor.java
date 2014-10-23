@@ -149,7 +149,7 @@ public class Distributor extends Transformer implements SequenceActor {
         newObject.input_tokenConsumptionRate = (Parameter) newObject.input
                 .getAttribute("tokenConsumptionRate");
         ((WidthDependentParameter) newObject.input_tokenConsumptionRate)
-                .setPort(newObject.output);
+        .setPort(newObject.output);
         return newObject;
     }
 

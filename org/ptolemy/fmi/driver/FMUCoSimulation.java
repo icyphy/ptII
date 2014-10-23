@@ -151,7 +151,7 @@ public class FMUCoSimulation extends FMUDriver {
     @Override
     public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName)
-            throws Exception {
+                    throws Exception {
 
         // Avoid a warning from FindBugs.
         _setEnableLogging(enableLogging);
@@ -200,8 +200,8 @@ public class FMUCoSimulation extends FMUDriver {
             System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
             fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                     new Object[] { _modelIdentifier, fmiModelDescription.guid,
-                fmuLocation, mimeType, timeout, visible,
-                interactive, callbacks, loggingOn });
+                            fmuLocation, mimeType, timeout, visible,
+                            interactive, callbacks, loggingOn });
 
         } else {
             // FMI 1.5 and greater
@@ -226,9 +226,9 @@ public class FMUCoSimulation extends FMUDriver {
             }
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
-                        fmiModelDescription.guid,
-                        fmiModelDescription.fmuResourceLocation, callbacks,
-                        toBeVisible, loggingOn });
+                            fmiModelDescription.guid,
+                            fmiModelDescription.fmuResourceLocation, callbacks,
+                            toBeVisible, loggingOn });
         }
 
         if (fmiComponent.equals(Pointer.NULL)) {
@@ -294,7 +294,7 @@ public class FMUCoSimulation extends FMUDriver {
                 }
                 invoke(doStep, new Object[] { fmiComponent, time, stepSize,
                         (byte) 1 }, "doStep(): Could not simulate, time was "
-                                + time + ": ");
+                        + time + ": ");
                 time += stepSize;
                 // Generate a line for this step
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,

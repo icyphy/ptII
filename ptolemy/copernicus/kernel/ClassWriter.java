@@ -148,10 +148,10 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
         try {
             File tempFile = new File(outputDirWithSep
                     + cl.getName()
-                            .replace(
-                                    '.',
-                                    System.getProperty("file.separator")
-                                            .toCharArray()[0]) + ".class");
+                    .replace(
+                            '.',
+                            System.getProperty("file.separator")
+                            .toCharArray()[0]) + ".class");
 
             _create(tempFile.getAbsoluteFile());
 

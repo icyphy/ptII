@@ -76,7 +76,7 @@ import diva.graph.JGraph;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ModelDisplay extends AbstractPlaceableActor implements
-        ChangeListener {
+ChangeListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

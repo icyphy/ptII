@@ -113,7 +113,7 @@ public class ArrayContains extends TypedAtomicActor {
         ArrayContains newObject = (ArrayContains) super.clone(workspace);
         try {
             newObject.array
-                    .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
+            .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Clone failed: " + e);
         }

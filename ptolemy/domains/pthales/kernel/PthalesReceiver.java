@@ -71,7 +71,7 @@ public class PthalesReceiver extends SDFReceiver {
     public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
             LinkedHashMap<String, Integer[]> tilingSpec, List<String> dimensions)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         /* FIXME: Checks for validity of array needed here.
          */
@@ -303,7 +303,7 @@ public class PthalesReceiver extends SDFReceiver {
                         }
                         if (_buffer == null || _buffer.length < finalSize) {
                             _buffer = new Token[finalSize
-                                    * ((IntToken) _header.get(1)).intValue()];
+                                                * ((IntToken) _header.get(1)).intValue()];
                         }
 
                         // Address jump for each dimension, determined by output port only
@@ -483,7 +483,7 @@ public class PthalesReceiver extends SDFReceiver {
         int finalSize = PthalesIOPort.getArraySize(port);
         if (_buffer == null || _buffer.length < finalSize) {
             _buffer = new Token[finalSize
-                    * PthalesIOPort.getNbTokenPerData(port)];
+                                * PthalesIOPort.getNbTokenPerData(port)];
         }
 
         // Computed for output ports only

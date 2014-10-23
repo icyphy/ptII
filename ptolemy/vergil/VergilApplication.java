@@ -213,10 +213,10 @@ public class VergilApplication extends MoMLApplication {
                 if (!_printedSecurityExceptionMessage) {
                     _printedSecurityExceptionMessage = true;
                     System.out
-                            .println("Warning: Mac OS X: Failed to set the \""
-                                    + aboutNameProperty
-                                    + "\" property. "
-                                    + "(applets and -sandbox always causes this)");
+                    .println("Warning: Mac OS X: Failed to set the \""
+                            + aboutNameProperty
+                            + "\" property. "
+                            + "(applets and -sandbox always causes this)");
                 }
             }
             // Uncomment the next line to use the screen menu bar instead of a per-window
@@ -379,7 +379,7 @@ public class VergilApplication extends MoMLApplication {
                         Parameter.class);
         if (applicationBlankPtolemyEffigyAtStartup != null
                 && applicationBlankPtolemyEffigyAtStartup.getExpression()
-                        .equals("true")) {
+                .equals("true")) {
 
             EffigyFactory factory = null;
 
@@ -519,7 +519,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = { { "-configuration",
-            "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
+    "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

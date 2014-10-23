@@ -720,7 +720,7 @@ public class Precision implements Cloneable {
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getIntegerBitLength() + "."
-                    + p.getFractionBitLength() + ")";
+            + p.getFractionBitLength() + ")";
         }
     }
 
@@ -808,13 +808,13 @@ public class Precision implements Cloneable {
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getNumberOfBits() + "/"
-                    + p.getIntegerBitLength() + ")";
+            + p.getIntegerBitLength() + ")";
         }
     }
 
     /** Precision format for use with the Expression Language. */
     public static class ExpressionLanguagePrecisionFormat extends
-            LengthIntegerPrecisionFormat {
+    LengthIntegerPrecisionFormat {
         /** Regular expression for ExpressionLanguagePrecisionFormat.
          *  For example: (3,2).
          */
@@ -981,7 +981,7 @@ public class Precision implements Cloneable {
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getMostSignificantBitPosition() + ":"
-                    + p.getLeastSignificantBitPosition() + ")";
+            + p.getLeastSignificantBitPosition() + ")";
         }
     }
 

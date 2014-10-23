@@ -511,10 +511,10 @@ public class PthalesDirector extends SDFDirector {
                                                             for (Receiver receiver : receiverss) {
                                                                 if (receiver instanceof PthalesReceiver) {
                                                                     ((PthalesReceiver) receiver)
-                                                                            .setExternalBuffer(
-                                                                                    compositeActor,
-                                                                                    externalPort,
-                                                                                    buffer);
+                                                                    .setExternalBuffer(
+                                                                            compositeActor,
+                                                                            externalPort,
+                                                                            buffer);
                                                                 }
                                                             }
                                                         }

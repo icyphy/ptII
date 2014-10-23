@@ -82,7 +82,7 @@ public class BasicJApplet extends JApplet {
     @Override
     public String[][] getParameterInfo() {
         String[][] pinfo = { { "background", "#RRGGBB",
-                "color of the background" }, };
+        "color of the background" }, };
         return pinfo;
     }
 

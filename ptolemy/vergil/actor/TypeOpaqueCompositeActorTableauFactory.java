@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  * @see ptolemy.vergil.actor.ActorGraphTableau.Factory
  */
 public class TypeOpaqueCompositeActorTableauFactory extends
-        ActorGraphTableau.Factory {
+ActorGraphTableau.Factory {
     /** Create an factory with the given name and container.
      *  @param container The container.
      *  @param name The name.

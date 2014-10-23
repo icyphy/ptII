@@ -65,7 +65,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      * @exception NameDuplicationException
      */
     public MetroIIFSMDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -103,7 +103,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });

@@ -145,7 +145,7 @@ public class GuardCriterion extends Criterion {
                 } catch (Exception e) {
                     throw new InternalErrorException(
                             "Failed to set container of " + guardVariable
-                                    + " to null");
+                            + " to null");
                 }
             }
         }

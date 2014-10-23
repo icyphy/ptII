@@ -428,7 +428,7 @@ public class ContainerLayout implements LayoutManager2 {
                                 Method writeMethod = propertyDescriptor
                                         .getWriteMethod();
                                 writeMethod
-                                        .invoke(comp, new Object[] { value });
+                                .invoke(comp, new Object[] { value });
                                 break;
                             }
                         }

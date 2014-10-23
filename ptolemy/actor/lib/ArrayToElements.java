@@ -160,8 +160,8 @@ public class ArrayToElements extends Transformer {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(new ArrayOfTypesFunction(output),
-                    input.getTypeTerm()));
+            result.add(new Inequality(new ArrayOfTypesFunction(output), input
+                    .getTypeTerm()));
         }
         return result;
     }

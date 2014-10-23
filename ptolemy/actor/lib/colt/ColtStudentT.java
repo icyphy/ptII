@@ -76,7 +76,7 @@ public class ColtStudentT extends ColtRandomSource {
         freedom = new PortParameter(this, "freedom", new DoubleToken(1.0));
         freedom.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(freedom.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         freedom.moveToFirst();
     }

@@ -36,8 +36,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.AcceptedRating Red (mankit)
  */
 public class DownSample
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.DownSample {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.DownSample {
 
     /**
      * Construct a DownSample adapter.

@@ -385,7 +385,7 @@ public class Dataflow extends AbstractDDI {
         }
 
         _currentTransitions = (Transition[]) nt.toArray(new Transition[nt
-                .size()]);
+                                                                       .size()]);
     }
 
     private static boolean isPrefixedByTagList(QID tag, QID[] tags) {

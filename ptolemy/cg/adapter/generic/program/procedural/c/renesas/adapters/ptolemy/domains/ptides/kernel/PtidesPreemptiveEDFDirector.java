@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating red (derler)
  */
 public class PtidesPreemptiveEDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
@@ -81,7 +81,8 @@ public class PtidesPreemptiveEDFDirector
      *  @exception IllegalActionException If thrown by generateInterruptVectorTableCode().
      */
     @Override
-    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
+    public Map<String, String> generateAdditionalCodeFiles()
+            throws IllegalActionException {
         Map<String, String> list = new HashMap();
         list.put("InterruptVectorTable.c", generateInterruptVectorTableCode());
         return list;
@@ -370,11 +371,11 @@ public class PtidesPreemptiveEDFDirector
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                                    + " cannot be used.");
+                            + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor)
-                                + "_Handler");
+                        + "_Handler");
             }
 
             if (actor instanceof SensorHandler) {
@@ -385,7 +386,7 @@ public class PtidesPreemptiveEDFDirector
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                                    + " cannot be used.");
+                            + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor));
@@ -454,7 +455,7 @@ public class PtidesPreemptiveEDFDirector
         args.add(interruptPragmas.toString());
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream()
-                        .getCodeBlock("globalVars", args));
+                .getCodeBlock("globalVars", args));
 
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 

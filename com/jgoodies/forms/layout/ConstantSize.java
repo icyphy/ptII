@@ -98,7 +98,7 @@ public final class ConstantSize implements Size, Serializable {
      * deserialized units.
      */
     private static final Unit[] VALUES = { PIXEL, POINT, DIALOG_UNITS_X,
-            DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH };
+        DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH };
 
     // Fields ***************************************************************
 

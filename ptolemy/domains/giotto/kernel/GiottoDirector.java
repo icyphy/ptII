@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements
-        Decorator {
+Decorator {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -97,7 +97,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  an entity with the specified name.
      */
     public GiottoDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -132,7 +132,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  that duplicates an existing name during initialization.
      */
     public GiottoDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -787,7 +787,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
@@ -845,7 +845,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     if (_debugging) {
                         _debug(getName(),
                                 "transferring input from " + port.getName()
-                                        + " channel " + i);
+                                + " channel " + i);
                     }
 
                     for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -964,7 +964,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  container rejects the change.
      */
     private void _init() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         GiottoScheduler scheduler = new GiottoScheduler(workspace());
         setScheduler(scheduler);
 

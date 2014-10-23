@@ -78,25 +78,25 @@ public class ReportOntologyLatticeStatus {
 
             StringBuffer errorMessageBuffer = new StringBuffer();
             errorMessageBuffer
-                    .append("The ontology model graph is not a valid lattice.\n");
+            .append("The ontology model graph is not a valid lattice.\n");
 
             switch (exampleType) {
             case LEASTUPPER:
                 errorMessageBuffer
-                        .append("These concepts have no least upper bound: ");
+                .append("These concepts have no least upper bound: ");
                 break;
             case GREATESTLOWER:
                 errorMessageBuffer
-                        .append("These concepts have no greatest lower bound: ");
+                .append("These concepts have no greatest lower bound: ");
                 break;
             case GRAPHCYCLE:
                 errorMessageBuffer
-                        .append("There is a cycle involving the concept: ");
+                .append("There is a cycle involving the concept: ");
                 break;
             default:
                 errorMessageBuffer
-                        .append("unknown lattice counterexample type: "
-                                + exampleType + ": ");
+                .append("unknown lattice counterexample type: "
+                        + exampleType + ": ");
             }
 
             _highlightErrors(modelGraphController, errorMessageBuffer, concepts);
@@ -106,7 +106,7 @@ public class ReportOntologyLatticeStatus {
                             + "top of the lattice:\n"), invalidUnacceptables);
         } else {
             MessageHandler
-                    .message("The ontology model graph is a valid lattice.");
+            .message("The ontology model graph is a valid lattice.");
         }
     }
 

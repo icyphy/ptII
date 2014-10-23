@@ -130,12 +130,12 @@ public class FMUFile {
                 File canonicalFile2 = new File(library).getCanonicalFile();
                 if (canonicalFile2.exists()) {
                     System.out
-                            .println("Could not find "
-                                    + canonicalFile
-                                    + " but "
-                                    + canonicalFile2
-                                    + "exists.  "
-                                    + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
+                    .println("Could not find "
+                            + canonicalFile
+                            + " but "
+                            + canonicalFile2
+                            + "exists.  "
+                            + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
                     canonicalFile = canonicalFile2;
                 } else {
                     System.out.println(canonicalFile + " does not exist"
@@ -236,10 +236,10 @@ public class FMUFile {
 
         if (fmuResourceLocation.indexOf("%20") != -1) {
             System.out
-                    .println("FMUFile: The fmuResourceLocation \""
-                            + fmuResourceLocation
-                            + "\" contains one or more \"%20\"."
-                            + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
+            .println("FMUFile: The fmuResourceLocation \""
+                    + fmuResourceLocation
+                    + "\" contains one or more \"%20\"."
+                    + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
             fmuResourceLocation = fmuResourceLocation.replace("%20", " ");
         }
 
@@ -298,12 +298,12 @@ public class FMUFile {
             // was used by the Ptolemy project for experimenting with FMI 2.0beta.
             if (fmiVersion < 1.5
                     && fmiModelDescription.fmuResourceLocation
-                            .endsWith("resources")) {
+                    .endsWith("resources")) {
                 fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation
                         .substring(
                                 0,
                                 fmiModelDescription.fmuResourceLocation
-                                        .length() - "resources".length() - 1); // +1 is to get rid of the /
+                                .length() - "resources".length() - 1); // +1 is to get rid of the /
             }
         }
         if (root.hasAttribute("modelIdentifier")) {
@@ -381,7 +381,7 @@ public class FMUFile {
                     .getElementsByTagName("CoSimulation");
             if (implementation.getLength() > 1) {
                 System.out
-                        .println("Warning: FMU modelDescription provides more than one CoSimulation element");
+                .println("Warning: FMU modelDescription provides more than one CoSimulation element");
             }
             if (implementation.getLength() == 1) {
                 Element cosimulation = (Element) implementation.item(0);
@@ -398,7 +398,7 @@ public class FMUFile {
                             .getAttribute("modelIdentifier");
                 } else {
                     System.out
-                            .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
 
                 // FIXME: We should use the
@@ -426,7 +426,7 @@ public class FMUFile {
             implementation = document.getElementsByTagName("ModelExchange");
             if (implementation.getLength() > 1) {
                 System.out
-                        .println("Warning: FMU modelDescription provides more than one ModelExchange element");
+                .println("Warning: FMU modelDescription provides more than one ModelExchange element");
             }
             if (implementation.getLength() == 1) {
                 Element modelExchange = (Element) implementation.item(0);
@@ -443,7 +443,7 @@ public class FMUFile {
                             .getAttribute("modelIdentifier");
                 } else {
                     System.out
-                            .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
             }
         }

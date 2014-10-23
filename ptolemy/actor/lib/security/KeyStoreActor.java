@@ -512,7 +512,7 @@ public class KeyStoreActor extends TypedAtomicActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to get instance '" + keyStoreType
-                                + "'of keyStore");
+                        + "'of keyStore");
             }
         }
     }
@@ -565,8 +565,8 @@ public class KeyStoreActor extends TypedAtomicActor {
                                     .get("PTII")).stringValue()
                                     + "/"
                                     + keystoreFileName
-                                            .substring(classpathProperty
-                                                    .length());
+                                    .substring(classpathProperty
+                                            .length());
                         }
 
                         createKeystore(keystoreFileName);
@@ -613,9 +613,9 @@ public class KeyStoreActor extends TypedAtomicActor {
                 } catch (java.io.EOFException ex) {
                     throw new IllegalActionException(this, ex,
                             "Problem loading " + fileOrURLDescription()
-                                    + ", perhaps the file is of length 0? "
-                                    + "To create a sample file, try "
-                                    + "cd $PTII; make ptKeystore");
+                            + ", perhaps the file is of length 0? "
+                            + "To create a sample file, try "
+                            + "cd $PTII; make ptKeystore");
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
                             "Problem loading " + fileOrURLDescription());

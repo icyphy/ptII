@@ -84,7 +84,7 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
         } catch (NameDuplicationException ex) {
             // The constructor of actors throws this.
             System.err
-                    .println("According to open instance this should not be thrown.");
+            .println("According to open instance this should not be thrown.");
         } catch (IllegalActionException ex) {
             // The EDF construction might throw this.
             System.err.println("Could not open new window");
@@ -97,7 +97,7 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
 
     private static void _layoutMultiFrameSystem(
             TypedCompositeActor multiFrameSystem)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         int multiFrameTaskXPos = 0;
         int multiFrameTaskYPos = 100;
         int multiFrameTaskSpacing = 100;
@@ -108,8 +108,8 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
         for (MultiFrameTask multiFrameTask : multiFrameSystem
                 .entityList(MultiFrameTask.class)) {
             (new Location(multiFrameTask, "_location"))
-                    .setLocation(new double[] { multiFrameTaskXPos,
-                            multiFrameTaskYPos });
+            .setLocation(new double[] { multiFrameTaskXPos,
+                    multiFrameTaskYPos });
 
             TaskFrame initialFrame = null;
             int taskFrameXPos = 0;
@@ -129,8 +129,8 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
                                 .linkedRelationList().get(0), "_vertex");
                     }
                     (new Location(currentFrame, "_location"))
-                    .setLocation(new double[] { taskFrameXPos,
-                            taskFrameYPos });
+                            .setLocation(new double[] { taskFrameXPos,
+                                    taskFrameYPos });
                     currentFrame = currentFrame.getNextFrame();
                     taskFrameXPos += taskFrameSpacing;
                 } while (currentFrame != initialFrame && currentFrame != null);

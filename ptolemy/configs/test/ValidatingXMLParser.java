@@ -156,7 +156,7 @@ public class ValidatingXMLParser extends DefaultHandler {
     @Override
     public void endElement(String namespaceURI, String sName, // simple name
             String qName // qualified name
-    ) throws SAXException {
+            ) throws SAXException {
     }
 
     @Override

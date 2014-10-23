@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class InequalityConceptFunctionDefinition extends
-        BinaryOperationMonotonicFunctionDefinition {
+BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the InequalityConceptFunctionDefinition attribute
      *  with the given container and name.

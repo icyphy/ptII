@@ -60,7 +60,7 @@ public class GPInputHandler extends InputDevice {
      */
     public GPInputHandler(
             ptolemy.domains.ptides.lib.luminary.GPInputHandler actor)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(actor);
 
         Parameter pinParameter = actor.pin;
@@ -108,15 +108,15 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("stackedModelTagIndex++;" + _eol);
         _codeStream.append("if (stackedModelTagIndex > MAX_EVENTS) {" + _eol);
         _codeStream
-                .append("die(\"MAX_EVENTS too small for stackedModelTagIndex\");"
-                        + _eol);
+        .append("die(\"MAX_EVENTS too small for stackedModelTagIndex\");"
+                + _eol);
         _codeStream.append("}" + _eol);
         _codeStream
-                .append("executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;"
-                        + _eol);
+        .append("executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;"
+                + _eol);
         _codeStream
-                .append("executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;"
-                        + _eol);
+        .append("executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;"
+                + _eol);
         _codeStream.append("getRealTime(&currentModelTime);" + _eol);
         _codeStream.append("currentMicrostep = 0;" + _eol);
 
@@ -131,11 +131,11 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("addStack();" + _eol);
         _codeStream.append("} else {" + _eol);
         _codeStream
-                .append("currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;"
-                        + _eol);
+        .append("currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;"
+                + _eol);
         _codeStream
-                .append("currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;"
-                        + _eol);
+        .append("currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;"
+                + _eol);
         _codeStream.append("stackedModelTagIndex--;" + _eol);
         _codeStream.append("loadState();" + _eol);
         _codeStream.append("}" + _eol);

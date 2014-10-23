@@ -86,8 +86,8 @@ public class ProxySink extends ProxyActor {
      */
     public ProxySink(CompositeEntity container, ComponentEntity targetSink,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException {
         super(container, targetSink, replaceTargetEntity, portTypes);
     }
 
@@ -135,7 +135,7 @@ public class ProxySink extends ProxyActor {
             long waitTime = _MIN_WAIT;
             while (!_proxyModelInfrastructure.isStopped()
                     && _proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
-                            .getMaxlatency() || force) {
+                    .getMaxlatency() || force) {
                 force = false;
                 try {
                     wait(waitTime);

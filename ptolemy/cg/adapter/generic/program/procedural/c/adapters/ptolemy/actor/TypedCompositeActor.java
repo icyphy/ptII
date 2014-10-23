@@ -56,8 +56,8 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (wlc)
  */
 public class TypedCompositeActor
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
 
     /**
      * Constructor method for the CompositeActor adapter.
@@ -285,7 +285,7 @@ public class TypedCompositeActor
         ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
         directorAdapter.setupAdapter();
     }
 

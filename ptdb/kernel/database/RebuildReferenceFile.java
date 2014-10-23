@@ -93,8 +93,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @exception XMLDBModelParsingException If thrown while parsing a model.
      */
     public static void main(String[] args) throws IOException,
-            DBConnectionException, DBExecutionException,
-            XMLDBModelParsingException {
+    DBConnectionException, DBExecutionException,
+    XMLDBModelParsingException {
 
         System.out.println("This process will take some time to complete. "
                 + "Are you sure you want to continue?(Y/N)");
@@ -154,8 +154,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         }
 
         referenceBuilder.append("<entity DBModelId=\"").append(modelId)
-                .append("\" name=\"").append(modelName).append("\" >")
-                .append("\n");
+        .append("\" name=\"").append(modelName).append("\" >")
+        .append("\n");
 
         /* Retrieve the model content from the database.*/
         GetModelTask task = new GetModelTask(modelName);
@@ -235,7 +235,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                     referenceBuilder.append(
                             _buildReferenceString(new XMLDBModel(
                                     referencedModelName, referencedModelId)))
-                            .append("\n");
+                                    .append("\n");
                 }
             }
         }
@@ -376,7 +376,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @exception DBConnectionException If thrown while connecting to the database.
      */
     private void _rebuildReferenceFile() throws DBExecutionException,
-            XMLDBModelParsingException, DBConnectionException {
+    XMLDBModelParsingException, DBConnectionException {
 
         try {
 
@@ -392,7 +392,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                 _buildReferenceString(model);
             }
             System.out
-                    .println("Starting transaction to update ReferenceFile...");
+            .println("Starting transaction to update ReferenceFile...");
             TransactionConfig transactionConfig = new TransactionConfig();
             /*
              * Open the transaction and enable committed reads. All

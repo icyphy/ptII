@@ -129,7 +129,7 @@ public class StateController extends AttributeWithIconController {
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                        .getMenuShortcutKeyMask()));
             }
         }
 
@@ -137,7 +137,7 @@ public class StateController extends AttributeWithIconController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                .error("Cannot look inside without a configuration.");
                 return;
             }
 
@@ -292,7 +292,7 @@ public class StateController extends AttributeWithIconController {
                     if (decoratorAttributes instanceof ExecutionAttributes) {
                         if (decoratorAttributes.getDecorator() != null
                                 && ((ExecutionAttributes) decoratorAttributes)
-                                        .enabled()) {
+                                .enabled()) {
                             try {
                                 if (object
                                         .getAttribute("_decoratorHighlightColor") == null) {
@@ -306,7 +306,7 @@ public class StateController extends AttributeWithIconController {
                                                 .getToken()).toString();
                                     }
                                     ((ColorAttribute) highlightColor)
-                                            .setExpression(colorExpression);
+                                    .setExpression(colorExpression);
                                 }
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.

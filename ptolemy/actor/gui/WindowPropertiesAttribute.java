@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (johnr)
  */
 public class WindowPropertiesAttribute extends Parameter implements
-        ComponentListener {
+ComponentListener {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

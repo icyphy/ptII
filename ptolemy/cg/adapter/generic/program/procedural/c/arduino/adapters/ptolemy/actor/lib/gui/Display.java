@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.arduino.adapters.ptolemy
  @Pt.AcceptedRating Red (eal)
  */
 public class Display
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
 
     /**
      *  Construct the Display adapter.

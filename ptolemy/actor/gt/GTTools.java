@@ -87,7 +87,7 @@ public class GTTools {
     public static void checkContainerClass(Attribute attribute,
             NamedObj container,
             Class<? extends CompositeEntity> containerClass, boolean deep)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         while (deep && container != null
                 && !containerClass.isInstance(container)
                 && !(container instanceof EntityLibrary)) {
@@ -214,8 +214,8 @@ public class GTTools {
      */
     public static void deepAddAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
-            throws InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+                    throws InstantiationException, IllegalAccessException,
+                    InvocationTargetException {
         Constructor<?>[] constructors = attributeClass.getConstructors();
         for (Constructor<?> constructor : constructors) {
             Class<?>[] types = constructor.getParameterTypes();
@@ -243,7 +243,7 @@ public class GTTools {
      */
     public static void deepRemoveAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         List<Object> attributes = new LinkedList<Object>(
                 container.attributeList(attributeClass));
         for (Object attribute : attributes) {
@@ -598,7 +598,7 @@ public class GTTools {
      */
     public static void restoreValues(ComponentEntity root,
             Hashtable<ValueIterator, Token> records)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (root instanceof CompositeEntity) {
             for (Object entity : ((CompositeEntity) root).entityList()) {
                 restoreValues((ComponentEntity) entity, records);
@@ -626,7 +626,7 @@ public class GTTools {
      */
     public static void saveValues(ComponentEntity root,
             Hashtable<ValueIterator, Token> records)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         List<?> iterators = root.attributeList(ValueIterator.class);
         for (Object iteratorObject : iterators) {
             ValueIterator iterator = (ValueIterator) iteratorObject;

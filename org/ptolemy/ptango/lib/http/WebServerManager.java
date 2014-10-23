@@ -153,8 +153,7 @@ public final class WebServerManager {
      */
 
     public int register(WebApplicationInfo appInfo, int portNumber,
-            boolean dynamicPortSelection)
-            throws Exception {
+            boolean dynamicPortSelection) throws Exception {
         // Fetch server at this port, if any.  If none, create and start a new
         // server for this port.  If the port number is <=0, WebServerUtilities
         // uses a default port
@@ -256,6 +255,5 @@ public final class WebServerManager {
     /** The singleton instance of the WebServerManager class */
     private static WebServerManager _instance = null;
 
-    private HashSet<WebServerUtilities> _servers =
-            new HashSet<WebServerUtilities>();
+    private HashSet<WebServerUtilities> _servers = new HashSet<WebServerUtilities>();
 }

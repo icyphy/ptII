@@ -324,10 +324,10 @@ public class SimpleCharStream {
     /** Constructor. */
     public SimpleCharStream(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn, int buffersize)
-            throws java.io.UnsupportedEncodingException {
+                    throws java.io.UnsupportedEncodingException {
         this(encoding == null ? new java.io.InputStreamReader(dstream)
-                : new java.io.InputStreamReader(dstream, encoding), startline,
-                startcolumn, buffersize);
+        : new java.io.InputStreamReader(dstream, encoding), startline,
+        startcolumn, buffersize);
     }
 
     /** Constructor. */
@@ -340,7 +340,7 @@ public class SimpleCharStream {
     /** Constructor. */
     public SimpleCharStream(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn)
-            throws java.io.UnsupportedEncodingException {
+                    throws java.io.UnsupportedEncodingException {
         this(dstream, encoding, startline, startcolumn, 4096);
     }
 
@@ -364,10 +364,10 @@ public class SimpleCharStream {
     /** Reinitialise. */
     public void ReInit(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn, int buffersize)
-            throws java.io.UnsupportedEncodingException {
+                    throws java.io.UnsupportedEncodingException {
         ReInit(encoding == null ? new java.io.InputStreamReader(dstream)
-                : new java.io.InputStreamReader(dstream, encoding), startline,
-                startcolumn, buffersize);
+        : new java.io.InputStreamReader(dstream, encoding), startline,
+        startcolumn, buffersize);
     }
 
     /** Reinitialise. */
@@ -391,7 +391,7 @@ public class SimpleCharStream {
     /** Reinitialise. */
     public void ReInit(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn)
-            throws java.io.UnsupportedEncodingException {
+                    throws java.io.UnsupportedEncodingException {
         ReInit(dstream, encoding, startline, startcolumn, 4096);
     }
 
@@ -407,7 +407,7 @@ public class SimpleCharStream {
             return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
         } else {
             return new String(buffer, tokenBegin, bufsize - tokenBegin)
-                    + new String(buffer, 0, bufpos + 1);
+            + new String(buffer, 0, bufpos + 1);
         }
     }
 
@@ -451,7 +451,7 @@ public class SimpleCharStream {
 
         while (i < len
                 && bufline[j = start % bufsize] == bufline[k = ++start
-                        % bufsize]) {
+                % bufsize]) {
             bufline[j] = newLine;
             nextColDiff = columnDiff + bufcolumn[k] - bufcolumn[j];
             bufcolumn[j] = newCol + columnDiff;

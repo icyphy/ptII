@@ -393,7 +393,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          */
         public IOMethodPort(ComponentEntity container, String name,
                 boolean isInput, boolean isOutput)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             this(container, name);
             setInput(isInput);
             setOutput(isOutput);

@@ -183,7 +183,7 @@ public class MoMLVariableChecker {
     private void _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(
             Attribute attribute, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         if (attribute instanceof Variable) {
             Variable variable = (Variable) attribute;
@@ -229,7 +229,7 @@ public class MoMLVariableChecker {
             if (parseTree != null) {
                 ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
                 Set set = variableCollector.collectFreeVariables(parseTree,
-                /*scope*/null);
+                        /*scope*/null);
                 for (Iterator elements = set.iterator(); elements.hasNext();) {
                     String name = (String) elements.next();
 
@@ -317,7 +317,7 @@ public class MoMLVariableChecker {
     private boolean _findUndefinedConstantsOrIdentifiers(
             IllegalActionException exception, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // True if we should rerun the outer parse or getToken
 
         // Ok, we have a variable that might have an appropriate
@@ -360,7 +360,7 @@ public class MoMLVariableChecker {
                 .getFullName()
                 .substring(
                         ((NamedObj) exception.getNameable1()).toplevel()
-                                .getName().length() + 2);
+                        .getName().length() + 2);
 
         return _findUndefinedConstantsOrIdentifiers(variableName,
                 idException.nodeName(), container, parsedContainer,
@@ -385,7 +385,7 @@ public class MoMLVariableChecker {
     private boolean _findUndefinedConstantsOrIdentifiers(String variableName,
             String nodeName, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         boolean doRerun = false;
 
         Attribute masterAttribute = container.getAttribute(variableName);

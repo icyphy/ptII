@@ -30,7 +30,6 @@ package ptolemy.domains.de.lib;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -87,9 +86,8 @@ public class EventToDate extends Transformer {
             if (input.hasToken(i)) {
                 input.get(i);
             }
-            long time = (long)(_director.getModelTime().getDoubleValue()
-                    / _director.localClock.getTimeResolution())
-                    + _director.getRealStartTimeMillis();
+            long time = (long) (_director.getModelTime().getDoubleValue() / _director.localClock
+                    .getTimeResolution()) + _director.getRealStartTimeMillis();
             output.send(0, new DateToken(time));
         }
     }

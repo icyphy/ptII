@@ -54,8 +54,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 public class PtidesBasicReceiver
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
 
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
@@ -64,7 +64,7 @@ public class PtidesBasicReceiver
      */
     public PtidesBasicReceiver(
             ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(receiver);
     }
 

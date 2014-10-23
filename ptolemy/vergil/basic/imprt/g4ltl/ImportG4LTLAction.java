@@ -193,9 +193,9 @@ public class ImportG4LTLAction extends AbstractAction {
                         int option = JOptionPane.showOptionDialog(null,
                                 "G4LTL unable to find strategy.\n"
                                         + "Perform counter-strategy finding?",
-                                "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
-                                JOptionPane.PLAIN_MESSAGE, icon, options,
-                                options[0]);
+                                        "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.PLAIN_MESSAGE, icon, options,
+                                        options[0]);
 
                         if (option == 0) {
                             result = G4LTL.synthesizeFromFile(solver, file,

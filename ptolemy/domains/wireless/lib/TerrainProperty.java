@@ -84,7 +84,7 @@ import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
  @Pt.AcceptedRating Red (pjb2e)
  */
 public class TerrainProperty extends TypedAtomicActor implements
-        PropertyTransformer {
+PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -292,7 +292,7 @@ public class TerrainProperty extends TypedAtomicActor implements
     @Override
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         RecordToken newProperties = properties;
         double[] p1 = _locationOf(sender);
@@ -350,7 +350,7 @@ public class TerrainProperty extends TypedAtomicActor implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + ".");
+                    + ".");
         }
 
         return location.getLocation();

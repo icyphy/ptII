@@ -210,14 +210,14 @@ public class EventIcon extends StateIcon {
                     - _spacingValue, -_spacingValue, width + 2.0
                     * _spacingValue, height, null, _getLineWidth(),
                     _roundingValue + _spacingValue, _roundingValue
-                            + _spacingValue));
+                    + _spacingValue));
             ((CompositeFigure) background).add(border);
         }
         figure.setBackgroundFigure(background);
 
         label.translateTo(background.getBounds().getCenterX(),
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
-                        - _spacingValue);
+                - _spacingValue);
         figure.add(label);
     }
 

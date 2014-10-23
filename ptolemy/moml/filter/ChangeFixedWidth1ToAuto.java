@@ -164,13 +164,13 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
                 int length = filename.length();
                 if (length > 3
                         && filename.substring(length - 4, length)
-                                .toLowerCase(Locale.getDefault())
-                                .equals(".xml")) {
+                        .toLowerCase(Locale.getDefault())
+                        .equals(".xml")) {
                     try {
                         if (filter == null
                                 || file.toURI().toString()
-                                        .toLowerCase(Locale.getDefault())
-                                        .contains("/" + filter + "/")) {
+                                .toLowerCase(Locale.getDefault())
+                                .contains("/" + filter + "/")) {
                             _updateFile(file.toString());
                         }
                     } catch (Exception e) {

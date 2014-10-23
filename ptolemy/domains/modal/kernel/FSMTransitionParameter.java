@@ -166,15 +166,15 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
                             .destinationState().getAttribute("_location");
                     try {
                         new Location(this, "_location")
-                        .setLocation(new double[] {
-                                destinationStateLocation.getLocation()[0]
-                                        + (sourceStateLocation
-                                                .getLocation()[0] - destinationStateLocation
-                                                .getLocation()[0]) / 2,
-                                                destinationStateLocation.getLocation()[1]
-                                                        + (sourceStateLocation
-                                                                .getLocation()[1] - destinationStateLocation
-                                                                .getLocation()[1]) / 2 });
+                                .setLocation(new double[] {
+                                        destinationStateLocation.getLocation()[0]
+                                                + (sourceStateLocation
+                                                        .getLocation()[0] - destinationStateLocation
+                                                        .getLocation()[0]) / 2,
+                                        destinationStateLocation.getLocation()[1]
+                                                + (sourceStateLocation
+                                                        .getLocation()[1] - destinationStateLocation
+                                                        .getLocation()[1]) / 2 });
                     } catch (NameDuplicationException ex) {
                         throw new IllegalActionException(_transition, ex,
                                 "Could not add _location?");
@@ -189,7 +189,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         if (_transition != null) {
             _transition.fsmTransitionParameterName.setExpression(name);
@@ -208,7 +208,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container == null && _transition != null) {
             _transition.setFsmTransitionParameter(null);
@@ -251,7 +251,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     ////                         private methods                   ////
 
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         if (getAttribute("_hideName") == null) {
             SingletonParameter hide = new SingletonParameter(this, "_hideName");
             hide.setToken(BooleanToken.TRUE);

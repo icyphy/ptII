@@ -73,9 +73,9 @@ public class TrigFunction extends NamedProgramCodeGeneratorAdapter {
         String function = actor.function.getExpression();
         String codeBlockName = function.equals("sin") ? "sinBlock" : function
                 .equals("cos") ? "cosBlock"
-                : function.equals("tan") ? "tanBlock"
-                        : function.equals("asin") ? "asinBlock" : function
-                                .equals("acos") ? "acosBlock" : "atanBlock";
+                        : function.equals("tan") ? "tanBlock"
+                                : function.equals("asin") ? "asinBlock" : function
+                                        .equals("acos") ? "acosBlock" : "atanBlock";
         ArrayList<String> args = new ArrayList<String>();
         code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
 

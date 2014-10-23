@@ -11,8 +11,8 @@ package ptolemy.actor.corba.CoordinatorUtil;
  */
 @SuppressWarnings("serial")
 public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.CoordinatorUtil.Client,
-        org.omg.CORBA.portable.InvokeHandler {
+implements ptolemy.actor.corba.CoordinatorUtil.Client,
+org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _ClientImplBase() {
     }
@@ -50,7 +50,7 @@ public abstract class _ClientImplBase extends org.omg.CORBA.portable.ObjectImpl
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
+                .write(out, $ex);
             }
 
             break;

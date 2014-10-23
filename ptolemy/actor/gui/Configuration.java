@@ -140,7 +140,7 @@ import ptolemy.util.StringUtilities;
  @see TextEditorTableau
  */
 public class Configuration extends CompositeEntity implements
-        ApplicationConfigurer, InstanceOpener {
+ApplicationConfigurer, InstanceOpener {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -157,7 +157,7 @@ public class Configuration extends CompositeEntity implements
      *   an entity already in the container.
      */
     public Configuration(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _configurations.add(this);
         classesToRemove = new Parameter(this, "_classesToRemove",
@@ -390,12 +390,12 @@ public class Configuration extends CompositeEntity implements
                                                 + outerNamedObj.workspace()
                                                 + "\n ClonedOuter Workspace: "
                                                 + clonedOuterNamedObj
-                                                        .workspace()
+                                                .workspace()
                                                 + "\n Outer Object:        "
                                                 + outerNamedObj.getFullName()
                                                 + "\n Cloned Outer Object: "
                                                 + clonedOuterNamedObj
-                                                        .getFullName());
+                                                .getFullName());
                                     }
                                 }
                             }
@@ -541,13 +541,13 @@ public class Configuration extends CompositeEntity implements
                             greaterNamedObj.getContainer().getClass().getName();
                             if (lesserNamedObj != null
                                     && greaterNamedObj.getContainer() != lesserNamedObj
-                                            .getContainer()
+                                    .getContainer()
                                     // actor.lib.qm.CompositeQM was causing false
                                     // positives because the contstraints had different
                                     // containers, but were contained within the Composite.
                                     && greaterNamedObj.getContainer()
-                                            .getContainer() != lesserNamedObj
-                                            .getContainer()
+                                    .getContainer() != lesserNamedObj
+                                    .getContainer()
                                     // PubSubPort that contains an
                                     // initialTokens that is used to
                                     // set the type.
@@ -763,7 +763,7 @@ public class Configuration extends CompositeEntity implements
                             if (((PtolemyEffigy) effigy).getModel() != null) {
                                 MessageHandler.error("Failed to open "
                                         + ((PtolemyEffigy) effigy).getModel()
-                                                .getFullName(), ex);
+                                        .getFullName(), ex);
                             } else {
                                 MessageHandler.error(
                                         "Failed to open " + effigy, ex);
@@ -824,8 +824,8 @@ public class Configuration extends CompositeEntity implements
                                     toRead.toExternalForm());
                         } else {
                             MessageHandler
-                                    .error("Cannot find a tableau or the source code for "
-                                            + object.getFullName());
+                            .error("Cannot find a tableau or the source code for "
+                                    + object.getFullName());
                         }
                     } catch (Exception exception) {
                         MessageHandler.error(
@@ -954,7 +954,7 @@ public class Configuration extends CompositeEntity implements
      */
     @Override
     public void openAnInstance(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // This could be called openInstance(), but we don't want to
         // have a dependency to Tableau in ModalController and ModalRefinement.
 
@@ -978,7 +978,7 @@ public class Configuration extends CompositeEntity implements
      *   should not be thrown).
      */
     public Tableau openInstance(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return openInstance(entity, null);
     }
 
@@ -1097,8 +1097,8 @@ public class Configuration extends CompositeEntity implements
 
             if (effigy == null) {
                 MessageHandler
-                        .error("Unsupported file type or connection not available: "
-                                + in.toExternalForm());
+                .error("Unsupported file type or connection not available: "
+                        + in.toExternalForm());
                 return null;
             }
 
@@ -1168,7 +1168,7 @@ public class Configuration extends CompositeEntity implements
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return openModel(entity, null);
     }
 
@@ -1296,8 +1296,8 @@ public class Configuration extends CompositeEntity implements
      */
     private static String _checkCloneField(NamedObj namedObj,
             NamedObj namedObjClone, Field field)
-            throws CloneNotSupportedException, IllegalAccessException,
-            ClassNotFoundException {
+                    throws CloneNotSupportedException, IllegalAccessException,
+                    ClassNotFoundException {
         Class namedObjClass = namedObj.getClass();
         StringBuffer results = new StringBuffer();
         // Tell the security manager we want to read private fields.
@@ -1312,40 +1312,40 @@ public class Configuration extends CompositeEntity implements
                 // Skip fields introduced by javascope
                 && !fieldType.toString().equals(
                         "COM.sun.suntest.javascope.database.CoverageUnit")
-                && !field.getName().equals("js$p")
-                // Skip fields introduced by backtracking
-                && !(field.getName().indexOf("$RECORD$") != -1)
-                && !(field.getName().indexOf("$RECORDS") != -1)
-                && !(field.getName().indexOf("$CHECKPOINT") != -1)
-                // Skip dependency injection fields
-                && !(field.getName().indexOf("_implementation") != -1)
-                // Skip immutables
-                && !fieldType.equals(java.net.InetAddress.class)
-                && !fieldType.equals(java.util.regex.Pattern.class)
-                // SharedParameter has a _containerClass field
-                && !fieldType.equals(Boolean.class)
-                && !fieldType.equals(Class.class)
-                && !fieldType.equals(String.class)
-                && !fieldType.equals(Token.class)
-                // Variable has various type fields
-                && !fieldType.equals(ptolemy.data.type.Type.class)
-                && !fieldType.equals(Settable.Visibility.class)) {
+                        && !field.getName().equals("js$p")
+                        // Skip fields introduced by backtracking
+                        && !(field.getName().indexOf("$RECORD$") != -1)
+                        && !(field.getName().indexOf("$RECORDS") != -1)
+                        && !(field.getName().indexOf("$CHECKPOINT") != -1)
+                        // Skip dependency injection fields
+                        && !(field.getName().indexOf("_implementation") != -1)
+                        // Skip immutables
+                        && !fieldType.equals(java.net.InetAddress.class)
+                        && !fieldType.equals(java.util.regex.Pattern.class)
+                        // SharedParameter has a _containerClass field
+                        && !fieldType.equals(Boolean.class)
+                        && !fieldType.equals(Class.class)
+                        && !fieldType.equals(String.class)
+                        && !fieldType.equals(Token.class)
+                        // Variable has various type fields
+                        && !fieldType.equals(ptolemy.data.type.Type.class)
+                        && !fieldType.equals(Settable.Visibility.class)) {
 
             // If an object is equal and the default hashCode() from
             // Object is the same, then we have a problem.
             if (field.get(namedObj).equals(field.get(namedObjClone))
                     && System.identityHashCode(field.get(namedObj)) == System
-                            .identityHashCode(field.get(namedObjClone))) {
+                    .identityHashCode(field.get(namedObjClone))) {
 
                 String message = "";
                 if (Class.forName("ptolemy.kernel.util.NamedObj")
                         .isAssignableFrom(fieldType)) {
                     NamedObj fieldNamedObj = (NamedObj) Class.forName(
                             "ptolemy.kernel.util.NamedObj").cast(
-                            field.get(namedObj));
+                                    field.get(namedObj));
                     NamedObj cloneNamedObj = (NamedObj) Class.forName(
                             "ptolemy.kernel.util.NamedObj").cast(
-                            field.get(namedObjClone));
+                                    field.get(namedObjClone));
                     message = "Field: " + fieldNamedObj.workspace().getName()
                             + " Clone: " + cloneNamedObj.workspace().getName();
                 }

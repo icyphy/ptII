@@ -199,13 +199,13 @@ public class HlaPtidesEvent {
             for (int i = 7; i >= 0; i--) {
                 l = l
                         | ((long) _iter.next() & 0x00000000000000FF) << i
-                                * _BYTE_LENGTH;
+                        * _BYTE_LENGTH;
             }
         } else {
             for (int i = 0; i <= 7; i++) {
                 l = l
                         | ((long) _iter.next() & 0x00000000000000FF) << i
-                                * _BYTE_LENGTH;
+                        * _BYTE_LENGTH;
             }
         }
         return l;

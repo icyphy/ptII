@@ -153,21 +153,22 @@ public class ParticleFilterRange extends ParticleFilter {
      * @exception NameDuplicationException
      */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
 
         StringToken[] stateNames = new StringToken[2];
         stateNames[0] = new StringToken("x");
         stateNames[1] = new StringToken("y");
         stateVariableNames
-        .setToken(new ArrayToken(BaseType.STRING, stateNames));
+                .setToken(new ArrayToken(BaseType.STRING, stateNames));
         stateVariableNames.setVisibility(Settable.EXPERT);
 
         observerPosition = new PortParameter(this, "observerPosition");
         observerPosition.setExpression("{0.0,0.0}");
-        SingletonParameter showName = (SingletonParameter) observerPosition.getPort()
-                .getAttribute("_showName");
+        SingletonParameter showName = (SingletonParameter) observerPosition
+                .getPort().getAttribute("_showName");
         if (showName == null) {
-            showName = new SingletonParameter(observerPosition.getPort(), "_showName");
+            showName = new SingletonParameter(observerPosition.getPort(),
+                    "_showName");
             showName.setToken("true");
         } else {
             showName.setToken("true");
@@ -176,8 +177,7 @@ public class ParticleFilterRange extends ParticleFilter {
         // The input port for range measurements.
         z_m = new TypedIOPort(this, "z_m", true, false);
         z_m.setTypeEquals(BaseType.DOUBLE);
-        showName = (SingletonParameter) z_m
-                .getAttribute("_showName");
+        showName = (SingletonParameter) z_m.getAttribute("_showName");
         z_m.setDisplayName("rangeMeasurement");
         if (showName == null) {
             showName = new SingletonParameter(z_m, "_showName");
@@ -194,7 +194,6 @@ public class ParticleFilterRange extends ParticleFilter {
         x_update = new Parameter(this, "x_update");
         x_update.setExpression("x");
 
-
         y_update = new Parameter(this, "y_update");
         y_update.setExpression("y");
 
@@ -202,7 +201,7 @@ public class ParticleFilterRange extends ParticleFilter {
         prior.setExpression("{random()*200-100,random()*200-100}");
 
         processNoise
-        .setExpression("multivariateGaussian({0.0,0.0},[3.0,0.0;0.0,3.0])");
+                .setExpression("multivariateGaussian({0.0,0.0},[3.0,0.0;0.0,3.0])");
 
         particleCount.setExpression("2000");
 

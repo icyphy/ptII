@@ -304,7 +304,7 @@ public class VQDecode extends Transformer {
 
         while (length > 2) {
             length = length >> 1;
-            x++;
+                x++;
         }
 
         return x;

@@ -98,13 +98,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // compileCommand is only used if useMake is false.
         if (compileCommand.getExpression().equals(_compileCommandDefault)) {
             compileCommand
-                    .setExpression("javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
+            .setExpression("javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
         }
 
         // runCommand is only used if useMake is false.
         if (runCommand.getExpression().equals(_runCommandDefault)) {
             runCommand
-                    .setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
+            .setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
         }
 
         generatorPackageList.setExpression("generic.program.procedural.java");
@@ -171,9 +171,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // It is not an error to resolve to general.  See
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml
             System.out
-                    .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
-                            + type
-                            + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
+            .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
+                    + type
+                    + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
         }
         if (result == null) {
             return null;
@@ -216,8 +216,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
-                            + type);
+            .println("JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
+                    + type);
         }
         if (result == null) {
             return null;
@@ -306,7 +306,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         case 7:
             returnType = PointerToken.POINTER;
             break;
-        // FIXME: case 8 is Matrix
+            // FIXME: case 8 is Matrix
         case 9:
             returnType = BaseType.COMPLEX;
             break;
@@ -372,7 +372,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             String value) {
         // Maybe we should keep track of these in a Set?
         return "static final " + type + " " + constant + " = " + value + ";"
-                + _eol;
+        + _eol;
     }
 
     /** Generate the closing code for a group of fire functions common
@@ -560,7 +560,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             if (codeGenerators.size() > 0) {
                 String[] results = generateFireFunctionVariableAndMethodName(namedObj);
                 return results[0] + " _inner" + results[0] + " = new "
-                        + results[0] + "();" + _eol;
+                + results[0] + "();" + _eol;
             }
             container = container.getContainer();
         }
@@ -592,7 +592,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (functions[j].equals("isCloseTo")
                             && (types[i].equals("Boolean")
                                     || types[i].equals("String") || types[i]
-                                        .equals("Object"))) {
+                                            .equals("Object"))) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // are the same as their corresponding *_equals
                         code.append(types[i] + "_equals");
@@ -720,17 +720,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 printExecutionTimeCode = _printExecutionTime();
             }
             mainEntryCode
-                    .append(_eol
-                            + _eol
-                            + "public static void main(String [] args) throws Exception {"
-                            + _eol + _sanitizedModelName + " model = new "
-                            + _sanitizedModelName + "();" + _eol
-                            + recordStartTimeCode + _eol
-                            + "model.preinitialize();" + _eol
-                            + "model.initialize();" + _eol + "model.execute();"
-                            + _eol + "model.doWrapup();" + _eol
-                            + printExecutionTimeCode + _eol + "System.exit(0);"
-                            + _eol + "}" + _eol);
+            .append(_eol
+                    + _eol
+                    + "public static void main(String [] args) throws Exception {"
+                    + _eol + _sanitizedModelName + " model = new "
+                    + _sanitizedModelName + "();" + _eol
+                    + recordStartTimeCode + _eol
+                    + "model.preinitialize();" + _eol
+                    + "model.initialize();" + _eol + "model.execute();"
+                    + _eol + "model.doWrapup();" + _eol
+                    + printExecutionTimeCode + _eol + "System.exit(0);"
+                    + _eol + "}" + _eol);
 
         } else {
             mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
@@ -1036,7 +1036,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (element.equals("isCloseTo")
                             && (typesArray[i].equals("Boolean")
                                     || typesArray[i].equals("String") || typesArray[i]
-                                        .equals("Object"))) {
+                                            .equals("Object"))) {
 
                         if (!functions.contains("equals")) {
                             //typeStreams[i].appendCodeBlock(typesArray[i]
@@ -1048,7 +1048,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                         if (!_unsupportedTypeFunctions.contains(functionName)
                                 && !_overloadedFunctionSet
-                                        .contains(functionName)) {
+                                .contains(functionName)) {
 
                             //typeStreams[i].appendCodeBlock(typesArray[i] + "_"
                             //+ functionsArray[j]);
@@ -1096,7 +1096,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 NamedObj namedObj = (NamedObj) namedObjs.next();
                 if (namedObj instanceof Actor) {
                     variableDeclarations
-                            .add(generateFireFunctionVariableDeclaration(namedObj));
+                    .add(generateFireFunctionVariableDeclaration(namedObj));
                 }
             }
 
@@ -1107,8 +1107,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
             if (variables.length() > 0) {
                 variables
-                        .insert(0,
-                                comment("inline: true, Variables that refer to inner classes."));
+                .insert(0,
+                        comment("inline: true, Variables that refer to inner classes."));
             }
             code.append(variables);
 
@@ -1261,7 +1261,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + " = "
                         + containerAdapter.getParameterValue(
                                 variable.getName(), variable.getContainer())
-                        + ";" + _eol);
+                                + ";" + _eol);
             }
         }
         return code.toString();
@@ -1328,7 +1328,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         return "variables_" + StringUtilities.sanitizeName(typeName) + "["
-                + variableIndex + "]";
+        + variableIndex + "]";
 
     }
 
@@ -1391,7 +1391,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public void markFunctionCalled(String name,
             JavaTemplateParser javaTemplateParser)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         try {
             if (_overloadedFunctions == null) {
@@ -1700,7 +1700,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 } catch (IllegalActionException ex) {
                     IOException exception = new IOException(
                             "Failed to get the declare block for " + element
-                                    + " from " + typesTemplate);
+                            + " from " + typesTemplate);
                     exception.initCause(ex);
                     throw exception;
                 }
@@ -1731,7 +1731,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     className = _sanitizedModelName + "." + className;
                 }
                 declarations
-                        .append("import static " + className + ".*;" + _eol);
+                .append("import static " + className + ".*;" + _eol);
 
                 String shortClassName = className.substring(className
                         .lastIndexOf('.') + 1);
@@ -2364,8 +2364,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (importLine == null) {
                         throw new InternalErrorException(
                                 "Last import line was null? Read " + i
-                                        + " lines of " + typesArray.length
-                                        + " lines.");
+                                + " lines of " + typesArray.length
+                                + " lines.");
                     }
 
                     // Get rid of the ".*;".
@@ -2390,9 +2390,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                     .substring(directoryName.indexOf('/'));
                         } else {
                             System.out
-                            .println("Warning: JavaCodeGenerator: directoryName \""
-                                    + directoryName
-                                    + "\" has no slashes?");
+                                    .println("Warning: JavaCodeGenerator: directoryName \""
+                                            + directoryName
+                                            + "\" has no slashes?");
                         }
                     }
                     File directory = new File(codeDirectoryFile, directoryName);
@@ -2489,7 +2489,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     typeName = _typeNameCG(typeName);
                     _writeCodeFileName(declareTypeOrTokenBlock,
                             codeDirectoryFile.toString() + "/" + directoryName
-                                    + "/" + typeName + ".java", false, true);
+                            + "/" + typeName + ".java", false, true);
                     // FIXME: we should not be deleting the .java and .class file
                     // in the top level, instead, we should be writing our code
                     // into a subdirectory.

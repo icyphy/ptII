@@ -369,11 +369,11 @@ public class Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " method not supported between "
-                + firstToken.getClass().getName() + " '"
-                + firstToken.toString() + "' and "
-                + secondToken.getClass().getName() + " '"
-                + secondToken.toString()
-                + "' because the types are incomparable.";
+        + firstToken.getClass().getName() + " '"
+        + firstToken.toString() + "' and "
+        + secondToken.getClass().getName() + " '"
+        + secondToken.toString()
+        + "' because the types are incomparable.";
     }
 
     /** Return a string with an error message that states that the
@@ -388,10 +388,10 @@ public class Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " operation not supported between "
-                + firstToken.getClass().getName() + " '"
-                + firstToken.toString() + "' and "
-                + secondToken.getClass().getName() + " '"
-                + secondToken.toString() + "'";
+        + firstToken.getClass().getName() + " '"
+        + firstToken.toString() + "' and "
+        + secondToken.getClass().getName() + " '"
+        + secondToken.toString() + "'";
     }
 
     /** Returns a new Token representing the multiplicative identity.

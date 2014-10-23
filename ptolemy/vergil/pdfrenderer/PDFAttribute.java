@@ -180,7 +180,7 @@ public class PDFAttribute extends VisibleAttribute {
                                             + jarURL
                                             + ", exception was: \n"
                                             + KernelException
-                                                    .stackTraceToString(ex3));
+                                            .stackTraceToString(ex3));
                         }
                     }
                 } finally {

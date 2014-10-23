@@ -139,10 +139,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 // array..
                 System.out.println(nodeName + " = ");
                 System.out
-                        .println(_nodeToLocalName.get(node.jjtGetChild(0))
-                                + "["
-                                + _nodeToLocalName.get(node.jjtGetChild(1))
-                                + "]");
+                .println(_nodeToLocalName.get(node.jjtGetChild(0))
+                        + "["
+                        + _nodeToLocalName.get(node.jjtGetChild(1))
+                        + "]");
             } else if (argCount == 2) {
                 // matrix..
                 System.out.println(nodeName + " = ");

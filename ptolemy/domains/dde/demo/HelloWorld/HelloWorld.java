@@ -59,7 +59,7 @@ public class HelloWorld {
     /**
      */
     public static void main(String[] args) throws IllegalActionException,
-            IllegalStateException, NameDuplicationException {
+    IllegalStateException, NameDuplicationException {
         // Set up Manager, Director and top level CompositeActor
         Workspace workSpc = new Workspace();
         TypedCompositeActor topLevelActor = new TypedCompositeActor(workSpc);
@@ -76,22 +76,22 @@ public class HelloWorld {
         vowelSrc.values.setExpression("{1,1,1,1,1,1,1,1,1,1,1,1,1}");
         vowelSrc.period.setToken(new DoubleToken(100.0));
         vowelSrc.offsets
-                .setExpression("{0.5,2.0,5.0,7.0,8.0,11.0,12.5,13.5,14.0,15.5,17.5,19.5,20.5}");
+        .setExpression("{0.5,2.0,5.0,7.0,8.0,11.0,12.5,13.5,14.0,15.5,17.5,19.5,20.5}");
         vowelSrc.stopTime.setToken(new DoubleToken(30.0));
 
         Clock consonantsSrc = new Clock(topLevelActor, "consonantsSrc");
         consonantsSrc.values
-                .setExpression("{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}");
+        .setExpression("{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}");
         consonantsSrc.period.setToken(new DoubleToken(100.0));
         consonantsSrc.offsets
-                .setExpression("{0.0, 1.0, 1.5, 4.0, 4.5, 6.0, 6.5, 7.5, 8.5, 9.0, 10.0, 10.5, 12.0, 13.0, 14.5, 16.0, 17.0, 18.0, 18.5, 19.0, 20.0}");
+        .setExpression("{0.0, 1.0, 1.5, 4.0, 4.5, 6.0, 6.5, 7.5, 8.5, 9.0, 10.0, 10.5, 12.0, 13.0, 14.5, 16.0, 17.0, 18.0, 18.5, 19.0, 20.0}");
         consonantsSrc.stopTime.setToken(new DoubleToken(30.0));
 
         Clock punctuationSrc = new Clock(topLevelActor, "punctuationSrc");
         punctuationSrc.values.setExpression("{1, 1, 1, 1, 1, 1, 1, 1, 1}");
         punctuationSrc.period.setToken(new DoubleToken(100.0));
         punctuationSrc.offsets
-                .setExpression("{2.5, 3.0, 3.5, 5.5, 9.5, 11.5, 15.0, 16.5, 21.0}");
+        .setExpression("{2.5, 3.0, 3.5, 5.5, 9.5, 11.5, 15.0, 16.5, 21.0}");
         punctuationSrc.stopTime.setToken(new DoubleToken(30.0));
 
         PrintString printer = new PrintString(topLevelActor, "printer");

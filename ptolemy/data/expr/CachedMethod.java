@@ -179,7 +179,7 @@ public class CachedMethod {
      */
     protected CachedMethod(String methodName, Type[] argumentTypes,
             Method method, ArgumentConversion[] conversions, int type)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Note clones for safety...
         _methodName = methodName;
         // Kepler (jdk1.4?) requires this cast
@@ -1343,7 +1343,7 @@ public class CachedMethod {
          */
         public ArrayMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1422,8 +1422,8 @@ public class CachedMethod {
             if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method " + toString()
-                                + " cannot be determined because "
-                                + "no matching method was found.");
+                        + " cannot be determined because "
+                        + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();
@@ -1467,7 +1467,7 @@ public class CachedMethod {
          */
         public MatrixMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1498,7 +1498,7 @@ public class CachedMethod {
                         if (xdim != 0
                                 && ydim != 0
                                 && (matrixToken.getRowCount() != ydim || matrixToken
-                                        .getColumnCount() != xdim)) {
+                                .getColumnCount() != xdim)) {
                             throw new IllegalActionException("Argument " + i
                                     + " is a reducible matrixToken that "
                                     + "does not have compatible size!");
@@ -1517,7 +1517,7 @@ public class CachedMethod {
             // Kepler (jdk1.4?) requires this cast
             Object[] subArgs = argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[xdim
-                    * ydim];
+                                                                     * ydim];
 
             int pos = 0;
 
@@ -1550,8 +1550,8 @@ public class CachedMethod {
             if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method " + toString()
-                                + " cannot be determined because "
-                                + "no matching method was found.");
+                        + " cannot be determined because "
+                        + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();

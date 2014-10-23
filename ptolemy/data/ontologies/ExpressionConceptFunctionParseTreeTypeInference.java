@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ExpressionConceptFunctionParseTreeTypeInference extends
-        ParseTreeTypeInference {
+ParseTreeTypeInference {
 
     /** Set the type of the given node to be the return type of the
      *  function determined for the given node.  Since all functions in a

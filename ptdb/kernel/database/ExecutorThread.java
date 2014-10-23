@@ -217,7 +217,7 @@ public class ExecutorThread implements Runnable {
      * reference.
      */
     private void _executeTask() throws DBExecutionException,
-            ModelAlreadyExistException, CircularDependencyException {
+    ModelAlreadyExistException, CircularDependencyException {
         Task task = _taskQueue.get(_noOfTasksExecuted);
 
         //if the task is of type save model task, then execute the proper method from the connection

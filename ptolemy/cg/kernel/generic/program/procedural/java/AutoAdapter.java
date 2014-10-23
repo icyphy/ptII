@@ -167,7 +167,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 || !splitInitializeParameterCode[1].isEmpty()) {
             splitInitializeParameterBlock = "{" + _eol
                     + splitInitializeParameterCode[0]
-                    + splitInitializeParameterCode[1] + "}" + _eol;
+                            + splitInitializeParameterCode[1] + "}" + _eol;
         }
         String result = resolveToplevelTypes
                 + splitInitializeParameterBlock
@@ -350,52 +350,52 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         String result = getCodeGenerator().comment(
                 "AutoAdapter._generatePreinitalizeCode("
                         + component.getFullName() + ") start")
-                + "try {"
-                + _eol
-                //+ "    $containerSymbol() = new TypedCompositeActor();" +_eol
-                + "    instantiateToplevel(\""
-                + component.toplevel().getName()
-                + "\");"
-                + _eol
-                // FIXME: set this just once
-                //+ getCodeGenerator().generateVariableName(component.toplevel()) + " = _toplevel;" + _eol
-                + toplevelSymbol
-                + " = _toplevel;"
-                + _eol
-                + containmentCode
-                // If there are two custom actors in one container, then
-                // we may have already created the actor.
-                + "    if ($actorSymbol(actor) == null) {"
-                + _eol
-                + "            $actorSymbol(actor) = new "
-                + actorClassName
-                //+ "($containerSymbol(), \"$actorSymbol(actor)\");"
-                + "($containerSymbol(), \""
-                + component.getName()
-                + "\");"
-                + _eol
-                // Set the displayName so that actors that call
-                // getDisplayName() get the same value.  Actors that
-                // generate random numbers often call getFullName(),
-                // then should call getDisplayName() instead.
-                + "        $actorSymbol(actor).setDisplayName(\""
-                + component.getName()
-                + "\");"
-                + _eol
-                + "    }"
-                + _eol
-                + splitInitializeConnectionCode[0]
-                + splitInitializeConnectionCode[1]
-                + "    if ($containerSymbol().getAttribute(\"director\") == null) {"
-                + _eol
-                + "        new ptolemy.actor.Director($containerSymbol(), \"director\");"
-                + _eol
-                + "    }"
-                + _eol
-                + "} catch (Exception ex) {"
-                + _eol
-                + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);"
-                + _eol + "}" + _eol;
+                        + "try {"
+                        + _eol
+                        //+ "    $containerSymbol() = new TypedCompositeActor();" +_eol
+                        + "    instantiateToplevel(\""
+                        + component.toplevel().getName()
+                        + "\");"
+                        + _eol
+                        // FIXME: set this just once
+                        //+ getCodeGenerator().generateVariableName(component.toplevel()) + " = _toplevel;" + _eol
+                        + toplevelSymbol
+                        + " = _toplevel;"
+                        + _eol
+                        + containmentCode
+                        // If there are two custom actors in one container, then
+                        // we may have already created the actor.
+                        + "    if ($actorSymbol(actor) == null) {"
+                        + _eol
+                        + "            $actorSymbol(actor) = new "
+                        + actorClassName
+                        //+ "($containerSymbol(), \"$actorSymbol(actor)\");"
+                        + "($containerSymbol(), \""
+                        + component.getName()
+                        + "\");"
+                        + _eol
+                        // Set the displayName so that actors that call
+                        // getDisplayName() get the same value.  Actors that
+                        // generate random numbers often call getFullName(),
+                        // then should call getDisplayName() instead.
+                        + "        $actorSymbol(actor).setDisplayName(\""
+                        + component.getName()
+                        + "\");"
+                        + _eol
+                        + "    }"
+                        + _eol
+                        + splitInitializeConnectionCode[0]
+                                + splitInitializeConnectionCode[1]
+                                        + "    if ($containerSymbol().getAttribute(\"director\") == null) {"
+                                        + _eol
+                                        + "        new ptolemy.actor.Director($containerSymbol(), \"director\");"
+                                        + _eol
+                                        + "    }"
+                                        + _eol
+                                        + "} catch (Exception ex) {"
+                                        + _eol
+                                        + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);"
+                                        + _eol + "}" + _eol;
         return processCode(result);
 
     }
@@ -477,12 +477,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + AutoAdapter._externalPortName(
                                             actorPort.getContainer(),
                                             actorPort.getName()).replace("$",
-                                            "\\u0024")
-                                    + "\", "
-                                    + actorPort.isInput()
-                                    + ", "
-                                    + actorPort.isOutput()
-                                    + ").setMultiport(true);" + _eol);
+                                                    "\\u0024")
+                                                    + "\", "
+                                                    + actorPort.isInput()
+                                                    + ", "
+                                                    + actorPort.isOutput()
+                                                    + ").setMultiport(true);" + _eol);
                         }
                     }
 
@@ -524,7 +524,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     if (typeAttributes.size() > 1) {
                         new Exception("Warning, " + insidePort.getFullName()
                                 + " has more than one typeAttribute.")
-                                .printStackTrace();
+                        .printStackTrace();
                     }
                     // only get the first element of the list.
                     TypeAttribute typeAttribute = typeAttributes.get(0);
@@ -554,10 +554,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + AutoAdapter._externalPortName(
                                     insidePort.getContainer(),
                                     insidePort.getName()).replace("$",
-                                    "\\u0024") + "\"), \"inputType\");" + _eol
-                            + "_type.setExpression(\""
-                            + typeAttribute.getExpression() + "\");" + _eol
-                            + "}" + _eol);
+                                            "\\u0024") + "\"), \"inputType\");" + _eol
+                                            + "_type.setExpression(\""
+                                            + typeAttribute.getExpression() + "\");" + _eol
+                                            + "}" + _eol);
                 }
             }
         }
@@ -645,7 +645,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // name as the actor.
         //files.add(getComponent().getClass().getName() + ";");
         ((ProceduralCodeGenerator) getCodeGenerator())
-                .addLibraryIfNecessary("$(PTII)");
+        .addLibraryIfNecessary("$(PTII)");
 
         // Loop through the path elements in java.class.path and add
         // them as libraries.  We need this so that we can find the
@@ -697,26 +697,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 "subParameters") + "}" + _eol + "}" + _eol;
             }
             variableCode
-                    .append("{"
-                            + _eol
-                            + "TypedCompositeActor subComposite = (TypedCompositeActor)"
-                            + containerSymbol
-                            + ".getEntity(\""
-                            + composite.getName()
-                            + "\");"
-                            + _eol
-                            + "if (subComposite == null) {"
-                            + _eol
-                            + "    subComposite = new "
-                            + composite.getClass().getName()
-                            + "("
-                            + containerSymbol
-                            + ", \""
-                            + composite.getName()
-                            + "\");"
-                            + _eol
-                            + _generateContainedVariables(composite,
-                                    "subComposite") + subparametersCode + "}"
+            .append("{"
+                    + _eol
+                    + "TypedCompositeActor subComposite = (TypedCompositeActor)"
+                    + containerSymbol
+                    + ".getEntity(\""
+                    + composite.getName()
+                    + "\");"
+                    + _eol
+                    + "if (subComposite == null) {"
+                    + _eol
+                    + "    subComposite = new "
+                    + composite.getClass().getName()
+                    + "("
+                    + containerSymbol
+                    + ", \""
+                    + composite.getName()
+                    + "\");"
+                    + _eol
+                    + _generateContainedVariables(composite,
+                            "subComposite") + subparametersCode + "}"
                             + _eol + "}" + _eol);
         }
 
@@ -737,101 +737,101 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         Set<String> sharedCode = super.getSharedCode();
         sharedCode
-                .add("static TypedCompositeActor _toplevel = null;"
-                        + _eol
-                        + getCodeGenerator()
-                                .comment(
-                                        "If necessary, create a top level for actors"
-                                                + "that do not have adapters that are handled by AutoAdapter.")
-                        + "static void instantiateToplevel(String name) throws Exception {"
-                        + _eol
-                        + "    if (_toplevel == null) { "
-                        + _eol
-                        + "        _toplevel = new TypedCompositeActor();"
-                        + _eol
-                        + "        _toplevel.setName(name);"
-                        + _eol
-                        + "        new Director(_toplevel, \"director\");"
-                        + _eol
-                        + "        _toplevel.setManager(new Manager(\"manager\"));"
-                        + _eol + variableCode.toString() + _eol + "    }"
-                        + _eol + "}" + _eol
-                //                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
-                //                 + "static ptolemy.kernel.CompositeEntity getContainer(ptolemy.kernel.util.NamedObj namedObj) {" + _eol
-                //                 + "    NamedObj child = namedObj;" + _eol
-                //                 + "    NamedObj container = child.getContainer();" + _eol
-                //                 + "    while (container != null) {" + _eol
-                //                 + "        " + _eol
-                //                 + "        container = child.getContainer();" + _eol
-                //                 + "    }" + _eol
-                //                 + "}" + _eol
+        .add("static TypedCompositeActor _toplevel = null;"
+                + _eol
+                + getCodeGenerator()
+                .comment(
+                        "If necessary, create a top level for actors"
+                                + "that do not have adapters that are handled by AutoAdapter.")
+                                + "static void instantiateToplevel(String name) throws Exception {"
+                                + _eol
+                                + "    if (_toplevel == null) { "
+                                + _eol
+                                + "        _toplevel = new TypedCompositeActor();"
+                                + _eol
+                                + "        _toplevel.setName(name);"
+                                + _eol
+                                + "        new Director(_toplevel, \"director\");"
+                                + _eol
+                                + "        _toplevel.setManager(new Manager(\"manager\"));"
+                                + _eol + variableCode.toString() + _eol + "    }"
+                                + _eol + "}" + _eol
+                                //                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
+                                //                 + "static ptolemy.kernel.CompositeEntity getContainer(ptolemy.kernel.util.NamedObj namedObj) {" + _eol
+                                //                 + "    NamedObj child = namedObj;" + _eol
+                                //                 + "    NamedObj container = child.getContainer();" + _eol
+                                //                 + "    while (container != null) {" + _eol
+                                //                 + "        " + _eol
+                                //                 + "        container = child.getContainer();" + _eol
+                                //                 + "    }" + _eol
+                                //                 + "}" + _eol
                 );
 
         if (_needAutoAdapterSetPrivateParameter) {
             sharedCode
-                    .add("// Search the fields of the class for a parameter by name."
-                            + _eol
-                            + "static void _autoAdapterSetPrivateParameter(Object actor, "
-                            + _eol
-                            + "String parameterName, String parameterSanitizedName, String parameterValue) throws Exception {"
-                            + _eol
-                            + "// Accessing private field."
-                            + _eol
-                            + "// Use getDeclaredFields() so that we get private fields."
-                            + _eol
-                            + "java.lang.reflect.Field declaredFields[] = actor.getClass().getDeclaredFields();"
-                            + _eol
-                            + "// Use getFields() instead of getDeclaredFields() so that we get fields in parent classes."
-                            + _eol
-                            + "java.lang.reflect.Field fields[] = actor.getClass().getFields();"
-                            + _eol
-                            + "// Note that there is overlap between the two arrays."
-                            + _eol
-                            + "java.lang.reflect.Field allFields[] = java.util.Arrays.copyOf(declaredFields, declaredFields.length + fields.length);"
-                            + _eol
-                            + "System.arraycopy(fields, 0, allFields, declaredFields.length, fields.length);"
-                            + _eol
-                            + "for (int i = 0; i < allFields.length; i++){"
-                            + _eol
-                            + "    ptolemy.data.expr.Parameter parameter = null;"
-                            + _eol
-                            + "    allFields[i].setAccessible(true);"
-                            + _eol
-                            + "    if (allFields[i].getName().equals(parameterSanitizedName)) {"
-                            + _eol
-                            + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);"
-                            + _eol
-                            + "    // If the field is a StringParameter, then we want to to assign to it."
-                            + _eol
-                            + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(allFields[i].getType())) {"
-                            + _eol
-                            + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);"
-                            + _eol
-                            + "// Check for private parameters that have setName() different than the name of the field."
-                            + _eol
-                            + "// $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml"
-                            + _eol
-                            + "// Uninitialized parameters may be null."
-                            + _eol
-                            + "        if (parameter != null && !parameter.getName().equals(parameterName)) {"
-                            + _eol
-                            + "            parameter = null;"
-                            + _eol
-                            + "        }"
-                            + _eol
-                            + "    }"
-                            + _eol
-                            + "    if (parameter != null) {"
-                            + _eol
-                            + "        parameter.setExpression(parameterValue );"
-                            + _eol
-                            + "       ((ptolemy.kernel.util.NamedObj)actor).attributeChanged(parameter);"
-                            + _eol
-                            + "        break;"
-                            + _eol
-                            + "    }"
-                            + _eol
-                            + "}" + _eol + "}" + _eol);
+            .add("// Search the fields of the class for a parameter by name."
+                    + _eol
+                    + "static void _autoAdapterSetPrivateParameter(Object actor, "
+                    + _eol
+                    + "String parameterName, String parameterSanitizedName, String parameterValue) throws Exception {"
+                    + _eol
+                    + "// Accessing private field."
+                    + _eol
+                    + "// Use getDeclaredFields() so that we get private fields."
+                    + _eol
+                    + "java.lang.reflect.Field declaredFields[] = actor.getClass().getDeclaredFields();"
+                    + _eol
+                    + "// Use getFields() instead of getDeclaredFields() so that we get fields in parent classes."
+                    + _eol
+                    + "java.lang.reflect.Field fields[] = actor.getClass().getFields();"
+                    + _eol
+                    + "// Note that there is overlap between the two arrays."
+                    + _eol
+                    + "java.lang.reflect.Field allFields[] = java.util.Arrays.copyOf(declaredFields, declaredFields.length + fields.length);"
+                    + _eol
+                    + "System.arraycopy(fields, 0, allFields, declaredFields.length, fields.length);"
+                    + _eol
+                    + "for (int i = 0; i < allFields.length; i++){"
+                    + _eol
+                    + "    ptolemy.data.expr.Parameter parameter = null;"
+                    + _eol
+                    + "    allFields[i].setAccessible(true);"
+                    + _eol
+                    + "    if (allFields[i].getName().equals(parameterSanitizedName)) {"
+                    + _eol
+                    + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);"
+                    + _eol
+                    + "    // If the field is a StringParameter, then we want to to assign to it."
+                    + _eol
+                    + "    } else if (ptolemy.data.expr.Parameter.class.isAssignableFrom(allFields[i].getType())) {"
+                    + _eol
+                    + "        parameter = (ptolemy.data.expr.Parameter)allFields[i].get(actor);"
+                    + _eol
+                    + "// Check for private parameters that have setName() different than the name of the field."
+                    + _eol
+                    + "// $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml"
+                    + _eol
+                    + "// Uninitialized parameters may be null."
+                    + _eol
+                    + "        if (parameter != null && !parameter.getName().equals(parameterName)) {"
+                    + _eol
+                    + "            parameter = null;"
+                    + _eol
+                    + "        }"
+                    + _eol
+                    + "    }"
+                    + _eol
+                    + "    if (parameter != null) {"
+                    + _eol
+                    + "        parameter.setExpression(parameterValue );"
+                    + _eol
+                    + "       ((ptolemy.kernel.util.NamedObj)actor).attributeChanged(parameter);"
+                    + _eol
+                    + "        break;"
+                    + _eol
+                    + "    }"
+                    + _eol
+                    + "}" + _eol + "}" + _eol);
         }
         _headerFiles.add("ptolemy.kernel.util.NamedObj;");
         for (Map.Entry<String, String> entry : _actorInstantiationMethods
@@ -845,14 +845,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 .booleanValue()) {
             // The array of TypedIOPorts used if the code generator variablesAsArrays is true.
             sharedCode
-                    .add("TypedIOPort [] _ioPortMap = new TypedIOPort["
-                            + getCodeGenerator().generatePtIOPortSize()
-                            + "];"
-                            + _eol
-                            + "TypedCompositeActor [] _compositeMap = new TypedCompositeActor["
-                            + getCodeGenerator()
-                                    .generatePtTypedCompositeActorSize() + "];"
-                            + _eol);
+            .add("TypedIOPort [] _ioPortMap = new TypedIOPort["
+                    + getCodeGenerator().generatePtIOPortSize()
+                    + "];"
+                    + _eol
+                    + "TypedCompositeActor [] _compositeMap = new TypedCompositeActor["
+                    + getCodeGenerator()
+                    .generatePtTypedCompositeActorSize() + "];"
+                    + _eol);
         }
         return sharedCode;
     }
@@ -937,7 +937,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     public static boolean isAutoAdapteredRemotePort(
             ProgramCodeGenerator codeGenerator, Port port)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         List linkedRelationList = port.linkedRelationList();
         if (linkedRelationList.size() == 0) {
             return false;
@@ -1172,8 +1172,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // if we split a long body, the declaration does not
                         // get separated from the use.
                         code.append("{" + _eol
-                        // Create temporary variables for each port so that we don't
-                        // read from empty mailbox.
+                                // Create temporary variables for each port so that we don't
+                                // read from empty mailbox.
                                 + _generateGetInsideDeclarations(name, name,
                                         type, 0) + _eol + "}" + _eol);
                     }
@@ -1185,7 +1185,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + _eol
                                 + _generateGetInsideDeclarations(name, name
                                         + "Source" + i, type, i) + _eol + "}"
-                                + _eol);
+                                        + _eol);
                     }
                     int sinks = outputPort.numberOfSinks();
                     for (int i = 0; i < sinks; i++) {
@@ -1193,7 +1193,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + _eol
                                 + _generateGetInsideDeclarations(name, name
                                         + "Sink" + i, type, i) + _eol + "}"
-                                + _eol);
+                                        + _eol);
                     }
                 }
             }
@@ -1203,7 +1203,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 "_AutoAdapterF_", code.toString());
 
         return //"try {" + _eol
-        "{" + _eol + splitFireCode[0] + _eol + splitFireCode[1] + _eol + "}"
+                "{" + _eol + splitFireCode[0] + _eol + splitFireCode[1] + _eol + "}"
                 + _eol;
         //+ "} catch (Exception ex) {" + _eol
         //+ "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\", ex);" + _eol
@@ -1311,7 +1311,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             boolean generateContainmentCode,
             boolean generateContainedVariables,
             boolean generateElectricityConnections)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         //String actorSymbol = getCodeGenerator().generateVariableName(
         //            actor) + "_actor";
         //String containerSymbol = getCodeGenerator().generateVariableName((((NamedObj) actor).getContainer()));
@@ -1327,45 +1327,45 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // FIXME: we should define a method that creates the containment hierarchy.
                 + (generateContainmentCode ? _generateContainmentCode(actor)
                         : " ")
-                + "}"
-                + _eol
-                + actorSymbol
-                + " = ("
-                + actor.getClass().getName()
-                + ")"
-                + containerSymbol
-                + ".getEntity(\""
-                + actor.getName()
-                + "\");"
-                + _eol
-                + "if ("
-                + actorSymbol
-                + " == null) {"
-                + _eol
-                + actorSymbol
-                + " = new "
-                + actor.getClass().getName()
-                + "("
-                + containerSymbol
-                + ", \""
-                + actor.getName()
-                + "\");"
-                + _eol
-                + _generateStringConsts(actor, actorSymbol, containerSymbol)
-                + (generateElectricityConnections ? _generateElectricityConnections(
-                        actor, actorSymbol, containerSymbol) : "")
-                + "}"
-                + _eol
-                + (generateContainedVariables ? _generateContainedVariables(
-                        actor, actorSymbol) : " ")
-                // Set the displayName so that actors that
-                // call getDisplayName() get the same value.
-                // Actors that generate random numbers often
-                // call getFullName(), then should call
-                // getDisplayName() instead.
-                + "        " + actorSymbol + ".setDisplayName(\""
-                + actor.getName() + "\");" + _eol + "}" + _eol + "return "
-                + actorSymbol + ";" + _eol;
+                        + "}"
+                        + _eol
+                        + actorSymbol
+                        + " = ("
+                        + actor.getClass().getName()
+                        + ")"
+                        + containerSymbol
+                        + ".getEntity(\""
+                        + actor.getName()
+                        + "\");"
+                        + _eol
+                        + "if ("
+                        + actorSymbol
+                        + " == null) {"
+                        + _eol
+                        + actorSymbol
+                        + " = new "
+                        + actor.getClass().getName()
+                        + "("
+                        + containerSymbol
+                        + ", \""
+                        + actor.getName()
+                        + "\");"
+                        + _eol
+                        + _generateStringConsts(actor, actorSymbol, containerSymbol)
+                        + (generateElectricityConnections ? _generateElectricityConnections(
+                                actor, actorSymbol, containerSymbol) : "")
+                                + "}"
+                                + _eol
+                                + (generateContainedVariables ? _generateContainedVariables(
+                                        actor, actorSymbol) : " ")
+                                        // Set the displayName so that actors that
+                                        // call getDisplayName() get the same value.
+                                        // Actors that generate random numbers often
+                                        // call getFullName(), then should call
+                                        // getDisplayName() instead.
+                                        + "        " + actorSymbol + ".setDisplayName(\""
+                                        + actor.getName() + "\");" + _eol + "}" + _eol + "return "
+                                        + actorSymbol + ";" + _eol;
         String nonArrayActorSymbol = "";
         if (actor instanceof TypedCompositeActor) {
             nonArrayActorSymbol = getCodeGenerator()
@@ -1464,10 +1464,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + _eol
                             + getCodeGenerator().comment(
                                     component.getFullName()) + _eol
-                            + "TypedCompositeActor cgContainer = _toplevel;"
-                            + _eol
-                            + "TypedCompositeActor temporaryContainer = null;"
-                            + _eol);
+                                    + "TypedCompositeActor cgContainer = _toplevel;"
+                                    + _eol
+                                    + "TypedCompositeActor temporaryContainer = null;"
+                                    + _eol);
             containmentCode.append(containerSymbol + " = cgContainer;" + _eol
                     + "}" + _eol);
 
@@ -1558,27 +1558,27 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // FIXME: we could have an attribute if set will generates variables.
                 if (composite.getName().equals("Generator")) {
                     variableCode
-                            .append("{"
-                                    + _eol
-                                    //+ "System.out.println(\"GeneratorHack: \");" + _eol
-                                    + "TypedCompositeActor genComposite = (TypedCompositeActor)"
-                                    + containerSymbol
-                                    + ".getEntity(\""
-                                    + composite.getName()
-                                    + "\");"
-                                    + _eol
-                                    + "if (genComposite == null) {"
-                                    + _eol
-                                    + "    genComposite = new "
-                                    + composite.getClass().getName()
-                                    + "("
-                                    + containerSymbol
-                                    + ", \""
-                                    + composite.getName()
-                                    + "\");"
-                                    + _eol
-                                    + _generateContainedVariables(composite,
-                                            "genComposite") + "}" + _eol + "}"
+                    .append("{"
+                            + _eol
+                            //+ "System.out.println(\"GeneratorHack: \");" + _eol
+                            + "TypedCompositeActor genComposite = (TypedCompositeActor)"
+                            + containerSymbol
+                            + ".getEntity(\""
+                            + composite.getName()
+                            + "\");"
+                            + _eol
+                            + "if (genComposite == null) {"
+                            + _eol
+                            + "    genComposite = new "
+                            + composite.getClass().getName()
+                            + "("
+                            + containerSymbol
+                            + ", \""
+                            + composite.getName()
+                            + "\");"
+                            + _eol
+                            + _generateContainedVariables(composite,
+                                    "genComposite") + "}" + _eol + "}"
                                     + _eol);
                 }
             }
@@ -1621,7 +1621,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateGetInside(String actorPortName,
             String codegenPortName, Type type, int channel)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         //codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
@@ -1637,20 +1637,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String ptolemyDataSymbol = "$actorSymbol(" + actorPortName
                     + "_ptolemyData)";
             return "{"
-                    + _eol
-                    //                 // Get the data from the Ptolemy port
-                    //                 + type.getTokenClass().getName() + " " + ptolemyData + "= (("
-                    //                 + type.getTokenClass().getName() + ")($actorSymbol("
-                    //                 + codegenPortName + ").getInside(0"
-                    //                 // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                    //                 + (channel == 0 ? "" : ", " + channel)
-                    //                 + ")));" + _eol
+            + _eol
+            //                 // Get the data from the Ptolemy port
+            //                 + type.getTokenClass().getName() + " " + ptolemyData + "= (("
+            //                 + type.getTokenClass().getName() + ")($actorSymbol("
+            //                 + codegenPortName + ").getInside(0"
+            //                 // For non-multiports "". For multiports, ", 0", ", 1" etc.
+            //                 + (channel == 0 ? "" : ", " + channel)
+            //                 + ")));" + _eol
 
-                    // Create an array for the codegen data.
-                    + _eol
-                    + getCodeGenerator()
-                            .comment(
-                                    "AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
+            // Create an array for the codegen data.
+            + _eol
+            + getCodeGenerator()
+            .comment(
+                    "AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
                     + " Token codeGenData = $Array_new("
                     + "((ArrayToken)"
                     + ptolemyDataSymbol
@@ -1665,20 +1665,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "   Array_set(codeGenData, i, "
                     + getCodeGenerator().codeGenType(
                             array.getDeclaredElementType()) + "_new(((("
-                    + codeGenElementType + "Token)(" + ptolemyDataSymbol
-                    + ".getElement(i)))." + targetElementType + "Value())));"
-                    + _eol + "  }" + _eol
+                            + codeGenElementType + "Token)(" + ptolemyDataSymbol
+                            + ".getElement(i)))." + targetElementType + "Value())));"
+                            + _eol + "  }" + _eol
 
-                    // Output our newly constructed token
-                    + " $put(" + actorPortName + ", codeGenData);" + _eol + "}"
-                    + _eol;
+                            // Output our newly constructed token
+                            + " $put(" + actorPortName + ", codeGenData);" + _eol + "}"
+                            + _eol;
         } else {
             String portData = actorPortName + "_portData"
                     + (channel == 0 ? "" : channel);
             return "$put(" + actorPortName
-            // Refer to the token by the full class name and obviate the
-            // need to manage imports.
-            //+ ", (" + _generatePtIOPortName(getComponent(), portData) + "))";
+                    // Refer to the token by the full class name and obviate the
+                    // need to manage imports.
+                    //+ ", (" + _generatePtIOPortName(getComponent(), portData) + "))";
                     + ", ($actorSymbol(" + portData + ")))";
 
         }
@@ -1705,7 +1705,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateGetInsideDeclarations(String actorPortName,
             String codegenPortName, Type type, int channel)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         codegenPortName = TemplateParser.escapePortName(codegenPortName);
         String codegenPortNameSymbol = _generatePtIOPortName(getComponent(),
@@ -1727,8 +1727,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "_ptolemyData)";
 
             return
-            // Get the data from the Ptolemy port
-            type.getTokenClass().getName()
+                    // Get the data from the Ptolemy port
+                    type.getTokenClass().getName()
                     + " "
                     + ptolemyDataSymbol
                     + " = (("
@@ -1743,99 +1743,99 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Create an array for the codegen data.
                     + _eol
                     + getCodeGenerator()
-                            .comment(
-                                    "AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
-                    + " Token "
-                    + " $actorSymbol("
-                    + portData
-                    + ")"
-                    + " = $Array_new("
-                    + "((ArrayToken)"
-                    + ptolemyDataSymbol
-                    + ").length(), 0);"
-                    + _eol
+                    .comment(
+                            "AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
+                            + " Token "
+                            + " $actorSymbol("
+                            + portData
+                            + ")"
+                            + " = $Array_new("
+                            + "((ArrayToken)"
+                            + ptolemyDataSymbol
+                            + ").length(), 0);"
+                            + _eol
 
-                    // Copy from the Ptolemy data to the codegen data.
-                    + " for (int i = 0; i < ((ArrayToken)"
-                    + ptolemyDataSymbol
-                    + ").length(); i++) {"
-                    + _eol
-                    + "   Array_set("
-                    + "$actorSymbol("
-                    + portData
-                    + ")"
-                    + ", i, "
-                    + getCodeGenerator().codeGenType(
-                            array.getDeclaredElementType())
-                    + "_new(((("
-                    + codeGenElementType
-                    + "Token)("
-                    + ptolemyDataSymbol
-                    + ".getElement(i)))."
-                    + targetElementType
-                    + "Value())));"
-                    + _eol
-                    + "  }"
-                    + _eol
-                    + _generateGetInside(actorPortName, codegenPortName, type,
-                            channel);
+                            // Copy from the Ptolemy data to the codegen data.
+                            + " for (int i = 0; i < ((ArrayToken)"
+                            + ptolemyDataSymbol
+                            + ").length(); i++) {"
+                            + _eol
+                            + "   Array_set("
+                            + "$actorSymbol("
+                            + portData
+                            + ")"
+                            + ", i, "
+                            + getCodeGenerator().codeGenType(
+                                    array.getDeclaredElementType())
+                                    + "_new(((("
+                                    + codeGenElementType
+                                    + "Token)("
+                                    + ptolemyDataSymbol
+                                    + ".getElement(i)))."
+                                    + targetElementType
+                                    + "Value())));"
+                                    + _eol
+                                    + "  }"
+                                    + _eol
+                                    + _generateGetInside(actorPortName, codegenPortName, type,
+                                            channel);
         } else if (type == BaseType.COMPLEX) {
             _headerFiles.add("ptolemy.math.Complex;");
             return "$targetType("
-                    + actorPortName
-                    + ") $actorSymbol("
-                    + portData
-                    + ");"
-                    + _eol
-                    + "Complex complex = (Complex)((("
-                    + type.getTokenClass().getName()
-                    + ")"
-                    + "("
-                    + codegenPortNameSymbol
-                    + ".getInside(0"
-                    + ")))."
-                    + _valueMethodName(type)
-                    + ");"
-                    + _eol
-                    + "double real = complex.real;"
-                    + _eol
-                    + "double imag = complex.imag;"
-                    + _eol
-                    + "$actorSymbol("
-                    + portData
-                    + ")"
-                    + " = $typeFunc(TYPE_Complex::new(real, imag));"
-                    + _eol
-                    + _generateGetInside(actorPortName, codegenPortName, type,
-                            channel);
+            + actorPortName
+            + ") $actorSymbol("
+            + portData
+            + ");"
+            + _eol
+            + "Complex complex = (Complex)((("
+            + type.getTokenClass().getName()
+            + ")"
+            + "("
+            + codegenPortNameSymbol
+            + ".getInside(0"
+            + ")))."
+            + _valueMethodName(type)
+            + ");"
+            + _eol
+            + "double real = complex.real;"
+            + _eol
+            + "double imag = complex.imag;"
+            + _eol
+            + "$actorSymbol("
+            + portData
+            + ")"
+            + " = $typeFunc(TYPE_Complex::new(real, imag));"
+            + _eol
+            + _generateGetInside(actorPortName, codegenPortName, type,
+                    channel);
 
             // For non-multiports "". For multiports, ", 0", ", 1" etc.
             //+ (channel == 0 ? "" : ", " + channel)
         } else if (type.equals(BaseType.OBJECT)) {
             //_headerFiles.add("ptolemy.math.Complex;");
             return "$targetType("
-                    + actorPortName
-                    + ") $actorSymbol("
-                    + portData
-                    + ");"
-                    + _eol
-                    + "Object object = (Object)((("
-                    + type.getTokenClass().getName()
-                    + ")"
-                    + "("
-                    + codegenPortNameSymbol
-                    + ".getInside(0"
-                    + ")))."
-                    + _valueMethodName(type)
-                    + ");"
-                    + _eol
-                    + "$actorSymbol("
-                    + portData
-                    + ")"
-                    + " = $typeFunc(TYPE_Object::new(object));"
-                    + _eol
-                    + _generateGetInside(actorPortName, codegenPortName, type,
-                            channel);
+            + actorPortName
+            + ") $actorSymbol("
+            + portData
+            + ");"
+            + _eol
+            + "Object object = (Object)((("
+            + type.getTokenClass().getName()
+            + ")"
+            + "("
+            + codegenPortNameSymbol
+            + ".getInside(0"
+            + ")))."
+            + _valueMethodName(type)
+            + ");"
+            + _eol
+            + "$actorSymbol("
+            + portData
+            + ")"
+            + " = $typeFunc(TYPE_Object::new(object));"
+            + _eol
+            + _generateGetInside(actorPortName, codegenPortName, type,
+                    channel);
 
             //             return "$targetType("
             //                 + actorPortName
@@ -1904,11 +1904,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         String escapedCodegenPortNameSymbol = _generatePtIOPortName(
                 getComponent(), escapedCodegenPortName);
         return "if (!c0PortA.isDeeplyConnected(" + portOrParameter + ")) {"
-                + _eol + "    $containerSymbol().connect(" + outputPortName
-                + "," + portOrParameter + ");" + _eol
-                + "    $containerSymbol().connect("
-                + escapedCodegenPortNameSymbol + ", c0PortB);" + _eol + "}"
-                + _eol;
+        + _eol + "    $containerSymbol().connect(" + outputPortName
+        + "," + portOrParameter + ");" + _eol
+        + "    $containerSymbol().connect("
+        + escapedCodegenPortNameSymbol + ", c0PortB);" + _eol + "}"
+        + _eol;
     }
 
     /** Generate port declaration code for a composite or atomic entity.
@@ -1992,7 +1992,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                         .contains(remoteActorContainer)) {
 
                                     _containersDeclared
-                                            .add(remoteActorContainer);
+                                    .add(remoteActorContainer);
                                     //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
                                     String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(
                                             remoteActorContainer,
@@ -2006,14 +2006,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                         .getContainer();
                                 if (remoteActorContainerContainer != null
                                         && !_containersDeclared
-                                                .contains(remoteActorContainerContainer)) {
+                                        .contains(remoteActorContainerContainer)) {
                                     _containersDeclared
-                                            .add(remoteActorContainerContainer);
+                                    .add(remoteActorContainerContainer);
                                     //String remoteActorContainerContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainerContainer);
                                     String remoteActorContainerContainerSymbol = _generatePtTypedCompositeActorName(
                                             remoteActorContainerContainer,
                                             remoteActorContainerContainer
-                                                    .getName());
+                                            .getName());
                                     code.append("TypedCompositeActor "
                                             + remoteActorContainerContainerSymbol
                                             + ";" + _eol);
@@ -2100,10 +2100,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (remoteActor.getContainer().getContainer() == null) {
                 if (verbosityLevel > 4) {
                     System.out
-                            .println(getComponent().getFullName()
-                                    + " remote actor "
-                                    + remoteActor.getFullName()
-                                    + " is close to the top, setting readingRemoteParameters to false");
+                    .println(getComponent().getFullName()
+                            + " remote actor "
+                            + remoteActor.getFullName()
+                            + " is close to the top, setting readingRemoteParameters to false");
                 }
                 readingRemoteParameters = false;
             } else {
@@ -2122,21 +2122,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         remoteActorContainerContainer.getName());
                 if (verbosityLevel > 4) {
                     System.out
-                            .println(getComponent().getFullName()
-                                    + " remote actor "
-                                    + remoteActor.getFullName()
-                                    + "Setting readingRemoteParameters "
-                                    + (remoteActor.getContainer()
-                                            .getContainer() != port
-                                            .getContainer().getContainer())
+                    .println(getComponent().getFullName()
+                            + " remote actor "
+                            + remoteActor.getFullName()
+                            + "Setting readingRemoteParameters "
+                            + (remoteActor.getContainer()
+                                    .getContainer() != port
+                                    .getContainer().getContainer())
                                     + " "
                                     + remoteActor.getContainer().getContainer()
-                                            .getContainer() != null);
+                                    .getContainer() != null);
                 }
                 if (remoteActor.getContainer().getContainer() != port
                         .getContainer().getContainer()
                         && remoteActor.getContainer().getContainer()
-                                .getContainer() != null) {
+                        .getContainer() != null) {
                     // The remoteActor could be contained by a composite, so we create connections
                     // all the way up.
                     // FIXME: In theory, we should have a loop here to deal with arbitrary depth
@@ -2344,26 +2344,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + AutoAdapter._externalPortName(
                                     port.getContainer(), codegenPortName)
                                     .replace("$", "\\u0024")
-                            + "\") == null) {"
-                            + _eol
-                            + escapedCodegenPortNameSymbol
-                            + " = new TypedIOPort($containerSymbol()"
-                            // Need to deal with backslashes in port names, see
-                            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
-                            + ", \""
-                            //+ codegenPortName.replace("\\", "\\\\")
-                            + AutoAdapter._externalPortName(
-                                    port.getContainer(), codegenPortName)
-                                    .replace("$", "\\u0024") + "\", "
-                            + port.isInput() + ", "
-                            + port.isOutput()
-                            + ");"
-                            + _eol
-                            // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-                            + "    " + escapedCodegenPortNameSymbol
-                            + ".setTypeEquals("
-                            + _typeToBaseType(port.getType()) + ");" + _eol
-                            + "}" + _eol);
+                                    + "\") == null) {"
+                                    + _eol
+                                    + escapedCodegenPortNameSymbol
+                                    + " = new TypedIOPort($containerSymbol()"
+                                    // Need to deal with backslashes in port names, see
+                                    // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
+                                    + ", \""
+                                    //+ codegenPortName.replace("\\", "\\\\")
+                                    + AutoAdapter._externalPortName(
+                                            port.getContainer(), codegenPortName)
+                                            .replace("$", "\\u0024") + "\", "
+                                            + port.isInput() + ", "
+                                            + port.isOutput()
+                                            + ");"
+                                            + _eol
+                                            // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
+                                            + "    " + escapedCodegenPortNameSymbol
+                                            + ".setTypeEquals("
+                                            + _typeToBaseType(port.getType()) + ");" + _eol
+                                            + "}" + _eol);
 
                 }
 
@@ -2394,7 +2394,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //String multiport = "";
                     code.append("if ($actorSymbol(actor).getPort(\""
                             + unescapedActorPortName.replace("\\", "\\\\")
-                                    .replace("$", "\\uu0024")
+                            .replace("$", "\\uu0024")
                             //+ AutoAdapter._externalPortName(port.getContainer(),
                             //        unescapedActorPortName)
                             + "\") == null) {"
@@ -2403,7 +2403,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + "TypedIOPort port"
                             + " = new TypedIOPort($actorSymbol(actor), \""
                             + unescapedActorPortName.replace("\\", "\\\\")
-                                    .replace("$", "\\u0024")
+                            .replace("$", "\\u0024")
                             //+ AutoAdapter._externalPortName(port.getContainer(),
                             //        unescapedActorPortName)
                             + "\", " + port.isInput() + ", " + port.isOutput()
@@ -2418,12 +2418,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             Parameter parameter = (Parameter) attribute;
                             String className = parameter.getClassName();
                             attributeCode
-                                    .append("parameter = new " + className
-                                            + "(port, \"" + parameter.getName()
-                                            + "\");" + _eol
-                                            + "parameter.setExpression(\""
-                                            + parameter.getExpression()
-                                            + "\");" + _eol);
+                            .append("parameter = new " + className
+                                    + "(port, \"" + parameter.getName()
+                                    + "\");" + _eol
+                                    + "parameter.setExpression(\""
+                                    + parameter.getExpression()
+                                    + "\");" + _eol);
                         }
                     }
                     if (attributeCode.length() > 0) {
@@ -2436,7 +2436,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             code.append("System.out.println(\"MP1\");" + _eol);
                         }
                         code.append(// escapedCodegenPortNameSymbol
-                        "port" + ".setMultiport(true);" + _eol);
+                                "port" + ".setMultiport(true);" + _eol);
                     }
 
                     code.append("}" + _eol);
@@ -2445,7 +2445,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // $PTII/bin/ptcg -language java  $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortWithStarsInName2.xml
                     portOrParameter = "(TypedIOPort)$actorSymbol(actor).getPort(\""
                             + unescapedActorPortName.replace("\\", "\\\\")
-                                    .replace("$", "\\uu0024")
+                            .replace("$", "\\uu0024")
 
                             //+ AutoAdapter._externalPortName(port.getContainer(),
                             //            unescapedActorPortName)
@@ -2490,7 +2490,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             String relationSetWidth = "";
                             if (moreThanOneRelation) {
                                 _headerFiles
-                                        .add("ptolemy.actor.TypedIORelation;");
+                                .add("ptolemy.actor.TypedIORelation;");
                                 code.append("{" + _eol + "TypedIORelation "
                                         + relationSymbol + " = null;" + _eol
                                         + portOrParameter + ".link("
@@ -2506,7 +2506,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     String multipleRemoteActorSymbol = getCodeGenerator()
                                             .generateVariableName(
                                                     multipleRemoteActor)
-                                            + "_actor";
+                                                    + "_actor";
                                     Field multipleRemoteFoundPortField = _findFieldByPortName(
                                             multipleRemoteActor,
                                             multipleRemotePort.getName());
@@ -2521,7 +2521,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                             + multipleRemoteActorSymbol
                                             + " = new "
                                             + multipleRemoteActor.getClass()
-                                                    .getName()
+                                            .getName()
                                             + "($containerSymbol() , \""
                                             //+ multipleRemoteActorSymbol
                                             + multipleRemoteActor.getName()
@@ -2540,15 +2540,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                             + _eol
                                             + "(("
                                             + multipleRemoteActor.getClass()
-                                                    .getName()
+                                            .getName()
                                             + ")"
                                             + multipleRemoteActorSymbol
                                             + ")."
                                             + multipleRemoteFoundPortField
-                                                    .getName()
+                                            .getName()
                                             + (multiplePortParameter != null ? ".getPort()"
                                                     : "") + ".link("
-                                            + relationSymbol + ");" + _eol);
+                                                    + relationSymbol + ");" + _eol);
                                 }
                                 code.append("}" + _eol);
                             } else {
@@ -2556,13 +2556,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     // Needed for
                                     // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
                                     _headerFiles
-                                            .add("ptolemy.actor.IORelation;");
+                                    .add("ptolemy.actor.IORelation;");
                                     relationAssignment = "IORelation relation = (IORelation)";
                                     relationSetWidth = "relation.setWidth("
                                             + port.getWidth() + "); " + _eol;
                                 } else if (remotePort.isMultiport()) {
                                     _headerFiles
-                                            .add("ptolemy.actor.IORelation;");
+                                    .add("ptolemy.actor.IORelation;");
                                     relationAssignment = "IORelation relation2 = (IORelation)";
                                     // Don't set the width to the width of the remote port if the remote port is a multiport. See
                                     // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
@@ -2612,8 +2612,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                         // FIXME: should portParameter be the remote port?
                                         + (portParameter != null ? ".getPort()"
                                                 : "") + ");" + _eol
-                                        + relationSetWidth + _eol + "}" + _eol
-                                        + "}" + _eol);
+                                                + relationSetWidth + _eol + "}" + _eol
+                                                + "}" + _eol);
                                 //                         code.append("((" + remoteActor.getClass().getName()
                                 //                                       + ")" + remoteActorSymbol + ")."
                                 //                                 + remoteFoundPortField.getName()
@@ -2634,19 +2634,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + AutoAdapter._externalPortName(
                                             remotePort.getContainer(),
                                             remotePort.getName())
-                                    + "\") == null) {"
-                                    + _eol
-                                    + escapedCodegenPortNameSymbol
-                                    + " = "
-                                    + " new TypedIOPort("
-                                    + remoteActorSymbol
-                                    + ", \""
-                                    + AutoAdapter._externalPortName(
-                                            remotePort.getContainer(),
-                                            remotePort.getName()).replace("$",
-                                            "\\u0024") + "\", "
-                                    + remotePort.isInput() + ", "
-                                    + remotePort.isOutput() + ");" + _eol);
+                                            + "\") == null) {"
+                                            + _eol
+                                            + escapedCodegenPortNameSymbol
+                                            + " = "
+                                            + " new TypedIOPort("
+                                            + remoteActorSymbol
+                                            + ", \""
+                                            + AutoAdapter._externalPortName(
+                                                    remotePort.getContainer(),
+                                                    remotePort.getName()).replace("$",
+                                                            "\\u0024") + "\", "
+                                                            + remotePort.isInput() + ", "
+                                                            + remotePort.isOutput() + ");" + _eol);
                             if (port.isMultiport()) {
                                 code.append(escapedCodegenPortNameSymbol
                                         + ".setMultiport(true);" + _eol);
@@ -2659,7 +2659,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + AutoAdapter._externalPortName(
                                             remotePort.getContainer(),
                                             remotePort.getName()).replace("$",
-                                            "\\uu0024") + "\")";
+                                                    "\\uu0024") + "\")";
                             if (!readingRemoteParameters) {
                                 if (verbosityLevel > 3) {
                                     code.append("    System.out.println(\"B1\");"
@@ -2677,14 +2677,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                         + AutoAdapter._externalPortName(
                                                 remotePort.getContainer(),
                                                 remotePort.getName()) + "\");"
-                                        + _eol + "        }" + _eol
-                                        + "    if (!" + escapedCodegenPortName
-                                        + ".equals(" + portOrParameter + ")) {"
-                                        + _eol
-                                        + "        $containerSymbol().connect("
-                                        + escapedCodegenPortName + ", "
-                                        + portOrParameter + ");" + _eol
-                                        + "    }" + _eol);
+                                                + _eol + "        }" + _eol
+                                                + "    if (!" + escapedCodegenPortName
+                                                + ".equals(" + portOrParameter + ")) {"
+                                                + _eol
+                                                + "        $containerSymbol().connect("
+                                                + escapedCodegenPortName + ", "
+                                                + portOrParameter + ");" + _eol
+                                                + "    }" + _eol);
                             } else {
                                 if (verbosityLevel > 3) {
                                     code.append("    System.out.println(\"B2\");"
@@ -2708,7 +2708,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     if (!readingRemoteParameters) {
                         if (!connectedAlready
                                 && connectedPorts
-                                        .get(escapedCodegenPortNameSymbol) == null) {
+                                .get(escapedCodegenPortNameSymbol) == null) {
                             connectedPorts.put(escapedCodegenPortNameSymbol,
                                     portOrParameter);
                             if (verbosityLevel > 3) {
@@ -2722,10 +2722,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             code.append(/*"if (!" + escapedCodegenPortNameSymbol + ".isDeeplyConnected("
                                           + portParameter + ")) {" + _eol
                                           + */
-                            "    $containerSymbol().connect("
+                                    "    $containerSymbol().connect("
                                     + escapedCodegenPortNameSymbol + ", "
                                     + portOrParameter + ");" + _eol
-                            /*+ "}" + _eol*/);
+                                    /*+ "}" + _eol*/);
                         }
                     } else {
                         String outputPortName = "c"
@@ -2854,7 +2854,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateSendInside(String actorPortName,
             String codegenPortName, Type type, int channel)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         codegenPortName = TemplateParser.escapePortName(codegenPortName);
         String codegenPortNameSymbol = _generatePtIOPortName(getComponent(),
@@ -2873,42 +2873,42 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String ptolemyDataSymbol = "$actorSymbol(" + actorPortName
                     + "_ptolemyData)";
             return "{"
-                    + _eol
-                    // Get the codegen data
-                    + " Token codeGenData = $get("
-                    + actorPortName
-                    // For non-multiports "". For multiports, #0, #1 etc.
-                    + (channel == 0 ? "" : "#" + channel)
-                    + ");"
-                    + _eol
+            + _eol
+            // Get the codegen data
+            + " Token codeGenData = $get("
+            + actorPortName
+            // For non-multiports "". For multiports, #0, #1 etc.
+            + (channel == 0 ? "" : "#" + channel)
+            + ");"
+            + _eol
 
-                    // Create a token to send
-                    + codeGenElementType
-                    + "Token [] "
-                    + ptolemyDataSymbol
-                    + " = new "
-                    + codeGenElementType
-                    + "Token [((Array)codeGenData.getPayload()).size];"
-                    + _eol
+            // Create a token to send
+            + codeGenElementType
+            + "Token [] "
+            + ptolemyDataSymbol
+            + " = new "
+            + codeGenElementType
+            + "Token [((Array)codeGenData.getPayload()).size];"
+            + _eol
 
-                    // Copy from the codegen data to the Ptolemy data
-                    + " for (int i = 0; i < ((Array)codeGenData.getPayload()).size; i++) {"
-                    + _eol + "   " + ptolemyDataSymbol + "[i] = new "
-                    + codeGenElementType + "Token(((" + javaElementType
-                    + ")(Array_get(codeGenData, i).getPayload()))."
-                    + targetElementType + "Value());" + _eol + " }"
-                    + _eol
+            // Copy from the codegen data to the Ptolemy data
+            + " for (int i = 0; i < ((Array)codeGenData.getPayload()).size; i++) {"
+            + _eol + "   " + ptolemyDataSymbol + "[i] = new "
+            + codeGenElementType + "Token(((" + javaElementType
+            + ")(Array_get(codeGenData, i).getPayload()))."
+            + targetElementType + "Value());" + _eol + " }"
+            + _eol
 
-                    // Set the type.
-                    + "   " + codegenPortNameSymbol + ".setTypeEquals("
-                    + _typeToBaseType(type) + ");" + _eol
-                    // Output our newly constructed token
-                    + codegenPortNameSymbol + ".sendInside(0, new ArrayToken("
-                    + ptolemyDataSymbol + "));" + _eol + "}" + _eol;
+            // Set the type.
+            + "   " + codegenPortNameSymbol + ".setTypeEquals("
+            + _typeToBaseType(type) + ");" + _eol
+            // Output our newly constructed token
+            + codegenPortNameSymbol + ".sendInside(0, new ArrayToken("
+            + ptolemyDataSymbol + "));" + _eol + "}" + _eol;
         } else if (type == BaseType.COMPLEX) {
             return
-            // Set the type.
-            "   " + codegenPortNameSymbol + ".setTypeEquals("
+                    // Set the type.
+                    "   " + codegenPortNameSymbol + ".setTypeEquals("
                     + _typeToBaseType(type) + ");" + _eol
                     // Send data to the actor.
                     + "    " + codegenPortNameSymbol
@@ -2928,37 +2928,37 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } else if (type.equals(BaseType.OBJECT)) {
             _headerFiles.add("ptolemy.data.ObjectToken;");
             return "{"
-                    + _eol
-                    // Set the type.
-                    + codegenPortNameSymbol
-                    + ".setTypeEquals("
-                    + _typeToBaseType(type)
-                    + ");"
-                    + _eol
-                    + "Token cgToken = $get("
-                    + actorPortName
-                    + ")"
-                    // For non-multiports "". For multiports, #0, #1 etc.
-                    + (channel == 0 ? "" : "#" + channel)
-                    + ";"
-                    + _eol
-                    + "ObjectToken objectToken = null;"
-                    + _eol
-                    + "if (cgToken == null) {"
-                    + _eol
-                    + "   objectToken = new ObjectToken(cgToken);"
-                    + _eol
-                    + "} else {"
-                    + _eol
-                    + "   objectToken = new ObjectToken(((ObjectCG)cgToken.payload).object);"
-                    + _eol + "}" + _eol
-                    // Send data to the actor.
-                    + "    " + codegenPortNameSymbol
-                    + ".sendInside(0, objectToken);" + _eol + "}" + _eol;
+            + _eol
+            // Set the type.
+            + codegenPortNameSymbol
+            + ".setTypeEquals("
+            + _typeToBaseType(type)
+            + ");"
+            + _eol
+            + "Token cgToken = $get("
+            + actorPortName
+            + ")"
+            // For non-multiports "". For multiports, #0, #1 etc.
+            + (channel == 0 ? "" : "#" + channel)
+            + ";"
+            + _eol
+            + "ObjectToken objectToken = null;"
+            + _eol
+            + "if (cgToken == null) {"
+            + _eol
+            + "   objectToken = new ObjectToken(cgToken);"
+            + _eol
+            + "} else {"
+            + _eol
+            + "   objectToken = new ObjectToken(((ObjectCG)cgToken.payload).object);"
+            + _eol + "}" + _eol
+            // Send data to the actor.
+            + "    " + codegenPortNameSymbol
+            + ".sendInside(0, objectToken);" + _eol + "}" + _eol;
         } else {
             return
-            // Set the type.
-            codegenPortNameSymbol + ".setTypeEquals(" + _typeToBaseType(type)
+                    // Set the type.
+                    codegenPortNameSymbol + ".setTypeEquals(" + _typeToBaseType(type)
                     + ");" + _eol
                     // Send data to the actor.
                     + "    " + codegenPortNameSymbol + ".sendInside(0, new "
@@ -3012,7 +3012,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateStringConsts(NamedObj composite,
             String actorSymbol, String containerSymbol)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (!composite.getContainer().getName().equals("Electricity")) {
             return "";
         }
@@ -3036,21 +3036,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + "TypedIOPort port = null;" + _eol);
                         }
                         stringConstantCode
-                                .append("stringConst = new StringConst("
-                                        + containerSymbol + ", \""
-                                        + stringConstant.getName() + "\");"
-                                        + _eol
-                                        + "stringConst.value.setExpression(\""
-                                        + stringConstant.value.getExpression()
-                                        + "\");" + _eol
-                                        + "port = new TypedIOPort("
-                                        + actorSymbol + ", \""
-                                        + castPort.getName() + "\", "
-                                        + castPort.isInput() + ", "
-                                        + castPort.isOutput() + ");" + _eol
-                                        + containerSymbol
-                                        + ".connect(port, stringConst."
-                                        + remotePort.getName() + ");" + _eol);
+                        .append("stringConst = new StringConst("
+                                + containerSymbol + ", \""
+                                + stringConstant.getName() + "\");"
+                                + _eol
+                                + "stringConst.value.setExpression(\""
+                                + stringConstant.value.getExpression()
+                                + "\");" + _eol
+                                + "port = new TypedIOPort("
+                                + actorSymbol + ", \""
+                                + castPort.getName() + "\", "
+                                + castPort.isInput() + ", "
+                                + castPort.isOutput() + ");" + _eol
+                                + containerSymbol
+                                + ".connect(port, stringConst."
+                                + remotePort.getName() + ");" + _eol);
                     }
                 }
                 if (stringConstantCode.length() != 0) {
@@ -3071,7 +3071,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateElectricityConnections(NamedObj composite,
             String actorSymbol, String containerSymbol)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (!composite.getContainer().getName().equals("Electricity")) {
             return "";
         }
@@ -3098,13 +3098,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 remoteActorContainer,
                                 remoteActorContainer.getName());
                         connectionCode
-                                .append("{"
-                                        + _eol
-                                        + "TypedCompositeActor e0 = (TypedCompositeActor)"
-                                        + _generateActorInstantiation(
-                                                remoteActor, remoteActorSymbol,
-                                                remoteActorContainerSymbol,
-                                                false, true, false)
+                        .append("{"
+                                + _eol
+                                + "TypedCompositeActor e0 = (TypedCompositeActor)"
+                                + _generateActorInstantiation(
+                                        remoteActor, remoteActorSymbol,
+                                        remoteActorContainerSymbol,
+                                        false, true, false)
                                         + "TypedIOPort e0PortA = (TypedIOPort)e0.getPort(\""
                                         + remotePort.getName()
                                         + "\");"
@@ -3209,9 +3209,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         .getToken()).intValue();
                 if (verbosityLevel > 0) {
                     System.out
-                            .println("Partially skipping "
-                                    + port
-                                    + " because it has a relation that starts with 'autoConnector'");
+                    .println("Partially skipping "
+                            + port
+                            + " because it has a relation that starts with 'autoConnector'");
                 }
                 return true;
             }
@@ -3228,7 +3228,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private boolean _isReadingRemoteParameters(TypedIOPort port,
             int channelNumber, List sourceOrSinkPorts)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         int verbosityLevel = ((IntToken) getCodeGenerator().verbosity
                 .getToken()).intValue();
 
@@ -3295,9 +3295,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                         .next()).getContainer();
                                 if (verbosityLevel > 14) {
                                     System.out
-                                            .println("_isReadingRemoteParameters: upstream actor: "
-                                                    + upstreamActor
-                                                            .getFullName());
+                                    .println("_isReadingRemoteParameters: upstream actor: "
+                                            + upstreamActor
+                                            .getFullName());
                                 }
                                 if (upstreamActor.getContainer().equals(
                                         remoteActor.getContainer())
@@ -3325,24 +3325,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                         .endsWith("SigmoidalActivation")) {
                                     if (verbosityLevel > 14) {
                                         System.out
-                                                .println("_isReadingRemoteParameters: "
-                                                        + namedObj.getClass()
-                                                                .getName()
-                                                        + " "
-                                                        + namedObj
-                                                                .getFullName()
-                                                        + " is autoadaptered, NOT returning false");
+                                        .println("_isReadingRemoteParameters: "
+                                                + namedObj.getClass()
+                                                .getName()
+                                                + " "
+                                                + namedObj
+                                                .getFullName()
+                                                + " is autoadaptered, NOT returning false");
                                     }
                                 } else {
                                     if (verbosityLevel > 14) {
                                         System.out
-                                                .println("_isReadingRemoteParameters: "
-                                                        + namedObj.getClass()
-                                                                .getName()
-                                                        + " "
-                                                        + namedObj
-                                                                .getFullName()
-                                                        + " is autoadaptered, returning false");
+                                        .println("_isReadingRemoteParameters: "
+                                                + namedObj.getClass()
+                                                .getName()
+                                                + " "
+                                                + namedObj
+                                                .getFullName()
+                                                + " is autoadaptered, returning false");
                                     }
                                     return false;
                                 }
@@ -3365,10 +3365,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             // We have parameters in the container, so return true.
                             if (verbosityLevel > 14) {
                                 System.out
-                                        .println("_isReadingRemoteParameters: "
-                                                + remoteContainer.getFullName()
-                                                + " return True, parameters: "
-                                                + parameters);
+                                .println("_isReadingRemoteParameters: "
+                                        + remoteContainer.getFullName()
+                                        + " return True, parameters: "
+                                        + parameters);
                             }
                             return true;
                         }

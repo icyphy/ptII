@@ -246,8 +246,8 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {
                 System.err
-                .println("SideEffectFreeInvocationRemover: could not add "
-                        + classMethod + " to the reachable method set.");
+                        .println("SideEffectFreeInvocationRemover: could not add "
+                                + classMethod + " to the reachable method set.");
             }
         }
 

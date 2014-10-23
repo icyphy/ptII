@@ -164,7 +164,7 @@ public class TokenToJSON extends Converter {
      *  expressed in JSON.
      */
     private Object _mapTokenToValue(Token token) throws IllegalActionException,
-            JSONException {
+    JSONException {
 
         // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
@@ -208,7 +208,7 @@ public class TokenToJSON extends Converter {
      *  ArrayToken cannot be expressed in JSON.
      */
     private JSONArray _scanArrayToken(ArrayToken token) throws JSONException,
-            IllegalActionException {
+    IllegalActionException {
         int i = 0;
         Object[] array = new Object[token.length()];
 

@@ -148,7 +148,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * deserialized alignments.
      */
     private static final Alignment[] VALUES = { DEFAULT, FILL, LEFT, RIGHT,
-            CENTER, TOP, BOTTOM };
+        CENTER, TOP, BOTTOM };
 
     /**
      * A reusable <code>Insets</code> object to reduce object instantiation.

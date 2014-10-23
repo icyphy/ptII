@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (beth)
  */
 public class CatchExceptionAttribute extends AbstractInitializableAttribute
-        implements ExceptionHandler, ExecutionListener {
+implements ExceptionHandler, ExecutionListener {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

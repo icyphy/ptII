@@ -112,7 +112,7 @@ public class PTree extends JTree {
     ////                         inner classes                     ////
     // A Drag Gesture listener for the tree.
     private static class PTreeDragGestureListener implements
-            DragGestureListener {
+    DragGestureListener {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
         @Override

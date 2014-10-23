@@ -72,7 +72,7 @@ public class IplImage extends Structure {
     }
 
     public static class ByReference extends IplImage implements
-            Structure.ByReference {
+    Structure.ByReference {
     }
 
     public ByReference getByReference() {
@@ -99,6 +99,6 @@ public class IplImage extends Structure {
                 //public IplImage maskROI
                 "roi", "maskROI", "imageId", "tileInfo", "imageSize",
                 "imageData", "widthStep", "BorderMode", "BorderConst",
-                "ImageDataOrigin" });
+        "ImageDataOrigin" });
     }
 }

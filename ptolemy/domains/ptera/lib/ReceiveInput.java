@@ -397,7 +397,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
      @Pt.AcceptedRating Red (tfeng)
      */
     private class InputListener extends RefiringData implements KeyListener,
-            MouseListener, WindowListener {
+    MouseListener, WindowListener {
 
         /** React to a key press event.
          *
@@ -407,7 +407,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         public void keyPressed(KeyEvent e) {
             if (_receiveKeyPress
                     && (_acceptableComponentType == null || _acceptableComponentType
-                            .isInstance(e.getComponent()))) {
+                    .isInstance(e.getComponent()))) {
                 String text = KeyEvent.getKeyText(e.getKeyCode());
                 if (_keyPattern == null || _keyPattern.matcher(text).matches()) {
                     e.consume();
@@ -466,7 +466,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         public void mousePressed(MouseEvent e) {
             if (_receiveMousePress
                     && (_acceptableComponentType == null || _acceptableComponentType
-                            .isInstance(e.getComponent()))) {
+                    .isInstance(e.getComponent()))) {
                 e.consume();
                 _componentType = e.getComponent().getClass();
                 _mousePressLocation = new Point(e.getX(), e.getY());

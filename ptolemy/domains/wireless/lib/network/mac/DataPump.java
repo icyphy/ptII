@@ -220,7 +220,7 @@ public class DataPump extends MACActorBase {
                     Token[] value = { new IntToken(TxStart),
                             new IntToken(length), new IntToken(rate) };
                     toPHYLayer
-                            .send(0, new RecordToken(TxStartMsgFields, value));
+                    .send(0, new RecordToken(TxStartMsgFields, value));
                     _state = Wait_TxStart;
 
                     break;

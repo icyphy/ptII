@@ -114,7 +114,7 @@ public class ArrayRemoveElement extends TypedAtomicActor {
                 .clone(workspace);
         try {
             newObject.array
-                    .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
+            .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
             newObject.output.setTypeAtLeast(newObject.array);
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Clone failed: " + e);

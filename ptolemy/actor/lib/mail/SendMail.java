@@ -119,35 +119,35 @@ public class SendMail extends TypedAtomicActor {
         to.setStringMode(true);
         to.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
         new SingletonParameter(to.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         cc = new PortParameter(this, "cc");
         cc.setStringMode(true);
         cc.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
         new SingletonParameter(cc.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         from = new PortParameter(this, "from");
         from.setStringMode(true);
         from.setExpression("noreply@noreply.com");
         new SingletonParameter(from.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         replyTo = new PortParameter(this, "replyTo");
         replyTo.setStringMode(true);
         replyTo.setExpression("");
         new SingletonParameter(replyTo.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         subject = new PortParameter(this, "subject");
         subject.setStringMode(true);
         new SingletonParameter(subject.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         message = new PortParameter(this, "message");
         message.setStringMode(true);
         new SingletonParameter(message.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         TextStyle style = new TextStyle(message, "style");
         style.height.setExpression("30");
 
@@ -157,25 +157,25 @@ public class SendMail extends TypedAtomicActor {
         SMTPHostName.setStringMode(true);
         SMTPHostName.setExpression("smtp.myserver.com");
         new SingletonParameter(SMTPHostName.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         SMTPUserName = new PortParameter(this, "SMTPUserName");
         SMTPUserName.setStringMode(true);
         SMTPUserName.setExpression("myusername");
         new SingletonParameter(SMTPUserName.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         password = new PortParameter(this, "password");
         password.setStringMode(true);
         password.setExpression("");
         new SingletonParameter(password.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         SMTPPort = new PortParameter(this, "SMTPPort");
         SMTPPort.setStringMode(true);
         SMTPPort.setExpression("");
         new SingletonParameter(SMTPPort.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         enableSSL = new Parameter(this, "enableSSL");
         enableSSL.setTypeEquals(BaseType.BOOLEAN);

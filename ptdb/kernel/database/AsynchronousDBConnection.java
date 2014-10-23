@@ -394,7 +394,7 @@ public class AsynchronousDBConnection implements DBConnection {
     @Override
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
-            throws DBExecutionException {
+                    throws DBExecutionException {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeModelNameSearchTask "
                         + "is not supported by this type of DBConnection");
@@ -526,9 +526,9 @@ public class AsynchronousDBConnection implements DBConnection {
 
         StringBuffer connState = new StringBuffer();
         connState.append(":Processing Error-")
-                .append(_taskQueue.hasProcessingError()).append(":");
+        .append(_taskQueue.hasProcessingError()).append(":");
         connState.append(":All Tasks Added-")
-                .append(_taskQueue.areAllTasksAdded()).append(":");
+        .append(_taskQueue.areAllTasksAdded()).append(":");
         return connState.toString();
     }
 

@@ -269,7 +269,7 @@ public class PtExecuteApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _localCommandOptions = { { "-config",
-            "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>" }, };
+    "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

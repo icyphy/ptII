@@ -160,7 +160,7 @@ public class ModelPanel extends JPanel {
                 JOptionPane.showMessageDialog(this,
                         "The specified model could "
                                 + "not be found in the database.",
-                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
+                                "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

@@ -179,9 +179,9 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                     // a subpanel is deleted, then the subsubpanel layout is not deleted.
                     try {
                         MessageHandler
-                                .warning("A layout is given for a subpanel named '"
-                                        + subpanelName
-                                        + "', but there is no instance of this subpanel.");
+                        .warning("A layout is given for a subpanel named '"
+                                + subpanelName
+                                + "', but there is no instance of this subpanel.");
                     } catch (CancelException e) {
                         throw new IllegalActionException(_model, "Canceled");
                     }
@@ -418,8 +418,8 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             // the drag.  Why?
             try {
                 MessageHandler
-                        .warning("Unrecognized entry in control panel layout: "
-                                + name);
+                .warning("Unrecognized entry in control panel layout: "
+                        + name);
             } catch (CancelException e) {
                 throw new IllegalActionException(_model, "Canceled");
             }
@@ -566,9 +566,9 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                     constraints.append("\" gridX=\"3\" gridY=\"");
                     constraints.append(row);
                     constraints
-                            .append("\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
-                                    + "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" "
-                                    + "rightInset=\"0\" leftInset=\"0\"/>\n");
+                    .append("\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
+                            + "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" "
+                            + "rightInset=\"0\" leftInset=\"0\"/>\n");
                     row = row + 2;
                 }
             }

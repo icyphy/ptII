@@ -101,7 +101,7 @@ public class LoopTest2 extends TypedAtomicActor {
             } catch (NumberFormatException ex) {
                 throw new IllegalActionException(this, ex,
                         "Could not convert \"" + counterStr
-                        + "\" to an integer.");
+                                + "\" to an integer.");
             }
             System.out.println("counter input  is " + counterInt);
 
@@ -116,7 +116,7 @@ public class LoopTest2 extends TypedAtomicActor {
                 if (xmlResultsStr.equals("Results Found")) {
                     System.out.println("Got data, set to " + xmlResultsStr);
                     foundResultsOutput
-                            .broadcast(new StringToken(xmlResultsStr));
+                    .broadcast(new StringToken(xmlResultsStr));
                     continueLooping = false;
                 }
             } else {

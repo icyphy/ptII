@@ -165,9 +165,9 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
                     // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
                     System.out
-                            .println("Warning: LinkToOpenTableaux._provideEachAttribute() "
-                                    + object.getFullName()
-                                    + ", an open effigy was null?");
+                    .println("Warning: LinkToOpenTableaux._provideEachAttribute() "
+                            + object.getFullName()
+                            + ", an open effigy was null?");
                 } else {
                     NamedObj container = component.getContainer();
                     while (container != null) {
@@ -336,7 +336,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml $PTII/ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution
 
         if (tableaux.size() == 0) {
-            List<PtolemyEffigy> effigies = effigy.entityList(PtolemyEffigy.class);
+            List<PtolemyEffigy> effigies = effigy
+                    .entityList(PtolemyEffigy.class);
             if (effigies != null && effigies.size() > 0) {
                 tableaux = effigies.get(0).entityList(Tableau.class);
             }

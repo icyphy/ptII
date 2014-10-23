@@ -109,7 +109,7 @@ public class Analysis {
             if (analyzer instanceof CachedStrategy) {
                 if (graph() == analyzer().graph()) {
                     ((CachedStrategy) analyzer)
-                            .setCachedResult((CachedStrategy) _analyzer);
+                    .setCachedResult((CachedStrategy) _analyzer);
                 }
             }
 

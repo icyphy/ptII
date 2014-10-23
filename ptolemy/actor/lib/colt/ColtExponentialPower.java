@@ -76,7 +76,7 @@ public class ColtExponentialPower extends ColtRandomSource {
         tau = new PortParameter(this, "tau", new DoubleToken(1.0));
         tau.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(tau.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         tau.moveToFirst();
     }

@@ -162,7 +162,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class SDFDirector extends StaticSchedulingDirector implements
-        PeriodicDirector {
+PeriodicDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -174,7 +174,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *   an entity with the specified name.
      */
     public SDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -191,7 +191,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *   an entity with the specified name.
      */
     public SDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -568,8 +568,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should produce " + rate
-                                            + " tokens, but there were only "
-                                            + k + " tokens available.");
+                                    + " tokens, but there were only "
+                                    + k + " tokens available.");
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -819,7 +819,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
-                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -878,8 +878,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should consume " + rate
-                                            + " tokens, but there were only "
-                                            + k + " tokens available.");
+                                    + " tokens, but there were only "
+                                    + k + " tokens available.");
                         }
                     }
                 } else if (port.isKnown(i)) {
@@ -948,8 +948,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                     } else {
                         throw new IllegalActionException(this, port,
                                 "Port should produce " + rate
-                                        + " tokens, but there were only " + k
-                                        + " tokens available.");
+                                + " tokens, but there were only " + k
+                                + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -978,7 +978,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // AUTO and UNBOUNDED are used to set the value of iterations,
         // see the getIterations() method.

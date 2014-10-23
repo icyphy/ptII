@@ -127,7 +127,7 @@ public class ConceptController extends AttributeInOntologyController {
             super("Toggle Acceptability");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_A, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         ///////////////////////////////////////////////////////////////////

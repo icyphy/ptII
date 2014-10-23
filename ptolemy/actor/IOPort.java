@@ -300,7 +300,7 @@ public class IOPort extends ComponentPort {
                 }
             }
         } else if (attribute == defaultValue) {
-                _persistentToken = defaultValue.getToken();
+            _persistentToken = defaultValue.getToken();
         }
         super.attributeChanged(attribute);
     }
@@ -327,7 +327,7 @@ public class IOPort extends ComponentPort {
      *     it.
      */
     public void broadcast(Token token) throws IllegalActionException,
-            NoRoomException {
+    NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -661,7 +661,7 @@ public class IOPort extends ComponentPort {
                     if (width == -1) {
                         throw new IllegalActionException(this,
                                 "Width of relation \"" + relation.getName()
-                                        + "\" was -1?");
+                                + "\" was -1?");
                     }
 
                     Receiver[][] result = new Receiver[width][1];
@@ -853,7 +853,7 @@ public class IOPort extends ComponentPort {
      * @exception InvalidStateException Not thrown in this base class
      */
     public Receiver[][] deepGetReceivers() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         if (!isInput()) {
             return _EMPTY_RECEIVER_ARRAY;
         }
@@ -917,7 +917,7 @@ public class IOPort extends ComponentPort {
      *   if the channel index is out of range.
      */
     public Token get(int channelIndex) throws NoTokenException,
-            IllegalActionException {
+    IllegalActionException {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
@@ -986,7 +986,7 @@ public class IOPort extends ComponentPort {
         }
         // If this port is persistent, then remember the value of this input.
         if (_persistentToken != null) {
-                _persistentToken = token;
+            _persistentToken = token;
         }
 
         return token;
@@ -1200,7 +1200,7 @@ public class IOPort extends ComponentPort {
      *   if the channel index is out of range.
      */
     public Token getInside(int channelIndex) throws NoTokenException,
-            IllegalActionException {
+    IllegalActionException {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
@@ -1269,7 +1269,7 @@ public class IOPort extends ComponentPort {
         }
         // If the port is persistent, update the remembered value.
         if (_persistentToken != null) {
-                _persistentToken = token;
+            _persistentToken = token;
         }
         return token;
     }
@@ -1372,14 +1372,14 @@ public class IOPort extends ComponentPort {
             boolean isOutsideRelation) {
         List<Relation> relations = isOutsideRelation ? port
                 .linkedRelationList() : port.insideRelationList();
-        int i = 0;
-        for (Relation relation2 : relations) {
-            if (relation == relation2) {
-                return i;
-            }
-            ++i;
-        }
-        return -1;
+                int i = 0;
+                for (Relation relation2 : relations) {
+                    if (relation == relation2) {
+                        return i;
+                    }
+                    ++i;
+                }
+                return -1;
     }
 
     /** Return the current time associated with a certain channel.
@@ -1486,7 +1486,7 @@ public class IOPort extends ComponentPort {
                     if (oldSeqNum == -1
                             && communicationAspect != null
                             && !_communicationAspects
-                                    .contains(communicationAspect)) {
+                            .contains(communicationAspect)) {
                         attribute.sequenceNumber.setToken(new IntToken(seqNum));
                         _communicationAspectMap.put(seqNum, attribute);
                         sequenceNumber = sequenceNumber + 1;
@@ -1508,7 +1508,7 @@ public class IOPort extends ComponentPort {
                     Decorator decorator = attribute.getDecorator();
                     if (decorator != null) {
                         _communicationAspects
-                                .add((CommunicationAspect) decorator);
+                        .add((CommunicationAspect) decorator);
                     }
                 }
             } catch (Exception e) {
@@ -1768,12 +1768,12 @@ public class IOPort extends ComponentPort {
                                 // The previous error message was meaningless.
                                 throw new InternalErrorException(this, ex,
                                         "Failed to set farReceivers[" + index
-                                                + "] = deepReceivers[" + i
-                                                + "]. "
-                                                + "farReceivers.length = "
-                                                + farReceivers.length
-                                                + " deepReceivers.length = "
-                                                + deepReceivers.length + ".");
+                                        + "] = deepReceivers[" + i
+                                        + "]. "
+                                        + "farReceivers.length = "
+                                        + farReceivers.length
+                                        + " deepReceivers.length = "
+                                        + deepReceivers.length + ".");
                             }
                             index++;
                         }
@@ -2884,7 +2884,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If defaultValue cannot be retrieved.
      */
     public void reset() throws IllegalActionException {
-            _persistentToken = defaultValue.getToken();
+        _persistentToken = defaultValue.getToken();
     }
 
     /** Send the specified token to all receivers connected to the
@@ -3217,7 +3217,7 @@ public class IOPort extends ComponentPort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // Invalidate schedule and type resolution of the old container.
         Actor oldContainer = (Actor) getContainer();
 

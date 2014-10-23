@@ -66,10 +66,11 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
         Figure figure = s.getFigure();
         // Set the size of the grab handles to be independent of the zoom factor.
         if (figure != null) {
-            AffineTransform transform = figure.getTransformContext().getScreenTransform();
+            AffineTransform transform = figure.getTransformContext()
+                    .getScreenTransform();
             // Assume the zoom factor in the x axis is the same as the y axis.
             double scaleX = transform.getScaleX();
-            setSize(4.0f / (float)scaleX);
+            setSize(4.0f / (float) scaleX);
         } else {
             setSize(_size);
         }

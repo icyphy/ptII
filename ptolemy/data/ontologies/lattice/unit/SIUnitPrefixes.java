@@ -47,12 +47,12 @@ public enum SIUnitPrefixes {
 
     YOTTA(1e24, "yotta", "Y"), ZETTA(1e21, "zetta", "Z"), EXA(1e18, "exa", "E"), PETA(
             1e15, "peta", "P"), TERA(1e12, "tera", "T"), GIGA(1e9, "giga", "G"), MEGA(
-            1e6, "mega", "M"), KILO(1e3, "kilo", "k"), HECTO(100.0, "hecto",
-            "h"), DEKA(10.0, "deka", "da"), DECI(0.1, "deci", "d"), CENTI(0.01,
-            "centi", "c"), MILLI(1e-3, "milli", "m"), MICRO(1e-6, "micro", "u"), NANO(
-            1e-9, "nano", "n"), PICO(1e-12, "pico", "p"), FEMTO(1e-15, "femto",
-            "f"), ATTO(1e-18, "atto", "a"), ZEPTO(1e-21, "zepto", "z"), YOCTO(
-            1e-24, "yocto", "y");
+                    1e6, "mega", "M"), KILO(1e3, "kilo", "k"), HECTO(100.0, "hecto",
+                            "h"), DEKA(10.0, "deka", "da"), DECI(0.1, "deci", "d"), CENTI(0.01,
+                                    "centi", "c"), MILLI(1e-3, "milli", "m"), MICRO(1e-6, "micro", "u"), NANO(
+                                            1e-9, "nano", "n"), PICO(1e-12, "pico", "p"), FEMTO(1e-15, "femto",
+                                                    "f"), ATTO(1e-18, "atto", "a"), ZEPTO(1e-21, "zepto", "z"), YOCTO(
+                                                            1e-24, "yocto", "y");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private enumeration constructor   ////

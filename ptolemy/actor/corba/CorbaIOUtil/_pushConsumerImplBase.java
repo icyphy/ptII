@@ -11,9 +11,9 @@ package ptolemy.actor.corba.CorbaIOUtil;
  */
 @SuppressWarnings("serial")
 public abstract class _pushConsumerImplBase extends
-        org.omg.CORBA.portable.ObjectImpl implements
-        ptolemy.actor.corba.CorbaIOUtil.pushConsumer,
-        org.omg.CORBA.portable.InvokeHandler {
+org.omg.CORBA.portable.ObjectImpl implements
+ptolemy.actor.corba.CorbaIOUtil.pushConsumer,
+org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _pushConsumerImplBase() {
     }
@@ -49,7 +49,7 @@ public abstract class _pushConsumerImplBase extends
             } catch (ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
+                .write(out, $ex);
             }
 
             break;

@@ -307,8 +307,8 @@ public class WebServer extends AbstractInitializableAttribute {
         // web server.
 
         if (attribute == preferredPort) {
-            if (preferredPort == null ||
-                    preferredPort.getExpression().isEmpty()) {
+            if (preferredPort == null
+                    || preferredPort.getExpression().isEmpty()) {
                 _dynamicPortSelection = true;
             } else {
                 _dynamicPortSelection = false;
@@ -367,8 +367,9 @@ public class WebServer extends AbstractInitializableAttribute {
         int preferredPortValue = WebServerUtilities.DEFAULT_PORT_NUMBER;
 
         if (preferredPort != null && !preferredPort.getExpression().isEmpty()) {
-           preferredPortValue = Integer.parseInt(preferredPort.getExpression());
-           _dynamicPortSelection = false;
+            preferredPortValue = Integer
+                    .parseInt(preferredPort.getExpression());
+            _dynamicPortSelection = false;
         } else {
             _dynamicPortSelection = true;
         }
@@ -413,7 +414,7 @@ public class WebServer extends AbstractInitializableAttribute {
         }
         @SuppressWarnings("unchecked")
         List<Entity<Port>> entities = ((CompositeEntity) container)
-                .allAtomicEntityList();
+        .allAtomicEntityList();
         for (Entity<Port> entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
@@ -448,8 +449,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // Specify directories or URLs in which to look for resources.
         // These are given by all instances of FileParameter in this
         // WebServer. Use a LinkedHashSet to preserve the order.
-        LinkedHashSet<Resource> resourceLocations =
-                new LinkedHashSet<Resource>();
+        LinkedHashSet<Resource> resourceLocations = new LinkedHashSet<Resource>();
         List<FileParameter> bases = attributeList(FileParameter.class);
         // To prevent duplicates, keep track of bases added
         // This set includes the temporary file location
@@ -484,8 +484,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
                     if (expression.startsWith("$CLASSPATH/")) {
                         baseURL = base.asURL();
-                    }
-                    else if (this.getClass().getClassLoader()
+                    } else if (this.getClass().getClassLoader()
                             .getResource(expression) != null) {
                         baseURL = new URL(this.getClass().getClassLoader()
                                 .getResource(expression).toExternalForm());
@@ -519,7 +518,6 @@ public class WebServer extends AbstractInitializableAttribute {
             }
         }
 
-
         // Throw an exception if resource path is not a valid URI, if a
         // duplicate path is requested or if the directory does not exist
         try {
@@ -534,9 +532,8 @@ public class WebServer extends AbstractInitializableAttribute {
         }
 
         try {
-            int actualPort =
-                            _serverManager.register(_appInfo, preferredPortValue,
-                            _dynamicPortSelection);
+            int actualPort = _serverManager.register(_appInfo,
+                    preferredPortValue, _dynamicPortSelection);
             if (actualPort != -1) {
                 deployedPort.setExpression(Integer.toString(actualPort));
                 deployedPort.validate();
@@ -565,8 +562,8 @@ public class WebServer extends AbstractInitializableAttribute {
             // If we are exporting to JNLP, then initialize might not
             // have been called.
 
-            int deployedPortValue =
-                    Integer.parseInt(deployedPort.getExpression());
+            int deployedPortValue = Integer.parseInt(deployedPort
+                    .getExpression());
             if (_serverManager != null
                     && _appInfo != null
                     && _serverManager.isRegistered(_appInfo.getModelName(),

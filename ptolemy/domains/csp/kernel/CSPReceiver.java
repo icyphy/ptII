@@ -283,7 +283,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -701,7 +701,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   interrupted while waiting(for a rendezvous to complete).
      */
     protected void _checkFlagsAndWait() throws TerminateProcessException,
-            InterruptedException {
+    InterruptedException {
         // Actually you should already have a lock before calling this
         // method. Otherwise you will miss notifies and cause deadlocks.
         Object lock = _getDirector();

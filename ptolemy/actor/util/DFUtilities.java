@@ -130,7 +130,7 @@ public class DFUtilities {
      *  @see #setRate
      */
     public static int getRate(IOPort port) throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
                     "Port is both an input and an output, which is not"

@@ -51,7 +51,7 @@ import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
  @version $Id$
  */
 public class SelfLoopStrategy extends CachedStrategy implements
-        SelfLoopAnalyzer {
+SelfLoopAnalyzer {
     /** Construct an instance of this strategy for a given graph.
      *
      *  @param graph The given graph.

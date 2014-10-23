@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class DebuggerParameter extends TableauParameter implements
-        DebugListener {
+DebugListener {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -152,7 +152,7 @@ public class DebuggerParameter extends TableauParameter implements
                 } catch (Throwable e) {
                     throw new InternalErrorException(this, e,
                             "Unable to report " + "message \"" + message
-                                    + "\".");
+                            + "\".");
                 }
                 break;
             case B_CHECK_LOG:
@@ -349,7 +349,7 @@ public class DebuggerParameter extends TableauParameter implements
                             for (TypedActor refinement : refinements) {
                                 if (refinement instanceof PteraController) {
                                     controllers
-                                            .add((PteraController) refinement);
+                                    .add((PteraController) refinement);
                                 }
                             }
                         }

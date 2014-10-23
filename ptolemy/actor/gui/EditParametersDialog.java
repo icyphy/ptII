@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class EditParametersDialog extends ComponentDialog implements
-        ChangeListener {
+ChangeListener {
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -217,7 +217,7 @@ public class EditParametersDialog extends ComponentDialog implements
 
                     if (configuration != null) {
                         configuration
-                                .openModel(null, doc, doc.toExternalForm());
+                        .openModel(null, doc, doc.toExternalForm());
                         success = true;
                     }
                 }
@@ -342,8 +342,8 @@ public class EditParametersDialog extends ComponentDialog implements
                 "ptolemy.data.expr.Parameter",
                 "ptolemy.data.expr.FileParameter",
                 "ptolemy.kernel.util.StringAttribute",
-                "ptolemy.actor.gui.ColorAttribute" },
-                "ptolemy.data.expr.Parameter", true);
+        "ptolemy.actor.gui.ColorAttribute" },
+        "ptolemy.data.expr.Parameter", true);
 
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
@@ -493,5 +493,5 @@ public class EditParametersDialog extends ComponentDialog implements
     ////                         private variables                 ////
     // Button labels.
     private static String[] _moreButtons = { "Commit", "Add", "Remove",
-            "Defaults", "Preferences", "Help", "Cancel" };
+        "Defaults", "Preferences", "Help", "Cancel" };
 }

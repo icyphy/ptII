@@ -233,7 +233,7 @@ public class TypeLattice {
             // _lattice.compare() on ptolemy.data package performance... Run
             // ptolemy/data/type/test/performance.xml before and after...(zk)
             if (//false &&
-            (val = _getCachedTypeComparisonResult(key.toString())) != null) {
+                    (val = _getCachedTypeComparisonResult(key.toString())) != null) {
                 return val;
             }
 
@@ -598,7 +598,7 @@ public class TypeLattice {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t2Rep)
                                 && _basicLattice
-                                        .containsNodeWeight(elementType)) {
+                                .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
                             return new ArrayType(
@@ -649,7 +649,7 @@ public class TypeLattice {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t1Rep)
                                 && _basicLattice
-                                        .containsNodeWeight(elementType)) {
+                                .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
                             return new ArrayType(
@@ -760,14 +760,14 @@ public class TypeLattice {
             _basicLattice = new DirectedAcyclicGraph();
 
             StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
-                    ._getRepresentative();
+            ._getRepresentative();
 
             String[] labels = new String[0];
             Type[] types = new Type[0];
             StructuredType recordRep = new RecordType(labels, types)
-                    ._getRepresentative();
+            ._getRepresentative();
             StructuredType unionRep = new UnionType(labels, types)
-                    ._getRepresentative();
+            ._getRepresentative();
 
             /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
                     new ptolemy.data.type.Type[0],

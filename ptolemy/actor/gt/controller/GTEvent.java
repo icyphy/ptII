@@ -76,7 +76,7 @@ public class GTEvent extends Event {
         refinementExtender = new RefinementExtender(this,
                 uniqueName("refinementExtender"));
         refinementExtender.description
-                .setExpression("Embedded Transformation Controller");
+        .setExpression("Embedded Transformation Controller");
         refinementExtender.setPersistent(false);
         refinementExtender.moveToFirst();
         _setRefinementExtender();

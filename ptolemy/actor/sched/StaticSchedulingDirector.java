@@ -76,7 +76,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public StaticSchedulingDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -363,8 +363,8 @@ public class StaticSchedulingDirector extends Director {
                         _tokenSentToCommunicationAspect = false;
                         if (((CompositeActor) getContainer()).getContainer() != null) {
                             ((CompositeActor) getContainer())
-                            .getExecutiveDirector().fireAtCurrentTime(
-                                    (CompositeActor) getContainer());
+                                    .getExecutiveDirector().fireAtCurrentTime(
+                                            (CompositeActor) getContainer());
                         }
                         _prefire = false;
                         return false;

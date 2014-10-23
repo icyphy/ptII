@@ -1,4 +1,3 @@
-
 /* Parses incoming token streams to output a sequence of Note objects
  *
 Copyright (c) 2013-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import java.util.Collections;
@@ -47,7 +46,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
 
 /**
 <p> The NoteParser receives OSC information regarding the Notes and
@@ -76,13 +74,11 @@ public class NoteParser extends TypedAtomicActor {
         freq = new TypedIOPort(this, "freq", true, false);
         freq.setTypeEquals(BaseType.DOUBLE);
 
-
         dur = new TypedIOPort(this, "dur", true, false);
         dur.setTypeEquals(BaseType.DOUBLE);
 
         timestamp = new TypedIOPort(this, "timestamp", true, false);
         timestamp.setTypeEquals(BaseType.INT);
-
 
         resetFO = new TypedIOPort(this, "resetFO", true, false);
         resetFO.setTypeEquals(BaseType.DOUBLE);
@@ -90,19 +86,20 @@ public class NoteParser extends TypedAtomicActor {
         notes = new TypedIOPort(this, "notes", false, true);
         notes.setTypeEquals(BaseType.OBJECT);
 
-        replicationProbability = new TypedIOPort(this, "replicationProbability", false, true);
+        replicationProbability = new TypedIOPort(this,
+                "replicationProbability", false, true);
         replicationProbability.setTypeEquals(BaseType.DOUBLE);
 
         bars = new TypedIOPort(this, "bars", false, true);
         bars.setTypeEquals(BaseType.DOUBLE);
-        StringAttribute cardinality = new StringAttribute( bars, "_cardinal");
+        StringAttribute cardinality = new StringAttribute(bars, "_cardinal");
         cardinality.setExpression("SOUTH");
 
         endTraining = new TypedIOPort(this, "endTraining", true, false);
         endTraining.setTypeEquals(BaseType.INT);
 
         _durations = new LinkedList<Double>();
-        _orderedNotes = new HashMap<Integer,Note>();
+        _orderedNotes = new HashMap<Integer, Note>();
         _notes = new LinkedList<Double>();
         _timestamps = new LinkedList<Integer>();
 
@@ -154,14 +151,13 @@ public class NoteParser extends TypedAtomicActor {
      */
     public TypedIOPort dur;
 
-
-
     public void fire() throws IllegalActionException {
 
         super.fire();
 
         if (resetFO.hasToken(0)) {
-            _replicationProbability = ((DoubleToken)resetFO.get(0)).doubleValue();
+            _replicationProbability = ((DoubleToken) resetFO.get(0))
+                    .doubleValue();
         }
 
         if (freq.hasToken(0)) {
@@ -184,28 +180,27 @@ public class NoteParser extends TypedAtomicActor {
             _terminate = true;
             _terminateLength = ((IntToken) endTraining.get(0)).intValue();
             // insert a termination note at the end of the list
-            _orderedNotes.put(_terminateLength+1,
-                    new Note(MusicSpecs.TERMINATION_NOTE_SYMBOL,-100));
+            _orderedNotes.put(_terminateLength + 1, new Note(
+                    MusicSpecs.TERMINATION_NOTE_SYMBOL, -100));
         }
 
-        if ( _notes.size() == _durations.size()
+        if (_notes.size() == _durations.size()
                 && _notes.size() == _timestamps.size()
-                && _notes.size() >= _terminateLength &&
-                _terminateLength > 0) {
+                && _notes.size() >= _terminateLength && _terminateLength > 0) {
             // sort
-            for ( int i = _timestamps.size()-1 ; i >=0; i--) {
+            for (int i = _timestamps.size() - 1; i >= 0; i--) {
                 int index = _timestamps.get(i);
-                if ( index < _durations.size() && index < _notes.size()) {
+                if (index < _durations.size() && index < _notes.size()) {
                     double duration = _durations.get(index);
-                    _orderedNotes.put(index,
-                            new Note(MusicSpecs.translateKeyToLetterNote(_notes.get(index), true),
-                                    duration));
+                    _orderedNotes.put(
+                            index,
+                            new Note(MusicSpecs.translateKeyToLetterNote(
+                                    _notes.get(index), true), duration));
                     _nBeats += duration;
                     _timestamps.remove(i);
                 }
             }
         }
-
 
         if (_terminate && _orderedNotes.keySet().size() >= _terminateLength) {
 
@@ -214,7 +209,7 @@ public class NoteParser extends TypedAtomicActor {
             Collections.sort(keysSoFar);
             Iterator iter = keysSoFar.iterator();
             while (iter.hasNext()) {
-                notes.send(0, new ObjectToken((Note)_orderedNotes.get(iter.next())));
+                notes.send(0, new ObjectToken(_orderedNotes.get(iter.next())));
             }
             _orderedNotes.clear();
             _notes.clear();
@@ -226,9 +221,10 @@ public class NoteParser extends TypedAtomicActor {
             bars.send(0, new DoubleToken(_nBeats));
             _nBeats = 0;
             if (_replicationProbability <= 0) {
-                _replicationProbability= 0.1;
+                _replicationProbability = 0.1;
             }
-            replicationProbability.send(0, new DoubleToken(_replicationProbability));
+            replicationProbability.send(0, new DoubleToken(
+                    _replicationProbability));
         }
     }
 

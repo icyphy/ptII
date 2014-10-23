@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  *
  */
 public abstract class AtomicContinuationActor extends TypedAtomicActor
-        implements Continuation {
+implements Continuation {
 
     public AtomicContinuationActor() {
         super();
@@ -74,7 +74,7 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor
     }
 
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _entries = new LinkedList();
         _exits = new LinkedList();
 
@@ -130,7 +130,7 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor
     @Override
     public ControlExitToken controlEnterAt(
             ControlEntryToken.EntryLocation location)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return controlEnter(ControlEntryToken.Enter(location));
     }
 
@@ -164,7 +164,7 @@ public abstract class AtomicContinuationActor extends TypedAtomicActor
     }
 
     public void addExitLocation(ExitLocation l) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_exitPoints.containsKey(l)) {
             return;
         }

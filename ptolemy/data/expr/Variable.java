@@ -230,7 +230,7 @@ import ptolemy.util.MessageHandler;
  @see #setPersistent(boolean)
  */
 public class Variable extends AbstractSettableAttribute implements Typeable,
-        ValueListener {
+ValueListener {
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -852,7 +852,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Nameable previousContainer = getContainer();
 
         // Warn if there are variables that depend on this one.
@@ -1009,7 +1009,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String previousName = getName();
         // If the name is changing from a previous name, then
         // make sure to update the variables that depend on this.
@@ -1045,8 +1045,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             writer.setStringMode(((Variable) listener)
                                     .isStringMode());
                             ((Variable) listener)
-                                    .setExpression(writer
-                                            .parseTreeToExpression(((Variable) listener)._parseTree));
+                            .setExpression(writer
+                                    .parseTreeToExpression(((Variable) listener)._parseTree));
                             changed.add(listener);
                         }
                     }
@@ -1611,7 +1611,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     protected Variable(NamedObj container, String name,
             ptolemy.data.Token token, boolean incrementWorkspaceVersion)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, incrementWorkspaceVersion);
         if (token != null) {
             // Notification is important here so that the attributeChanged()
@@ -2074,7 +2074,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_declaredType instanceof StructuredType
                     && !_declaredType.isConstant()) {
                 ((StructuredType) _varType)
-                        .updateType((StructuredType) newToken.getType());
+                .updateType((StructuredType) newToken.getType());
             } else if (_declaredType.equals(BaseType.UNKNOWN)) {
                 // this could be either a structured or basic type
                 _varType = newToken.getType();
@@ -2172,7 +2172,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_varType instanceof StructuredType
                     && oldVarType instanceof StructuredType) {
                 ((StructuredType) _varType)
-                        .updateType((StructuredType) oldVarType);
+                .updateType((StructuredType) oldVarType);
             } else {
                 _varType = oldVarType;
             }

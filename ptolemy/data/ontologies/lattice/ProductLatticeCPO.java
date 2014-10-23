@@ -388,7 +388,7 @@ public class ProductLatticeCPO extends ConceptGraph {
         StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
             conceptNameBuffer
-                    .append(ontology.getConceptGraph().top().getName());
+            .append(ontology.getConceptGraph().top().getName());
         }
         String productLatticeConceptName = conceptNameBuffer.toString();
         _topConcept = (ProductLatticeConcept) _productOntology

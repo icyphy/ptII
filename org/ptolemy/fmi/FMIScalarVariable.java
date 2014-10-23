@@ -573,7 +573,7 @@ public class FMIScalarVariable {
         if (_fmiGetFunction == null) {
             if (_typeName.equals("skip")) {
                 System.out
-                        .println("Could not process type, it was marked as skip.");
+                .println("Could not process type, it was marked as skip.");
                 return;
             }
             try {
@@ -600,7 +600,7 @@ public class FMIScalarVariable {
         if (_fmiSetFunction == null) {
             if (_typeName.equals("skip")) {
                 System.out
-                        .println("Could not process type, it was marked as skip.");
+                .println("Could not process type, it was marked as skip.");
                 return;
             }
             try {

@@ -80,7 +80,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.TypedIOPort
  */
 public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
-        TypedActor {
+TypedActor {
     // All the constructors are wrappers of the super class constructors.
 
     /** Construct an actor in the default workspace with an empty string

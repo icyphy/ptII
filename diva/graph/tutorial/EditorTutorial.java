@@ -194,7 +194,7 @@ public class EditorTutorial {
         }
 
         private class SelectionListener implements
-                java.awt.event.ActionListener {
+        java.awt.event.ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 /* String name = (String) */_layoutList.getSelectedItem();
@@ -202,7 +202,7 @@ public class EditorTutorial {
         }
 
         private class LayoutActionListener implements
-                java.awt.event.ActionListener {
+        java.awt.event.ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = (String) _layoutList.getSelectedItem();

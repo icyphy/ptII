@@ -157,7 +157,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         if (seed.getToken() instanceof LongToken) {
             longSeed = ((LongToken) seed.getToken()).longValue()
                     + ((ptolemy.actor.lib.PoissonClock) getComponent())
-                            .getFullName().hashCode();
+                    .getFullName().hashCode();
         }
         args.add(Long.toString(longSeed));
 

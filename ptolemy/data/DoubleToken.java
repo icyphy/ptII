@@ -142,7 +142,7 @@ public class DoubleToken extends ScalarToken {
             DoubleToken result = new DoubleToken(floatToken.doubleValue());
             if (floatToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(floatToken._unitCategoryExponents)) {
+                    .isUnitless(floatToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = floatToken
                         ._copyOfCategoryExponents();
             }
@@ -156,7 +156,7 @@ public class DoubleToken extends ScalarToken {
             DoubleToken result = new DoubleToken(intToken.doubleValue());
             if (intToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(intToken._unitCategoryExponents)) {
+                    .isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
             }

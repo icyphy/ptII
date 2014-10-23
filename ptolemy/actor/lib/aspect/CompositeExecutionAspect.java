@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (derler)
  */
 public class CompositeExecutionAspect extends TypedCompositeActor implements
-        ActorExecutionAspect {
+ActorExecutionAspect {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -329,7 +329,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                             .getToken();
                     if (recordToken.get("actor") != null
                             && ((ObjectToken) recordToken.get("actor"))
-                                    .getValue() != null) {
+                            .getValue() != null) {
                         NamedObj actor = (NamedObj) ((ObjectToken) recordToken
                                 .get("actor")).getValue();
                         notifyExecutionListeners(actor, getExecutiveDirector()
@@ -577,7 +577,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      *  @author Patricia Derler
      */
     public static class CompositeExecutionAspectAttributes extends
-            ExecutionTimeAttributes {
+    ExecutionTimeAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.

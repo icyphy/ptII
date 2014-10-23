@@ -71,8 +71,8 @@ public class UnaryMathFunction extends NamedProgramCodeGeneratorAdapter {
         String function = actor.function.getExpression();
         String codeBlockName = function.equals("exp") ? "expBlock" : function
                 .equals("log") ? "logBlock"
-                : function.equals("sign") ? "signBlock" : function
-                        .equals("square") ? "squareBlock" : "sqrtBlock";
+                        : function.equals("sign") ? "signBlock" : function
+                                .equals("square") ? "squareBlock" : "sqrtBlock";
         code.append(_generateBlockByName(codeBlockName));
 
         return code.toString();

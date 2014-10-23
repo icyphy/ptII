@@ -164,7 +164,7 @@ public class DiscreteClock extends TimedSource {
         period.setExpression("1.0");
         period.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(period.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0}");

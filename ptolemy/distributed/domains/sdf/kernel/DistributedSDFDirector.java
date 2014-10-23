@@ -135,7 +135,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public DistributedSDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         init();
     }
@@ -351,7 +351,7 @@ public class DistributedSDFDirector extends SDFDirector {
         if (VERBOSE) {
             System.out.println("parallelSchedule: "
                     + ((BooleanToken) parallelSchedule.getToken())
-                            .booleanValue());
+                    .booleanValue());
         }
 
         //System.out.println(getScheduler().getSchedule().toString());
@@ -519,7 +519,7 @@ public class DistributedSDFDirector extends SDFDirector {
                                 + currentPort.getFullName()
                                 + "\n"
                                 + DistributedUtilities
-                                        .receiversArrayToString(receivers));
+                                .receiversArrayToString(receivers));
                     }
 
                     if (currentPort.isOutput()) {
@@ -530,7 +530,7 @@ public class DistributedSDFDirector extends SDFDirector {
                     if (currentPort.isInput()) {
                         portsReceiversMap.put(currentPort.getName(),
                                 DistributedUtilities
-                                        .convertReceiversToIntegers(receivers));
+                                .convertReceiversToIntegers(receivers));
                     }
                 }
             }
@@ -578,7 +578,7 @@ public class DistributedSDFDirector extends SDFDirector {
                                     .get(actor)).getService())) {
                         servicesReceiversMap.put(
                                 ((ClientThread) actorsThreadsMap.get(actor))
-                                        .getService(), new LinkedList());
+                                .getService(), new LinkedList());
                     }
 
                     LinkedList list = (LinkedList) servicesReceiversMap

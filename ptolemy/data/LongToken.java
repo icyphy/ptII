@@ -137,7 +137,7 @@ public class LongToken extends ScalarToken {
             LongToken result = new LongToken(intToken.longValue());
             if (intToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(intToken._unitCategoryExponents)) {
+                    .isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
             }

@@ -51,7 +51,7 @@ import diva.gui.toolbox.FigureIcon;
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class NamedObjectIconWidget extends ResizableImageWidget implements
-        NamedObjectWidgetInterface {
+NamedObjectWidgetInterface {
 
     /** Create new instance of the widget by finding the element's EditorIcon attribute
      *  and rendering it as an image.

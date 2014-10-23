@@ -188,7 +188,7 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static class ConfigureCriteriaAction extends
-            ConfigureIngredientsAction {
+    ConfigureIngredientsAction {
 
         @Override
         protected String _getAttributeName() {
@@ -201,7 +201,7 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static abstract class ConfigureIngredientsAction extends
-            FigureAction {
+    FigureAction {
 
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -262,7 +262,7 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static class ConfigureOperationsAction extends
-            ConfigureIngredientsAction {
+    ConfigureIngredientsAction {
 
         @Override
         protected String _getAttributeName() {

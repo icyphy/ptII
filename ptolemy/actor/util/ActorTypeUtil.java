@@ -88,7 +88,7 @@ public class ActorTypeUtil {
      *  This term is not variable and cannot be set.
      */
     private static class TypeableSizedArrayVariableTypeTerm extends
-            MonotonicFunction {
+    MonotonicFunction {
 
         /** Construct a term that will defer to the type of the
          *  specified typeable.

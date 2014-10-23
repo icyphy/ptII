@@ -111,7 +111,7 @@ public class Port extends NamedObj {
      *   a port already in the container.
      */
     public Port(Entity container, String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(container.workspace(), name);
         _elementName = "port";
         setContainer(container);
@@ -605,7 +605,7 @@ public class Port extends NamedObj {
      *  @see #_checkContainer(Entity)
      */
     public void setContainer(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
@@ -697,7 +697,7 @@ public class Port extends NamedObj {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }

@@ -38,8 +38,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 @since Ptolemy II 10.0
  */
 public class CurrentTime
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.CurrentTime {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.CurrentTime {
     /**
      *  Construct a CurrentTime adapter.
      *  @param actor The given ptolemy.actor.lib.CurrentTime actor.

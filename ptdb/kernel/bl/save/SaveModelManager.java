@@ -171,9 +171,9 @@ public class SaveModelManager {
      *
      */
     public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
-            DBExecutionException, IllegalArgumentException,
-            ModelAlreadyExistException, XMLDBModelParsingException,
-            CircularDependencyException {
+    DBExecutionException, IllegalArgumentException,
+    ModelAlreadyExistException, XMLDBModelParsingException,
+    CircularDependencyException {
 
         String modelId = null;
 
@@ -245,10 +245,10 @@ public class SaveModelManager {
      */
     public String saveWithParents(
             XMLDBModelWithReferenceChanges xmlDBModelWithReferenceChanges)
-            throws DBConnectionException, DBExecutionException,
-            DBModelNotFoundException, ModelAlreadyExistException,
-            IllegalArgumentException, XMLDBModelParsingException,
-            CircularDependencyException {
+                    throws DBConnectionException, DBExecutionException,
+                    DBModelNotFoundException, ModelAlreadyExistException,
+                    IllegalArgumentException, XMLDBModelParsingException,
+                    CircularDependencyException {
 
         String modelId = "";
 
@@ -280,7 +280,7 @@ public class SaveModelManager {
 
                 GetModelTask getModelTask = new GetModelTask(
                         xmlDBModelWithReferenceChanges.getModelToBeSaved()
-                                .getModelName());
+                        .getModelName());
 
                 // Get the content of the model to be saved from the database.
                 XMLDBModel dbModelToBeSaved = dbConnection
@@ -293,8 +293,8 @@ public class SaveModelManager {
                 String modelContent = dbModelToBeSaved.getModel();
                 modelContent = modelContent.replaceFirst("name=\""
                         + dbModelToBeSaved.getModelName() + "\"", "name=\""
-                        + xmlDBModelWithReferenceChanges.getVersionName()
-                        + "\"");
+                                + xmlDBModelWithReferenceChanges.getVersionName()
+                                + "\"");
                 newXMLDBModel.setModel(modelContent);
 
                 String newModelId = save(newXMLDBModel, dbConnection);
@@ -306,15 +306,15 @@ public class SaveModelManager {
                 updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
 
                 updateParentsToNewVersionTask
-                        .setOldModel(xmlDBModelWithReferenceChanges
-                                .getModelToBeSaved());
+                .setOldModel(xmlDBModelWithReferenceChanges
+                        .getModelToBeSaved());
 
                 updateParentsToNewVersionTask
-                        .setParentsList(xmlDBModelWithReferenceChanges
-                                .getParentsList());
+                .setParentsList(xmlDBModelWithReferenceChanges
+                        .getParentsList());
 
                 dbConnection
-                        .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
+                .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
 
                 ArrayList<String> parentsList = xmlDBModelWithReferenceChanges
                         .getParentsList();
@@ -512,8 +512,8 @@ public class SaveModelManager {
                             if (name != null
                                     && (name.startsWith("_")
                                             || XMLDBModel.DB_REFERENCE_ATTR
-                                                    .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
-                                                .equals(name))) {
+                                            .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
+                                            .equals(name))) {
                                 entityElement.appendChild(childNode);
                             } else {
                                 k++;
@@ -577,7 +577,7 @@ public class SaveModelManager {
 
         if (originalModel.getModelId() == null
                 && (originalModel.getModelName() == null || originalModel
-                        .getModelName().length() == 0)) {
+                .getModelName().length() == 0)) {
 
             throw new IllegalArgumentException(
                     "The original model must contain either"

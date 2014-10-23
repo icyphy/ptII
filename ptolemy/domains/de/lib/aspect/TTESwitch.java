@@ -234,7 +234,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
         if (_nextTimeFree != null
                 && currentTime.compareTo(_nextTimeFree) == 0
                 && (_ttTokens.size() == 1 || _ttTokens.size() == 0
-                        && _etTokens.size() > 0)) {
+                && _etTokens.size() > 0)) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
@@ -256,7 +256,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
                     "Schedule violation: A time-triggered message is "
                             + "being sent at port "
                             + ((Receiver) ((Object[]) _ttTokens.get(0))[0])
-                                    .getContainer()
+                            .getContainer()
                             + " while a new time-triggered message is received at port "
                             + receiver.getContainer() + " at time "
                             + getDirector().getModelTime());

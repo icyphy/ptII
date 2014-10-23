@@ -494,7 +494,7 @@ public abstract class MatrixToken extends Token {
      */
     public static int determineSequenceLength(ScalarToken start,
             ScalarToken increment, ScalarToken end)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ScalarToken zero = (ScalarToken) increment.zero();
 
         if (increment.isEqualTo(increment.zero()).booleanValue()) {

@@ -84,7 +84,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  @Pt.AcceptedRating Green (acataldo)
  */
 public class ViewScreen3D extends GRActor3D implements Placeable,
-        ViewScreenInterface {
+ViewScreenInterface {
     // FIXME: Need a reset button to reset the viewpoint to the original.
 
     /** Construct a ViewScreen in the given container with the given name.

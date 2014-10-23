@@ -68,7 +68,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class CompositeActorMatcher extends TypedCompositeActor implements
-        GTCompositeActor, GTEntity, ValueListener {
+GTCompositeActor, GTEntity, ValueListener {
 
     /** Construct an atomic actor matcher to be either contained in the pattern
      *  of a {@link TransformationRule} or in the replacement.

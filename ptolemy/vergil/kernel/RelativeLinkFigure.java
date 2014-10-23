@@ -284,7 +284,7 @@ public class RelativeLinkFigure extends AbstractFigure {
     /** The stroke used for drawing the line. */
     private static final Stroke STROKE = new BasicStroke(1.0f,
             BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {
-                    2.0f, 2.0f }, 0.0f);
+            2.0f, 2.0f }, 0.0f);
 
     /** The normal color of the line. */
     private static final Color NORMAL_COLOR = new Color(180, 180, 0);

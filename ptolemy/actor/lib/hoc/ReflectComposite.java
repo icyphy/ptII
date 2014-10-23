@@ -70,7 +70,7 @@ import ptolemy.moml.HandlesInternalLinks;
  @Pt.AcceptedRating Red (neuendor)
  */
 public class ReflectComposite extends TypedCompositeActor implements
-HandlesInternalLinks {
+        HandlesInternalLinks {
 
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
@@ -157,10 +157,10 @@ HandlesInternalLinks {
 
                 if (insidePort instanceof MirrorPort) {
                     ((MirrorPort) port)
-                    .setAssociatedPort((MirrorPort) insidePort);
+                            .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
                     ((ParameterMirrorPort) port)
-                    .setAssociatedPort((ParameterMirrorPort) insidePort);
+                            .setAssociatedPort((ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -358,7 +358,7 @@ HandlesInternalLinks {
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
 
         super._addPort(port);
 
@@ -440,10 +440,10 @@ HandlesInternalLinks {
 
                                 if (insidePort instanceof MirrorPort) {
                                     ((MirrorPort) castPort)
-                                            .setAssociatedPort((MirrorPort) insidePort);
+                                    .setAssociatedPort((MirrorPort) insidePort);
                                 } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                     ((ParameterMirrorPort) castPort)
-                                            .setAssociatedPort((ParameterMirrorPort) insidePort);
+                                    .setAssociatedPort((ParameterMirrorPort) insidePort);
                                 }
 
                                 // Create a link only if it doesn't already exist.
@@ -690,7 +690,7 @@ HandlesInternalLinks {
          */
         @Override
         protected void _addPort(final Port port) throws IllegalActionException,
-        NameDuplicationException {
+                NameDuplicationException {
 
             super._addPort(port);
 

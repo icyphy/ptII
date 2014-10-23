@@ -429,7 +429,7 @@ public class SootUtilities {
                     paramTypes.add(RefType.v(newClass));
                 } else if (type instanceof RefType
                         && ((RefType) type).getSootClass().getName()
-                                .startsWith(oldClass.getName())) {
+                        .startsWith(oldClass.getName())) {
                     SootClass changeClass = _getInnerClassCopy(oldClass,
                             ((RefType) type).getSootClass(), newClass);
                     paramTypes.add(RefType.v(changeClass));
@@ -502,9 +502,9 @@ public class SootUtilities {
                             r.setFieldRef(changeClass.getFieldByName(
                                     r.getField().getName()).makeRef());
                         }//  else if (r.getField().getDeclaringClass() == oldClass) {
-                         //                             r.setFieldRef(
-                         //                                     newClass.getFieldByName(
-                         //                                             r.getField().getName()).makeRef());
+                        //                             r.setFieldRef(
+                        //                                     newClass.getFieldByName(
+                        //                                             r.getField().getName()).makeRef());
 
                         //                             //   System.out.println("fieldRef = " +
                         //                             //              box.getValue());
@@ -568,8 +568,8 @@ public class SootUtilities {
                                 newParameterTypes.add(RefType.v(newClass));
                             } else if (type instanceof RefType
                                     && ((RefType) type).getSootClass()
-                                            .getName()
-                                            .startsWith(oldClass.getName())) {
+                                    .getName()
+                                    .startsWith(oldClass.getName())) {
                                 System.out.println("matchedParameter = "
                                         + newClass);
                                 SootClass changeClass = _getInnerClassCopy(
@@ -805,7 +805,7 @@ public class SootUtilities {
                 ArrayType arrayElementType = (ArrayType) elementType;
                 return ArrayType.v(arrayElementType.baseType,
                         arrayElementType.numDimensions
-                                + arrayShapeType.numDimensions);
+                        + arrayShapeType.numDimensions);
             }
         }
 
@@ -833,10 +833,10 @@ public class SootUtilities {
                         Jimple.v().newNewExpr(exceptionType)), unit);
         body.getUnits().insertBefore(
                 Jimple.v()
-                        .newInvokeStmt(
-                                Jimple.v().newSpecialInvokeExpr(local,
-                                        initMethod.makeRef(),
-                                        StringConstant.v(string))), unit);
+                .newInvokeStmt(
+                        Jimple.v().newSpecialInvokeExpr(local,
+                                initMethod.makeRef(),
+                                StringConstant.v(string))), unit);
         return local;
     }
 
@@ -1082,7 +1082,7 @@ public class SootUtilities {
             SootClass class2 = ((RefType) type2).getSootClass();
             return derivesFrom(class1, class2);
         } else if (/* type1 instanceof Type && */
-        type2 instanceof ArrayType) {
+                type2 instanceof ArrayType) {
             Type elementType1 = ((ArrayType) type1).baseType;
 
             // FIXME: FindBugs: Impossible cast from soot.RefType to
@@ -1976,7 +1976,7 @@ public class SootUtilities {
 
                 if (!(collectionDefinition.getRightOp() instanceof FieldRef)
                         || ((FieldRef) collectionDefinition.getRightOp())
-                                .getField() != field) {
+                        .getField() != field) {
                     continue;
                 }
 
@@ -2004,7 +2004,7 @@ public class SootUtilities {
 
                 // Remove the jump that should be the final statement.
                 blockStmtList
-                        .remove(blockStmtList.get(blockStmtList.size() - 1));
+                .remove(blockStmtList.get(blockStmtList.size() - 1));
 
                 // Loop through and unroll the loop body once for
                 // every element of the field list.

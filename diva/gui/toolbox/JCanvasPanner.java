@@ -291,7 +291,7 @@ public class JCanvasPanner extends JPanel {
     // This listener is attached to this panner and is responsible for
     // panning the target in response to a mouse click on the panner.
     private class PanMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    MouseMotionListener {
         @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null

@@ -75,7 +75,7 @@ public class Job {
      */
     public Job(Director director, double relativeDeadline,
             double executionTime, Actor task, Actor parentTask)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         this._startTime = director.getModelTime();
         this._absoluteDeadline = this._startTime.add(relativeDeadline);
         this._remainingTime = new Time(director, executionTime);

@@ -491,7 +491,7 @@ public class ComponentRelation extends Relation {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }

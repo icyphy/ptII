@@ -116,7 +116,7 @@ public class TimedPNDirector extends PNDirector {
      *   an entity with the specified name.
      */
     public TimedPNDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -133,7 +133,7 @@ public class TimedPNDirector extends PNDirector {
      *   an entity with the specified name.
      */
     public TimedPNDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 

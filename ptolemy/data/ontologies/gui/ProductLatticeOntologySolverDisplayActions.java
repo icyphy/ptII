@@ -56,7 +56,7 @@ import diva.graph.GraphController;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ProductLatticeOntologySolverDisplayActions extends
-        OntologyDisplayActions {
+OntologyDisplayActions {
 
     /** Construct a ProductLatticeOntologyDisplayActions object with the specified container
      *  and name.
@@ -114,7 +114,7 @@ public class ProductLatticeOntologySolverDisplayActions extends
      *  lattice ontology to use as a basis for highlighting the resolved concepts.
      */
     protected static class ProductLatticeHighlighterController extends
-            HighlighterController {
+    HighlighterController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The ProductLatticeOntologySolverDisplayActions object reference.

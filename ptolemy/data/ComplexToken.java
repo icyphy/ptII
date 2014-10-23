@@ -137,7 +137,7 @@ public class ComplexToken extends ScalarToken {
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
             if (doubleToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(doubleToken._unitCategoryExponents)) {
+                    .isUnitless(doubleToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = doubleToken
                         ._copyOfCategoryExponents();
             }

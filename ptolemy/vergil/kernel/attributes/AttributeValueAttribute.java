@@ -62,7 +62,7 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.AcceptedRating Red (cxh)
  */
 public class AttributeValueAttribute extends AbstractTextAttribute implements
-        ValueListener, Settable {
+ValueListener, Settable {
     // NOTE: This attribute only implements settable as a workaround
     // to ensure that it gets notified of the start of execution.
     // Unfortunately, most of the code in the Variable class is

@@ -56,7 +56,7 @@ import ptolemy.util.StringUtilities;
  */
 
 public class IOPort extends NamedProgramCodeGeneratorAdapter implements
-        PortCodeGenerator {
+PortCodeGenerator {
 
     /**
      * Construct the code generator adapter for the given IOPort.
@@ -104,11 +104,11 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             if (channelIndex >= receivers.length) {
                 throw new IllegalActionException(getComponent(),
                         "The channelIndex \"" + channelIndex
-                                + "\" is greater than "
-                                + "or equal to the length of the receiver \""
-                                + receivers.length + "\".  The channel was: \""
-                                + channel + "\", the offset was: \"" + offset
-                                + "\".");
+                        + "\" is greater than "
+                        + "or equal to the length of the receiver \""
+                        + receivers.length + "\".  The channel was: \""
+                        + channel + "\", the offset was: \"" + offset
+                        + "\".");
             }
             if (receivers[channelIndex].length > 1) {
                 throw new IllegalActionException(
@@ -166,7 +166,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                     throw new IllegalActionException(getComponent(), throwable,
                             " Failed to generate code for receiver "
                                     + receivers[channelIndex][0]
-                                    + " on channel " + channelIndex);
+                                            + " on channel " + channelIndex);
                 }
             }
         }
@@ -184,10 +184,10 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                     // FIXME: Shouldn't this happen every where?
                     // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
                     return "\""
-                            + parameter.getExpression().replace("\\d", "\\\\d")
-                                    .replace("\\D", "\\\\D")
-                                    .replace("\"", "\\\"")
-                                    .replace("\\b", "\\\\b") + "\"";
+                    + parameter.getExpression().replace("\\d", "\\\\d")
+                    .replace("\\D", "\\\\D")
+                    .replace("\"", "\\\"")
+                    .replace("\\b", "\\\\b") + "\"";
                 } else {
                     return parameter.getValueAsString();
                 }
@@ -305,7 +305,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                 // This model needs to convert object(null) to object.
                 // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelayObjectNull.xml
                 System.out
-                        .println("Warning: cg IOPort hack, found object(null), converting to null");
+                .println("Warning: cg IOPort hack, found object(null), converting to null");
                 dataToken = "null";
             }
             code.append(targetType(type) + " temporary = " + dataToken + ";"
@@ -313,19 +313,19 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
 
             boolean debug = ((IntToken) getCodeGenerator().verbosity.getToken())
                     .intValue() > 9;
-            for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
-                if (debug) {
-                    code.append("/* IOPort.generatePutCode start. " + dataToken
-                            + " */" + _eol);
-                }
-                code.append(remoteReceivers[channelIndex][i].generatePutCode(
-                        (ptolemy.actor.IOPort) this.getComponent(), offset,
-                        "temporary"));
-                if (debug) {
-                    code.append("/* IOPort.generatePutCode end. */" + _eol);
-                }
-            }
-            code.append("}" + _eol);
+                    for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
+                        if (debug) {
+                            code.append("/* IOPort.generatePutCode start. " + dataToken
+                                    + " */" + _eol);
+                        }
+                        code.append(remoteReceivers[channelIndex][i].generatePutCode(
+                                (ptolemy.actor.IOPort) this.getComponent(), offset,
+                                "temporary"));
+                        if (debug) {
+                            code.append("/* IOPort.generatePutCode end. */" + _eol);
+                        }
+                    }
+                    code.append("}" + _eol);
         }
         return code.toString();
     }

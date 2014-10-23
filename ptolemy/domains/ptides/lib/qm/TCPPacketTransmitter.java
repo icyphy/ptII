@@ -257,7 +257,7 @@ public class TCPPacketTransmitter extends OutputDevice {
             Token[] values = new Token[] {
                     new DoubleToken(ptidesDirector.getModelTime()
                             .getDoubleValue()),
-                    new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
+                            new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
             RecordToken record = new RecordToken(labels, values);
 
             // add the token into packet values List

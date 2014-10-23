@@ -64,7 +64,7 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  @see MonitorReceiverContents
  */
 public class MonitorReceiverAttribute extends SingletonAttribute implements
-        Settable {
+Settable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

@@ -74,7 +74,7 @@ public class ConfigureAction extends FigureAction {
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3094
         putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                 KeyEvent.VK_E, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
+                .getMenuShortcutKeyMask()));
     }
 
     ///////////////////////////////////////////////////////////////////

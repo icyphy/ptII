@@ -59,7 +59,7 @@ import ptolemy.vergil.gt.IterativeParameterIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class IterativeParameter extends Parameter implements MatchCallback,
-        ValueIterator {
+ValueIterator {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a

@@ -97,7 +97,7 @@ import diva.gui.toolbox.MenuCreator;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class BasicGraphController extends AbstractGraphController
-        implements DebugListener, ValueListener {
+implements DebugListener, ValueListener {
     /** Create a new basic controller.
      */
     public BasicGraphController() {
@@ -632,7 +632,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             highlightColor = new ColorAttribute((NamedObj) culprit,
                     "_highlightColor");
             ((ColorAttribute) highlightColor)
-                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
+            .setExpression("{1.0, 0.0, 0.0, 1.0}");
             highlightColor.setPersistent(false);
             ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
             _errorHighlights.add(highlightColor);
@@ -693,7 +693,7 @@ public abstract class BasicGraphController extends AbstractGraphController
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot open base class without a configuration.");
+                .error("Cannot open base class without a configuration.");
                 return;
             }
 

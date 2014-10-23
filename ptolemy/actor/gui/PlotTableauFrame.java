@@ -88,7 +88,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class PlotTableauFrame extends TableauFrame implements Printable,
-        ImageExportable {
+ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -376,8 +376,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
             // case is that we will have no Export PDF in the menu.
             // That is better than preventing the user from opening a model.
             System.err
-                    .println("Warning: Tried to create Export PDF menu item, but failed: "
-                            + ex);
+            .println("Warning: Tried to create Export PDF menu item, but failed: "
+                    + ex);
         }
 
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
@@ -495,7 +495,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
                 "PlotTableauFrame is a plot in a top-level window.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Write the plot to the specified file in PlotML syntax.

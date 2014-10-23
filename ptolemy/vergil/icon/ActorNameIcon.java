@@ -114,8 +114,8 @@ public class ActorNameIcon extends BoxedValueIcon {
                     if (!_printedMessage) {
                         _printedMessage = true;
                         System.out
-                                .println("Failed to create the background figure. "
-                                        + ex);
+                        .println("Failed to create the background figure. "
+                                + ex);
                     }
                 }
             }

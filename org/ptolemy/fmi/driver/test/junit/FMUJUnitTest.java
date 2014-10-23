@@ -211,7 +211,7 @@ public class FMUJUnitTest {
     public void modelExchange(String testName) throws Exception {
         modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName
                 + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
-                + testName + "_me.csv");
+                        + testName + "_me.csv");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
@@ -262,7 +262,7 @@ public class FMUJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("org.ptolemy.fmi.driver.test.junit.FMUJUnitTest");
+        .main("org.ptolemy.fmi.driver.test.junit.FMUJUnitTest");
     }
 
     /** Read in the named file and returns the contents as a string.

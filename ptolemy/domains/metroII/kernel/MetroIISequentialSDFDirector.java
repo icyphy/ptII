@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  *
  */
 public class MetroIISequentialSDFDirector extends SDFDirector implements
-        GetFirable {
+GetFirable {
 
     /**
      * Constructs a director in the default workspace with an empty string as its
@@ -79,7 +79,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      *                specified name.
      */
     public MetroIISequentialSDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
     }
 
     /**
@@ -190,7 +190,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });

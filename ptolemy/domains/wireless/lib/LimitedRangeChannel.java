@@ -139,7 +139,7 @@ public class LimitedRangeChannel extends DelayChannel {
     @Override
     protected boolean _isInRange(WirelessIOPort source,
             WirelessIOPort destination, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
 

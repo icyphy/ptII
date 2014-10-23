@@ -77,7 +77,7 @@ import quicktime.util.RawEncodedImage;
  */
 @SuppressWarnings("deprecation")
 public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
-        Errors {
+Errors {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -180,7 +180,7 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
             _file = new QTFile(fileName.asFile());
             _movie = Movie.createMovieFile(_file, kMoviePlayer,
                     createMovieFileDeleteCurFile
-                            | createMovieFileDontCreateResFile);
+                    | createMovieFileDontCreateResFile);
 
             //
             // add content

@@ -87,7 +87,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
             // FIXME: what about user initializations in ~/.tclrc?
             // Source Ptolemy specific initializations.
             _tclInterp
-                    .eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+            .eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
         } catch (TclException ex) {
             throw new IllegalActionException(this, ex,
                     "Could not initialize the " + "tcl interpreter:\n"

@@ -261,7 +261,7 @@ public class Autocorrelation extends SDFTransformer {
                 if (complex) {
                     ComplexToken conjugate = new ComplexToken(
                             ((ComplexToken) inputValues[j]).complexValue()
-                                    .conjugate());
+                            .conjugate());
                     sum = sum.add(conjugate.multiply(inputValues[j + i]));
                 } else {
                     sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
@@ -283,7 +283,7 @@ public class Autocorrelation extends SDFTransformer {
         for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
             if (complex) {
                 ComplexToken candidate = (ComplexToken) _outputs[2
-                        * (_numberOfLags - notSymmetric) - i];
+                                                                 * (_numberOfLags - notSymmetric) - i];
                 _outputs[i] = new ComplexToken(candidate.complexValue()
                         .conjugate());
             } else {

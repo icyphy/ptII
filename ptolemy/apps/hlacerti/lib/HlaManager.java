@@ -224,7 +224,7 @@ import certi.rti.impl.CertiRtiAmbassador;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaManager extends AbstractInitializableAttribute implements
-TimeRegulator {
+        TimeRegulator {
 
     /** Construct a HlaManager with a name and a container. The container
      *  argument must not be null, or a NullPointerException will be thrown.
@@ -1020,7 +1020,7 @@ TimeRegulator {
                     breakpoint = new Time(
                             _director,
                             ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA)
-                            .getTime());
+                                    .getTime());
                 } catch (IllegalActionException e) {
                     throw new IllegalActionException(this, e,
                             "The breakpoint time is not a valid Ptolemy time");
@@ -1372,7 +1372,7 @@ TimeRegulator {
             } else {
                 throw new IllegalActionException(this,
                         "The current type of the token " + t
-                        + " is not handled by " + this.getDisplayName());
+                                + " is not handled by " + this.getDisplayName());
             }
 
             try {
@@ -1427,7 +1427,7 @@ TimeRegulator {
         } else {
             throw new IllegalActionException(this,
                     "The current type of the token " + t
-                    + " is not handled by " + this.getDisplayName());
+                            + " is not handled by " + this.getDisplayName());
         }
 
         // GL: FIXME: HLA PTIDES event support.
@@ -1482,11 +1482,11 @@ TimeRegulator {
             _hlaAttributesToPublish.put(
                     hp.getName(),
                     new Object[] {
-                        tiop,
-                        tiop.getType(),
-                        ((StringToken) ((Parameter) hp
-                                .getAttribute("classObjectHandle"))
-                                .getToken()).stringValue() });
+                            tiop,
+                            tiop.getType(),
+                            ((StringToken) ((Parameter) hp
+                                    .getAttribute("classObjectHandle"))
+                                    .getToken()).stringValue() });
         }
 
         _hlaSubscribers = ca.entityList(HlaSubscriber.class);
@@ -1502,11 +1502,11 @@ TimeRegulator {
             _hlaAttributesSubscribedTo.put(
                     hs.getName(),
                     new Object[] {
-                        tiop,
-                        tiop.getType(),
-                        ((StringToken) ((Parameter) hs
-                                .getAttribute("classObjectHandle"))
-                                .getToken()).stringValue() });
+                            tiop,
+                            tiop.getType(),
+                            ((StringToken) ((Parameter) hs
+                                    .getAttribute("classObjectHandle"))
+                                    .getToken()).stringValue() });
 
             // The events list to store updated values of HLA attribute,
             // (received by callbacks) from the RTI, is indexed by the HLA
@@ -1698,9 +1698,9 @@ TimeRegulator {
          *  All those exceptions are from the HLA/CERTI implementation.
          */
         public void initialize(RTIambassador rtia) throws NameNotFound,
-        ObjectClassNotDefined, FederateNotExecutionMember,
-        RTIinternalError, AttributeNotDefined, SaveInProgress,
-        RestoreInProgress, ConcurrentAccessAttempted {
+                ObjectClassNotDefined, FederateNotExecutionMember,
+                RTIinternalError, AttributeNotDefined, SaveInProgress,
+                RestoreInProgress, ConcurrentAccessAttempted {
             this.timeAdvanceGrant = false;
             this.timeConstrained = false;
             this.timeRegulator = false;
@@ -1824,7 +1824,7 @@ TimeRegulator {
 
                     _hlaAttributesToPublish.put(s,
                             new Object[] { tObj[0], tObj[1], tObj[2], tObj[3],
-                            tObj[4], myObjectInstId });
+                                    tObj[4], myObjectInstId });
                 }
             }
 
@@ -1935,9 +1935,9 @@ TimeRegulator {
         public void reflectAttributeValues(int theObject,
                 ReflectedAttributes theAttributes, byte[] userSuppliedTag,
                 LogicalTime theTime, EventRetractionHandle retractionHandle)
-                        throws ObjectNotKnown, AttributeNotKnown,
-                        FederateOwnsAttributes, InvalidFederationTime,
-                        FederateInternalError {
+                throws ObjectNotKnown, AttributeNotKnown,
+                FederateOwnsAttributes, InvalidFederationTime,
+                FederateInternalError {
             try {
                 for (int i = 0; i < theAttributes.size(); i++) {
                     Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
@@ -1974,18 +1974,18 @@ TimeRegulator {
                                     //ts = new Time(_director, he.getSourceTime());
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
-                                            .getTime());
+                                                    .getTime());
                                     te = new TimedEvent(ts, new Object[] {
                                             (RecordType) tObj[1],
                                             _decodeHlaValue(hs,
                                                     (RecordType) tObj[1],
                                                     hpe.getValue()),
-                                                    // GL: FIXME: PTIDES: should be:
-                                                    // he.getLogicalTime(),
-                                                    ts.getDoubleValue(),
-                                                    hpe.getMicroStep(),
-                                                    // GL: FIXME: PTIDES: should be:
-                                                    hpe.getSourceTime() });
+                                            // GL: FIXME: PTIDES: should be:
+                                            // he.getLogicalTime(),
+                                            ts.getDoubleValue(),
+                                            hpe.getMicroStep(),
+                                            // GL: FIXME: PTIDES: should be:
+                                            hpe.getSourceTime() });
                                     //ts.getDoubleValue()});
 
                                     //  System.out.println("RAV " + "has to decode asHlaPtidesEvent");
@@ -1996,7 +1996,7 @@ TimeRegulator {
                                 } else {
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
-                                            .getTime());
+                                                    .getTime());
                                     te = new TimedEvent(
                                             ts,
                                             new Object[] {
@@ -2005,7 +2005,7 @@ TimeRegulator {
                                                             hs,
                                                             (BaseType) tObj[1],
                                                             theAttributes
-                                                            .getValue(i)) });
+                                                                    .getValue(i)) });
                                 }
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
@@ -2013,14 +2013,14 @@ TimeRegulator {
 
                             _fromFederationEvents.get(
                                     ((TypedIOPort) tObj[0]).getContainer()
-                                    .getName()).add(te);
+                                            .getName()).add(te);
                             if (_debugging) {
                                 _debug(HlaManager.this.getDisplayName()
                                         + " INNER"
                                         + " reflectAttributeValues() (RAV) - "
                                         + "HLA attribute: "
                                         + ((TypedIOPort) tObj[0])
-                                        .getContainer().getName()
+                                                .getContainer().getName()
                                         + "(value=" + te.contents
                                         + ", timestamp=" + te.timeStamp
                                         + ") has been received");
@@ -2140,7 +2140,7 @@ TimeRegulator {
         @Override
         public void announceSynchronizationPoint(
                 String synchronizationPointLabel, byte[] userSuppliedTag)
-                        throws FederateInternalError {
+                throws FederateInternalError {
             inPause = true;
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"

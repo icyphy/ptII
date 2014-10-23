@@ -244,10 +244,10 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
                 && (_positiveRepresentative
                         .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
                                 .getRepresentative()) || _negativeRepresentative
-                        .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
-                                .getRepresentative()))
-                && ((FlatScalarTokenInfiniteConcept) inputConcept)
-                        .getTokenValue() != null)) {
+                                .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
+                                        .getRepresentative()))
+                                        && ((FlatScalarTokenInfiniteConcept) inputConcept)
+                                        .getTokenValue() != null)) {
             throw new IllegalActionException(inputConcept,
                     "Invalid argument: "
                             + "the FlatScalarTokenInfiniteConcept "
@@ -255,14 +255,14 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
                             + "has an incorrect representative concept or "
                             + "a null token value. It's representative is: "
                             + ((FlatScalarTokenInfiniteConcept) inputConcept)
-                                    .getRepresentative()
+                            .getRepresentative()
                             + " and it should be "
                             + _positiveRepresentative
                             + " or "
                             + _negativeRepresentative
                             + ". It's token value is "
                             + ((FlatScalarTokenInfiniteConcept) inputConcept)
-                                    .getTokenValue());
+                            .getTokenValue());
         }
     }
 

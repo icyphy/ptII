@@ -71,7 +71,7 @@ public class ExportImageJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
+        .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
     }
 
     /**
@@ -208,14 +208,14 @@ public class ExportImageJUnitTest {
                             if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
                                 throw new RuntimeException(
                                         imageDisplayModel[0].getFullName()
-                                        + "is not a TypedCompositeActor? "
-                                        + imageDisplayModel[0]
-                                                .getClass());
+                                                + "is not a TypedCompositeActor? "
+                                                + imageDisplayModel[0]
+                                                        .getClass());
                             } else {
                                 ((TypedCompositeActor) imageDisplayModel[0])
-                                .setManager(manager);
+                                        .setManager(manager);
                                 ((TypedCompositeActor) imageDisplayModel[0])
-                                .setModelErrorHandler(new BasicModelErrorHandler());
+                                        .setModelErrorHandler(new BasicModelErrorHandler());
                                 manager.execute();
                             }
                         }
@@ -237,7 +237,7 @@ public class ExportImageJUnitTest {
             public void run() {
                 try {
                     ConfigurationApplication
-                            .closeModelWithoutSavingOrExiting(model[0]);
+                    .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

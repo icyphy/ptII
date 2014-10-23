@@ -255,8 +255,8 @@ public abstract class ConceptGraph implements CPO<Concept> {
                 default:
                     throw new IllegalArgumentException(
                             "Unrecognized bound type: " + boundType
-                                    + ". Expected either GREATESTLOWER or "
-                                    + "LEASTUPPER");
+                            + ". Expected either GREATESTLOWER or "
+                            + "LEASTUPPER");
                 }
             }
             return bound;

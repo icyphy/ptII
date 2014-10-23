@@ -260,26 +260,26 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      */
     protected static String[] _firingEventTypeLabels = {
 
-            // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
-            //"before prefire",
-            //"after prefire",
-            //"before fire",
-            //"after fire",
-            //"before postfire",
-            //"after postfire",
-            "before iterate", "after iterate" };
+        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+        //"before prefire",
+        //"after prefire",
+        //"before fire",
+        //"after fire",
+        //"before postfire",
+        //"after postfire",
+        "before iterate", "after iterate" };
 
     /** FiringEventTypes that the user can set breakpoints on. */
     protected static FiringEventType[] _firingEventTypes = {
 
-            // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
-            //FiringEvent.BEFORE_PREFIRE,
-            //FiringEvent.AFTER_PREFIRE,
-            //FiringEvent.BEFORE_FIRE,
-            //FiringEvent.AFTER_FIRE,
-            //FiringEvent.BEFORE_POSTFIRE,
-            //FiringEvent.AFTER_POSTFIRE,
-            FiringEvent.BEFORE_ITERATE, FiringEvent.AFTER_ITERATE };
+        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+        //FiringEvent.BEFORE_PREFIRE,
+        //FiringEvent.AFTER_PREFIRE,
+        //FiringEvent.BEFORE_FIRE,
+        //FiringEvent.AFTER_FIRE,
+        //FiringEvent.BEFORE_POSTFIRE,
+        //FiringEvent.AFTER_POSTFIRE,
+        FiringEvent.BEFORE_ITERATE, FiringEvent.AFTER_ITERATE };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -99,7 +99,7 @@ public class UnitConversionInfo extends Parameter {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container == null
                 || container instanceof DimensionRepresentativeConcept) {
             super.setContainer(container);

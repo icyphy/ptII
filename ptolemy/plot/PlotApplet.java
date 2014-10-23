@@ -214,8 +214,8 @@ public class PlotApplet extends JApplet {
                         System.err.println("PlotApplet: file not found: " + e);
                     } catch (IOException e) {
                         System.err
-                                .println("PlotApplet: error reading input file: "
-                                        + e);
+                        .println("PlotApplet: error reading input file: "
+                                + e);
                     }
                 }
             }

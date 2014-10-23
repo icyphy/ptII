@@ -224,7 +224,7 @@ public class Transition extends ComponentRelation {
      *   any relation already in the container.
      */
     public Transition(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -283,8 +283,8 @@ public class Transition extends ComponentRelation {
                 _getFSMTransitionParameter();
                 try {
                     _fsmTransitionParameter
-                    .setName(((StringToken) fsmTransitionParameterName
-                            .getToken()).stringValue());
+                            .setName(((StringToken) fsmTransitionParameterName
+                                    .getToken()).stringValue());
                 } catch (NameDuplicationException e) {
                     throw new IllegalActionException(this, e.getCause(),
                             e.getLocalizedMessage());
@@ -1066,7 +1066,7 @@ public class Transition extends ComponentRelation {
                         .getAttribute("_location");
                 String moml = "<property name=\""
                         + ((StringToken) fsmTransitionParameterName.getToken())
-                        .stringValue()
+                                .stringValue()
                         + "\" class=\"ptolemy.domains.modal.kernel.FSMTransitionParameter\">\n"
                         + "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n"
                         + "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.ValueIcon\">\n"
@@ -1078,17 +1078,17 @@ public class Transition extends ComponentRelation {
                         + (int) (destinationStateLocation.getLocation()[0] + (sourceStateLocation
                                 .getLocation()[0] - destinationStateLocation
                                 .getLocation()[0]) / 2)
-                                + ", "
-                                + (int) (destinationStateLocation.getLocation()[1] + (sourceStateLocation
-                                        .getLocation()[1] - destinationStateLocation
-                                        .getLocation()[1]) / 2)
-                                        + "]\"/>\n"
-                                        + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
-                                        + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
-                                        + "    </property>\n"
-                                        + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
-                                        + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
-                                        + "</property>";
+                        + ", "
+                        + (int) (destinationStateLocation.getLocation()[1] + (sourceStateLocation
+                                .getLocation()[1] - destinationStateLocation
+                                .getLocation()[1]) / 2)
+                        + "]\"/>\n"
+                        + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
+                        + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
+                        + "    </property>\n"
+                        + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
+                        + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
+                        + "</property>";
 
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         getContainer(), moml);
@@ -1099,7 +1099,7 @@ public class Transition extends ComponentRelation {
 
     // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         fsmTransitionParameterName = new StringParameter(this,
                 "fsmTransitionParameterName");
         fsmTransitionParameterName.setExpression(this.getName() + "Parameter");

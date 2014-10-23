@@ -73,7 +73,7 @@ import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 
  */
 public class LibraryUsageReporter extends SceneTransformer implements
-        HasPhaseOptions {
+HasPhaseOptions {
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
      *  properly initialized so that resolved types and other static
@@ -128,8 +128,8 @@ public class LibraryUsageReporter extends SceneTransformer implements
             if (method.getName().equals("<init>")
                     && !method.getDeclaringClass().getName().startsWith("java")) {
                 createableClasses
-                        .addAll(hierarchy.getSuperclassesOfIncluding(method
-                                .getDeclaringClass()));
+                .addAll(hierarchy.getSuperclassesOfIncluding(method
+                        .getDeclaringClass()));
                 _addAllInterfaces(createableClasses, method.getDeclaringClass());
             }
         }
@@ -189,8 +189,8 @@ public class LibraryUsageReporter extends SceneTransformer implements
                                     necessaryClasses.add(castClass);
                                 } else {
                                     necessaryClasses
-                                            .addAll(hierarchy
-                                                    .getSuperclassesOfIncluding(castClass));
+                                    .addAll(hierarchy
+                                            .getSuperclassesOfIncluding(castClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, castClass);
@@ -205,8 +205,8 @@ public class LibraryUsageReporter extends SceneTransformer implements
 
                                 if (!checkClass.isInterface()) {
                                     necessaryClasses
-                                            .addAll(hierarchy
-                                                    .getSuperclassesOfIncluding(checkClass));
+                                    .addAll(hierarchy
+                                            .getSuperclassesOfIncluding(checkClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, checkClass);

@@ -71,7 +71,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class ModalController extends FSMActor implements DropTargetHandler,
-        RefinementActor {
+RefinementActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -127,7 +127,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     @Override
     public void addRefinement(State state, final String name, Entity template,
             String className, final InstanceOpener instanceOpener)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         ModalRefinement.addRefinement(state, name, template, className,
                 instanceOpener, (CompositeEntity) getContainer());
     }
@@ -365,7 +365,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // If mirroring is disabled, then the port is being added by the
         // container, which is surely OK.
         if (!_mirrorDisable) {

@@ -95,7 +95,7 @@ import diva.graph.JGraph;
  */
 @SuppressWarnings("serial")
 public class UnitSolverDialog extends PtolemyDialog implements
-        ListSelectionListener, SelectionListener {
+ListSelectionListener, SelectionListener {
     /**
      * Construct a Unit Solver Dialog.
      * @param dialogTableau The DialogTableau.

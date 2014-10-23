@@ -131,7 +131,7 @@ public class SCRTableHelper {
      */
     public static void checkDisjointness(List<String> _tableContent,
             int rowCount, int columnCount, FSMActor model)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         //Check that all values are unique.
         List<String> subList = _tableContent.subList(
                 getContentIndex(rowCount - 1, 1, columnCount),

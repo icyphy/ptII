@@ -1084,7 +1084,7 @@ public class JSONObject {
                 break;
             default:
                 if (c < ' ' || c >= '\u0080' && c < '\u00a0' || c >= '\u2000'
-                        && c < '\u2100') {
+                && c < '\u2100') {
                     t = "000" + Integer.toHexString(c);
                     sb.append("\\u" + t.substring(t.length() - 4));
                 } else {
@@ -1465,12 +1465,12 @@ public class JSONObject {
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage
                     .getName() : "";
-            if (objectPackageName.startsWith("java.")
-                    || objectPackageName.startsWith("javax.")
-                    || object.getClass().getClassLoader() == null) {
-                return object.toString();
-            }
-            return new JSONObject(object);
+                    if (objectPackageName.startsWith("java.")
+                            || objectPackageName.startsWith("javax.")
+                            || object.getClass().getClassLoader() == null) {
+                        return object.toString();
+                    }
+                    return new JSONObject(object);
         } catch (Exception exception) {
             return null;
         }

@@ -93,7 +93,7 @@ public class HTMLAboutJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.actor.gui.test.junit.HTMLAboutJUnitTest");
+        .main("ptolemy.actor.gui.test.junit.HTMLAboutJUnitTest");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -150,7 +150,7 @@ public class HTMLAboutJUnitTest {
                     // FIXME: handle cases where model[0] is null.
                     if (model[0] != null) {
                         ConfigurationApplication
-                                .closeModelWithoutSavingOrExiting(model[0]);
+                        .closeModelWithoutSavingOrExiting(model[0]);
                     }
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);

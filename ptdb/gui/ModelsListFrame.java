@@ -126,12 +126,12 @@ public class ModelsListFrame extends javax.swing.JFrame {
 
         _previousPageButton.setLabel("<< ");
         _previousPageButton
-                .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        _gotToPreviousPage(evt);
-                    }
-                });
+        .addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _gotToPreviousPage(evt);
+            }
+        });
 
         _pageNumberCombo.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -144,73 +144,73 @@ public class ModelsListFrame extends javax.swing.JFrame {
                 jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout
-                .setHorizontalGroup(jPanel1Layout
-                        .createParallelGroup(
-                                javax.swing.GroupLayout.Alignment.LEADING)
+        .setHorizontalGroup(jPanel1Layout
+                .createParallelGroup(
+                        javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(
                                 jPanel1Layout
-                                        .createSequentialGroup()
-                                        .addComponent(
-                                                _totalModelsLabel,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .createSequentialGroup()
+                                .addComponent(
+                                        _totalModelsLabel,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(
-                                                _numberOfModelsLabel,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                50,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(
-                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                148, Short.MAX_VALUE)
-                                        .addComponent(
-                                                _previousPageButton,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(
-                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(
-                                                _pageNumberCombo,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                41,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)));
+                                                .addComponent(
+                                                        _numberOfModelsLabel,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        50,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(
+                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                148, Short.MAX_VALUE)
+                                                                .addComponent(
+                                                                        _previousPageButton,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(
+                                                                                        _pageNumberCombo,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        41,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
         jPanel1Layout
-                .setVerticalGroup(jPanel1Layout
-                        .createParallelGroup(
-                                javax.swing.GroupLayout.Alignment.LEADING)
+        .setVerticalGroup(jPanel1Layout
+                .createParallelGroup(
+                        javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(
                                 jPanel1Layout
-                                        .createSequentialGroup()
-                                        .addGroup(
-                                                jPanel1Layout
-                                                        .createParallelGroup(
-                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                _totalModelsLabel,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .createSequentialGroup()
+                                .addGroup(
+                                        jPanel1Layout
+                                        .createParallelGroup(
+                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(
+                                                        _totalModelsLabel,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(
                                                                 _numberOfModelsLabel,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(
-                                                                _pageNumberCombo,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(
-                                                                _previousPageButton,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addContainerGap(
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                Short.MAX_VALUE)));
+                                                                .addComponent(
+                                                                        _pageNumberCombo,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(
+                                                                                _previousPageButton,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                .addContainerGap(
+                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                        Short.MAX_VALUE)));
 
         _nextPageButton.setLabel(">>");
         _nextPageButton.addActionListener(new java.awt.event.ActionListener() {
@@ -228,59 +228,59 @@ public class ModelsListFrame extends javax.swing.JFrame {
                 .addGroup(
                         javax.swing.GroupLayout.Alignment.TRAILING,
                         layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(
-                                                        _hintLabel,
-                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(
+                                layout.createParallelGroup(
+                                        javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(
+                                                _hintLabel,
+                                                javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(
                                                         jScrollPane1,
                                                         javax.swing.GroupLayout.Alignment.LEADING,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         380, Short.MAX_VALUE)
-                                                .addGroup(
-                                                        javax.swing.GroupLayout.Alignment.LEADING,
-                                                        layout.createSequentialGroup()
+                                                        .addGroup(
+                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                layout.createSequentialGroup()
                                                                 .addComponent(
                                                                         jPanel1,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         Short.MAX_VALUE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(
-                                                                        _nextPageButton,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap()));
+                                                                        .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(
+                                                                                        _nextPageButton,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                        .addContainerGap()));
         layout.setVerticalGroup(layout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(
                         layout.createSequentialGroup()
-                                .addComponent(_hintLabel)
-                                .addComponent(jScrollPane1,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        265,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(_hintLabel)
+                        .addComponent(jScrollPane1,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                265,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(
                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(
-                                                        jPanel1,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(
-                                                        _nextPageButton,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap()));
+                                        .addGroup(
+                                                layout.createParallelGroup(
+                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(
+                                                                jPanel1,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(
+                                                                        _nextPageButton,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -372,7 +372,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,
                         "The specified model could "
                                 + "not be found in the database.",
-                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
+                                "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

@@ -78,7 +78,7 @@ public class Excel extends TypedAtomicActor {
      *   actor with this name.
      */
     public Excel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -268,7 +268,7 @@ public class Excel extends TypedAtomicActor {
      *   actor with this name.
      */
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         //super._initialize();
 
         // Only has an input port

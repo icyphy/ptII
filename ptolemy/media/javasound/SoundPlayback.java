@@ -246,7 +246,7 @@ public class SoundPlayback {
      *  or if stopPlayback() has already been called.
      */
     public void putSamples(double[][] putSamplesArray) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (_isAudioPlaybackActive == true) {
             if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
@@ -259,7 +259,7 @@ public class SoundPlayback {
                 // Note: consumptionRate is amount of data to write, in bytes.
                 // Now write the array to output device.
                 _sourceLine
-                        .write(_data, 0, _putSamplesSize * _frameSizeInBytes);
+                .write(_data, 0, _putSamplesSize * _frameSizeInBytes);
             } else if (_playbackMode.equals("file")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
@@ -321,7 +321,7 @@ public class SoundPlayback {
      *  or if stopPlayback() has already been called.
      */
     public void putSamplesInt(int[][] putSamplesArray) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (_isAudioPlaybackActive == true) {
             if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
@@ -334,7 +334,7 @@ public class SoundPlayback {
                 // Note: consumptionRate is amount of data to write, in bytes.
                 // Now write the array to output device.
                 _sourceLine
-                        .write(_data, 0, _putSamplesSize * _frameSizeInBytes);
+                .write(_data, 0, _putSamplesSize * _frameSizeInBytes);
             } else if (_playbackMode.equals("file")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
@@ -634,7 +634,7 @@ public class SoundPlayback {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp * bytesPerSample * channels
-                            + bytesPerSample * currChannel + i] = b[i];
+                              + bytesPerSample * currChannel + i] = b[i];
                 }
             }
         }
@@ -705,7 +705,7 @@ public class SoundPlayback {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp * bytesPerSample * channels
-                            + bytesPerSample * currChannel + i] = b[i];
+                              + bytesPerSample * currChannel + i] = b[i];
                 }
             }
         }

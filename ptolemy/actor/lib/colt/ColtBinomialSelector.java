@@ -88,13 +88,13 @@ public class ColtBinomialSelector extends ColtRandomSource {
         trials = new PortParameter(this, "trials", new IntToken(1));
         trials.setTypeEquals(BaseType.INT);
         new SingletonParameter(trials.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         populations = new TypedIOPort(this, "populations", true, false);
         populations.setMultiport(true);
         populations.setTypeEquals(BaseType.LONG);
         new SingletonParameter(populations, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         output.setMultiport(true);
         output.setTypeEquals(BaseType.INT);

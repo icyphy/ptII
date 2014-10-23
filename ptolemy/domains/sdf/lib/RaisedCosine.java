@@ -205,17 +205,17 @@ public class RaisedCosine extends FIR {
 
         DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ? (DoubleUnaryOperation) new SignalProcessing.SqrtRaisedCosineSampleGenerator(
                 symbolIntervalValue, excessBWValue)
-                : (DoubleUnaryOperation) new SignalProcessing.RaisedCosineSampleGenerator(
-                        symbolIntervalValue, excessBWValue);
+        : (DoubleUnaryOperation) new SignalProcessing.RaisedCosineSampleGenerator(
+                symbolIntervalValue, excessBWValue);
 
-        double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
-                1.0, raisedCosineSampleGenerator);
-        DoubleToken[] tapsArrayToken = new DoubleToken[tapsArray.length];
+                double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
+                        1.0, raisedCosineSampleGenerator);
+                DoubleToken[] tapsArrayToken = new DoubleToken[tapsArray.length];
 
-        for (int i = 0; i < tapsArray.length; i++) {
-            tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
-        }
+                for (int i = 0; i < tapsArray.length; i++) {
+                    tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
+                }
 
-        taps.setToken(new ArrayToken(BaseType.DOUBLE, tapsArrayToken));
+                taps.setToken(new ArrayToken(BaseType.DOUBLE, tapsArrayToken));
     }
 }

@@ -145,7 +145,8 @@ public class DocViewer extends HTMLViewer {
             _init(null, configuration, null, url);
         } catch (Throwable throwable) {
             // Should not happen.
-            throw new InternalErrorException(null, throwable, "Unexpected exception initializing viewer for " + url);
+            throw new InternalErrorException(null, throwable,
+                    "Unexpected exception initializing viewer for " + url);
         }
     }
 
@@ -180,7 +181,7 @@ public class DocViewer extends HTMLViewer {
                 Effigy effigy = getEffigy();
                 DocEffigy newEffigy = new DocEffigy(
                         (CompositeEntity) effigy.getContainer(), effigy
-                                .getContainer().uniqueName("parentClass"));
+                        .getContainer().uniqueName("parentClass"));
                 newEffigy.setDocAttribute(attribute);
                 DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                 tableau.show();
@@ -369,8 +370,8 @@ public class DocViewer extends HTMLViewer {
         Iterator attributes = target.attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable parameter = (Settable) attributes.next();
-            if (_isHidden((NamedObj)parameter)) {
-                    continue;
+            if (_isHidden((NamedObj) parameter)) {
+                continue;
             }
             if (parameter instanceof PortParameter) {
                 // Skip this one.
@@ -450,7 +451,7 @@ public class DocViewer extends HTMLViewer {
         while (ports.hasNext()) {
             Port port = (Port) ports.next();
             if (_isHidden(port)) {
-                    continue;
+                continue;
             }
             if (port instanceof ParameterPort) {
                 // Skip this one.
@@ -586,8 +587,8 @@ public class DocViewer extends HTMLViewer {
                 .iterator();
         while (attributes.hasNext()) {
             Settable parameter = (Settable) attributes.next();
-            if (_isHidden((NamedObj)parameter)) {
-                    continue;
+            if (_isHidden((NamedObj) parameter)) {
+                continue;
             }
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {

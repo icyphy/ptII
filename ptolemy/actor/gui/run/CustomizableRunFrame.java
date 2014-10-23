@@ -141,8 +141,8 @@ public class CustomizableRunFrame extends TableauFrame {
                 } catch (KernelException ex) {
                     try {
                         MessageHandler
-                                .warning("Failed to create layout customization frame: "
-                                        + ex);
+                        .warning("Failed to create layout customization frame: "
+                                + ex);
                     } catch (CancelException exception) {
                     }
                 }
@@ -216,8 +216,8 @@ public class CustomizableRunFrame extends TableauFrame {
                 } catch (KernelException ex) {
                     try {
                         MessageHandler
-                                .warning("Failed to create layout customization frame: "
-                                        + ex);
+                        .warning("Failed to create layout customization frame: "
+                                + ex);
                     } catch (CancelException exception) {
                     }
                 }

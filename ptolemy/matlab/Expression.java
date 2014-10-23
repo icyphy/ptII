@@ -195,7 +195,6 @@ public class Expression extends TypedAtomicActor {
         clearEnvironment.setTypeEquals(BaseType.BOOLEAN);
         clearEnvironment.setToken(BooleanToken.TRUE);
 
-
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "_iteration", new IntToken(1));
     }
@@ -242,7 +241,7 @@ public class Expression extends TypedAtomicActor {
         Expression newObject = (Expression) super.clone(workspace);
 
         newObject._addPathCommand = null;
-        newObject._iteration = (Variable)newObject.getAttribute("_iteration");
+        newObject._iteration = (Variable) newObject.getAttribute("_iteration");
         newObject._iterationCount = 1;
         newObject._previousPath = null;
         newObject._inputTokens = new HashMap<String, Token>();
@@ -429,7 +428,7 @@ public class Expression extends TypedAtomicActor {
                 }
                 try {
                     matlabEngine
-                    .put(engine, "iteration", _iteration.getToken());
+                            .put(engine, "iteration", _iteration.getToken());
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to set the \"iteration\" variable in the Matlab "

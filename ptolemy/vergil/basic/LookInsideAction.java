@@ -113,7 +113,7 @@ public class LookInsideAction extends FigureAction {
             // Avoid Control_O, which is open file.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
     }
 

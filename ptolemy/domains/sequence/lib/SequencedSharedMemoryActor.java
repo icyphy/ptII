@@ -454,7 +454,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         // Set up strings for moml change requests

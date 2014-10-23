@@ -62,7 +62,7 @@ public class EditIconTableau extends Tableau {
      *   an attribute already in the container.
      */
     public EditIconTableau(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 

@@ -411,7 +411,7 @@ public class CADirector extends Director {
      * with a specified name.
      */
     protected void _initParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // FIXME: we need an attributeChanged() method.  What happens
         // if one of these parameters changes while the model is running?

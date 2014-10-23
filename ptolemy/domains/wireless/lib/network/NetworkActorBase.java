@@ -79,37 +79,37 @@ public class NetworkActorBase extends TypedAtomicActor {
 
     // messages between the layers
     protected static final String[] PCRequestMsgFields = { "kind",
-            "fromMACAddr", "toMACAddr", "range", "angle", "num_nb", "xpos",
-            "ypos", "Length" };
+        "fromMACAddr", "toMACAddr", "range", "angle", "num_nb", "xpos",
+        "ypos", "Length" };
 
     protected static final String[] PCResponseMsgFields = { "kind",
-            "fromMACAddr", "toMACAddr", "xpos", "ypos", "range", "Length" };
+        "fromMACAddr", "toMACAddr", "xpos", "ypos", "range", "Length" };
 
     protected static final String[] StartRspMsgFields = { "kind", "range" };
 
     protected static final String[] cNetwInterestMessageFields = { "kind",
-            "cost", "hop_distance", "fromMACAddr", "toMACAddr", "hopcount",
-            "arrivalTime", "Length" };
+        "cost", "hop_distance", "fromMACAddr", "toMACAddr", "hopcount",
+        "arrivalTime", "Length" };
 
     protected static final String[] cNetwDataMessageFields = { "kind",
-            "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime", "payload",
-            "Length" };
+        "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime", "payload",
+    "Length" };
 
     protected static final String[] DataPacket = { "protocolVer", "Type",
-            "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
-            "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Addr2",
-            "Addr3", "SeqNum", "FragNum", "Addr4", "payload", "Length" };
+        "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+        "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Addr2",
+        "Addr3", "SeqNum", "FragNum", "Addr4", "payload", "Length" };
 
     protected static final String[] RtsPacket = { "protocolVer", "Type",
-            "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
-            "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Addr2",
-            "Length" };
+        "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+        "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Addr2",
+    "Length" };
 
     // use Addr1 for RA, so FilterMpdu does not need to check packet type
     // before checking Addr1 or RA filed
     protected static final String[] AckPacket = { "protocolVer", "Type",
-            "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
-            "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Length" };
+        "Subtype", "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt",
+        "moreData", "wepBit", "orderBit", "FCS", "durId", "Addr1", "Length" };
 
     // message types
     protected static final int RxStart = 30;

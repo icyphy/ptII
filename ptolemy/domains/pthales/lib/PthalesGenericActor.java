@@ -76,7 +76,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
      *   actor with this name.
      */
     public PthalesGenericActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -162,8 +162,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         // Outputs ports arrays created before elementary task called
         for (IOPort port : portsOut) {
             realOut[portNumber] = new float[PthalesIOPort
-                    .getDataProducedSize(port)
-                    * PthalesIOPort.getNbTokenPerData(port)];
+                                            .getDataProducedSize(port)
+                                            * PthalesIOPort.getNbTokenPerData(port)];
             portNumber++;
         }
 
@@ -251,7 +251,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
 
     @Override
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         super._initialize();
 

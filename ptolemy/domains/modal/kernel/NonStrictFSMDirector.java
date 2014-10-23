@@ -453,9 +453,9 @@ public class NonStrictFSMDirector extends FSMDirector {
 
                             if (inputPortOutside.getContainer() == container
                                     && !_refinementReferredInputPorts
-                                            .contains(inputPortOutside)) {
+                                    .contains(inputPortOutside)) {
                                 _refinementReferredInputPorts
-                                        .add(inputPortOutside);
+                                .add(inputPortOutside);
                             }
                         }
                     }

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class BinaryOperationMonotonicFunctionDefinition extends
-        ExpressionConceptFunctionDefinitionAttribute {
+ExpressionConceptFunctionDefinitionAttribute {
 
     /** Construct the BinaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -66,7 +66,7 @@ public class BinaryOperationMonotonicFunctionDefinition extends
      */
     public BinaryOperationMonotonicFunctionDefinition(
             CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Since a binary function always has 2 arguments, its
@@ -84,7 +84,7 @@ public class BinaryOperationMonotonicFunctionDefinition extends
         // Constrain argument list to have only 2 arguments.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 2));
         argumentDomainOntologies
-                .setTypeEquals(new ArrayType(BaseType.STRING, 2));
+        .setTypeEquals(new ArrayType(BaseType.STRING, 2));
         argumentDomainOntologies.setVisibility(Settable.NONE);
 
         outputRangeOntologyName.setVisibility(Settable.NONE);

@@ -316,8 +316,8 @@ public class NonStrictTest extends Sink {
                     && !referenceToken.isNil()
                     && !_isCloseToIfNilArrayElement(token, referenceToken,
                             _tolerance)
-                    && !_isCloseToIfNilRecordElement(token, referenceToken,
-                            _tolerance)) {
+                            && !_isCloseToIfNilRecordElement(token, referenceToken,
+                                    _tolerance)) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
                                 + "Value was: " + token
@@ -494,15 +494,15 @@ public class NonStrictTest extends Sink {
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
                     System.out
-                            .println("NonStrictTest: "
-                                    + getFullName()
-                                    + ": exponent of "
-                                    + newValue
-                                    + " is "
-                                    + log
-                                    + ", which cannot be compared with the previous tolerance."
-                                    + " The new tolerance is "
-                                    + tolerance.getExpression() + ".");
+                    .println("NonStrictTest: "
+                            + getFullName()
+                            + ": exponent of "
+                            + newValue
+                            + " is "
+                            + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is "
+                            + tolerance.getExpression() + ".");
                 }
             }
         }

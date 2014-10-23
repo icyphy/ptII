@@ -772,7 +772,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                         + channel + "]";
             }
             return "[" + token + " for port " + port.getName() + " channel "
-                    + channel + "]";
+            + channel + "]";
         }
     }
 
@@ -817,9 +817,9 @@ public class SysMLConcurrentDirector extends ProcessDirector {
             synchronized (SysMLConcurrentDirector.this) {
                 if (SysMLConcurrentDirector.this._debugging) {
                     SysMLConcurrentDirector.this
-                            ._debug("******* Iterating actor "
-                                    + _actor.getName() + " at time "
-                                    + getModelTime());
+                    ._debug("******* Iterating actor "
+                            + _actor.getName() + " at time "
+                            + getModelTime());
                     SysMLConcurrentDirector.this._debug("input queue: "
                             + _myActorData.inputQueue);
                 }
@@ -857,8 +857,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                             } catch (InterruptedException e) {
                                 if (SysMLConcurrentDirector.this._debugging) {
                                     SysMLConcurrentDirector.this
-                                            ._debug(_actor.getFullName()
-                                                    + " thread interrupted. Requesting stop.");
+                                    ._debug(_actor.getFullName()
+                                            + " thread interrupted. Requesting stop.");
                                 }
                                 SysMLConcurrentDirector.this.stop();
                             }
@@ -881,14 +881,14 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                         } catch (InterruptedException e) {
                             if (SysMLConcurrentDirector.this._debugging) {
                                 SysMLConcurrentDirector.this
-                                        ._debug(_actor.getFullName()
-                                                + " thread interrupted. Requesting stop.");
+                                ._debug(_actor.getFullName()
+                                        + " thread interrupted. Requesting stop.");
                             }
                             SysMLConcurrentDirector.this.stop();
                         }
                     }
                 } // while (inputQueue.size() == 0).
-                  // Either queue is non-empty, or time has passed.
+                // Either queue is non-empty, or time has passed.
                 if (SysMLConcurrentDirector.this._debugging) {
                     SysMLConcurrentDirector.this._debug(_actor.getFullName()
                             + " unblocked at time " + getModelTime() + ".");
@@ -926,10 +926,10 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                             int channel = port
                                     .getChannelForReceiver(input.receiver);
                             SysMLConcurrentDirector.this
-                                    ._debug(_actor.getFullName()
-                                            + ": Providing change event to port "
-                                            + port.getName() + " on channel "
-                                            + channel);
+                            ._debug(_actor.getFullName()
+                                    + ": Providing change event to port "
+                                    + port.getName() + " on channel "
+                                    + channel);
                         }
                     }
                 }
@@ -963,8 +963,8 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                     synchronized (SysMLConcurrentDirector.this) {
                         if (SysMLConcurrentDirector.this._debugging) {
                             SysMLConcurrentDirector.this
-                                    ._debug(_actor.getFullName()
-                                            + " postfire() returns false. Ending thread.");
+                            ._debug(_actor.getFullName()
+                                    + " postfire() returns false. Ending thread.");
                         }
                         removeThread(this);
                         _actorData.remove(_actor);
@@ -1062,9 +1062,9 @@ public class SysMLConcurrentDirector extends ProcessDirector {
                     actorData.inputQueue.add(input);
                     if (SysMLConcurrentDirector.this._debugging) {
                         SysMLConcurrentDirector.this
-                                ._debug("Adding to queue for "
-                                        + actor.getName() + " at time "
-                                        + getModelTime() + ": " + input);
+                        ._debug("Adding to queue for "
+                                + actor.getName() + " at time "
+                                + getModelTime() + ": " + input);
                         SysMLConcurrentDirector.this._debug("input queue: "
                                 + actorData.inputQueue);
                     }

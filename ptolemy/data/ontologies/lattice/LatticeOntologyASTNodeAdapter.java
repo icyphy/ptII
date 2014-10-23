@@ -87,7 +87,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      */
     public LatticeOntologyASTNodeAdapter(LatticeOntologySolver solver,
             ASTPtRootNode node, boolean useDefaultConstraints)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         super(solver, node, useDefaultConstraints);
     }

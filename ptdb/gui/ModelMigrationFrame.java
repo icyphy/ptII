@@ -188,11 +188,11 @@ public class ModelMigrationFrame extends JFrame {
 
         _allSubDirectoriesCheckBox.setSelected(true);
         _allSubDirectoriesCheckBox
-                .setText("Migrate all .xml files under the given folder path and all sub-directories under it.");
+        .setText("Migrate all .xml files under the given folder path and all sub-directories under it.");
 
         _checkFileContentCheckBox.setSelected(true);
         _checkFileContentCheckBox
-                .setText("Validate the file content before migrating the model. Only migrate proper Ptolemy models.");
+        .setText("Validate the file content before migrating the model. Only migrate proper Ptolemy models.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
                 getContentPane());
@@ -202,109 +202,109 @@ public class ModelMigrationFrame extends JFrame {
                 .addComponent(_resultsTextField,
                         javax.swing.GroupLayout.DEFAULT_SIZE, 463,
                         Short.MAX_VALUE)
-                .addGroup(
-                        layout.createSequentialGroup()
+                        .addGroup(
+                                layout.createSequentialGroup()
                                 .addGap(156, 156, 156)
                                 .addComponent(_migrateButton)
                                 .addPreferredGap(
                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(_closeButton,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        72,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-                .addGroup(
-                        javax.swing.GroupLayout.Alignment.TRAILING,
-                        layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(_jLabel3,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        443, Short.MAX_VALUE).addContainerGap())
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(_jLabel5,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        443, Short.MAX_VALUE).addContainerGap())
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(_jLabel4,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        443, Short.MAX_VALUE).addContainerGap())
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(
-                                                        _allSubDirectoriesCheckBox)
-                                                .addComponent(
-                                                        _checkFileContentCheckBox)
+                                        .addComponent(_closeButton,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                72,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addContainerGap())
                                                 .addGroup(
+                                                        javax.swing.GroupLayout.Alignment.TRAILING,
                                                         layout.createSequentialGroup()
-                                                                .addComponent(
-                                                                        _jLabel2)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(
-                                                                        _directoryPathTextField,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        271,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(
-                                                                        _browseButton))
-                                                .addComponent(
-                                                        _jLabel1,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        443, Short.MAX_VALUE))
-                                .addContainerGap()));
+                                                        .addContainerGap()
+                                                        .addComponent(_jLabel3,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                443, Short.MAX_VALUE).addContainerGap())
+                                                                .addGroup(
+                                                                        layout.createSequentialGroup()
+                                                                        .addContainerGap()
+                                                                        .addComponent(_jLabel5,
+                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                443, Short.MAX_VALUE).addContainerGap())
+                                                                                .addGroup(
+                                                                                        layout.createSequentialGroup()
+                                                                                        .addContainerGap()
+                                                                                        .addComponent(_jLabel4,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                443, Short.MAX_VALUE).addContainerGap())
+                                                                                                .addGroup(
+                                                                                                        layout.createSequentialGroup()
+                                                                                                        .addContainerGap()
+                                                                                                        .addGroup(
+                                                                                                                layout.createParallelGroup(
+                                                                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                        .addComponent(
+                                                                                                                                _allSubDirectoriesCheckBox)
+                                                                                                                                .addComponent(
+                                                                                                                                        _checkFileContentCheckBox)
+                                                                                                                                        .addGroup(
+                                                                                                                                                layout.createSequentialGroup()
+                                                                                                                                                .addComponent(
+                                                                                                                                                        _jLabel2)
+                                                                                                                                                        .addPreferredGap(
+                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                                                                                .addComponent(
+                                                                                                                                                                        _directoryPathTextField,
+                                                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                        271,
+                                                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                        .addPreferredGap(
+                                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                                                                                                                .addComponent(
+                                                                                                                                                                                        _browseButton))
+                                                                                                                                                                                        .addComponent(
+                                                                                                                                                                                                _jLabel1,
+                                                                                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                                                                                443, Short.MAX_VALUE))
+                                                                                                                                                                                                .addContainerGap()));
         layout.setVerticalGroup(layout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(
                         javax.swing.GroupLayout.Alignment.TRAILING,
                         layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(_jLabel3)
-                                .addGap(4, 4, 4)
-                                .addComponent(_jLabel4)
-                                .addPreferredGap(
-                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addContainerGap()
+                        .addComponent(_jLabel3)
+                        .addGap(4, 4, 4)
+                        .addComponent(_jLabel4)
+                        .addPreferredGap(
+                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(_jLabel5)
                                 .addGap(18, 18, 18)
                                 .addComponent(_jLabel1)
                                 .addPreferredGap(
                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(_jLabel2)
-                                                .addComponent(
-                                                        _directoryPathTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(_browseButton))
-                                .addGap(18, 18, 18)
-                                .addComponent(_allSubDirectoriesCheckBox)
-                                .addComponent(_checkFileContentCheckBox)
-                                .addPreferredGap(
-                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        23, Short.MAX_VALUE)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(_migrateButton)
-                                                .addComponent(_closeButton))
-                                .addPreferredGap(
-                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(_resultsTextField,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        27,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
+                                        .addGroup(
+                                                layout.createParallelGroup(
+                                                        javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(_jLabel2)
+                                                        .addComponent(
+                                                                _directoryPathTextField,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(_browseButton))
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(_allSubDirectoriesCheckBox)
+                                                                .addComponent(_checkFileContentCheckBox)
+                                                                .addPreferredGap(
+                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                        23, Short.MAX_VALUE)
+                                                                        .addGroup(
+                                                                                layout.createParallelGroup(
+                                                                                        javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                        .addComponent(_migrateButton)
+                                                                                        .addComponent(_closeButton))
+                                                                                        .addPreferredGap(
+                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                .addComponent(_resultsTextField,
+                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                        27,
+                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
 
         pack();
     }
@@ -323,11 +323,11 @@ public class ModelMigrationFrame extends JFrame {
 
         } else {
             JOptionPane
-                    .showMessageDialog(
-                            ModelMigrationFrame.this,
-                            "Please specify a path where the models to be migrated exist.",
-                            "Empty Path Error",
-                            JOptionPane.INFORMATION_MESSAGE, null);
+            .showMessageDialog(
+                    ModelMigrationFrame.this,
+                    "Please specify a path where the models to be migrated exist.",
+                    "Empty Path Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
         }
 
     }

@@ -93,8 +93,8 @@ public class PortDialogAction extends FigureAction {
             // was throwing an exception here that was not being displayed
             // in the UI.
             MessageHandler
-                    .error("Failed to open a dialog to configure the ports the target.",
-                            throwable);
+            .error("Failed to open a dialog to configure the ports the target.",
+                    throwable);
         }
     }
 

@@ -41,7 +41,7 @@ import diva.util.Filter;
  * @Pt.AcceptedRating Yellow
  */
 public abstract class AbstractFigureContainer extends AbstractFigure implements
-        FigureContainer {
+FigureContainer {
     /** Decorate a child figure, replacing the reference to the
      * child figure with the decorator.
      */

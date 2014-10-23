@@ -649,8 +649,8 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition() */
-                    /* &&!entity.isOpaque() */
-                    entity instanceof CompositeEntity) {
+                            /* &&!entity.isOpaque() */
+                            entity instanceof CompositeEntity) {
                         result.add(entity);
                         result.addAll(((CompositeEntity) entity)
                                 .deepCompositeEntityList());
@@ -788,7 +788,7 @@ public class CompositeEntity extends ComponentEntity {
                         if (entity instanceof CompositeEntity) {
                             _addAll(result,
                                     ((CompositeEntity) entity)
-                                            .deepRelationSet());
+                                    .deepRelationSet());
                         }
                     }
                 }
@@ -1579,7 +1579,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& !entity.isOpaque()*/
-                    entity instanceof CompositeEntity) {
+                            entity instanceof CompositeEntity) {
                         result.add(entity);
                         result.addAll(((CompositeEntity) entity)
                                 .lazyAllCompositeTransparentAndOpaqueEntityList());
@@ -2033,19 +2033,19 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             return "Size Statistics for "
-                    + getFullName()
-                    + "\nAtomicEntities: "
-                    + entityCount
-                    + "\nCompositeEntities: "
-                    + compositeEntityCount
-                    + "\nOpaqueCompositeEntities: "
-                    + opaqueCompositeEntityCount
-                    + "\nRelations: "
-                    + relationCount
-                    + "\nAttributes: "
-                    + attributeCount
-                    + (clazz == null ? "" : "\nEntities of type \""
-                            + clazz.getName() + "\": " + entityClassCount)
+            + getFullName()
+            + "\nAtomicEntities: "
+            + entityCount
+            + "\nCompositeEntities: "
+            + compositeEntityCount
+            + "\nOpaqueCompositeEntities: "
+            + opaqueCompositeEntityCount
+            + "\nRelations: "
+            + relationCount
+            + "\nAttributes: "
+            + attributeCount
+            + (clazz == null ? "" : "\nEntities of type \""
+                    + clazz.getName() + "\": " + entityClassCount)
                     + "\nAtomic Actor Names and Counts:\n" + actorNames
                     + "\nComposite Entity Depths and Counts:\n"
                     + compositeEntityDepths;
@@ -2252,7 +2252,7 @@ public class CompositeEntity extends ComponentEntity {
                         result.add(entity);
                     } else {
                         ((CompositeEntity) entity)
-                                ._deepOpaqueEntityList(result);
+                        ._deepOpaqueEntityList(result);
                     }
                 }
             }
@@ -2365,8 +2365,8 @@ public class CompositeEntity extends ComponentEntity {
             } else if (getAttribute("_createdBy") != null) {
                 try {
                     ((VersionAttribute) getAttribute("_createdBy"))
-                            .setExpression(VersionAttribute.CURRENT_VERSION
-                                    .getExpression());
+                    .setExpression(VersionAttribute.CURRENT_VERSION
+                            .getExpression());
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(this, ex,
                             "Failed to update _createdBy");
@@ -2853,7 +2853,7 @@ public class CompositeEntity extends ComponentEntity {
      *  then relations.
      */
     protected class ContainedObjectsIterator extends
-            Entity.ContainedObjectsIterator {
+    Entity.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for CompositeEntities are attributes, ports, classes
          *  entities, and relations.

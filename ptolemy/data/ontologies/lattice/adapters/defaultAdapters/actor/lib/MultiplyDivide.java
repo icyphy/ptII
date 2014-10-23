@@ -61,7 +61,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
      */
     public MultiplyDivide(LatticeOntologySolver solver,
             ptolemy.actor.lib.MultiplyDivide actor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, actor, false);
 
         _multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
@@ -119,7 +119,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 // set up the constraint to be the product of the inputs.
                 if (multiplyInputs.size() > 1) {
                     InequalityTerm[] plusTerms = new InequalityTerm[multiplyInputs
-                            .size()];
+                                                                    .size()];
                     for (int i = 0; i < plusTerms.length; i++) {
                         plusTerms[i] = getPropertyTerm(multiplyInputs.get(i));
                     }
@@ -128,7 +128,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                             new ConceptFunctionInequalityTerm(
                                     new ApplyBinaryFunctionToMultipleArguments(
                                             "productMultiplyInputs", _solver
-                                                    .getOntology(),
+                                            .getOntology(),
                                             multiplyFunction), plusTerms));
                 }
 
@@ -137,7 +137,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 List<IOPort> divideInputs = _getSourcePortList(actor.divide);
                 if (divideInputs.size() > 1) {
                     InequalityTerm[] divideTerms = new InequalityTerm[divideInputs
-                            .size()];
+                                                                      .size()];
                     for (int i = 0; i < divideTerms.length; i++) {
                         divideTerms[i] = getPropertyTerm(divideInputs.get(i));
                     }
@@ -146,7 +146,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                             new ConceptFunctionInequalityTerm(
                                     new ApplyBinaryFunctionToMultipleArguments(
                                             "productDivideInputs", _solver
-                                                    .getOntology(),
+                                            .getOntology(),
                                             multiplyFunction), divideTerms));
                 }
 

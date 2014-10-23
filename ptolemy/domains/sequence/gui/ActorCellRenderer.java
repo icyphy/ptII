@@ -80,10 +80,10 @@ public class ActorCellRenderer extends DefaultListCellRenderer {
                             + ")";
                 } catch (IllegalActionException e) {
                     MessageHandler
-                            .error("Actor "
-                                    + actor.getName()
-                                    + "'s SequenceAttribute does not have a valid sequence number.",
-                                    e);
+                    .error("Actor "
+                            + actor.getName()
+                            + "'s SequenceAttribute does not have a valid sequence number.",
+                            e);
                 }
             }
             this.setText(name);

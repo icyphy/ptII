@@ -207,7 +207,7 @@ public class View extends GTEvent {
                     && !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
 
                 EventUtils
-                        .setTableau(this, referredTableau, this.tableau, null);
+                .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }

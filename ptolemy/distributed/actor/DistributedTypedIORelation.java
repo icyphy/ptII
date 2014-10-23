@@ -126,7 +126,7 @@ public class DistributedTypedIORelation extends TypedIORelation {
         }
 
         ((DistributedReceiver) intermediateReceiver[0][0])
-                .setServicesReceiversListMap(servicesReceiversListMap);
+        .setServicesReceiversListMap(servicesReceiversListMap);
     }
 
     ///////////////////////////////////////////////////////////////////

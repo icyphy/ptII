@@ -436,7 +436,7 @@ public class TDLCodeGeneratorUtilities {
                                     + " {";
                             sb.insert(sb.indexOf(insertPosition)
                                     + insertPosition.length() + 2, "  import "
-                                    + importModule + ";\n");
+                                            + importModule + ";\n");
                         }
                     }
                 } else {
@@ -531,7 +531,7 @@ public class TDLCodeGeneratorUtilities {
                     Port outport = (Port) outputs.get(j);
                     if (inport.connectedPortList().size() > 1
                             && inport.connectedPortList().get(1)
-                                    .equals(outport)) {
+                            .equals(outport)) {
                         copiedinputs.remove(inport);
                         continue;
                     }

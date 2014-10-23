@@ -75,7 +75,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class UndeferredGraphicalMessageHandler extends
-ptolemy.util.MessageHandler {
+        ptolemy.util.MessageHandler {
 
     /** Get the component set by a call to setContext(), or null if none.
      *  @see #setContext(Component)
@@ -355,7 +355,7 @@ ptolemy.util.MessageHandler {
     @Override
     protected boolean _yesNoCancelQuestion(String question, String trueOption,
             String falseOption, String exceptionOption)
-            throws ptolemy.util.CancelException {
+                    throws ptolemy.util.CancelException {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG));

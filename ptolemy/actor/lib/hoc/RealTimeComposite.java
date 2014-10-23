@@ -664,8 +664,8 @@ public class RealTimeComposite extends MirrorComposite {
             if (director != null) {
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this
-                            ._debug("---- Actor requests firing at time "
-                                    + time + ": " + actor.getFullName());
+                    ._debug("---- Actor requests firing at time "
+                            + time + ": " + actor.getFullName());
                 }
                 result = director.fireAt(RealTimeComposite.this, time,
                         microstep);
@@ -711,12 +711,12 @@ public class RealTimeComposite extends MirrorComposite {
                         (System.currentTimeMillis() - _realStartTime) / 1000.0);
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this
-                            ._debug("----- fireAtCurrentTime() request by actor "
-                                    + actor.getFullName()
-                                    + ". Model time is "
-                                    + environmentTime
-                                    + ", and real time is "
-                                    + time);
+                    ._debug("----- fireAtCurrentTime() request by actor "
+                            + actor.getFullName()
+                            + ". Model time is "
+                            + environmentTime
+                            + ", and real time is "
+                            + time);
                 }
                 director.fireAt(RealTimeComposite.this, time);
                 return time;
@@ -795,8 +795,8 @@ public class RealTimeComposite extends MirrorComposite {
                     .getExecutiveDirector().getModelTime();
             if (RealTimeComposite.this._debugging) {
                 RealTimeComposite.this
-                        ._debug("----- Current environment time is: "
-                                + environmentTime);
+                ._debug("----- Current environment time is: "
+                        + environmentTime);
             }
 
             if (_delayValue != 0) {
@@ -826,10 +826,10 @@ public class RealTimeComposite extends MirrorComposite {
                 if (_inputTokens.size() > 0) {
                     if (RealTimeComposite.this._debugging) {
                         RealTimeComposite.this
-                                ._debug("Queueing input tokens for the associated thread: "
-                                        + _inputTokens.toString()
-                                        + " to be processed at time "
-                                        + environmentTime);
+                        ._debug("Queueing input tokens for the associated thread: "
+                                + _inputTokens.toString()
+                                + " to be processed at time "
+                                + environmentTime);
                     }
                     _inputFrames.put(new InputFrame(environmentTime,
                             _inputTokens));
@@ -855,9 +855,9 @@ public class RealTimeComposite extends MirrorComposite {
                         if (_inputTokens.size() == 0) {
                             if (RealTimeComposite.this._debugging) {
                                 RealTimeComposite.this
-                                        ._debug("Queueing pure event for the associated thread, "
-                                                + " to be processed at time "
-                                                + environmentTime);
+                                ._debug("Queueing pure event for the associated thread, "
+                                        + " to be processed at time "
+                                        + environmentTime);
                             }
                             _inputFrames.put(new InputFrame(environmentTime,
                                     _inputTokens));
@@ -902,8 +902,8 @@ public class RealTimeComposite extends MirrorComposite {
             if (_delayValue != 0) {
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this
-                            ._debug("Queueing a stop-frame token for the associated thread with time: "
-                                    + environmentTime);
+                    ._debug("Queueing a stop-frame token for the associated thread with time: "
+                            + environmentTime);
                 }
                 // A "stop frame" has a null token list.
                 _inputFrames.put(new InputFrame(environmentTime, null));
@@ -984,7 +984,7 @@ public class RealTimeComposite extends MirrorComposite {
                             if (port.hasTokenInside(i)) {
                                 Token token = port.getInside(i);
                                 outputTokens
-                                        .add(new QueuedToken(port, i, token));
+                                .add(new QueuedToken(port, i, token));
                                 if (RealTimeComposite.this._debugging) {
                                     RealTimeComposite.this._debug(
                                             getName(),
@@ -1025,20 +1025,20 @@ public class RealTimeComposite extends MirrorComposite {
                         .getExecutiveDirector().getModelTime();
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this
-                            ._debug("Queueing a stop-frame token for the associated thread with time: "
-                                    + environmentTime);
+                    ._debug("Queueing a stop-frame token for the associated thread with time: "
+                            + environmentTime);
                 }
                 // A "stop frame" has a null token list.
                 _inputFrames.put(new InputFrame(environmentTime, null));
                 try {
                     if (RealTimeComposite.this._debugging) {
                         RealTimeComposite.this
-                                ._debug("Waiting for associated thread to stop.");
+                        ._debug("Waiting for associated thread to stop.");
                     }
                     _thread.join();
                     if (RealTimeComposite.this._debugging) {
                         RealTimeComposite.this
-                                ._debug("Associated thread has stopped.");
+                        ._debug("Associated thread has stopped.");
                     }
                 } catch (InterruptedException e) {
                     // Ignore.
@@ -1075,23 +1075,23 @@ public class RealTimeComposite extends MirrorComposite {
                     try {
                         if (RealTimeComposite.this._debugging) {
                             RealTimeComposite.this
-                                    ._debug("---- Waiting for inputs in the associated thread.");
+                            ._debug("---- Waiting for inputs in the associated thread.");
                         }
                         InputFrame frame = _inputFrames.take();
                         if (frame.tokens == null) {
                             // Recognize a "stop frame" and exit the thread.
                             if (RealTimeComposite.this._debugging) {
                                 RealTimeComposite.this
-                                        ._debug("---- Read a stop frame in associated thread.");
+                                ._debug("---- Read a stop frame in associated thread.");
                             }
                             break;
                         }
                         if (RealTimeComposite.this._debugging) {
                             RealTimeComposite.this
-                                    ._debug("---- Reading input tokens in associated thread with time "
-                                            + frame.time
-                                            + " and value "
-                                            + frame.tokens);
+                            ._debug("---- Reading input tokens in associated thread with time "
+                                    + frame.time
+                                    + " and value "
+                                    + frame.tokens);
                         }
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.

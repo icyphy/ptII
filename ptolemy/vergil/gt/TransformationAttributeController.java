@@ -94,7 +94,7 @@ public class TransformationAttributeController extends AttributeController {
     }
 
     private static class Listener extends TransformationListener implements
-            ChangeListener, WindowListener {
+    ChangeListener, WindowListener {
 
         @Override
         public void changeExecuted(ChangeRequest change) {

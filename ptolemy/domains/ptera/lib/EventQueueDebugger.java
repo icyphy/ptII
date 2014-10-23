@@ -56,7 +56,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class EventQueueDebugger extends SingletonAttribute implements
-        EventQueueDebugListener, Initializable {
+EventQueueDebugListener, Initializable {
 
     /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
@@ -192,7 +192,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);

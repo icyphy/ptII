@@ -111,7 +111,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -217,9 +217,9 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      * Updates the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         directorClass
-                .setExpression("ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
+        .setExpression("ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
     }
 
 }

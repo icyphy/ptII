@@ -297,7 +297,7 @@ public class CodeStream {
                 if (_adapter != null && blockName.matches(block)) {
                     throw new IllegalActionException(
                             blockName
-                                    + " -- is a code block that is appended by default.");
+                            + " -- is a code block that is appended by default.");
                 }
             }
         }
@@ -574,7 +574,7 @@ public class CodeStream {
      *  the adapter .[target] file.
      */
     public static void main(String[] args) throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         selfTest();
 
         if (args.length < 1) {
@@ -870,8 +870,8 @@ public class CodeStream {
 
                 if (reader == null) {
                     System.out
-                            .println("CodeStream._constructCodeTableAdapter(): Could not open "
-                                    + _filePath);
+                    .println("CodeStream._constructCodeTableAdapter(): Could not open "
+                            + _filePath);
                     return;
                 }
                 //System.out.println("CodeStream._constructCodeTableAdapter(): opened " + _filePath);
@@ -979,7 +979,7 @@ public class CodeStream {
 
         String extension = _adapter.getCodeGenerator().getTemplateExtension();
         return "$CLASSPATH/" + adapterClass.getName().replace('.', '/') + "."
-                + extension;
+        + extension;
     }
 
     /**
@@ -1025,7 +1025,7 @@ public class CodeStream {
         // strip beginning new lines and white spaces
         while (body.length() > 0
                 && (body.charAt(0) == '\n' || body.charAt(0) == '\r' || body
-                        .charAt(0) == ' ')) {
+                .charAt(0) == ' ')) {
             body.deleteCharAt(0);
         }
 
@@ -1034,7 +1034,7 @@ public class CodeStream {
         int endChar = body.length() - 1;
         while (endChar >= 0
                 && (body.charAt(endChar) == '\n'
-                        || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
+                || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
             body.deleteCharAt(endChar);
             endChar = body.length() - 1;
             hasNewline = true;
@@ -1194,7 +1194,7 @@ public class CodeStream {
         for (int commaIndex = TemplateParser.indexOf(",",
                 codeInFile.toString(), startIndex); commaIndex != -1
                 && commaIndex <= endIndex; commaIndex = TemplateParser.indexOf(
-                ",", codeInFile.toString(), commaIndex + 1)) {
+                        ",", codeInFile.toString(), commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(startIndex, commaIndex);
 
@@ -1238,7 +1238,7 @@ public class CodeStream {
      */
     private static StringBuffer _substituteParameters(StringBuffer codeBlock,
             List<String> parameters, List<String> arguments)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Text-substitute for each parameters.
         for (int i = 0; i < arguments.size(); i++) {
 
@@ -1255,10 +1255,10 @@ public class CodeStream {
                                     + " a type that is not supported.\nParameters:\n"
                                     + java.util.Arrays.toString(parameters
                                             .toArray())
-                                    + "\nArguments:\n"
-                                    + java.util.Arrays.toString(arguments
-                                            .toArray()) + "\nStringBuffer:\n"
-                                    + codeBlock);
+                                            + "\nArguments:\n"
+                                            + java.util.Arrays.toString(arguments
+                                                    .toArray()) + "\nStringBuffer:\n"
+                                                    + codeBlock);
                 }
                 replaceString = _checkArgumentName(arguments.get(i));
             } catch (ClassCastException ex) {
@@ -1441,7 +1441,7 @@ public class CodeStream {
         private StringBuffer _getCode(Signature signature,
                 List<String> arguments,
                 List<LinkedHashMap<Signature, Object[]>> scopeList)
-                throws IllegalActionException {
+                        throws IllegalActionException {
 
             int size = scopeList.size();
 
@@ -1474,7 +1474,7 @@ public class CodeStream {
 
         private String _getHeader(Signature signature,
                 List<LinkedHashMap<Signature, Object[]>> scopeList)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             int size = scopeList.size();
 
             if (size == 0) {
@@ -1504,7 +1504,7 @@ public class CodeStream {
         private StringBuffer _substituteSuperAndThis(Signature signature,
                 List<LinkedHashMap<Signature, Object[]>> scopeList,
                 Object[] codeObject, StringBuffer codeBlock)
-                throws IllegalActionException {
+                        throws IllegalActionException {
 
             StringBuffer result;
 
@@ -1536,7 +1536,7 @@ public class CodeStream {
 
                     String blockName = isImplicit ? signature.functionName
                             : codeBlock.substring(dotIndex + 1, openIndex)
-                                    .trim();
+                            .trim();
 
                     // Arguments need to include the opening and closing parentheses.
                     // This is necessary for parsing the arguments properly.
@@ -1556,26 +1556,26 @@ public class CodeStream {
                     if (!isSuper && callSignature.equals(signature)) {
                         throw new IllegalActionException(_adapter,
                                 callSignature
-                                        + " recursively appends itself in "
-                                        + codeObject[0]);
+                                + " recursively appends itself in "
+                                + codeObject[0]);
                     }
 
                     StringBuffer callCodeBlock = !isSuper ? getCode(
                             callSignature, callArguments) : _getCode(
-                            callSignature, callArguments,
-                            scopeList.subList(1, scopeList.size()));
+                                    callSignature, callArguments,
+                                    scopeList.subList(1, scopeList.size()));
 
-                    if (callCodeBlock == null) {
-                        throw new IllegalActionException(_adapter,
-                                "Cannot find " + (isSuper ? "super" : "this")
+                            if (callCodeBlock == null) {
+                                throw new IllegalActionException(_adapter,
+                                        "Cannot find " + (isSuper ? "super" : "this")
                                         + " block for " + callSignature
                                         + " in \"" + codeObject[0] + "\"");
-                    }
-                    result.append(callCodeBlock);
+                            }
+                            result.append(callCodeBlock);
 
-                    lastMacroEnd = closeParen + 1;
-                    macroIndex = _indexOfMacro(codeBlock, macro, lastMacroEnd,
-                            true);
+                            lastMacroEnd = closeParen + 1;
+                            macroIndex = _indexOfMacro(codeBlock, macro, lastMacroEnd,
+                                    true);
                 }
                 result.append(codeBlock.substring(lastMacroEnd,
                         codeBlock.length()));

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 /** The Note object.
@@ -34,8 +34,8 @@ package org.ptolemy.machineImprovisation;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
-*/
-public class Note{
+ */
+public class Note {
 
     /**
      * Constructs a Note object.
@@ -46,6 +46,7 @@ public class Note{
         this._name = name;
         this._noteValue = 0.0;
     }
+
     /**
      * Constructs a Note object.
      *
@@ -98,7 +99,7 @@ public class Note{
     }
 
     private int _getCompleteKeyIndex(int noteIndex, int octave) {
-        return noteIndex + 12*(octave+1);
+        return noteIndex + 12 * (octave + 1);
     }
 
     private int _numericNoteIndex;

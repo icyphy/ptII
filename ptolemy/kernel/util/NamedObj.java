@@ -136,7 +136,7 @@ import ptolemy.util.StringUtilities;
  @see Workspace
  */
 public class NamedObj implements Changeable, Cloneable, Debuggable,
-        DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
+DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
     // This class used to implement Serializable, but the implementation was never
     // complete and thus cause many warnings.
 
@@ -1973,7 +1973,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String oldName = "";
 
         if (_debugging) {
@@ -2294,7 +2294,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Error creating singleton attribute named " + name
-                            + " for " + getFullName());
+                    + " for " + getFullName());
         }
     }
 
@@ -2331,9 +2331,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // initCause() and then throw.
                 CloneNotSupportedException cloneException = new CloneNotSupportedException(
                         "The field associated with " + fields[i].getName()
-                                + " could not be automatically cloned because "
-                                + ex.getMessage() + ".  This can be caused if "
-                                + "the field is not defined in a public class.");
+                        + " could not be automatically cloned because "
+                        + ex.getMessage() + ".  This can be caused if "
+                        + "the field is not defined in a public class.");
 
                 cloneException.initCause(ex);
                 throw cloneException;
@@ -2387,9 +2387,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             if (_debugListeners == null) {
                 System.err
-                        .println("Warning, _debugListeners was null, "
-                                + "which means that _debugging was set to true, but no "
-                                + "listeners were added?");
+                .println("Warning, _debugListeners was null, "
+                        + "which means that _debugging was set to true, but no "
+                        + "listeners were added?");
                 System.err.println(event);
             } else {
                 // NOTE: This used to synchronize on this, which caused
@@ -2420,9 +2420,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             if (_debugListeners == null) {
                 System.err
-                        .println("Warning, _debugListeners was null, "
-                                + "which means that _debugging was set to true, but no "
-                                + "listeners were added?");
+                .println("Warning, _debugListeners was null, "
+                        + "which means that _debugging was set to true, but no "
+                        + "listeners were added?");
                 System.err.println(message);
             } else {
                 // NOTE: This used to synchronize on this, which caused
@@ -3123,7 +3123,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     private List<NamedObj> _getDerivedList(Collection<NamedObj> visited,
             boolean propagate, boolean force, NamedObj context, int depth,
             List<Integer> override, String relativeName)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -3572,7 +3572,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** Serializable version of the Java Object class. */
     @SuppressWarnings("serial")
     private static class SerializableObject extends Object implements
-            Serializable {
+    Serializable {
         // FindBugs suggested making this class a static inner class:
         //
         // "This class is an inner class, but does not use its embedded

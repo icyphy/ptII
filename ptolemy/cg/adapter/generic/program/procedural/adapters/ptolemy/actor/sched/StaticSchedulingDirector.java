@@ -290,7 +290,7 @@ public class StaticSchedulingDirector extends PortDirector {
 
         String[] splitFireCode = getCodeGenerator()._splitBody(
                 "_" + CodeGeneratorAdapter.generateName(getComponent())
-                        + "_run_", generateFireCode());
+                + "_run_", generateFireCode());
 
         code.append("if (!run()) {" + _eol + "break;" + _eol + "}" + _eol + "}"
                 + _eol + "}" + _eol + _eol + splitFireCode[0] + _eol
@@ -493,7 +493,7 @@ public class StaticSchedulingDirector extends PortDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 

@@ -120,8 +120,8 @@ public class REDUtility {
      */
     public static CompositeActor generateEquivalentSystemWithoutHierarchy(
             CompositeActor originalCompositeActor)
-            throws NameDuplicationException, IllegalActionException,
-            CloneNotSupportedException {
+                    throws NameDuplicationException, IllegalActionException,
+                    CloneNotSupportedException {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
 
@@ -543,8 +543,8 @@ public class REDUtility {
 
         // Module description
         returnREDFormat
-                .append(moduleDefinition
-                        + "\n/*State representing buffer overflow. */\nmode Buffer_Overflow (true) {\n}\n");
+        .append(moduleDefinition
+                + "\n/*State representing buffer overflow. */\nmode Buffer_Overflow (true) {\n}\n");
 
         // Initial Condition: Except FSMActors, the rest should be the same.
         returnREDFormat.append("\n/*Initial Condition */\ninitially\n");
@@ -584,12 +584,12 @@ public class REDUtility {
         returnREDFormat.append("\n/*Specification */\n");
         if (choice == FormulaType.Buffer) {
             returnREDFormat
-                    .append("/* In RED 7.0, specification must be placed in separated files. */\n/* risk\nexists i:i>=1, (Buffer_Overflow[i]);*/\n\n");
+            .append("/* In RED 7.0, specification must be placed in separated files. */\n/* risk\nexists i:i>=1, (Buffer_Overflow[i]);*/\n\n");
 
         } else {
             returnREDFormat
-                    .append("/* In RED 7.0, specification must be placed in separated files. */\n/*"
-                            + pattern + "*/\n");
+            .append("/* In RED 7.0, specification must be placed in separated files. */\n/*"
+                    + pattern + "*/\n");
 
         }
         return returnREDFormat;
@@ -756,7 +756,7 @@ public class REDUtility {
                 if (stateInThis == null) {
                     throw new IllegalActionException(
                             "Internal error, removing \"" + name
-                                    + "\" returned null?");
+                            + "\" returned null?");
                 }
                 ComponentPort outPort = stateInThis.outgoingPort;
                 Iterator transitions = outPort.linkedRelationList().iterator();
@@ -997,8 +997,8 @@ public class REDUtility {
                                                     .parseInt(rValue);
                                             // add it into the _variableInfo
                                             returnVariableSet
-                                                    .add(characterOfSubGuard[0]
-                                                            .trim());
+                                            .add(characterOfSubGuard[0]
+                                                    .trim());
                                             VariableInfo variable = _variableInfo
                                                     .get(characterOfSubGuard[0]
                                                             .trim());
@@ -1012,7 +1012,7 @@ public class REDUtility {
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
-                                                        newVariable);
+                                                                newVariable);
 
                                             } else {
                                                 // modify the existing one
@@ -1027,12 +1027,12 @@ public class REDUtility {
                                                             .toString(numberRetrieval);
                                                 }
                                                 _variableInfo
-                                                        .remove(characterOfSubGuard[0]
-                                                                .trim());
+                                                .remove(characterOfSubGuard[0]
+                                                        .trim());
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
-                                                        variable);
+                                                                variable);
 
                                             }
                                         }
@@ -1272,7 +1272,7 @@ public class REDUtility {
     private static ArrayList<REDTransitionBean> _generateTransition(
             FSMActor actor, State state, HashSet<String> variableSet,
             HashSet<String> globalSynchronizerSet)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         ArrayList<REDTransitionBean> returnList = new ArrayList<REDTransitionBean>();
 
@@ -1390,7 +1390,7 @@ public class REDUtility {
                                             // if a transition does not have a signal, it can be triggered by "any" signal
 
                                             usedSignalInTransition
-                                                    .add(signalName[0]);
+                                            .add(signalName[0]);
                                         } else {
                                             // Split the expression, and rename
                                             // the variable by adding up the
@@ -1431,28 +1431,28 @@ public class REDUtility {
                                                                 .equalsIgnoreCase(
                                                                         "")) {
                                                             bean._preCondition
-                                                                    .append(actor
-                                                                            .getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " == "
-                                                                            + rValue);
+                                                            .append(actor
+                                                                    .getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " == "
+                                                                    + rValue);
                                                         } else {
                                                             bean._preCondition
-                                                                    .append(" && "
-                                                                            + actor.getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " == "
-                                                                            + rValue);
+                                                            .append(" && "
+                                                                    + actor.getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " == "
+                                                                    + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(actor
-                                                                        .getName()
-                                                                        + "_"
-                                                                        + lValue
-                                                                        + " != "
-                                                                        + rValue);
+                                                        .add(actor
+                                                                .getName()
+                                                                + "_"
+                                                                + lValue
+                                                                + " != "
+                                                                + rValue);
                                                     } else if (Pattern.matches(
                                                             ".*!=.*",
                                                             subGuardCondition)) {
@@ -1461,28 +1461,28 @@ public class REDUtility {
                                                                 .equalsIgnoreCase(
                                                                         "")) {
                                                             bean._preCondition
-                                                                    .append(actor
-                                                                            .getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " != "
-                                                                            + rValue);
+                                                            .append(actor
+                                                                    .getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " != "
+                                                                    + rValue);
                                                         } else {
                                                             bean._preCondition
-                                                                    .append(" && "
-                                                                            + actor.getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " != "
-                                                                            + rValue);
+                                                            .append(" && "
+                                                                    + actor.getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " != "
+                                                                    + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(actor
-                                                                        .getName()
-                                                                        + "_"
-                                                                        + lValue
-                                                                        + " == "
-                                                                        + rValue);
+                                                        .add(actor
+                                                                .getName()
+                                                                + "_"
+                                                                + lValue
+                                                                + " == "
+                                                                + rValue);
 
                                                     } else if (Pattern.matches(
                                                             ".*<=.*",
@@ -1492,28 +1492,28 @@ public class REDUtility {
                                                                 .equalsIgnoreCase(
                                                                         "")) {
                                                             bean._preCondition
-                                                                    .append(actor
-                                                                            .getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " <= "
-                                                                            + rValue);
+                                                            .append(actor
+                                                                    .getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " <= "
+                                                                    + rValue);
                                                         } else {
                                                             bean._preCondition
-                                                                    .append(" && "
-                                                                            + actor.getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " <= "
-                                                                            + rValue);
+                                                            .append(" && "
+                                                                    + actor.getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " <= "
+                                                                    + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(actor
-                                                                        .getName()
-                                                                        + "_"
-                                                                        + lValue
-                                                                        + " > "
-                                                                        + rValue);
+                                                        .add(actor
+                                                                .getName()
+                                                                + "_"
+                                                                + lValue
+                                                                + " > "
+                                                                + rValue);
                                                     } else if (Pattern.matches(
                                                             ".*>=.*",
                                                             subGuardCondition)) {
@@ -1523,28 +1523,28 @@ public class REDUtility {
                                                                 .equalsIgnoreCase(
                                                                         "")) {
                                                             bean._preCondition
-                                                                    .append(actor
-                                                                            .getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " >= "
-                                                                            + rValue);
+                                                            .append(actor
+                                                                    .getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " >= "
+                                                                    + rValue);
                                                         } else {
                                                             bean._preCondition
-                                                                    .append(" && "
-                                                                            + actor.getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " >= "
-                                                                            + rValue);
+                                                            .append(" && "
+                                                                    + actor.getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " >= "
+                                                                    + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(actor
-                                                                        .getName()
-                                                                        + "_"
-                                                                        + lValue
-                                                                        + " < "
-                                                                        + rValue);
+                                                        .add(actor
+                                                                .getName()
+                                                                + "_"
+                                                                + lValue
+                                                                + " < "
+                                                                + rValue);
                                                     } else if (Pattern.matches(
                                                             ".*>.*",
                                                             subGuardCondition)) {
@@ -1554,28 +1554,28 @@ public class REDUtility {
                                                                 .equalsIgnoreCase(
                                                                         "")) {
                                                             bean._preCondition
-                                                                    .append(actor
-                                                                            .getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " > "
-                                                                            + rValue);
+                                                            .append(actor
+                                                                    .getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " > "
+                                                                    + rValue);
                                                         } else {
                                                             bean._preCondition
-                                                                    .append(" && "
-                                                                            + actor.getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " > "
-                                                                            + rValue);
+                                                            .append(" && "
+                                                                    + actor.getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " > "
+                                                                    + rValue);
                                                         }
                                                         bean._complementedCondition
-                                                                .add(actor
-                                                                        .getName()
-                                                                        + "_"
-                                                                        + lValue
-                                                                        + " <= "
-                                                                        + rValue);
+                                                        .add(actor
+                                                                .getName()
+                                                                + "_"
+                                                                + lValue
+                                                                + " <= "
+                                                                + rValue);
 
                                                     } else if (Pattern.matches(
                                                             ".*<.*",
@@ -1586,29 +1586,29 @@ public class REDUtility {
                                                                 .equalsIgnoreCase(
                                                                         "")) {
                                                             bean._preCondition
-                                                                    .append(actor
-                                                                            .getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " < "
-                                                                            + rValue);
+                                                            .append(actor
+                                                                    .getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " < "
+                                                                    + rValue);
                                                         } else {
                                                             bean._preCondition
-                                                                    .append(" && "
-                                                                            + actor.getName()
-                                                                            + "_"
-                                                                            + lValue
-                                                                            + " < "
-                                                                            + rValue);
+                                                            .append(" && "
+                                                                    + actor.getName()
+                                                                    + "_"
+                                                                    + lValue
+                                                                    + " < "
+                                                                    + rValue);
 
                                                         }
                                                         bean._complementedCondition
-                                                                .add(actor
-                                                                        .getName()
-                                                                        + "_"
-                                                                        + lValue
-                                                                        + " >= "
-                                                                        + rValue);
+                                                        .add(actor
+                                                                .getName()
+                                                                + "_"
+                                                                + lValue
+                                                                + " >= "
+                                                                + rValue);
                                                     }
 
                                                 } else {
@@ -1736,7 +1736,7 @@ public class REDUtility {
                                         + signal.trim().trim());
                                 if (guard != null
                                         && guard.trim()
-                                                .equalsIgnoreCase("true")) {
+                                        .equalsIgnoreCase("true")) {
                                     // Special case for true; in this way, the system must listen to all incoming ports
                                     // Since each incoming port is OK, it will turn to be separate transitions.
                                     newBean._preCondition.append("false");
@@ -1798,13 +1798,13 @@ public class REDUtility {
                             if (returnList.get(i)._preCondition.toString()
                                     .equalsIgnoreCase("")) {
                                 returnList.get(i)._preCondition
-                                        .append(returnList.get(j)._complementedCondition
-                                                .get(k));
+                                .append(returnList.get(j)._complementedCondition
+                                        .get(k));
                             } else {
                                 returnList.get(i)._preCondition
-                                        .append(" && "
-                                                + returnList.get(j)._complementedCondition
-                                                        .get(k));
+                                .append(" && "
+                                        + returnList.get(j)._complementedCondition
+                                        .get(k));
                             }
                         }
                     }
@@ -1947,7 +1947,7 @@ public class REDUtility {
                         if (actors.length > 1) {
 
                             System.out
-                                    .println("We might not be able to deal with it");
+                            .println("We might not be able to deal with it");
                         } else {
 
                             // Retrieve the actor.
@@ -1976,9 +1976,9 @@ public class REDUtility {
                                         newState.setContainer(returnFSMActor);
                                         if (model.getInitialState() == state
                                                 && ((FSMActor) innerActor)
-                                                        .getInitialState() == innerState) {
+                                                .getInitialState() == innerState) {
                                             newState.isInitialState
-                                                    .setToken("true");
+                                            .setToken("true");
                                         }
                                         newState.moveToFirst();
 
@@ -2026,11 +2026,11 @@ public class REDUtility {
                                                     .getName()
                                                     .equalsIgnoreCase(
                                                             ((State) state)
-                                                                    .getName()
-                                                                    .trim()
-                                                                    + "-"
-                                                                    + source.getName()
-                                                                            .trim())) {
+                                                            .getName()
+                                                            .trim()
+                                                            + "-"
+                                                            + source.getName()
+                                                            .trim())) {
 
                                                 sCorresponding = (State) cState;
                                             }
@@ -2047,12 +2047,12 @@ public class REDUtility {
                                                     .getName()
                                                     .equalsIgnoreCase(
                                                             ((State) state)
-                                                                    .getName()
-                                                                    .trim()
-                                                                    + "-"
-                                                                    + destination
-                                                                            .getName()
-                                                                            .trim())) {
+                                                            .getName()
+                                                            .trim()
+                                                            + "-"
+                                                            + destination
+                                                            .getName()
+                                                            .trim())) {
                                                 dCorresponding = (State) cState;
 
                                             }
@@ -2187,10 +2187,10 @@ public class REDUtility {
                     if (cState instanceof State) {
                         if (((State) cState).getName().equalsIgnoreCase(
                                 destination.getName().trim()
-                                        + "-"
-                                        + ((FSMActor) dInnerActor)
-                                                .getInitialState().getName()
-                                                .trim())) {
+                                + "-"
+                                + ((FSMActor) dInnerActor)
+                                .getInitialState().getName()
+                                .trim())) {
                             dCorresponding = (State) cState;
                         }
                     }
@@ -2209,7 +2209,7 @@ public class REDUtility {
                         + destination.getName().trim()
                         + "-"
                         + ((FSMActor) dInnerActor).getInitialState().getName()
-                                .trim());
+                        .trim());
 
             } else if (sActors != null && dActors == null) {
                 // We need to connect every inner state in the source and
@@ -2236,10 +2236,10 @@ public class REDUtility {
                                     if (((State) cState).getName()
                                             .equalsIgnoreCase(
                                                     source.getName().trim()
-                                                            + "-"
-                                                            + innerState
-                                                                    .getName()
-                                                                    .trim())) {
+                                                    + "-"
+                                                    + innerState
+                                                    .getName()
+                                                    .trim())) {
 
                                         sCorresponding = (State) cState;
                                     }
@@ -2254,7 +2254,7 @@ public class REDUtility {
                                     if (((State) cState).getName()
                                             .equalsIgnoreCase(
                                                     destination.getName()
-                                                            .trim())) {
+                                                    .trim())) {
                                         dCorresponding = (State) cState;
                                     }
                                 }
@@ -2294,7 +2294,7 @@ public class REDUtility {
                     newDestName = destination.getName().trim()
                             + "-"
                             + ((FSMActor) dInnerActor).getInitialState()
-                                    .getName().trim();
+                            .getName().trim();
                 }
                 if (sInnerActor instanceof FSMActor) {
                     Iterator innerStates = ((FSMActor) sInnerActor)
@@ -2320,10 +2320,10 @@ public class REDUtility {
                                     if (((State) cState).getName()
                                             .equalsIgnoreCase(
                                                     source.getName().trim()
-                                                            + "-"
-                                                            + innerState
-                                                                    .getName()
-                                                                    .trim())) {
+                                                    + "-"
+                                                    + innerState
+                                                    .getName()
+                                                    .trim())) {
 
                                         sCorresponding = (State) cState;
                                     }
@@ -2375,7 +2375,7 @@ public class REDUtility {
     private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
             BoundedBufferNondeterministicDelay delayedActor,
             String inputSignalName, String outputSignalName)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         // If we expect to convert a TimedDelayedActor into a timed automata,
         // we need to have the following information from the
@@ -2465,17 +2465,17 @@ public class REDUtility {
                         if (StateClockConstraint.toString()
                                 .equalsIgnoreCase("")) {
                             StateClockConstraint
-                                    .append(" " + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
+                            .append(" " + delayedActor.getName().trim()
+                                    + "_C" + String.valueOf(i) + "<= "
+                                    + delayedActor.getName().trim()
+                                    + "_DELAY ");
                         } else {
                             StateClockConstraint
-                                    .append(" && "
-                                            + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
+                            .append(" && "
+                                    + delayedActor.getName().trim()
+                                    + "_C" + String.valueOf(i) + "<= "
+                                    + delayedActor.getName().trim()
+                                    + "_DELAY ");
                         }
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
@@ -2493,9 +2493,9 @@ public class REDUtility {
                                 // All true cases. then we need to represent one
                                 // case for overflow.
                                 StateTransitionCondition
-                                        .append("    when ?"
-                                                + outputSignalName.trim()
-                                                + " (true) may goto Buffer_Overflow; \n");
+                                .append("    when ?"
+                                        + outputSignalName.trim()
+                                        + " (true) may goto Buffer_Overflow; \n");
                             }
                         }
                     }
@@ -2640,17 +2640,17 @@ public class REDUtility {
                         if (StateClockConstraint.toString()
                                 .equalsIgnoreCase("")) {
                             StateClockConstraint
-                                    .append(" " + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
+                            .append(" " + delayedActor.getName().trim()
+                                    + "_C" + String.valueOf(i) + "<= "
+                                    + delayedActor.getName().trim()
+                                    + "_DELAY ");
                         } else {
                             StateClockConstraint
-                                    .append(" && "
-                                            + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
+                            .append(" && "
+                                    + delayedActor.getName().trim()
+                                    + "_C" + String.valueOf(i) + "<= "
+                                    + delayedActor.getName().trim()
+                                    + "_DELAY ");
                         }
 
                         // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
@@ -2671,9 +2671,9 @@ public class REDUtility {
                                 // case
                                 // for overflow.
                                 StateTransitionCondition
-                                        .append("    when ?"
-                                                + outputSignalName.trim()
-                                                + " (true) may goto Buffer_Overflow; \n");
+                                .append("    when ?"
+                                        + outputSignalName.trim()
+                                        + " (true) may goto Buffer_Overflow; \n");
                             }
                         }
 
@@ -2852,16 +2852,16 @@ public class REDUtility {
                         + clockActor.getName().trim() + "_init ("
                         + clockActor.getName().trim() + "_C1 == 0) { \n");
                 bean._moduleDescription
-                        .append("    when " + "!" + outputSignalName.trim()
-                                + " (" + clockActor.getName().trim()
-                                + "_C1 == 0 &&" + clockActor.getName().trim()
-                                + "_Cycle < " + clockActor.getName().trim()
-                                + "_STOP_CYCLE_COUNT" + ") may "
-                                + clockActor.getName().trim() + "_C1 = 0 ; "
-                                + clockActor.getName().trim() + "_Cycle = "
-                                + clockActor.getName().trim() + "_Cycle + 1;"
-                                + " goto " + clockActor.getName().trim()
-                                + "_state; \n");
+                .append("    when " + "!" + outputSignalName.trim()
+                        + " (" + clockActor.getName().trim()
+                        + "_C1 == 0 &&" + clockActor.getName().trim()
+                        + "_Cycle < " + clockActor.getName().trim()
+                        + "_STOP_CYCLE_COUNT" + ") may "
+                        + clockActor.getName().trim() + "_C1 = 0 ; "
+                        + clockActor.getName().trim() + "_Cycle = "
+                        + clockActor.getName().trim() + "_Cycle + 1;"
+                        + " goto " + clockActor.getName().trim()
+                        + "_state; \n");
                 bean._moduleDescription.append("    when  ("
                         + clockActor.getName().trim() + "_Cycle == "
                         + clockActor.getName().trim()
@@ -3002,7 +3002,7 @@ public class REDUtility {
      */
     private static REDSingleEntityBean _translateFSMActor(FSMActor actor,
             int span, HashSet<String> globalSynchronizerSet)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         REDSingleEntityBean bean = new REDSingleEntityBean();
         bean._moduleDescription.append("\n/* Process name: "
@@ -3186,7 +3186,7 @@ public class REDUtility {
                                             + signalName.trim()
                                             + " (t>=0) may "
                                             + transition._postCondition
-                                                    .toString() + " t=0; goto "
+                                            .toString() + " t=0; goto "
                                             + transition._newState.toString()
                                             + " ;\n");
                                 }
@@ -3229,7 +3229,7 @@ public class REDUtility {
                                             + signalName.trim()
                                             + " (t>=0) may "
                                             + transition._postCondition
-                                                    .toString() + " t=0; goto "
+                                            .toString() + " t=0; goto "
                                             + transition._newState.toString()
                                             + " ;\n");
                                 }
@@ -3269,7 +3269,7 @@ public class REDUtility {
                                             + signalName.trim()
                                             + " (t>=0) may "
                                             + transition._postCondition
-                                                    .toString()
+                                            .toString()
                                             + " ; t=0; goto "
                                             + transition._newState.toString()
                                             + " ;\n");
@@ -3430,7 +3430,7 @@ public class REDUtility {
     private static REDSingleEntityBean _translateTimedDelayedActor(
             TimedDelay delayedActor, String inputSignalName,
             String outputSignalName, int bufferSize)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         // If we expect to convert a TimedDelayedActor into a timed
         // automata, we need to have the following information from the
@@ -3538,17 +3538,17 @@ public class REDUtility {
                         if (StateClockConstraint.toString()
                                 .equalsIgnoreCase("")) {
                             StateClockConstraint
-                                    .append(" " + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
+                            .append(" " + delayedActor.getName().trim()
+                                    + "_C" + String.valueOf(i) + "<= "
+                                    + delayedActor.getName().trim()
+                                    + "_DELAY ");
                         } else {
                             StateClockConstraint
-                                    .append(" && "
-                                            + delayedActor.getName().trim()
-                                            + "_C" + String.valueOf(i) + "<= "
-                                            + delayedActor.getName().trim()
-                                            + "_DELAY ");
+                            .append(" && "
+                                    + delayedActor.getName().trim()
+                                    + "_C" + String.valueOf(i) + "<= "
+                                    + delayedActor.getName().trim()
+                                    + "_DELAY ");
                         }
 
                         // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
@@ -3569,9 +3569,9 @@ public class REDUtility {
                                 // case
                                 // for overflow.
                                 StateTransitionCondition
-                                        .append("    when ?"
-                                                + outputSignalName.trim()
-                                                + " (true) may goto Buffer_Overflow; \n");
+                                .append("    when ?"
+                                        + outputSignalName.trim()
+                                        + " (true) may goto Buffer_Overflow; \n");
                             }
                         }
 

@@ -151,9 +151,9 @@ public class DCT4x4dc extends TypedAtomicActor {
             d23 = temp[i][2] - temp[i][3];
 
             sum[i][0] = s01 + s23 + 1 >> 1;
-            sum[i][1] = s01 - s23 + 1 >> 1;
-            sum[i][2] = d01 - d23 + 1 >> 1;
-            sum[i][3] = d01 + d23 + 1 >> 1;
+        sum[i][1] = s01 - s23 + 1 >> 1;
+        sum[i][2] = d01 - d23 + 1 >> 1;
+        sum[i][3] = d01 + d23 + 1 >> 1;
         }
 
         _output[0] = new IntMatrixToken(sum);

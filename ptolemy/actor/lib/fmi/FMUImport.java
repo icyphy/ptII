@@ -185,7 +185,7 @@ import com.sun.jna.ptr.PointerByReference;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUImport extends TypedAtomicActor implements Advanceable,
-        ContinuousStepSizeController, ContinuousStatefulComponent {
+ContinuousStepSizeController, ContinuousStatefulComponent {
     // FIXME: For FMI Co-simulation, we want to extend TypedAtomicActor.
     // For model exchange, we want to extend TypedCompositeActor.
 
@@ -449,7 +449,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // FMI20EventInfo.ByValue fmi20EventInfo = null;
         //FMI20EventInfo fmi20EventInfo = null;
 
-
         if (_fmiModelDescription.modelExchange) {
             /////////////////////////////////////////
             // Model exchange version.
@@ -485,17 +484,20 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiInitialize();
 
                 if (_fmiVersion >= 2.0) {
-                    FMI20ModelInstance fmi20ModelInstance = new FMI20ModelInstance(_fmiComponent);
+                    FMI20ModelInstance fmi20ModelInstance = new FMI20ModelInstance(
+                            _fmiComponent);
                     FMI20EventInfo fmi20EventInfoStruct = fmi20ModelInstance.eventInfo;
-                    fmi20EventInfo = new FMI20EventInfo.ByReference(fmi20EventInfoStruct);
+                    fmi20EventInfo = new FMI20EventInfo.ByReference(
+                            fmi20EventInfoStruct);
                     //fmi20EventInfo = new FMI20EventInfo();
 
                     //fmi20EventInfo = fmi20ModelInstance.eventInfo;
 
                     // "event iteration"
-                    fmi20EventInfo.newDiscreteStatesNeeded = (byte)1;
-                    fmi20EventInfo.terminateSimulation = (byte)0;
-                    System.out.println("FMUImport: ME not supported under FMI-2.0 right now.");
+                    fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
+                    fmi20EventInfo.terminateSimulation = (byte) 0;
+                    System.out
+                            .println("FMUImport: ME not supported under FMI-2.0 right now.");
                     // while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1) && !(fmi20EventInfo.terminateSimulation == (byte)1)) {
                     //     // "update discrete states"
                     //     int fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(Integer.class, new Object[] {
@@ -505,9 +507,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     //         throw new IllegalActionException("Failed to set a new discrete state.");
                     //     }
                     // }
-                    if (fmi20EventInfo.terminateSimulation == (byte)1) {
+                    if (fmi20EventInfo.terminateSimulation == (byte) 1) {
                         double currentTimeValue = currentTime.getDoubleValue();
-                        System.out.println("model requested termination at t=" + currentTimeValue);
+                        System.out.println("model requested termination at t="
+                                + currentTimeValue);
                         getDirector().finish();
                         return;
                     }
@@ -590,7 +593,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     if ((_fmiVersion >= 2.0)
                             && _fmiModelDescription.modelExchange
                             && _fmiModelDescription.continuousStates
-                            .contains(input.port.getName())) {
+                                    .contains(input.port.getName())) {
                         _index = _fmiModelDescription.continuousStates
                                 .indexOf(input.port.getName());
                         _newStates[_index] = ((DoubleToken) token)
@@ -687,7 +690,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // the current time in this simulation.
                     boolean noSetFMUStatePriorToCurrentPoint = true;
                     boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
-                    if (/*timeEvent || stateEvent ||*/ stepEvent) {
+                    if (/*timeEvent || stateEvent ||*/stepEvent) {
                         _enterEventMode();
                         //if (timeEvent) {
                         //    nTimeEvents++;
@@ -707,10 +710,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             }
                         }
                         // "event iteration in one step, ignoring intermediate results"
-                        fmi20EventInfo.newDiscreteStatesNeeded = (byte)1;
-                        fmi20EventInfo.terminateSimulation = (byte)0;
+                        fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
+                        fmi20EventInfo.terminateSimulation = (byte) 0;
 
-                    System.out.println("FMUImport: ME not supported under FMI-2.0 right now.");
+                        System.out
+                                .println("FMUImport: ME not supported under FMI-2.0 right now.");
                         // while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1) && !(fmi20EventInfo.terminateSimulation == (byte)1)) {
                         //     // "update discrete states"
                         //     int fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(Integer.class, new Object[] {
@@ -719,8 +723,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         //         throw new IllegalActionException("Failed to set a new discrete state.");
                         //     }
                         // }
-                        if (fmi20EventInfo.terminateSimulation == (byte)1) {
-                            System.out.println("model requested termination at t=" + currentTimeValue);
+                        if (fmi20EventInfo.terminateSimulation == (byte) 1) {
+                            System.out
+                                    .println("model requested termination at t="
+                                            + currentTimeValue);
                             getDirector().finish();
                         }
 
@@ -728,11 +734,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
                         // "check for change of value of states"
                         if (_debugging) {
-                            if (fmi20EventInfo.valuesOfContinuousStatesChanged == (byte)1) {
-                                _debug("continuous state values changed at t=" + currentTimeValue);
+                            if (fmi20EventInfo.valuesOfContinuousStatesChanged == (byte) 1) {
+                                _debug("continuous state values changed at t="
+                                        + currentTimeValue);
                             }
-                            if (fmi20EventInfo.nominalsOfContinuousStatesChanged == (byte)1) {
-                                _debug("nominals of continuous state changed  at t=" + currentTimeValue);
+                            if (fmi20EventInfo.nominalsOfContinuousStatesChanged == (byte) 1) {
+                                _debug("nominals of continuous state changed  at t="
+                                        + currentTimeValue);
                             }
                         }
                     }
@@ -1155,7 +1163,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
-                    ) {
+            ) {
                 // Parameters
                 // Parameter parameter = new Parameter(this, scalar.name);
                 // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
@@ -1168,10 +1176,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 case input:
                     portCount++;
                     parameterMoML
-                            .append("  <property name=\""
-                                    + StringUtilities.sanitizeName(scalar.name)
-                                    + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
-                                    + scalar.type + "\"/>\n");
+                    .append("  <property name=\""
+                            + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
+                            + scalar.type + "\"/>\n");
                     break;
                 case local: // FMI-2.0rc1
                 case internal:
@@ -1181,10 +1189,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 case none:
                     // FIXME: Need to sanitize the value.
                     parameterMoML
-                            .append("  <property name=\""
-                                    + StringUtilities.sanitizeName(scalar.name)
-                                    + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                                    + scalar.type + "\" " + "/>\n"
+                    .append("  <property name=\""
+                            + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
+                            + scalar.type + "\" " + "/>\n"
                             //+ (scalar.causality == Causality.internal ? hide : "")
                             //+ "</property>\n"
                             );
@@ -1208,7 +1216,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 boolean hideLocal = false;
 
                 String causality = "";
-                System.out.println("FMUImport: scalar.causality: " + scalar.causality + " name: " + scalar.name);
+                System.out.println("FMUImport: scalar.causality: "
+                        + scalar.causality + " name: " + scalar.name);
                 switch (scalar.causality) {
                 case local:
                     // If an FMU is imported as model exchange, then
@@ -1225,14 +1234,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     if (fmiModelDescription.modelExchange) {
                         if (fmiModelDescription.continuousStates
                                 .contains(scalar.name)) {
-                            System.out.println("FMUImport: scalar.causality: " + scalar.causality + " contains " + scalar.name);
+                            System.out.println("FMUImport: scalar.causality: "
+                                    + scalar.causality + " contains "
+                                    + scalar.name);
                             // This local scalar is the state variable for a scalar
                             // that has a "<Real derivative=N" element, where N is
                             // the index (starting with 1) of this scalar.
                             hideLocal = false;
                         } else {
                             if (scalar.type instanceof FMIRealType) {
-                                if (((FMIRealType)scalar.type).indexState != -1) {
+                                if (((FMIRealType) scalar.type).indexState != -1) {
                                     portCount++;
                                     dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
                                     causality = "output";
@@ -1281,7 +1292,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         + (portCount > maximumNumberOfPortsToDisplay
                                 || scalar.causality == Causality.internal
                                 || hideLocal // FMI-2.0rc1
-                                ? hide : "") + "  </port>\n");
+                        ? hide : "") + "  </port>\n");
             }
         }
 
@@ -1294,11 +1305,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             // Provide a parameter that indicates that this is a model exchange FMU.
             parameterMoML
-                    .append("  <property name=\"modelExchange\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
+            .append("  <property name=\"modelExchange\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
 
             // Provide a parameter for a forward Euler maximum step size.
             parameterMoML
-                    .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
+            .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
 
             /* If we want to use model exchange FMUs with the Continuous director, then
              * we need to provide the derivatives as output ports and the continuousStates as
@@ -1555,7 +1566,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _fmiInstantiateFunction = _fmiModelDescription
                             .getFmiFunction("fmiInstantiate");
                     _fmiNewDiscreteStatesFunction = _fmiModelDescription
-                        .getFmiFunction("fmiNewDiscreteStates");
+                            .getFmiFunction("fmiNewDiscreteStates");
                 }
                 _fmiSetTimeFunction = _fmiModelDescription
                         .getFmiFunction("fmiSetTime");
@@ -1699,8 +1710,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 _fmiComponent = (Pointer) _fmiInstantiateModelFunction.invoke(
                         Pointer.class, new Object[] { getFullName(),
-                                _fmiModelDescription.guid, _callbacks,
-                                loggingOn });
+                            _fmiModelDescription.guid, _callbacks,
+                            loggingOn });
             } else {
                 if (_debugging) {
                     _debugToStdOut("FMUCoSimulation: about to call "
@@ -1708,10 +1719,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction.invoke(
                         Pointer.class, new Object[] { getFullName(),
-                                _fmiModelDescription.guid,
-                                _fmiModelDescription.fmuResourceLocation,
-                                mimeType, timeout, toBeVisible, interactive,
-                                _callbacks, loggingOn });
+                            _fmiModelDescription.guid,
+                            _fmiModelDescription.fmuResourceLocation,
+                            mimeType, timeout, toBeVisible, interactive,
+                            _callbacks, loggingOn });
             }
         } else {
             // FMI-1.5 and greater...
@@ -1762,9 +1773,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // Do not instantiate if true and previously instantiated.
                     _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
                             .invoke(Pointer.class, new Object[] {
-                                getFullName(), _fmiModelDescription.guid,
-                                _fmiModelDescription.fmuResourceLocation,
-                                _callbacks, toBeVisible, loggingOn });
+                                    getFullName(), _fmiModelDescription.guid,
+                                    _fmiModelDescription.fmuResourceLocation,
+                                    _callbacks, toBeVisible, loggingOn });
                 }
             } else if (_fmiVersion >= 2.0) {
                 // FMI-2.0 Model Exchange and Cosimulation.
@@ -1776,9 +1787,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
                 _fmiComponent = (Pointer) _fmiInstantiateFunction.invoke(
                         Pointer.class, new Object[] { getFullName(), fmiType,
-                            _fmiModelDescription.guid,
-                            _fmiModelDescription.fmuResourceLocation,
-                            _callbacks, toBeVisible, loggingOn });
+                                _fmiModelDescription.guid,
+                                _fmiModelDescription.fmuResourceLocation,
+                                _callbacks, toBeVisible, loggingOn });
             }
         }
 
@@ -1846,7 +1857,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                             + "but it is being asked to roll back from time "
                                             + _lastFireTime + " to time "
                                             + _lastCommitTime, "Proceed",
-                                    "Proceed and do not warn me again",
+                                            "Proceed and do not warn me again",
                                     "Cancel");
                     if (!response) {
                         // User has asked to not be warned again.
@@ -1933,7 +1944,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         int fmiFlag = ((Integer) _fmiGetEventIndicatorsFunction.invoke(
                 Integer.class, new Object[] { _fmiComponent, _eventIndicators,
-                        new NativeSizeT(number) })).intValue();
+                    new NativeSizeT(number) })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this,
@@ -1956,7 +1967,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         return false;
     }
 
-
     /** Invoke the fmi2EnterContinuousTimeMode() function.
      *  This method is typically invoked by FMI-2.0 model exchange.
      *  @exception IllegalActionException If there is a problem
@@ -1965,14 +1975,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _enterContinuousTimeMode() throws IllegalActionException {
         // Can't call fmi2CompletedIntegratorStep() unless
         // fmi2EnterContinuousTimeMode() has been called.
-        int fmiFlag = ((Integer) _fmiEnterContinuousTimeModeFunction
-                .invoke(Integer.class, new Object[] { _fmiComponent }))
-            .intValue();
+        int fmiFlag = ((Integer) _fmiEnterContinuousTimeModeFunction.invoke(
+                Integer.class, new Object[] { _fmiComponent })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this,
                     "Failed to enter the continuous time mode of the FMU: "
-                    + _fmiStatusDescription(fmiFlag));
+                            + _fmiStatusDescription(fmiFlag));
         }
     }
 
@@ -1982,14 +1991,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  invoking the fmi2EnterEventMode() function in the fmi.
      */
     protected void _enterEventMode() throws IllegalActionException {
-        int fmiFlag = ((Integer) _fmiEnterEventModeFunction
-                .invoke(Integer.class, new Object[] { _fmiComponent }))
-            .intValue();
+        int fmiFlag = ((Integer) _fmiEnterEventModeFunction.invoke(
+                Integer.class, new Object[] { _fmiComponent })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this,
                     "Failed to enter the event mode of the FMU: "
-                    + _fmiStatusDescription(fmiFlag));
+                            + _fmiStatusDescription(fmiFlag));
         }
     }
 
@@ -2029,7 +2037,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  sets the value of the enterEventMode parameter to true.
      *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
-    protected boolean _fmiCompletedIntegratorStep(boolean eventOccuredOrNoSetFMUStatePriorToCurrentPoint)
+    protected boolean _fmiCompletedIntegratorStep(
+            boolean eventOccuredOrNoSetFMUStatePriorToCurrentPoint)
             throws IllegalActionException {
         // FIXME: It is possibly a mistake to have one method for both
         // FMI < 2.0 and >=2.0.
@@ -2038,35 +2047,38 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (_fmiVersion < 2.0) {
                 ByteBuffer callEventUpdate = ByteBuffer.allocate(1);
                 int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
-                    .invoke(Integer.class, new Object[] { _fmiComponent,
-                                                          callEventUpdate })).intValue();
+                        .invoke(Integer.class, new Object[] { _fmiComponent,
+                                callEventUpdate })).intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
                             "Failed to complete integrator step: "
-                            + _fmiStatusDescription(fmiFlag));
+                                    + _fmiStatusDescription(fmiFlag));
                 }
 
-                if (callEventUpdate.get(0) != (byte) 0 || eventOccuredOrNoSetFMUStatePriorToCurrentPoint) {
+                if (callEventUpdate.get(0) != (byte) 0
+                        || eventOccuredOrNoSetFMUStatePriorToCurrentPoint) {
                     // return true; //?
                     throw new IllegalActionException(this,
                             "FIXME: Not supported yet. Call eventUpdate");
                 }
             } else {
 
-                byte noSetFMUStatePriorToCurrentPointByte = (eventOccuredOrNoSetFMUStatePriorToCurrentPoint ? (byte)1 : (byte)0);
+                byte noSetFMUStatePriorToCurrentPointByte = (eventOccuredOrNoSetFMUStatePriorToCurrentPoint ? (byte) 1
+                        : (byte) 0);
                 ByteBuffer enterEventMode = ByteBuffer.allocate(1);
                 ByteBuffer terminateSimulation = ByteBuffer.allocate(1);
 
                 int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
-                    .invoke(Integer.class, new Object[] { _fmiComponent,
-                                                          noSetFMUStatePriorToCurrentPointByte,
-                                                          enterEventMode, terminateSimulation})).intValue();
+                        .invoke(Integer.class, new Object[] { _fmiComponent,
+                                noSetFMUStatePriorToCurrentPointByte,
+                                enterEventMode, terminateSimulation }))
+                        .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
                             "Failed to complete integrator step: "
-                            + _fmiStatusDescription(fmiFlag));
+                                    + _fmiStatusDescription(fmiFlag));
                 }
 
                 if (terminateSimulation.get(0) != (byte) 0) {
@@ -2349,12 +2361,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_fmiVersion < 2.0) {
             if (_fmiModelDescription.modelExchange) {
                 _fmiFreeModelInstanceFunction
-                        .invokeInt(new Object[] { _fmiComponent });
+                .invokeInt(new Object[] { _fmiComponent });
             } else {
                 // fmiFreeSlaveInstance is a void function.
                 // No returned status.
                 _fmiFreeSlaveInstanceFunction
-                        .invokeInt(new Object[] { _fmiComponent });
+                .invokeInt(new Object[] { _fmiComponent });
             }
         } else {
             _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
@@ -2376,7 +2388,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (numberOfStates > 0) {
             int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(
                     Integer.class, new Object[] { _fmiComponent, _derivatives,
-                            new NativeSizeT(numberOfStates) })).intValue();
+                        new NativeSizeT(numberOfStates) })).intValue();
 
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 throw new IllegalActionException(this,
@@ -2402,8 +2414,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 FMIEventInfo eventInfo = new FMIEventInfo.ByValue();
                 int fmiFlag = ((Integer) _fmiInitializeFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent,
-                            _toleranceControlled, _relativeTolerance,
-                            eventInfo.getPointer() })).intValue();
+                                _toleranceControlled, _relativeTolerance,
+                                eventInfo.getPointer() })).intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
@@ -2435,9 +2447,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 int fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
-                                _relativeTolerance, startTime.getDoubleValue(),
-                                (byte) 1, stopTime.getDoubleValue() }))
-                        .intValue();
+                            _relativeTolerance, startTime.getDoubleValue(),
+                            (byte) 1, stopTime.getDoubleValue() }))
+                            .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
@@ -2483,14 +2495,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent,
-                                startTime.getDoubleValue(), (byte) 1,
-                                stopTime.getDoubleValue() })).intValue();
+                            startTime.getDoubleValue(), (byte) 1,
+                            stopTime.getDoubleValue() })).intValue();
             } else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent,
-                            _relativeTolerance, startTime.getDoubleValue(),
-                            (byte) 1, stopTime.getDoubleValue() }))
-                            .intValue();
+                                _relativeTolerance, startTime.getDoubleValue(),
+                                (byte) 1, stopTime.getDoubleValue() }))
+                        .intValue();
                 // If the FMU can provide a maximum step size, query for the initial maximum
                 // step size and call fireAt() and ensure that the FMU is invoked
                 // at the specified time.
@@ -2504,9 +2516,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
-                                _relativeTolerance, startTime.getDoubleValue(),
-                                (byte) 1, stopTime.getDoubleValue() }))
-                        .intValue();
+                            _relativeTolerance, startTime.getDoubleValue(),
+                            (byte) 1, stopTime.getDoubleValue() }))
+                            .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                     throw new IllegalActionException(this,
@@ -2571,13 +2583,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         int fmiFlag = ((Integer) _fmiSetContinuousStates.invoke(Integer.class,
                 new Object[] { _fmiComponent, values,
-                        new NativeSizeT(values.length) })).intValue();
+            new NativeSizeT(values.length) })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             Time currentTime = getDirector().getModelTime();
             throw new IllegalActionException(this,
                     "Failed to set continuous states at time " + currentTime
-                            + ": " + _fmiStatusDescription(fmiFlag));
+                    + ": " + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
             // FindBugs: Invocation of toString on an array
@@ -2670,7 +2682,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_fmiFreeFMUstateFunction != null && _recordedState != null) {
             int freeStateSucceeded = ((Integer) _fmiFreeFMUstateFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
-                            _recordedState })).intValue();
+                        _recordedState })).intValue();
             if (freeStateSucceeded != FMILibrary.FMIStatus.fmiOK) {
                 throw new IllegalActionException(this,
                         "Failed to free memory recording FMU state: "
@@ -2724,7 +2736,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction.invoke(
                     Integer.class, new Object[] { _fmiComponent, _states,
-                            new NativeSizeT(numberOfStates) })).intValue();
+                        new NativeSizeT(numberOfStates) })).intValue();
 
             if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
                 Time currentTime = getDirector().getModelTime();
@@ -2747,7 +2759,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 int getStateSucceeded = ((Integer) _fmiGetFMUstateFunction
                         .invoke(Integer.class, new Object[] { _fmiComponent,
-                                _recordedState })).intValue();
+                            _recordedState })).intValue();
                 if (getStateSucceeded != FMILibrary.FMIStatus.fmiOK) {
                     Time currentTime = getDirector().getModelTime();
                     throw new IllegalActionException(this,
@@ -2800,7 +2812,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 DoubleBuffer maxStepSize = DoubleBuffer.allocate(1);
                 int providesMaxStepSize = ((Integer) maxStepSizeFunction
                         .invoke(Integer.class, new Object[] { _fmiComponent,
-                                maxStepSize })).intValue();
+                            maxStepSize })).intValue();
                 if (providesMaxStepSize == FMILibrary.FMIStatus.fmiOK) {
                     // FMU provides an initial maximum step size.
                     double stepSize = maxStepSize.get(0);
@@ -2861,10 +2873,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             parameter.setToken(new IntToken(scalar.getInt(_fmiComponent)));
         } else if (scalar.type instanceof FMIRealType) {
             parameter
-                    .setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
+            .setToken(new DoubleToken(scalar.getDouble(_fmiComponent)));
         } else if (scalar.type instanceof FMIStringType) {
             parameter
-                    .setToken(new StringToken(scalar.getString(_fmiComponent)));
+            .setToken(new StringToken(scalar.getString(_fmiComponent)));
         } else {
             throw new IllegalActionException("Type " + scalar.type
                     + " not supported.");
@@ -3241,17 +3253,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // causality="local" and
                     // variability="continuous", so we should
                     // return it as an input.
-                            || (_fmiModelDescription.modelExchange && scalarVariable.causality == Causality.local
-                                    // If it is a scalar that is marked as a derivative, then it is not an input
-                                    && (((scalarVariable.type instanceof FMIRealType
-                                                            && ((FMIRealType)scalarVariable.type).indexState == -1))
-                                            || !(scalarVariable.type instanceof FMIRealType)))
-                        )) {
+                    || (_fmiModelDescription.modelExchange
+                            && scalarVariable.causality == Causality.local
+                    // If it is a scalar that is marked as a derivative, then it is not an input
+                    && (((scalarVariable.type instanceof FMIRealType && ((FMIRealType) scalarVariable.type).indexState == -1)) || !(scalarVariable.type instanceof FMIRealType))))) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {
                     throw new IllegalActionException(this,
                             "FMU has an input named " + scalarVariable.name
-                                    + ", but the actor has no such input port");
+                            + ", but the actor has no such input port");
                 }
                 Input input = new Input();
                 input.scalarVariable = scalarVariable;
@@ -3456,7 +3466,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  has the same name as a pre-existing parameter.
      */
     private void _updateParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (_debugging) {
             _debugToStdOut("FMUImport.updateParameters() START");
@@ -3519,7 +3529,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip, read in or process \"" + fmuFileName
-                            + "\".");
+                    + "\".");
         }
         if (_debugging) {
             _debugToStdOut("FMUImport.updateParameters() END");

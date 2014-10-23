@@ -85,7 +85,7 @@ public class JNLPUtilities {
                     possibleJarURL.toExternalForm(), " ", "%20");
             if (possibleJarURLPath.contains("..")) {
                 // A jar URL with a relative path.  about:checkCompleteDemos will generate these.
-                String [] path = possibleJarURLPath.split("/");
+                String[] path = possibleJarURLPath.split("/");
                 ArrayList<String> paths = new ArrayList(Arrays.asList(path));
 
                 for (int j = 0; j < paths.size(); j++) {
@@ -93,21 +93,23 @@ public class JNLPUtilities {
                     if (paths.get(j).equals("..")) {
                         if (j > 0) {
                             //System.out.println(j-1 + " Removing: " + paths.get(j-1));
-                            paths.remove(j-1);
+                            paths.remove(j - 1);
                         }
                         //System.out.println(j-1 + "Removing: " + paths.get(j-1));
-                        paths.remove(j-1);
-                        j = j-2;
+                        paths.remove(j - 1);
+                        j = j - 2;
                     }
                 }
                 StringBuffer newPath = new StringBuffer();
                 for (String pathElement : paths) {
                     newPath.append(pathElement + "/");
                 }
-                possibleJarURLPath = newPath.toString().substring(0, newPath.length()-1);
+                possibleJarURLPath = newPath.toString().substring(0,
+                        newPath.length() - 1);
                 //System.out.println("JNLPUtilities: possibleJarURLPath: " + possibleJarURLPath);
                 try {
-                    URL jarURL = ClassUtilities.jarURLEntryResource(possibleJarURLPath);
+                    URL jarURL = ClassUtilities
+                            .jarURLEntryResource(possibleJarURLPath);
                     //System.out.println("JNLPUtilities: jarURL: " + jarURL);
                     return jarURL;
                 } catch (IOException ex) {
@@ -122,7 +124,8 @@ public class JNLPUtilities {
             // FIXME: should we check to see if the jarURL exists here?
             if (jarURL == null) {
                 try {
-                    return ClassUtilities.jarURLEntryResource(possibleJarURLPath);
+                    return ClassUtilities
+                            .jarURLEntryResource(possibleJarURLPath);
                 } catch (IOException ex) {
                     throw new java.net.MalformedURLException(ex.toString());
                 }
@@ -268,7 +271,7 @@ public class JNLPUtilities {
             String jarURLTop = jarURLParentFileName.substring(
                     9,
                     jarURLParentFileName.length()
-                            - parentEntryFileName.length());
+                    - parentEntryFileName.length());
 
             File temporaryFile = new File(jarURLTop, entryFileName);
 

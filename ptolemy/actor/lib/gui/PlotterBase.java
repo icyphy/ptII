@@ -82,7 +82,7 @@ import ptolemy.plot.plotml.PlotMLParser;
  @Pt.AcceptedRating Green (cxh)
  */
 public class PlotterBase extends TypedAtomicActor implements Configurable,
-        PortablePlaceable {
+PortablePlaceable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -466,7 +466,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         _getImplementation().setTableauTitle(name);

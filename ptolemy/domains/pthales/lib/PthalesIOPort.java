@@ -151,11 +151,11 @@ public class PthalesIOPort {
                                             + (repetitions[i] - 1)
                                             * tiling.get(tilingDimensionName)[0]);
                             sizesToMap
-                                    .put(patternDimensionName,
-                                            new IntToken(
-                                                    pattern.get(patternDimensionName)[0]
-                                                            + (repetitions[i] - 1)
-                                                            * tiling.get(tilingDimensionName)[0]));
+                            .put(patternDimensionName,
+                                    new IntToken(
+                                            pattern.get(patternDimensionName)[0]
+                                                    + (repetitions[i] - 1)
+                                                    * tiling.get(tilingDimensionName)[0]));
                         } else {
                             // Not enough reps for tilings, rep = 1
                             sizes.put(patternDimensionName,
@@ -516,7 +516,7 @@ public class PthalesIOPort {
      *   actor with this name.
      */
     public static void initialize(IOPort port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (port.getAttribute("base") == null) {
             new Parameter(port, "base");
@@ -626,12 +626,12 @@ public class PthalesIOPort {
             // Output pattern
             PthalesIOPort.modifyPattern(
                     (IOPort) ((PthalesRemoveHeaderActor) portIn.getContainer())
-                            .getPort("out"), dims, sizes);
+                    .getPort("out"), dims, sizes);
 
             // Header found, update of all following Pthales actors
             propagateIterations(
                     (IOPort) ((PthalesRemoveHeaderActor) portIn.getContainer())
-                            .getPort("out"),
+                    .getPort("out"),
                     arraySizes);
         }
 
@@ -694,7 +694,7 @@ public class PthalesIOPort {
         if (portIn.getContainer() instanceof PthalesCompositeActor) {
             // Iteration computation
             ((PthalesCompositeActor) portIn.getContainer())
-                    .computeSetIterations(portIn, sizes);
+            .computeSetIterations(portIn, sizes);
 
             // Once iterations are computed, output port can be computed
             for (IOPort portOut : (List<IOPort>) ((PthalesCompositeActor) portIn

@@ -175,8 +175,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
             _dbMenu.addSeparator();
 
             _simpleSearchAction
-                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_F, InputEvent.CTRL_MASK));
+            .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_F, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
@@ -190,15 +190,15 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
 
             _renameModelAction
-                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_R, InputEvent.CTRL_MASK));
+            .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_R, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
             GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
 
             _openModelMigrationFrameAction
-                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_M, InputEvent.CTRL_MASK));
+            .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_M, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openModelMigrationFrameAction);
@@ -378,7 +378,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
             configureAttributesFrame.pack();
             configureAttributesFrame
-                    .setLocationRelativeTo(ActorGraphDBFrame.this);
+            .setLocationRelativeTo(ActorGraphDBFrame.this);
             configureAttributesFrame.setVisible(true);
 
         }
@@ -507,7 +507,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
             JFrame frame = new DatabaseSetupFrame();
             _containedFramesManager
-                    .addContainedFrame((DatabaseSetupFrame) frame);
+            .addContainedFrame((DatabaseSetupFrame) frame);
             frame.pack();
             frame.setLocationRelativeTo(ActorGraphDBFrame.this);
             frame.setVisible(true);
@@ -661,7 +661,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
                     _configuration, getTableau());
 
             _containedFramesManager
-                    .addContainedFrame((SimpleSearchFrame) frame);
+            .addContainedFrame((SimpleSearchFrame) frame);
 
             frame.pack();
             frame.setLocationRelativeTo(_sourceFrame);
@@ -685,7 +685,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler
-                    .setContext(ActorGraphDBFrame.this);
+            .setContext(ActorGraphDBFrame.this);
 
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -703,9 +703,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
                 } else {
 
                     JOptionPane
-                            .showMessageDialog(ActorGraphDBFrame.this,
-                                    "The specified model could "
-                                            + "not be found in the database.",
+                    .showMessageDialog(ActorGraphDBFrame.this,
+                            "The specified model could "
+                                    + "not be found in the database.",
                                     "Load Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -759,7 +759,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
         if (history == null) {
             throw new KernelRuntimeException(
 
-            "Unexpected loss of Recently Opened Models menu.");
+                    "Unexpected loss of Recently Opened Models menu.");
 
         }
 

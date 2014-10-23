@@ -136,7 +136,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
         files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
 
         ((ProceduralCodeGenerator) getCodeGenerator())
-                .addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
+        .addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
         return files;
     }
 

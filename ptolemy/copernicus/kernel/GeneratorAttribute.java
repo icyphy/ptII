@@ -89,7 +89,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (johnr)
  */
 public class GeneratorAttribute extends SingletonAttribute implements
-        ChangeListener {
+ChangeListener {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -177,7 +177,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
      *  accordingly.
      */
     public void initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_initialized) {
             return;
         }
@@ -291,30 +291,30 @@ public class GeneratorAttribute extends SingletonAttribute implements
                 || !ptIIUserDirectoryFile.canWrite()
                 || (JNLPUtilities.isRunningUnderWebStart() || StringUtilities
                         .getProperty("lax.user.dir").length() > 0)
-                && ptIIUserDirectory.equals(ptII)) {
+                        && ptIIUserDirectory.equals(ptII)) {
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out
-                        .println("AppletWriter: WARNING: ptIIUserDirectory = '"
-                                + ptIIUserDirectory
-                                + "', but there is no directory there?");
+                .println("AppletWriter: WARNING: ptIIUserDirectory = '"
+                        + ptIIUserDirectory
+                        + "', but there is no directory there?");
             } else {
                 if (!ptIIUserDirectoryFile.canWrite()) {
                     System.out
-                            .println("AppletWriter: WARNING: ptIIUserDirectory = '"
-                                    + ptIIUserDirectory
-                                    + "', but it is not writable");
+                    .println("AppletWriter: WARNING: ptIIUserDirectory = '"
+                            + ptIIUserDirectory
+                            + "', but it is not writable");
                 } else {
                     System.out
-                            .println("AppletWriter: ptIIUserDirectory = "
-                                    + ptIIUserDirectory
-                                    + " isDirectory: "
-                                    + ptIIUserDirectoryFile.isDirectory()
-                                    + " canWrite: "
-                                    + ptIIUserDirectoryFile.canWrite()
-                                    + " WebStart: "
-                                    + (JNLPUtilities.isRunningUnderWebStart() || StringUtilities
-                                            .getProperty("lax.user.dir")
-                                            .length() > 0) + " ptII: " + ptII);
+                    .println("AppletWriter: ptIIUserDirectory = "
+                            + ptIIUserDirectory
+                            + " isDirectory: "
+                            + ptIIUserDirectoryFile.isDirectory()
+                            + " canWrite: "
+                            + ptIIUserDirectoryFile.canWrite()
+                            + " WebStart: "
+                            + (JNLPUtilities.isRunningUnderWebStart() || StringUtilities
+                                    .getProperty("lax.user.dir")
+                                    .length() > 0) + " ptII: " + ptII);
                 }
             }
 
@@ -345,7 +345,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
                     ((StringParameter) getAttribute("ptIIUserDirectory"))
-                            .setExpression(ptIIUserDirectory);
+                    .setExpression(ptIIUserDirectory);
 
                     //.setExpression("property(\"user.dir\") + "
                     //        + "\"/ptII/cg\"");
@@ -371,7 +371,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         }
 
         ((Variable) getAttribute("ptIIUserDirectoryAsURL"))
-                .setExpression(ptIIUserDirectoryAsURL);
+        .setExpression(ptIIUserDirectoryAsURL);
 
         String targetPath = getParameter("targetPath");
 
@@ -588,7 +588,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
             } catch (ClassCastException ex) {
                 throw new InternalErrorException(this, ex,
                         "Failed to cast toplevel '" + toplevel
-                                + "' to a CompositeActor");
+                        + "' to a CompositeActor");
             }
 
             Director director = compositeActor.getDirector();
@@ -665,7 +665,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         }
 
         ((StringParameter) getAttribute("necessaryClassPath"))
-                .setExpression(necessaryClassPath.toString());
+        .setExpression(necessaryClassPath.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

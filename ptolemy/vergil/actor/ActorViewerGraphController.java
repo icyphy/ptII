@@ -244,21 +244,22 @@ public class ActorViewerGraphController extends RunnableGraphController {
                     Configuration configuration = getConfiguration();
                     if (configuration != null) {
                         StringParameter actorInteractionAddonParameter;
-                        actorInteractionAddonParameter = (StringParameter) configuration.getAttribute(
-                                    "_actorInteractionAddon", Parameter.class);
+                        actorInteractionAddonParameter = (StringParameter) configuration
+                                .getAttribute("_actorInteractionAddon",
+                                        Parameter.class);
 
                         if (actorInteractionAddonParameter != null) {
                             String actorInteractionAddonClassName = actorInteractionAddonParameter
-                                .stringValue();
+                                    .stringValue();
 
                             Class actorInteractionAddonClass = Class
-                                .forName(actorInteractionAddonClassName);
+                                    .forName(actorInteractionAddonClassName);
 
                             ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
-                                .newInstance();
+                                    .newInstance();
 
                             isActorOfInterest = actorInteractionAddon
-                                .isActorOfInterestForAddonController((NamedObj) semanticObject);
+                                    .isActorOfInterestForAddonController((NamedObj) semanticObject);
                         }
                     }
                 } catch (Exception e) {
@@ -309,7 +310,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
             // The Vergil Applet at $PTII/ptolemy/vergil/Vergil.htm might not have a configuration?
             if (configuration != null) {
                 StringParameter actorInteractionAddon;
-                actorInteractionAddon = (StringParameter) configuration.getAttribute("_actorInteractionAddon", Parameter.class);
+                actorInteractionAddon = (StringParameter) configuration
+                        .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddon != null) {
                     _addonActorController.setConfiguration(configuration);
@@ -339,7 +341,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
             Configuration configuration = getConfiguration();
             if (configuration != null) {
                 StringParameter actorInteractionAddon;
-                actorInteractionAddon = (StringParameter) configuration.getAttribute("_actorInteractionAddon", Parameter.class);
+                actorInteractionAddon = (StringParameter) configuration
+                        .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddon != null) {
                     _addonActorController.addHotKeys(jgraph);
@@ -374,20 +377,20 @@ public class ActorViewerGraphController extends RunnableGraphController {
             Configuration configuration = getConfiguration();
             if (configuration != null) {
                 StringParameter actorInteractionAddonParameter;
-                actorInteractionAddonParameter = (StringParameter) configuration.getAttribute("_actorInteractionAddon",
-                            Parameter.class);
+                actorInteractionAddonParameter = (StringParameter) configuration
+                        .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
                     String actorInteractionAddonClassName = actorInteractionAddonParameter
-                        .stringValue();
+                            .stringValue();
                     Class actorInteractionAddonClass = Class
-                        .forName(actorInteractionAddonClassName);
+                            .forName(actorInteractionAddonClassName);
 
                     ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
-                        .newInstance();
+                            .newInstance();
 
                     _addonActorController = actorInteractionAddon
-                        .getControllerInstance(this, false);
+                            .getControllerInstance(this, false);
                 }
             }
         } catch (Exception e) {
@@ -682,7 +685,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             && portHide instanceof Variable
                             && ((Variable) portHide).getToken().equals(
                                     BooleanToken.TRUE) && port
-                            .linkedRelationList().isEmpty())) {
+                                    .linkedRelationList().isEmpty())) {
                         count++;
                     }
                 } catch (IllegalActionException ex) {
@@ -713,7 +716,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             && portHide instanceof Variable
                             && ((Variable) portHide).getToken().equals(
                                     BooleanToken.TRUE)
-                            && port.linkedRelationList().isEmpty()) {
+                                    && port.linkedRelationList().isEmpty()) {
                         continue;
                     }
                 } catch (IllegalActionException ex) {

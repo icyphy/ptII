@@ -62,7 +62,7 @@ import ptolemy.graph.mapping.ToIntMapping;
  @version $Id$
  */
 public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
-        implements MaximumProfitToCostRatioAnalyzer {
+implements MaximumProfitToCostRatioAnalyzer {
     /** Construct an instance of this class.
      *
      * @param graph The given graph.
@@ -332,7 +332,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     private double[][] _makeFirstOrderLongestPathMatrix(HashMap D,
             DirectedGraph graph, HashMap predecessorMap) {
         _firstOrderLongestPathMatrix = new double[_delayNodeList.size()][_delayNodeList
-                .size()];
+                                                                         .size()];
 
         for (int i = 0; i < _delayNodeList.size(); i++) {
             for (int j = 0; j < _delayNodeList.size(); j++) {

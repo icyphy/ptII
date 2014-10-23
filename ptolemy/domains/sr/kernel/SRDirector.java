@@ -176,7 +176,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *   an entity with the specified name.
      */
     public SRDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -425,7 +425,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");

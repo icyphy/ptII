@@ -197,7 +197,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 code.append(getCodeGenerator().generatePortName(
                         t,
                         StringUtilities.sanitizeName(t.getFullName())
-                                .substring(1), 1)
+                        .substring(1), 1)
                         + " = ");
             }
         }
@@ -205,15 +205,15 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         int i = name.indexOf("_Controller");
         name = name.substring(0, i) + name.substring(i + 12);
         code.append( // FIXME: Defaulting to buffer size 1.
-        getCodeGenerator().generatePortName(
-                inputPort,
-                StringUtilities.sanitizeName(inputPort.getFullName())
+                getCodeGenerator().generatePortName(
+                        inputPort,
+                        StringUtilities.sanitizeName(inputPort.getFullName())
                         .substring(1), 1)
-                + " = "
-                // FIXME: Defaulting to buffer size 1.
-                + getCodeGenerator().generatePortName(inputPort,
-                        StringUtilities.sanitizeName(name).substring(1), 1)
-                + "; ");
+                        + " = "
+                        // FIXME: Defaulting to buffer size 1.
+                        + getCodeGenerator().generatePortName(inputPort,
+                                StringUtilities.sanitizeName(name).substring(1), 1)
+                                + "; ");
 
     }
 
@@ -229,7 +229,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.domains.modal.modal.ModalController) getComponent())
-                                .getDirector().getContainer());
+                        .getDirector().getContainer());
 
         //executive If true, then look for the reference in the
         // executive director (the director of the container).  The
@@ -320,11 +320,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                                 + getCodeGenerator().generatePortName(
                                         (TypedIOPort) outputPort, destination,
                                         1)
-                                + " = "
-                                // FIXME: Defaulting to buffer size 1.
-                                + getCodeGenerator().generatePortName(
-                                        (TypedIOPort) outputPort, source, 1)
-                                + ";" + _eol);
+                                        + " = "
+                                        // FIXME: Defaulting to buffer size 1.
+                                        + getCodeGenerator().generatePortName(
+                                                (TypedIOPort) outputPort, source, 1)
+                                                + ";" + _eol);
                     }
 
                 }
@@ -586,7 +586,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
     /** Retrieve the nonpreemtive transitions. */
     private static class NonPreemptiveTransitions implements
-            TransitionRetriever {
+    TransitionRetriever {
         // Findbugs wants this to be static.
         /** Retrieve the nonpreemtive transitions.
          *  @param state The state

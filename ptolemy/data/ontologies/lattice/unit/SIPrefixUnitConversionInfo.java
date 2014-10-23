@@ -136,7 +136,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
     private static void createUnitConversionParameterForFactor(
             DimensionRepresentativeConcept dimension, String unitName,
             double unitFactor, RecordToken unitRecord)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         SIPrefixUnitConversionInfo unitParameter = null;
         try {
             unitParameter = new SIPrefixUnitConversionInfo(dimension, unitName);
@@ -172,7 +172,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      */
     private static void removeAllSIPrefixConversionParameters(
             DimensionRepresentativeConcept dimension)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         for (SIPrefixUnitConversionInfo prefixUnitParameter : dimension
                 .attributeList(SIPrefixUnitConversionInfo.class)) {
             try {

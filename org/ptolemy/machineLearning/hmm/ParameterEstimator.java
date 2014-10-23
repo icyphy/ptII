@@ -293,7 +293,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         if (_observationLength <= 0) {
             throw new IllegalActionException(this,
                     "Observation sequence length " + _observationLength
-                            + " but must be greater than zero.");
+                    + " but must be greater than zero.");
         }
         // Get Observation Values as doubles
         //FIXME: should the observations  allowed to be vectors too, for multivariate distributions?
@@ -374,7 +374,8 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @return boolean indicating whether algorithm has converged
      * @exception IllegalActionException
      */
-    protected abstract boolean _checkForConvergence(int i) throws IllegalActionException;
+    protected abstract boolean _checkForConvergence(int i)
+            throws IllegalActionException;
 
     /**
      * Update parameter estimates
@@ -460,7 +461,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next]; // MJ Eqn (11.45)
+                                        / alphas[t + 1][next]; // MJ Eqn (11.45)
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -616,7 +617,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next];
+                                        / alphas[t + 1][next];
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }

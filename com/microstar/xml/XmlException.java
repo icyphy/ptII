@@ -125,7 +125,7 @@ public class XmlException extends Exception {
                 + (_line == -1 ? "unknown line " : " at line " + _line)
                 + (_column == -1 ? " and unknown column " : " and column "
                         + _column)
-                + (_cause == null ? "" : "\nCaused by:\n " + _cause);
+                        + (_cause == null ? "" : "\nCaused by:\n " + _cause);
     }
 
     /** Get the URI of the entity containing the error.

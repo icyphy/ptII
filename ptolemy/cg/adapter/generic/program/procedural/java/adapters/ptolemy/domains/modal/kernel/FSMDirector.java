@@ -48,8 +48,8 @@ is also associated with a code generator.
 @Pt.AcceptedRating Red (sssf)
  */
 public class FSMDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -58,7 +58,7 @@ public class FSMDirector
     public FSMDirector(ptolemy.domains.modal.kernel.FSMDirector component) {
         super(component);
         System.out
-        .println("ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernel/FSMDirector.java ctor");
+                .println("ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernel/FSMDirector.java ctor");
     }
 
     ///////////////////////////////////////////////////////////////////

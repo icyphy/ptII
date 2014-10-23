@@ -122,10 +122,10 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
         SumofAbsoluteDifferences newObject = (SumofAbsoluteDifferences) super
                 .clone(workspace);
         newObject.previousImageBlock
-                .setTypeAtLeast(newObject.previousImageBlock);
+        .setTypeAtLeast(newObject.previousImageBlock);
         newObject.currentImageBlock.setTypeAtLeast(newObject.currentImageBlock);
         newObject.sumAbsoluteDifference
-                .setTypeAtLeast(newObject.sumAbsoluteDifference);
+        .setTypeAtLeast(newObject.sumAbsoluteDifference);
         return newObject;
     }
 

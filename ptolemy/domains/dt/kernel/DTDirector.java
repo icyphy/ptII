@@ -216,7 +216,7 @@ public class DTDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public DTDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }

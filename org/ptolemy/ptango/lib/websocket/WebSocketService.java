@@ -7,7 +7,6 @@ import java.net.URI;
 import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.ptolemy.ptango.lib.WebServer;
 
-
 /*
  Copyright (c) 1997-2014 The Regents of the University of California.
  All rights reserved.

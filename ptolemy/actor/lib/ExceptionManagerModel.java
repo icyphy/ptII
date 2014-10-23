@@ -45,8 +45,6 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ExceptionManagerModel extends CompositeEntity {
 
-
-
     /** Construct an ExceptionManager in the specified workspace.
      *  If the workspace argument is null, then use the default workspace.
      *  Add the entity to the workspace directory.
@@ -71,7 +69,6 @@ public class ExceptionManagerModel extends CompositeEntity {
         super(container, name);
         _modelContainer = null;
     }
-
 
     /** Create a new ExceptionManagerModel with the specified workspace and the
      *  specified ExceptionManager.

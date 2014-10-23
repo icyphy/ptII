@@ -763,7 +763,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
                 if (colIndex < 1 || colIndex > maxColumn) {
                     throw new IndexOutOfBoundsException(
                             "Invalid column group index " + colIndex
-                                    + " in group " + (group + 1));
+                            + " in group " + (group + 1));
                 }
                 if (usedIndices[colIndex]) {
                     throw new IllegalArgumentException("Column index "
@@ -834,7 +834,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
                 if (rowIndex < 1 || rowIndex > rowCount) {
                     throw new IndexOutOfBoundsException(
                             "Invalid row group index " + rowIndex
-                                    + " in group " + (i + 1));
+                            + " in group " + (i + 1));
                 }
                 if (usedIndices[rowIndex]) {
                     throw new IllegalArgumentException("Row index " + rowIndex
@@ -1534,7 +1534,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * that caches component sizes.
      */
     private abstract static class CachingMeasure implements Measure,
-            Serializable {
+    Serializable {
 
         /**
          * Holds previously requested component sizes.

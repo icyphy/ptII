@@ -113,7 +113,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *   an entity with the specified name.
      */
     public LinearStateSpace(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -299,7 +299,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         /* DoubleMatrixToken d = (DoubleMatrixToken)*/D.getToken();
 
         /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates
-                .getToken();
+        .getToken();
 
         try {
             _workspace.getWriteAccess();
@@ -456,8 +456,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
                     "The number of rows of the B matrix (" + b.getRowCount()
-                            + ") should be equal to "
-                            + "the number of rows of the A matrix (" + n + ").");
+                    + ") should be equal to "
+                    + "the number of rows of the A matrix (" + n + ").");
         }
 
         int m = b.getColumnCount();
@@ -486,9 +486,9 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
                     "The number of rows of the D matrix (" + d.getRowCount()
-                            + ") should be equal to "
-                            + "the number of rows of the C matrix ("
-                            + c.getRowCount() + ").");
+                    + ") should be equal to "
+                    + "the number of rows of the C matrix ("
+                    + c.getRowCount() + ").");
         }
 
         if (d.getColumnCount() != input.getWidth()) {
@@ -504,15 +504,15 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (x0.getColumnCount() != n) {
             throw new IllegalActionException(this,
                     "The number of initial states (" + x0.getColumnCount()
-                            + ") should equal to "
-                            + "the number of columns of the A matrix (" + n
-                            + ").");
+                    + ") should equal to "
+                    + "the number of columns of the A matrix (" + n
+                    + ").");
         }
     }
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);

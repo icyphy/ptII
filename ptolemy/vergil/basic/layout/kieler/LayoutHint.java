@@ -555,7 +555,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                             headLocation, tailLocation, headMultiportWidth,
                             tailMultiportWidth);
                     double[] primitiveBendPoints = new double[bendPoints
-                            .length()];
+                                                              .length()];
                     for (int ii = 0; ii < bendPoints.length(); ii++) {
                         primitiveBendPoints[ii] = ((ScalarToken) bendPoints
                                 .getElement(ii)).doubleValue();
@@ -569,11 +569,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     this,
                     e,
                     e.getMessage()
-                            + "\nExpression is expected to be an Array of layout hint Records. "
-                            + "The following expression is of wrong format: \n"
-                            + _expression
-                            + "\nAn example for a layoutHint expression is\n"
-                            + EXAMPLE_EXPRESSION);
+                    + "\nExpression is expected to be an Array of layout hint Records. "
+                    + "The following expression is of wrong format: \n"
+                    + _expression
+                    + "\nAn example for a layoutHint expression is\n"
+                    + EXAMPLE_EXPRESSION);
         }
     }
 

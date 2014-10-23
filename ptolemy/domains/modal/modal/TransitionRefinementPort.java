@@ -129,7 +129,7 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -318,7 +318,7 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {

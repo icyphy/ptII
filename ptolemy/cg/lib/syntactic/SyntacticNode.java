@@ -252,7 +252,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public int addPorts(Port port, boolean isin) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String prefix = isin ? "in_" : "out_";
         List<SyntacticPort> portset = isin ? _inputs : _outputs;
         String cardinality = isin ? "WEST" : "EAST";
@@ -287,7 +287,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void representExteriorPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (port instanceof IOPort) {
             IOPort ioport = (IOPort) port;
@@ -371,7 +371,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setIdentity() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setSyntactic(1, 1);
         _nodeType = NodeType.IDENTITY;
         _attachText("_iconDescription", _identityIcon);
@@ -383,7 +383,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setFeedback(boolean direction) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
             _attachText("_iconDescription", _sendIcon);
@@ -426,7 +426,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setCap(boolean direction) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
         } else {
@@ -537,7 +537,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setLocation(double x, double y) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Location location = (Location) getAttribute("_location");
         if (location == null) {
             location = new Location(this, "_location");

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ProductLatticeOntologyCompositeAdapter extends
-        LatticeOntologyCompositeAdapter {
+LatticeOntologyCompositeAdapter {
 
     /** Construct the product lattice ontology adapter associated
      *  with the given composite actor.
@@ -54,7 +54,7 @@ public class ProductLatticeOntologyCompositeAdapter extends
      */
     public ProductLatticeOntologyCompositeAdapter(
             ProductLatticeOntologySolver solver, CompositeEntity component)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, component);
         _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver,
                 component);
@@ -84,10 +84,10 @@ public class ProductLatticeOntologyCompositeAdapter extends
                 adapter._addDefaultConstraints(adapter.getSolver()
                         ._getConstraintType());
                 ((LatticeOntologyCompositeAdapter) adapter)
-                        ._addInterConnectionConstraints();
+                ._addInterConnectionConstraints();
                 ProductLatticeOntologyAdapter
-                        .addConstraintsFromTupleOntologyAdapter(
-                                adapter._ownConstraints, adapterOntology, this);
+                .addConstraintsFromTupleOntologyAdapter(
+                        adapter._ownConstraints, adapterOntology, this);
             }
         }
         return super.constraintList();

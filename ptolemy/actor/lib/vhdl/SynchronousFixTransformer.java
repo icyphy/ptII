@@ -122,7 +122,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
             }
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
 
             Overflow overflow = Overflow
                     .getName(((Parameter) getAttribute("outputOverflow"))
@@ -140,7 +140,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         if (attribute == initialValue) {
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
 
             Overflow overflow = Overflow
                     .getName(((Parameter) getAttribute("outputOverflow"))

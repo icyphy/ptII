@@ -234,10 +234,10 @@ public final class KielerGraphUtil {
 
         // Register the default resource factory -- only needed for stand-alone!
         resourceSet
-                .getResourceFactoryRegistry()
-                .getExtensionToFactoryMap()
-                .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-                        new XMIResourceFactoryImpl());
+        .getResourceFactoryRegistry()
+        .getExtensionToFactoryMap()
+        .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+                new XMIResourceFactoryImpl());
 
         try {
             // Get the URI of the model file.

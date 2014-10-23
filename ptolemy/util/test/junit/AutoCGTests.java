@@ -140,10 +140,10 @@ public class AutoCGTests extends ModelTests {
                 (Object) args)).intValue();
         if (returnValue != 0) {
             System.out
-                    .println("AutoCGTests: "
-                            + fullPath
-                            + ": Return value of the last command executed was not zero, it was: "
-                            + returnValue + ", marking this as a test failure.");
+            .println("AutoCGTests: "
+                    + fullPath
+                    + ": Return value of the last command executed was not zero, it was: "
+                    + returnValue + ", marking this as a test failure.");
             Assert.fail("Return value of the last command executed was not zero, it was: "
                     + returnValue);
         }

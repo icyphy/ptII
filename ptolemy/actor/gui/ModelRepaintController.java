@@ -144,7 +144,7 @@ public class ModelRepaintController extends Attribute {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_executable == null) {
             // The inner class will be piggybacked as an executable for the container to
             // execute change request at the appropriate times. These change request will

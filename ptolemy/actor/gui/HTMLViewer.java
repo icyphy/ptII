@@ -102,7 +102,7 @@ import ptolemy.util.MessageHandler;
  */
 @SuppressWarnings("serial")
 public class HTMLViewer extends TableauFrame implements Printable,
-        HyperlinkListener {
+HyperlinkListener {
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
@@ -142,8 +142,9 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  the getDocumentation() method.
      */
     public static void getDocumentation(Configuration configuration,
-            String className, Effigy context)
-            throws IllegalActionException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+            String className, Effigy context) throws IllegalActionException,
+            ClassNotFoundException, NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException {
         // Read the _getDocumentationActionClassName from
         // the configuration and attempt to call it.
         // If _getDocumentationActionClassName is not set,
@@ -152,26 +153,24 @@ public class HTMLViewer extends TableauFrame implements Printable,
         // FIXME: Refactor this code, use DocApplicationSpecializer
 
         StringAttribute getDocumentationActionClassNameStringAttribute = (StringAttribute) configuration
-            .getAttribute("_getDocumentationActionClassName",
-                    StringAttribute.class);
+                .getAttribute("_getDocumentationActionClassName",
+                        StringAttribute.class);
         String getDocumentationActionClassName = null;
         if (getDocumentationActionClassNameStringAttribute != null) {
             getDocumentationActionClassName = getDocumentationActionClassNameStringAttribute
-                .getExpression();
+                    .getExpression();
         } else {
             getDocumentationActionClassName = "ptolemy.vergil.basic.GetDocumentationAction";
         }
         Class getDocumentationActionClass = Class
-            .forName(getDocumentationActionClassName);
-        Method getDocumentationMethod = getDocumentationActionClass
-            .getMethod("getDocumentation", new Class[] {
-                        Configuration.class, String.class,
-                        Effigy.class });
+                .forName(getDocumentationActionClassName);
+        Method getDocumentationMethod = getDocumentationActionClass.getMethod(
+                "getDocumentation", new Class[] { Configuration.class,
+                        String.class, Effigy.class });
         //GetDocumentationAction.getDocumentation(configuration,
         //        event.getDescription().substring(6), getEffigy());
-        getDocumentationMethod.invoke(null, new Object[] {
-                    configuration,
-                    className, context });
+        getDocumentationMethod.invoke(null, new Object[] { configuration,
+                className, context });
     }
 
     /** Get the page displayed by this viewer.
@@ -213,18 +212,19 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
-                                    + "'.", throwable);
+                            + "'.", throwable);
                 }
             }
 
             if (event.getDescription().startsWith("ptdoc:")) {
                 // Process "ptdoc:" hyperlinks
                 try {
-                    getDocumentation(getConfiguration(), event.getDescription().substring(6), getEffigy());
+                    getDocumentation(getConfiguration(), event.getDescription()
+                            .substring(6), getEffigy());
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
-                                    + "'.", throwable);
+                            + "'.", throwable);
                 }
             }
             // NOTE: It would be nice to use target="_browser" or some
@@ -369,10 +369,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
                                         } catch (Throwable throwable2) {
                                             IOException exception = new IOException(
                                                     "Failed to find " + newURL
-                                                            + ", also tried\n "
-                                                            + eventURL
-                                                            + " and\n"
-                                                            + eventURL2);
+                                                    + ", also tried\n "
+                                                    + eventURL
+                                                    + " and\n"
+                                                    + eventURL2);
                                             exception.initCause(ex);
                                             throw exception;
                                         }

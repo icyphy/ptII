@@ -65,7 +65,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtRelationalNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtRelationalNode node)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -99,7 +99,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      *  syntax trees of Ptolemy expressions.
      */
     private static class ASTPtRelationalNodeFunction extends
-            MonotonicityConceptFunction {
+    MonotonicityConceptFunction {
         // FindBugs indicates that this should be a static class.
 
         /** Create a new function for inferring the monotonicity concept
@@ -114,7 +114,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
                 Ontology monotonicityOntology, List<Ontology> domainOntologies)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("defaultASTPtRelationalNodeFunction", 2,
                     monotonicityOntology, domainOntologies);
             _operator = operator.toString();

@@ -157,7 +157,7 @@ public class VariableLattice extends Lattice implements ExplicitChangeContext {
         VariableLattice newObject = (VariableLattice) super.clone(workspace);
 
         newObject.newCoefficients
-                .setTypeSameAs(newObject.reflectionCoefficients);
+        .setTypeSameAs(newObject.reflectionCoefficients);
 
         // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);

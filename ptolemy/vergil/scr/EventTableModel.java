@@ -69,7 +69,7 @@ public class EventTableModel extends AbstractTableModel {
      * Check that pairwise OR of events in a row is always false.
      * --- check coverage: AND of all events in a row is true
      */
-   public void checkDisjointness() throws IllegalActionException {
+    public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),
                 getColumnCount(), _model);
     }
@@ -158,7 +158,7 @@ public class EventTableModel extends AbstractTableModel {
      *  @exception NameDuplicationException  If thrown while saving the model.
      */
     public void saveModel() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {
             StringBuffer insideModeExpression = new StringBuffer();
             StringBuffer enterModeExpression = new StringBuffer();

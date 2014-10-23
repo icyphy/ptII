@@ -128,8 +128,8 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
     @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> properties)
-            throws InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+                    throws InstantiationException, IllegalAccessException,
+                    InvocationTargetException {
         List<JButton> buttons = new ArrayList<JButton>();
 
         for (int i = 1; i < 6; i++) {

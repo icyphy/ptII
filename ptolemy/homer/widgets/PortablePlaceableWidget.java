@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class PortablePlaceableWidget extends GlassPaneWidget implements
-        MinSizeInterface {
+MinSizeInterface {
 
     /** Create a new instance of the widget by requesting the element to place
      *  itself into the provided container.

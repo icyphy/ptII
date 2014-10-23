@@ -438,7 +438,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
     protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -461,7 +461,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 + offset;
         String sourceRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(source.port.getContainer())).getReference(
-                sourcePortChannel, false);
+                        sourcePortChannel, false);
 
         String sinkPortChannel = CodeGeneratorAdapter.generateName(sink.port)
                 + "#" + sink.channelNumber + ", " + offset;
@@ -475,7 +475,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(sink.port.getContainer())).getReference(
-                sinkPortChannel, true);
+                        sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need

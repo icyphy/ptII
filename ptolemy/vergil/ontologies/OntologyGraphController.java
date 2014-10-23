@@ -228,7 +228,7 @@ public class OntologyGraphController extends WithIconGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _conceptController.getNodeInteractor())
-                .addInteractor(_relationCreator);
+        .addInteractor(_relationCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -246,7 +246,7 @@ public class OntologyGraphController extends WithIconGraphController {
 
             if (interactor instanceof CompositeInteractor) {
                 ((CompositeInteractor) interactor)
-                        .addInteractor(_relationCreator);
+                .addInteractor(_relationCreator);
             }
         }
     }
@@ -285,7 +285,7 @@ public class OntologyGraphController extends WithIconGraphController {
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask());
+            .getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////
@@ -362,7 +362,7 @@ public class OntologyGraphController extends WithIconGraphController {
                             newConceptLocation = new Location(prototype,
                                     locationName);
                             newConceptLocation
-                                    .setLocation(new double[] { x, y });
+                            .setLocation(new double[] { x, y });
                         }
                         newConceptLocation.setLocation(new double[] { x, y });
                         moml = prototype.exportMoML(conceptName);

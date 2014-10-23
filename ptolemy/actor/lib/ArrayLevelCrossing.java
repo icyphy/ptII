@@ -88,9 +88,9 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
         new SingletonParameter(start.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         new StringAttribute(start.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         forwards = new Parameter(this, "forwards");
         forwards.setExpression("true");
@@ -100,7 +100,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         threshold.setExpression("0.0");
         threshold.setTypeEquals(BaseType.DOUBLE);
         new StringAttribute(threshold.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(threshold.getPort(), "_showName").setExpression("true");
 
         above = new Parameter(this, "above");

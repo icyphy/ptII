@@ -126,7 +126,7 @@ public abstract class PortDirector extends Director {
     @Override
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         name = processCode(name);
         String castType = _getCastType(name);
         String refName = _getRefName(name);
@@ -193,7 +193,7 @@ public abstract class PortDirector extends Director {
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
         int channelNumber = 0;
@@ -290,7 +290,7 @@ public abstract class PortDirector extends Director {
                                     .max(DFUtilities
                                             .getTokenProductionRate(sourceChannel.port),
                                             DFUtilities
-                                                    .getTokenConsumptionRate(sourceChannel.port));
+                                            .getTokenConsumptionRate(sourceChannel.port));
                             if (rate > 1
                                     && channelAndOffset[1].trim().length() > 0) {
                                 result.append("[" + channelAndOffset[1].trim()
@@ -402,7 +402,7 @@ public abstract class PortDirector extends Director {
      */
     protected/*static*/String _generateChannelOffset(TypedIOPort port,
             boolean isWrite, String channelString)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // By default, return the channel offset for the first channel.
         if (channelString.equals("")) {
             channelString = "0";
@@ -426,7 +426,7 @@ public abstract class PortDirector extends Director {
      */
     protected String _generatePortReference(TypedIOPort port,
             String[] channelAndOffset, boolean isWrite)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         String channelOffset;

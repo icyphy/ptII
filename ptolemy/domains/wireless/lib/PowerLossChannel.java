@@ -136,7 +136,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
         powerPropagationFactor = new Parameter(this, "powerPropagationFactor");
         powerPropagationFactor.setTypeEquals(BaseType.DOUBLE);
         powerPropagationFactor
-                .setExpression("1.0 / (4 * PI * distance * distance)");
+        .setExpression("1.0 / (4 * PI * distance * distance)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -172,7 +172,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
     @Override
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort source, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Use the superclass to merge the record argument with the
         // default properties and to apply registered transformers.
         RecordToken merged = super.transformProperties(properties, source,

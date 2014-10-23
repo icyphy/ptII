@@ -73,7 +73,7 @@ public class BasicGraphFrameExtension implements Serializable {
      */
     public static void alternateDelete(Object[] selection,
             AbstractBasicGraphModel graphModel, NamedObj container)
-            throws IllegalActionException {
+                    throws IllegalActionException {
     }
 
     /** Paste the Ptolemy objects represented by the value of the

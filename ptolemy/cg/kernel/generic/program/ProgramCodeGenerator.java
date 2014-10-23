@@ -102,7 +102,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public ProgramCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension);
 
         _templateExtension = templateExtension;
@@ -355,8 +355,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("Cannot resolve codegen type from Ptolemy type: "
-                            + ptType);
+            .println("Cannot resolve codegen type from Ptolemy type: "
+                    + ptType);
         }
         return result;
     }
@@ -755,7 +755,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
 
         return arrayName + StringUtilities.sanitizeName(typeName) + "["
-                + portIndex + "]";
+        + portIndex + "]";
     }
 
     /** Generate sanitized name for the given Ptolemy IOPort.
@@ -1003,12 +1003,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public static Type ptolemyType(String cgType) {
         Type result = cgType.equals("Int") ? BaseType.INT : cgType
                 .equals("Long") ? BaseType.LONG
-                : cgType.equals("String") ? BaseType.STRING : cgType
-                        .equals("Boolean") ? BaseType.BOOLEAN : cgType
-                        .equals("Double") ? BaseType.DOUBLE : cgType
-                        .equals("Complex") ? BaseType.COMPLEX : cgType
-                        .equals("Object") ? BaseType.OBJECT : cgType
-                        .equals("Pointer") ? PointerToken.POINTER : null;
+                        : cgType.equals("String") ? BaseType.STRING : cgType
+                                .equals("Boolean") ? BaseType.BOOLEAN : cgType
+                                        .equals("Double") ? BaseType.DOUBLE : cgType
+                                                .equals("Complex") ? BaseType.COMPLEX : cgType
+                                                        .equals("Object") ? BaseType.OBJECT : cgType
+                                                                .equals("Pointer") ? PointerToken.POINTER : null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -1022,7 +1022,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                     : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
                                             : elementType.equals("Fix") ? BaseType.FIX_MATRIX
                                                     : elementType
-                                                            .equals("Long") ? BaseType.LONG_MATRIX
+                                                    .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
 
         }
@@ -1131,14 +1131,14 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 { "-measureTime", "       true|false (default: false)" },
                 { "-run", "               true|false (default: true)" },
                 { "-runCommand",
-                        "        <a string, default: make -f @modelName@.mk run>" },
+                "        <a string, default: make -f @modelName@.mk run>" },
                 { "-variablesAsArrays", " true|false (default:false)" },
                 { "-verbosity",
-                        "         <an integer, try 1 or 10>, (default: 0)" } };
+                "         <an integer, try 1 or 10>, (default: 0)" } };
 
         String[][] parentOptions = super.updateCommandOptions();
         String[][] allOptions = new String[parentOptions.length
-                + options.length][2];
+                                           + options.length][2];
         int i = 0;
         for (; i < parentOptions.length; i++) {
             allOptions[i][0] = parentOptions[i][0];
@@ -1173,7 +1173,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         ((NamedProgramCodeGeneratorAdapter) getAdapter(getContainer()))
-                .analyzeTypeConvert();
+        .analyzeTypeConvert();
     }
 
     /** Return the value of the codeDirectory parameter.
@@ -1184,7 +1184,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  codeDirectory parameter.
      */
     protected File _codeDirectoryAsFile() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         // This method is here to avoid code duplication.
         // It is package protected so we can read it in ProgramCodeGeneratorAdapter
         File codeDirectoryFile = codeDirectory.asFile();
@@ -1290,8 +1290,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             //Director directorAdapter = (Director) getAdapter(director);
             NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(director);
             code += directorAdapter.generateMainLoop(
-                    /* CodeGenerator.containsCode(_postfireCode)*/
-                    );
+            /* CodeGenerator.containsCode(_postfireCode)*/
+            );
 
         } else {
             // Generate embedded code.
@@ -1748,7 +1748,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     @Override
     protected CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super
                 ._instantiateAdapter(component, componentClass,
                         adapterClassName);
@@ -1850,8 +1850,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         } catch (Throwable throwable) {
             // Ignore
             System.out
-                    .println("Warning: Failed to split variable declaration: "
-                            + throwable);
+            .println("Warning: Failed to split variable declaration: "
+                    + throwable);
             throwable.printStackTrace();
             results.add("");
             results.add(code);
@@ -1986,10 +1986,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             } else {
                 _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                         "# Unknown java property os.name \"" + osName
-                        + "\" please edit ptolemy/codegen/c/"
-                        + "kernel/CCodeGenerator.java and "
-                        + "ptolemy/actor/lib/jni/"
-                        + "CompiledCompositeActor.java");
+                                + "\" please edit ptolemy/codegen/c/"
+                                + "kernel/CCodeGenerator.java and "
+                                + "ptolemy/actor/lib/jni/"
+                                + "CompiledCompositeActor.java");
             }
 
         }
@@ -2037,7 +2037,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String makefileOutputName = codeDirectory.stringValue()
                 + (!codeDirectory.stringValue().endsWith("/")
                         && !codeDirectory.stringValue().endsWith("\\") ? "/"
-                        : "") + _sanitizedModelName + ".mk";
+                                : "") + _sanitizedModelName + ".mk";
 
         BufferedReader makefileTemplateReader = null;
 
@@ -2068,7 +2068,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to read \"" + makefileTemplateName
-                            + "\" or write \"" + makefileOutputName + "\"");
+                    + "\" or write \"" + makefileOutputName + "\"");
         } finally {
             if (makefileTemplateReader != null) {
                 try {
@@ -2237,7 +2237,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
+    "Pointer" });
 
     /** The initial default value of the <i>runCommand</i> parameter.
      *  The constructor of a derived class may compare the value of <i>runCommand</i>

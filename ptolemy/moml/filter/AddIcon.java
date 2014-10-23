@@ -152,7 +152,7 @@ public class AddIcon extends MoMLFilterSimple {
     @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception {
+                    throws Exception {
         if (_currentlyProcessingActorThatMayNeedAnIcon
                 && elementName.equals("entity") && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
@@ -218,21 +218,21 @@ public class AddIcon extends MoMLFilterSimple {
 
         // In alphabetic order by actor class name.
         _actorsThatShouldHaveIcons
-                .put("ptolemy.actor.lib.Const",
-                        "<property name=\"_icon\" "
-                                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                                + "<property name=\"attributeName\" value=\"value\"/>\n"
-                                + "<property name=\"displayWidth\" value=\"40\"/>\n"
-                                + "</property>\n");
+        .put("ptolemy.actor.lib.Const",
+                "<property name=\"_icon\" "
+                        + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                        + "<property name=\"attributeName\" value=\"value\"/>\n"
+                        + "<property name=\"displayWidth\" value=\"40\"/>\n"
+                        + "</property>\n");
 
         // In alphabetic order by actor class name.
         _actorsThatShouldHaveIcons
-                .put("ptolemy.actor.lib.Expression",
-                        "<property name=\"_icon\" "
-                                + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
-                                + "<property name=\"attributeName\" value=\"expression\"/>\n"
-                                + "<property name=\"displayWidth\" value=\"60\"/>\n"
-                                + "</property>\n");
+        .put("ptolemy.actor.lib.Expression",
+                "<property name=\"_icon\" "
+                        + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
+                        + "<property name=\"attributeName\" value=\"expression\"/>\n"
+                        + "<property name=\"displayWidth\" value=\"60\"/>\n"
+                        + "</property>\n");
 
         String functionIcon = "<property name=\"_icon\" "
                 + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
@@ -243,11 +243,11 @@ public class AddIcon extends MoMLFilterSimple {
                 functionIcon);
 
         _actorsThatShouldHaveIcons
-                .put("ptolemy.actor.lib.Scale",
-                        "<property name=\"_icon\" "
-                                + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-                                + "<property name=\"attributeName\" value=\"factor\"/>\n"
-                                + "</property>\n");
+        .put("ptolemy.actor.lib.Scale",
+                "<property name=\"_icon\" "
+                        + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
+                        + "<property name=\"attributeName\" value=\"factor\"/>\n"
+                        + "</property>\n");
 
         _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
                 functionIcon);

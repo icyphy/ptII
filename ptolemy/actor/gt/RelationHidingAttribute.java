@@ -109,7 +109,7 @@ public class RelationHidingAttribute extends Parameter implements GTAttribute {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Replacement.class,

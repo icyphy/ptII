@@ -128,7 +128,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
         /** Return a left-to-right schedule. */
         @Override
         protected Schedule _getSchedule() throws IllegalActionException,
-                NotSchedulableException {
+        NotSchedulableException {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.

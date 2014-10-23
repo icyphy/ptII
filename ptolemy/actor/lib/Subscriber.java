@@ -224,7 +224,7 @@ public class Subscriber extends TypedAtomicActor {
      *  @exception NameDuplicationException If there is already a port named "input".
      */
     protected void _createInputPort() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         input = new SubscriberPort(this, "input");
     }
 }

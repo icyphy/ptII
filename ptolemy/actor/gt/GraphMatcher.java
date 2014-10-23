@@ -1017,7 +1017,7 @@ public class GraphMatcher extends GraphAnalyzer {
                 optionalContainer = _getOptionalContainer((NamedObj) patternObject);
                 if (optionalContainer != null
                         && !_ignoredOptionalObjects
-                                .containsKey(optionalContainer)) {
+                        .containsKey(optionalContainer)) {
                     _ignoredOptionalObjects.put(optionalContainer, false);
                     _clearCaches();
                 } else {

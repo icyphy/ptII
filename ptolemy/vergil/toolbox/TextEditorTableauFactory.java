@@ -63,7 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
  @see TextEditorConfigureFactory
  */
 public class TextEditorTableauFactory extends TableauFactory implements
-        TextEditorFactory {
+TextEditorFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.

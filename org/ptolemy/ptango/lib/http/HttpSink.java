@@ -91,9 +91,9 @@ public abstract class HttpSink extends TypedAtomicActor {
         properties.setExpression("{}");
         properties.setTypeAtMost(BaseType.RECORD);
         new SingletonParameter(properties.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         (new StringAttribute(properties.getPort(), "_cardinal"))
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         status = new TypedIOPort(this, "status", false, true);
         status.setTypeEquals(HttpResponse.getStatusType());
@@ -111,9 +111,9 @@ public abstract class HttpSink extends TypedAtomicActor {
         uri.setStringMode(true);
         uri.setExpression("http://localhost");
         new SingletonParameter(uri.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         (new StringAttribute(uri.getPort(), "_cardinal"))
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
     }
 

@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class TextEditor extends TableauFrame implements DocumentListener,
-        ImageExportable, Printable {
+ImageExportable, Printable {
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -319,7 +319,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
         return _print(graphics2D, index, linesPerPage, lineHeight,
                 (int) format.getImageableX(), lineYPosition, format.getHeight()
-                        - bottomMargin);
+                - bottomMargin);
 
     }
 
@@ -688,7 +688,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                 String linetext = text.getText(
                         text.getLineStartOffset(line),
                         text.getLineEndOffset(line)
-                                - text.getLineStartOffset(line));
+                        - text.getLineStartOffset(line));
                 graphics2D.drawString(linetext, lineXPosition, linePosition);
             } catch (BadLocationException e) {
                 // Ignore. Never a bad location.

@@ -69,7 +69,7 @@ public class NamedObjVariable extends Variable {
      *   variable already in the container.
      */
     public NamedObjVariable(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         this(container, container.uniqueName(NAME_PREFIX));
     }
 
@@ -159,7 +159,7 @@ public class NamedObjVariable extends Variable {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         super.setContainer(container);
         if (_setTokenWithContainer && container != oldContainer) {

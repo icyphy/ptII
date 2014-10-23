@@ -182,7 +182,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
                 A_new = _A0; // reset to initial guess
                 prior_new = _priors; // reset to input priors
                 System.out
-                        .println("Expectation Maximization failed to converge");
+                .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means

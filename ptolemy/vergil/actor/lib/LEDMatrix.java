@@ -187,10 +187,10 @@ public class LEDMatrix extends TypedAtomicActor {
                     .booleanValue();
             if (controlValue) {
                 _leds[rowValue][columnValue].fillColor
-                        .setToken("{1.0, 0.0, 0.0, 1.0}");
+                .setToken("{1.0, 0.0, 0.0, 1.0}");
             } else {
                 _leds[rowValue][columnValue].fillColor
-                        .setToken("{0.0, 0.0, 0.0, 1.0}");
+                .setToken("{0.0, 0.0, 0.0, 1.0}");
             }
         }
     }
@@ -213,7 +213,7 @@ public class LEDMatrix extends TypedAtomicActor {
 
     /** Create the LED Array. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         int columnsValue = ((IntToken) columns.getToken()).intValue();
         int rowsValue = ((IntToken) rows.getToken()).intValue();

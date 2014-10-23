@@ -118,7 +118,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 List<IOPort> plusInputs = _getSourcePortList(actor.plus);
                 if (plusInputs.size() > 1) {
                     InequalityTerm[] plusTerms = new InequalityTerm[plusInputs
-                            .size()];
+                                                                    .size()];
                     for (int i = 0; i < plusTerms.length; i++) {
                         plusTerms[i] = getPropertyTerm(plusInputs.get(i));
                     }
@@ -133,7 +133,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 List<IOPort> minusInputs = _getSourcePortList(actor.minus);
                 if (minusInputs.size() > 1) {
                     InequalityTerm[] minusTerms = new InequalityTerm[minusInputs
-                            .size()];
+                                                                     .size()];
                     for (int i = 0; i < minusTerms.length; i++) {
                         // Coverity identified a copy paste error here:
                         //minusTerms[i] = getPropertyTerm(plusInputs.get(i));

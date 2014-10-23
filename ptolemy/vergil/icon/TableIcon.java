@@ -258,7 +258,7 @@ public class TableIcon extends DynamicEditorIcon {
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     while (labelSet.hasNext()) {
                                         /*String column = (String) */labelSet
-                                                .next();
+                                        .next();
                                         tableElement[i][j].translateTo(
                                                 columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);

@@ -358,7 +358,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
                             if (!Modifier.isAbstract(cls.getModifiers())
                                     && GTIngredient.class.isAssignableFrom(cls)) {
                                 ingredientClasses
-                                        .add((Class<? extends GTIngredient>) cls);
+                                .add((Class<? extends GTIngredient>) cls);
                             }
                         } catch (ClassNotFoundException e) {
                         } catch (NoClassDefFoundError e) {
@@ -439,7 +439,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         getContentPane().removeAll();
 
         _tableModel = new DefaultTableModel(new Object[] { "", "Class",
-                "Elements" }, 0) {
+        "Elements" }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 if (column == 0) {
@@ -633,9 +633,9 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     private GTIngredient _createTemporaryIngredient(
             Class<? extends GTIngredient> ingredientClass)
-            throws SecurityException, NoSuchMethodException,
-            IllegalArgumentException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+                    throws SecurityException, NoSuchMethodException,
+                    IllegalArgumentException, InstantiationException,
+                    IllegalAccessException, InvocationTargetException {
         Constructor<? extends GTIngredient> constructor = ingredientClass
                 .getConstructor(GTIngredientList.class);
         return constructor
@@ -667,7 +667,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
     private static final Border _TEXT_FIELD_BORDER = new JTextField()
-            .getBorder();
+    .getBorder();
 
     private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
@@ -725,7 +725,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         private Editor _editor = new Editor();
 
         private class Editor extends MouseAdapter implements ActionListener,
-                ComboBoxEditor, FocusListener {
+        ComboBoxEditor, FocusListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -870,7 +870,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 try {
                     Configuration configuration = _owner.getConfiguration();
                     configuration
-                            .openModel(null, _help, _help.toExternalForm());
+                    .openModel(null, _help, _help.toExternalForm());
                 } catch (Exception e1) {
                     HTMLViewer viewer = new HTMLViewer();
                     try {
@@ -889,8 +889,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
         public void mouseEntered(MouseEvent e) {
             Color color = new Color(Math.min(
                     (int) (_background.getRed() * 1.1), 255), Math.min(
-                    (int) (_background.getGreen() * 1.1), 255), Math.min(
-                    (int) (_background.getBlue() * 1.1), 255));
+                            (int) (_background.getGreen() * 1.1), 255), Math.min(
+                                    (int) (_background.getBlue() * 1.1), 255));
             setBackground(color);
         }
 
@@ -942,7 +942,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
     }
 
     private static class IngredientContentEditor extends AbstractCellEditor
-            implements TableCellEditor, TableCellRenderer {
+    implements TableCellEditor, TableCellRenderer {
 
         @Override
         public Object getCellEditorValue() {

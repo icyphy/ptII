@@ -67,7 +67,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtProductNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtProductNode node)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -158,7 +158,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                 List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction multiplyFunction,
                 ConceptFunction divideFunction, List<Token> operatorTokenList)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("defaultASTPtProductNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 

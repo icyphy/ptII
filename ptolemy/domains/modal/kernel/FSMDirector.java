@@ -186,7 +186,7 @@ import ptolemy.kernel.util.Workspace;
  * @see FSMActor
  */
 public class FSMDirector extends Director implements ExplicitChangeContext,
-        QuasiTransparentDirector, SuperdenseTimeDirector {
+QuasiTransparentDirector, SuperdenseTimeDirector {
     /**
      * Construct a director in the default workspace with an empty
      * string as its name. The director is added to the list of
@@ -196,7 +196,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public FSMDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _createAttribute();
     }
@@ -210,7 +210,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public FSMDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _createAttribute();
     }
@@ -894,7 +894,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {
@@ -925,7 +925,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 if (destinationDirector != this
                         && destinationDirector instanceof SuperdenseTimeDirector) {
                     ((SuperdenseTimeDirector) destinationDirector)
-                            .setIndex(index);
+                    .setIndex(index);
                 }
             }
         }
@@ -1115,7 +1115,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                     Transition transition = (Transition) transitions
                                             .next();
                                     stateList
-                                            .add(transition.destinationState());
+                                    .add(transition.destinationState());
                                     _checkActorsForReceiver(
                                             transition.getRefinement(), cont,
                                             receiver, resultsList);

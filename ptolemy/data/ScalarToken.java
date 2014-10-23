@@ -72,7 +72,7 @@ import ptolemy.math.FixPoint;
  @Pt.AcceptedRating Green (yuhong)
  */
 public abstract class ScalarToken extends Token implements
-        BitwiseOperationToken, PartiallyOrderedToken {
+BitwiseOperationToken, PartiallyOrderedToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

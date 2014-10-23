@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class TestExceptionAttribute extends AbstractInitializableAttribute
-        implements ExceptionHandler {
+implements ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -184,7 +184,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
                 if (!exception.getMessage().startsWith(prefix)) {
                     throw new IllegalActionException(this, exception,
                             "Expected a message starting with:\n" + prefix
-                                    + "\nBut got:\n" + exception.getMessage());
+                            + "\nBut got:\n" + exception.getMessage());
                 }
             }
         }

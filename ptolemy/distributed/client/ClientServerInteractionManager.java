@@ -72,7 +72,7 @@ import ptolemy.kernel.util.KernelException;
  @see "Jini Documentation"
  */
 public class ClientServerInteractionManager implements DiscoveryListener,
-        ServiceDiscoveryListener {
+ServiceDiscoveryListener {
     /** Construct a ClientServerInteractionManager initializing it with a given
      *  VERBOSE option.
      *

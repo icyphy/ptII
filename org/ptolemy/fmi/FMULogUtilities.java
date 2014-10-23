@@ -154,7 +154,7 @@ public class FMULogUtilities {
                             for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
                                 if (scalarVariable.valueReference == variableReference
                                         && scalarVariable.type.getClass()
-                                                .isAssignableFrom(fmiTypeClass)) {
+                                        .isAssignableFrom(fmiTypeClass)) {
                                     foundIt = true;
                                     results.append(scalarVariable.name);
                                     break;

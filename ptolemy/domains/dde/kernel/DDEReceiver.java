@@ -106,7 +106,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.dde.kernel.DDEThread
  */
 public class DDEReceiver extends PrioritizedTimedQueue implements
-        ProcessReceiver {
+ProcessReceiver {
     /** Construct an empty receiver with no container.
      */
     public DDEReceiver() {
@@ -365,7 +365,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      */
     @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 

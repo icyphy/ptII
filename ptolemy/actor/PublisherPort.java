@@ -187,11 +187,11 @@ public class PublisherPort extends PubSubPort {
                 // set to no longer be a class definition.
                 if (container instanceof InstantiableNamedObj
                         && !((InstantiableNamedObj) container)
-                                .isWithinClassDefinition()
-                //                        || (container == null
-                //                                && immediateContainer instanceof InstantiableNamedObj
-                //                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition())
-                ) {
+                        .isWithinClassDefinition()
+                        //                        || (container == null
+                        //                                && immediateContainer instanceof InstantiableNamedObj
+                        //                                && !((InstantiableNamedObj)immediateContainer).isWithinClassDefinition())
+                        ) {
                     String newValue = channel.stringValue();
                     boolean globalValue = ((BooleanToken) global.getToken())
                             .booleanValue();
@@ -210,14 +210,14 @@ public class PublisherPort extends PubSubPort {
                                     if (_global && !globalValue) {
                                         // Changing from global to non-global.
                                         ((CompositeActor) container)
-                                                .unregisterPublisherPort(
-                                                        _channel, this, true);
+                                        .unregisterPublisherPort(
+                                                _channel, this, true);
                                     }
                                 }
 
                                 if (attribute == channel
                                         && !(_channel == null || _channel
-                                                .trim().equals(""))) {
+                                        .trim().equals(""))) {
                                     // Changing the channel from a previous channel name.
                                     if (((BooleanToken) propagateNameChanges
                                             .getToken()).booleanValue()) {
@@ -235,14 +235,14 @@ public class PublisherPort extends PubSubPort {
 
                                 if (attribute == channel
                                         && !(_channel == null || _channel
-                                                .trim().equals(""))) {
+                                        .trim().equals(""))) {
                                     ((CompositeActor) container)
-                                            .unregisterPublisherPort(_channel,
-                                                    this, _global);
+                                    .unregisterPublisherPort(_channel,
+                                            this, _global);
                                 }
                                 ((CompositeActor) container)
-                                        .registerPublisherPort(newValue, this,
-                                                globalValue);
+                                .registerPublisherPort(newValue, this,
+                                        globalValue);
 
                             } catch (NameDuplicationException e) {
                                 throw new IllegalActionException(this, e,
@@ -341,8 +341,8 @@ public class PublisherPort extends PubSubPort {
                     if (container instanceof CompositeActor) {
                         try {
                             ((CompositeActor) container)
-                                    .unregisterPublisherPort(channelValue,
-                                            this, _global);
+                            .unregisterPublisherPort(channelValue,
+                                    this, _global);
                         } catch (NameDuplicationException e) {
                             throw new InternalErrorException(e);
                         }
@@ -506,7 +506,7 @@ public class PublisherPort extends PubSubPort {
      */
     private void _updateChannelNameOfConnectedSubscribers(
             String previousChannelName, String newChannelName)
-            throws KernelException {
+                    throws KernelException {
 
         // This will end up calling attributeChanged() (in order to
         // defeat lazy composites), and we want to prevent a recursive
@@ -533,7 +533,7 @@ public class PublisherPort extends PubSubPort {
                                 .getAttribute("channel");
                         if (containerChannel instanceof StringParameter) {
                             ((StringParameter) containerChannel)
-                                    .setExpression(newChannelName);
+                            .setExpression(newChannelName);
                             container.attributeChanged(containerChannel);
                             port.attributeChanged(port.channel);
                         } else {

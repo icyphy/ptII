@@ -116,7 +116,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void append(Nameable element) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String newName = element.getName();
 
         if (newName == null) {
@@ -413,7 +413,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void prepend(Nameable element) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _insertAt(0, element);
         if (_hashEnabled) {
             _hashedList.put(element.getName(), element);

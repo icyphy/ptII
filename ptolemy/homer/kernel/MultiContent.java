@@ -100,11 +100,11 @@ public class MultiContent<T extends ContentPrototype> {
      */
     public String addTab(ComponentEntity topLevel, String tabTag,
             String tabName, ContentPrototype content)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         if (tabTag != null && _contents.containsKey(tabTag)) {
             throw new IllegalActionException(
                     "A content area with the identifier " + tabTag
-                            + " already exists.");
+                    + " already exists.");
         }
 
         TabDefinition tabDefinition = new TabDefinition(topLevel, tabTag,

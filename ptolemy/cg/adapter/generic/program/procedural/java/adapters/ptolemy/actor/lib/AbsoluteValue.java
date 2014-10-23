@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.AcceptedRating Red (cxh)
  */
 public class AbsoluteValue
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AbsoluteValue {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AbsoluteValue {
     /**
      *  Construct a AbsoluteValue adapter.
      *  @param actor The given ptolemy.actor.lib.AbsoluteValue actor.

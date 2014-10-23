@@ -85,7 +85,7 @@ import ptolemy.util.MessageHandler;
  */
 @SuppressWarnings("serial")
 public class SearchResultsDialog extends PtolemyDialog implements
-        ListSelectionListener, QueryListener {
+ListSelectionListener, QueryListener {
 
     /** Construct a dialog for search results.
      *  @param tableau The DialogTableau.
@@ -125,12 +125,12 @@ public class SearchResultsDialog extends PtolemyDialog implements
         _resultsTableModel = new ResultsTableModel();
         _resultsTable = new JTable(_resultsTableModel);
         _resultsTable
-                .setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
+        .setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
 
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
         _resultsTable
-                .setPreferredScrollableViewportSize(new Dimension(300, 300));
+        .setPreferredScrollableViewportSize(new Dimension(300, 300));
 
         ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
         selectionModel.addListSelectionListener(this);

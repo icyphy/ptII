@@ -177,7 +177,7 @@ public class HlaSubscriber extends TypedAtomicActor {
                 output.setTypeEquals(new RecordType(new String[] { "microstep",
                         "payload", "sourceTimestamp", "timestamp" },
                         new Type[] { BaseType.INT, BaseType.DOUBLE,
-                                BaseType.DOUBLE, BaseType.DOUBLE }));
+                        BaseType.DOUBLE, BaseType.DOUBLE }));
             }
         }
         super.attributeChanged(attribute);
@@ -232,7 +232,7 @@ public class HlaSubscriber extends TypedAtomicActor {
             TimedEvent te = it.next();
             if (te.timeStamp.compareTo(currentTime) == 0) {
                 this.outputPortList().get(0)
-                        .send(0, _buildToken((Object[]) te.contents));
+                .send(0, _buildToken((Object[]) te.contents));
 
                 if (_debugging) {
                     _debug(this.getDisplayName()
@@ -299,8 +299,8 @@ public class HlaSubscriber extends TypedAtomicActor {
                     new DoubleToken((Double) obj[1]),
                     new DoubleToken((Double) obj[4]) };
 
-            RecordToken record = new RecordToken(PtidesNetworkModelTimeType.LABELS,
-                    values);
+            RecordToken record = new RecordToken(
+                    PtidesNetworkModelTimeType.LABELS, values);
 
             return record;
         }

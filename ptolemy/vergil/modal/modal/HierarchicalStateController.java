@@ -99,7 +99,7 @@ public class HierarchicalStateController extends StateController {
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _removeRefinementAction));
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -263,7 +263,7 @@ public class HierarchicalStateController extends StateController {
 
             if (!(target instanceof State)) {
                 MessageHandler
-                        .error("Can only remove refinements from states.");
+                .error("Can only remove refinements from states.");
                 return;
             }
 

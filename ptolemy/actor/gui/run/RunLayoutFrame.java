@@ -95,9 +95,9 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
                 // If data is malformed, issue a warning and proceed.
                 try {
                     MessageHandler
-                            .warning("A container with name "
-                                    + containerLayout.getName()
-                                    + " was found in the contstraints file but was not found in the container");
+                    .warning("A container with name "
+                            + containerLayout.getName()
+                            + " was found in the contstraints file but was not found in the container");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(model, "Canceled");
                 }

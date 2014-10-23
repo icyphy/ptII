@@ -232,7 +232,7 @@ public class IORelation extends ComponentRelation {
      * @exception InvalidStateException
      */
     public Receiver[][] deepReceivers(IOPort except)
-            throws /*InvalidStateException,*/ IllegalActionException {
+            throws /*InvalidStateException,*/IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -725,8 +725,8 @@ public class IORelation extends ComponentRelation {
             } else {
                 throw new IllegalActionException(this, relation,
                         "Relations have different widths: " + _getUserWidth()
-                                + " != "
-                                + ((IORelation) relation)._getUserWidth());
+                        + " != "
+                        + ((IORelation) relation)._getUserWidth());
             }
         }
 

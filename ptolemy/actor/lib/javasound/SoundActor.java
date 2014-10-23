@@ -239,18 +239,18 @@ public class SoundActor extends TypedAtomicActor {
                 case 4:
                     playbackData[base + 3] = (byte) intValue;
                     intValue >>>= 8;
-                case 3:
-                    playbackData[base + 2] = (byte) intValue;
-                    intValue >>>= 8;
-                case 2:
-                    playbackData[base + 1] = (byte) intValue;
-                    intValue >>>= 8;
-                case 1:
-                    playbackData[base] = (byte) intValue;
-                    break;
-                default:
-                    throw new IllegalArgumentException(_bytesPerSample
-                            + " is not supported.");
+        case 3:
+            playbackData[base + 2] = (byte) intValue;
+            intValue >>>= 8;
+        case 2:
+            playbackData[base + 1] = (byte) intValue;
+            intValue >>>= 8;
+        case 1:
+            playbackData[base] = (byte) intValue;
+            break;
+        default:
+            throw new IllegalArgumentException(_bytesPerSample
+                    + " is not supported.");
                 }
             }
         }

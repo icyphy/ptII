@@ -230,9 +230,9 @@ public class ModelExecutor extends TypedAtomicActor {
                         executorPort = (TypedIOPort) executorPortObject;
                         if (executorPort.getName().equals(entityPort.getName())
                                 && executorPort.isInput() == entityPort
-                                        .isInput()
+                                .isInput()
                                 && executorPort.isOutput() == entityPort
-                                        .isOutput()
+                                .isOutput()
                                 && entityPort.getType().isCompatible(
                                         executorPort.getType())) {
                             found = true;
@@ -288,7 +288,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *   an entity with the specified name.
          */
         Wrapper(Workspace workspace) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
             super(workspace);
             new WrapperDirector(this, "_director");
         }
@@ -564,7 +564,7 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         @Override
         public void broadcast(Token token) throws NoRoomException,
-                IllegalActionException {
+        IllegalActionException {
             // super.broadcast() is not called because we want to send on
             // the executorPort, not on this port.
 
@@ -636,7 +636,7 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         @Override
         public Token get(int channelIndex) throws NoTokenException,
-                IllegalActionException {
+        IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             return executorPort.get(channelIndex);
@@ -777,7 +777,7 @@ public class ModelExecutor extends TypedAtomicActor {
          */
         @Override
         public void send(int channelIndex, Token token) throws NoRoomException,
-                IllegalActionException {
+        IllegalActionException {
             // super.send() is not called because we want to send on
             // the executorPort, not on this port.
 

@@ -151,10 +151,12 @@ public class BasicHighlighter extends FigureDecorator {
     @Override
     public FigureDecorator newInstance(Figure f) {
         // Make the halo size independent of the zoom factor.
-        AffineTransform transform = f.getTransformContext().getScreenTransform();
+        AffineTransform transform = f.getTransformContext()
+                .getScreenTransform();
         // Assume zoom factor is the same in X and Y axes.
         double scaleX = transform.getScaleX();
-        return new BasicHighlighter(_paint, 6.0f/(float)scaleX, _composite, _stroke);
+        return new BasicHighlighter(_paint, 6.0f / (float) scaleX, _composite,
+                _stroke);
     }
 
     /** Paint the figure. This method first paints the highlight over

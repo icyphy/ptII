@@ -213,7 +213,7 @@ public class EditorDropTargetListener implements DropTargetListener {
         // Account for the scaling in the pane.
         Point2D transformedPoint = new Point2D.Double();
         pane.getTransformContext().getInverseTransform()
-                .transform(originalPoint, transformedPoint);
+        .transform(originalPoint, transformedPoint);
 
         // Get an iterator over objects to drop.
         Iterator iterator = null;
@@ -448,7 +448,7 @@ public class EditorDropTargetListener implements DropTargetListener {
         // Account for the scaling in the pane.
         Point2D transformedPoint = new Point2D.Double();
         pane.getTransformContext().getInverseTransform()
-                .transform(point, transformedPoint);
+        .transform(point, transformedPoint);
 
         return BasicGraphFrame.getFigureUnder(pane, transformedPoint,
                 new Object[] {});

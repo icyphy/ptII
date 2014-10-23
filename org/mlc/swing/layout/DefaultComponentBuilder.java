@@ -142,8 +142,8 @@ public class DefaultComponentBuilder implements ComponentBuilder {
     @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> objectProperties)
-            throws InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+                    throws InstantiationException, IllegalAccessException,
+                    InvocationTargetException {
         Object instance = clazz.newInstance();
 
         for (Object element : objectProperties.keySet()) {

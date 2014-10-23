@@ -86,7 +86,7 @@ public class VergilApplet extends BasicJApplet {
     @Override
     public String[][] getParameterInfo() {
         String[][] newinfo = { { "commandLineArguments", "",
-                "Command Line Arguments suitable for VergilApplication" }, };
+        "Command Line Arguments suitable for VergilApplication" }, };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 

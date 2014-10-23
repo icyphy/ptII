@@ -278,9 +278,9 @@ public class LiveSoundCommon {
                 case 4:
                     _playbackData[base + 3] = (byte) intValue;
                     intValue >>>= 8;
-                case 3:
-                    _playbackData[base + 2] = (byte) intValue;
-                    intValue >>>= 8;
+        case 3:
+            _playbackData[base + 2] = (byte) intValue;
+            intValue >>>= 8;
                 case 2:
                     _playbackData[base + 1] = (byte) intValue;
                     intValue >>>= 8;

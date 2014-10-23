@@ -70,7 +70,7 @@ public class HomerJUnitTest {
                             + "/"
                             + ResourceBundle.getBundle(
                                     "ptserver.PtolemyServerConfig").getString(
-                                    "MODELS_DIRECTORY");
+                                            "MODELS_DIRECTORY");
                     File modelFile = new File(modelsDirectory
                             + "/SoundSpectrum_demo.layout.xml");
                     File layoutFile = new File(modelsDirectory
@@ -84,7 +84,7 @@ public class HomerJUnitTest {
                         NamedObj model = (NamedObj) models.next();
                         if (model instanceof CompositeEntity) {
                             ConfigurationApplication
-                                    .closeModelWithoutSavingOrExiting((CompositeEntity) model);
+                            .closeModelWithoutSavingOrExiting((CompositeEntity) model);
                         }
                     }
                 } catch (Throwable throwable) {
@@ -109,6 +109,6 @@ public class HomerJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.homer.test.junit.HomerJUnitTest");
+        .main("ptolemy.homer.test.junit.HomerJUnitTest");
     }
 }

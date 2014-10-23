@@ -274,7 +274,7 @@ public class UtilityFunctions {
             return new ArrayType(
                     ((ArrayType) TypeLattice.lattice().leastUpperBound(
                             firstArrayType, secondArrayType)).getElementType(),
-                    ((ArrayType) firstArrayType).length()
+                            ((ArrayType) firstArrayType).length()
                             + ((ArrayType) secondArrayType).length());
         }
     }
@@ -311,12 +311,12 @@ public class UtilityFunctions {
             if (nElements > 0) {
                 return new ArrayType(
                         ((ArrayType) arrayType.getElementType())
-                                .getElementType(),
+                        .getElementType(),
                         nElements);
             } else {
                 return new ArrayType(
                         ((ArrayType) arrayType.getElementType())
-                                .getElementType());
+                        .getElementType());
             }
         }
     }
@@ -464,7 +464,7 @@ public class UtilityFunctions {
      */
     public static Type filterReturnType(Type predicateType,
             Type arrayTokenType, Type sizeLimitType)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         if (predicateType instanceof FunctionType) {
@@ -1259,7 +1259,7 @@ public class UtilityFunctions {
             }
 
             correlatedTokens[i] = new DoubleToken(correlatedSamples[i])
-            .add(meanArray[i]);
+                    .add(meanArray[i]);
         }
         return new ArrayToken(BaseType.DOUBLE, correlatedTokens);
     }
@@ -2136,7 +2136,7 @@ public class UtilityFunctions {
                                     + ex2
                                     + (shortLibraryName
                                             .equals(shortLibraryName2) ? ""
-                                            : "\nAlso, loadlibrary(\""
+                                                    : "\nAlso, loadlibrary(\""
                                                     + shortLibraryName2
                                                     + "\") was called, "
                                                     + "the exception  for the loadLibrary call was: "

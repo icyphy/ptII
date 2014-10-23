@@ -335,7 +335,7 @@ public class MultiCompositePort extends TypedIOPort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -476,7 +476,7 @@ public class MultiCompositePort extends TypedIOPort {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 

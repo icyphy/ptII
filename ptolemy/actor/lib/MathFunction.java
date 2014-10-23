@@ -323,7 +323,7 @@ public class MathFunction extends TypedAtomicActor {
     /** Create the second port needed by modulo function
      */
     private void _createSecondPort() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         // Go looking for the port in case somebody else created the port
         // already.  For example, this might
         // happen in shallow code generation.

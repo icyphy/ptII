@@ -175,25 +175,26 @@ public class FactorOracleGenerator extends TypedAtomicActor {
             //FIXME: Termination = "T" note received notes received
             // if we receive a termination note, construct the oracle
             if (currentNoteName.equals(MusicSpecs.TERMINATION_NOTE_SYMBOL)) {
-                    if (_pitchLicks.isEmpty() || _pitchLicks.get(0).isEmpty()) {
-                        if (!_pitchSequence.isEmpty()) {
-                            LinkedList s = new LinkedList();
-                            for (int i = 0; i < _pitchSequence.size(); i++) {
-                                s.add(_pitchSequence.get(i));
-                            }
-                            _pitchLicks.add(s);
-                            _pitchSequence.clear();
+                if (_pitchLicks.isEmpty() || _pitchLicks.get(0).isEmpty()) {
+                    if (!_pitchSequence.isEmpty()) {
+                        LinkedList s = new LinkedList();
+                        for (int i = 0; i < _pitchSequence.size(); i++) {
+                            s.add(_pitchSequence.get(i));
                         }
+                        _pitchLicks.add(s);
+                        _pitchSequence.clear();
                     }
-                    if (!_pitchLicks.isEmpty()) {
-                        try {
-                            _constructNewFactorOracle();
-                        } catch (NameDuplicationException e) {
-                            throw new IllegalActionException(this,
-                                    "Attempted to create object with duplicate name while creating new Factor Oracle");
-                        }
-                        this.reset();
+                }
+                if (!_pitchLicks.isEmpty()) {
+                    try {
+                        _constructNewFactorOracle();
+                    } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(
+                                this,
+                                "Attempted to create object with duplicate name while creating new Factor Oracle");
                     }
+                    this.reset();
+                }
             } else {
                 if (currentNoteName.equals("R")) {
                     _durationSequence.add(-currentNoteDuration);
@@ -264,7 +265,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     }
 
     private void _constructNewFactorOracle() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         _addPitchFO(_pitchLicks);
         _addDurationFO(_durationSequence);
         _pitchLicks.clear();
@@ -281,124 +282,113 @@ public class FactorOracleGenerator extends TypedAtomicActor {
         return _transitions;
     }
 
-    private void _addPitchFO(final List<List> _pitchSequences) throws IllegalActionException, NameDuplicationException {
-            _completePitchOracle = new FactorOracleTop(this.workspace());
-            _completePitchOracle.setName(uniqueName("PitchOracle"));
-            new ModalTableauFactory(
-                    _completePitchOracle, "_tableauFactory");
+    private void _addPitchFO(final List<List> _pitchSequences)
+            throws IllegalActionException, NameDuplicationException {
+        _completePitchOracle = new FactorOracleTop(this.workspace());
+        _completePitchOracle.setName(uniqueName("PitchOracle"));
+        new ModalTableauFactory(_completePitchOracle, "_tableauFactory");
 
-            List<State> stateList = new LinkedList<State>();
-            for (int i = 0; i < _pitchSequences.size(); i++) {
-                String foName = ("Lick" + i);
-                State s = new State(_completePitchOracle.getController(),
-                        (foName));
-                // set the first added FO to be the initial state.
-                if (i == 0) {
-                    s.isInitialState.setExpression("true");
-                    (_completePitchOracle.getController()).initialStateName
-                            .setExpression(foName);
-                }
-                // this will be the refinement of the state
-                String refinementName = "m" + (foName);
-                // refinements of the Lick states are contained by the OracleModel(ModalModel)
-                OracleModel fo = new OracleModel(
-                        (CompositeEntity) _completePitchOracle,
-                        refinementName,
-                        ((List) _pitchSequences.get(i)).toArray(),
-                        _repetitionFactor,
-                        true,
-                        _usePitch);
-                new ModalTableauFactory(fo,"_tableauFactory");
-                fo.getController().initialStateName.setExpression("S0");
-                s.refinementName.setExpression(refinementName);
-                stateList.add(s);
-                //set state location
-                Double vertical = i * 150.0 + 300.0;
-                Double horizontal = 100.0;
-                Location l = (Location) s.getAttribute("_location");
-                if (l == null) {
-                    l = new Location(s, "_location");
-                }
-                l.setExpression("{" + horizontal.toString() + ","
-                        + vertical.toString() + "}");
+        List<State> stateList = new LinkedList<State>();
+        for (int i = 0; i < _pitchSequences.size(); i++) {
+            String foName = ("Lick" + i);
+            State s = new State(_completePitchOracle.getController(), (foName));
+            // set the first added FO to be the initial state.
+            if (i == 0) {
+                s.isInitialState.setExpression("true");
+                (_completePitchOracle.getController()).initialStateName
+                        .setExpression(foName);
             }
-
-            //construct the transitions between factor oracles
-            for (int i = 0; i < stateList.size() - 1; i++) {
-                String relationName = "relation_" + i;
-                Transition t = new Transition(
-                        _completePitchOracle.getController(), relationName);
-                (t.exitAngle).setExpression("0.0");
-
-                t.guardExpression.setExpression("probability("
-                        + _repetitionFactor + ")" + "& ( startLick )");
-                t.history.setExpression("true");
-                ((State) stateList.get(i)).outgoingPort.link(t);
-                ((State) stateList.get(i + 1)).incomingPort.link(t);
+            // this will be the refinement of the state
+            String refinementName = "m" + (foName);
+            // refinements of the Lick states are contained by the OracleModel(ModalModel)
+            OracleModel fo = new OracleModel(_completePitchOracle,
+                    refinementName, _pitchSequences.get(i).toArray(),
+                    _repetitionFactor, true, _usePitch);
+            new ModalTableauFactory(fo, "_tableauFactory");
+            fo.getController().initialStateName.setExpression("S0");
+            s.refinementName.setExpression(refinementName);
+            stateList.add(s);
+            //set state location
+            Double vertical = i * 150.0 + 300.0;
+            Double horizontal = 100.0;
+            Location l = (Location) s.getAttribute("_location");
+            if (l == null) {
+                l = new Location(s, "_location");
             }
+            l.setExpression("{" + horizontal.toString() + ","
+                    + vertical.toString() + "}");
+        }
 
-            double creativityProbability = (1.0 - _repetitionFactor)
-                    / (stateList.size() - 1);
-            // do not construct additional connections for the corner case
-            if (Math.abs(creativityProbability) > 1E-6) {
-                for (int i = 0; i < stateList.size(); i++) {
-                    for (int j = 0; j < stateList.size(); j++) {
-                        if (i == stateList.size() - 1) {
-                            creativityProbability = 1.0 / (stateList.size() - 1);
-                        }
-                        if (i != j && i != j - 1) {
-                            String relationName = "relation_" + i + "_" + j;
-                            Transition t = new Transition(
-                                    _completePitchOracle.getController(),
-                                    relationName);
-                            (t.exitAngle).setExpression("0.7");
-                            (t.guardExpression).setExpression("probability("
-                                    + creativityProbability + ")"
-                                    + "&startLick");
-                            t.history.setExpression("true");
+        //construct the transitions between factor oracles
+        for (int i = 0; i < stateList.size() - 1; i++) {
+            String relationName = "relation_" + i;
+            Transition t = new Transition(_completePitchOracle.getController(),
+                    relationName);
+            (t.exitAngle).setExpression("0.0");
 
-                            ((State) stateList.get(i)).outgoingPort.link(t);
-                            ((State) stateList.get(j)).incomingPort.link(t);
+            t.guardExpression.setExpression("probability(" + _repetitionFactor
+                    + ")" + "& ( startLick )");
+            t.history.setExpression("true");
+            stateList.get(i).outgoingPort.link(t);
+            stateList.get(i + 1).incomingPort.link(t);
+        }
 
-                        }
+        double creativityProbability = (1.0 - _repetitionFactor)
+                / (stateList.size() - 1);
+        // do not construct additional connections for the corner case
+        if (Math.abs(creativityProbability) > 1E-6) {
+            for (int i = 0; i < stateList.size(); i++) {
+                for (int j = 0; j < stateList.size(); j++) {
+                    if (i == stateList.size() - 1) {
+                        creativityProbability = 1.0 / (stateList.size() - 1);
+                    }
+                    if (i != j && i != j - 1) {
+                        String relationName = "relation_" + i + "_" + j;
+                        Transition t = new Transition(
+                                _completePitchOracle.getController(),
+                                relationName);
+                        (t.exitAngle).setExpression("0.7");
+                        (t.guardExpression).setExpression("probability("
+                                + creativityProbability + ")" + "&startLick");
+                        t.history.setExpression("true");
+
+                        stateList.get(i).outgoingPort.link(t);
+                        stateList.get(j).incomingPort.link(t);
+
                     }
                 }
             }
+        }
 
-            // add new port to the modal model
-            ModalPort p = (ModalPort) _completePitchOracle.newPort("input");
-            p.setInput(true);
-            p.createReceivers();
-            ModalPort o = (ModalPort) _completePitchOracle.newPort("output");
-            o.setOutput(true);
-            o.createReceivers();
-            _pitchMoMLString = _completePitchOracle.exportMoML();
+        // add new port to the modal model
+        ModalPort p = (ModalPort) _completePitchOracle.newPort("input");
+        p.setInput(true);
+        p.createReceivers();
+        ModalPort o = (ModalPort) _completePitchOracle.newPort("output");
+        o.setOutput(true);
+        o.createReceivers();
+        _pitchMoMLString = _completePitchOracle.exportMoML();
     }
-
 
     private void _addDurationFO(final List<List> _durationSequences)
             throws NameDuplicationException, IllegalActionException {
         _completeDurationOracle = new FactorOracleTop(this.workspace(),
-                ((List) _durationSequences).toArray(),
-                _repetitionFactor,
-                false,
-                false);
+                ((List) _durationSequences).toArray(), _repetitionFactor,
+                false, false);
         _completeDurationOracle.setName(uniqueName("DurationOracle"));
         new ModalTableauFactory(_completeDurationOracle, "_tableauFactory");
-
 
         String sName = "S0";
         State s = null;
         if (_completeDurationOracle.getController().getEntity(sName) == null) {
-             s = new State(_completeDurationOracle.getController(),sName);
+            s = new State(_completeDurationOracle.getController(), sName);
         } else {
-            s = (State) _completeDurationOracle.getController().getEntity(sName);
+            s = (State) _completeDurationOracle.getController()
+                    .getEntity(sName);
         }
         s.isInitialState.setExpression("true");
         (_completeDurationOracle.getController()).initialStateName
-        .setExpression(sName);
-
-
+                .setExpression(sName);
 
         //create input/output ports
         TypedIOPort output = (TypedIOPort) _completeDurationOracle

@@ -123,7 +123,7 @@ public class Lattice extends Transformer {
 
         // Note that setExpression() will call attributeChanged().
         reflectionCoefficients
-                .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
+        .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////

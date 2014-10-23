@@ -278,8 +278,8 @@ public class FMIModelDescription {
                     // We sometimes compile this with gcj, which is Java 1.5
                     IOException exception = new IOException(
                             "Failed to build \"" + sharedLibraryFile
-                                    + "\".\nThe build was:\n" + builder.buffer
-                                    + "\n" + message);
+                            + "\".\nThe build was:\n" + builder.buffer
+                            + "\n" + message);
                     exception.initCause(throwable2);
                     throw exception;
 
@@ -328,7 +328,8 @@ public class FMIModelDescription {
         }
         Function function = null;
         // FMI-2.0
-        String name1 = modelIdentifier + "_" + functionName.replace("fmi", "fmi2");
+        String name1 = modelIdentifier + "_"
+                + functionName.replace("fmi", "fmi2");
         String name2 = functionName.replace("fmi", "fmi2");
         // FMI-2.0RC1
         String name3 = modelIdentifier + "_" + functionName;
@@ -347,9 +348,10 @@ public class FMIModelDescription {
                         function = _nativeLibrary.getFunction(name4);
                     } catch (UnsatisfiedLinkError error4) {
                         UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
-                            "Could not find the function, \"" + name1 + "\" or \""
-                            + name2 + "\" or \"" + name3 + "\" or \"" + name4
-                            + "\" in " + _nativeLibrary);
+                                "Could not find the function, \"" + name1
+                                        + "\" or \"" + name2 + "\" or \""
+                                        + name3 + "\" or \"" + name4 + "\" in "
+                                        + _nativeLibrary);
                         //linkError.initCause(error);
                         throw linkError;
                     }
@@ -380,11 +382,12 @@ public class FMIModelDescription {
             // sometimes compile this with gcj, which is
             // Java 1.5
             IOException exception = new IOException(
-                    "Error loading \"" + sharedLibrary
-                    + "\" shared library.  "
-                    + "To debug loading errors, "
-                    + "Restart Java with \"-Djna.debug_load=true\".  "
-                    + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging.");
+                    "Error loading \""
+                            + sharedLibrary
+                            + "\" shared library.  "
+                            + "To debug loading errors, "
+                            + "Restart Java with \"-Djna.debug_load=true\".  "
+                            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging.");
             exception.initCause(throwable3);
             throw exception;
         }

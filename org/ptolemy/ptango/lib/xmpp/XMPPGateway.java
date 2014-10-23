@@ -93,7 +93,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (marten)
  */
 public class XMPPGateway extends AbstractInitializableAttribute implements
-        Executable {
+Executable {
 
     /** Construct an instance of the XMPPGateway attribute.
      *  @param container The container.
@@ -476,7 +476,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                     throw new IllegalActionException(this, ex,
                                             "Failed to close "
                                                     + passwordFile
-                                                            .stringValue());
+                                                    .stringValue());
                                 }
                             }
                         }

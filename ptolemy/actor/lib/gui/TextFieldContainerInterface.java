@@ -58,7 +58,7 @@ public interface TextFieldContainerInterface {
      * actor with this name.
      */
     public void init(Sink sink) throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object

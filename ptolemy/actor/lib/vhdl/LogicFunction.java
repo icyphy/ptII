@@ -121,7 +121,7 @@ public class LogicFunction extends SynchronousFixTransformer {
             BigInteger intResult = null;
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
             if (A.hasToken(0) && B.hasToken(0)) {
                 FixPoint valueA = ((FixToken) A.get(0)).fixValue();
                 FixPoint valueB = ((FixToken) B.get(0)).fixValue();

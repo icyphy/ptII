@@ -89,7 +89,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     public ActorConstraintsDefinitionAdapter(LatticeOntologySolver solver,
             ComponentEntity component,
             List<StringParameter> constraintExpressions)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, false);
         _constraintTermExpressions = constraintExpressions;
@@ -128,13 +128,13 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                     throw new InternalErrorException(
                             (getComponent() instanceof NamedObj ? ((NamedObj) getComponent())
                                     : null), null,
-                                    "Could not find a component or attribute named \""
-                                            + objName
-                                            + "\".  Thus, actorElement is null?");
+                            "Could not find a component or attribute named \""
+                                    + objName
+                                    + "\".  Thus, actorElement is null?");
                 } else {
                     _setConstraints(actorElement,
                             ((StringToken) constraintExpression.getToken())
-                            .stringValue());
+                                    .stringValue());
                 }
             }
         }
@@ -190,7 +190,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      */
     protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(
             NamedObj actorElement, String functionString)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ArrayList<String> argumentNameList = new ArrayList<String>();
         ArrayList<InequalityTerm> argumentList = new ArrayList<InequalityTerm>();
 
@@ -265,8 +265,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         ConceptFunction function = new ExpressionConceptFunction(
                 ((ComponentEntity) getComponent()).getName() + "_"
                         + actorElement.getName() + "_ConstraintFunction", true,
-                domainOntologies, functionOntology, argumentNameList,
-                functionString, (OntologySolverModel) getSolver()
+                        domainOntologies, functionOntology, argumentNameList,
+                        functionString, (OntologySolverModel) getSolver()
                         .getContainedModel(), actorElement);
 
         ConceptFunctionInequalityTerm functionTerm = new ConceptFunctionInequalityTerm(

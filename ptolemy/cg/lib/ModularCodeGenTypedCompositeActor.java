@@ -72,7 +72,7 @@ A TypedCompositeActor with Lazy evaluation for Modular code generation.
  @Pt.AcceptedRating Red (rodiers)
  */
 public class ModularCodeGenTypedCompositeActor extends
-ModularCodeGenLazyTypedCompositeActor {
+        ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no container
      *  and an empty string as its name. Add the library to the
@@ -84,7 +84,7 @@ ModularCodeGenLazyTypedCompositeActor {
      *   actor with this name.
      */
     public ModularCodeGenTypedCompositeActor() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super();
         _init();
     }
@@ -147,7 +147,7 @@ ModularCodeGenLazyTypedCompositeActor {
                 List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
-                            .setToken(new BooleanToken(true));
+                    .setToken(new BooleanToken(true));
                 }
             }
             //        } else if (attribute == recompileThisLevel) {
@@ -235,7 +235,7 @@ ModularCodeGenLazyTypedCompositeActor {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             System.out
-                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -305,72 +305,72 @@ ModularCodeGenLazyTypedCompositeActor {
             URLClassLoader classLoader = null;
             Class<?> classInstance = null;
             // try {
+            try {
+                classLoader = new URLClassLoader(urls);
+                classInstance = classLoader.loadClass(className);
+            } catch (ClassNotFoundException ex) {
+                // We couldn't load the class, maybe the code is not
+                // generated (for example the user might have given
+                // this model to somebody else. Regenerate it again.
+                _generateCode();
                 try {
-                    classLoader = new URLClassLoader(urls);
                     classInstance = classLoader.loadClass(className);
-                } catch (ClassNotFoundException ex) {
-                    // We couldn't load the class, maybe the code is not
-                    // generated (for example the user might have given
-                    // this model to somebody else. Regenerate it again.
-                    _generateCode();
-                    try {
-                        classInstance = classLoader.loadClass(className);
-                    } catch (ClassNotFoundException ex2) {
-                        ex2.printStackTrace();
-                        throw new ClassNotFoundException("Failed to load "
-                                + className
-                                + " using URLClassLoader based on "
-                                + url
-                                + ", urls were: "
-                                + java.util.Arrays.deepToString(classLoader
-                                        .getURLs()) + "\n" + ex2);
-                    }
+                } catch (ClassNotFoundException ex2) {
+                    ex2.printStackTrace();
+                    throw new ClassNotFoundException("Failed to load "
+                            + className
+                            + " using URLClassLoader based on "
+                            + url
+                            + ", urls were: "
+                            + java.util.Arrays.deepToString(classLoader
+                                    .getURLs()) + "\n" + ex2);
+                }
+            }
+
+            _objectWrapper = classInstance.newInstance();
+
+            Method[] methods = classInstance.getMethods();
+            Method initializeMethod = null;
+
+            for (Method method : methods) {
+                String name = method.getName();
+                if (name.equals("fire")) {
+                    _fireMethod = method;
                 }
 
-                _objectWrapper = classInstance.newInstance();
-
-                Method[] methods = classInstance.getMethods();
-                Method initializeMethod = null;
-
-                for (Method method : methods) {
-                    String name = method.getName();
-                    if (name.equals("fire")) {
-                        _fireMethod = method;
-                    }
-
-                    if (name.equals("initialize")) {
-                        initializeMethod = method;
-                    }
+                if (name.equals("initialize")) {
+                    initializeMethod = method;
                 }
-                if (_fireMethod == null) {
-                    throw new IllegalActionException(this, "Cannot find fire "
-                            + "method in the wrapper class.");
-                }
+            }
+            if (_fireMethod == null) {
+                throw new IllegalActionException(this, "Cannot find fire "
+                        + "method in the wrapper class.");
+            }
 
-                if (initializeMethod == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find initialize "
-                                    + "method in the wrapper class.");
-                }
+            if (initializeMethod == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find initialize "
+                                + "method in the wrapper class.");
+            }
 
-                //initialize the generated object
-                initializeMethod.invoke(_objectWrapper, (Object[]) null);
-                if (_debugging) {
-                    _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
-                }
+            //initialize the generated object
+            initializeMethod.invoke(_objectWrapper, (Object[]) null);
+            if (_debugging) {
+                _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
+            }
 
             // java.net.URLClassLoader is not present in Java 1.6.
-//             } finally {
-//                 if (classLoader != null) {
-//                     try {
-//                         classLoader.close();
-//                     } catch (IOException ex) {
-//                         throw new IllegalActionException(this, ex,
-//                                 "Failed to close \""
-//                                         + (url == null ? "null" : url) + "\".");
-//                     }
-//                 }
-//             }
+            //             } finally {
+            //                 if (classLoader != null) {
+            //                     try {
+            //                         classLoader.close();
+            //                     } catch (IOException ex) {
+            //                         throw new IllegalActionException(this, ex,
+            //                                 "Failed to close \""
+            //                                         + (url == null ? "null" : url) + "\".");
+            //                     }
+            //                 }
+            //             }
             recompileThisLevel.setToken(new BooleanToken(false));
             recompileHierarchy.setToken(new BooleanToken(false));
 
@@ -419,15 +419,15 @@ ModularCodeGenLazyTypedCompositeActor {
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
                                     DFUtilities
-                                            .setRateVariable(
-                                                    (IOPort) actorPort,
-                                                    port.input() ? "tokenConsumptionRate"
-                                                            : "tokenProductionRate",
+                                    .setRateVariable(
+                                            (IOPort) actorPort,
+                                            port.input() ? "tokenConsumptionRate"
+                                                    : "tokenProductionRate",
                                                     port.rate());
                                     ((TypedIOPort) actorPort)
-                                            .setTypeEquals(JavaCodeGenerator
-                                                    .codeGenTypeToPtType(port
-                                                            .type()));
+                                    .setTypeEquals(JavaCodeGenerator
+                                            .codeGenTypeToPtType(port
+                                                    .type()));
                                     break;
                                 }
                             }
@@ -442,13 +442,13 @@ ModularCodeGenLazyTypedCompositeActor {
                                 newPort.setOutput(port.output());
                                 DFUtilities.setRateVariable(newPort, port
                                         .input() ? "tokenConsumptionRate"
-                                        : "tokenProductionRate", port.rate());
+                                                : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                            .linkToPublishedPort(
-                                                    port.getPubSubChannelName(),
-                                                    newPort);
+                                    .linkToPublishedPort(
+                                            port.getPubSubChannelName(),
+                                            newPort);
                                 }
                             }
                         }
@@ -575,7 +575,7 @@ ModularCodeGenLazyTypedCompositeActor {
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularCodeGenerator(this,
                     "ModularCodeGenerator");
@@ -591,7 +591,7 @@ ModularCodeGenLazyTypedCompositeActor {
      *   parameter with this name.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
         // However, a parent class, TypedCompositeActor sets the classname
@@ -666,23 +666,23 @@ ModularCodeGenLazyTypedCompositeActor {
 
                 URLClassLoader classLoader = null;
                 //try {
-                    classLoader = new URLClassLoader(urls);
-                    classInstance = classLoader.loadClass(className);
-                    _profile = (Profile) classInstance.newInstance();
-                    portList();
+                classLoader = new URLClassLoader(urls);
+                classInstance = classLoader.loadClass(className);
+                _profile = (Profile) classInstance.newInstance();
+                portList();
                 // java.net.URLClassLoader is not present in Java 1.6.
-//                 } finally {
-//                     if (classLoader != null) {
-//                         try {
-//                             classLoader.close();
-//                         } catch (IOException ex) {
-//                             throw new IllegalActionException(this, ex,
-//                                     "Failed to close \""
-//                                             + (url == null ? "null" : url)
-//                                             + "\".");
-//                         }
-//                     }
-//                }
+                //                 } finally {
+                //                     if (classLoader != null) {
+                //                         try {
+                //                             classLoader.close();
+                //                         } catch (IOException ex) {
+                //                             throw new IllegalActionException(this, ex,
+                //                                     "Failed to close \""
+                //                                             + (url == null ? "null" : url)
+                //                                             + "\".");
+                //                         }
+                //                     }
+                //                }
             }
         } catch (Throwable throwable) {
             try {
@@ -706,7 +706,7 @@ ModularCodeGenLazyTypedCompositeActor {
     private boolean _modelChanged() throws IllegalActionException {
         if (((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                        .booleanValue()) {
+                .booleanValue()) {
             return true;
         }
 

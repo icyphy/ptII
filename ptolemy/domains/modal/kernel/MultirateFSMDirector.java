@@ -371,7 +371,7 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             IOPort port, String name, List dependents)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Variable variable = DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
                 .getAttribute("_MultirateFSMRateDependencyDeclaration",
@@ -573,7 +573,7 @@ public class MultirateFSMDirector extends FSMDirector {
             // Update the refinement's production and consumption rates.
             refinementDir.invalidateSchedule();
             ((StaticSchedulingDirector) refinementDir).getScheduler()
-                    .getSchedule();
+            .getSchedule();
         }
 
         // Record consumption and production rates in the ports of this actor.

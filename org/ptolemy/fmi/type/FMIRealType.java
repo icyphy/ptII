@@ -82,7 +82,7 @@ public class FMIRealType extends FMIType {
             } catch (NumberFormatException ex) {
                 throw new NumberFormatException(
                         "Failed to parse derivative index " + derivative
-                        + " of " + name);
+                                + " of " + name);
             }
         } else {
             indexState = -1;

@@ -7,7 +7,7 @@ package ptolemy.actor.corba.util;
  * Thursday, January 18, 2001 7:07:58 PM PST
  */
 public final class CorbaIllegalValueExceptionHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaIllegalValueException value = null;
 
     public CorbaIllegalValueExceptionHolder() {

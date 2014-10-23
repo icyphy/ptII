@@ -413,39 +413,39 @@ public class MACActorBase extends NetworkActorBase {
 
     // message formats
     protected static final String[] TxStartMsgFields = { "kind", "length",
-            "rate" };
+    "rate" };
 
     protected static final String[] TxDataMsgFields = { "kind", "pdu" };
 
     protected static final String[] RtsTimeoutMsgFields = { "kind" };
 
     protected static final String[] RxMpduMsgFields = { "kind", "pdu", "endRx",
-            "rxRate" };
+    "rxRate" };
 
     protected static final String[] UseIfsMsgFields = { "kind", "tRxEnd" };
 
     protected static final String[] RxIndicateMessageFields = { "kind", "pdu",
-            "endRx", "rxRate" };
+        "endRx", "rxRate" };
 
     protected static final String[] NeedAckMessageFields = { "kind", "ackto",
-            "endRx", "rxRate", "dAck" };
+        "endRx", "rxRate", "dAck" };
 
     protected static final String[] SetNavMessageFields = { "kind", "tRef",
-            "dNav", "src" };
+        "dNav", "src" };
 
     protected static final String[] CSMsgFields = { "kind" };
 
     // the value for the pdu field is a record with fields
     // as DataPacket's fields.
     protected static final String[] TxRequestMsgFields = { "kind", "pdu",
-            "rate" };
+    "rate" };
 
     protected static final String[] TxConfirmMsgFields = { "kind" };
 
     protected static final String[] BackoffDoneMsgFields = { "kind", "cnt" };
 
     protected static final String[] getBackoffMsgFields = { "kind", "ccw",
-            "cnt" };
+    "cnt" };
 
     protected static final String[] GotCtsMsgFields = { "kind", "endRx" };
 

@@ -301,7 +301,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         // and then close the optimized model.  You should not be
                         // prompted for save.
                         ((Effigy) tableau.getContainer())
-                                .setPersistent(isPersistentValue);
+                        .setPersistent(isPersistentValue);
                         model.setDeferringChangeRequests(false);
                         output.send(i, token);
                     } catch (NameDuplicationException e) {

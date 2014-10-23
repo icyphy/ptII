@@ -227,7 +227,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // TODO Auto-generated method stub
         super._addPort(port);
     }
@@ -404,14 +404,14 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                     if (destinationPort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) destinationPort)
-                                    .isSensorPort()) {
+                            .isSensorPort()) {
                         Inequality ineq = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
                     } else if (destinationPort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) destinationPort)
-                                    .isNetworkReceiverPort()) {
+                            .isNetworkReceiverPort()) {
 
                         sourcePort.setTypeEquals(new PtidesNetworkType());
                         RecordType sourcePortType = (RecordType) sourcePort
@@ -428,12 +428,12 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                     Inequality ineq = null;
                     if (sourcePort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) sourcePort)
-                                    .isActuatorPort()) {
+                            .isActuatorPort()) {
                         ineq = new Inequality(sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) sourcePort)
-                                    .isNetworkTransmitterPort()) {
+                            .isNetworkTransmitterPort()) {
 
                         destinationPort.setTypeEquals(new PtidesNetworkType());
                         RecordType outputType = (RecordType) destinationPort
@@ -455,7 +455,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     /** Initializes the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
 
         // Create the PtidesPlatformDirector in the proper workspace.
@@ -507,11 +507,11 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-                BaseType.UNKNOWN };
+            BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
-                "microstep", "payload" };
+            "microstep", "payload" };
 
         /**
          * Label of the timestamp that is transmitted within the RecordToken.
@@ -540,7 +540,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * addition will result in appropriate connections being made.
      */
     public static class PtidesPlatformContents extends
-            MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
+    MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -822,7 +822,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                                         record.get(PtidesNetworkType.payload),
                                                         farReceivers[channelIndex][i],
                                                         sourceTimestamp),
-                                                MetroIIPtidesDirector
+                                                        MetroIIPtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -844,7 +844,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                                         t,
                                                         farReceivers[channelIndex][i],
                                                         director.getModelTime()),
-                                                MetroIIPtidesDirector
+                                                        MetroIIPtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -852,7 +852,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                 }
                             } else {
                                 ((MirrorPort) port).getAssociatedPort()
-                                        .sendInside(channelIndex, t);
+                                .sendInside(channelIndex, t);
                             }
 
                             result = true;
@@ -1065,7 +1065,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             if (!(getContainer() instanceof MetroIIPtidesPlatform)
                     || !isOutput()
                     || !((MetroIIPtidesPort) this.insidePortList().get(0))
-                            .isNetworkTransmitterPort()) {
+                    .isNetworkTransmitterPort()) {
                 return super.convert(token);
             }
             if (getType().equals(BaseType.GENERAL)) {

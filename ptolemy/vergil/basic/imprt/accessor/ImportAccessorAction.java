@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY 2
-*/
+ */
 
 package ptolemy.vergil.basic.imprt.accessor;
 
@@ -96,7 +96,7 @@ import diva.graph.GraphController;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 @SuppressWarnings("serial")
 public class ImportAccessorAction extends AbstractAction {
 
@@ -113,7 +113,7 @@ public class ImportAccessorAction extends AbstractAction {
             throw new InternalErrorException("Frame " + _frame
                     + " is not a BasicGraphFrame?");
         }
-        _frame = (BasicGraphFrame)frame;
+        _frame = (BasicGraphFrame) frame;
         _lastLocation = "http://www.terraswarm.org/accessors";
         putValue("tooltip", "Instantiate an accessor");
         // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
@@ -127,126 +127,131 @@ public class ImportAccessorAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent event) {
-            final Query query = new Query();
-            query.setTextWidth(60);
-            query.addFileChooser("location", "location", _lastLocation, null, null, true, true);
-            // query.addLine("location", "location", _lastLocation);
-            final JComboBox box = query.addChoice("accessor", "accessor",
-                            new String[] {}, _lastAccessorName);
-            updateComboBox(box, query);
-            query.addQueryListener(new QueryListener() {
-                @Override
-                public void changed(String name) {
-                    if (name.equals("location")) {
-                        updateComboBox(box, query);
-                    }
+        final Query query = new Query();
+        query.setTextWidth(60);
+        query.addFileChooser("location", "location", _lastLocation, null, null,
+                true, true);
+        // query.addLine("location", "location", _lastLocation);
+        final JComboBox box = query.addChoice("accessor", "accessor",
+                new String[] {}, _lastAccessorName);
+        updateComboBox(box, query);
+        query.addQueryListener(new QueryListener() {
+            @Override
+            public void changed(String name) {
+                if (name.equals("location")) {
+                    updateComboBox(box, query);
                 }
-            });
-            ComponentDialog dialog = new ComponentDialog(_frame,
-                    "Instantiate Accessor", query);
-
-            if (dialog.buttonPressed().equals("OK")) {
-                // Get the associated Ptolemy model.
-                GraphController controller = _frame.getJGraph()
-                        .getGraphPane().getGraphController();
-                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                        .getGraphModel();
-                NamedObj context = model.getPtolemyModel();
-
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = _frame.getVisibleCanvasRectangle();
-                final double x = bounds.getWidth() / 2.0;
-                final double y = bounds.getHeight() / 2.0;
-
-                URL url;
-                String input = "";
-                _lastAccessorName = query.getStringValue("accessor");
-                final String urlSpec = _lastLocation + _lastAccessorName;
-                StringBuffer buffer = new StringBuffer();
-                buffer.append("<group name=\"auto\">\n");
-                try {
-                    url = FileUtilities.nameToURL(urlSpec, null, null);
-
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(url.openStream()));
-                    StringBuffer contents = new StringBuffer();
-                    while ((input = in.readLine()) != null) {
-                        contents.append(input);
-                    }
-
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
-                    Source xslt = new StreamSource(FileUtilities.nameToFile(
-                            xsltLocation, null));
-                    Transformer transformer = factory.newTransformer(xslt);
-                    StreamSource source = new StreamSource(
-                            new InputStreamReader(url.openStream()));
-                    StringWriter outWriter = new StringWriter();
-                    StreamResult result = new StreamResult(outWriter);
-                    transformer.transform(source, result);
-                    contents = outWriter.getBuffer();
-
-                    buffer.append(contents);
-                    in.close();
-                } catch (Exception e1) {
-                    MessageHandler.error("Failed to import accessor.", e1);
-                    return;
-                }
-                buffer.append("</group>\n");
-
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, buffer.toString()) {
-                    @Override
-                    protected void _postParse(MoMLParser parser) {
-                        List<NamedObj> topObjects = parser.topObjectsCreated();
-                        if (topObjects == null) {
-                            return;
-                        }
-                        for (NamedObj object : topObjects) {
-                            Location location = (Location) object.getAttribute("_location");
-                            // Set the location.
-                            if (location == null) {
-                                try {
-                                    location = new Location(object, "_location");
-                                } catch (KernelException e) {
-                                    // Ignore.
-                                }
-                            }
-                            if (location != null) {
-                                try {
-                                    location.setLocation(new double[] { x, y });
-                                } catch (IllegalActionException e) {
-                                    // Ignore.
-                                }
-                            }
-                            // Set the source.
-                            Attribute source = object.getAttribute("accessorSource");
-                            if (source instanceof StringAttribute) {
-                                try {
-                                    ((StringAttribute) source).setExpression(urlSpec);
-                                    // Have to mark persistent or the urlSpec will be assumed to be part
-                                    // of the class definition and hence will not be exported to MoML.
-                                    ((StringAttribute) source).setDerivedLevel(Integer.MAX_VALUE);
-                                    ((StringAttribute) source).setPersistent(true);
-                                } catch (IllegalActionException e) {
-                                    // Should not happen.
-                                    throw new InternalErrorException(object, e,
-                                            "Failed to set accessorSource");
-                                }
-                            }
-                        }
-                        parser.clearTopObjectsList();
-                        super._postParse(parser);
-                    }
-
-                    @Override
-                    protected void _preParse(MoMLParser parser) {
-                        super._preParse(parser);
-                        parser.clearTopObjectsList();
-                    }
-                };
-                context.requestChange(request);
             }
+        });
+        ComponentDialog dialog = new ComponentDialog(_frame,
+                "Instantiate Accessor", query);
+
+        if (dialog.buttonPressed().equals("OK")) {
+            // Get the associated Ptolemy model.
+            GraphController controller = _frame.getJGraph().getGraphPane()
+                    .getGraphController();
+            AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                    .getGraphModel();
+            NamedObj context = model.getPtolemyModel();
+
+            // Use the center of the screen as a location.
+            Rectangle2D bounds = _frame.getVisibleCanvasRectangle();
+            final double x = bounds.getWidth() / 2.0;
+            final double y = bounds.getHeight() / 2.0;
+
+            URL url;
+            String input = "";
+            _lastAccessorName = query.getStringValue("accessor");
+            final String urlSpec = _lastLocation + _lastAccessorName;
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("<group name=\"auto\">\n");
+            try {
+                url = FileUtilities.nameToURL(urlSpec, null, null);
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        url.openStream()));
+                StringBuffer contents = new StringBuffer();
+                while ((input = in.readLine()) != null) {
+                    contents.append(input);
+                }
+
+                TransformerFactory factory = TransformerFactory.newInstance();
+                String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
+                Source xslt = new StreamSource(FileUtilities.nameToFile(
+                        xsltLocation, null));
+                Transformer transformer = factory.newTransformer(xslt);
+                StreamSource source = new StreamSource(new InputStreamReader(
+                        url.openStream()));
+                StringWriter outWriter = new StringWriter();
+                StreamResult result = new StreamResult(outWriter);
+                transformer.transform(source, result);
+                contents = outWriter.getBuffer();
+
+                buffer.append(contents);
+                in.close();
+            } catch (Exception e1) {
+                MessageHandler.error("Failed to import accessor.", e1);
+                return;
+            }
+            buffer.append("</group>\n");
+
+            MoMLChangeRequest request = new MoMLChangeRequest(this, context,
+                    buffer.toString()) {
+                @Override
+                protected void _postParse(MoMLParser parser) {
+                    List<NamedObj> topObjects = parser.topObjectsCreated();
+                    if (topObjects == null) {
+                        return;
+                    }
+                    for (NamedObj object : topObjects) {
+                        Location location = (Location) object
+                                .getAttribute("_location");
+                        // Set the location.
+                        if (location == null) {
+                            try {
+                                location = new Location(object, "_location");
+                            } catch (KernelException e) {
+                                // Ignore.
+                            }
+                        }
+                        if (location != null) {
+                            try {
+                                location.setLocation(new double[] { x, y });
+                            } catch (IllegalActionException e) {
+                                // Ignore.
+                            }
+                        }
+                        // Set the source.
+                        Attribute source = object
+                                .getAttribute("accessorSource");
+                        if (source instanceof StringAttribute) {
+                            try {
+                                ((StringAttribute) source)
+                                        .setExpression(urlSpec);
+                                // Have to mark persistent or the urlSpec will be assumed to be part
+                                // of the class definition and hence will not be exported to MoML.
+                                ((StringAttribute) source)
+                                        .setDerivedLevel(Integer.MAX_VALUE);
+                                ((StringAttribute) source).setPersistent(true);
+                            } catch (IllegalActionException e) {
+                                // Should not happen.
+                                throw new InternalErrorException(object, e,
+                                        "Failed to set accessorSource");
+                            }
+                        }
+                    }
+                    parser.clearTopObjectsList();
+                    super._postParse(parser);
+                }
+
+                @Override
+                protected void _preParse(MoMLParser parser) {
+                    super._preParse(parser);
+                    parser.clearTopObjectsList();
+                }
+            };
+            context.requestChange(request);
+        }
     }
 
     private void updateComboBox(JComboBox box, Query query) {
@@ -278,7 +283,9 @@ public class ImportAccessorAction extends AbstractAction {
             }
         } catch (Exception e) {
             // Don't provide a list of options, but issue a message.
-            System.err.println("Cannot suggest accessors, because there is no index.json file at " + _lastLocation);
+            System.err
+                    .println("Cannot suggest accessors, because there is no index.json file at "
+                            + _lastLocation);
         }
     }
 

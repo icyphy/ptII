@@ -300,9 +300,9 @@ public class FormEditor extends JPanel {
         rowSpanLabel.setDisplayedMnemonic(KeyEvent.VK_R);
 
         columnInsertAfterButton
-                .setToolTipText("Insert a column after this column");
+        .setToolTipText("Insert a column after this column");
         columnInsertBeforeButton
-                .setToolTipText("Insert a column before this column");
+        .setToolTipText("Insert a column before this column");
         columnDeleteButton.setToolTipText("Delete this column");
         rowInsertBeforeButton.setToolTipText("Insert a row before this row");
         rowInsertAfterButton.setToolTipText("Insert a row after this row");
@@ -450,7 +450,7 @@ public class FormEditor extends JPanel {
                     CellConstraints constraints = getComponentConstraints(component);
                     Insets insets = new Insets(constraints.insets.top,
                             constraints.insets.left, bottomInsetSpinnerModel
-                                    .getNumber().intValue(),
+                            .getNumber().intValue(),
                             constraints.insets.right);
                     constraints.insets = insets;
                     updateLayout(component);
@@ -574,7 +574,7 @@ public class FormEditor extends JPanel {
         // we don't want to update the selection interval if nothing changed...
         table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
         table.getColumnModel().getSelectionModel()
-                .setSelectionInterval(columnIndex, columnIndex);
+        .setSelectionInterval(columnIndex, columnIndex);
 
         if (forceVisible) {
             // let's make sure the cell is in the visible range...
@@ -587,7 +587,7 @@ public class FormEditor extends JPanel {
     }
 
     private class ComponentSelectionListModel extends
-            javax.swing.AbstractListModel {
+    javax.swing.AbstractListModel {
         //    private String selectedName = null;
 
         List<Component> sortedComponents = new ArrayList<Component>();
@@ -849,8 +849,8 @@ public class FormEditor extends JPanel {
             }
             Integer next = constraints.gridX + constraints.gridWidth - 1 < containerLayout
                     .getColumnCount() ? Integer
-                    .valueOf(constraints.gridWidth + 1) : null;
-            return next;
+                            .valueOf(constraints.gridWidth + 1) : null;
+                            return next;
         }
 
         @Override
@@ -860,7 +860,7 @@ public class FormEditor extends JPanel {
             } else {
                 Integer previous = constraints.gridWidth > 1 ? Integer
                         .valueOf(constraints.gridWidth - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
@@ -918,8 +918,8 @@ public class FormEditor extends JPanel {
             } else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < containerLayout
                         .getRowCount() ? Integer
-                        .valueOf(constraints.gridHeight + 1) : null;
-                return next;
+                                .valueOf(constraints.gridHeight + 1) : null;
+                                return next;
             }
         }
 
@@ -930,7 +930,7 @@ public class FormEditor extends JPanel {
             } else {
                 Integer previous = constraints.gridHeight > 1 ? Integer
                         .valueOf(constraints.gridHeight - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
@@ -1136,7 +1136,7 @@ public class FormEditor extends JPanel {
         }
 
         private class PropertyTableModel extends
-                javax.swing.table.AbstractTableModel {
+        javax.swing.table.AbstractTableModel {
             @Override
             public int getColumnCount() {
                 return 2;
@@ -1288,10 +1288,10 @@ public class FormEditor extends JPanel {
                     }
                     if (columnIndex >= constraints.gridX
                             && columnIndex < constraints.gridX
-                                    + constraints.gridWidth
+                            + constraints.gridWidth
                             && rowIndex >= constraints.gridY
                             && rowIndex < constraints.gridY
-                                    + constraints.gridHeight) {
+                            + constraints.gridHeight) {
                         component = thisComponent;
                         if (component == topComponent) {
                             break;
@@ -1369,7 +1369,7 @@ public class FormEditor extends JPanel {
                 if (containerLayout.getCellConstraints(controlName) != null) {
                     JOptionPane.showMessageDialog(FormEditor.this,
                             "A component named '" + controlName
-                                    + "' already exists", "Error",
+                            + "' already exists", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     // the best way to add this control is to setup the constraints
@@ -1606,7 +1606,7 @@ public class FormEditor extends JPanel {
     }
 
     class ComponentPaletteListRenderer extends JLabel implements
-            ListCellRenderer {
+    ListCellRenderer {
         public ComponentPaletteListRenderer() {
             setOpaque(true);
         }

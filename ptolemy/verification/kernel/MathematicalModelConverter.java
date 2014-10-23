@@ -152,8 +152,8 @@ public class MathematicalModelConverter extends Attribute {
     public StringBuffer generateCode(ModelType modelType,
             String inputTemporalFormula, FormulaType formulaType,
             int variableSpanSize, int delayActorBufferSize)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException {
         StringBuffer systemDescription = new StringBuffer("");
 
         switch (modelType) {
@@ -203,8 +203,8 @@ public class MathematicalModelConverter extends Attribute {
     public StringBuffer generateFile(File file, ModelType modelType,
             String inputTemporalFormula, FormulaType formulaType,
             int variableSpanSize, OutputType outputChoice, int FSMBufferSize)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException, IOException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException, IOException {
         StringBuffer returnStringBuffer = new StringBuffer("");
         _codeFile = null;
 
@@ -212,7 +212,7 @@ public class MathematicalModelConverter extends Attribute {
 
             if (REDUtility.isValidModelForVerification((CompositeActor) _model)
                     || SMVUtility
-                            .isValidModelForVerification((CompositeActor) _model)
+                    .isValidModelForVerification((CompositeActor) _model)
                     || _model instanceof FSMActor) {
 
                 StringBuffer systemDescription = generateCode(modelType,
@@ -291,8 +291,8 @@ public class MathematicalModelConverter extends Attribute {
                         StringBufferExec exec = new StringBufferExec();
 
                         System.out
-                        .println("MathematicalModelConverter: About to execute: "
-                                + execCommands);
+                                .println("MathematicalModelConverter: About to execute: "
+                                        + execCommands);
                         exec.setCommands(execCommands);
                         exec.setWaitForLastSubprocess(true);
                         try {
@@ -322,13 +322,13 @@ public class MathematicalModelConverter extends Attribute {
                         return returnStringBuffer;
                     } else {
                         MessageHandler
-                                .error("The functionality for invoking RED is not implemented.\n");
+                        .error("The functionality for invoking RED is not implemented.\n");
                     }
                 }
 
             } else {
                 MessageHandler
-                        .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
+                .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
             }
         }
 
@@ -444,7 +444,7 @@ public class MathematicalModelConverter extends Attribute {
     /** This is used to delete recursively the folder and files within.
      */
     private void _deleteFolder(File folder) throws IllegalActionException,
-            IOException {
+    IOException {
 
         if (folder.list() == null || folder.list().length <= 0) {
             boolean isDeleted = folder.delete();

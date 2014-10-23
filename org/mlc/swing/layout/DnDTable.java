@@ -71,7 +71,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  */
 @SuppressWarnings("serial")
 class DnDTable extends JTable implements DragSourceListener,
-        DragGestureListener, DropTargetListener, Autoscroll {
+DragGestureListener, DropTargetListener, Autoscroll {
     protected DragSource fDragSource = null;
     protected DropTarget fDropTarget = null;
     protected Component dragComponent = null;
@@ -373,11 +373,11 @@ class DnDTable extends JTable implements DragSourceListener,
                         componentConstraints.gridWidth = Math.min(
                                 componentConstraints.gridWidth,
                                 parent.containerLayout.getColumnCount()
-                                        - componentConstraints.gridX + 1);
+                                - componentConstraints.gridX + 1);
                         componentConstraints.gridHeight = Math.min(
                                 componentConstraints.gridHeight,
                                 parent.containerLayout.getRowCount()
-                                        - componentConstraints.gridY + 1);
+                                - componentConstraints.gridY + 1);
 
                         if (!component.isVisible()) {
                             component.setVisible(true);

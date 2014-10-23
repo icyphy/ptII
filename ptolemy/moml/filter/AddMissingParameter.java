@@ -161,7 +161,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
     @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception {
+                    throws Exception {
         //          System.out.println("AddMissingParameter: filterEndElement: "
         //                  + _currentlyProcessingActorThatMayNeedUpdating
         //                  + " elementName: " + (elementName == null? "null" : elementName)
@@ -172,7 +172,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
             return;
         } else if (_addProperty != null
                 && (_addProperty.onlyAddIfPresent != null
-                        && _currentAttributeHasValue || _addProperty.onlyAddIfPresent == null)
+                && _currentAttributeHasValue || _addProperty.onlyAddIfPresent == null)
                 && elementName != null && elementName.equals("property")
                 && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
@@ -213,10 +213,10 @@ public class AddMissingParameter extends MoMLFilterSimple {
     public String toString() {
         StringBuffer results = new StringBuffer(
                 getClass().getName()
-                        + ": If a NamedObj is missing a property, then add it.\n"
-                        + "Optionally, only add the property if another property, "
-                        + "such as _location is present.\n"
-                        + "Below are the property names, the optional property and the moml:\n");
+                + ": If a NamedObj is missing a property, then add it.\n"
+                + "Optionally, only add the property if another property, "
+                + "such as _location is present.\n"
+                + "Below are the property names, the optional property and the moml:\n");
         for (Map.Entry<String, AddProperty> entry : _namedObjsWithMissingProperties
                 .entrySet()) {
             String namedObjName = entry.getKey();
@@ -227,7 +227,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
                     + "\t"
                     + (addProperty.onlyAddIfPresent == null ? "null"
                             : addProperty.onlyAddIfPresent) + "\n\t"
-                    + addProperty.moml + "\n");
+                            + addProperty.moml + "\n");
         }
         return results.toString();
     }

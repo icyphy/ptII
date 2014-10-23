@@ -282,7 +282,7 @@ public class Copernicus {
             String codeGeneratorClassName = generatorAttribute
                     .getParameter("codeGeneratorClassName");
             System.out
-                    .println("codeGeneratorClass = " + codeGeneratorClassName);
+            .println("codeGeneratorClass = " + codeGeneratorClassName);
 
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain) codeGeneratorClass
@@ -696,9 +696,9 @@ public class Copernicus {
             _verbose = true;
         } else if (arg.equals("-version")) {
             System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION.getExpression()
-                            + ", Build $Id$");
+            .println("Version "
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + ", Build $Id$");
 
             StringUtilities.exit(0);
         } else if (arg.equals("")) {
@@ -839,7 +839,7 @@ public class Copernicus {
 
     /** The command-line options that take arguments. */
     protected String[][] _commandOptions = { { "-<parameter name>",
-            "<parameter value>" }, };
+    "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "\ncopernicus [options . . .] [relative xml filename]\n"
@@ -918,7 +918,7 @@ public class Copernicus {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _stream.println( /*prefix + */
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 System.out.flush();

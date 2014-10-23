@@ -47,7 +47,7 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class DoubleMatrixTokenHandler implements
-        TokenHandler<DoubleMatrixToken> {
+TokenHandler<DoubleMatrixToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

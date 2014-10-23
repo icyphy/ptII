@@ -153,8 +153,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             return xmlIcon;
         } catch (Exception ex) {
             System.out
-                    .println("Warning: could not instantiate alternate XMLIcon class. "
-                            + "Using default XMLIcon.  : " + ex.getMessage());
+            .println("Warning: could not instantiate alternate XMLIcon class. "
+                    + "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(container, name);
         }
@@ -192,8 +192,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             return xmlIcon;
         } catch (Exception ex) {
             System.out
-                    .println("Warning: could not instantiate alternate XMLIcon class. "
-                            + "Using default XMLIcon.  : " + ex.getMessage());
+            .println("Warning: could not instantiate alternate XMLIcon class. "
+                    + "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(workspace, name);
         }

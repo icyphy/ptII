@@ -104,8 +104,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             if (_boundsOnMousePressed != null
                     && Math.abs(bounds.getWidth()
                             - _boundsOnMousePressed.getWidth()) < resolution
-                    && Math.abs(bounds.getHeight()
-                            - _boundsOnMousePressed.getHeight()) < resolution) {
+                            && Math.abs(bounds.getHeight()
+                                    - _boundsOnMousePressed.getHeight()) < resolution) {
                 // Change is not big enough. Return.
                 return;
             }
@@ -199,14 +199,14 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                         // (this is a tricky geometry problem!).
                         newX = snappedXY[0]
                                 + snappedWidthHeight[0]
-                                / _boundsOnMousePressed.getWidth()
-                                * (previousLocation[0] - _boundsOnMousePressed
-                                        .getX());
+                                        / _boundsOnMousePressed.getWidth()
+                                        * (previousLocation[0] - _boundsOnMousePressed
+                                                .getX());
                         newY = snappedXY[1]
                                 + snappedWidthHeight[1]
-                                / _boundsOnMousePressed.getHeight()
-                                * (previousLocation[1] - _boundsOnMousePressed
-                                        .getY());
+                                        / _boundsOnMousePressed.getHeight()
+                                        * (previousLocation[1] - _boundsOnMousePressed
+                                                .getY());
                     } else {
                         // This is legacy code. Should never be invoked.
                         // If the figure is centered, have to use the center

@@ -120,7 +120,7 @@ public class MirrorComposite extends ReflectComposite {
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
@@ -148,7 +148,7 @@ public class MirrorComposite extends ReflectComposite {
      *  connections being made.
      */
     public static class MirrorCompositeContents extends
-    ReflectCompositeContents {
+            ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -176,7 +176,7 @@ public class MirrorComposite extends ReflectComposite {
          */
         @Override
         protected void _addPort(final Port port) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
 
             if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,

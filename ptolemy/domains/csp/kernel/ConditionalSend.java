@@ -169,7 +169,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
             int branchID, Token token, ConditionalBranchController controller)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(guard, port, branchID, controller);
         _port = port;
         _channel = channel;
@@ -249,9 +249,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         // was more than one output connected to input port.
                         throw new InvalidStateException(
                                 ((Nameable) controller.getParent()).getName()
-                                        + ": ConditionalSend branch is trying to rendezvous "
-                                        + "with a receiver that already has a put or a "
-                                        + "ConditionalSend waiting.");
+                                + ": ConditionalSend branch is trying to rendezvous "
+                                + "with a receiver that already has a put or a "
+                                + "ConditionalSend waiting.");
                     }
                 }
                 // Loop until either the rendezvous succeeds or the branch
@@ -320,7 +320,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                                     + _channel
                                                     + ": the other side is also first: "
                                                     + side2.getParent()
-                                                            .getFullName());
+                                                    .getFullName());
                                         }
                                         markedFirst.add(receiver);
                                     } else {
@@ -330,7 +330,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                                         + _channel
                                                         + ": the other side is NOT first: "
                                                         + side2.getParent()
-                                                                .getFullName());
+                                                        .getFullName());
                                             } else {
                                                 _debug("ConditionalSend: send() on channel "
                                                         + _channel
@@ -483,7 +483,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         for (int i = 0; i < receivers.length; i++) {
             if (!((CSPReceiver) receivers[i])._isGetWaiting()
                     && !((CSPReceiver) receivers[i])
-                            ._isConditionalReceiveWaiting()) {
+                    ._isConditionalReceiveWaiting()) {
                 return false;
             }
         }

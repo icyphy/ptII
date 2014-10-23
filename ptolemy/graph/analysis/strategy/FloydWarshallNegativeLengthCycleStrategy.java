@@ -46,7 +46,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
-        implements NegativeLengthCycleAnalyzer {
+implements NegativeLengthCycleAnalyzer {
     /** Constructs negative cycle detection analyzer for a given graph and
      *  given edge values.
      *

@@ -144,11 +144,11 @@ public class HTMLAbout {
         _demosURLs = new LinkedList();
         if (_configurationExists("full")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demos.htm")
-                            + _aboutHTML("ptolemy/configs/doc/whatsNew"
-                                    + version + ".htm")
+            .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demos.htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew"
+                            + version + ".htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew8.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew7.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew6.0.htm")
@@ -160,42 +160,42 @@ public class HTMLAbout {
 
         if (_configurationExists("bcvtb")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>BCVTB</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/bcvtb/intro.htm")
-                            + _aboutHTML("ptolemy/configs/doc/completeDemosBcvtb.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
-                            + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
+            .append("<tr rowspan=4><center><b>BCVTB</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/bcvtb/intro.htm")
+                    + _aboutHTML("ptolemy/configs/doc/completeDemosBcvtb.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
+                    + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
         }
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
+            .append("<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
         }
 
         if (_configurationExists("ptiny")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm")
+            .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm")
 
-                            + _aboutHTML("doc/mainVergilPtiny.htm"));
+                    + _aboutHTML("doc/mainVergilPtiny.htm"));
         }
 
         if (_configurationExists("ptinyKepler")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/kepler/doc-index.htm")
-                            + _aboutHTML("doc/mainVergilPtinyKepler.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm")
-                            + _aboutHTML("ptolemy/configs/doc/docsPtinyKepler.htm")
-                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm"));
+            .append("<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/kepler/doc-index.htm")
+                    + _aboutHTML("doc/mainVergilPtinyKepler.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm")
+                    + _aboutHTML("ptolemy/configs/doc/docsPtinyKepler.htm")
+                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm"));
 
         }
         if (_configurationExists("visualsense")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
+            .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
         }
 
         try {
@@ -235,7 +235,8 @@ public class HTMLAbout {
      *  @exception IOException If there is a problem reading the
      *  completeDemos.htm file.
      */
-    public static String checkCompleteDemos(String completeDemos) throws IOException {
+    public static String checkCompleteDemos(String completeDemos)
+            throws IOException {
         URL demosURL = _getDemoURL(completeDemos);
         StringBuffer results = new StringBuffer(
                 "<h1>Results of checking for demos not listed in full "
@@ -245,7 +246,8 @@ public class HTMLAbout {
                         + "<code>" + demosURL + "</code></a>\n");
         List completeDemosList = _getURLs(demosURL, ".*.xml$", true, 1);
         if (_demosURLs == null) {
-            throw new NullPointerException("_demosURLs is null.  Call HTMLAbout.about(Configuration) first.");
+            throw new NullPointerException(
+                    "_demosURLs is null.  Call HTMLAbout.about(Configuration) first.");
         }
         Iterator demosFileNames = _demosURLs.iterator();
         while (demosFileNames.hasNext()) {
@@ -298,8 +300,10 @@ public class HTMLAbout {
         while (models.hasNext()) {
             String model = (String) models.next();
             if (model.startsWith("ptdoc:")) {
-                Effigy context = configuration.getDirectory().entityList(Effigy.class).iterator().next();
-                HTMLViewer.getDocumentation(configuration, model.substring(6), context);
+                Effigy context = configuration.getDirectory()
+                        .entityList(Effigy.class).iterator().next();
+                HTMLViewer.getDocumentation(configuration, model.substring(6),
+                        context);
             } else {
                 URL modelURL = new URL(demosURL, model);
 
@@ -348,11 +352,8 @@ public class HTMLAbout {
 
         } else if (event.getDescription()
                 .startsWith("about:checkCompleteDemos")) {
-            newURL = _temporaryHTMLFile(
-                    "checkCompleteDemos",
-                    ".htm",
-                    checkCompleteDemos(
-                            "ptolemy/configs/doc/completeDemos.htm"));
+            newURL = _temporaryHTMLFile("checkCompleteDemos", ".htm",
+                    checkCompleteDemos("ptolemy/configs/doc/completeDemos.htm"));
         } else if (event.getDescription().startsWith("about:checkModelSizes")) {
             // Expand all the local .xml files in the fragment
             // and check their sizes and locations
@@ -365,7 +366,7 @@ public class HTMLAbout {
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
                     CheckModelSize.checkModelSize(configuration,
                             (String[]) modelSet.toArray(new String[modelSet
-                                    .size()])));
+                                                                   .size()])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
@@ -376,11 +377,11 @@ public class HTMLAbout {
                         "copyright",
                         ".htm",
                         GenerateCopyrights
-                                .generatePrimaryCopyrightHTML(configuration)
-                                + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
-                                + "about this configuration \n"
-                                + "(<i>may take a moment to run</i>).\n"
-                                + "</body>\n</html>");
+                        .generatePrimaryCopyrightHTML(configuration)
+                        + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
+                        + "about this configuration \n"
+                        + "(<i>may take a moment to run</i>).\n"
+                        + "</body>\n</html>");
             } catch (SecurityException ex) {
                 // Could be that we were running with -sandbox and
                 // cannot write the temporary file.
@@ -512,7 +513,7 @@ public class HTMLAbout {
         String ptII = null;
         try {
             ptII = new URI(StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
-                    .normalize().getPath();
+            .normalize().getPath();
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
             ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
         } catch (URISyntaxException ex) {
@@ -552,22 +553,22 @@ public class HTMLAbout {
     private static String _aboutHTML(String fileName) {
         _demosURLs.add(fileName);
         return "  <tr>\n"
-                + "    <code>"
-                + fileName
-                + "</code>\n"
-                + "    <td><a href=\"about:demos#"
-                + fileName
-                + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
-                + "    <td><a href=\"about:links#"
-                + fileName
-                + "\">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
-                + "    <td><a href=\"about:checkModelSizes#"
-                + fileName
-                + "\">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>\n"
-                // RunAllDemos does not work, it runs in the wrong thread?
-                // + "    <td><a href=\"about:runAllDemos#" + fileName
-                // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
-                + "  </tr>\n";
+        + "    <code>"
+        + fileName
+        + "</code>\n"
+        + "    <td><a href=\"about:demos#"
+        + fileName
+        + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
+        + "    <td><a href=\"about:links#"
+        + fileName
+        + "\">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+        + "    <td><a href=\"about:checkModelSizes#"
+        + fileName
+        + "\">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>\n"
+        // RunAllDemos does not work, it runs in the wrong thread?
+        // + "    <td><a href=\"about:runAllDemos#" + fileName
+        // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
+        + "  </tr>\n";
     }
 
     /** Expand the left hand library pane.  We search for a model,
@@ -602,38 +603,38 @@ public class HTMLAbout {
                     aboutURLString.lastIndexOf("/"));
             baseURL = ConfigurationApplication.specToURL(base + "/intro.htm");
             System.out
-                    .println("HTMLAbout._expandLibrary(): looking in about URL: "
-                            + baseURL);
+            .println("HTMLAbout._expandLibrary(): looking in about URL: "
+                    + baseURL);
             List modelList = _getURLs(baseURL, regexp);
             if (modelList.size() > 0) {
                 // Get the first model and open it
                 String model = (String) modelList.get(0);
                 System.out
-                        .println("HTMLAbout._expandLibrary(): looking for model relative to about URL: "
-                                + model);
+                .println("HTMLAbout._expandLibrary(): looking for model relative to about URL: "
+                        + model);
                 modelURL = new URL(baseURL, model);
             } else {
                 // Get the first url from intro.htm, look in it and get the
                 // first model
                 System.out
-                        .println("HTMLAbout._expandLibrary(): looking inside "
-                                + baseURL + " for .htm files");
+                .println("HTMLAbout._expandLibrary(): looking inside "
+                        + baseURL + " for .htm files");
                 List urlList = _getURLs(baseURL, ".*.htm");
                 Iterator urls = urlList.iterator();
                 while (urls.hasNext() && modelURL == null) {
                     // Looping through files, looking for a model
                     String model = (String) urls.next();
                     System.out
-                            .println("HTMLAbout._expandLibrary(): looking inside "
-                                    + model);
+                    .println("HTMLAbout._expandLibrary(): looking inside "
+                            + model);
                     URL possibleModelURL = new URL(baseURL, model);
                     modelList = _getURLs(possibleModelURL, regexp);
                     if (modelList.size() > 0) {
                         model = (String) modelList.get(0);
                         // Get the first model and open it
                         System.out
-                                .println("HTMLAbout._expandLibrary(): looking for model relative to first URL: "
-                                        + model);
+                        .println("HTMLAbout._expandLibrary(): looking for model relative to first URL: "
+                                + model);
                         modelURL = new URL(baseURL, model);
                     }
                 }
@@ -643,21 +644,21 @@ public class HTMLAbout {
             // Get completeDemos.htm
             baseURL = _getDemoURL(null);
             System.out
-                    .println("HTMLAbout._expandLibrary(): looking in completeDemos URL: "
-                            + baseURL);
+            .println("HTMLAbout._expandLibrary(): looking in completeDemos URL: "
+                    + baseURL);
             List modelList = _getURLs(baseURL, regexp);
             if (modelList.size() > 0) {
                 // Get the first model and open it
                 String model = (String) modelList.get(0);
                 System.out
-                        .println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
-                                + model);
+                .println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
+                        + model);
                 modelURL = new URL(baseURL, model);
             } else {
                 String model = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml";
                 System.out
-                        .println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
-                                + model);
+                .println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
+                        + model);
                 modelURL = new URL(model);
             }
         }
@@ -783,7 +784,7 @@ public class HTMLAbout {
                         Exception ex1 = null;
                         try {
                             model = new URI(demosURLParent + modelLink)
-                                    .normalize().getPath();
+                            .normalize().getPath();
                             // Under Windows, convert /C:/foo/bar to C:/foo/bar
                             model = new File(model).toString().replace('\\',
                                     '/');
@@ -874,7 +875,7 @@ public class HTMLAbout {
                     .getContextClassLoader()
                     .getResource(
                             "ptolemy/configs/" + configurationName
-                                    + "/configuration.xml");
+                            + "/configuration.xml");
 
             if (url != null) {
                 configurationExists = true;

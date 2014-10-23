@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (liuxj)
  */
 public class HybridModalDirector extends FSMDirector implements
-        ContinuousStatefulComponent, ContinuousStepSizeController {
+ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -567,7 +567,7 @@ public class HybridModalDirector extends FSMDirector implements
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStatefulComponent) {
                 ((ContinuousStatefulComponent) actor)
-                        .rollBackToCommittedState();
+                .rollBackToCommittedState();
             } else if (actor instanceof CompositeActor) {
                 // Delegate to the director.
                 Director director = actor.getDirector();

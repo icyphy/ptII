@@ -125,7 +125,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  *  @Pt.AcceptedRating Red (sssf)
  */
 public class GiottoTimingManager extends SingletonAttribute implements
-        Decorator { //extends SingletonAttribute
+Decorator { //extends SingletonAttribute
 
     /** Construct an instance with the specified container and name.
      *  @param container The container.
@@ -348,7 +348,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                     public void initialize() throws IllegalActionException {
                         if (_random == null
                                 || ((BooleanToken) resetOnEachRun.getToken())
-                                        .booleanValue()) {
+                                .booleanValue()) {
                             _createGenerator();
                         }
                         _needNew = true;
@@ -388,7 +388,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                                     + _totalExpectedExecutionTime
                                                     + ")  for actor "
                                                     + container
-                                                            .getDisplayName()));
+                                                    .getDisplayName()));
 
                         }
                         _totalObservedExecutionTime = 0; // reset the observed time
@@ -396,7 +396,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true /*Although this not a structural change in my point of view
                                                                    , we however for some reason need to specify it is, otherwise the GUI won't update.*/
-                        ) {
+                                ) {
                             @Override
                             protected void _execute()
                                     throws IllegalActionException {
@@ -497,8 +497,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                                 + (actor.getDirector()
                                                         .getModelTime()
                                                         .getDoubleValue() + actorWCET)
-                                                + "physical time is actually "
-                                                + _myPhysicalTime);
+                                                        + "physical time is actually "
+                                                        + _myPhysicalTime);
                                     }
                                 }
                                 Parameter dummyP = (Parameter) executionTime;
@@ -527,10 +527,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                     // FIXME: How to handle this?
                                     // put the actor on a no-fire hashtable?
                                     System.err
-                                            .println("Warning: Giotto iterate returned "
-                                                    + "STOP_ITERATING for actor \""
-                                                    + actor1.getFullName()
-                                                    + "\"");
+                                    .println("Warning: Giotto iterate returned "
+                                            + "STOP_ITERATING for actor \""
+                                            + actor1.getFullName()
+                                            + "\"");
                                 }
                             }
 
@@ -615,7 +615,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                             + _periodValue
                                             + ") for actor "
                                             + ((CompositeActor) getContainer())
-                                                    .getDisplayName());
+                                            .getDisplayName());
 
                         } //end of if
                         if (_debugging) {

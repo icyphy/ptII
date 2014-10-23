@@ -50,7 +50,7 @@ import javax.swing.table.TableCellRenderer;
  */
 @SuppressWarnings("serial")
 public class CellPanelEditor extends AbstractCellEditor implements
-        TableCellEditor, TableCellRenderer {
+TableCellEditor, TableCellRenderer {
 
     @Override
     public Object getCellEditorValue() {

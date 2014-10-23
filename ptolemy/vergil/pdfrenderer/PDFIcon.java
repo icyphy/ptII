@@ -166,8 +166,8 @@ public class PDFIcon extends DynamicEditorIcon {
                     new Rectangle(0, 0,
                             (int) (boundingBox.getWidth() * _scale),
                             (int) (boundingBox.getHeight() * _scale)), null, // No clipping.
-                    null // Transparent background.
-            );
+                            null // Transparent background.
+                    );
             try {
                 _page.waitForFinish();
             } catch (InterruptedException e) {

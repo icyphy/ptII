@@ -163,7 +163,7 @@ public class MappingEditor extends Attribute {
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to save to mapping file \"" + filename
-                                    + "\".");
+                            + "\".");
                 }
             }
         }

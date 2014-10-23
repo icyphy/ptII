@@ -100,7 +100,7 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                             throws CollectionAbortedException {
                                         try {
                                             synchronousQueue
-                                                    .put(new ValueMessage(value));
+                                            .put(new ValueMessage(value));
                                             returnQueue.take(); // wait for permission to continue
                                         } catch (InterruptedException e) {
                                             // this thread has been aborted
@@ -124,7 +124,7 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                             } catch (IllegalActionException e) {
                                 // e.printStackTrace();
                                 synchronousQueue
-                                .put(new IllegalActionMessage(e));
+                                        .put(new IllegalActionMessage(e));
                             }
 
                         } catch (InterruptedException e) {

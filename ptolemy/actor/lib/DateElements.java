@@ -96,22 +96,22 @@ public class DateElements extends TypedAtomicActor {
         millisecond = new TypedIOPort(this, "millisecond", false, true);
         millisecond.setTypeEquals(BaseType.INT);
         new SingletonParameter(millisecond, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         microsecond = new TypedIOPort(this, "microsecond", false, true);
         microsecond.setTypeEquals(BaseType.INT);
         new SingletonParameter(microsecond, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         nanosecond = new TypedIOPort(this, "nanosecond", false, true);
         nanosecond.setTypeEquals(BaseType.INT);
         new SingletonParameter(nanosecond, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         timezone = new TypedIOPort(this, "timezone", false, true);
         timezone.setTypeEquals(BaseType.STRING);
         new SingletonParameter(timezone, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
     }
 
     /** Input for date token.

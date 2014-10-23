@@ -7,7 +7,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
  *
  */
 public final class CorbaIllegalActionExceptionHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException value = null;
 
     public CorbaIllegalActionExceptionHolder() {
@@ -27,7 +27,7 @@ public final class CorbaIllegalActionExceptionHolder implements
     @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                .write(o, value);
+        .write(o, value);
     }
 
     @Override

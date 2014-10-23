@@ -931,7 +931,7 @@ public class PtolemyPlatform implements Platform {
             } catch (IllegalActionException ex) {
                 throw new InterpreterException(
                         "Failed to create integer value from string: '" + s
-                                + "'.", ex);
+                        + "'.", ex);
             }
         }
 
@@ -1199,7 +1199,7 @@ public class PtolemyPlatform implements Platform {
                     throw new RuntimeException(
                             "Expected ClassObject, got instance of '"
                                     + ((ObjectToken) o).getValue().getClass()
-                                            .getName() + "'.", e);
+                                    .getName() + "'.", e);
                 } else {
                     throw new RuntimeException(
                             "Expected ClassObject inside ObjectToken, got instance of '"

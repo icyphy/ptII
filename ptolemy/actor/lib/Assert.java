@@ -195,7 +195,7 @@ public class Assert extends Expression {
      */
     @Override
     protected void _addPort(TypedIOPort port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._addPort(port);
 
         if (_creatingOutputPort || _cloning) {
@@ -344,7 +344,7 @@ public class Assert extends Expression {
         // output port.
         @Override
         public void setName(final String name) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
             final String oldName = getName();
             super.setName(name);
             // No need to do anything for the first name setting

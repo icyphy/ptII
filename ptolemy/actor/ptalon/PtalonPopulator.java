@@ -43,7 +43,7 @@ import antlr.collections.AST;
   @Pt.AcceptedRating Red (celaine)
  */
 public class PtalonPopulator extends antlr.TreeParser implements
-PtalonPopulatorTokenTypes {
+        PtalonPopulatorTokenTypes {
 
     private PtalonEvaluator info;
 
@@ -58,7 +58,7 @@ PtalonPopulatorTokenTypes {
     }
 
     public final void port_declaration(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -919,7 +919,7 @@ PtalonPopulatorTokenTypes {
     }
 
     public final void relation_declaration(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1115,7 +1115,7 @@ PtalonPopulatorTokenTypes {
     }
 
     public final void assignment(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1341,7 +1341,7 @@ PtalonPopulatorTokenTypes {
      * declaration.
      */
     public final void actor_declaration(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -1458,7 +1458,7 @@ PtalonPopulatorTokenTypes {
     }
 
     public final void atomic_statement(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2024,7 +2024,7 @@ PtalonPopulatorTokenTypes {
     }
 
     public final void iterative_statement(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2337,7 +2337,7 @@ PtalonPopulatorTokenTypes {
     }
 
     public final void transformation(AST _t) throws RecognitionException,
-    PtalonRuntimeException {
+            PtalonRuntimeException {
 
         returnAST = null;
         ASTPair currentAST = new ASTPair();
@@ -2636,23 +2636,23 @@ PtalonPopulatorTokenTypes {
     }
 
     public static final String[] _tokenNames = { "<0>", "EOF", "<2>",
-        "NULL_TREE_LOOKAHEAD", "\"port\"", "LBRACKET", "RBRACKET",
-        "\"inport\"", "\"outport\"", "ID", "\"parameter\"", "EQUALS",
-        "\"actor\"", "\"actorparameter\"", "\"relation\"",
-        "\"transparent\"", "\"reference\"", "COLON", "DOT", "\"import\"",
-        "\"true\"", "\"false\"", "\"if\"", "\"else\"", "\"is\"", "\"for\"",
-        "\"initially\"", "\"next\"", "\"danglingPortsOkay\"",
-        "\"attachDanglingPorts\"", "ASSIGN", "RPAREN", "COMMA",
-        "EXPRESSION", "LPAREN", "SEMI", "\"negate\"", "\"optional\"",
-        "\"remove\"", "\"preserve\"", "LCURLY", "RCURLY", "TRANSFORM",
-        "PLUS", "TRUEBRANCH", "FALSEBRANCH", "QUALID", "ATTRIBUTE",
-        "ACTOR_DECLARATION", "ACTOR_DEFINITION", "TRANSFORMATION",
-        "NEGATIVE_SIGN", "POSITIVE_SIGN", "ARITHMETIC_FACTOR",
-        "BOOLEAN_FACTOR", "LOGICAL_BUFFER", "ARITHMETIC_EXPRESSION",
-        "BOOLEAN_EXPRESSION", "MULTIPORT", "MULTIINPORT", "MULTIOUTPORT",
-        "PARAM_EQUALS", "ACTOR_EQUALS", "SATISFIES", "VARIABLE",
-        "DYNAMIC_NAME", "ACTOR_LABEL", "QUALIFIED_PORT", "ACTOR_ID", "ESC",
-        "NUMBER_LITERAL", "STRING_LITERAL", "WHITE_SPACE", "LINE_COMMENT",
-    "COMMENT" };
+            "NULL_TREE_LOOKAHEAD", "\"port\"", "LBRACKET", "RBRACKET",
+            "\"inport\"", "\"outport\"", "ID", "\"parameter\"", "EQUALS",
+            "\"actor\"", "\"actorparameter\"", "\"relation\"",
+            "\"transparent\"", "\"reference\"", "COLON", "DOT", "\"import\"",
+            "\"true\"", "\"false\"", "\"if\"", "\"else\"", "\"is\"", "\"for\"",
+            "\"initially\"", "\"next\"", "\"danglingPortsOkay\"",
+            "\"attachDanglingPorts\"", "ASSIGN", "RPAREN", "COMMA",
+            "EXPRESSION", "LPAREN", "SEMI", "\"negate\"", "\"optional\"",
+            "\"remove\"", "\"preserve\"", "LCURLY", "RCURLY", "TRANSFORM",
+            "PLUS", "TRUEBRANCH", "FALSEBRANCH", "QUALID", "ATTRIBUTE",
+            "ACTOR_DECLARATION", "ACTOR_DEFINITION", "TRANSFORMATION",
+            "NEGATIVE_SIGN", "POSITIVE_SIGN", "ARITHMETIC_FACTOR",
+            "BOOLEAN_FACTOR", "LOGICAL_BUFFER", "ARITHMETIC_EXPRESSION",
+            "BOOLEAN_EXPRESSION", "MULTIPORT", "MULTIINPORT", "MULTIOUTPORT",
+            "PARAM_EQUALS", "ACTOR_EQUALS", "SATISFIES", "VARIABLE",
+            "DYNAMIC_NAME", "ACTOR_LABEL", "QUALIFIED_PORT", "ACTOR_ID", "ESC",
+            "NUMBER_LITERAL", "STRING_LITERAL", "WHITE_SPACE", "LINE_COMMENT",
+            "COMMENT" };
 
 }

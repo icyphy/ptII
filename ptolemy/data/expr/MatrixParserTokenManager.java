@@ -80,7 +80,7 @@ public class MatrixParserTokenManager implements MatrixParserConstants {
     }
 
     static final long[] jjbitVec0 = { 0x0L, 0x0L, 0xffffffffffffffffL,
-            0xffffffffffffffffL };
+        0xffffffffffffffffL };
 
     static private final int jjMoveNfa_0(int startState, int curPos) {
         int startsAt = 0;
@@ -305,18 +305,18 @@ public class MatrixParserTokenManager implements MatrixParserConstants {
                 } while (i != startsAt);
             } else {
                 int i2 = (curChar & 0xff) >> 6;
-                long l2 = 1L << (curChar & 077);
-                MatchLoop: do {
-                    switch (jjstateSet[--i]) {
-                    case 4:
-                        if ((jjbitVec0[i2] & l2) != 0L) {
-                            jjAddStates(11, 12);
-                        }
-                        break;
-                    default:
-                        break;
+            long l2 = 1L << (curChar & 077);
+            MatchLoop: do {
+                switch (jjstateSet[--i]) {
+                case 4:
+                    if ((jjbitVec0[i2] & l2) != 0L) {
+                        jjAddStates(11, 12);
                     }
-                } while (i != startsAt);
+                    break;
+                default:
+                    break;
+                }
+            } while (i != startsAt);
             }
             if (kind != 0x7fffffff) {
                 jjmatchedKind = kind;
@@ -336,10 +336,10 @@ public class MatrixParserTokenManager implements MatrixParserConstants {
     }
 
     static final int[] jjnextStates = { 13, 14, 15, 8, 17, 18, 20, 21, 14, 15,
-            8, 4, 5, 9, 10, };
+        8, 4, 5, 9, 10, };
     public static final String[] jjstrLiteralImages = { "", null, null, null,
-            null, null, null, null, null, null, null, null, null, "\133",
-            "\73", "\135", "\54", };
+        null, null, null, null, null, null, null, null, null, "\133",
+        "\73", "\135", "\54", };
     public static final String[] lexStateNames = { "DEFAULT", };
     static final long[] jjtoToken = { 0x1ee21L, };
     static final long[] jjtoSkip = { 0x101eL, };

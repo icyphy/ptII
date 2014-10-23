@@ -53,8 +53,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 public class SDFReceiver
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
     /** Construct an adapter for an SDF receiver.
      *  @param receiver The SDFReceiver for which an adapter is constructed.
      *  @exception IllegalActionException If thrown by the superclass.

@@ -129,7 +129,7 @@ public class TokenParserTest {
 
     @Test
     public void testUnsignedByteToken() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         UnsignedByteToken token = new UnsignedByteToken(220);
         //System.out.println(token.byteValue());
         PipedOutputStream outputStream = new PipedOutputStream();
@@ -199,7 +199,7 @@ public class TokenParserTest {
 
     @Test
     public void testLongMatrixToken() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         long[][] matrix = new long[3][4];
 
         for (int row = 0; row < 3; row++) {
@@ -219,7 +219,7 @@ public class TokenParserTest {
 
     @Test
     public void testDoubleMatrixToken() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         double[][] matrix = new double[3][4];
 
         for (int row = 0; row < 3; row++) {
@@ -239,7 +239,7 @@ public class TokenParserTest {
 
     @Test
     public void testComplexMatrixToken() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         Complex[][] matrix = new Complex[3][4];
 
         for (int row = 0; row < 3; row++) {
@@ -287,7 +287,7 @@ public class TokenParserTest {
 
     @Test
     public void testCommunicationToken() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         token.setTargetActorName("targetActor");
 
@@ -325,7 +325,7 @@ public class TokenParserTest {
 
     @Test
     public void testCommunicationToken2() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         token.setTargetActorName("targetActor");
         token.addPort("testPort1", 1);
@@ -345,7 +345,7 @@ public class TokenParserTest {
 
     @Test
     public void testAttributeChangeToken() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName("targetSettable");
         token.setExpression("testing");

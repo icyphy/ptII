@@ -83,7 +83,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public LatticeOntologyAdapter(LatticeOntologySolver solver,
             Object component, boolean useDefaultConstraints)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;

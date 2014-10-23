@@ -145,7 +145,7 @@ public class ShortToken extends ScalarToken {
             ShortToken result = new ShortToken(unsignedByteToken.shortValue());
             if (unsignedByteToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(unsignedByteToken._unitCategoryExponents)) {
+                    .isUnitless(unsignedByteToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = unsignedByteToken
                         ._copyOfCategoryExponents();
             }

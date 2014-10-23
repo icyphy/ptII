@@ -74,7 +74,7 @@ import ptolemy.vergil.gt.TransformEventController.Factory;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Transform extends GTEvent implements ConfigurableEntity,
-        TransformationListener {
+TransformationListener {
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -229,7 +229,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
             }
             isMatched = mode.transform(mode.getWorkingCopy(_transformation),
                     model, initializeObjects ? this : null,
-                    ((BooleanToken) defer.getToken()).booleanValue());
+                            ((BooleanToken) defer.getToken()).booleanValue());
             if (isMatched) {
                 _debug(new PteraDebugEvent(this, "Match found."));
             } else {

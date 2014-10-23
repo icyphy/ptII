@@ -169,7 +169,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute != null
                         && ((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -179,7 +179,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute != null
                         && ((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -192,7 +192,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute == null
                         || !((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -202,7 +202,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute == null
                         || !((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }

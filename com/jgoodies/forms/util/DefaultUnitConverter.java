@@ -466,7 +466,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * Listens to changes of the Look and Feel and invalidates the cache.
      */
     private final class LookAndFeelChangeHandler implements
-            PropertyChangeListener {
+    PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             invalidateCaches();

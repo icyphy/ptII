@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Attribute;
  *
  */
 public class AttributeSearcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the AttributeSearcher according to the input search criteria.
@@ -95,8 +95,8 @@ public class AttributeSearcher extends AbstractSearcher implements
                         } else {
 
                             newAttribute
-                                    .setClassName(((PTDBSearchAttribute) originalAttribute)
-                                            .getGenericClassName());
+                            .setClassName(((PTDBSearchAttribute) originalAttribute)
+                                    .getGenericClassName());
 
                         }
                     } else {

@@ -126,7 +126,7 @@ public class FloatToken extends ScalarToken {
             FloatToken result = new FloatToken(shortToken.floatValue());
             if (shortToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(shortToken._unitCategoryExponents)) {
+                    .isUnitless(shortToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
             }

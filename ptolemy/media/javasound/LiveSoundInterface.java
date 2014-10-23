@@ -77,7 +77,7 @@ public interface LiveSoundInterface {
      *  to access the audio capture resources.
      */
     public void flushCaptureBuffer(Object consumer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
     /** Flush queued data from the playback buffer.  The flushed data is
      *  discarded.  It is only legal to flush the playback buffer after
@@ -102,7 +102,7 @@ public interface LiveSoundInterface {
      *  to access the audio playback resources.
      */
     public void flushPlaybackBuffer(Object producer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
     /** Return the number of bits per audio sample, which is
      *  set by the setBitsPerSample() method. The default
@@ -203,7 +203,7 @@ public interface LiveSoundInterface {
      *   to access the audio capture resources.
      */
     public double[][] getSamples(Object consumer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
     /** Get the array length (in samples per channel) to use
      *  for capturing and playing samples via the putSamples()
@@ -397,7 +397,7 @@ public interface LiveSoundInterface {
      *   while audio capture is already active.
      */
     public void startCapture(Object consumer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
     /** Start audio playback. The specified object will be
      *  given an exclusive lock on the audio playback resources
@@ -420,7 +420,7 @@ public interface LiveSoundInterface {
      *   while audio playback is already active.
      */
     public void startPlayback(Object producer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
     /** Stop audio capture. If the specified object has
      *  the lock on audio capture when this method is
@@ -439,7 +439,7 @@ public interface LiveSoundInterface {
      *   captured audio resources when this method was invoked.
      */
     public void stopCapture(Object consumer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
     /** Stop audio playback. If the specified object has
      *  the lock on audio playback when this method is
@@ -459,6 +459,6 @@ public interface LiveSoundInterface {
      *
      */
     public void stopPlayback(Object producer) throws IOException,
-            IllegalStateException;
+    IllegalStateException;
 
 }

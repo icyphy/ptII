@@ -48,8 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Green (cxh)
  */
 public abstract class RandomSource
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
     /**
      * Construct a RandomSource helper.
      * @param actor the associated actor

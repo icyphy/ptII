@@ -113,7 +113,7 @@ public class SingletonAttribute extends Attribute implements Singleton {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

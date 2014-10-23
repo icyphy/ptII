@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ShowTypes extends AbstractInitializableAttribute implements
-        ExecutionListener {
+ExecutionListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -209,11 +209,11 @@ public class ShowTypes extends AbstractInitializableAttribute implements
                             if (attribute instanceof StringParameter) {
                                 if (port instanceof TypedIOPort) {
                                     ((StringParameter) attribute)
-                                            .setExpression(((TypedIOPort) port)
-                                                    .getType().toString());
+                                    .setExpression(((TypedIOPort) port)
+                                            .getType().toString());
                                 } else {
                                     ((StringParameter) attribute)
-                                            .setExpression("untyped");
+                                    .setExpression("untyped");
                                 }
                             }
                         }

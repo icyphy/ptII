@@ -348,8 +348,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         }
         throw new IllegalActionException(_actor,
                 "Attempt to get depth of actor " + actor.getFullName()
-                        + " that was not sorted. It is probably not"
-                        + " contained by " + _actor.getFullName());
+                + " that was not sorted. It is probably not"
+                + " contained by " + _actor.getFullName());
     }
 
     /** Return the depth of a port of the associated actor
@@ -657,7 +657,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      */
     private void _computeInputDepth(IOPort inputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         int depth = 0;
         // Iterate over all the ports in the equivalence class.
         Actor actor = (Actor) inputPort.getContainer();
@@ -732,7 +732,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      */
     private void _computeOutputPortDepth(IOPort outputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         visitedOutputs.add(outputPort);
         int depth = 0;
         // Iterate over the input ports of the same actor that
@@ -801,7 +801,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     private boolean _recordDependency(IOPort inputPort, IOPort port,
             Map<IOPort, Dependency> map, Dependency dependency,
             Map<IOPort, Collection<IOPort>> dependsOnInputsMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (dependency.equals(_defaultDependency.oPlusIdentity())) {
             return false;
         }
@@ -912,7 +912,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     private void _setDependency(IOPort inputPort, Map<IOPort, Dependency> map,
             Collection<IOPort> portsToProcess,
             Map<IOPort, Collection<IOPort>> dependsOnInputsMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Set<IOPort> portsToProcessNext = new HashSet<IOPort>();
         for (IOPort port : portsToProcess) {
             // The argument map is required to contain this dependency.

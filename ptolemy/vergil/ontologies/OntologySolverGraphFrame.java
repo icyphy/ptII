@@ -81,7 +81,7 @@ import diva.gui.toolbox.FigureIcon;
  */
 @SuppressWarnings("serial")
 public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
-        ActionListener {
+ActionListener {
 
     /** Construct a frame associated with the specified ontology solver model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -339,7 +339,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             putValue(diva.gui.GUIUtilities.LARGE_ICON, toolbarIcon);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
 
             // Initialize the default ontology directory to null in the

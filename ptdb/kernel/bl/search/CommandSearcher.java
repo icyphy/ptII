@@ -46,7 +46,7 @@ import ptdb.common.dto.SearchCriteria;
  *
  */
 public class CommandSearcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the command searcher.

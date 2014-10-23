@@ -280,8 +280,8 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @param prior prior distribution estimates
      * @return labels of assigned states
      */
-    public static final int[] gaussianClassifyMM(double[] y,
-            double[] mu, double[] sigma, double[] prior) {
+    public static final int[] gaussianClassifyMM(double[] y, double[] mu,
+            double[] sigma, double[] prior) {
         int nStates = mu.length;
         // the soft assignments for the observations  given the parameter estimates
         double[][] tau = new double[y.length][nStates];

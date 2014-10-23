@@ -111,8 +111,8 @@ public class MatlabUtilities {
 
             try {
                 synchronized (
-                //matlabEngine.getSemaphore();
-                _engine) {
+                        //matlabEngine.getSemaphore();
+                        _engine) {
                     // matlabEngine is not very good since it is
                     // "local".
                     // (zk:) I would recommend removing the static,
@@ -131,7 +131,7 @@ public class MatlabUtilities {
                             && packageDirectories instanceof StringToken) {
                         StringTokenizer dirs = new StringTokenizer(
                                 ((StringToken) packageDirectories)
-                                        .stringValue(),
+                                .stringValue(),
                                 ",");
                         StringBuffer cellFormat = new StringBuffer(512);
                         cellFormat.append("{");
@@ -159,7 +159,7 @@ public class MatlabUtilities {
                             //    (engine, "previousPath_=path");
                             _engineEvalString.invoke(matlabEngine,
                                     new Object[] { _engine,
-                                            "previousPath_=path" });
+                            "previousPath_=path" });
 
                             //previousPath = matlabEngine.get
                             //    (engine, "previousPath_");

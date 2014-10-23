@@ -194,9 +194,9 @@ public class AttributeCriterion extends Criterion {
                     VariableScope scope = new VariableScope(object);
                     try {
                         ASTPtRootNode tree = new PtParser()
-                                .generateParseTree(expression);
+                        .generateParseTree(expression);
                         Token token = new ParseTreeEvaluator()
-                                .evaluateParseTree(tree, scope);
+                        .evaluateParseTree(tree, scope);
 
                         if (isAttributeTypeEnabled()) {
                             Type ruleType = _attributeType.getToken().getType();
@@ -307,9 +307,9 @@ public class AttributeCriterion extends Criterion {
     /** The elements.
      */
     private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", false, false, false),
-            new ChoiceCriterionElement("type", true, false, true, true),
-            new StringCriterionElement("value", true, false, true) };
+        new StringCriterionElement("name", false, false, false),
+        new ChoiceCriterionElement("type", true, false, true, true),
+        new StringCriterionElement("value", true, false, true) };
 
     /** Value of the attributeName element.
      */

@@ -114,7 +114,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CIDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 

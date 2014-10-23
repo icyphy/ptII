@@ -730,7 +730,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next]; // MJ Eqn (11.45)
+                                        / alphas[t + 1][next]; // MJ Eqn (11.45)
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -879,7 +879,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next];
+                                        / alphas[t + 1][next];
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -1034,7 +1034,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
          */
         public BusAttributes(NamedObj target,
                 AtomicCommunicationAspect decorator)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
         }
 

@@ -101,7 +101,7 @@ public class HDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public HDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -116,7 +116,7 @@ public class HDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public HDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -244,7 +244,7 @@ public class HDFDirector extends SDFDirector {
      *  cacheSize parameter with default value 100.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // During construction, create the scheduleCacheSize parameter
         // with default value of 100.
         int cacheSize = 100;

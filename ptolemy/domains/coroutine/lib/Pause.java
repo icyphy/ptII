@@ -119,7 +119,7 @@ public class Pause extends AtomicContinuationActor {
     ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         addEntryLocation(pauseEntry);
         addEntryLocation(resumeEntry);

@@ -137,14 +137,14 @@ public class OpenModelica extends TypedAtomicActor {
 
         parameter = new StringParameter(this, "parameter");
         parameter
-        .setDisplayName("Initialized model parameter(s), seperate by '#'");
+                .setDisplayName("Initialized model parameter(s), seperate by '#'");
 
         initialValue = new StringParameter(this, "initialValue");
         initialValue.setDisplayName("Initial value(s), seperate by ','");
 
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter
-        .setDisplayName("Filter for displaying simulation result, seperate by '#'");
+                .setDisplayName("Filter for displaying simulation result, seperate by '#'");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -291,7 +291,7 @@ public class OpenModelica extends TypedAtomicActor {
                     }
                 } else {
                     _omcLogger
-                    .getInfo("There is no component to modify prior to running the model!");
+                            .getInfo("There is no component to modify prior to running the model!");
                 }
             } catch (ConnectException e) {
                 throw new IllegalActionException(
@@ -322,7 +322,7 @@ public class OpenModelica extends TypedAtomicActor {
                 }
             } else {
                 _omcLogger
-                .getInfo("There is no components to modify prior to running the model!");
+                        .getInfo("There is no components to modify prior to running the model!");
             }
         }
 

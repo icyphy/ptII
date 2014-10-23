@@ -145,7 +145,7 @@ public class Slice extends FixTransformer {
                     .shiftRight(shiftBits));
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
             if (newEndValue - newStartValue != precision.getNumberOfBits()) {
                 throw new IllegalActionException(this, "Bit width of "
                         + (newEndValue - newStartValue)

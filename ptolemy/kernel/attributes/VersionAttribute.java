@@ -268,7 +268,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
     public static String majorCurrentVersion() {
         Iterator versionTuples = CURRENT_VERSION.iterator();
         return (String) versionTuples.next() + "."
-                + (String) versionTuples.next();
+        + (String) versionTuples.next();
     }
 
     /** Set the value of the string attribute and notify the container

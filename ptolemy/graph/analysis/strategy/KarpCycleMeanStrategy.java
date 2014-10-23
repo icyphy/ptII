@@ -61,7 +61,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class KarpCycleMeanStrategy extends CachedStrategy implements
-        CycleMeanAnalyzer {
+CycleMeanAnalyzer {
     /** Construct a maximum cycle mean analyzer for a given graph, using the
      *  Karp's algorithm.
      *

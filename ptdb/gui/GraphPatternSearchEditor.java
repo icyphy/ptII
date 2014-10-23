@@ -95,7 +95,7 @@ import diva.gui.GUIUtilities;
  */
 @SuppressWarnings("serial")
 public class GraphPatternSearchEditor extends TransformationEditor implements
-        PTDBBasicFrame {
+PTDBBasicFrame {
 
     //    /**
     //     * Construct the GraphPatternSearchEditor.
@@ -227,7 +227,7 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
                         if (gtIngredient instanceof DynamicNameCriterion
                                 && !gtIngredient.getValue(0).toString().trim()
-                                        .isEmpty()) {
+                                .isEmpty()) {
 
                             PTDBSearchAttribute gtIngredientAttribute = new PTDBSearchAttribute();
 
@@ -304,13 +304,13 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
                             .getIngredientList()) {
                         if (gtIngredient instanceof DynamicNameCriterion
                                 && !((DynamicNameCriterion) gtIngredient)
-                                        .getValue(0).toString().trim()
-                                        .isEmpty()) {
+                                .getValue(0).toString().trim()
+                                .isEmpty()) {
 
                             PTDBSearchComponentEntity ptdbSearchComponentEntity = new PTDBSearchComponentEntity();
                             ptdbSearchComponentEntity
-                                    .setName(((DynamicNameCriterion) gtIngredient)
-                                            .getValue(0).toString());
+                            .setName(((DynamicNameCriterion) gtIngredient)
+                                    .getValue(0).toString());
                             componentEntities.add(ptdbSearchComponentEntity);
 
                         }
@@ -339,14 +339,14 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
                             .toString().trim().isEmpty()) {
                         PTDBSearchAttribute ptdbSearchAttribute = new PTDBSearchAttribute();
                         ptdbSearchAttribute
-                                .setName(((AttributeCriterion) gtIngredient)
-                                        .getValue(0).toString());
+                        .setName(((AttributeCriterion) gtIngredient)
+                                .getValue(0).toString());
 
                         if (((AttributeCriterion) gtIngredient)
                                 .isAttributeValueEnabled()) {
                             ptdbSearchAttribute
-                                    .setToken(((AttributeCriterion) gtIngredient)
-                                            .getValue(2).toString());
+                            .setToken(((AttributeCriterion) gtIngredient)
+                                    .getValue(2).toString());
                         }
 
                         attributesList.add(ptdbSearchAttribute);
@@ -624,20 +624,20 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
 
             GUIUtilities.addIcons(this,
                     new String[][] {
+                    { "/ptdb/gui/img/database.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptdb/gui/img/database.gif",
+                            GUIUtilities.ROLLOVER_ICON },
                             { "/ptdb/gui/img/database.gif",
-                                    GUIUtilities.LARGE_ICON },
-                            { "/ptdb/gui/img/database.gif",
-                                    GUIUtilities.ROLLOVER_ICON },
-                            { "/ptdb/gui/img/database.gif",
-                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
-                            { "/ptdb/gui/img/database.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptdb/gui/img/database.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Search Ptolemy models in Database"
                     + "(Ctrl+1)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_1, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -680,13 +680,13 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/save.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/save_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/save_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/save_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/save_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/save_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/save_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 

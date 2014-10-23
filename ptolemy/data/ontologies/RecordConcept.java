@@ -309,7 +309,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @exception IllegalActionException If the base class throws it.
      */
     protected RecordConcept(Ontology ontology) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(ontology);
     }
 

@@ -84,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
  *
  */
 public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
-        GetFirable {
+GetFirable {
 
     /**
      * Constructs a director in the given container with the given name. The
@@ -581,7 +581,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
                     break;
                     // return;
                 } // else if 0, keep executing
-                //if (!actorList.contains(actorAndState.first)) {
+                  //if (!actorList.contains(actorAndState.first)) {
                 if (eventAndState.first != null) {
 
                     _eventList.add(eventAndState.first);
@@ -749,7 +749,7 @@ public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
      * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("true");

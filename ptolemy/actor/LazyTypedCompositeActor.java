@@ -144,7 +144,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LazyTypedCompositeActor extends TypedCompositeActor implements
-        LazyComposite {
+LazyComposite {
 
     // FIXME: Have to do ports and relations.  Only done attributes and entities.
 
@@ -689,7 +689,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                 if (prototypes == null || prototypes.size() == 0) {
                     throw new InternalErrorException(
                             getFullName()
-                                    + ": Object says it is derived but reports no prototypes!");
+                            + ": Object says it is derived but reports no prototypes!");
                 }
                 // The prototype must have the same class as this.
                 LazyTypedCompositeActor prototype = (LazyTypedCompositeActor) prototypes
@@ -1081,7 +1081,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  then relations.
      */
     protected class ContainedObjectsIterator extends
-            Entity.ContainedObjectsIterator {
+    Entity.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for CompositeEntities are attributes, ports, classes
          *  entities, and relations.

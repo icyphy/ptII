@@ -122,7 +122,7 @@ public class ParameterMirrorPort extends ParameterPort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
 
         if (container == null && _associatedPort != null
@@ -171,7 +171,7 @@ public class ParameterMirrorPort extends ParameterPort {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         if (_associatedPort != null && !_associatedPort.getName().equals(name)) {

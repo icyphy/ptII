@@ -485,7 +485,7 @@ public class TransitionController extends BasicEdgeController {
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                        .getMenuShortcutKeyMask()));
             }
         }
 
@@ -493,7 +493,7 @@ public class TransitionController extends BasicEdgeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                .error("Cannot look inside without a configuration.");
                 return;
             }
 

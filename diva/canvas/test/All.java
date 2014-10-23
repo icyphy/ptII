@@ -51,7 +51,7 @@ public class All extends TestSuite {
 
         // Canvas tests
         new JCanvasTest(getTestHarness(), new JCanvasTest.CanvasFactory())
-                .run();
+        .run();
     }
 
     ///////////////////////////////////////////////////////////////////

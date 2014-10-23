@@ -217,7 +217,7 @@ public class SingleWindowConfiguration extends Configuration {
      */
     @Override
     public Tableau openModel(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other.
         InstantiableNamedObj deferredTo = null;

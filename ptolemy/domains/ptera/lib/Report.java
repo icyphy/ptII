@@ -171,7 +171,7 @@ public class Report extends Event {
                     this.tableau);
             if (tableau != null && !(tableau.getFrame() instanceof TextEditor)) {
                 EventUtils
-                        .setTableau(this, referredTableau, this.tableau, null);
+                .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }

@@ -233,7 +233,7 @@ public class PtidesEvent extends DEEvent {
                 : _absoluteDeadline.hashCode();
         int objectFieldHash = isPureEvent() ? absoluteDeadlineHash : _token
                 .hashCode() >>> _receiver.hashCode();
-        return primitiveFieldHash >>> objectFieldHash;
+                return primitiveFieldHash >>> objectFieldHash;
     }
 
     @Override
@@ -262,10 +262,10 @@ public class PtidesEvent extends DEEvent {
                     event.timeStamp()) <= 0
                     && _timestamp.add(clockSyncBound).compareTo(
                             event.timeStamp()) >= 0;
-            // The microstep in Ptides describes a logical ordering. Therefore,
-            // even if the timestamps are not equal, we require the microsteps
-            // to be the same.
-            same = same & _microstep == event.microstep();
+                            // The microstep in Ptides describes a logical ordering. Therefore,
+                            // even if the timestamps are not equal, we require the microsteps
+                            // to be the same.
+                            same = same & _microstep == event.microstep();
         }
 
         return same;
@@ -323,16 +323,16 @@ public class PtidesEvent extends DEEvent {
             name = ((NamedObj) _actor).getFullName();
         }
         return "PtidesEvent{time = "
-                + _timestamp
-                + ", microstep = "
-                + _microstep
-                + ", depth = "
-                + _depth
-                + ", token = "
-                + _token
-                + ", absoluteDeadline = "
-                + (_absoluteDeadline == null ? "null" : _absoluteDeadline
-                        .toString())
+        + _timestamp
+        + ", microstep = "
+        + _microstep
+        + ", depth = "
+        + _depth
+        + ", token = "
+        + _token
+        + ", absoluteDeadline = "
+        + (_absoluteDeadline == null ? "null" : _absoluteDeadline
+                .toString())
                 + ", dest = "
                 + name
                 + "."
@@ -344,8 +344,8 @@ public class PtidesEvent extends DEEvent {
                         + " {"
                         + (_receiver.getContainer() != null ? _receiver
                                 .getContainer().getFullName() : "")
-                        + ".receiver }") + ", isPureEvent = " + _isPureEvent
-                + ", sourceTimestamp = " + _sourceTimestamp + "}";
+                                + ".receiver }") + ", isPureEvent = " + _isPureEvent
+                                + ", sourceTimestamp = " + _sourceTimestamp + "}";
     }
 
     ///////////////////////////////////////////////////////////////////

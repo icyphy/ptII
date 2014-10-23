@@ -66,7 +66,7 @@ import ptolemy.moml.unit.UnitEquation;
  */
 @SuppressWarnings("serial")
 public class UnitConstraintsDialog extends PtolemyDialog implements
-        ChangeListener {
+ChangeListener {
     /**
      * Construct a dialog that presents Unit constraints as a table. Each row
      * of the table corresponds to one constraint. The user modifies the table

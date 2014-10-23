@@ -105,7 +105,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 public class MovieWriter extends Sink implements ControllerListener,
-        DataSinkListener {
+DataSinkListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

@@ -60,7 +60,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Red
  */
 public abstract class SyntacticCodeGeneratorAdapter extends
-        CodeGeneratorAdapter {
+CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.

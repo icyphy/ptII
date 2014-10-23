@@ -117,7 +117,7 @@ public class BasicGraphController extends SimpleGraphController {
         };
         _edgeCreator.setMouseFilter(_controlFilter);
         ((NodeInteractor) getNodeController().getNodeInteractor())
-                .addInteractor(_edgeCreator);
+        .addInteractor(_edgeCreator);
     }
 
     ///////////////////////////////////////////////////////////////////

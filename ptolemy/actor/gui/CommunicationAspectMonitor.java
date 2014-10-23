@@ -63,7 +63,7 @@ import ptolemy.plot.Plot;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class CommunicationAspectMonitor extends TypedAtomicActor implements
-        CommunicationAspectListener {
+CommunicationAspectListener {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.

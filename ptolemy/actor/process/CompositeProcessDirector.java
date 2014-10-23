@@ -132,7 +132,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CompositeProcessDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -666,8 +666,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
                                 ((CompositeProcessDirector) execDir)
-                                        .threadBlocked(Thread.currentThread(),
-                                                null);
+                                .threadBlocked(Thread.currentThread(),
+                                        null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC
@@ -687,8 +687,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
                                 ((CompositeProcessDirector) execDir)
-                                        .threadBlocked(Thread.currentThread(),
-                                                null);
+                                .threadBlocked(Thread.currentThread(),
+                                        null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC

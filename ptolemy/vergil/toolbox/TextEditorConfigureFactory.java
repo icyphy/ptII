@@ -65,7 +65,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (ptolemy)
  */
 public class TextEditorConfigureFactory extends EditorFactory implements
-        TextEditorFactory {
+TextEditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.

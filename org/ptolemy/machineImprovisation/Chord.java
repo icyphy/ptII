@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import java.util.HashSet;
@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
+
 /**
  * A class that defines a Chord object. A chord is either given by
  * a set of notes that it contains, or a name. In the latter case,
@@ -55,6 +56,7 @@ public class Chord {
         _chordTones = new HashSet<Note>();
         this.setChordTones(name);
     }
+
     /**
      * Construct a chord by a set of note objects
      * @param chordTones a Set of notes that are a part of the specified Chord.
@@ -65,12 +67,14 @@ public class Chord {
             _chordTones.add(n);
         }
     }
+
     /**
      * Construct an empty Chord with no chord tones.
      */
     public Chord() {
         _chordTones = new HashSet<Note>();
     }
+
     /**
      * Add a note to this chord.
      * @param n Note to be added
@@ -78,6 +82,7 @@ public class Chord {
     public void addNote(Note n) {
         _chordTones.add(n);
     }
+
     /**
      * Get notes contained by this Chord.
      * @return the Set of chord tones contained by this chord
@@ -85,6 +90,7 @@ public class Chord {
     public Set<Note> getNotes() {
         return this._chordTones;
     }
+
     /**
      * Get the duration of this Chord.
      * @return duration of chord
@@ -92,6 +98,7 @@ public class Chord {
     public double getDuration() {
         return this._duration;
     }
+
     /**
      * Get name of this Chord.
      * @return Chord name
@@ -99,20 +106,22 @@ public class Chord {
     public String getName() {
         return this._name;
     }
+
     /**
      * Set the notes contained by this chord by a dictionary lookup.
      * @param chord The chord name
      * @exception IllegalActionException
      */
-    public void setChordTones() throws IllegalActionException{
+    public void setChordTones() throws IllegalActionException {
 
         if (this._name == null) {
             throw new IllegalActionException("Chord name is undefined.");
         } else {
-            List<String> chordNotes = MusicSpecs.getChordPitches(this._name, true);
+            List<String> chordNotes = MusicSpecs.getChordPitches(this._name,
+                    true);
             if (chordNotes != null) {
-                for ( int i = 0; i< chordNotes.size(); i++) {
-                    _chordTones.add( new Note((String)chordNotes.get(i)));
+                for (int i = 0; i < chordNotes.size(); i++) {
+                    _chordTones.add(new Note(chordNotes.get(i)));
                 }
             }
         }
@@ -126,11 +135,12 @@ public class Chord {
 
         List<String> chordNotes = MusicSpecs.getChordPitches(chord, true);
         if (chordNotes != null) {
-            for ( int i = 0; i< chordNotes.size(); i++) {
-                _chordTones.add( new Note((String)chordNotes.get(i)));
+            for (int i = 0; i < chordNotes.size(); i++) {
+                _chordTones.add(new Note(chordNotes.get(i)));
             }
         }
     }
+
     /** The set of notes that define this chord object. */
     private final Set<Note> _chordTones;
     /** Duration of this chord in beats.

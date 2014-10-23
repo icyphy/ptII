@@ -210,7 +210,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             }
             _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
-                            + File.pathSeparatorChar);
+                    + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
@@ -482,7 +482,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     }
 
                     _statusBar
-                            .setText("Executing: " + statusCommand.toString());
+                    .setText("Executing: " + statusCommand.toString());
 
                     // If _envp is null, then no environment changes.
                     _process = runtime.exec(commandTokens, _envp,
@@ -596,14 +596,14 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                         _statusBar.setText("Cancelled.");
                     } catch (ExecutionException ex1) {
                         _statusBar
-                                .setText("The computation threw an exception: "
-                                        + ex1.getCause());
+                        .setText("The computation threw an exception: "
+                                + ex1.getCause());
                     } catch (InterruptedException ex2) {
                         _statusBar
-                                .setText("The worker thread was interrupted while waiting, which is probably not a problem.");
+                        .setText("The worker thread was interrupted while waiting, which is probably not a problem.");
                     } catch (TimeoutException ex3) {
                         _statusBar
-                                .setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
+                        .setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
                     }
                 }
             };

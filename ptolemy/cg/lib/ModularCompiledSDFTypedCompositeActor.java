@@ -157,7 +157,7 @@ will simply result in the expression failing to evaluate.
  */
 
 public class ModularCompiledSDFTypedCompositeActor extends
-        ModularCodeGenLazyTypedCompositeActor {
+ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -229,7 +229,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCompiledSDFTypedCompositeActor) entity).recompileHierarchy
-                            .setToken(new BooleanToken(true));
+                    .setToken(new BooleanToken(true));
                 }
             }
         } else if (attribute != recompileThisLevel) {
@@ -303,9 +303,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
                             NamedObj container = getContainer();
                             if (container instanceof CompositeActor) {
                                 ((CompositeActor) container)
-                                        .registerPublisherPort(
-                                                port.getPubSubChannelName(),
-                                                newPort);
+                                .registerPublisherPort(
+                                        port.getPubSubChannelName(),
+                                        newPort);
                             }
                         }
                     }
@@ -353,7 +353,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             System.out
-                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -415,17 +415,17 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 // this model to somebody else. Regenerate it again.
                 _generateCode();
                 classInstance = classLoader.loadClass(className);
-            // java.net.URLClassLoader is not present in Java 1.6.
-//             } finally {
-//                 if (classLoader != null) {
-//                     try {
-//                         classLoader.close();
-//                     } catch (IOException ex) {
-//                         throw new IllegalActionException(this, ex,
-//                                 "Failed to close \""
-//                                         + (url == null ? "null" : url) + "\".");
-//                     }
-//                 }
+                // java.net.URLClassLoader is not present in Java 1.6.
+                //             } finally {
+                //                 if (classLoader != null) {
+                //                     try {
+                //                         classLoader.close();
+                //                     } catch (IOException ex) {
+                //                         throw new IllegalActionException(this, ex,
+                //                                 "Failed to close \""
+                //                                         + (url == null ? "null" : url) + "\".");
+                //                     }
+                //                 }
             }
 
             _objectWrapper = classInstance.newInstance();
@@ -637,15 +637,15 @@ public class ModularCompiledSDFTypedCompositeActor extends
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
                                     DFUtilities
-                                            .setRateVariable(
-                                                    (IOPort) actorPort,
-                                                    port.input() ? "tokenConsumptionRate"
-                                                            : "tokenProductionRate",
+                                    .setRateVariable(
+                                            (IOPort) actorPort,
+                                            port.input() ? "tokenConsumptionRate"
+                                                    : "tokenProductionRate",
                                                     port.rate());
                                     ((TypedIOPort) actorPort)
-                                            .setTypeEquals(JavaCodeGenerator
-                                                    .codeGenTypeToPtType(port
-                                                            .type()));
+                                    .setTypeEquals(JavaCodeGenerator
+                                            .codeGenTypeToPtType(port
+                                                    .type()));
                                     ((IOPort) actorPort).setDefaultWidth(port
                                             .width());
                                     break;
@@ -662,13 +662,13 @@ public class ModularCompiledSDFTypedCompositeActor extends
                                 newPort.setOutput(port.output());
                                 DFUtilities.setRateVariable(newPort, port
                                         .input() ? "tokenConsumptionRate"
-                                        : "tokenProductionRate", port.rate());
+                                                : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                            .linkToPublishedPort(
-                                                    port.getPubSubChannelName(),
-                                                    newPort);
+                                    .linkToPublishedPort(
+                                            port.getPubSubChannelName(),
+                                            newPort);
                                 }
                             }
                         }
@@ -924,17 +924,17 @@ public class ModularCompiledSDFTypedCompositeActor extends
             } catch (Throwable throwable) {
                 throw new InternalErrorException(this, throwable,
                         "Failed to get the profile.");
-            // java.net.URLClassLoader is not present in Java 1.6.
-//             } finally {
-//                 if (classLoader != null) {
-//                     try {
-//                         classLoader.close();
-//                     } catch (IOException ex) {
-//                         throw new InternalErrorException(this, ex,
-//                                 "Failed to close \""
-//                                         + (url == null ? "null" : url) + "\".");
-//                     }
-//                 }
+                // java.net.URLClassLoader is not present in Java 1.6.
+                //             } finally {
+                //                 if (classLoader != null) {
+                //                     try {
+                //                         classLoader.close();
+                //                     } catch (IOException ex) {
+                //                         throw new InternalErrorException(this, ex,
+                //                                 "Failed to close \""
+                //                                         + (url == null ? "null" : url) + "\".");
+                //                     }
+                //                 }
             }
         }
 
@@ -945,7 +945,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularSDFCodeGenerator(this,
                     "ModularSDFCodeGenerator");
@@ -1040,7 +1040,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                        .booleanValue();
+                .booleanValue();
     }
 
     /** Return the name of a Publisher or Subscriber channel name.

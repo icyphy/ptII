@@ -139,13 +139,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         if (getConfiguration().getEntity("actor library") != null) {
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
             diva.gui.GUIUtilities
-                    .addToolBarButton(toolbar, _newInputPortAction);
+            .addToolBarButton(toolbar, _newInputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newOutputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
             diva.gui.GUIUtilities
-                    .addToolBarButton(toolbar, _newInoutPortAction);
+            .addToolBarButton(toolbar, _newInoutPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newInputMultiportAction);
@@ -481,12 +481,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                         .newInstance(args);
             } catch (Exception e) {
                 System.out
-                        .println("The configuration has "
-                                + "_alternateActorInstanceController set, but the class "
-                                + _alternateActorInstanceClassName
-                                + " is not found.  Defaulting "
-                                + " to ActorInstanceController: "
-                                + e.getMessage());
+                .println("The configuration has "
+                        + "_alternateActorInstanceController set, but the class "
+                        + _alternateActorInstanceClassName
+                        + " is not found.  Defaulting "
+                        + " to ActorInstanceController: "
+                        + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -604,30 +604,30 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _portController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+        .addInteractor(_linkCreator);
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+        .addInteractor(_linkCreator);
         ((CompositeInteractor) _relationController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+        .addInteractor(_linkCreator);
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2
-                .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
+        .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-                .addInteractor(linkCreator2);
+        .addInteractor(linkCreator2);
     }
 
     /** Action for creating a new relation. */
     protected Action _newRelationAction = new NewRelationAction(
             new String[][] {
                     { "/ptolemy/vergil/actor/img/relation.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/relation_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/relation_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     //   private LinkCreator _linkCreator2;  // For shift-click
 
@@ -725,78 +725,78 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
             "New input/output multiport", KeyEvent.VK_T, new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_inout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input/output port. */
     private Action _newInoutPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT, "New input/output port",
             KeyEvent.VK_P, new String[][] {
                     { "/ptolemy/vergil/actor/img/single_inout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/single_inout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/single_inout_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input multiport. */
     private Action _newInputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
             "New input multiport", KeyEvent.VK_N, new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_in.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/multi_in_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/multi_in_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT, "New input port",
             KeyEvent.VK_I, new String[][] {
                     { "/ptolemy/vergil/actor/img/single_in.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/single_in_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/single_in_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/single_in_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new output multiport. */
     private Action _newOutputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
             "New output multiport", KeyEvent.VK_U, new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_out.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/multi_out_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/multi_out_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new output port. */
     private Action _newOutputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT, "New output port",
             KeyEvent.VK_O, new String[][] {
                     { "/ptolemy/vergil/actor/img/single_out.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/single_out_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/single_out_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/single_out_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** The port dialog factory. */
     private PortDialogAction _portDialogAction;
@@ -814,8 +814,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask());
+            .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
+            .getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

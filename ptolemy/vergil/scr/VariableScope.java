@@ -150,7 +150,6 @@ public class VariableScope extends ModelScope {
         return getAllScopedVariableNames(null, _model);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

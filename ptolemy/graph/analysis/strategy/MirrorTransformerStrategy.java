@@ -52,7 +52,7 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
  @version $Id$
  */
 public class MirrorTransformerStrategy extends CachedStrategy implements
-        MirrorTransformer {
+MirrorTransformer {
     /** Construct a transformer for a given graph.
      *  @param graph The given graph.
      */

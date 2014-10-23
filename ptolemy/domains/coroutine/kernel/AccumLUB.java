@@ -77,7 +77,7 @@ public class AccumLUB extends TypedAtomicActor {
     }
 
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _ins = new TypedIOPort(this, "Ins", true, false);
         _out = new TypedIOPort(this, "Out", false, true);
         _ins.setMultiport(true);

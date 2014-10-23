@@ -586,9 +586,9 @@ public final class CanvasUtilities {
 
             switch (at.getType()) {
             case AffineTransform.TYPE_GENERAL_SCALE
-                    | AffineTransform.TYPE_TRANSLATION:
+            | AffineTransform.TYPE_TRANSLATION:
             case AffineTransform.TYPE_UNIFORM_SCALE
-                    | AffineTransform.TYPE_TRANSLATION:
+            | AffineTransform.TYPE_TRANSLATION:
                 xdash = x * m[m00] + m[m02];
                 ydash = y * m[m11] + m[m12];
                 wdash = w * m[m00];

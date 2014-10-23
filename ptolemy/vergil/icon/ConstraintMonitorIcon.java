@@ -148,7 +148,7 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != null && !(container instanceof ConstraintMonitor)) {
             throw new IllegalActionException(this, container,
                     "Container is required to be a ConstraintMonitor");

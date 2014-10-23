@@ -76,7 +76,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
         // get the "Look Inside" menu to work for composite actors in
         // Kepler, we create these menu items now.
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _openInstanceAction));
     }

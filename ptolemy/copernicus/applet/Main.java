@@ -58,18 +58,18 @@ public class Main extends KernelMain {
         // Generate the makefile files in outputDirectory
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
-                        + " targetPackage:" + _targetPackage + " targetPath:"
-                        + _targetPath + " templateDirectory:"
-                        + _templateDirectory + " outputDirectory:"
-                        + _outputDirectory + " overwrite:false");
+                + " targetPackage:" + _targetPackage + " targetPath:"
+                + _targetPath + " templateDirectory:"
+                + _templateDirectory + " outputDirectory:"
+                + _outputDirectory + " overwrite:false");
 
         // Generate the applet files in outputDirectory
         addTransform(pack, "wjtp.appletWriter", AppletWriter.v(_toplevel),
                 "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
-                        + " outputDirectory:" + _outputDirectory
-                        + " ptIIJarsPath:" + _ptIIJarsPath + " ptIILocalURL:"
-                        + _ptIILocalURL + " ptIIUserDirectory:"
-                        + _ptIIUserDirectory + " targetPath:" + _targetPath);
+                + " outputDirectory:" + _outputDirectory
+                + " ptIIJarsPath:" + _ptIIJarsPath + " ptIILocalURL:"
+                + _ptIILocalURL + " ptIIUserDirectory:"
+                + _ptIIUserDirectory + " targetPath:" + _targetPath);
         System.out.println("applet.Main.addTransforms, targetPath: "
                 + _targetPath);
     }

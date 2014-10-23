@@ -62,7 +62,7 @@ public class SCRModel extends ModalModel {
      *   an entity with the specified name.
      */
     public SCRModel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -88,7 +88,7 @@ public class SCRModel extends ModalModel {
      * @exception NameDuplicationException
      */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         Parameter parameter = new Parameter(this, "openAsSCRActor");
         parameter.setTypeEquals(BaseType.BOOLEAN);
         parameter.setToken("true");

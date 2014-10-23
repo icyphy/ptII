@@ -38,8 +38,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 @since Ptolemy II 10.0
  */
 public class Distributor
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Distributor {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Distributor {
     /**
      *  Construct a Distributor adapter.
      *  @param actor The given ptolemy.actor.lib.Distributor actor.

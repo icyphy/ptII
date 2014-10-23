@@ -47,7 +47,7 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
                             .init()
                             .create_struct_tc(
                                     ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                                            .id(),
+                                    .id(),
                                     "CorbaIndexOutofBoundException", _members0);
                     __active = false;
                 }

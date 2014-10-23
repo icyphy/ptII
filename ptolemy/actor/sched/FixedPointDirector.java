@@ -120,7 +120,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (eal)
  */
 public class FixedPointDirector extends StaticSchedulingDirector implements
-        SuperdenseTimeDirector {
+SuperdenseTimeDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -131,7 +131,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *   an entity with the specified name.
      */
     public FixedPointDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -999,7 +999,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  values and types.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _zeroTime = new Time(this, 0.0);
 
         iterations = new Parameter(this, "iterations", new IntToken(0));

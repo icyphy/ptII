@@ -63,7 +63,7 @@ import javax.sound.sampled.TargetDataLine;
  @Pt.AcceptedRating Red (ishwinde)
  */
 public class LiveSoundJavaSE extends LiveSoundCommon implements
-        LiveSoundInterface {
+LiveSoundInterface {
 
     /** Flush queued data from the capture buffer.  The flushed data is
      *  discarded.  It is only legal to flush the capture buffer after
@@ -87,7 +87,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public void flushCaptureBuffer(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.flushCaptureBuffer(), but "
@@ -127,7 +127,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public void flushPlaybackBuffer(Object producer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         _flushPlaybackBuffer();
     }
 
@@ -215,7 +215,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public double[][] getSamples(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.getSamples(), but "
@@ -534,7 +534,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public void startCapture(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         // FIXME: consider allowing several object to
         // share the captured audio resources.
         if (_soundConsumers.size() > 0) {
@@ -589,7 +589,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public void startPlayback(Object producer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (!_playbackIsActive) {
             _startPlayback();
             _playbackIsActive = true;
@@ -614,7 +614,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public void stopCapture(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (_soundConsumers.contains(consumer)) {
             _soundConsumers.remove(consumer);
         } else {
@@ -647,7 +647,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      */
     @Override
     public void stopPlayback(Object producer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (_playbackIsActive) {
             _stopPlayback();
         }
@@ -707,7 +707,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n" + format
-                            + "\n are:\n" + _encodings(format));
+                    + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex2) {
@@ -749,7 +749,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n" + format
-                            + "\n are:\n" + _encodings(format));
+                    + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex) {

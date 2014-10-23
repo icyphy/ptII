@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationRule extends MultiCompositeActor implements
-        GTCompositeActor, ValueListener {
+GTCompositeActor, ValueListener {
 
     /** Construct a transformation rule with a name and a container.
      *  The container argument must not be null, or a
@@ -438,7 +438,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         trigger.setTypeEquals(BaseType.BOOLEAN);
                         trigger.setDerivedLevel(1);
                         new StringAttribute(trigger, "_cardinal")
-                                .setExpression("SOUTH");
+                        .setExpression("SOUTH");
                     }
                     if (remaining == null) {
                         remaining = new TypedIOPort(this, "remaining", false,
@@ -446,7 +446,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         remaining.setTypeEquals(BaseType.INT);
                         remaining.setDerivedLevel(1);
                         new StringAttribute(remaining, "_cardinal")
-                                .setExpression("SOUTH");
+                        .setExpression("SOUTH");
                     }
                     if (matched != null) {
                         matched.setContainer(null);
@@ -487,7 +487,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         matched.setTypeEquals(BaseType.BOOLEAN);
                         matched.setDerivedLevel(1);
                         new StringAttribute(matched, "_cardinal")
-                                .setExpression("SOUTH");
+                        .setExpression("SOUTH");
                     }
                 }
             } catch (KernelException e) {
@@ -638,7 +638,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *   with a name already in the container.
      */
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
 
         // Create the default refinement.

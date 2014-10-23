@@ -263,7 +263,7 @@ public class TxCoordination extends MACActorBase {
 
                     Time endRx = new Time(getDirector(),
                             ((DoubleToken) GotCtsMsg.get("endRx"))
-                                    .doubleValue());
+                            .doubleValue());
                     _ssrc = 0;
 
                     setTimer(SifsTimeout, endRx.add(_dSifsDly * 1e-6));
@@ -447,14 +447,14 @@ public class TxCoordination extends MACActorBase {
                 new IntToken(123),
                 new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
                         + _sAckCtsLng / _mBrate),
-                new IntToken(dest_addr),
-                new IntToken(getID()),
-                new IntToken(0),
-                new IntToken(_seqNum - _seqNum / 4096 * 4096),
-                new IntToken(0),
-                new IntToken(0),
-                msg,
-                new IntToken(34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
+                        new IntToken(dest_addr),
+                        new IntToken(getID()),
+                        new IntToken(0),
+                        new IntToken(_seqNum - _seqNum / 4096 * 4096),
+                        new IntToken(0),
+                        new IntToken(0),
+                        msg,
+                        new IntToken(34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
         _seqNum++;
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);

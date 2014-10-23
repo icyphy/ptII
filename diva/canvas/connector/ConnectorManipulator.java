@@ -161,7 +161,7 @@ public class ConnectorManipulator extends Manipulator {
      */
     public void removeConnectorListener(ConnectorListener l) {
         ((ConnectorInteractor) getHandleInteractor())
-                .removeConnectorListener(l);
+        .removeConnectorListener(l);
     }
 
     /** Remove the given layer motion listener from this interactor.

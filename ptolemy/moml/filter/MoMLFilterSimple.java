@@ -77,7 +77,7 @@ public abstract class MoMLFilterSimple implements MoMLFilter {
     @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception {
+                    throws Exception {
         filterEndElement(container, elementName, currentCharData, xmlFile);
     }
 }

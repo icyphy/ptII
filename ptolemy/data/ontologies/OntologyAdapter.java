@@ -327,7 +327,7 @@ public abstract class OntologyAdapter {
                         "guardTransition")
                         || ((StringAttribute) attribute).getContainer() instanceof Expression
                         && ((StringAttribute) attribute).getName()
-                                .equalsIgnoreCase("expression")) {
+                        .equalsIgnoreCase("expression")) {
 
                     result.add(attribute);
                 }
@@ -352,20 +352,20 @@ public abstract class OntologyAdapter {
                                 "firingCountLimit")
                                 || ((Parameter) attribute).getName().equals(
                                         "NONE")
-                                || ((Parameter) attribute).getName().equals(
-                                        "_hideName")
-                                || ((Parameter) attribute).getName().equals(
-                                        "_showName")
-                                || ((Parameter) attribute).getName().equals(
-                                        "conservativeAnalysis")
-                                || ((Parameter) attribute).getName().equals(
-                                        "directorClass")
-                                || ((Parameter) attribute).getName().equals(
-                                        "stateDependentCausality")
-                                || ((Parameter) attribute).getName().equals(
-                                        "delayed")
-                                || ((Parameter) attribute).getName().equals(
-                                        "displayWidth")) {
+                                        || ((Parameter) attribute).getName().equals(
+                                                "_hideName")
+                                                || ((Parameter) attribute).getName().equals(
+                                                        "_showName")
+                                                        || ((Parameter) attribute).getName().equals(
+                                                                "conservativeAnalysis")
+                                                                || ((Parameter) attribute).getName().equals(
+                                                                        "directorClass")
+                                                                        || ((Parameter) attribute).getName().equals(
+                                                                                "stateDependentCausality")
+                                                                                || ((Parameter) attribute).getName().equals(
+                                                                                        "delayed")
+                                                                                        || ((Parameter) attribute).getName().equals(
+                                                                                                "displayWidth")) {
 
                             // do nothing, ignore the parameter
                         } else {
@@ -396,11 +396,11 @@ public abstract class OntologyAdapter {
             boolean isCompositeOutput = connectedPort.getContainer() instanceof CompositeEntity
                     && !isInput
                     && port.depthInHierarchy() > connectedPort
-                            .depthInHierarchy();
+                    .depthInHierarchy();
 
-            if (isInput || isCompositeOutput) {
-                result.add(connectedPort);
-            }
+                    if (isInput || isCompositeOutput) {
+                        result.add(connectedPort);
+                    }
         }
         return result;
     }
@@ -422,11 +422,11 @@ public abstract class OntologyAdapter {
             boolean isCompositeInput = connectedPort.getContainer() instanceof CompositeEntity
                     && isInput
                     && port.depthInHierarchy() > connectedPort
-                            .depthInHierarchy();
+                    .depthInHierarchy();
 
-            if (!isInput || isCompositeInput) {
-                result.add(connectedPort);
-            }
+                    if (!isInput || isCompositeInput) {
+                        result.add(connectedPort);
+                    }
         }
         return result;
     }

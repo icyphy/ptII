@@ -114,8 +114,7 @@ public class WebApplicationInfo {
      * @param servlet The servlet to associated with the servlet path
      * @exception Exception If the path has already been requested by another servlet
      */
-    public void addServletInfo(URI path, Servlet servlet)
-            throws Exception {
+    public void addServletInfo(URI path, Servlet servlet) throws Exception {
         if (_servletInfo == null) {
             _servletInfo = new HashMap<URI, Servlet>();
         }
@@ -155,8 +154,7 @@ public class WebApplicationInfo {
      * @exception Exception If the path has already been requested by a servlet
      * or resource
      */
-    public void addSocketInfo(URI path, Entity entity)
-            throws Exception {
+    public void addSocketInfo(URI path, Entity entity) throws Exception {
         if (_websocketInfo == null) {
             _websocketInfo = new HashMap<URI, HashSet<Entity>>();
         }
@@ -165,8 +163,7 @@ public class WebApplicationInfo {
             throw new Exception("Socket path cannot be empty");
         } else if (_servletInfo.containsKey(path)
                 || _resourceInfo.keySet().contains(path)) {
-            throw new Exception("Duplicate path requested by a socket, "
-                    + path
+            throw new Exception("Duplicate path requested by a socket, " + path
                     + " . Please check other servlet and resource "
                     + "paths for matches.");
         }
@@ -200,8 +197,8 @@ public class WebApplicationInfo {
             throw new Exception("Resource path cannot be empty");
         } else if (resourceLocations == null || resourceLocations.isEmpty()) {
             throw new Exception("At least one resource location must be given");
-        } else if (_servletInfo.containsKey(path) ||
-                _websocketInfo.containsKey(path)) {
+        } else if (_servletInfo.containsKey(path)
+                || _websocketInfo.containsKey(path)) {
             throw new Exception("Duplicate path requested by a resource, "
                     + path
                     + " . Please check servlet and socket paths for matches.");
@@ -232,14 +229,14 @@ public class WebApplicationInfo {
     }
 
     /** Get the full model name of the model that is running the web application.
-    *
-    * @return  The full model name of the model that is running the web
-    * application
-    * @see #setModelName(String)
-    */
-   public String getModelName() {
-       return _modelName;
-   }
+     *
+     * @return  The full model name of the model that is running the web
+     * application
+     * @see #setModelName(String)
+     */
+    public String getModelName() {
+        return _modelName;
+    }
 
     /** Get the set of servlet paths assigned to this web application and their
      * corresponding servlets. May be empty.
@@ -489,23 +486,23 @@ public class WebApplicationInfo {
     private FileParameter _temporaryFileLocation;
 
     /** A map associating paths with sets of actors for WebSocket communication.
-    *
-    * A web application is typically composed of request handlers, each
-    * assigned to a path prefix.  For example, handler at path prefix /start
-    * on the host localhost at port 8080 in the application at path /modelName
-    * would be accessed at URL http://localhost:8080/modelName/start
-    *
-    * This full URL path must be unique on the server and may not be a prefix
-    * of any other unique path.  This ensures that there is a unique handler
-    * for each request.  One
-    * {@link org.eclipse.jetty.server.handler.WebContextHandler}
-    * will be allocated per path.  Multiple actors may read from and write to
-    * the socket.
-    *
-    * May be an empty list if the application does not use any WebSocket
-    * communication.
-    *
-    * See also comments in {@link org.ptolemy.ptango.lib.WebServer}
-    */
+     *
+     * A web application is typically composed of request handlers, each
+     * assigned to a path prefix.  For example, handler at path prefix /start
+     * on the host localhost at port 8080 in the application at path /modelName
+     * would be accessed at URL http://localhost:8080/modelName/start
+     *
+     * This full URL path must be unique on the server and may not be a prefix
+     * of any other unique path.  This ensures that there is a unique handler
+     * for each request.  One
+     * {@link org.eclipse.jetty.server.handler.WebContextHandler}
+     * will be allocated per path.  Multiple actors may read from and write to
+     * the socket.
+     *
+     * May be an empty list if the application does not use any WebSocket
+     * communication.
+     *
+     * See also comments in {@link org.ptolemy.ptango.lib.WebServer}
+     */
     private HashMap<URI, HashSet<Entity>> _websocketInfo;
 }

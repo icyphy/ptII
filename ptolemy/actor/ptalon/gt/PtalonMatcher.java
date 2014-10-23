@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PtalonMatcher extends TypedCompositeActor implements
-        GTCompositeActor {
+GTCompositeActor {
 
     /** Construct a PtalonMatcher with a name and a container.
      *  The container argument must not be null, or a
@@ -139,7 +139,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
                 } else {
                     _currentActor = _actors.get(key);
                     _currentActor.getAttribute(_IGNORING_ATTRIBUTE_NAME)
-                            .setContainer(null);
+                    .setContainer(null);
                 }
                 if (_currentActor != null) {
                     Attribute ignoringAttribute = _currentActor
@@ -205,7 +205,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     /**  A nested ptalon actor.
      */
     public static class NestedPtalonActor extends PtalonActor implements
-            GTCompositeActor {
+    GTCompositeActor {
 
         /** Construct a NestedPtalonActor with a name and a container.
          *  The container argument must not be null, or a
@@ -285,7 +285,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     ////                         private methods                   ////
 
     private void _createParameters() throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
+    NameDuplicationException, CloneNotSupportedException {
         _currentActor._fixed = true;
         Set<PtalonExpressionParameter> parameters = new HashSet<PtalonExpressionParameter>();
         for (Object parameterObject : _currentActor
@@ -322,14 +322,14 @@ public class PtalonMatcher extends TypedCompositeActor implements
             if (!parameters.contains(parameter)) {
                 if (parameter.getAttribute("_hide") == null) {
                     new Parameter(parameter, "_hide")
-                            .setToken(BooleanToken.TRUE);
+                    .setToken(BooleanToken.TRUE);
                 }
             }
         }
     }
 
     private void _createPtalonActor(HashKey key) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NestedPtalonActor actor = new NestedPtalonActor(this,
                 uniqueName("PtalonActor"));
         actor.ptalonCodeLocation.setToken(key._codeLocation);
@@ -370,7 +370,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     }
 
     private void _mirrorPtalonActor() throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
+    NameDuplicationException, CloneNotSupportedException {
         removeAllPorts();
         removeAllRelations();
         for (Object portObject : _currentActor.portList()) {
@@ -385,7 +385,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     }
 
     private void _rearrangePtalonActors() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         final int width = 640;
         final int xSpace = 80;
         final int ySpace = 80;

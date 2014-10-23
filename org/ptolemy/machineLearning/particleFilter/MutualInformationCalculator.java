@@ -27,7 +27,6 @@
  */
 package org.ptolemy.machineLearning.particleFilter;
 
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,7 +137,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
                 for (int k = 0; k < _labels.length; k++) {
                     if (_labels[k].equals("weight")) {
-                        _weights[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
+                        _weights[i] = ((DoubleToken) token.get(_labels[k]))
+                                .doubleValue();
                     }
                 }
                 _px[i] = ((DoubleToken) token.get(_labels[0])).doubleValue(); //particleValue.get(0);
@@ -211,7 +211,6 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     public TypedIOPort xValue;
 
     // code for computing the mutual information between particle sets and measurements
-
 
     private double Hz(double[] x) {
         // zeroth order approximation of the measurement entropy.
@@ -287,7 +286,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         return -Hz;
     }
 
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         optIndex = new Parameter(this, "optIndex");
         optIndex.setExpression("-1");
         optIndex.setTypeEquals(BaseType.INT);
@@ -306,8 +306,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         _types = new Type[names.length() + 1];
         for (int i = 0; i < names.length(); i++) {
             stateName = ((StringToken) names.getElement(i)).stringValue();
-            if (this.getAttribute(stateName) == null
-                    && stateName.length() != 0) {
+            if (this.getAttribute(stateName) == null && stateName.length() != 0) {
                 Parameter y = new Parameter(this, stateName);
                 y.setExpression("0.0");
                 y.setVisibility(Settable.EXPERT);
@@ -317,8 +316,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         }
         _labels[names.length()] = "weight";
         _types[names.length()] = BaseType.DOUBLE;
-        particles.setTypeEquals(new ArrayType(new RecordType(_labels,
-                _types)));
+        particles.setTypeEquals(new ArrayType(new RecordType(_labels, _types)));
         _px = new double[0];
         _py = new double[0];
         _weights = new double[0];

@@ -166,7 +166,7 @@ public class DBActorController extends ActorController {
             if (!StringUtilities.inApplet()) {
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_D, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                        .getMenuShortcutKeyMask()));
             }
         }
 
@@ -196,7 +196,7 @@ public class DBActorController extends ActorController {
                                         ((StringParameter) object
                                                 .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                                                 .getExpression(),
-                                        _configuration);
+                                                _configuration);
 
                         if (effigy != null) {
                             effigy.showTableaux();

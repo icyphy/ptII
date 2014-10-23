@@ -223,7 +223,7 @@ public class OptimizingSDFDirector extends SDFDirector {
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // set the schedule to an instance of OptimizingSDFScheduler
         OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this,

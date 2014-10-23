@@ -79,7 +79,7 @@ public class Butterfly extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public Butterfly(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         setName("Butterfly");
 

@@ -73,7 +73,7 @@ import ptolemy.moml.filter.MoMLFilterSimple;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class DesignPatternImporter extends Attribute implements GTAttribute,
-        ValueListener {
+ValueListener {
 
     /** Construct an attribute with the given name contained by the
      *  specified entity. The container argument must not be null, or
@@ -131,7 +131,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         try {
             if (oldContainer != null && _lastUndoStack != null) {
@@ -202,7 +202,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
             URI baseDirectory = designPatternFile.getBaseDirectory();
             model = parser.parse(
                     baseDirectory == null ? null : baseDirectory.toURL(),
-                    value, reader);
+                            value, reader);
         } catch (Exception e) {
             throw new InternalErrorException(this, e, "Unable to read design "
                     + "pattern from file \"" + value + "\".");

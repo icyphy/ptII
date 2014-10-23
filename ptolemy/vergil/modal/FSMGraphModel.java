@@ -552,7 +552,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
                                     + ((NamedObj) refinement)
-                                            .getName(container) + "\"/>\n");
+                                    .getName(container) + "\"/>\n");
                         }
                     }
                 }
@@ -1300,7 +1300,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
                                     + ((NamedObj) refinement)
-                                            .getName(container) + "\"/>\n");
+                                    .getName(container) + "\"/>\n");
                         }
                     }
                 }

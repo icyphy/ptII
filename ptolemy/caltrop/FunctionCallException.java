@@ -43,7 +43,7 @@ package ptolemy.caltrop;
  */
 @SuppressWarnings("serial")
 public class FunctionCallException extends
-        caltrop.interpreter.InterpreterException {
+caltrop.interpreter.InterpreterException {
     /**
      * Create a FunctionCallException for an exception
      * in a function with the given cause.

@@ -8,7 +8,7 @@ package ptolemy.actor.corba.util;
  */
 @SuppressWarnings("serial")
 public final class CorbaIndexOutofBoundException extends
-        org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
+org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
     public short index = (short) 0;
 
     public CorbaIndexOutofBoundException() {

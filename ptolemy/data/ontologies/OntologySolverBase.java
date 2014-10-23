@@ -606,7 +606,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                     "No ontology has been given.");
         }
         return solver.getClass().getPackage().getName() + ".adapters."
-                + ontology.getName();
+        + ontology.getName();
     }
 
     /**

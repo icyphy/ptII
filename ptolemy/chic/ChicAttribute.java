@@ -125,7 +125,7 @@ public class ChicAttribute extends StringAttribute {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         ChicAttribute previous = null;
 
         if (container != null) {

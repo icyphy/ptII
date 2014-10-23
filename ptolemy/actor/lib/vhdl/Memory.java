@@ -124,7 +124,7 @@ public class Memory extends SynchronousFixTransformer {
 
         } else if (attribute.getName().equals("outputPrecision")) {
             _dataWidth = new Precision(getPortPrecision(output))
-                    .getNumberOfBits();
+            .getNumberOfBits();
         }
     }
 

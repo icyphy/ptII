@@ -66,7 +66,7 @@ public class TDLCodeGenerator extends Attribute {
      *                container.
      */
     public TDLCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -130,7 +130,7 @@ public class TDLCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "

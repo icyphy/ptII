@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  *
  */
 public class MetroIICompositeActor extends TypedCompositeActor implements
-        GetFirable {
+GetFirable {
 
     /**
      * Constructs a MetroIICompositeActor.
@@ -112,8 +112,8 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException,
-                                    IllegalActionException {
+                                    throws CollectionAbortedException,
+                            IllegalActionException {
                         getfire(resultHandler);
                     }
                 });

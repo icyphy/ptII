@@ -193,7 +193,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                             throw new IllegalActionException(_actor,
                                     localInput, "Expected matching port in "
                                             + causality.getActor()
-                                                    .getFullName());
+                                            .getFullName());
                         }
                         equivalences.addAll(_localMirrors(causality
                                 .equivalentPorts(mirrorInput)));

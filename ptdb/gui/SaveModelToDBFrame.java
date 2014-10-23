@@ -140,7 +140,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                         XMLDBModel.DB_REFERENCE_ATTR)
                         && !((StringParameter) attribute).getName().equals(
                                 XMLDBModel.DB_MODEL_ID_ATTR)
-                        && _attributesListPanel
+                                && _attributesListPanel
                                 .isDBAttribute(((StringParameter) attribute)
                                         .getName())) {
 
@@ -199,14 +199,14 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             if (stringParameter instanceof StringParameter
                     && !((StringParameter) stringParameter).getName().equals(
                             XMLDBModel.DB_REFERENCE_ATTR)
-                    && !((StringParameter) stringParameter).getName().equals(
-                            XMLDBModel.DB_MODEL_ID_ATTR)
-                    && _attributesListPanel
-                            .isDBAttribute(((StringParameter) stringParameter)
-                                    .getName())) {
+                            && !((StringParameter) stringParameter).getName().equals(
+                                    XMLDBModel.DB_MODEL_ID_ATTR)
+                                    && _attributesListPanel
+                                    .isDBAttribute(((StringParameter) stringParameter)
+                                            .getName())) {
 
                 _attributesListPanel
-                        .addAttribute((StringParameter) stringParameter);
+                .addAttribute((StringParameter) stringParameter);
 
             }
 
@@ -246,7 +246,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
                 _parentValidateFrame.pack();
                 _parentValidateFrame
-                        .setLocationRelativeTo(SaveModelToDBFrame.this);
+                .setLocationRelativeTo(SaveModelToDBFrame.this);
                 _parentValidateFrame.setVisible(true);
 
                 // Hide the first frame.
@@ -356,7 +356,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
      */
     private void _commitSave(boolean isNew, String id,
             ArrayList<String> parentsMaintainOldVersion, String newVersionName)
-            throws Exception {
+                    throws Exception {
 
         String newName = _attributesListPanel.getModelName();
         _modelToSave.setName(newName);
@@ -368,7 +368,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
 
                 _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)
-                        .setContainer(null);
+                .setContainer(null);
 
                 try {
 
@@ -673,7 +673,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 if (_source.getConfiguration().getDirectory()
                         .getEffigy(_xmlModel.getModelName()) != null) {
                     _source.getConfiguration().getDirectory()
-                            .getEffigy(_xmlModel.getModelName()).showTableaux();
+                    .getEffigy(_xmlModel.getModelName()).showTableaux();
                 }
 
             } else {
@@ -718,7 +718,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
      * obtained.
      */
     private boolean _hasParents() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
 
         if (_hasParentFlag == false) {
             return false;
@@ -750,7 +750,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     }
 
     private boolean _isNew() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
 
         boolean isNew = true;
 
@@ -768,7 +768,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
     }
 
     private boolean _isValid() throws NameDuplicationException,
-            IllegalActionException, HeadlessException, IllegalNameException {
+    IllegalActionException, HeadlessException, IllegalNameException {
 
         if (_attributesListPanel.getModelName().length() == 0) {
 
@@ -859,8 +859,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 if (!attribute.getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
                         && !attribute.getName().equals(
                                 XMLDBModel.DB_MODEL_ID_ATTR)
-                        && _attributesListPanel.isDBAttribute(attribute
-                                .getName())) {
+                                && _attributesListPanel.isDBAttribute(attribute
+                                        .getName())) {
 
                     attribute.setContainer(null);
 
@@ -967,10 +967,10 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                     int n = JOptionPane.showOptionDialog(this,
                             "You have given the model a new name.  "
                                     + "Do you want to save a new copy?",
-                            "Model Name Changed",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, null, options,
-                            options[2]);
+                                    "Model Name Changed",
+                                    JOptionPane.YES_NO_CANCEL_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE, null, options,
+                                    options[2]);
 
                     if (n != JOptionPane.YES_OPTION) {
 
@@ -1074,8 +1074,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 if (attribute.getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
                         && attribute.getName().equals(
                                 XMLDBModel.DB_MODEL_ID_ATTR)
-                        && _attributesListPanel.isDBAttribute(attribute
-                                .getName())) {
+                                && _attributesListPanel.isDBAttribute(attribute
+                                        .getName())) {
 
                     attribute.setContainer(null);
 
@@ -1426,7 +1426,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
          * some unsaved parents opening there.
          */
         private boolean _isValid() throws IllegalNameException,
-                UnSavedParentModelsException {
+        UnSavedParentModelsException {
 
             Collection<NamedObj> unSavedModels = new ArrayList<NamedObj>();
             boolean hasUnsavedParent = false;
@@ -1570,8 +1570,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                                     ParentModelItemPanel.this,
                                     "The specified model could "
                                             + "not be found in the database.",
-                                    "Load Error",
-                                    JOptionPane.INFORMATION_MESSAGE, null);
+                                            "Load Error",
+                                            JOptionPane.INFORMATION_MESSAGE, null);
 
                         }
 

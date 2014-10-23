@@ -75,7 +75,7 @@ import ptolemy.moml.HandlesInternalLinks;
  * @Pt.AcceptedRating Red (neuendor)
  */
 public class MetroIIMirrorComposite extends MetroIICompositeActor implements
-        HandlesInternalLinks {
+HandlesInternalLinks {
 
     /**
      * Create an actor with a name and a container. The container argument must
@@ -177,10 +177,10 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
                 if (insidePort instanceof MirrorPort) {
                     ((MirrorPort) port)
-                            .setAssociatedPort((MirrorPort) insidePort);
+                    .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
                     ((ParameterMirrorPort) port)
-                            .setAssociatedPort((ParameterMirrorPort) insidePort);
+                    .setAssociatedPort((ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -392,7 +392,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
@@ -466,10 +466,10 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
                             if (insidePort instanceof MirrorPort) {
                                 ((MirrorPort) castPort)
-                                        .setAssociatedPort((MirrorPort) insidePort);
+                                .setAssociatedPort((MirrorPort) insidePort);
                             } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                 ((ParameterMirrorPort) castPort)
-                                        .setAssociatedPort((ParameterMirrorPort) insidePort);
+                                .setAssociatedPort((ParameterMirrorPort) insidePort);
                             }
 
                             // Create a link only if it doesn't already exist.
@@ -665,7 +665,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * addition will result in appropriate connections being made.
      */
     public static class MetroIIMirrorCompositeContents extends
-            MetroIICompositeActor {
+    MetroIICompositeActor {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -724,7 +724,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
          */
         @Override
         protected void _addPort(final Port port) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
 
             if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,

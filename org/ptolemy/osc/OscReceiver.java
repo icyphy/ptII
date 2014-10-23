@@ -31,8 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.ptolemy.machineLearning.hmm.HMMGaussianEstimator;
-
 import oscP5.OscEventListener;
 import oscP5.OscMessage;
 import oscP5.OscP5;
@@ -98,8 +96,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OscReceiver newObject = (OscReceiver) super
-                .clone(workspace);
+        OscReceiver newObject = (OscReceiver) super.clone(workspace);
         newObject._receivedTokens = new ConcurrentHashMap<String, List<Object>>();
         newObject.oscP5 = null;
         return newObject;
@@ -142,10 +139,12 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
         synchronized (this) {
             if (_receivedTokens.size() > 0) {
                 if (_receivedTokens.keySet().size() > 0) {
-                    for ( String identifier : _receivedTokens.keySet()) {
-                        TypedIOPort destinationPort = (TypedIOPort) this.getPort(identifier);
+                    for (String identifier : _receivedTokens.keySet()) {
+                        TypedIOPort destinationPort = (TypedIOPort) this
+                                .getPort(identifier);
 
-                        if (destinationPort == null || !destinationPort.isOutput()) {
+                        if (destinationPort == null
+                                || !destinationPort.isOutput()) {
                             _receivedTokens.remove(identifier);
                         } else {
                             if (destinationPort.getType() != null) {
@@ -155,34 +154,44 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
                                 if (token instanceof Double) {
                                     if (!portTypeDefined) {
-                                        destinationPort.setTypeEquals(BaseType.DOUBLE);
+                                        destinationPort
+                                                .setTypeEquals(BaseType.DOUBLE);
                                         portTypeDefined = true;
                                     }
-                                    destinationPort.send(0, new DoubleToken((Double)token));
+                                    destinationPort.send(0, new DoubleToken(
+                                            (Double) token));
                                 } else if (token instanceof Integer) {
                                     if (!portTypeDefined) {
-                                        destinationPort.setTypeEquals(BaseType.INT);
+                                        destinationPort
+                                                .setTypeEquals(BaseType.INT);
                                         portTypeDefined = true;
                                     }
-                                    destinationPort.send(0, new IntToken((Integer)token));
+                                    destinationPort.send(0, new IntToken(
+                                            (Integer) token));
                                 } else if (token instanceof String) {
                                     if (!portTypeDefined) {
-                                        destinationPort.setTypeEquals(BaseType.STRING);
+                                        destinationPort
+                                                .setTypeEquals(BaseType.STRING);
                                         portTypeDefined = true;
                                     }
-                                    destinationPort.send(0, new StringToken((String)token));
+                                    destinationPort.send(0, new StringToken(
+                                            (String) token));
                                 } else if (token instanceof Float) {
                                     if (!portTypeDefined) {
-                                        destinationPort.setTypeEquals(BaseType.FLOAT);
+                                        destinationPort
+                                                .setTypeEquals(BaseType.FLOAT);
                                         portTypeDefined = true;
                                     }
-                                    destinationPort.send(0, new FloatToken((Float)token));
+                                    destinationPort.send(0, new FloatToken(
+                                            (Float) token));
                                 } else {
                                     if (!portTypeDefined) {
-                                        destinationPort.setTypeEquals(BaseType.OBJECT);
+                                        destinationPort
+                                                .setTypeEquals(BaseType.OBJECT);
                                         portTypeDefined = true;
                                     }
-                                    destinationPort.send(0, new ObjectToken(token));
+                                    destinationPort.send(0, new ObjectToken(
+                                            token));
                                 }
                             }
                             _receivedTokens.get(identifier).clear(); // reset list
@@ -200,7 +209,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
     /* incoming osc message are forwarded to the oscEvent method. */
     public void oscEvent(OscMessage theMessage) {
-        synchronized(this) {
+        synchronized (this) {
             try {
                 Object[] receivedData = theMessage.arguments();
                 String addressPattern = theMessage.addrPattern();
@@ -216,7 +225,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
         }
     }
 
-    public void oscStatus( OscStatus s) {
+    public void oscStatus(OscStatus s) {
         //TODO(ilgea): Add OSC Connection Error Handling
     }
 
@@ -224,11 +233,11 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
         super.wrapup();
         oscP5.stop();
     }
+
     private void _constructOscReceiver(int port) throws IllegalActionException {
 
         oscP5 = new OscP5(this, port);
         _port = port; // set port if succ essful
-
 
     }
 
@@ -236,7 +245,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
 
         String[] addressBits = address.split("/");
         if (addressBits != null) {
-            String identifier = addressBits[addressBits.length-1];
+            String identifier = addressBits[addressBits.length - 1];
             if (identifier.length() > 0) {
                 List<Object> tokenList;
                 if (_receivedTokens.containsKey(identifier)) {
@@ -247,13 +256,13 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                 for (int i = 0; i < message.length; i++) {
                     Object b = message[i];
                     if (b instanceof Double) {
-                        tokenList.add((Double)b);
+                        tokenList.add(b);
                     } else if (b instanceof Integer) {
-                        tokenList.add((Integer)b);
+                        tokenList.add(b);
                     } else if (b instanceof String) {
-                        tokenList.add((String)b);
+                        tokenList.add(b);
                     } else if (b instanceof Float) {
-                        tokenList.add((Float)b);
+                        tokenList.add(b);
                     } else {
                         tokenList.add(b);
                     }

@@ -58,7 +58,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.AcceptedRating Red (cxh)
  */
 public abstract class WebContent extends StringParameter implements
-        WebExportable {
+WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.

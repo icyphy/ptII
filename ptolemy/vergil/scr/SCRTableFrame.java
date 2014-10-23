@@ -519,7 +519,7 @@ public class SCRTableFrame extends PtolemyFrame {
     @Pt.AcceptedRating Red (pd)
      */
     private static class SCRTableCellRenderer extends DefaultTableCellRenderer
-    implements TableCellRenderer {
+            implements TableCellRenderer {
 
         @Override
         public Component getTableCellRendererComponent(JTable table,

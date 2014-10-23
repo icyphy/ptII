@@ -101,7 +101,7 @@ public interface ImageDisplayInterface {
      * actor with this name.
      */
     public void init(ImageDisplay imageDisplay) throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
     /**
      * Initialize the effigy of the image.
@@ -115,7 +115,7 @@ public interface ImageDisplayInterface {
      * @exception NameDuplicationException If there is a problem creating the attributes.
      */
     public void initWindowAndSizeProperties() throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
     /** Set the container to be placed.
      *  @param container The Container to be placed.

@@ -100,7 +100,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (ellen_zh)
  */
 public class ApplyFilterOverArray extends TypedAtomicActor implements
-        ExecutionListener {
+ExecutionListener {
     /** Construct a ApplyFilterOverArray with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.

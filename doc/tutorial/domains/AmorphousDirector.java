@@ -147,7 +147,7 @@ public class AmorphousDirector extends Director {
         /** Delegate to the specified receiver. */
         @Override
         public void put(Token token) throws NoRoomException,
-                IllegalActionException {
+        IllegalActionException {
             _receiver.put(token);
         }
     }

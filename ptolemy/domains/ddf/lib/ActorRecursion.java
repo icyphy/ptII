@@ -158,7 +158,7 @@ public class ActorRecursion extends TypedCompositeActor {
             getDirector().initialize();
             _transferOutputs();
             ((DDFDirector) getExecutiveDirector())
-                    .merge((DDFDirector) getDirector());
+            .merge((DDFDirector) getDirector());
 
             try {
                 // get rid of the local director.
@@ -256,7 +256,7 @@ public class ActorRecursion extends TypedCompositeActor {
 
         if (_recursionActor.inputPortList().size() != inputPortList().size()
                 || _recursionActor.outputPortList().size() != outputPortList()
-                        .size()) {
+                .size()) {
             throw new IllegalActionException(this, "The recursionActor "
                     + recursionActor.stringValue()
                     + " must have the same number of input ports and "
@@ -331,7 +331,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   be cloned.
      */
     private void _cloneRecursionActor() throws IllegalActionException,
-            CloneNotSupportedException {
+    CloneNotSupportedException {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor) _recursionActor
@@ -534,7 +534,7 @@ public class ActorRecursion extends TypedCompositeActor {
             }
 
             IntToken[] productionRateToken = new IntToken[outputPort
-                    .getWidthInside()];
+                                                          .getWidthInside()];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);

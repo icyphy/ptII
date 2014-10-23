@@ -183,14 +183,14 @@ public class MacOSXAdapter implements InvocationHandler {
                         if (ex.getCause() instanceof SecurityException) {
                             if (!_printedSecurityExceptionMessage) {
                                 System.out
-                                .println("Warning: Failed to get the"
-                                        + "constructor of \""
-                                        + applicationClassName
-                                        + "\" ("
-                                        + applicationClass
-                                        + "): "
-                                        + ex
-                                        + "(applets and -sandbox always causes this)");
+                                        .println("Warning: Failed to get the"
+                                                + "constructor of \""
+                                                + applicationClassName
+                                                + "\" ("
+                                                + applicationClass
+                                                + "): "
+                                                + ex
+                                                + "(applets and -sandbox always causes this)");
                             }
                         }
                         return;

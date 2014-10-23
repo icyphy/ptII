@@ -328,7 +328,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
     /** Default renderer for table cells.
      */
     private class StringCellRenderer extends JLabel implements
-            TableCellRenderer {
+    TableCellRenderer {
         public StringCellRenderer() {
             super();
         }

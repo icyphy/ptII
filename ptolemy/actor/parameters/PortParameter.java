@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (neuendor)
  */
 public class PortParameter extends AbstractInitializableParameter implements
-        Initializable {
+Initializable {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -387,7 +387,7 @@ public class PortParameter extends AbstractInitializableParameter implements
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_settingName) {
             return;
         }

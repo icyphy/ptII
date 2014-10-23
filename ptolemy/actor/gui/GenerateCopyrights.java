@@ -133,7 +133,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
-        _addIfPresent(copyrightsMap, "io.socket.SocketIO", "lib/socketio-license.htm");
+        _addIfPresent(copyrightsMap, "io.socket.SocketIO",
+                "lib/socketio-license.htm");
 
         _addIfPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
                 "lib/javax.servlet-api-license.htm");
@@ -148,8 +149,7 @@ public class GenerateCopyrights {
                 "net.jimblackler.Utils.YieldAdapterIterator",
                 "net/jimblackler/Utils/jimblacklerUtils-license.htm");
 
-        _addIfPresent(copyrightsMap, "oscP5.OscP5",
-                "lib/oscP5-license.htm");
+        _addIfPresent(copyrightsMap, "oscP5.OscP5", "lib/oscP5-license.htm");
 
         _addIfPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
                 "lib/org.apache.oltu.oauth2-license.htm");
@@ -180,18 +180,20 @@ public class GenerateCopyrights {
                 "mescal/configs/doc/jsat-copyright.htm");
 
         // Vertx
-        _addIfPresent(copyrightsMap, "com.fasterxml.jackson.core.base.GeneratorBase",
+        _addIfPresent(copyrightsMap,
+                "com.fasterxml.jackson.core.base.GeneratorBase",
                 "lib/jackson-2.2.2-license.htm");
 
-        _addIfPresent(copyrightsMap, "io.netty.handler.traffic.ChannelTrafficShapingHandler",
+        _addIfPresent(copyrightsMap,
+                "io.netty.handler.traffic.ChannelTrafficShapingHandler",
                 "lib/netty-all-4.0.20.Final-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
+        _addIfPresent(copyrightsMap,
+                "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
                 "lib/hazelcast-3.2.3-license.htm");
 
         _addIfPresent(copyrightsMap, "org.vertx.java.core.Vertx",
                 "lib/vertx-2.1.2-license.htm");
-
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
@@ -374,27 +376,27 @@ public class GenerateCopyrights {
         if (copyrightsMap.size() != sortedCopyrightsMap.size()) {
             // Print only a message, we want to print the copyrights.
             System.err
-            .println("GenerateCopyrights: the size of the unsorted copyright table "
-                    + "and the sorted copyright table are not the same?  Perhaps there are two "
-                    + "or more copyrights with the same file name? (foo/copyright.htm and "
-                    + "bar/copyright.htm will not work.)");
+                    .println("GenerateCopyrights: the size of the unsorted copyright table "
+                            + "and the sorted copyright table are not the same?  Perhaps there are two "
+                            + "or more copyrights with the same file name? (foo/copyright.htm and "
+                            + "bar/copyright.htm will not work.)");
 
         }
         Iterator copyrights = sortedCopyrightsMap.entrySet().iterator();
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
             htmlBuffer
-            .append("<p>Below we list features and the "
-                    + "corresponding copyright "
-                    + " of the package that is used.  If a feature is not "
-                    + "listed below, then the "
-                    + _getApplicationName(configuration)
-                    + " copyright is the "
-                    + "only copyright."
-                    + "<table>\n"
-                    + "  <tr>\n"
-                    + "      <th>Copyright of package used by the feature</th>\n"
-                    + "      <th>Feature</th>\n" + "  </tr>\n");
+                    .append("<p>Below we list features and the "
+                            + "corresponding copyright "
+                            + " of the package that is used.  If a feature is not "
+                            + "listed below, then the "
+                            + _getApplicationName(configuration)
+                            + " copyright is the "
+                            + "only copyright."
+                            + "<table>\n"
+                            + "  <tr>\n"
+                            + "      <th>Copyright of package used by the feature</th>\n"
+                            + "      <th>Feature</th>\n" + "  </tr>\n");
 
             while (copyrights.hasNext()) {
                 Map.Entry entry = (Map.Entry) copyrights.next();
@@ -424,7 +426,8 @@ public class GenerateCopyrights {
                 //System.out.println("GenerateCopyrights: url: " + copyrightURL);
                 String foundCopyright = _findURL(copyrightURL);
 
-                if (copyrightURL.contains("backtrack") && !copyrightURL.contains("http")) {
+                if (copyrightURL.contains("backtrack")
+                        && !copyrightURL.contains("http")) {
                     // If the backtrack copyright is not local, then don't print it.
                     continue;
                 }
@@ -448,9 +451,9 @@ public class GenerateCopyrights {
                         } else {
                             // Print only a message, we want to print the copyrights.
                             System.out
-                            .println("Could not find body or head in "
-                                    + foundCopyright + " "
-                                    + copyright.substring(0, 200));
+                                    .println("Could not find body or head in "
+                                            + foundCopyright + " "
+                                            + copyright.substring(0, 200));
                             startIndex = 0;
                         }
                     } else {
@@ -523,8 +526,8 @@ public class GenerateCopyrights {
                                 //_guessCopyright(label, copyright);
 
                                 masterCopyrightTable
-                                .append(_generateLicenseTableRow(
-                                        target, label));
+                                        .append(_generateLicenseTableRow(
+                                                target, label));
                             }
                         }
                     }
@@ -543,13 +546,13 @@ public class GenerateCopyrights {
         int tableTargetIndex = -1;
         if ((tableTargetIndex = masterCopyrightBuffer.indexOf(tableTarget)) == -1) {
             System.err
-            .println("GenerateCopyrights: Could not find \""
-                    + tableTarget
-                    + "\" in the generated copyright text, "
-                    + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
+                    .println("GenerateCopyrights: Could not find \""
+                            + tableTarget
+                            + "\" in the generated copyright text, "
+                            + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
         } else {
             masterCopyrightBuffer
-            .insert(tableTargetIndex, masterCopyrightTable);
+                    .insert(tableTargetIndex, masterCopyrightTable);
         }
         try {
             URL masterCopyrightURL = HTMLAbout
@@ -561,8 +564,8 @@ public class GenerateCopyrights {
         } catch (IOException ex) {
             // Ignore this, we want to print the copyrights.
             System.err
-            .println("Could not write a temporary file with the complete copyrights: "
-                    + ex);
+                    .println("Could not write a temporary file with the complete copyrights: "
+                            + ex);
         }
 
         htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
@@ -630,24 +633,24 @@ public class GenerateCopyrights {
         }
 
         htmlBuffer
-        .append("<p>"
-                + applicationName
-                + " uses AElfred as an XML Parser.\n"
-                + "AElfred is covered by the copyright in\n "
-                + "<a href=\""
-                + aelfredCopyright
-                + "\"><code>."
-                + _canonicalizeURLToPTII(aelfredCopyright)
-                + "</code></a>\n</p>"
-                + "<p>"
-                + applicationName
-                + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
-                + "Significant portions of the ptolemy.graph package were developed by "
-                + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
-                + "and his group. and are covered by a BSD License in\n "
-                + "<a href=\"" + graphCopyright + "\"><code>"
-                + _canonicalizeURLToPTII(graphCopyright)
-                + "</code></a>\n</p>");
+                .append("<p>"
+                        + applicationName
+                        + " uses AElfred as an XML Parser.\n"
+                        + "AElfred is covered by the copyright in\n "
+                        + "<a href=\""
+                        + aelfredCopyright
+                        + "\"><code>."
+                        + _canonicalizeURLToPTII(aelfredCopyright)
+                        + "</code></a>\n</p>"
+                        + "<p>"
+                        + applicationName
+                        + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
+                        + "Significant portions of the ptolemy.graph package were developed by "
+                        + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
+                        + "and his group. and are covered by a BSD License in\n "
+                        + "<a href=\"" + graphCopyright + "\"><code>"
+                        + _canonicalizeURLToPTII(graphCopyright)
+                        + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
     }
@@ -704,7 +707,8 @@ public class GenerateCopyrights {
 
             // However, under MacOSX, include any backtracking links
             String osName = System.getProperty("os.name");
-            if (osName.startsWith("Mac OS") && copyrightPath.contains("backtrack")) {
+            if (osName.startsWith("Mac OS")
+                    && copyrightPath.contains("backtrack")) {
                 addIt = true;
             }
         }
@@ -780,7 +784,7 @@ public class GenerateCopyrights {
 
             String majorVersion = majorVersionBuffer.toString();
             return "http://ptolemy.eecs.berkeley.edu/ptolemyII/" + "ptII"
-            + majorVersion + "/ptII" + majorVersion + "/" + localURL;
+                    + majorVersion + "/ptII" + majorVersion + "/" + localURL;
         }
     }
 
@@ -875,76 +879,79 @@ public class GenerateCopyrights {
      * We use a simple table here for ease of maintenance.
      */
     private static String[][] _licenses = {
-        // Name, Ptiny, Windows JRE, Included in Sources, Included in Kepler, Summary
-        { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh" },
-        { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
-        { "BrowserLauncher", "Y", " ", "Y", "Y",
-        "Include the BrowserLauncher copyright" },
-        { "ExtensionFileFilter", "Y", " ", "Y", "Y",
-        "Include Oracle's copyright" },
-        { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
-        { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
-        { "javamail", " ", " ", "Y", " ", "CDDL + GPLv2 with Classpath exception" },
-        { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
-        { "ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Oracle" },
-        { "chic", " ", " ", "Y", "Y", "BSD" },
-        { "colt", "Y", " ", "Y", "Y", "BSD and others" },
-        { "cup", " ", " ", "Y", " ", "Similar to BSD" },
-        { "db", " ", " ", "Y", " ",
-        "Similar to <font color=\"red\">like GPL</font>" }, // GPL!!
-        { "fmipp", " ", " ", "Y", " ", "FMUSDK: Qtronic: Similar to BSD" },
-        { "fmusdk", " ", " ", "Y", " ", " QTronic: Similar to BSD" },
-        { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
-        { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
-        { "guava", " ", " ", "Y", "Y", "Apache License" },
-        { "hazelcast", " ", " ", "Y", " ", "Apache License" },
-        { "itextpdf", " ", " ", "Y", " ",
-        "Affero General Public License <font color=\"red\">like GPL</font>" },
-        { "jackson", " ", " ", "Y", " ", "Apache License or LGPL" },
-        { "jai", " ", "Y", " ", " ", "Oracle" },
-        { "java3d", " ", "Y", "", " ", "Oracle" },
-        { "javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT" },
-        { "javax.servlet", " ", " ", "Y", "Y", "Apache License" },
-        { "jcerti", " ", " ", "Y", "Y", "GNU Lesser General Public" },
-        { "jcobyla", " ", " ", "Y", "", "MIT" },
-        { "jdom", " ", " ", "Y", "",
-        "Similar to BSD.  No use of sponsor name in advertising" },
-        { "jetty", " ", " ", "Y", "Y", "Apache License + Eclipse" },
-        { "jgoodies", " ", " ", "Y", "Y", "3 Clause BSD" },
-        { "jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain" },
-        { "jmf", " ", "Y", " ", " ", "Oracle" },
-        { "jna", " ", " ", "Y", "Y",
-        "Apache License + GNU Lesser General Public" },
-        { "joystick", " ", " ", "Y", " ", "Artistic License" },
-        { "js", " ", " ", "Y", " ", "Mozilla + Oracle" },
-        { "json", " ", " ", "Y", "Y", "BSD-like" },
-        { "jsoup", " ", " ", "Y", "Y", "MIT" },
-        { "junit", " ", " ", "Y", "Y", "Common Public License - v 1.0" },
-        { "jxl", " ", " ", "Y", " ", "GNU Lesser General Public" },
-        { "jython", "Y", " ", "Y", "Y",
-        "Apache License + Python V2 + other licenses" },
-        { "kieler", "Y", " ", "Y", "Y", "Eclipse" },
-        { "mapss", " ", " ", "Y", "Y", "BSD" },
-        { "matlab", "Y", " ", "Y", "Y", "Research in Motion BSD" },
-        { "mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Oracle" },
-        { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
-        { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
-        { "opencv", " ", " ", "Y", " ", "" },
-        { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
-        { "oscP5", " ", " ", " ", "Y ", "GNU Lesser General Public License 3.0" },
-        { "protobuf", " ", " ", "Y", "Y", "BSD 3-Clause" },
-        { "ptalon", "Y", " ", "Y", " ", "Antler: Public Domain" },
-        { "ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Oracle" },
-        { "quicktime", " ", " ", " ", " ", "Apple" }, // License prohibits distribution
-        { "rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Oracle" },
-        { "saxon", " ", " ", "Y", " ", "Mozilla Public License" },
-        { "smack", " ", " ", "Y", "Y", "Apache License" },
-        { "socketio", " ", " ", "Y", "Y", "BSD" },
-        { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
-        { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
-        { "udunits", " ", " ", "Y", " ",
-          "Similar to BSD.  No use of sponsor name in advertising" },
-        { "vertx", " ", " ", "Y", " ", "Apache License" }
-    };
+            // Name, Ptiny, Windows JRE, Included in Sources, Included in Kepler, Summary
+            { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh" },
+            { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
+            { "BrowserLauncher", "Y", " ", "Y", "Y",
+                    "Include the BrowserLauncher copyright" },
+            { "ExtensionFileFilter", "Y", " ", "Y", "Y",
+                    "Include Oracle's copyright" },
+            { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
+            { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
+            { "javamail", " ", " ", "Y", " ",
+                    "CDDL + GPLv2 with Classpath exception" },
+            { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
+            { "ResizableImageWidget", " ", " ", "Y", " ",
+                    "CDDL + Oracle + Oracle" },
+            { "chic", " ", " ", "Y", "Y", "BSD" },
+            { "colt", "Y", " ", "Y", "Y", "BSD and others" },
+            { "cup", " ", " ", "Y", " ", "Similar to BSD" },
+            { "db", " ", " ", "Y", " ",
+                    "Similar to <font color=\"red\">like GPL</font>" }, // GPL!!
+            { "fmipp", " ", " ", "Y", " ", "FMUSDK: Qtronic: Similar to BSD" },
+            { "fmusdk", " ", " ", "Y", " ", " QTronic: Similar to BSD" },
+            { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
+            { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
+            { "guava", " ", " ", "Y", "Y", "Apache License" },
+            { "hazelcast", " ", " ", "Y", " ", "Apache License" },
+            { "itextpdf", " ", " ", "Y", " ",
+                    "Affero General Public License <font color=\"red\">like GPL</font>" },
+            { "jackson", " ", " ", "Y", " ", "Apache License or LGPL" },
+            { "jai", " ", "Y", " ", " ", "Oracle" },
+            { "java3d", " ", "Y", "", " ", "Oracle" },
+            { "javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT" },
+            { "javax.servlet", " ", " ", "Y", "Y", "Apache License" },
+            { "jcerti", " ", " ", "Y", "Y", "GNU Lesser General Public" },
+            { "jcobyla", " ", " ", "Y", "", "MIT" },
+            { "jdom", " ", " ", "Y", "",
+                    "Similar to BSD.  No use of sponsor name in advertising" },
+            { "jetty", " ", " ", "Y", "Y", "Apache License + Eclipse" },
+            { "jgoodies", " ", " ", "Y", "Y", "3 Clause BSD" },
+            { "jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain" },
+            { "jmf", " ", "Y", " ", " ", "Oracle" },
+            { "jna", " ", " ", "Y", "Y",
+                    "Apache License + GNU Lesser General Public" },
+            { "joystick", " ", " ", "Y", " ", "Artistic License" },
+            { "js", " ", " ", "Y", " ", "Mozilla + Oracle" },
+            { "json", " ", " ", "Y", "Y", "BSD-like" },
+            { "jsoup", " ", " ", "Y", "Y", "MIT" },
+            { "junit", " ", " ", "Y", "Y", "Common Public License - v 1.0" },
+            { "jxl", " ", " ", "Y", " ", "GNU Lesser General Public" },
+            { "jython", "Y", " ", "Y", "Y",
+                    "Apache License + Python V2 + other licenses" },
+            { "kieler", "Y", " ", "Y", "Y", "Eclipse" },
+            { "mapss", " ", " ", "Y", "Y", "BSD" },
+            { "matlab", "Y", " ", "Y", "Y", "Research in Motion BSD" },
+            { "mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Oracle" },
+            { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
+            { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
+            { "opencv", " ", " ", "Y", " ", "" },
+            { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
+            { "oscP5", " ", " ", " ", "Y ",
+                    "GNU Lesser General Public License 3.0" },
+            { "protobuf", " ", " ", "Y", "Y", "BSD 3-Clause" },
+            { "ptalon", "Y", " ", "Y", " ", "Antler: Public Domain" },
+            { "ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Oracle" },
+            { "quicktime", " ", " ", " ", " ", "Apple" }, // License prohibits distribution
+            { "rxtx", " ", "Y", " ", " ",
+                    "GNU Lesser General Public 2.1 + Oracle" },
+            { "saxon", " ", " ", "Y", " ", "Mozilla Public License" },
+            { "smack", " ", " ", "Y", "Y", "Apache License" },
+            { "socketio", " ", " ", "Y", "Y", "BSD" },
+            { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
+            { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
+            { "udunits", " ", " ", "Y", " ",
+                    "Similar to BSD.  No use of sponsor name in advertising" },
+            { "vertx", " ", " ", "Y", " ", "Apache License" } };
 
 }

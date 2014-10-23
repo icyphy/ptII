@@ -257,7 +257,7 @@ public class JPanner extends JPanel {
     }
 
     private class PanMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    MouseMotionListener {
         @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null
@@ -280,7 +280,7 @@ public class JPanner extends JPanel {
     }
 
     private class ScaleMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    MouseMotionListener {
         public Point2D origin = null;
 
         public Point2D scaled = null;
@@ -388,7 +388,7 @@ public class JPanner extends JPanel {
                                 "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
                                 "twoooooooooooooooooooooooooooooooooooooooo",
                                 "threeeeeeeeeeeeeeeee",
-                                "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
+                        "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
                         JList dataList = new JList(data);
                         JScrollPane p = new JScrollPane(dataList);
                         p.setSize(200, 200);

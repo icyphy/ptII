@@ -132,7 +132,7 @@ public class FSMDirector extends Director {
     @Override
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // FIXME: need documentation on the input string format.
         return target.getFullName() + "_" + name;
     }

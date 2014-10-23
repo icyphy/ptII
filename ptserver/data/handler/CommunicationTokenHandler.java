@@ -56,7 +56,7 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class CommunicationTokenHandler implements
-        TokenHandler<CommunicationToken> {
+TokenHandler<CommunicationToken> {
 
     /** Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
      *  @param token Token to be converted to bytes.

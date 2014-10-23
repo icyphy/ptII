@@ -238,7 +238,7 @@ public class SequenceScheduler extends Scheduler {
      */
     public SequenceSchedule getSchedule(
             List<SequenceAttribute> independentList, boolean validSequence)
-            throws IllegalActionException, NotSchedulableException {
+                    throws IllegalActionException, NotSchedulableException {
 
         // Check the list of sequence attributes
         // There must be at least one actor with a sequence attribute in the model
@@ -372,7 +372,7 @@ public class SequenceScheduler extends Scheduler {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -544,7 +544,7 @@ public class SequenceScheduler extends Scheduler {
                 _independentList.remove(removeMe);
             } else {
                 System.out
-                        .println("SequenceScheduler can't find dependent sequence actor to remove it.");
+                .println("SequenceScheduler can't find dependent sequence actor to remove it.");
             }
         }
 
@@ -692,7 +692,7 @@ public class SequenceScheduler extends Scheduler {
                 if (connectedActor instanceof CompositeEntity
                         && !((CompositeEntity) connectedActor).isOpaque()) {
                     insideActors
-                            .addAll(_getInsideConnectedPorts((IOPort) port));
+                    .addAll(_getInsideConnectedPorts((IOPort) port));
                 } else {
                     insideActors.add((IOPort) port);
                 }
@@ -733,9 +733,9 @@ public class SequenceScheduler extends Scheduler {
         // and if there is a specific method being triggered for this actor.
         if (connectedActor instanceof MultipleFireMethodsInterface
                 && ((MultipleFireMethodsInterface) connectedActor)
-                        .numFireMethods() > 1
+                .numFireMethods() > 1
                 && !connectedActor.attributeList(ProcessAttribute.class)
-                        .isEmpty()) {
+                .isEmpty()) {
             StringAttribute methodNameAttribute = (StringAttribute) connectedPort
                     .getAttribute("methodName");
             String methodName = null;
@@ -747,7 +747,7 @@ public class SequenceScheduler extends Scheduler {
                 if (((ProcessAttribute) processAttribute).getMethodName()
                         .equals(methodName)
                         && ((ProcessAttribute) processAttribute)
-                                .getProcessName().equals("None")) {
+                        .getProcessName().equals("None")) {
                     conAttribute = (ProcessAttribute) processAttribute;
                     break;
                 }
@@ -792,7 +792,7 @@ public class SequenceScheduler extends Scheduler {
 
             if (conAttribute instanceof ProcessAttribute
                     && !((ProcessAttribute) conAttribute).getProcessName()
-                            .equals("None")) {
+                    .equals("None")) {
                 throw new IllegalActionException(conAttribute, "The actor "
                         + connectedActor
                         + " is dependent on a control actor, but its"
@@ -971,7 +971,7 @@ public class SequenceScheduler extends Scheduler {
                             for (IOPort methodInputPort : methodInputPorts) {
                                 if (predecessor instanceof Port
                                         && methodInputPort.sourcePortList()
-                                                .contains(predecessor)) {
+                                        .contains(predecessor)) {
                                     newPredecessors.add(predecessor);
                                 } else if (predecessor instanceof SequenceAttribute) {
                                     for (Object upstreamActorOutputPort : ((Actor) ((SequenceAttribute) predecessor)
@@ -1101,10 +1101,10 @@ public class SequenceScheduler extends Scheduler {
 
                 if (pre instanceof MultipleFireMethodsInterface
                         && ((MultipleFireMethodsInterface) pre)
-                                .numFireMethods() > 1
+                        .numFireMethods() > 1
                         || ((Entity) pre)
-                                .attributeList(SequenceAttribute.class)
-                                .isEmpty()) {
+                        .attributeList(SequenceAttribute.class)
+                        .isEmpty()) {
                     predecessor = outPort;
                 } else {
                     // If the actor is not a MultipleFireMethodsInterface with more than one fire method
@@ -1334,8 +1334,8 @@ public class SequenceScheduler extends Scheduler {
                             && (((Port) nodeWeight).getContainer() instanceof MultipleFireMethodsInterface
                                     && ((MultipleFireMethodsInterface) ((Port) nodeWeight)
                                             .getContainer()).numFireMethods() > 1 || ((Entity) ((Port) nodeWeight)
-                                        .getContainer()).attributeList(
-                                    SequenceAttribute.class).isEmpty())) {
+                                                    .getContainer()).attributeList(
+                                                            SequenceAttribute.class).isEmpty())) {
                         // Check if the source node is already in the graph.  If not, add it, and
                         // process source node's connected nodes.
                         if (!graph.containsNode(sourceNode)) {

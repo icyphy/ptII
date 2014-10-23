@@ -166,7 +166,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     public void put(Token token) throws NoRoomException, IllegalActionException {
         communicationAspect.sendToken(this, _receiver, token);
         ((Actor) _receiver.getContainer().getContainer()).getDirector()
-        .notifyTokenSentToCommunicationAspect();
+                .notifyTokenSentToCommunicationAspect();
     }
 
     /** Reset this receiver to its initial state, which in this base

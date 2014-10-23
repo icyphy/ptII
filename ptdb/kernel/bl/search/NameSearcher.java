@@ -47,7 +47,7 @@ import ptdb.common.exception.DBExecutionException;
  *
  */
 public class NameSearcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the NameSearcher object according to the passed search

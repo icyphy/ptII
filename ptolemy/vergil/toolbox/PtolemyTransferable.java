@@ -174,12 +174,12 @@ public class PtolemyTransferable implements Transferable, Serializable {
         if (PtGUIUtilities.macOSLookAndFeel()) {
             namedObjFlavor = new DataFlavor(
                     DataFlavor.javaJVMLocalObjectMimeType
-                            + ";class=ptolemy.kernel.util.NamedObj",
+                    + ";class=ptolemy.kernel.util.NamedObj",
                     "Named Object");
         } else {
             namedObjFlavor = new DataFlavor(
                     DataFlavor.javaJVMLocalObjectMimeType
-                            + "ptolemy.kernel.util.NamedObj", "Named Object");
+                    + "ptolemy.kernel.util.NamedObj", "Named Object");
         }
     }
 

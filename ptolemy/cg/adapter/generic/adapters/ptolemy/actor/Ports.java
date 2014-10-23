@@ -236,14 +236,14 @@ public class Ports {
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay5.xml
             if (container != null
                     && getComponent().getContainer() != port.getContainer()
-                    .getContainer()
+                            .getContainer()
                     && getComponent().getContainer() != port.getContainer()
                     && getComponent()
-                    .getContainer()
-                    .getFullName()
-                    .startsWith(
-                            port.getContainer().getContainer()
-                            .getFullName())) {
+                            .getContainer()
+                            .getFullName()
+                            .startsWith(
+                                    port.getContainer().getContainer()
+                                            .getFullName())) {
                 while (container != null) {
                     if (container instanceof CompositeEntity) {
                         List entities = ((CompositeEntity) container)

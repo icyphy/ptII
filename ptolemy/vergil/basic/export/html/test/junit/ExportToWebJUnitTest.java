@@ -60,7 +60,7 @@ public class ExportToWebJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.vergil.basic.export.html.test.junit.ExportToWebJUnitTest");
+        .main("ptolemy.vergil.basic.export.html.test.junit.ExportToWebJUnitTest");
     }
 
     /** Test the export the Butterfly model.

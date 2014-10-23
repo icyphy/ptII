@@ -177,7 +177,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         // Set the expression in the copyVariableName for display in the icon
@@ -256,7 +256,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
                 Variable var = getVariable();
                 if (var != null && var.getToken() != null) {
                     copyVariableName
-                            .setExpression(variableName.getExpression());
+                    .setExpression(variableName.getExpression());
                 }
             }
             // OK if this throws an exception.  Want default of UNDEFINED which was already set.

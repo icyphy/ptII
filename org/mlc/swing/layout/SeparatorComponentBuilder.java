@@ -60,9 +60,9 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
             text = "";
         }
         return "java.awt.Component "
-                + name
-                + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
-                + text + "\");\n";
+        + name
+        + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
+        + text + "\");\n";
     }
 
     @Override

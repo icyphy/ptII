@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ExpressionConceptFunctionDefinitionAttribute extends
-        ConceptFunctionDefinitionAttribute {
+ConceptFunctionDefinitionAttribute {
 
     /** Construct the ExpressionConceptFunctionDefinitionAttribute attribute
      *  with the given container and name.
@@ -69,7 +69,7 @@ public class ExpressionConceptFunctionDefinitionAttribute extends
      */
     public ExpressionConceptFunctionDefinitionAttribute(
             CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // By default the number of arguments for the concept function is fixed.
@@ -152,11 +152,11 @@ public class ExpressionConceptFunctionDefinitionAttribute extends
                                 + " number of arguments, but the lengths of the arrays"
                                 + " for the argument names ("
                                 + ((ArrayToken) argumentNames.getToken())
-                                        .length()
+                                .length()
                                 + ") and argument domain ontologies("
                                 + ((ArrayToken) argumentDomainOntologies
                                         .getToken()).length()
-                                + ") are different.");
+                                        + ") are different.");
             }
         }
 
@@ -179,8 +179,8 @@ public class ExpressionConceptFunctionDefinitionAttribute extends
             if (ontology == null) {
                 throw new IllegalActionException(this,
                         "The specified domain ontology " + ontologyName
-                                + " for a function argument"
-                                + " could not be found in the model.");
+                        + " for a function argument"
+                        + " could not be found in the model.");
             } else {
                 argDomainOntologies.add(ontology);
             }
@@ -195,7 +195,7 @@ public class ExpressionConceptFunctionDefinitionAttribute extends
         ExpressionConceptFunction newConceptFunction = new ExpressionConceptFunction(
                 getName(),
                 ((BooleanToken) numberOfArgumentsIsFixed.getToken())
-                        .booleanValue(), argDomainOntologies,
+                .booleanValue(), argDomainOntologies,
                 outputRangeOntology, argNameList,
                 conceptFunctionExpression.getExpression(),
                 (OntologySolverModel) getContainer(), null);

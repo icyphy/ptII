@@ -226,7 +226,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             if (port == null) {
                 throw new IllegalActionException(
                         parameter
-                                + " is not a port. $refinePrimitiveType macro takes in a port.");
+                        + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (codeGenerator.isPrimitive(port.getType())) {
                 return ".payload/*jcgh*/."

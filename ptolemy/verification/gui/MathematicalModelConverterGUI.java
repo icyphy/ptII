@@ -96,7 +96,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
     @Deprecated
     public MathematicalModelConverterGUI(
             final MathematicalModelConverter modelConverter, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(modelConverter, tableau);
 
         setTitle(modelConverter.getName());

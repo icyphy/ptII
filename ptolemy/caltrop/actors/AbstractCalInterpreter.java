@@ -357,7 +357,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Create parameters of the Ptolemy actor to correspond with the
     // interface specified in the CAL code.
     private void _refreshParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Set parNames = new HashSet();
 
         if (_actor.getParameters() != null) {
@@ -395,8 +395,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
             if (port != null
                     && (port.isInput() != isInput
-                            || port.isOutput() != isOutput || port
-                            .isMultiport() != port2.isMultiport())) {
+                    || port.isOutput() != isOutput || port
+                    .isMultiport() != port2.isMultiport())) {
                 port.setContainer(null);
                 port = null;
             }
@@ -421,7 +421,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         // Set the types.
         for (PortDecl port : ports) {
             ((TypedIOPort) getPort(port.getName()))
-                    .setTypeEquals(_getPtolemyType(port.getType()));
+            .setTypeEquals(_getPtolemyType(port.getType()));
         }
     }
 
@@ -479,7 +479,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
                 PtolemyPlatform.thePlatform));
         importHandlers.add(new ClassLoadingImportHandler(
                 PtolemyPlatform.thePlatform, AbstractCalInterpreter.class
-                        .getClassLoader()));
+                .getClassLoader()));
     }
 
     // Map of substitutions from CAL types to Ptolemy types.

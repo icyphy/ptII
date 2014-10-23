@@ -171,7 +171,7 @@ public class Simulator extends SDFTransformer {
         // expert settings
         socketPortNumber = new Parameter(this, "socketPortNumber");
         socketPortNumber
-                .setDisplayName("socketPortNumber (used if non-negative)");
+        .setDisplayName("socketPortNumber (used if non-negative)");
         socketPortNumber.setExpression("-1");
         socketPortNumber.setTypeEquals(BaseType.INT);
         socketPortNumber.setVisibility(Settable.EXPERT);
@@ -482,13 +482,13 @@ public class Simulator extends SDFTransformer {
             } catch (IOException e2) {
             }
             ; // do nothing here
-              // If the client sent a termination flag, then clientTerminated=true
-              // In this case, the client may have closed the socket connection, and
-              // hence we don't throw an IOException, but rather issue a warning
-              // in case that Ptolemy proceeds with its iterations.
-              // Without the check (!clientTerminated), an IOException is thrown
-              // on Windows (but not on Mac or Linux) from the actor that connects
-              // to EnergyPlus.
+            // If the client sent a termination flag, then clientTerminated=true
+            // In this case, the client may have closed the socket connection, and
+            // hence we don't throw an IOException, but rather issue a warning
+            // in case that Ptolemy proceeds with its iterations.
+            // Without the check (!clientTerminated), an IOException is thrown
+            // on Windows (but not on Mac or Linux) from the actor that connects
+            // to EnergyPlus.
             if (!clientTerminated) {
                 throw new IllegalActionException(this, e, em);
             }

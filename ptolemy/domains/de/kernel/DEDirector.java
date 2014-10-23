@@ -285,7 +285,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public DEDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -1356,7 +1356,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (director == null) {
             throw new IllegalActionException(this,
                     "Cannot get director of container " + container.getName()
-                    + " of actor " + actor.getName());
+                            + " of actor " + actor.getName());
         }
 
         Time time = director.getModelTime();
@@ -1545,10 +1545,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         || next.microstep() < _microstep) {
                     throw new IllegalActionException(
                             "The tag of the next event (" + next.timeStamp()
-                                    + "." + next.microstep()
-                                    + ") can not be less than"
-                                    + " the current tag (" + getModelTime()
-                                    + "." + _microstep + ") !");
+                            + "." + next.microstep()
+                            + ") can not be less than"
+                            + " the current tag (" + getModelTime()
+                            + "." + _microstep + ") !");
                 } else {
                     // The next event has the same tag as the current tag,
                     // indicating that at least one actor is going to be
@@ -1639,7 +1639,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (_debugging) {
             _debug("DEDirector: enqueue a pure event: ",
                     ((NamedObj) actor).getName(), "time = " + time
-                            + " microstep = " + microstep + " depth = " + depth);
+                    + " microstep = " + microstep + " depth = " + depth);
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
@@ -1741,7 +1741,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj) actor).getName(), " time = " + time
-                            + " microstep = " + microstep + " depth = " + depth);
+                    + " microstep = " + microstep + " depth = " + depth);
         }
 
         // Register this trigger event.
@@ -2296,14 +2296,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     }
                                 }
                             } // while
-                              // If stopFire() has been called, then the wait for real
-                              // time above was interrupted by a change request. Hence,
-                              // real time will not have reached the time of the first
-                              // event in the event queue. If we allow this method to
-                              // proceed, it will set model time to that event time,
-                              // which is in the future. This violates the principle
-                              // of synchronize to real time.  Hence, we must return
-                              // without processing the event or incrementing time.
+                            // If stopFire() has been called, then the wait for real
+                            // time above was interrupted by a change request. Hence,
+                            // real time will not have reached the time of the first
+                            // event in the event queue. If we allow this method to
+                            // proceed, it will set model time to that event time,
+                            // which is in the future. This violates the principle
+                            // of synchronize to real time.  Hence, we must return
+                            // without processing the event or incrementing time.
 
                             // NOTE: CompositeActor used to call stopFire() before
                             // queuing the change request, which created the risk
@@ -2421,7 +2421,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _actorsFinished.remove(actorToFire);
                 } else if (!_schedule((NamedObj) actorToFire, getModelTime())) {
                     _nextScheduleTime.get(_aspectForActor.get(actorToFire))
-                            .add(getModelTime());
+                    .add(getModelTime());
                     if (_actorsInExecution == null) {
                         _actorsInExecution = new HashMap();
                     }
@@ -2461,13 +2461,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             if (_aspectUsed) {
                 //if (!MessageHandler.yesNoQuestion(
                 System.out
-                .println("WARNING: The execution aspects in this model can "
-                        + "influence the timing of actors by delaying the \n"
-                        + "execution, which can potentially reverse causality. "
-                        + "There is no guarantee that actors fire at the \n"
-                        + "time they request to be fired. \n"
-                        + "Use Ptides for deterministic DE behavior that is "
-                        + "not influenced by execution aspects. \n");
+                        .println("WARNING: The execution aspects in this model can "
+                                + "influence the timing of actors by delaying the \n"
+                                + "execution, which can potentially reverse causality. "
+                                + "There is no guarantee that actors fire at the \n"
+                                + "time they request to be fired. \n"
+                                + "Use Ptides for deterministic DE behavior that is "
+                                + "not influenced by execution aspects. \n");
                 //+ "Continue?")) {
                 //stop();
                 //}
@@ -2502,13 +2502,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             ActorExecutionAspect scheduler = getExecutionAspect(actor);
             if (scheduler != null) {
                 ((CompositeActor) scheduler.getContainer()).getDirector()
-                .fireAt((Actor) scheduler,
-                        getModelTime().add(
-                                _nextScheduleTime.get(scheduler)));
+                        .fireAt((Actor) scheduler,
+                                getModelTime().add(
+                                        _nextScheduleTime.get(scheduler)));
             } else {
                 throw new InternalErrorException(this, null,
                         "_getExecutionAspect(" + actor.getFullName()
-                        + ") returned null?");
+                                + ") returned null?");
             }
         }
         return schedule;
@@ -2699,7 +2699,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
      */
     private static class DECausalityInterface extends
-            CausalityInterfaceForComposites {
+    CausalityInterfaceForComposites {
         // FindBugs indicates that this should be a static class.
 
         /** Construct a causality interface for the specified actor.

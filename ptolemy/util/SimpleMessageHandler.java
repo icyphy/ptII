@@ -135,7 +135,7 @@ public class SimpleMessageHandler extends MessageHandler {
     @Override
     protected boolean _yesNoCancelQuestion(String question, String trueOption,
             String falseOption, String exceptionOption)
-            throws ptolemy.util.CancelException {
+                    throws ptolemy.util.CancelException {
         System.out.print(question + " (" + trueOption + " or " + falseOption
                 + " or " + exceptionOption + ") ");
         return false;

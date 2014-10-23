@@ -96,7 +96,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      *                specified name.
      */
     public MetroIISRDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -179,7 +179,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });

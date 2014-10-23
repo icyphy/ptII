@@ -137,7 +137,7 @@ public class DiningPhilosophers {
      */
     public static void connect(TypedCompositeActor univ, Philosopher p1,
             Philosopher p2, Philosopher p3, Philosopher p4, Philosopher p5)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
 
         // Avoid duplicate code and share this with DiningApplet.
         Chopstick f1 = new Chopstick(univ, "Chopstick1");

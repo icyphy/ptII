@@ -148,7 +148,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     public SharedParameter(NamedObj container, String name,
             Class<?> containerClass, String defaultValue)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (containerClass == null) {
@@ -382,7 +382,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
             if (previousContainer instanceof Initializable) {
@@ -404,7 +404,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name != null && !name.equals(getName())) {
             SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
             // Unregister under previous name.

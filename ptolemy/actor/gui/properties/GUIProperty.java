@@ -222,7 +222,7 @@ public abstract class GUIProperty extends Attribute {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (getComponent() == null || _add(container)) {
             super.setContainer(container);
         } else {

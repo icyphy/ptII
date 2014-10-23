@@ -161,8 +161,8 @@ public class LogicGate extends Transformer {
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized logic function: " + functionName
-                                + ".  Valid functions are 'and', 'or', 'xor', "
-                                + "'nand', 'nor', and 'xnor'.");
+                        + ".  Valid functions are 'and', 'or', 'xor', "
+                        + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);

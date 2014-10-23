@@ -99,27 +99,27 @@ public class DateConstructor extends TypedAtomicActor {
         millisecond = new TypedIOPort(this, "millisecond", true, false);
         millisecond.setTypeEquals(BaseType.INT);
         new SingletonParameter(millisecond, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         microsecond = new TypedIOPort(this, "microsecond", true, false);
         microsecond.setTypeEquals(BaseType.INT);
         new SingletonParameter(microsecond, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         nanosecond = new TypedIOPort(this, "nanosecond", true, false);
         nanosecond.setTypeEquals(BaseType.INT);
         new SingletonParameter(microsecond, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         timeZone = new TypedIOPort(this, "timeZone", true, false);
         timeZone.setTypeEquals(BaseType.STRING);
         new SingletonParameter(timeZone, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         timeAsLong = new TypedIOPort(this, "timeAsLong", true, false);
         timeAsLong.setTypeEquals(BaseType.LONG);
         new SingletonParameter(timeAsLong, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         precision = new StringParameter(this, "precision");
         precision.addChoice("second");
@@ -278,7 +278,7 @@ public class DateConstructor extends TypedAtomicActor {
             dateToken.getCalendarInstance().set(Calendar.YEAR, yearValue);
             dateToken.getCalendarInstance().set(Calendar.MONTH, monthValue);
             dateToken.getCalendarInstance()
-            .set(Calendar.DAY_OF_MONTH, dayValue);
+                    .set(Calendar.DAY_OF_MONTH, dayValue);
             dateToken.getCalendarInstance().set(Calendar.HOUR, hourValue);
             dateToken.getCalendarInstance().set(Calendar.MINUTE, minuteValue);
             dateToken.getCalendarInstance().set(Calendar.SECOND, secondValue);

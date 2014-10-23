@@ -54,7 +54,7 @@ import javax.swing.ListSelectionModel;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class DndList extends JList implements DragSourceListener,
-        DragGestureListener {
+DragGestureListener {
     /**
      *
      */

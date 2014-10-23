@@ -116,8 +116,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
      */
     public ProxyActor(CompositeEntity container, ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException {
         this(container, targetEntity.getName()
                 + ServerUtility.REMOTE_OBJECT_TAG);
         System.out.println("ProxyActor() ctor: " + targetEntity.getName()
@@ -180,8 +180,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
      */
     private void _replaceConnectingEntities(ComponentEntity targetEntity,
             HashMap<String, String> portTypes)
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+                    throws CloneNotSupportedException, IllegalActionException,
+                    NameDuplicationException {
         // Copy all attributes of the entity whose connected entities are removed.
         // This is needed in cases when a port references any of the attributes via an expression.
         for (Object attributeObject : targetEntity.attributeList()) {
@@ -288,8 +288,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
      */
     private void _replaceTargetEntity(ComponentEntity targetEntity,
             HashMap<String, String> portTypes)
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
+                    throws CloneNotSupportedException, IllegalActionException,
+                    NameDuplicationException {
         // Copy all attributes of the entity being replaced.
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(
                 targetEntity.attributeList());

@@ -197,7 +197,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      */
     @Override
     public Token get(int channelIndex) throws NoTokenException,
-            IllegalActionException {
+    IllegalActionException {
         if (channelIndex != 0) {
             throw new IllegalActionException(
                     this,

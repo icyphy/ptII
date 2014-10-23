@@ -131,7 +131,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
     @SuppressWarnings("unused")
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             Port port, String name, List dependents)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("declaring dependency for rate variable " + name
                     + " in port " + port.getFullName());

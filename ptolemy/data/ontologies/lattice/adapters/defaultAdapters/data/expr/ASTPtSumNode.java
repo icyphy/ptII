@@ -155,7 +155,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         public ASTPtSumNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction addFunction,
                 ConceptFunction subtractFunction, List<Token> operatorTokenList)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("defaultASTPtSumNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 

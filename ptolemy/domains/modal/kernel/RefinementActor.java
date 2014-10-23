@@ -64,7 +64,7 @@ public interface RefinementActor extends TypedActor {
      */
     public void addRefinement(State state, String name, Entity template,
             String className, InstanceOpener instanceOpener)
-            throws IllegalActionException;
+                    throws IllegalActionException;
 
     /** Return the state (or event, which subclasses state) that this actor
      *  refines.

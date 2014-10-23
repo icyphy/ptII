@@ -10,5 +10,5 @@ package ptolemy.domains.openmodelica.lib.omc.corba;
 /* A CORBA compatible interface for omc.
  */
 public interface OmcCommunication extends OmcCommunicationOperations,
-        org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity {
+org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity {
 } // interface OmcCommunication

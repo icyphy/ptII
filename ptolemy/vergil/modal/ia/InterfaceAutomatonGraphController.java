@@ -131,7 +131,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                 background = jFileChooserBugFix.saveBackground();
                 JFileChooser fileDialog = new JFileChooser();
                 fileDialog
-                        .setDialogTitle("Select an interface automaton to compose with.");
+                .setDialogTitle("Select an interface automaton to compose with.");
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);

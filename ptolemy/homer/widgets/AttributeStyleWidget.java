@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Settable;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class AttributeStyleWidget extends GlassPaneWidget implements
-        MinSizeInterface {
+MinSizeInterface {
 
     /**
      * Create a new instance visualizing the positionable element based on its style definitions.

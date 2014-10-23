@@ -412,7 +412,7 @@ public class DataflowActorInterpreter {
      * actually needed.
      */
     protected static class SingleTokenReaderThunk implements
-            Environment.VariableContainer {
+    Environment.VariableContainer {
         @Override
         public Object value() {
             if (val == this) {
@@ -454,7 +454,7 @@ public class DataflowActorInterpreter {
     }
 
     protected static class MultipleTokenReaderThunk implements
-            Environment.VariableContainer {
+    Environment.VariableContainer {
         @Override
         public Object value() {
             freeze();

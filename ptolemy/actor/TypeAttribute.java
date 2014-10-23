@@ -160,7 +160,7 @@ public class TypeAttribute extends Parameter {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _checkContainer(container);
         try {
             workspace().getWriteAccess();

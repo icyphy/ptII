@@ -117,7 +117,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         checkWidthConsistencyAtMultiports.setTypeEquals(BaseType.BOOLEAN);
         checkWidthConsistencyAtMultiports.setExpression("true");
         checkWidthConsistencyAtMultiports
-                .setDisplayName("Check width consistency at multiports");
+        .setDisplayName("Check width consistency at multiports");
 
         Parameter checkWidthConstraints = new Parameter(this,
                 "_checkWidthConstraints");

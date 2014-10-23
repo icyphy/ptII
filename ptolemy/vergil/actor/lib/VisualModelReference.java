@@ -325,7 +325,7 @@ public class VisualModelReference extends ModelReference {
                                         if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                                             if (frame instanceof ExtendedGraphFrame) {
                                                 ((ExtendedGraphFrame) frame)
-                                                        .fullScreen();
+                                                .fullScreen();
                                             }
                                         }
 

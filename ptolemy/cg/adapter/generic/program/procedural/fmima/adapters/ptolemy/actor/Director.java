@@ -102,7 +102,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 codeGeneratorAdapter = (FMIMACodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(
-                        // Extending ProceduralCodeGenerator start.
+                // Extending ProceduralCodeGenerator start.
                         adapter.
                         // Extending ProceduralCodeGenerator end.
 
@@ -111,10 +111,10 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         // Extending GenericCodeGenerator end.
 
                         getComponent(), ex, "Failed to cast " + object
-                        + " of class " + object.getClass().getName()
-                        + " to "
-                        + FMIMACodeGeneratorAdapter.class.getName()
-                        + ".");
+                                + " of class " + object.getClass().getName()
+                                + " to "
+                                + FMIMACodeGeneratorAdapter.class.getName()
+                                + ".");
 
             }
             code.append(codeGeneratorAdapter.generateFMIMA());

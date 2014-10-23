@@ -185,10 +185,10 @@ public class FigureTest extends TestSuite {
             public void check() throws TestFailedException {
                 assertExpr(at1.equals(at2),
                         "Graphics2D transform changed from:\n    " + at1
-                                + " \nto:\n    " + at2);
+                        + " \nto:\n    " + at2);
                 assertExpr(at2.equals(at3),
                         "Graphics2D transform changed from:\n    " + at2
-                                + " \nto:\n    " + at3);
+                        + " \nto:\n    " + at3);
             }
         });
 
@@ -235,7 +235,7 @@ public class FigureTest extends TestSuite {
             public void check() throws TestFailedException {
                 assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
                         0.01), "Shape not transformed: " + shape + " != "
-                        + figure.getShape());
+                                + figure.getShape());
 
                 // For the bounds, we need to allow a large error,
                 // because bounds don't necessarily transform correctly!
@@ -243,7 +243,7 @@ public class FigureTest extends TestSuite {
                 // gross errors
                 assertExpr(TestUtilities.shapeEquals(bounds,
                         figure.getBounds(), 2.0), "Bounds not transformed: "
-                        + bounds + " != " + figure.getBounds());
+                                + bounds + " != " + figure.getBounds());
             }
         });
     }
@@ -280,11 +280,11 @@ public class FigureTest extends TestSuite {
             public void check() throws TestFailedException {
                 assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
                         0.01), "Shape not translated: " + shape + " != "
-                        + figure.getShape());
+                                + figure.getShape());
 
                 assertExpr(TestUtilities.shapeEquals(bounds,
                         figure.getBounds(), 0.01), "Bounds not translated: "
-                        + bounds + " != " + figure.getBounds());
+                                + bounds + " != " + figure.getBounds());
             }
         });
     }
@@ -329,7 +329,7 @@ public class FigureTest extends TestSuite {
         public void check() throws TestFailedException {
             assertExpr(TestUtilities.shapeEquals(region, copy, 0.01),
                     "The region was changed from:\n    " + copy
-                            + " \nto:\n    " + region);
+                    + " \nto:\n    " + region);
         }
     }
 }

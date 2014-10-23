@@ -220,7 +220,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      */
     private void _addNewShared(DatabaseManager database, String sourceSpaceID,
             RecordToken sourceRecord, RecordToken destinationRecord)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Create a new entry that duplicates all the fields of source
         // except the ones that identify the destination location.
         StringBuffer fieldNames = new StringBuffer();
@@ -332,7 +332,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      */
     private RecordToken _editPersonQuery(RecordToken person, String room,
             DatabaseManager database, NamedObj object, Frame parent)
-            throws CancelException, IllegalActionException {
+                    throws CancelException, IllegalActionException {
         Query query = new Query();
         // NOTE: It would be nice to just provide editing of all fields
         // in _occupantInSpaceFields, but the sponsor needs to be dealt
@@ -368,7 +368,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 RecordToken sponsor = _searchForPerson(newSponsorName,
                         sponsorFnames, "", "", "", parent, object, database,
                         null, "Find sponsor for " + _getField(person, "fnames")
-                                + " " + _getField(person, "lname"));
+                        + " " + _getField(person, "lname"));
                 // Get confirmation with full information.
                 newSponsorName = _getField(sponsor, "lname");
                 sponsorFnames = _getField(sponsor, "fnames");
@@ -561,7 +561,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     String sourceFieldValue = ((StringToken) sourceRecord
                             .get(label)).stringValue();
                     destinationFieldValues
-                            .append(_quotedString(sourceFieldValue));
+                    .append(_quotedString(sourceFieldValue));
 
                     if (sourceFieldValues.length() > 0) {
                         sourceFieldValues.append(", ");
@@ -571,7 +571,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     String destinationFieldValue = ((StringToken) destinationRecord
                             .get(label)).stringValue();
                     sourceFieldValues
-                            .append(_quotedString(destinationFieldValue));
+                    .append(_quotedString(destinationFieldValue));
                 }
             }
 
@@ -649,7 +649,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      */
     private ArrayToken _priorOccupants(DatabaseManager database,
             String building, String room, String deskno)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Check to see whether the requested space is vacant.
         StringBuffer sql1 = new StringBuffer();
         sql1.append("select spaceid,fnames,lname from ");
@@ -936,7 +936,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                 String[] buttons = { "Close", "Edit occupant", "Move occupant",
                         "Add occupant", "Remove occupant", "Remove space",
-                        "Add space" };
+                "Add space" };
 
                 // Set up table selection interaction.
                 // Set the table to allow only one row selected at a time.
@@ -1040,7 +1040,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         // If there is no person, warn and abort.
                         if (fnames.trim().equals("") && lname.trim().equals("")) {
                             MessageHandler
-                                    .warning("No person occupying the selected space.");
+                            .warning("No person occupying the selected space.");
                             createEditor(object, parent);
                             return;
                         }
@@ -1146,8 +1146,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     } catch (KernelException e) {
                         // This should have been caught earlier.
                         MessageHandler
-                                .error("Update failed. Perhaps you need to resynchronize with the database?",
-                                        e);
+                        .error("Update failed. Perhaps you need to resynchronize with the database?",
+                                e);
                         return;
                     }
                 } else if ("Add occupant".equals(response)) {
@@ -1306,7 +1306,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                 .stringValue();
                         if (spaceid == null) {
                             MessageHandler
-                                    .error("No space ID for the selected space.");
+                            .error("No space ID for the selected space.");
                             return;
                         }
                         // Get confirmation.
@@ -1329,8 +1329,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     } catch (KernelException e) {
                         // This should have been caught earlier.
                         MessageHandler
-                                .error("Update failed. Perhaps you need to resynchronize with the database?",
-                                        e);
+                        .error("Update failed. Perhaps you need to resynchronize with the database?",
+                                e);
                         return;
                     }
                 } else if ("Add space".equals(response)) {
@@ -1392,8 +1392,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     } catch (KernelException e) {
                         // This should have been caught earlier.
                         MessageHandler
-                                .error("Update failed. Perhaps you need to resynchronize with the database?",
-                                        e);
+                        .error("Update failed. Perhaps you need to resynchronize with the database?",
+                                e);
                         return;
                     }
                 }

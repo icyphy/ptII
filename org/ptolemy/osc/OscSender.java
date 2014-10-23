@@ -1,4 +1,3 @@
-
 /* A Generic actor that generates OSC Messages via the provided input ports.
 
 Copyright (c) 2013-2014 The Regents of the University of California.
@@ -36,7 +35,6 @@ import oscP5.OscMessage;
 import oscP5.OscP5;
 import netP5.NetAddress;
 
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
@@ -54,7 +52,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
 
 /**
 <p> An actor that generates and sends OSC Messages. Add input ports to this actor
@@ -104,15 +101,14 @@ public class OscSender extends TypedAtomicActor {
         localPort.setTypeEquals(BaseType.INT);
         localPort.setExpression("56999");
 
-        tagPrefix = new PortParameter(this,"tagPrefix");
+        tagPrefix = new PortParameter(this, "tagPrefix");
         tagPrefix.setTypeEquals(BaseType.STRING);
         tagPrefix.setExpression("\"\"");
     }
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OscSender newObject = (OscSender) super
-                .clone(workspace);
+        OscSender newObject = (OscSender) super.clone(workspace);
         newObject.oscP5 = null;
         return newObject;
     }
@@ -168,22 +164,27 @@ public class OscSender extends TypedAtomicActor {
         }
         // collect tokens and generate OSC Messages
 
-        HashMap<String, Object> tokensToBeTransmitted = new HashMap<String,Object>();
+        HashMap<String, Object> tokensToBeTransmitted = new HashMap<String, Object>();
         for (TypedIOPort port : this.inputPortList()) {
-            if (!(port instanceof ParameterPort) &&
-                    port.isInput() && port.hasToken(0)) {
+            if (!(port instanceof ParameterPort) && port.isInput()
+                    && port.hasToken(0)) {
                 Token t = port.get(0);
                 String portName = port.getName();
                 if (t.getType().equals(BaseType.DOUBLE)) {
-                    tokensToBeTransmitted.put(portName, (Double)((DoubleToken)t).doubleValue());
+                    tokensToBeTransmitted.put(portName,
+                            ((DoubleToken) t).doubleValue());
                 } else if (t.getType().equals(BaseType.INT)) {
-                    tokensToBeTransmitted.put(portName, (Integer)((IntToken)t).intValue());
+                    tokensToBeTransmitted.put(portName,
+                            ((IntToken) t).intValue());
                 } else if (t.getType().equals(BaseType.STRING)) {
-                    tokensToBeTransmitted.put(portName, (String)((StringToken)t).stringValue());
+                    tokensToBeTransmitted.put(portName,
+                            ((StringToken) t).stringValue());
                 } else if (t.getType().equals(BaseType.FLOAT)) {
-                    tokensToBeTransmitted.put(portName,  (Float)((FloatToken)t).floatValue());
+                    tokensToBeTransmitted.put(portName,
+                            ((FloatToken) t).floatValue());
                 } else {
-                    tokensToBeTransmitted.put(portName, ((ObjectToken)t).getValue());
+                    tokensToBeTransmitted.put(portName,
+                            ((ObjectToken) t).getValue());
                 }
             }
         }
@@ -196,8 +197,6 @@ public class OscSender extends TypedAtomicActor {
         oscP5.stop();
     }
 
-
-
     OscP5 oscP5;
     NetAddress myRemoteLocation;
 
@@ -205,32 +204,34 @@ public class OscSender extends TypedAtomicActor {
         oscP5 = new OscP5(this, port);// set port if successful
     }
 
-    private void _sendOscPackets(HashMap<String, Object> tokenMap) throws IllegalActionException {
+    private void _sendOscPackets(HashMap<String, Object> tokenMap)
+            throws IllegalActionException {
 
         myRemoteLocation = new NetAddress(_host, _remotePort);
 
         // initialize an OSC bundle
         OscBundle bundle = new OscBundle();
-        String prefix = ((StringToken)tagPrefix.getToken()).stringValue();
-        if ( !prefix.equals("") && !prefix.startsWith("/")) {
-            prefix = "/"+prefix;
+        String prefix = ((StringToken) tagPrefix.getToken()).stringValue();
+        if (!prefix.equals("") && !prefix.startsWith("/")) {
+            prefix = "/" + prefix;
         }
 
-        for ( Map.Entry<String, Object> entry : tokenMap.entrySet()) {
+        for (Map.Entry<String, Object> entry : tokenMap.entrySet()) {
 
             String label = entry.getKey();
             Object o = entry.getValue();
-            OscMessage m = new OscMessage(prefix+"/"+label);
+            OscMessage m = new OscMessage(prefix + "/" + label);
 
             if (o instanceof Double) {
-                m.add((Double)o);
+                m.add((Double) o);
             } else if (o instanceof Integer) {
-                m.add((Integer)o);
+                m.add((Integer) o);
             } else if (o instanceof String) {
-                m.add((String)o);
+                m.add((String) o);
             } else {
-                throw new IllegalActionException("Invalid OSC input. " +
-                                "Currently this OSC Client  Integer, String and Double types");
+                throw new IllegalActionException(
+                        "Invalid OSC input. "
+                                + "Currently this OSC Client  Integer, String and Double types");
             }
             bundle.add(m);
         }
@@ -239,6 +240,7 @@ public class OscSender extends TypedAtomicActor {
 
         tokenMap.clear();
     }
+
     private int _remotePort = 9999;
     private int _localPort = 56999;
     private String _host = "";

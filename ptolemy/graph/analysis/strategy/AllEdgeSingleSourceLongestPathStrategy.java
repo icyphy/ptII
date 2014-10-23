@@ -53,7 +53,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
-        implements SingleSourceLongestPathAnalyzer {
+implements SingleSourceLongestPathAnalyzer {
     /** Construct an instance of this analyzer.
      *
      *  @param graph The given graph.

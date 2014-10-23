@@ -463,8 +463,8 @@ public class ProxyModelInfrastructure {
      *  @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
     private void _loadPlainModel() throws IllegalActionException,
-            TypeConflictException, NameDuplicationException,
-            CloneNotSupportedException {
+    TypeConflictException, NameDuplicationException,
+    CloneNotSupportedException {
         ProxyModelBuilder builder = new ProxyModelBuilder(_modelType,
                 _topLevelActor);
         builder.build();

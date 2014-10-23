@@ -153,7 +153,7 @@ public class ParametersAttribute extends StringParameter {
             try {
                 String function = "function" + getExpression() + " 1";
                 _parseTree = (ASTPtFunctionDefinitionNode) new PtParser()
-                        .generateParseTree(function);
+                .generateParseTree(function);
                 _parseTreeVersion = _workspace.getVersion();
             } catch (Exception e) {
                 throw new IllegalActionException(this, e, "The parameter "

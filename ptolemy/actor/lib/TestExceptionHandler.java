@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  */
 @Deprecated
 public class TestExceptionHandler extends TypedAtomicActor implements
-        ExceptionHandler {
+ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

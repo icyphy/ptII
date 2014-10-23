@@ -190,7 +190,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (eal)
  */
 public class ModelReference extends TypedAtomicActor implements
-        ExecutionListener {
+ExecutionListener {
     /** Construct a ModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -339,7 +339,7 @@ public class ModelReference extends TypedAtomicActor implements
 
                     if (myURI != null
                             && myURI.toURL().toExternalForm()
-                                    .equals(url.toExternalForm())) {
+                            .equals(url.toExternalForm())) {
                         throw new IllegalActionException(this,
                                 "Cannot reference my own container.");
                     }

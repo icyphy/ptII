@@ -113,7 +113,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         _toplevel = (CompositeActor) _parser.parse(null, new File(xmlFileName)
-                .toURI().toURL());
+        .toURI().toURL());
 
         // If the model is a top level, and a model error handler has not been set,
         // then set a BasicModelErrorHandler.

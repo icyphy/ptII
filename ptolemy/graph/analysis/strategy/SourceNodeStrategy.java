@@ -52,7 +52,7 @@ import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
  @version $Id$
  */
 public class SourceNodeStrategy extends CachedStrategy implements
-        SourceNodeAnalyzer {
+SourceNodeAnalyzer {
     /** Construct an instance of this strategy for a given graph.
      *
      *  @param graph The given graph.

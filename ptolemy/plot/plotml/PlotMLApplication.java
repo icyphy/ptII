@@ -146,18 +146,18 @@ public class PlotMLApplication extends PlotApplication {
     @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotMLApplication class\n"
-                                + "By: Edward A. Lee "
-                                + "and Christopher Hylands\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2014, "
-                                + "The Regents of the University of California.",
+        .showMessageDialog(
+                this,
+                "PlotMLApplication class\n"
+                        + "By: Edward A. Lee "
+                        + "and Christopher Hylands\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -166,13 +166,13 @@ public class PlotMLApplication extends PlotApplication {
     @Override
     protected void _help() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotMLApplication is a standalone plot "
-                                + " application.\n"
-                                + "  File formats understood: PlotML and Ptplot ASCII.\n"
-                                + "  Left mouse button: Zooming.\n\n"
-                                + _usage(), "About Ptolemy Plot",
+        .showMessageDialog(
+                this,
+                "PlotMLApplication is a standalone plot "
+                        + " application.\n"
+                        + "  File formats understood: PlotML and Ptplot ASCII.\n"
+                        + "  Left mouse button: Zooming.\n\n"
+                        + _usage(), "About Ptolemy Plot",
                         JOptionPane.INFORMATION_MESSAGE);
     }
 

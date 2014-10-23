@@ -110,7 +110,7 @@ public class WebElement extends StringAttribute {
         if (webElement == null) {
             throw new NullPointerException(
                     "Could not get the WebElement attribute \"" + id
-                    + "\" from \"" + container.getFullName() + "\"");
+                            + "\" from \"" + container.getFullName() + "\"");
         } else {
             webElement.setWebName(webName);
             webElement.setPersistent(false);

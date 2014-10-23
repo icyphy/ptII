@@ -58,8 +58,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (ltrnc)
  */
 
-public class WebSocketReader extends TypedAtomicActor
-    implements WebSocketService {
+public class WebSocketReader extends TypedAtomicActor implements
+        WebSocketService {
     /** Create an instance of the actor.
      *  @param container The container
      *  @param name The name.
@@ -119,18 +119,18 @@ public class WebSocketReader extends TypedAtomicActor
                 // or be "*"
                 if (!pathValue.trim().equals("")) {
                     // Check for common incorrect protocols
-                    if (pathValue.startsWith("http") ||
-                            pathValue.startsWith("ftp")) {
-                      throw new IllegalActionException(this, "Remote websocket"
-                            + " paths must start with ws://");
+                    if (pathValue.startsWith("http")
+                            || pathValue.startsWith("ftp")) {
+                        throw new IllegalActionException(this,
+                                "Remote websocket"
+                                        + " paths must start with ws://");
                     }
 
-                    if (pathValue.startsWith("ws://") ||
-                            pathValue.startsWith("wss://")) {
+                    if (pathValue.startsWith("ws://")
+                            || pathValue.startsWith("wss://")) {
                         _URIpath = URI.create(pathValue);
                         _isLocal = false;
-                    }
-                    else if (!pathValue.trim().startsWith("/")) {
+                    } else if (!pathValue.trim().startsWith("/")) {
                         _URIpath = URI.create("/" + pathValue);
                         _isLocal = true;
                     } else {
@@ -237,12 +237,10 @@ public class WebSocketReader extends TypedAtomicActor
 
         // Request a firing
         // Figure out what time to request a firing for.
-        long elapsedRealTime = System.currentTimeMillis()
-                - _initializeRealTime;
+        long elapsedRealTime = System.currentTimeMillis() - _initializeRealTime;
 
         // Assume model time is in seconds, not milliseconds.
-        Time timeOfRequest = _initializeModelTime
-                .add(elapsedRealTime / 1000.0);
+        Time timeOfRequest = _initializeModelTime.add(elapsedRealTime / 1000.0);
 
         if (_debugging) {
             _debug("**** Request firing at time " + timeOfRequest);
@@ -299,14 +297,14 @@ public class WebSocketReader extends TypedAtomicActor
     }
 
     /** Close any open WebSocket connections.
-    * @exception IllegalActionException If thrown by the parent. */
-   @Override
-   public void wrapup() throws IllegalActionException {
-       super.wrapup();
+     * @exception IllegalActionException If thrown by the parent. */
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
 
-       _connectionManager.releaseConnection(_URIpath, this);
-       _connection  = null;
-   }
+        _connectionManager.releaseConnection(_URIpath, this);
+        _connection = null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

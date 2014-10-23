@@ -222,7 +222,7 @@ public class Backoff extends MACActorBase {
                 _startBackoff();
                 break;
 
-            // end modification
+                // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
@@ -253,7 +253,7 @@ public class Backoff extends MACActorBase {
                 _status = Busy;
                 break;
 
-            // end modification
+                // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;

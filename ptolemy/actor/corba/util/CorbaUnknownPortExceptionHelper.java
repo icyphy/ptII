@@ -51,7 +51,7 @@ abstract public class CorbaUnknownPortExceptionHelper {
                             .init()
                             .create_struct_tc(
                                     ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                                            .id(), "CorbaUnknownPortException",
+                                    .id(), "CorbaUnknownPortException",
                                     _members0);
                     __active = false;
                 }

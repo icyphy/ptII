@@ -169,7 +169,7 @@ public class FixSequence extends FixTransformer {
             if (_currentIndex < valuesArray.length()) {
                 Precision precision = new Precision(
                         ((Parameter) getAttribute("outputPrecision"))
-                                .getExpression());
+                        .getExpression());
 
                 Overflow overflow = Overflow
                         .getName(((Parameter) getAttribute("outputOverflow"))
@@ -183,7 +183,7 @@ public class FixSequence extends FixTransformer {
 
                 FixPoint result = new FixPoint(
                         ((ScalarToken) valuesArray.getElement(_currentIndex))
-                                .doubleValue(),
+                        .doubleValue(),
                         new FixPointQuantization(precision, overflow, rounding));
                 sendOutput(output, 0, new FixToken(result));
                 _outputProduced = true;

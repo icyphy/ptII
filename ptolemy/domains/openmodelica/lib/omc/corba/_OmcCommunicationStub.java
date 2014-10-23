@@ -10,7 +10,7 @@ package ptolemy.domains.openmodelica.lib.omc.corba;
 /* A CORBA compatible interface for omc.
  */
 public class _OmcCommunicationStub extends org.omg.CORBA.portable.ObjectImpl
-        implements OmcCommunication {
+implements OmcCommunication {
 
     private static final long serialVersionUID = -2199076960265794510L;
 

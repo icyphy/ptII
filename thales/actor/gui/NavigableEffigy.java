@@ -489,7 +489,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                 while ((aLine = reader.readLine()) != null) {
                     if (aLine.indexOf("<property") != -1
                             && (aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1 || aLine
-                                    .indexOf("name='" + _tagToCheck + "'") != -1)) {
+                            .indexOf("name='" + _tagToCheck + "'") != -1)) {
                         answer = true;
                         break;
                     }

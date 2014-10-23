@@ -60,7 +60,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class KeplerDocumentationAttribute extends Attribute implements
-        Configurable {
+Configurable {
 
     /** Construct a Kepler documentation attribute.  */
     public KeplerDocumentationAttribute() {
@@ -373,7 +373,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
             documentationAttribute.description = new StringAttribute(
                     documentationAttribute, "description");
             documentationAttribute.description
-                    .setExpression(_userLevelDocumentation);
+            .setExpression(_userLevelDocumentation);
 
             //add ports and params
             Enumeration ports = _portHash.keys();
@@ -501,7 +501,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @see #addPort(String, String)
      */
     public String removePort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String retval = (String) _portHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("port:" + name);
@@ -520,7 +520,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @see #addProperty(String, String)
      */
     public String removeProperty(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String retval = (String) _propertyHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("prop:" + name);
@@ -726,7 +726,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
                         if (newPropDoc != null && _isEmpty(newPropDoc)
                                 && !_isEmpty(propertyDescription)) {
                             _propertyHash
-                                    .put(propertyName, propertyDescription);
+                            .put(propertyName, propertyDescription);
                             replaced = true;
                         }
                     }

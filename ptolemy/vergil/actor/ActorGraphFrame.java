@@ -431,7 +431,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                             _importLibraryAction);
                     item.add(importLibraryItem);
 
-
                 } else if (item.getActionCommand().equals("Export")) {
 
                     /////////////////////////////////////////////////
@@ -610,16 +609,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                         && _listeningTo != director) {
                                     if (_listeningTo != null) {
                                         _listeningTo
-                                                .removeDebugListener(_controller);
+                                        .removeDebugListener(_controller);
                                     }
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 } else {
                                     MessageHandler
-                                            .error("Cannot find the director. "
-                                                    + "Possibly this is because this "
-                                                    + "is a class, not an instance.");
+                                    .error("Cannot find the director. "
+                                            + "Possibly this is because this "
+                                            + "is a class, not an instance.");
                                 }
 
                             } catch (NumberFormatException ex) {
@@ -630,7 +629,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         }
                     } else {
                         MessageHandler
-                                .error("Model is not an actor. Cannot animate.");
+                        .error("Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {

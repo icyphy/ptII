@@ -123,7 +123,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      */
     @Override
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -216,7 +216,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      */
     private Schedule _scheduleConnectedActors(Map externalRates,
             List actorList, CompositeActor container)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 

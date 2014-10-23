@@ -507,7 +507,7 @@ public class ArrayType extends StructuredType implements Cloneable {
             // _declaredElementType is a StructuredType. _elementType
             // must also be.
             ((StructuredType) _elementType)
-                    .updateType((StructuredType) newElemType);
+            .updateType((StructuredType) newElemType);
         }
     }
 
@@ -878,7 +878,7 @@ public class ArrayType extends StructuredType implements Cloneable {
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "ArrayType$ElementTypeTerm.setValue: This type " + e
-                                + " is not settable.");
+                        + " is not settable.");
             }
 
             if (!_declaredElementType.isSubstitutionInstance((Type) e)) {

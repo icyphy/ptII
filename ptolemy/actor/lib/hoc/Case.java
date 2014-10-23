@@ -90,7 +90,7 @@ public class Case extends MultiCompositeActor {
      *   an entity with the specified name.
      */
     public Case(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -181,7 +181,7 @@ public class Case extends MultiCompositeActor {
      *  exists with this name.
      */
     public Refinement newRefinement(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new Refinement(this, name);
     }
 
@@ -224,7 +224,7 @@ public class Case extends MultiCompositeActor {
      *  attribute with the name "_director".
      */
     protected CaseDirector _createDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new CaseDirector(this, "_director");
     }
 
@@ -245,7 +245,7 @@ public class Case extends MultiCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.Case");
 
         // Create the control port.

@@ -342,9 +342,9 @@ public class LocatableNodeController extends BasicNodeController {
                     && cf != null) {
                 // float[] dash = { 2.0f, 5.0f };
                 Stroke stroke = new BasicStroke(2f, /* width */
-                BasicStroke.CAP_SQUARE, /* cap   */
-                BasicStroke.JOIN_MITER, /* join  */
-                10.0f); /* mitre limit */
+                        BasicStroke.CAP_SQUARE, /* cap   */
+                        BasicStroke.JOIN_MITER, /* join  */
+                        10.0f); /* mitre limit */
                 // To get a dashed line, add the following two arguments above:
                 // dash, /* dash  */
                 // 0.0f); /* dash_phase  */
@@ -354,7 +354,7 @@ public class LocatableNodeController extends BasicNodeController {
                 double padding = 3.0;
                 bounds = new Rectangle2D.Double(bounds.getX() - padding,
                         bounds.getY() - padding, bounds.getWidth() + padding
-                                * 2.0, bounds.getHeight() + padding * 2.0);
+                        * 2.0, bounds.getHeight() + padding * 2.0);
                 BasicFigure bf = new BasicFigure(bounds);
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);

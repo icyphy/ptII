@@ -77,7 +77,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class ModalRefinement extends ModalModel implements DropTargetHandler,
-        RefinementActor {
+RefinementActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -316,11 +316,11 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                             if (entity.getPort(name) == null) {
                                 try {
                                     ((RefinementActor) entity)
-                                            .setMirrorDisable(1);
+                                    .setMirrorDisable(1);
                                     entity.newPort(name);
                                 } finally {
                                     ((RefinementActor) entity)
-                                            .setMirrorDisable(0);
+                                    .setMirrorDisable(0);
                                 }
                             }
                         }
@@ -410,7 +410,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
     @Override
     public void addRefinement(State state, final String name, Entity template,
             String className, final InstanceOpener instanceOpener)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ModalRefinement.addRefinement(state, name, template, className,
                 instanceOpener, (CompositeEntity) getContainer());
     }
@@ -434,7 +434,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
     public static void addRefinement(State state, final String name,
             Entity template, String className,
             final InstanceOpener instanceOpener, final CompositeEntity container)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // This method is static so that ModalController can call it
         // and avoid code duplication.
@@ -452,7 +452,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
         Attribute allowRefinement = state.getAttribute("_allowRefinement");
         if (allowRefinement instanceof Parameter
                 && !((BooleanToken) ((Parameter) allowRefinement).getToken())
-                        .booleanValue()) {
+                .booleanValue()) {
             throw new IllegalActionException(state, "State does not support "
                     + "refinement.");
         }
@@ -518,7 +518,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                                 && port instanceof IOPort) {
                             try {
                                 ((RefinementPort) newPort)
-                                        .setMirrorDisable(true);
+                                .setMirrorDisable(true);
 
                                 if (((IOPort) port).isInput()) {
                                     ((RefinementPort) newPort).setInput(true);
@@ -530,7 +530,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
 
                                 if (((IOPort) port).isMultiport()) {
                                     ((RefinementPort) newPort)
-                                            .setMultiport(true);
+                                    .setMultiport(true);
                                 }
 
                                 // Copy the location to the new port if any.
@@ -557,7 +557,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                                 }
                             } finally {
                                 ((RefinementPort) newPort)
-                                        .setMirrorDisable(false);
+                                .setMirrorDisable(false);
                             }
                         }
                     } finally {

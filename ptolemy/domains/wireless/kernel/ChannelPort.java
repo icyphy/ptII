@@ -130,7 +130,7 @@ public class ChannelPort extends WirelessIOPort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container instanceof WirelessChannel) {
             super.setContainer(container);
         } else {

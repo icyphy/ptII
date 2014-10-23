@@ -205,7 +205,7 @@ public class DelayChannel extends ErasureChannel {
     @Override
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         double speed = ((DoubleToken) propagationSpeed.getToken())
                 .doubleValue();
 

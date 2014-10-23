@@ -406,7 +406,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (conflicts.size() > 0) {
                 throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
-                                + " on the following inequalities:");
+                        + " on the following inequalities:");
             }
             if (unacceptable.size() > 0) {
                 throw new TypeConflictException(unacceptable,
@@ -595,7 +595,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      */
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
                     "TypedCompositeActor can only contain instances of "

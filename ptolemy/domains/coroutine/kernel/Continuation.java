@@ -53,7 +53,7 @@ public interface Continuation {
 
     public ControlExitToken controlEnterAt(
             ControlEntryToken.EntryLocation location)
-            throws IllegalActionException;
+                    throws IllegalActionException;
 
     /** Returns the set of exposed Entry Locations.
      *  Some internal entry locations may exist that are not exposed

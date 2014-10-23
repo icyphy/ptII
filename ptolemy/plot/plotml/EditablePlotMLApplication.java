@@ -189,18 +189,18 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "EditablePlotMLApplication class\n"
-                                + "By: Edward A. Lee "
-                                + "and Christopher Hylands\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2014, "
-                                + "The Regents of the University of California.",
+        .showMessageDialog(
+                this,
+                "EditablePlotMLApplication class\n"
+                        + "By: Edward A. Lee "
+                        + "and Christopher Hylands\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -209,14 +209,14 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     @Override
     protected void _help() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "EditablePlotMLApplication is a standalone plot "
-                                + " application.\n"
-                                + "  File formats understood: PlotML and Ptplot ASCII.\n"
-                                + "  Left mouse button: Zooming.\n"
-                                + "  Right mouse button: Editing data (use edit menu to select "
-                                + "a dataset).\n\n" + _usage(),
+        .showMessageDialog(
+                this,
+                "EditablePlotMLApplication is a standalone plot "
+                        + " application.\n"
+                        + "  File formats understood: PlotML and Ptplot ASCII.\n"
+                        + "  Left mouse button: Zooming.\n"
+                        + "  Right mouse button: Editing data (use edit menu to select "
+                        + "a dataset).\n\n" + _usage(),
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 

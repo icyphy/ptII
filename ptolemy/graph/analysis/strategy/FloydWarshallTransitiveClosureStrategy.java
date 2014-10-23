@@ -54,7 +54,7 @@ import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
  @version $Id$
  */
 public class FloydWarshallTransitiveClosureStrategy extends
-        FloydWarshallStrategy implements TransitiveClosureAnalyzer {
+FloydWarshallStrategy implements TransitiveClosureAnalyzer {
     /** Construct a transitive closure analysis for a given directed graph.
      *  @param graph The given directed graph.
      */
@@ -75,7 +75,7 @@ public class FloydWarshallTransitiveClosureStrategy extends
     @Override
     public boolean pathExistence(Node startNode, Node endNode) {
         return _transitiveClosure[graph().nodeLabel(startNode)][graph()
-                .nodeLabel(endNode)];
+                                                                .nodeLabel(endNode)];
     }
 
     /** Return a description of the analyzer.

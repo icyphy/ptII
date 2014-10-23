@@ -305,10 +305,10 @@ public class CanBus extends AtomicCommunicationAspect {
                     // arriving at time t must be re-emitted => "> 0" condition.
                     if (listToSort.get(i)[0] == listToSort.get(mostRecent)[0]
                             && this.getDirector()
-                                    .getModelTime()
-                                    .compareTo(
-                                            ((Time) listToSort.get(mostRecent)[2])
-                                                    .add(nextTokenTransmissionTime())) > 0) {
+                            .getModelTime()
+                            .compareTo(
+                                    ((Time) listToSort.get(mostRecent)[2])
+                                    .add(nextTokenTransmissionTime())) > 0) {
                         listToSort.remove(i);
                         i--;
                     }
@@ -464,13 +464,13 @@ public class CanBus extends AtomicCommunicationAspect {
                     for (int i = 0; i < entry.getValue().size(); i++) {
                         _debug("Receiver: "
                                 + ((Receiver) entry.getValue().get(i)[0])
-                                        .toString()
+                                .toString()
                                 + " Token: "
                                 + ((Token) entry.getValue().get(i)[1])
-                                        .toString()
+                                .toString()
                                 + " Time: "
                                 + ((Time) entry.getValue().get(i)[2])
-                                        .getDoubleValue());
+                                .getDoubleValue());
                     }
                 }
             }

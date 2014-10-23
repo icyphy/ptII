@@ -174,7 +174,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
             ((MetroIIPtidesReceiver) ptidesEvent.receiver())
-                    .putToReceiver(ptidesEvent.token());
+            .putToReceiver(ptidesEvent.token());
         }
         if (_debugging) {
             _debug("--- taking from queue: " + ptidesEvent);
@@ -205,7 +205,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         if (ptidesEvent.receiver() != null) {
             if (ptidesEvent.receiver() instanceof MetroIIPtidesReceiver) {
                 ((MetroIIPtidesReceiver) ptidesEvent.receiver())
-                        .putToReceiver(ptidesEvent.token());
+                .putToReceiver(ptidesEvent.token());
             }
         }
         if (_debugging) {

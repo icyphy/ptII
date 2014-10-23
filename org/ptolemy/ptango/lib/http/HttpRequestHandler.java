@@ -149,8 +149,8 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-public class HttpRequestHandler extends TypedAtomicActor
-                implements HttpService, ExceptionSubscriber {
+public class HttpRequestHandler extends TypedAtomicActor implements
+        HttpService, ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -178,11 +178,13 @@ public class HttpRequestHandler extends TypedAtomicActor
         responseContentType.setTypeEquals(BaseType.STRING);
         responseContentType.setStringMode(true);
         responseContentType.setExpression("text/html");
-        new Parameter(responseContentType.getPort(), "_showName").setExpression("true");
+        new Parameter(responseContentType.getPort(), "_showName")
+                .setExpression("true");
 
         responseHeaders = new PortParameter(this, "responseHeaders");
         responseHeaders.setTypeEquals(BaseType.RECORD);
-        new Parameter(responseHeaders.getPort(), "_showName").setExpression("true");
+        new Parameter(responseHeaders.getPort(), "_showName")
+                .setExpression("true");
 
         setCookies = new TypedIOPort(this, "setCookies", true, false);
         new Parameter(setCookies, "_showName").setExpression("true");
@@ -422,7 +424,8 @@ public class HttpRequestHandler extends TypedAtomicActor
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HttpRequestHandler newObject = (HttpRequestHandler) super.clone(workspace);
+        HttpRequestHandler newObject = (HttpRequestHandler) super
+                .clone(workspace);
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._URIpath = null;
@@ -534,7 +537,8 @@ public class HttpRequestHandler extends TypedAtomicActor
 
         // Handle the response data.
         if (responseBody.hasToken(0)) {
-            responseData.response = ((StringToken) responseBody.get(0)).stringValue();
+            responseData.response = ((StringToken) responseBody.get(0))
+                    .stringValue();
             responseFound = true;
             if (_debugging) {
                 _debug("Received response on the response input port: "
@@ -543,20 +547,21 @@ public class HttpRequestHandler extends TypedAtomicActor
         }
         // Handle the code input.
         if (responseCode.getWidth() > 0 && responseCode.hasToken(0)) {
-            responseData.statusCode = ((IntToken) responseCode.get(0)).intValue();
+            responseData.statusCode = ((IntToken) responseCode.get(0))
+                    .intValue();
             responseFound = true;
             if (_debugging) {
-                _debug("Received response code: "
-                        + responseData.statusCode);
+                _debug("Received response code: " + responseData.statusCode);
             }
         }
         // Handle the responseContentType input.
         responseContentType.update();
-        responseData.contentType = ((StringToken) responseContentType.getToken()).stringValue();
+        responseData.contentType = ((StringToken) responseContentType
+                .getToken()).stringValue();
 
         // Handle the responseHeaders input.
         responseHeaders.update();
-        responseData.headers = (RecordToken)responseHeaders.getToken();
+        responseData.headers = (RecordToken) responseHeaders.getToken();
 
         if (responseFound) {
             if (_pendingRequest == null) {
@@ -600,14 +605,16 @@ public class HttpRequestHandler extends TypedAtomicActor
             }
 
             if (_debugging) {
-                    _debug("Sending request method: " + _pendingRequest.method);
-                    _debug("Sending request URI: " + _pendingRequest.requestURI);
+                _debug("Sending request method: " + _pendingRequest.method);
+                _debug("Sending request URI: " + _pendingRequest.requestURI);
             }
             // Produce header output.
-            if (_pendingRequest.headers != null && _pendingRequest.headers.length() > 0) {
+            if (_pendingRequest.headers != null
+                    && _pendingRequest.headers.length() > 0) {
                 if (!headers.sinkPortList().isEmpty()) {
                     if (_debugging) {
-                        _debug("Sending request header: " + _pendingRequest.headers);
+                        _debug("Sending request header: "
+                                + _pendingRequest.headers);
                     }
                     try {
                         headers.send(0, _pendingRequest.headers);
@@ -621,31 +628,36 @@ public class HttpRequestHandler extends TypedAtomicActor
                 }
             }
             // Produce requestor output.
-            if (_pendingRequest.requestor != null && _pendingRequest.requestor.length() > 0) {
+            if (_pendingRequest.requestor != null
+                    && _pendingRequest.requestor.length() > 0) {
                 if (_debugging) {
-                    _debug("Sending requestor identification: " + _pendingRequest.requestor);
+                    _debug("Sending requestor identification: "
+                            + _pendingRequest.requestor);
                 }
                 requestor.send(0, new StringToken(_pendingRequest.requestor));
             }
             if (!parameters.sinkPortList().isEmpty()) {
                 if (_debugging) {
-                        _debug("Sending request parameters: " + _pendingRequest.parameters);
+                    _debug("Sending request parameters: "
+                            + _pendingRequest.parameters);
                 }
-                    // Send parameters, but handle type errors locally.
-                    try {
-                        parameters.send(0, _pendingRequest.parameters);
-                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                        // Parameters provided do not match the required type.
-                        // Construct an appropriate response.
-                        _respondWithBadRequestMessage(_pendingRequest.parameters,
-                                parameters.getType(), "parameters");
-                        return;
-                    }
+                // Send parameters, but handle type errors locally.
+                try {
+                    parameters.send(0, _pendingRequest.parameters);
+                } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                    // Parameters provided do not match the required type.
+                    // Construct an appropriate response.
+                    _respondWithBadRequestMessage(_pendingRequest.parameters,
+                            parameters.getType(), "parameters");
+                    return;
+                }
             }
-            if (_pendingRequest.cookies != null && _pendingRequest.cookies.length() > 0) {
+            if (_pendingRequest.cookies != null
+                    && _pendingRequest.cookies.length() > 0) {
                 if (!cookies.sinkPortList().isEmpty()) {
                     if (_debugging) {
-                        _debug("Sending request cookies: " + _pendingRequest.cookies);
+                        _debug("Sending request cookies: "
+                                + _pendingRequest.cookies);
                     }
                     try {
                         cookies.send(0, _pendingRequest.cookies);
@@ -734,8 +746,8 @@ public class HttpRequestHandler extends TypedAtomicActor
      *  response
      */
     protected void _handleRequest(HttpServletRequest request,
-            HttpServletResponse response, String type)
-            throws ServletException, IOException {
+            HttpServletResponse response, String type) throws ServletException,
+            IOException {
         // The following code block is synchronized on the enclosing
         // actor. This lock _is_ released while waiting for the response,
         // allowing the fire method to execute its own synchronized blocks.
@@ -744,8 +756,9 @@ public class HttpRequestHandler extends TypedAtomicActor
             // Is this possible?
             // This will simply overwrite it. For now, print a warning to standard error.
             if (_newRequest != null) {
-                System.err.println(getFullName()
-                        + ": WARNING. Discarding HTTP request that has not yet been handled.");
+                System.err
+                        .println(getFullName()
+                                + ": WARNING. Discarding HTTP request that has not yet been handled.");
             }
             _newRequest = new HttpRequestItems();
 
@@ -753,8 +766,8 @@ public class HttpRequestHandler extends TypedAtomicActor
             _newRequest.method = type;
 
             if (_debugging) {
-                _debug("**** Handling a " + type
-                        + " request to URI " + _newRequest.requestURI);
+                _debug("**** Handling a " + type + " request to URI "
+                        + _newRequest.requestURI);
             }
 
             try {
@@ -798,7 +811,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                 getDirector().fireAt(HttpRequestHandler.this, timeOfRequest);
             } catch (IllegalActionException e) {
                 _newRequest = null;
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        e.getMessage());
                 return;
             }
             //////////////////////////////////////////////////////
@@ -881,7 +895,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                 for (String name : _response.headers.labelSet()) {
                     Token token = _response.headers.get(name);
                     if (token instanceof StringToken) {
-                        response.addHeader(name, ((StringToken)token).stringValue());
+                        response.addHeader(name,
+                                ((StringToken) token).stringValue());
                     } else if (token != null) {
                         response.addHeader(name, token.toString());
                     }
@@ -894,8 +909,7 @@ public class HttpRequestHandler extends TypedAtomicActor
                 _writeCookies(_response.cookies, response);
             }
             if (_debugging) {
-                _debug("**** Servet received response: "
-                        + _response.response);
+                _debug("**** Servet received response: " + _response.response);
             }
 
             // Set up a buffer for the output so we can set the length of
@@ -926,7 +940,6 @@ public class HttpRequestHandler extends TypedAtomicActor
             _response = null;
         }
     }
-
 
     /** Read the body information from the HttpServletRequest, which at this time
      *  is constrained to be a string.
@@ -969,8 +982,7 @@ public class HttpRequestHandler extends TypedAtomicActor
         LinkedHashMap<String, Token> map = new LinkedHashMap<String, Token>();
         StringToken emptyString = new StringToken("");
         for (int i = 0; i < labels.length(); i++) {
-            String label = ((StringToken) labels.getElement(i))
-                    .stringValue();
+            String label = ((StringToken) labels.getElement(i)).stringValue();
             map.put(label, emptyString);
         }
         // Next, override these default values with any cookies provided in the request.
@@ -1013,7 +1025,9 @@ public class HttpRequestHandler extends TypedAtomicActor
             if (valueList.size() == 1) {
                 map.put(name, valueList.get(0));
             } else {
-                map.put(name, new ArrayToken(valueList.toArray(new StringToken[valueList.size()])));
+                map.put(name,
+                        new ArrayToken(valueList
+                                .toArray(new StringToken[valueList.size()])));
             }
         }
         if (map.isEmpty()) {
@@ -1206,7 +1220,8 @@ public class HttpRequestHandler extends TypedAtomicActor
                     // TODO:  Test if this works for strings
                     // I believe these require quotation marks around them
                     parameters.append(label + ": "
-                            + _pendingRequest.parameters.get(label).toString() + ",");
+                            + _pendingRequest.parameters.get(label).toString()
+                            + ",");
                 }
 
                 // Erase the last , and add }

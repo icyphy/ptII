@@ -1,4 +1,3 @@
-
 /* Parse incoming chord info into Chord objects in correct order
 
 Copyright (c) 2013-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import java.util.Collections;
@@ -61,21 +60,20 @@ a sequence of {@link Chord} objects, in sequence order.
 public class ChordParser extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
-        *  @param container The container.
-        *  @param name The name of this actor
-        *  @param trainingSequence The input string that the oracle is built from
-        *  @exception IllegalActionException If the actor cannot be contained
-        *   by the proposed container.
-        *  @exception NameDuplicationException If the container already has an
-        *   actor with this name.
-        */
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @param trainingSequence The input string that the oracle is built from
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ChordParser(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         chordName = new TypedIOPort(this, "chordName", true, false);
         chordName.setTypeEquals(BaseType.STRING);
-
 
         chordDuration = new TypedIOPort(this, "chordDuration", true, false);
         chordDuration.setTypeEquals(BaseType.DOUBLE);
@@ -124,8 +122,6 @@ public class ChordParser extends TypedAtomicActor {
      */
     public TypedIOPort chords;
 
-
-
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -136,7 +132,8 @@ public class ChordParser extends TypedAtomicActor {
         }
 
         if (chordDuration.hasToken(0)) {
-            double duration = ((DoubleToken) chordDuration.get(0)).doubleValue();
+            double duration = ((DoubleToken) chordDuration.get(0))
+                    .doubleValue();
             _durations.add(duration);
         }
 
@@ -148,21 +145,21 @@ public class ChordParser extends TypedAtomicActor {
 
         if (endChord.hasToken(0)) {
             _terminateChord = true;
-            _chordLength = ((IntToken)endChord.get(0)).intValue();
-            _orderedChords.put(_chordLength+1, new Chord(MusicSpecs.TERMINATION_CHORD,0.0));
+            _chordLength = ((IntToken) endChord.get(0)).intValue();
+            _orderedChords.put(_chordLength + 1, new Chord(
+                    MusicSpecs.TERMINATION_CHORD, 0.0));
         }
 
-
-        if ( _chordNames.size() == _durations.size()
+        if (_chordNames.size() == _durations.size()
                 && _chordNames.size() == _timestamps.size()
-                && _chordNames.size() >= _chordLength &&
-                        _chordLength > 0) {
+                && _chordNames.size() >= _chordLength && _chordLength > 0) {
             // sort
-            for ( int i = _timestamps.size()-1; i >= 0; i--) {
+            for (int i = _timestamps.size() - 1; i >= 0; i--) {
                 int index = _timestamps.get(i);
-                if ( index < _durations.size() && index < _chordNames.size()) {
+                if (index < _durations.size() && index < _chordNames.size()) {
                     double duration = _durations.get(index);
-                    _orderedChords.put(index,new Chord(_chordNames.get(index),duration));
+                    _orderedChords.put(index, new Chord(_chordNames.get(index),
+                            duration));
                     _timestamps.remove(i);
                 }
             }

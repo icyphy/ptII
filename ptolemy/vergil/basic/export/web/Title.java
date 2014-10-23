@@ -155,10 +155,10 @@ public class Title extends StringParameter implements WebExportable {
                 "_smallIconDescription");
         try {
             smallIcon
-                    .configure(
-                            null,
-                            null,
-                            "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
+            .configure(
+                    null,
+                    null,
+                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
         } catch (Exception e) {
             // Show exception on the console. Should not occur.
             e.printStackTrace();

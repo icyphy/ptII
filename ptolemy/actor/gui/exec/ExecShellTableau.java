@@ -307,7 +307,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             } catch (final IOException io) {
                 stderr("IOException: "
                         + ptolemy.kernel.util.KernelException
-                                .stackTraceToString(io));
+                        .stackTraceToString(io));
             }
         } catch (InterruptedException e) {
             //_interpreter.destroy();
@@ -343,7 +343,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _execShellTableau.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _execShellTableau.stderr("IOException: " + ioe);

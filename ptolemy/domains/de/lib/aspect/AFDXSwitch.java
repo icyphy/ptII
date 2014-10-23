@@ -430,8 +430,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                             Token[] values = new Token[] {
                                     new DoubleToken(
                                             event.timeStamp.getDoubleValue()),
-                                    new ObjectToken(output[2]),
-                                    (Token) output[1] };
+                                            new ObjectToken(output[2]),
+                                            (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else { // Else the receiver is an actor.
@@ -688,7 +688,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
     public static class AfdxSwitchAttributes extends
-            CommunicationAspectAttributes {
+    CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.

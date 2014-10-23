@@ -62,7 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
 @Pt.AcceptedRating Red (cshelton)
  */
 public class SIBaseDimensionRepresentativeConcept extends
-        BaseDimensionRepresentativeConcept {
+BaseDimensionRepresentativeConcept {
 
     /** Create a new SIBaseUnitRepresentativeConcept with the specified name and
      *  ontology.

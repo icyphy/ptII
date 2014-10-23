@@ -109,7 +109,7 @@ public class MatrixSplit extends SDFTransformer {
         columnSplit.setExpression("{1}");
 
         output_tokenProductionRate
-                .setExpression("rowSplit.length() * columnSplit.length()");
+        .setExpression("rowSplit.length() * columnSplit.length()");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -118,7 +118,7 @@ public class ModelPane extends JPanel implements CloseListener {
             _controlPanel.setLayout(new BoxLayout(_controlPanel,
                     BoxLayout.Y_AXIS));
             _controlPanel
-                    .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
             // Add a listener that requests the focus when we click
             // in the pane. This allows keyboard bindings to work.

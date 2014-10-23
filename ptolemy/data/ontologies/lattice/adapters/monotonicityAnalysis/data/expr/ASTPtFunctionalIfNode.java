@@ -59,7 +59,7 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtFunctionalIfNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -76,7 +76,7 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
         IfNodeFunction astIfFunction = new IfNodeFunction(
                 (ptolemy.data.expr.ASTPtFunctionalIfNode) _getNode(),
                 getSolver().getOntology(), getSolver()
-                        .getAllContainedOntologies());
+                .getAllContainedOntologies());
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(astIfFunction,
                 _getChildNodeTerms()));

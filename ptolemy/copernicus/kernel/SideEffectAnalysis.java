@@ -255,7 +255,7 @@ public class SideEffectAnalysis {
                 if (value instanceof FieldRef) {
                     if (_debug) {
                         System.out
-                                .println("SideEffectAnalysis: assigns to field");
+                        .println("SideEffectAnalysis: assigns to field");
                     }
 
                     out.addSideEffect(((FieldRef) value).getField());
@@ -264,7 +264,7 @@ public class SideEffectAnalysis {
                 if (value instanceof ArrayRef) {
                     if (_debug) {
                         System.out
-                                .println("SideEffectAnalysis: assigns to array.");
+                        .println("SideEffectAnalysis: assigns to array.");
                     }
 
                     // Escape analysis might help in this case.

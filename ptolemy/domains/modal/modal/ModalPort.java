@@ -207,7 +207,7 @@ public class ModalPort extends ModalBasePort {
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // See also ModelRefinementPort.setContainer() for a similar method.
         try {
             _workspace.getWriteAccess();
@@ -277,7 +277,7 @@ public class ModalPort extends ModalBasePort {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _setName(name);
     }
 

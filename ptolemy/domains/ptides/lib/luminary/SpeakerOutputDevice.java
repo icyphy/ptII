@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  */
 public class SpeakerOutputDevice extends ActuatorSetup implements
-        ActuationDevice {
+ActuationDevice {
 
     /**
      * Constructs a SpeakerOutputDevice  object.

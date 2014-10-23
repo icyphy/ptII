@@ -44,7 +44,7 @@ import ptserver.data.AttributeChangeToken;
  *  @Pt.AcceptedRating Red (pdf)
  */
 public class AttributeChangeTokenHandler implements
-        TokenHandler<AttributeChangeToken> {
+TokenHandler<AttributeChangeToken> {
 
     /** Write the AttributeChangeToken to a byte array.
      *  @param token Token to be converted to bytes.
@@ -72,7 +72,7 @@ public class AttributeChangeTokenHandler implements
     @Override
     public AttributeChangeToken convertToToken(DataInputStream inputStream,
             Class<? extends AttributeChangeToken> tokenType)
-            throws IOException, IllegalActionException {
+                    throws IOException, IllegalActionException {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName(inputStream.readUTF());
         token.setExpression(inputStream.readUTF());

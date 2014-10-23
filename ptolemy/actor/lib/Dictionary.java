@@ -284,7 +284,7 @@ public class Dictionary extends TypedAtomicActor {
             newObject.readKeyArray.setTypeAtLeast(ArrayType
                     .arrayOf(newObject.readKey));
             newObject.keys
-            .setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
+                    .setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
             newObject.result.setTypeSameAs(newObject.value);
             newObject.resultArray.setTypeAtLeast(ArrayType
                     .arrayOf(newObject.value));
@@ -383,13 +383,14 @@ public class Dictionary extends TypedAtomicActor {
             }
             ArrayToken resultToken = new ArrayToken(value.getType(), theResult);
             if (_debugging) {
-                _debug("Retrieved keys, values: " + theKeys + ", " + resultToken);
+                _debug("Retrieved keys, values: " + theKeys + ", "
+                        + resultToken);
             }
             resultArray.send(0, resultToken);
             if (keysNotFound.size() > 0) {
-                ArrayToken notFoundToken = new ArrayToken(
-                        BaseType.STRING,
-                        keysNotFound.toArray(new StringToken[keysNotFound.size()]));
+                ArrayToken notFoundToken = new ArrayToken(BaseType.STRING,
+                        keysNotFound.toArray(new StringToken[keysNotFound
+                                .size()]));
                 notFound.send(0, notFoundToken);
                 if (_debugging) {
                     _debug("Keys with no value: " + notFoundToken);

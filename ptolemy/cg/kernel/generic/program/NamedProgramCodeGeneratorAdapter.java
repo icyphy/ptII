@@ -95,7 +95,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Yellow (eal)
  */
 public class NamedProgramCodeGeneratorAdapter extends
-        ProgramCodeGeneratorAdapter {
+ProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
@@ -264,7 +264,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                 if (!necessaryFileDestination.exists()
                         || necessaryFileSource.exists()
                         && necessaryFileSource.lastModified() > necessaryFileDestination
-                                .lastModified()) {
+                        .lastModified()) {
                     // If the dest file does not exist or is older than the
                     // source file, we do the copy
                     System.out.println("Copying " + necessaryFileSource
@@ -407,7 +407,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                         "Fire "
                                 + composite
                                 + CodeGeneratorAdapter
-                                        .generateName(getComponent())));
+                                .generateName(getComponent())));
 
         if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
             code.append(_generateFireCode());
@@ -1147,7 +1147,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _templateParser.generateTypeConvertStatement(source, sink,
                 offset, null);
     }
@@ -1208,7 +1208,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                 // referenced by the name anywhere it is used.
                 if (getCodeGenerator() != null
                         && getCodeGenerator()._modifiedVariables
-                                .contains(result)) { // figure out how to get the containers code generator that may help
+                        .contains(result)) { // figure out how to get the containers code generator that may help
                     return new ObjectToken(getCodeGenerator()//_codeGenerator
                             .generateVariableName(result));
                 } else {
@@ -1339,7 +1339,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     private String _generateTypeConvertStatements(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
 

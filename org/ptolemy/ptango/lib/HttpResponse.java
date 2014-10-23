@@ -92,7 +92,7 @@ public class HttpResponse {
         //_contentLength = connection.getContentLengthLong();
         _contentLength = connection.getContentLength();
 
-       _contentType = connection.getContentType();
+        _contentType = connection.getContentType();
 
         try {
             _responseCode = connection.getResponseCode();
@@ -216,7 +216,7 @@ public class HttpResponse {
 
         try {
             return new RecordToken(_labels, values.toArray(new Token[values
-                                                                     .size()]));
+                    .size()]));
         } catch (IllegalActionException e) {
             return new RecordToken();
         }
@@ -236,7 +236,7 @@ public class HttpResponse {
 
         try {
             return new RecordToken(_labels, values.toArray(new Token[values
-                                                                     .size()])).getType();
+                    .size()])).getType();
         } catch (IllegalActionException e) {
             return new RecordToken().getType();
         }
@@ -327,7 +327,7 @@ public class HttpResponse {
 
     /** Labels for returning the status as a RecordToken */
     static final String[] _labels = { "responseCode", "responseMessage",
-        "successful", "furtherActionExpected" };
+            "successful", "furtherActionExpected" };
 
     /** A code indicating the status of the response.
      *  See http://en.wikipedia.org/wiki/List_of_HTTP_status_codes

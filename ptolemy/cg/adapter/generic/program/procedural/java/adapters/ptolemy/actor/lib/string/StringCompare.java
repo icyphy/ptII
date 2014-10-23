@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 @Pt.AcceptedRating Red (cxh)
  */
 public class StringCompare
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringCompare {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringCompare {
     /**
      *  Construct a StringCompare adapter.
      *  @param actor The given ptolemy.actor.lib.string.StringCompare actor.

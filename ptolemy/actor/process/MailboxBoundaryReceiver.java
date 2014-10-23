@@ -202,7 +202,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      */
     @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 

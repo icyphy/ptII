@@ -200,7 +200,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     if (ready) {
                         PtalonPopulator populator = new PtalonPopulator();
                         populator
-                        .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();

@@ -113,7 +113,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(source.port.getContainer())).getReference(
-                    sourcePortChannel, false);
+                            sourcePortChannel, false);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -130,7 +130,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
                 .getAdapter(sink.port.getContainer())).getReference(
-                sinkPortChannel, true);
+                        sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -154,7 +154,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
                     + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";"
-                + StringUtilities.getProperty("line.separator");
+        + StringUtilities.getProperty("line.separator");
     }
 
     /** Return the translated token instance function invocation string.
@@ -222,7 +222,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
             if (port == null) {
                 throw new IllegalActionException(
                         parameter
-                                + " is not a port. $refinePrimitiveType macro takes in a port.");
+                        + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (_getCodeGenerator().isPrimitive(port.getType())) {
                 return ".payload."

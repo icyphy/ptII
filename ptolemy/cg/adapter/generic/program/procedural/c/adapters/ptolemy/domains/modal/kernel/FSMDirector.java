@@ -56,8 +56,8 @@ is also associated with a code generator.
 @Pt.AcceptedRating Red (sssf)
  */
 public class FSMDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -314,7 +314,7 @@ public class FSMDirector
                         + _sanitizedDirectorName
                         + ".currentMicrostep = "
                         + ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + ";");
+                        .getIndex() + ";");
             }
         }
 
@@ -338,7 +338,7 @@ public class FSMDirector
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
-                        .comment("End of the Initialization of the director"));
+                .comment("End of the Initialization of the director"));
 
         return code.toString();
     }
@@ -424,7 +424,7 @@ public class FSMDirector
 
         code.append(_eol
                 + getCodeGenerator()
-                        .comment(0, "The postfire of the director."));
+                .comment(0, "The postfire of the director."));
 
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();

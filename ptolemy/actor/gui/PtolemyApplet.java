@@ -185,10 +185,10 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
         String[][] newInfo = {
                 { "modelClass", "", "Class name for an instance of NamedObj" },
                 { "orientation", "",
-                        "Orientation: vertical, horizontal, or controls_only" },
+                "Orientation: vertical, horizontal, or controls_only" },
                 { "controls", "", "List of on-screen controls" },
                 { "autoRun", "boolean",
-                        "Determines if the model is run automatically" } };
+                "Determines if the model is run automatically" } };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 

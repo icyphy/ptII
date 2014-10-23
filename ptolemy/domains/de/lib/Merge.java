@@ -173,7 +173,7 @@ public class Merge extends DETransformer {
         int microstep = _getMicrostep();
         if (_moreTokensOnOtherChannels
                 && ((CompositeActor) this.getContainer()).getDirector()
-                        .getModelTime().compareTo(_previousModelTime) == 0
+                .getModelTime().compareTo(_previousModelTime) == 0
                 && microstep == _previousMicrostep) {
             return false;
         }

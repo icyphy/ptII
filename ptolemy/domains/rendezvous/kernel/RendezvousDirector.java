@@ -74,7 +74,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public RendezvousDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -166,7 +166,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // in the array.
         String[] defaultSuggestions = new String[] {
                 "ptolemy.domains.modal.kernel.FSMDirector",
-                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -243,10 +243,10 @@ public class RendezvousDirector extends CompositeProcessDirector {
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
                 MessageHandler
-                        .message("Model ended with a deadlock "
-                                + "(this may be normal for this model).\n"
-                                + "A parameter with name SuppressDeadlockReporting and "
-                                + "value true will suppress this message.");
+                .message("Model ended with a deadlock "
+                        + "(this may be normal for this model).\n"
+                        + "A parameter with name SuppressDeadlockReporting and "
+                        + "value true will suppress this message.");
             }
 
             return false;

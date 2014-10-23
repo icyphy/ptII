@@ -121,16 +121,16 @@ public class ExportModelJUnitTest {
 
         if (!openComposites) {
             System.out
-                    .println("Warning: not opening composites for "
-                            + modelPath
-                            + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+            .println("Warning: not opening composites for "
+                    + modelPath
+                    + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
 
         if (!run) {
             System.out
-                    .println("Warning: not running "
-                            + modelPath
-                            + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+            .println("Warning: not running "
+                    + modelPath
+                    + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
@@ -244,8 +244,7 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = {
-                "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+        String[] skip = { "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
                 "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {

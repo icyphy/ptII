@@ -89,7 +89,7 @@ public class MovieReader extends Source implements ControllerListener {
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL
-                .setExpression("$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
+        .setExpression("$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,10 +144,10 @@ public class MovieReader extends Source implements ControllerListener {
                                         + "', to '"
                                         + (urlCopy == null ? "null" : urlCopy
                                                 .toString())
-                                        + "', (copyFileName was: '"
-                                        + copyFileName
-                                        + "') but that failed with:\n"
-                                        + KernelException
+                                                + "', (copyFileName was: '"
+                                                + copyFileName
+                                                + "') but that failed with:\n"
+                                                + KernelException
                                                 .stackTraceToString(throwable));
                     }
                 }

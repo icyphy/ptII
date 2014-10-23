@@ -119,7 +119,7 @@ public abstract class ConceptFunction {
         if (argValues == null) {
             throw new IllegalActionException(
                     "The input array to the ConceptFunction " + this
-                            + " is null.");
+                    + " is null.");
 
             // If the function has a fixed number of arguments, check to make sure
             // the input list has the right number of arguments and also check
@@ -145,8 +145,8 @@ public abstract class ConceptFunction {
                 for (Concept argument : argValues) {
                     if (argument != null
                             && !_argumentDomainOntologies.get(index)
-                                    .entityList(Concept.class)
-                                    .contains(argument)) {
+                            .entityList(Concept.class)
+                            .contains(argument)) {
                         throw new IllegalActionException(
                                 "The input value "
                                         + argument

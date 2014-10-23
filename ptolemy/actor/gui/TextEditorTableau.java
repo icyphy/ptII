@@ -177,7 +177,7 @@ public class TextEditorTableau extends Tableau {
                         new Class[] { CompositeEntity.class, String.class });
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
-                                URL.class });
+                        URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {

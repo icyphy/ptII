@@ -265,7 +265,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      *   by the proposed container.
      */
     protected void setEmbeddedActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // This code was separated into its own function so that
         // embeddedJavaFileActor can extend this class without a large

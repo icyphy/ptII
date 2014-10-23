@@ -78,7 +78,7 @@ public class GiottoCodeGenerator extends Attribute {
      *   an attribute already in the container.
      */
     public GiottoCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -129,7 +129,7 @@ public class GiottoCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "

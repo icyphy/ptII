@@ -150,7 +150,7 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
                         _lastLocation,
                         /* URI base */null,
                         /* File startingDirectory */basicGraphFrame
-                                .getLastDirectory(),
+                        .getLastDirectory(),
                         /* allowFiles */true,
                         /* allowDirectories */false,
                         /* Color background */

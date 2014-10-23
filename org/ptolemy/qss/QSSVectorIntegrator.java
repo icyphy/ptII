@@ -178,8 +178,8 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
             _x[i] = _xIni[i];
             _nextOutputValue[i] = _quantize(_x[i], _dq[i]);
             _previousOutputValue[i] = _nextOutputValue[i];
-            _currentSlope [i] = 0.0;
-            _previousSlope [i] = 0.0;
+            _currentSlope[i] = 0.0;
+            _previousSlope[i] = 0.0;
             _previousInput[i] = null;
             _inputReceived[i] = false;
             _firstFiring[i] = true;
@@ -243,8 +243,8 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 // another firing. Note that DE needs this because
                 // of the way it handles feedback loops. It may invoke fire and
                 // postfire more than once in each iteration.
-                _nextOutputTime[i] = _nextCrossingTime(_currentSlope[i], 0.0, 0.0,
-                        _dq[i], currentTime);
+                _nextOutputTime[i] = _nextCrossingTime(_currentSlope[i], 0.0,
+                        0.0, _dq[i], currentTime);
                 // Calculate the next output value
                 _nextOutputValue[i] = _nextOutputValue(_currentSlope[i],
                         _previousOutputValue[i], _dq[i]);
@@ -256,9 +256,8 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 if (_inputReceived[i]) {
                     _x[i] += _previousSlope[i]
                             * (currentTime.subtract(_previousStateUpdateTime))
-                                    .getDoubleValue();
-                    System.out
-                    .println("This is the index in received "
+                            .getDoubleValue();
+                    System.out.println("This is the index in received "
                             + String.valueOf(i) + ": "
                             + String.valueOf((_x[i])));
                     // Update the time of the next output, which is the time it will take to
@@ -270,11 +269,10 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                     _nextOutputValue[i] = _nextOutputValue(_currentSlope[i],
                             _previousOutputValue[i], _dq[i]);
                     _inputReceived[i] = false;
-                }
-                else {
-                // Calculate the next output value
-                _nextOutputValue[i] = _nextOutputValue(_previousSlope[i],
-                        _previousOutputValue[i], _dq[i]);
+                } else {
+                    // Calculate the next output value
+                    _nextOutputValue[i] = _nextOutputValue(_previousSlope[i],
+                            _previousOutputValue[i], _dq[i]);
                 }
             }
 

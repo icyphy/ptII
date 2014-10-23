@@ -56,7 +56,7 @@ import ptdb.common.exception.DBExecutionException;
  *
  */
 public class HierarchyFetcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the HierarchyFetcher object.

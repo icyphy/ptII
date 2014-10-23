@@ -162,7 +162,7 @@ public class GeneratorTableau extends Tableau {
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
             caveatsPanel
-                    .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+            .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
@@ -206,8 +206,8 @@ public class GeneratorTableau extends Tableau {
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
             parametersButton
-                    .setToolTipText("Sanity check the Parameters and then "
-                            + "display a summary.");
+            .setToolTipText("Sanity check the Parameters and then "
+                    + "display a summary.");
             buttonPanel.add(parametersButton);
 
             JButton goButton = new JButton("Generate");
@@ -314,10 +314,10 @@ public class GeneratorTableau extends Tableau {
                         if (!directory.isDirectory()) {
                             throw new IllegalActionException(model,
                                     "Not a directory: " + ptIIUserDirectory
-                                            + "/" + targetPath
-                                            + "\n.Try hitting the "
-                                            + "Parameters button to "
-                                            + "create the directory.");
+                                    + "/" + targetPath
+                                    + "\n.Try hitting the "
+                                    + "Parameters button to "
+                                    + "create the directory.");
                         }
 
                         if (!directory.canWrite()) {
@@ -413,7 +413,7 @@ public class GeneratorTableau extends Tableau {
     // "applet" or "java" or "shallow".
     private List _generateCodeGeneratorCommands(CompositeEntity model,
             GeneratorAttribute generatorAttribute, String codeGenerator)
-            throws IllegalArgumentException, InternalErrorException {
+                    throws IllegalArgumentException, InternalErrorException {
         List results = new LinkedList();
 
         try {
@@ -447,8 +447,8 @@ public class GeneratorTableau extends Tableau {
 
             // Replace the original modelPath.
             generatorAttribute
-                    .sanityCheckAndUpdateParameters(((GeneratorFrame) getFrame())
-                            .getEffigy().uri.getURI().toString());
+            .sanityCheckAndUpdateParameters(((GeneratorFrame) getFrame())
+                    .getEffigy().uri.getURI().toString());
         } catch (Exception ex) {
             throw new InternalErrorException(model, ex, "Failed to generate "
                     + "command strings");

@@ -111,7 +111,7 @@ public class GetDocumentationAction extends FigureAction {
 
         if (_configuration == null) {
             MessageHandler
-                    .error("Cannot get documentation without a configuration.");
+            .error("Cannot get documentation without a configuration.");
         }
 
         NamedObj target = getTarget();
@@ -131,7 +131,7 @@ public class GetDocumentationAction extends FigureAction {
     public void showDocumentation(NamedObj target) {
         if (_configuration == null) {
             MessageHandler
-                    .error("Cannot get documentation without a configuration.");
+            .error("Cannot get documentation without a configuration.");
         }
 
         // If the object contains
@@ -267,10 +267,10 @@ public class GetDocumentationAction extends FigureAction {
                                     + "."
                                     + (DocManager
                                             .getRemoteDocumentationURLBase() != null ? " Also tried looking on \""
-                                            + DocManager
+                                                    + DocManager
                                                     .getRemoteDocumentationURLBase()
-                                            + "\"."
-                                            : ""));
+                                                    + "\"."
+                                                    : ""));
                 }
             }
         } catch (Exception ex) {
@@ -294,17 +294,19 @@ public class GetDocumentationAction extends FigureAction {
                     }
                 }
                 // Pop up a query an prompt the user
-                String message = "The documentation for " + className + " was not found.\n"
+                String message = "The documentation for "
+                        + className
+                        + " was not found.\n"
                         + (_lastClassName != null
-                                && DocManager.getRemoteDocumentationURLBase() != null ? " We looked in \""
+                        && DocManager.getRemoteDocumentationURLBase() != null ? " We looked in \""
                                 + DocManager.getRemoteDocumentationURLBase()
                                 + "\" but did not find anything.\n"
                                 : "") + "You may\n"
-                        + "1) Build the documentation, which requires "
-                        + "configure and make, or\n"
-                        + "2) Use the documentation from the website at \""
-                        + tentativeRemoteDocumentationURLBase + "\" or\n"
-                        + "3) Cancel";
+                                + "1) Build the documentation, which requires "
+                                + "configure and make, or\n"
+                                + "2) Use the documentation from the website at \""
+                                + tentativeRemoteDocumentationURLBase + "\" or\n"
+                                + "3) Cancel";
                 Object[] options = { "Build", "Use Website", "Cancel" };
                 int selected = JOptionPane.showOptionDialog(null, message,
                         "Choose Documentation Source",
@@ -317,7 +319,7 @@ public class GetDocumentationAction extends FigureAction {
                 case 1:
                     // Use Website
                     DocManager
-                            .setRemoteDocumentationURLBase(tentativeRemoteDocumentationURLBase);
+                    .setRemoteDocumentationURLBase(tentativeRemoteDocumentationURLBase);
                     _lastClassName = className;
                     getDocumentation(configuration, className, context);
                     break;
@@ -325,7 +327,7 @@ public class GetDocumentationAction extends FigureAction {
                     // Build
                     // Need to create an effigy and tableau.
                     ComponentEntity effigy = context
-                            .getEntity("DocBuilderEffigy");
+                    .getEntity("DocBuilderEffigy");
                     if (effigy == null) {
                         try {
                             effigy = new DocBuilderEffigy(context,
@@ -348,7 +350,7 @@ public class GetDocumentationAction extends FigureAction {
                                     (DocBuilderEffigy) effigy,
                                     "DocBuilderTableau");
                             ((DocBuilderTableau) tableau)
-                                    .setTitle("Documentation for " + className);
+                            .setTitle("Documentation for " + className);
                         } catch (KernelException exception) {
                             throw new InternalErrorException(exception);
                         }
@@ -487,9 +489,11 @@ public class GetDocumentationAction extends FigureAction {
                 throw new InternalErrorException(exception);
             }
         } else {
-            if (_isMultipleDocumentationAllowed() ||
-                            // For some reason, the frame might be null.
-                            (tableau instanceof Tableau) && ((Tableau)tableau).getFrame() == null) {
+            if (_isMultipleDocumentationAllowed()
+                    ||
+                    // For some reason, the frame might be null.
+                    (tableau instanceof Tableau)
+                    && ((Tableau) tableau).getFrame() == null) {
                 try {
                     // FIXME: This is necessary for Kepler, but
                     // not for Ptolemy?  Why?

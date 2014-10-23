@@ -106,9 +106,9 @@ public class LabelFigure extends AbstractFigure {
     /** The order of anchors used by the autoanchor method.
      */
     private static int[] _anchors = { SwingConstants.SOUTH,
-            SwingConstants.NORTH, SwingConstants.WEST, SwingConstants.EAST,
-            SwingConstants.SOUTH_WEST, SwingConstants.SOUTH_EAST,
-            SwingConstants.NORTH_WEST, SwingConstants.NORTH_EAST };
+        SwingConstants.NORTH, SwingConstants.WEST, SwingConstants.EAST,
+        SwingConstants.SOUTH_WEST, SwingConstants.SOUTH_EAST,
+        SwingConstants.NORTH_WEST, SwingConstants.NORTH_EAST };
 
     /**
      * Construct an empty label figure.

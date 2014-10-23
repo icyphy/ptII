@@ -158,9 +158,9 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
     protected void _warning(final String info) throws CancelException {
         if (isRunningNightlyBuild()) {
             System.out
-                    .println("Running nightly build or in batch mode.  "
-                            + "A warning dialog would have been displayed, but instead we are printing:\n"
-                            + info);
+            .println("Running nightly build or in batch mode.  "
+                    + "A warning dialog would have been displayed, but instead we are printing:\n"
+                    + info);
             return;
         }
 
@@ -220,10 +220,10 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
             throws CancelException {
         if (isRunningNightlyBuild()) {
             System.out
-                    .println("Running nightly build or in batch mode.  "
-                            + "A warning dialog would have been displayed, but instead we are printing:\n"
-                            + info + ": " + throwable.getMessage() + " "
-                            + throwable);
+            .println("Running nightly build or in batch mode.  "
+                    + "A warning dialog would have been displayed, but instead we are printing:\n"
+                    + info + ": " + throwable.getMessage() + " "
+                    + throwable);
             return;
         }
         // In swing, updates to showing graphics must be done in the
@@ -376,8 +376,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
             } catch (Exception ex) {
                 // do nothing.
                 System.out
-                .println("Internal warning:? GraphicalMessageHandler modal threw an exception: "
-                        + ex);
+                        .println("Internal warning:? GraphicalMessageHandler modal threw an exception: "
+                                + ex);
             }
 
             if (results[1] != null && results[1].booleanValue()) {

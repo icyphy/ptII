@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public abstract class AtomicCommunicationAspect extends TypedAtomicActor
-        implements CommunicationAspect, Decorator {
+implements CommunicationAspect, Decorator {
 
     /** Construct an AtomicQuantityManager in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -230,7 +230,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
             while (listeners.hasNext()) {
                 ((CommunicationAspectListener) listeners.next()).event(this,
                         source, messageId, messageCnt, getDirector()
-                                .getModelTime().getDoubleValue(), eventType);
+                        .getModelTime().getDoubleValue(), eventType);
             }
         }
     }

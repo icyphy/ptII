@@ -131,7 +131,7 @@ public interface DistributedActor {
      *   the data type is incompatible).
      */
     public void put(HashMap data) throws java.rmi.RemoteException,
-            IllegalActionException;
+    IllegalActionException;
 
     /** Set the "virtual connections" concerning the wrapped actor.
      *  The connections HashMap contains a list of ports, and for each

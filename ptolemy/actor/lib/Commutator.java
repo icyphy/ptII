@@ -139,7 +139,7 @@ public class Commutator extends Transformer implements SequenceActor {
         newObject.output_tokenProductionRate = (Parameter) newObject.output
                 .getAttribute("tokenProductionRate");
         ((WidthDependentParameter) newObject.output_tokenProductionRate)
-                .setPort(newObject.input);
+        .setPort(newObject.input);
         return newObject;
     }
 

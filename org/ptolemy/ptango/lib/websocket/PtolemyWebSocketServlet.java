@@ -55,10 +55,10 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
-*/
+ */
 
-public class PtolemyWebSocketServlet extends WebSocketServlet
-    implements WebSocketService {
+public class PtolemyWebSocketServlet extends WebSocketServlet implements
+        WebSocketService {
 
     /** Create a new servlet. */
     public PtolemyWebSocketServlet() {
@@ -111,7 +111,7 @@ public class PtolemyWebSocketServlet extends WebSocketServlet
         for (WebSocketEndpoint recipient : _webSocketEndpoints) {
             if (recipient != sender && recipient.getConnection() != null) {
                 try {
-                 recipient.getConnection().sendMessage(message);
+                    recipient.getConnection().sendMessage(message);
                 } catch (IOException e) {
                     //TODO:  What to do here?
                 }

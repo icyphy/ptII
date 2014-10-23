@@ -349,10 +349,10 @@ public abstract class Top extends JFrame {
                                 if (!_printedSecurityExceptionMessage) {
                                     _printedSecurityExceptionMessage = true;
                                     System.out
-                                            .println("Warning: Failed set "
-                                                    + field
-                                                    + " accessible while disposing. "
-                                                    + "(applets and -sandbox always causes this)");
+                                    .println("Warning: Failed set "
+                                            + field
+                                            + " accessible while disposing. "
+                                            + "(applets and -sandbox always causes this)");
                                 }
                             }
                             break;
@@ -939,11 +939,11 @@ public abstract class Top extends JFrame {
             // On the Mac, calling job.setJobName() will set the file name,
             // but not the directory.
             System.out
-                    .println("Top._printPDF(): Print Job information, much of which is ignored?\n"
-                            + "JobName: "
-                            + job.getJobName()
-                            + "\nUserName: "
-                            + job.getUserName());
+            .println("Top._printPDF(): Print Job information, much of which is ignored?\n"
+                    + "JobName: "
+                    + job.getJobName()
+                    + "\nUserName: "
+                    + job.getUserName());
             javax.print.attribute.Attribute[] attributes = aset.toArray();
             for (Attribute attribute : attributes) {
                 System.out.println(attribute.getName() + " "
@@ -952,9 +952,9 @@ public abstract class Top extends JFrame {
 
             job.print(aset);
             System.out
-                    .println("Window printed from command line. "
-                            + "Under MacOSX, look for "
-                            + "~/Desktop/Java Printing.pdf");
+            .println("Window printed from command line. "
+                    + "Under MacOSX, look for "
+                    + "~/Desktop/Java Printing.pdf");
         }
     }
 
@@ -1615,10 +1615,10 @@ public abstract class Top extends JFrame {
         if (PtGUIUtilities.macOSLookAndFeel()
                 && System.getProperty("java.version").startsWith("1.5")) {
             System.out
-                    .println("Warning, under Mac OS X with Java 1.5, printing might "
-                            + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
-                            + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
-                            + "and restarting vergil: $PTII/bin/vergil");
+            .println("Warning, under Mac OS X with Java 1.5, printing might "
+                    + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
+                    + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
+                    + "and restarting vergil: $PTII/bin/vergil");
         }
     }
 

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (mankit)
  */
 public class LatticeOntologyModalFSMAdapter extends
-        LatticeOntologyCompositeAdapter {
+LatticeOntologyCompositeAdapter {
 
     /** Construct an adapter for the given FSMActor. This is the
      *  base adapter class for any FSMActor that does not have a

@@ -112,7 +112,7 @@ public class EventUtils {
      */
     public static Tableau getTableau(Event event,
             StringParameter referredTableau, TableauParameter defaultTableau)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         TableauParameter parameter = getTableauParameter(event,
                 referredTableau, defaultTableau);
         if (parameter == null) {
@@ -137,7 +137,7 @@ public class EventUtils {
      */
     public static TableauParameter getTableauParameter(Event event,
             StringParameter referredTableau, TableauParameter defaultTableau)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         String tableauName = referredTableau.stringValue().trim();
         if (tableauName.equals("")) {
             return defaultTableau;
@@ -167,7 +167,7 @@ public class EventUtils {
      */
     public static void setTableau(Event event, StringParameter referredTableau,
             TableauParameter defaultTableau, Tableau tableau)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ObjectToken token = new ObjectToken(tableau, Tableau.class);
         getTableauParameter(event, referredTableau, defaultTableau).setToken(
                 token);

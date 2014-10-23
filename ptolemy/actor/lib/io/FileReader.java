@@ -79,7 +79,7 @@ public class FileReader extends LimitedFiringSource {
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
         new SingletonParameter(fileOrURLPort, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");

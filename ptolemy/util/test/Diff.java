@@ -99,7 +99,7 @@ public class Diff {
      *  @exception IOException If a file cannot be read.
      */
     public static void main(String[] args) throws MalformedURLException,
-            IOException {
+    IOException {
         if (args.length != 2) {
             System.err.println("Error: number of arguments must be 2, "
                     + "not " + args.length + ".");

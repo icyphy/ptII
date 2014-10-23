@@ -109,7 +109,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  */
 public class CommitActionsAttribute extends AbstractActionsAttribute implements
-        CommitAction {
+CommitAction {
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
@@ -341,7 +341,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
                 if (!(variable instanceof Variable)) {
                     throw new IllegalActionException(fsm, this,
                             "The attribute with name \"" + name
-                                    + "\" is not an " + "instance of Variable.");
+                            + "\" is not an " + "instance of Variable.");
                 }
 
                 return variable;

@@ -217,12 +217,12 @@ public class TDLModuleDirector extends ModalDirector {
                                 }
                                 for (TDLAction actionToRemove : actionsToRemove) {
                                     _nodesDependentOnPreviousActions.get(n)
-                                            .remove(actionToRemove);
+                                    .remove(actionToRemove);
                                 }
                             }
                             if (_nodesDependentOnPreviousActions.get(n) == null
                                     || _nodesDependentOnPreviousActions.get(n)
-                                            .size() == 0) {
+                                    .size() == 0) {
                                 if (!_nextEventsTimeStamps.keySet().contains(n)) {
                                     _fireAt(n, getModelTime());
                                 }

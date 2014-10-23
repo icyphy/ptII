@@ -53,14 +53,15 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class DateToken extends AbstractConvertibleToken implements
-PartiallyOrderedToken {
+        PartiallyOrderedToken {
 
     /** Construct a date token. The current time is used for the date,
      *  the default precision is milliseconds and the default time zone
      *  is the local time zone.
      */
     public DateToken() {
-        this(Calendar.getInstance().getTimeInMillis(), PRECISION_MILLISECOND, TimeZone.getDefault());
+        this(Calendar.getInstance().getTimeInMillis(), PRECISION_MILLISECOND,
+                TimeZone.getDefault());
     }
 
     /** Construct a DateToken that represents the time since January 1, 1970.
@@ -137,7 +138,7 @@ PartiallyOrderedToken {
 
         // Simple date format is not thread safe - intermediate parsing results are
         // stored in instance fields.
-        synchronized(_SIMPLE_DATE_FORMAT) {
+        synchronized (_SIMPLE_DATE_FORMAT) {
             try {
                 // See https://stackoverflow.com/questions/4713825/how-to-parse-output-of-new-date-tostring
                 // FIXME: this is probably Locale.US-specific
@@ -175,13 +176,13 @@ PartiallyOrderedToken {
                     _precision = PRECISION_NANOSECOND;
                 } else {
                     throw new IllegalActionException(null, "Unexpected date"
-                            + "format: " +
-                            dateString + " is not formatted as " +
-                            _SIMPLE_DATE_FORMAT);
+                            + "format: " + dateString + " is not formatted as "
+                            + _SIMPLE_DATE_FORMAT);
                 }
 
                 // Calculate and set time zone.
-                int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
+                int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar
+                        .get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
                 _timeZone = TimeZone.getTimeZone("GMT" + offset);
                 calendar.setTimeZone(_timeZone);
                 _calendar = calendar;
@@ -567,15 +568,15 @@ PartiallyOrderedToken {
         _simpleDateFormat.setTimeZone(_timeZone);
         String timeString = _simpleDateFormat.format(c.getTime());
 
-        String beforeTimeZone = timeString.substring(0, timeString.lastIndexOf(" "));
-        beforeTimeZone = beforeTimeZone.substring(0, beforeTimeZone.lastIndexOf(" "));
+        String beforeTimeZone = timeString.substring(0,
+                timeString.lastIndexOf(" "));
+        beforeTimeZone = beforeTimeZone.substring(0,
+                beforeTimeZone.lastIndexOf(" "));
 
         String remainder = timeString.substring(beforeTimeZone.length());
 
-        return "\"" + beforeTimeZone
-                + String.format("%03d", getMicrosecond())
-                + String.format("%03d", getNanosecond())
-                + remainder + "\"";
+        return "\"" + beforeTimeZone + String.format("%03d", getMicrosecond())
+                + String.format("%03d", getNanosecond()) + remainder + "\"";
     }
 
     /** A token that represents a missing value.
@@ -677,7 +678,7 @@ PartiallyOrderedToken {
 
         return BooleanToken.getInstance(left.compareTo(right) == 0
                 && _getMicroAndNanoSeconds() == rightArgumentDateToken
-                ._getMicroAndNanoSeconds());
+                        ._getMicroAndNanoSeconds());
     }
 
     /** Test for ordering of the values of this Token and the argument
@@ -700,7 +701,7 @@ PartiallyOrderedToken {
         return BooleanToken
                 .getInstance(left.compareTo(right) < 0
                         || (left.compareTo(right) == 0 && _getMicroAndNanoSeconds() < rightArgument
-                        ._getMicroAndNanoSeconds()));
+                                ._getMicroAndNanoSeconds()));
     }
 
     /** Modulo is not supported for Dates.
@@ -797,7 +798,8 @@ PartiallyOrderedToken {
     private static final String _NIL = "nil";
 
     /** The format used to read and write dates. */
-    private SimpleDateFormat _simpleDateFormat = new SimpleDateFormat(_SIMPLE_DATE_FORMAT);
+    private SimpleDateFormat _simpleDateFormat = new SimpleDateFormat(
+            _SIMPLE_DATE_FORMAT);
 
     /** The time in a given precision */
     private long _value;

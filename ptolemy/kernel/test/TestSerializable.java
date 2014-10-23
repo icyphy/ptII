@@ -59,7 +59,7 @@ public class TestSerializable {
      * be built.
      */
     public static void main(String[] args) throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         ExampleSystem exampleSystem = new ExampleSystem();
         String filename = "TestSerializable.data";
 
@@ -126,7 +126,7 @@ public class TestSerializable {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 System.err
-                        .println("ClassNotFoundException while reading: " + e);
+                .println("ClassNotFoundException while reading: " + e);
             } finally {
                 if (f != null) {
                     try {

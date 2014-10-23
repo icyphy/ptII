@@ -87,7 +87,7 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      */
     @Override
     protected void _init() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         //delay = new PortParameter(this, "delay");
         //delay.setExpression("1.0");
         //delay.setTypeEquals(BaseType.DOUBLE);

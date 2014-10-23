@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cshelton)
  */
 public abstract class DimensionRepresentativeConcept extends
-        FlatTokenRepresentativeConcept {
+FlatTokenRepresentativeConcept {
 
     /** Create a new DimensionRepresentativeConcept with the specified name and
      *  ontology.

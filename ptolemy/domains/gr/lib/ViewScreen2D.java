@@ -79,7 +79,7 @@ import diva.canvas.toolbox.BasicFigure;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ViewScreen2D extends GRActor2D implements Placeable,
-        ViewScreenInterface {
+ViewScreenInterface {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -433,7 +433,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
                 .doubleValue();
         java.awt.geom.Rectangle2D visibleRect = new java.awt.geom.Rectangle2D.Double(
                 upperLeftXValue, upperLeftYValue, lowerRightXValue
-                        - upperLeftXValue, lowerRightYValue - upperLeftYValue);
+                - upperLeftXValue, lowerRightYValue - upperLeftYValue);
 
         if (visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
             throw new IllegalActionException(this, "The width and height "
@@ -539,7 +539,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     /** Listen for Layer, LayerMotion and Key events.
      */
     public class ViewScreen2DListener implements LayerListener,
-            LayerMotionListener, KeyListener {
+    LayerMotionListener, KeyListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -593,7 +593,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
             if (selectedFigure != null) {
                 ((FigureInteractor) selectedFigure.getInteractor())
-                        .keyReleased(e);
+                .keyReleased(e);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_O) {
@@ -686,7 +686,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
                 if (!figure.contains(e.getLayerPoint())) {
                     ((FigureInteractor) figure.getInteractor())
-                            .setSelected(false);
+                    .setSelected(false);
                 }
             }
         }

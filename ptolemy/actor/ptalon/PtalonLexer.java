@@ -59,7 +59,7 @@ import antlr.collections.impl.BitSet;
  */
 
 public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
-TokenStream {
+        TokenStream {
     public PtalonLexer(InputStream in) {
         this(new ByteBuffer(in));
     }
@@ -300,7 +300,7 @@ TokenStream {
     }
 
     public final void mCOMMA(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -315,7 +315,7 @@ TokenStream {
     }
 
     public final void mDOT(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -426,7 +426,7 @@ TokenStream {
     }
 
     public final void mSEMI(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -457,7 +457,7 @@ TokenStream {
     }
 
     public final void mCOLON(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -488,7 +488,7 @@ TokenStream {
     }
 
     public final void mPLUS(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -503,7 +503,7 @@ TokenStream {
     }
 
     public final void mESC(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -554,7 +554,7 @@ TokenStream {
     }
 
     public final void mID(boolean _createToken) throws RecognitionException,
-    CharStreamException, TokenStreamException {
+            CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();

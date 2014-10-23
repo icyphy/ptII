@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ActorProductLatticeConstraintsDefinitionAdapter extends
-        ActorConstraintsDefinitionAdapter {
+ActorConstraintsDefinitionAdapter {
 
     /** Construct the lattice ontology adapter for the given component
      *  and property lattice.
@@ -72,7 +72,7 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends
     public ActorProductLatticeConstraintsDefinitionAdapter(
             ProductLatticeOntologySolver solver, ComponentEntity component,
             List<StringParameter> constraintExpressions)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, constraintExpressions);
 
@@ -104,7 +104,7 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends
      */
     public static boolean areActorElementConstraintsInherited(
             StringParameter actorElementConstraintExpression)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
             throw new IllegalActionException(
                     "The constraint expression for the actor"
@@ -149,16 +149,16 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends
                         List<Inequality> actorElementConstraints = _getActorElementConstraints(
                                 actorElement, adapter.constraintList());
                         ProductLatticeOntologyAdapter
-                                .addConstraintsFromTupleOntologyAdapter(
-                                        actorElementConstraints,
-                                        adapterOntology, this);
+                        .addConstraintsFromTupleOntologyAdapter(
+                                actorElementConstraints,
+                                adapterOntology, this);
                     }
                 }
             } else if (!isActorElementIgnored(constraintExpression)
                     && !isActorElementUnconstrained(constraintExpression)) {
                 _setConstraints(actorElement,
                         ((StringToken) constraintExpression.getToken())
-                                .stringValue());
+                        .stringValue());
             }
         }
 

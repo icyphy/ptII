@@ -86,7 +86,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         super(container, name);
 
         generatorPackageList
-                .setExpression("generic.program.procedural.java.modular");
+        .setExpression("generic.program.procedural.java.modular");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -158,10 +158,10 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         + (port.isInput() ? DFUtilities
                                 .getTokenConsumptionRate(port) : DFUtilities
                                 .getTokenProductionRate(port)) + ", "
-                        + ptTypeToCodegenType(((TypedIOPort) port).getType())
-                        + ", " + port.isInput() + ", " + port.isOutput() + ", "
-                        + profilePort.multiport() + ", \""
-                        + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                                + ptTypeToCodegenType(((TypedIOPort) port).getType())
+                                + ", " + port.isInput() + ", " + port.isOutput() + ", "
+                                + profilePort.multiport() + ", \""
+                                + profilePort.getPubSubChannelName() + "\"));" + _eol);
             }
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);
@@ -215,13 +215,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         StringBuffer actorGraph = new StringBuffer();
 
         actorGraph
-                .append(INDENT1
-                        + "public List<Profile.FiringFunction> firings() throws IllegalActionException {"
-                        + _eol);
+        .append(INDENT1
+                + "public List<Profile.FiringFunction> firings() throws IllegalActionException {"
+                + _eol);
         actorGraph
-                .append(INDENT2
-                        + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();"
-                        + _eol);
+        .append(INDENT2
+                + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();"
+                + _eol);
         actorGraph.append(INDENT2 + "FiringFunction firingFunction;" + _eol
                 + _eol);
         int index = 0;
@@ -253,15 +253,15 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
                     firingFunction
-                            .append(INDENT2
-                                    + "firingFunction.ports.add(new FiringFunctionPort(\""
-                                    + inputPort.getName()
-                                    + "\",\""
-                                    + externalPortName
-                                    + "\","
-                                    + DFUtilities
-                                            .getTokenConsumptionRate(inputPort)
-                                    + "," + inputPort.isInput() + "));" + _eol);
+                    .append(INDENT2
+                            + "firingFunction.ports.add(new FiringFunctionPort(\""
+                            + inputPort.getName()
+                            + "\",\""
+                            + externalPortName
+                            + "\","
+                            + DFUtilities
+                            .getTokenConsumptionRate(inputPort)
+                            + "," + inputPort.isInput() + "));" + _eol);
                 }
             }
 
@@ -279,15 +279,15 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
                     firingFunction
-                            .append(INDENT2
-                                    + "firingFunction.ports.add(new FiringFunctionPort(\""
-                                    + outputPort.getName()
-                                    + "\",\""
-                                    + externalPortName
-                                    + "\","
-                                    + DFUtilities
-                                            .getTokenProductionRate(outputPort)
-                                    + "," + outputPort.isInput() + "));" + _eol);
+                    .append(INDENT2
+                            + "firingFunction.ports.add(new FiringFunctionPort(\""
+                            + outputPort.getName()
+                            + "\",\""
+                            + externalPortName
+                            + "\","
+                            + DFUtilities
+                            .getTokenProductionRate(outputPort)
+                            + "," + outputPort.isInput() + "));" + _eol);
                 }
             }
             firingFunction.append(INDENT2
@@ -381,13 +381,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         // for the whole model.
         if (_isTopLevel()) {
             mainEntryCode
-                    .append(_eol
-                            + _eol
-                            + "public static void main(String [] args) throws Exception {"
-                            + _eol + _sanitizedModelName + " model = new "
-                            + _sanitizedModelName + "();" + _eol
-                            + "model.run();" + _eol + "}" + _eol
-                            + "public void run() throws Exception {" + _eol);
+            .append(_eol
+                    + _eol
+                    + "public static void main(String [] args) throws Exception {"
+                    + _eol + _sanitizedModelName + " model = new "
+                    + _sanitizedModelName + "();" + _eol
+                    + "model.run();" + _eol + "}" + _eol
+                    + "public void run() throws Exception {" + _eol);
         } else {
             boolean addComma = false;
 

@@ -75,7 +75,7 @@ public class ProcessDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public ProcessDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -91,7 +91,7 @@ public class ProcessDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public ProcessDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -254,7 +254,7 @@ public class ProcessDirector extends SequencedModelDirector {
                 }
                 Collections.sort(processes);
                 _processExecutionArray = processes.toArray(new String[processes
-                        .size()]);
+                                                                      .size()]);
             }
         }
 
@@ -349,7 +349,7 @@ public class ProcessDirector extends SequencedModelDirector {
      */
     @Override
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._init();
 
         defaultProcessExecutionArray = new Parameter(this,

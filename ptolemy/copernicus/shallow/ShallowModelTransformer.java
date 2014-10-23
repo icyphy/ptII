@@ -96,7 +96,7 @@ import soot.util.Chain;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ShallowModelTransformer extends SceneTransformer implements
-        HasPhaseOptions {
+HasPhaseOptions {
     /** Construct a new shallow model transformer.
      * @param model The model that this class will operate on.
      */
@@ -168,7 +168,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 Jimple.v().newVirtualInvokeExpr(
                                         contextLocal,
                                         PtolemyUtilities.getAttributeMethod
-                                                .makeRef(),
+                                        .makeRef(),
                                         StringConstant.v(attributeName))));
             } else {
                 // If the class does not create the attribute,
@@ -205,7 +205,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 Jimple.v().newInterfaceInvokeExpr(
                                         settableLocal,
                                         PtolemyUtilities.setExpressionMethod
-                                                .makeRef(),
+                                        .makeRef(),
                                         StringConstant.v(expression))));
 
                 // call validate to ensure that attributeChanged is called.
@@ -214,7 +214,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 Jimple.v().newInterfaceInvokeExpr(
                                         settableLocal,
                                         PtolemyUtilities.validateMethod
-                                                .makeRef())));
+                                        .makeRef())));
             }
 
             // FIXME: configurable??
@@ -414,7 +414,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 Jimple.v().newVirtualInvokeExpr(
                                         containerLocal,
                                         PtolemyUtilities.getEntityMethod
-                                                .makeRef(),
+                                        .makeRef(),
                                         StringConstant.v(entity
                                                 .getName(container)))));
 
@@ -496,7 +496,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 Jimple.v().newVirtualInvokeExpr(
                                         entityLocal,
                                         PtolemyUtilities.getPortMethod
-                                                .makeRef(),
+                                        .makeRef(),
                                         StringConstant.v(port.getName()))));
 
                 if (port instanceof TypedIOPort) {
@@ -508,36 +508,36 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                         Jimple.v().newVirtualInvokeExpr(
                                                 tempPortLocal,
                                                 PtolemyUtilities.setInputMethod
-                                                        .makeRef(),
+                                                .makeRef(),
                                                 IntConstant.v(1))));
                     }
 
                     if (ioPort.isOutput()) {
                         body.getUnits()
-                                .add(Jimple
-                                        .v()
-                                        .newInvokeStmt(
-                                                Jimple.v()
-                                                        .newVirtualInvokeExpr(
-                                                                tempPortLocal,
-                                                                PtolemyUtilities.setOutputMethod
-                                                                        .makeRef(),
-                                                                IntConstant
-                                                                        .v(1))));
+                        .add(Jimple
+                                .v()
+                                .newInvokeStmt(
+                                        Jimple.v()
+                                        .newVirtualInvokeExpr(
+                                                tempPortLocal,
+                                                PtolemyUtilities.setOutputMethod
+                                                .makeRef(),
+                                                IntConstant
+                                                .v(1))));
                     }
 
                     if (ioPort.isMultiport()) {
                         body.getUnits()
-                                .add(Jimple
-                                        .v()
-                                        .newInvokeStmt(
-                                                Jimple.v()
-                                                        .newVirtualInvokeExpr(
-                                                                tempPortLocal,
-                                                                PtolemyUtilities.setMultiportMethod
-                                                                        .makeRef(),
-                                                                IntConstant
-                                                                        .v(1))));
+                        .add(Jimple
+                                .v()
+                                .newInvokeStmt(
+                                        Jimple.v()
+                                        .newVirtualInvokeExpr(
+                                                tempPortLocal,
+                                                PtolemyUtilities.setMultiportMethod
+                                                .makeRef(),
+                                                IntConstant
+                                                .v(1))));
                     }
                 }
 
@@ -566,36 +566,36 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                         Jimple.v().newVirtualInvokeExpr(
                                                 local,
                                                 PtolemyUtilities.setInputMethod
-                                                        .makeRef(),
+                                                .makeRef(),
                                                 IntConstant.v(1))));
                     }
 
                     if (ioPort.isOutput()) {
                         body.getUnits()
-                                .add(Jimple
-                                        .v()
-                                        .newInvokeStmt(
-                                                Jimple.v()
-                                                        .newVirtualInvokeExpr(
-                                                                local,
-                                                                PtolemyUtilities.setOutputMethod
-                                                                        .makeRef(),
-                                                                IntConstant
-                                                                        .v(1))));
+                        .add(Jimple
+                                .v()
+                                .newInvokeStmt(
+                                        Jimple.v()
+                                        .newVirtualInvokeExpr(
+                                                local,
+                                                PtolemyUtilities.setOutputMethod
+                                                .makeRef(),
+                                                IntConstant
+                                                .v(1))));
                     }
 
                     if (ioPort.isMultiport()) {
                         body.getUnits()
-                                .add(Jimple
-                                        .v()
-                                        .newInvokeStmt(
-                                                Jimple.v()
-                                                        .newVirtualInvokeExpr(
-                                                                local,
-                                                                PtolemyUtilities.setMultiportMethod
-                                                                        .makeRef(),
-                                                                IntConstant
-                                                                        .v(1))));
+                        .add(Jimple
+                                .v()
+                                .newInvokeStmt(
+                                        Jimple.v()
+                                        .newVirtualInvokeExpr(
+                                                local,
+                                                PtolemyUtilities.setMultiportMethod
+                                                .makeRef(),
+                                                IntConstant
+                                                .v(1))));
                     }
                 }
 
@@ -646,7 +646,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 Jimple.v().newVirtualInvokeExpr(
                                         portLocal,
                                         PtolemyUtilities.insertLinkMethod
-                                                .makeRef(),
+                                        .makeRef(),
                                         IntConstant.v(index), relationLocal)));
             }
         }
@@ -694,17 +694,17 @@ public class ShallowModelTransformer extends SceneTransformer implements
 
                     // Call the _insertLink method with the current index.
                     body.getUnits()
-                            .add(Jimple
-                                    .v()
-                                    .newInvokeStmt(
-                                            Jimple.v()
-                                                    .newVirtualInvokeExpr(
-                                                            portLocal,
-                                                            PtolemyUtilities.insertLinkMethod
-                                                                    .makeRef(),
-                                                            IntConstant
-                                                                    .v(index),
-                                                            relationLocal)));
+                    .add(Jimple
+                            .v()
+                            .newInvokeStmt(
+                                    Jimple.v()
+                                    .newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.insertLinkMethod
+                                            .makeRef(),
+                                            IntConstant
+                                            .v(index),
+                                            relationLocal)));
                 }
             }
         }
@@ -761,7 +761,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
                                 .declaresMethod(r.getMethod().getSubSignature())) {
                             if (r.getMethod().getName().equals("prefire")
                                     || r.getMethod().getName()
-                                            .equals("postfire")) {
+                                    .equals("postfire")) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);
@@ -894,7 +894,7 @@ public class ShallowModelTransformer extends SceneTransformer implements
 
                         throw new InternalErrorException(null, ex,
                                 "Failed to parse \"" + source
-                                        + "\", filters:\n" + results.toString());
+                                + "\", filters:\n" + results.toString());
                     } catch (Exception ex) {
                         throw new InternalErrorException(null, ex, "Attempt "
                                 + "to create an instance of " + deferredClass

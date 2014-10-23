@@ -86,7 +86,7 @@ public abstract class Polygon2D implements Shape {
         // edge with the same value as one of the arguments.
         // See diva/util/java2d/test/junit/Polygon2DJUnitTest.java
         Path2D path = this instanceof Polygon2D.Float ? new Path2D.Float()
-                : new Path2D.Double();
+        : new Path2D.Double();
         path.moveTo(getX(0), getY(0));
         for (int i = 1; i < getVertexCount(); i++) {
             path.lineTo(getX(i), getY(i));

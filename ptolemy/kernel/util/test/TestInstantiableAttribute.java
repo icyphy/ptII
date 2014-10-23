@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 public class TestInstantiableAttribute extends Attribute implements
-        Instantiable {
+Instantiable {
 
     public TestInstantiableAttribute() {
         super();

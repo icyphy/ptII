@@ -119,7 +119,7 @@ import com.microstar.xml.XmlException;
  */
 @SuppressWarnings("serial")
 public class PtolemyQuery extends Query implements QueryListener,
-        ValueListener, ChangeListener, CloseListener {
+ValueListener, ChangeListener, CloseListener {
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
      *  queued with the given change handler. The change handler should
@@ -423,7 +423,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                             // and the default Line style should be used.
                             if (attribute.getExpression().equals("true")
                                     || attribute.getExpression()
-                                            .equals("false")) {
+                                    .equals("false")) {
                                 component = addCheckBox(name, displayName,
                                         ((BooleanToken) current).booleanValue());
                                 attachParameter(attribute, name);
@@ -1223,7 +1223,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             // of the first value.
             if (widget instanceof JTextField) {
                 ((JTextField) widget)
-                        .addActionListener(new QueryActionListener(_owner, name));
+                .addActionListener(new QueryActionListener(_owner, name));
 
                 // Add a listener for loss of focus.  When the entry gains
                 // and then loses focus, listeners are notified of an update,

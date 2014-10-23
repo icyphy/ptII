@@ -238,7 +238,7 @@ public class CaseDirector extends Director {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
                                                             .getContainer(),
-                                                    true, i, false, token));
+                                                            true, i, false, token));
                                         }
 
                                         insideReceivers[i][j].put(token);
@@ -247,7 +247,7 @@ public class CaseDirector extends Director {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
                                                             .getContainer(),
-                                                    false, i, false, token));
+                                                            false, i, false, token));
                                             _debug(getFullName(),
                                                     "transferring input from "
                                                             + port.getFullName()

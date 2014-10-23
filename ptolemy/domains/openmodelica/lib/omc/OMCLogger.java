@@ -119,7 +119,7 @@ public class OMCLogger {
 
         if (username == null) {
             System.err
-            .println("Could not get user.name property?  Using 'nobody'.");
+                    .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";

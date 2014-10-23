@@ -342,10 +342,10 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                 throw new IllegalActionException(
                                         this,
                                         getFullName()
-                                                + ".preinitialize(): "
-                                                + "output port "
-                                                + port.getName()
-                                                + "must be connected to a multi-port");
+                                        + ".preinitialize(): "
+                                        + "output port "
+                                        + port.getName()
+                                        + "must be connected to a multi-port");
                             }
 
                             // Modified by Gang Zhou so that the port can
@@ -357,15 +357,15 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             if (port.isInput()
                                     && (!isInsideLinked && otherPort.isOutput() || isInsideLinked
                                             && otherPort.isInput())
-                                    || port.isOutput()
-                                    && (!isInsideLinked && otherPort.isInput() || isInsideLinked
-                                            && otherPort.isOutput())) {
+                                            || port.isOutput()
+                                            && (!isInsideLinked && otherPort.isInput() || isInsideLinked
+                                                    && otherPort.isOutput())) {
                                 if (otherPort.isMultiport()) {
                                     if (!isRelationCreated) {
                                         relation = new TypedIORelation(
                                                 container, "r_" + getName()
-                                                        + "_" + i + "_"
-                                                        + port.getName());
+                                                + "_" + i + "_"
+                                                + port.getName());
                                         relation.setPersistent(false);
                                         isRelationCreated = true;
 

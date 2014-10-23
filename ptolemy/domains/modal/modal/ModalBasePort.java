@@ -456,7 +456,7 @@ public class ModalBasePort extends TypedIOPort {
      *   with the same name in the container.
      */
     protected void _setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 

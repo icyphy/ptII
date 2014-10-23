@@ -154,7 +154,7 @@ public class CachedSDFScheduler extends SDFScheduler {
      */
     @Override
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         Schedule schedule;
 
         if (_inputPortList == null

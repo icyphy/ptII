@@ -172,8 +172,8 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
         }
         _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/includes/",
                 directoryFmiIncludes, new String[] { "fmi.h",
-                "fmiFunctionTypes.h", "fmiFunctions.h",
-        "fmiTypesPlatform.h" });
+                        "fmiFunctionTypes.h", "fmiFunctions.h",
+                        "fmiTypesPlatform.h" });
 
         String directoryFmiParser = directoryFmi + "parser/";
         if (new File(directoryFmiParser).mkdirs()) {
@@ -196,12 +196,12 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
         }
         _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/libxml/",
                 directoryFmiParserLibxml, new String[] { "dict.h",
-                "encoding.h", "entities.h", "globals.h", "hash.h",
-                "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
-                "threads.h", "tree.h", "valid.h", "xlink.h",
-                "xmlautomata.h", "xmlerror.h", "xmlexports.h",
-                "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h",
-                "xmlschemas.h", "xmlstring.h", "xmlversion.h" });
+                        "encoding.h", "entities.h", "globals.h", "hash.h",
+                        "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
+                        "threads.h", "tree.h", "valid.h", "xlink.h",
+                        "xmlautomata.h", "xmlerror.h", "xmlexports.h",
+                        "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h",
+                        "xmlschemas.h", "xmlstring.h", "xmlversion.h" });
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }

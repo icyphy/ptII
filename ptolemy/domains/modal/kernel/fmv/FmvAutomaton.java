@@ -277,7 +277,7 @@ public class FmvAutomaton extends FSMActor {
 
             }
             returnSmvFormat
-                    .append("\t\t\t\t1             : " + valName + ";\n");
+            .append("\t\t\t\t1             : " + valName + ";\n");
             returnSmvFormat.append("\t\t\tesac;\n\n");
         }
 
@@ -398,8 +398,8 @@ public class FmvAutomaton extends FSMActor {
                                                     .parseInt(rValue);
                                             // add it into the _variableInfo
                                             returnVariableSet
-                                                    .add(characterOfSubGuard[0]
-                                                            .trim());
+                                            .add(characterOfSubGuard[0]
+                                                    .trim());
 
                                             VariableInfo variable = _variableInfo
                                                     .get(characterOfSubGuard[0]
@@ -413,7 +413,7 @@ public class FmvAutomaton extends FSMActor {
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
-                                                        newVariable);
+                                                                newVariable);
 
                                             } else {
                                                 // modify the existing one
@@ -428,12 +428,12 @@ public class FmvAutomaton extends FSMActor {
                                                             .toString(numberRetrieval);
                                                 }
                                                 _variableInfo
-                                                        .remove(characterOfSubGuard[0]
-                                                                .trim());
+                                                .remove(characterOfSubGuard[0]
+                                                        .trim());
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
-                                                        variable);
+                                                                variable);
 
                                             }
                                         }
@@ -777,7 +777,7 @@ public class FmvAutomaton extends FSMActor {
                         if (variableInfo == null) {
                             throw new IllegalActionException(
                                     "Internal error, removing \"" + val
-                                            + "\" returned null?");
+                                    + "\" returned null?");
                         } else {
 
                             if (variableInfo._minValue != null
@@ -1076,15 +1076,15 @@ public class FmvAutomaton extends FSMActor {
 
                                         try {
                                             /*int value =*/Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
+                                            .parseInt(rValueOperends[1]
+                                                    .trim());
                                         } catch (Exception ex) {
                                             // check if the value is of format
                                             // (-a)
                                             if (rValueOperends[1].trim()
                                                     .endsWith(")")
                                                     && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
+                                                    .startsWith("(")) {
                                                 // retrieve the value
                                                 offset = rValueOperends[1]
                                                         .trim()
@@ -1119,7 +1119,7 @@ public class FmvAutomaton extends FSMActor {
                                                 statePrecondition, valueDomain,
                                                 "state",
                                                 destinationInThis
-                                                        .getDisplayName(), "S");
+                                                .getDisplayName(), "S");
 
                                     } else if (Pattern.matches(".*/.*", rValue)) {
 
@@ -1138,7 +1138,7 @@ public class FmvAutomaton extends FSMActor {
                                             if (rValueOperends[1].trim()
                                                     .endsWith(")")
                                                     && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
+                                                    .startsWith("(")) {
                                                 // retrieve the value
                                                 offset = rValueOperends[1]
                                                         .trim()
@@ -1170,7 +1170,7 @@ public class FmvAutomaton extends FSMActor {
                                                 statePrecondition, valueDomain,
                                                 "state",
                                                 destinationInThis
-                                                        .getDisplayName(), "S");
+                                                .getDisplayName(), "S");
 
                                     } else if (Pattern.matches(".*+.*", rValue)) {
 
@@ -1189,7 +1189,7 @@ public class FmvAutomaton extends FSMActor {
                                             if (rValueOperends[1].trim()
                                                     .endsWith(")")
                                                     && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
+                                                    .startsWith("(")) {
                                                 // retrieve the value
                                                 offset = rValueOperends[1]
                                                         .trim()
@@ -1204,10 +1204,10 @@ public class FmvAutomaton extends FSMActor {
                                                     // Return the format is not
                                                     // supported by the system.
                                                     System.err
-                                                    .println("FmvAutomaton: failed to parse \""
-                                                            + offset
-                                                            + "\": "
-                                                            + exInner);
+                                                            .println("FmvAutomaton: failed to parse \""
+                                                                    + offset
+                                                                    + "\": "
+                                                                    + exInner);
                                                 }
 
                                             }
@@ -1230,7 +1230,7 @@ public class FmvAutomaton extends FSMActor {
                                                 statePrecondition, valueDomain,
                                                 "state",
                                                 destinationInThis
-                                                        .getDisplayName(), "S");
+                                                .getDisplayName(), "S");
 
                                     } else if (Pattern.matches(".*-.*", rValue)) {
 
@@ -1249,7 +1249,7 @@ public class FmvAutomaton extends FSMActor {
                                             if (rValueOperends[1].trim()
                                                     .endsWith(")")
                                                     && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
+                                                    .startsWith("(")) {
                                                 // retrieve the value
                                                 offset = rValueOperends[1]
                                                         .trim()
@@ -1264,10 +1264,10 @@ public class FmvAutomaton extends FSMActor {
                                                     // Return the format is not
                                                     // supported by the system.
                                                     System.err
-                                                    .println("FmvAutomaton: failed to parse \""
-                                                            + offset
-                                                            + "\": "
-                                                            + exInner);
+                                                            .println("FmvAutomaton: failed to parse \""
+                                                                    + offset
+                                                                    + "\": "
+                                                                    + exInner);
                                                 }
                                             }
                                         }
@@ -1285,7 +1285,7 @@ public class FmvAutomaton extends FSMActor {
                                                 statePrecondition, valueDomain,
                                                 "state",
                                                 destinationInThis
-                                                        .getDisplayName(), "S");
+                                                .getDisplayName(), "S");
 
                                     }
                                 }
@@ -1375,7 +1375,7 @@ public class FmvAutomaton extends FSMActor {
             String[] keySetArray,
             HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
             String newVariableValue, String operatingSign)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         if (lValue != null) {
             if (index >= maxIndex) {
@@ -1389,7 +1389,7 @@ public class FmvAutomaton extends FSMActor {
                 if (temp == null) {
                     throw new IllegalActionException(
                             "Internal error, removing \"" + lValue
-                                    + "\" returned null?");
+                            + "\" returned null?");
                 }
                 temp.add(newTransitionInfo);
                 _variableTransitionInfo.put(lValue, temp);
@@ -1423,7 +1423,7 @@ public class FmvAutomaton extends FSMActor {
                                         // + "gt");
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                                        + "=" + "gt";
 
                                         // When the original value is GT, then
                                         // GT + positive_const = GT
@@ -1443,7 +1443,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "ls";
+                                                        + "=" + "ls";
                                         // String newPremise = new String(
                                         // currentPremise + " & "
                                         // + keySetArray[index] + "="
@@ -1514,23 +1514,23 @@ public class FmvAutomaton extends FSMActor {
                                         String newPremise = currentPremise
                                                 + " & "
                                                 + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                                        + "="
+                                                        + String.valueOf(vList.get(i)
+                                                                .intValue());
 
                                         String updatedVariableValue = String
                                                 .valueOf(vList.get(i)
                                                         .intValue()
                                                         + Integer
-                                                                .parseInt(newVariableValue));
+                                                        .parseInt(newVariableValue));
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo != null) {
                                             if (variableInfo._maxValue != null) {
                                                 if (vList.get(i).intValue()
                                                         + Integer
-                                                                .parseInt(newVariableValue) > Integer
-                                                            .parseInt(variableInfo._maxValue)) {
+                                                        .parseInt(newVariableValue) > Integer
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     // Use DOMAIN_GT to replace the value.
                                                     updatedVariableValue = "gt";
                                                 }
@@ -1551,7 +1551,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "ls";
+                                                        + "=" + "ls";
 
                                         // When the original value is LS, then
                                         // LS + negative_const = LS
@@ -1565,7 +1565,7 @@ public class FmvAutomaton extends FSMActor {
                                     } else if (vList.get(i).intValue() == DOMAIN_GT) {
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                                        + "=" + "gt";
 
                                         // When the original value is GT, we place
                                         // conservative analysis and assert that it
@@ -1605,7 +1605,7 @@ public class FmvAutomaton extends FSMActor {
                                                     if (variableInfo._minValue != null) {
                                                         if (maximumInBoundary
                                                                 + j < Integer
-                                                                    .parseInt(variableInfo._minValue)) {
+                                                                .parseInt(variableInfo._minValue)) {
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
                                                                     index + 1,
@@ -1645,23 +1645,23 @@ public class FmvAutomaton extends FSMActor {
                                         String newPremise = currentPremise
                                                 + " & "
                                                 + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                                        + "="
+                                                        + String.valueOf(vList.get(i)
+                                                                .intValue());
 
                                         String updatedVariableValue = String
                                                 .valueOf(vList.get(i)
                                                         .intValue()
                                                         + Integer
-                                                                .parseInt(newVariableValue));
+                                                        .parseInt(newVariableValue));
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo != null) {
                                             if (variableInfo._minValue != null) {
                                                 if (vList.get(i).intValue()
                                                         + Integer
-                                                                .parseInt(newVariableValue) < Integer
-                                                            .parseInt(variableInfo._minValue)) {
+                                                        .parseInt(newVariableValue) < Integer
+                                                        .parseInt(variableInfo._minValue)) {
                                                     // Use DOMAIN_LS to replace the value.
                                                     updatedVariableValue = "ls";
                                                 }
@@ -1705,7 +1705,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "ls";
+                                                        + "=" + "ls";
 
                                         // Hence the updated value remains the same.
                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1722,7 +1722,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                                        + "=" + "gt";
 
                                         // First, it may keep to be GT
                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1785,23 +1785,23 @@ public class FmvAutomaton extends FSMActor {
                                         String newPremise = currentPremise
                                                 + " & "
                                                 + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                                        + "="
+                                                        + String.valueOf(vList.get(i)
+                                                                .intValue());
 
                                         String updatedVariableValue = String
                                                 .valueOf(vList.get(i)
                                                         .intValue()
                                                         - Integer
-                                                                .parseInt(newVariableValue));
+                                                        .parseInt(newVariableValue));
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo != null) {
                                             if (variableInfo._minValue != null) {
                                                 if (vList.get(i).intValue()
                                                         - Integer
-                                                                .parseInt(newVariableValue) < Integer
-                                                            .parseInt(variableInfo._minValue)) {
+                                                        .parseInt(newVariableValue) < Integer
+                                                        .parseInt(variableInfo._minValue)) {
                                                     // Use DOMAIN_LS to replace the value.
                                                     updatedVariableValue = "ls";
                                                 }
@@ -1823,7 +1823,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                                        + "=" + "gt";
 
                                         // Hence the updated value remains the same.
                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1839,7 +1839,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "ls";
+                                                        + "=" + "ls";
 
                                         // First, LS - negative_const = LS
                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1909,23 +1909,23 @@ public class FmvAutomaton extends FSMActor {
                                         String newPremise = currentPremise
                                                 + " & "
                                                 + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                                        + "="
+                                                        + String.valueOf(vList.get(i)
+                                                                .intValue());
 
                                         String updatedVariableValue = String
                                                 .valueOf(vList.get(i)
                                                         .intValue()
                                                         - Integer
-                                                                .parseInt(newVariableValue));
+                                                        .parseInt(newVariableValue));
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo != null) {
                                             if (variableInfo._maxValue != null) {
                                                 if (vList.get(i).intValue()
                                                         - Integer
-                                                                .parseInt(newVariableValue) > Integer
-                                                            .parseInt(variableInfo._maxValue)) {
+                                                        .parseInt(newVariableValue) > Integer
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     // Use DOMAIN_LS to replace the value.
                                                     updatedVariableValue = "gt";
                                                 }
@@ -1966,7 +1966,7 @@ public class FmvAutomaton extends FSMActor {
                                         // const)
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                                        + "=" + "gt";
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo == null) {
@@ -2029,17 +2029,17 @@ public class FmvAutomaton extends FSMActor {
 
                                                     while (starter
                                                             * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue)) {
+                                                            .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue)) {
 
                                                         if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) < Integer
-                                                                    .parseInt(variableInfo._minValue)
+                                                                .parseInt(newVariableValue) < Integer
+                                                                .parseInt(variableInfo._minValue)
                                                                 && (starter + 1)
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) >= Integer
-                                                                            .parseInt(variableInfo._minValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(variableInfo._minValue)) {
                                                             // This IF statement
                                                             // represents
                                                             // tricks mentioned above.
@@ -2055,16 +2055,16 @@ public class FmvAutomaton extends FSMActor {
 
                                                         } else if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(variableInfo._maxValue)
+                                                                .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(variableInfo._maxValue)
                                                                 && starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) >= Integer
-                                                                            .parseInt(variableInfo._minValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(variableInfo._minValue)) {
                                                             String updatedVariableValue = String
                                                                     .valueOf(starter
                                                                             * Integer
-                                                                                    .parseInt(newVariableValue));
+                                                                            .parseInt(newVariableValue));
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
                                                                     index + 1,
@@ -2096,7 +2096,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "ls";
+                                                        + "=" + "ls";
 
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
@@ -2134,16 +2134,16 @@ public class FmvAutomaton extends FSMActor {
                                                             .parseInt(variableInfo._minValue) - 1;
                                                     while (starter
                                                             * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                                .parseInt(variableInfo._minValue)) {
+                                                            .parseInt(newVariableValue) >= Integer
+                                                            .parseInt(variableInfo._minValue)) {
                                                         if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) > Integer
-                                                                    .parseInt(variableInfo._maxValue)
+                                                                .parseInt(newVariableValue) > Integer
+                                                                .parseInt(variableInfo._maxValue)
                                                                 && (starter - 1)
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) <= Integer
-                                                                            .parseInt(variableInfo._maxValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(variableInfo._maxValue)) {
 
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
@@ -2157,16 +2157,16 @@ public class FmvAutomaton extends FSMActor {
 
                                                         } else if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(variableInfo._maxValue)
+                                                                .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(variableInfo._maxValue)
                                                                 && starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) >= Integer
-                                                                            .parseInt(variableInfo._minValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(variableInfo._minValue)) {
                                                             String updatedVariableValue = String
                                                                     .valueOf(starter
                                                                             * Integer
-                                                                                    .parseInt(newVariableValue));
+                                                                            .parseInt(newVariableValue));
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
                                                                     index + 1,
@@ -2202,15 +2202,15 @@ public class FmvAutomaton extends FSMActor {
                                         String newPremise = currentPremise
                                                 + " & "
                                                 + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                                        + "="
+                                                        + String.valueOf(vList.get(i)
+                                                                .intValue());
 
                                         String updatedVariableValue = String
                                                 .valueOf(vList.get(i)
                                                         .intValue()
                                                         * Integer
-                                                                .parseInt(newVariableValue));
+                                                        .parseInt(newVariableValue));
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo == null) {
@@ -2223,8 +2223,8 @@ public class FmvAutomaton extends FSMActor {
                                                     && variableInfo._maxValue != null) {
                                                 if (vList.get(i).intValue()
                                                         * Integer
-                                                                .parseInt(newVariableValue) < Integer
-                                                            .parseInt(variableInfo._minValue)) {
+                                                        .parseInt(newVariableValue) < Integer
+                                                        .parseInt(variableInfo._minValue)) {
                                                     // Use DOMAIN_LS to replace the
                                                     // value.
                                                     updatedVariableValue = "ls";
@@ -2232,8 +2232,8 @@ public class FmvAutomaton extends FSMActor {
                                                 } else if (vList.get(i)
                                                         .intValue()
                                                         * Integer
-                                                                .parseInt(newVariableValue) > Integer
-                                                            .parseInt(variableInfo._maxValue)) {
+                                                        .parseInt(newVariableValue) > Integer
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     updatedVariableValue = "gt";
                                                 }
 
@@ -2254,7 +2254,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                                        + "=" + "gt";
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo == null) {
@@ -2283,13 +2283,13 @@ public class FmvAutomaton extends FSMActor {
 
                                                     while (starter
                                                             * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                                .parseInt(variableInfo._minValue)) {
+                                                            .parseInt(newVariableValue) >= Integer
+                                                            .parseInt(variableInfo._minValue)) {
 
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
-                                                                                .parseInt(newVariableValue));
+                                                                        .parseInt(newVariableValue));
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                 newPremise,
                                                                 index + 1,
@@ -2325,16 +2325,16 @@ public class FmvAutomaton extends FSMActor {
                                                             .parseInt(variableInfo._maxValue) + 1;
                                                     while (starter
                                                             * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                                .parseInt(variableInfo._minValue)) {
+                                                            .parseInt(newVariableValue) >= Integer
+                                                            .parseInt(variableInfo._minValue)) {
                                                         if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) > Integer
-                                                                    .parseInt(variableInfo._maxValue)
+                                                                .parseInt(newVariableValue) > Integer
+                                                                .parseInt(variableInfo._maxValue)
                                                                 && (starter + 1)
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) <= Integer
-                                                                            .parseInt(variableInfo._maxValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(variableInfo._maxValue)) {
 
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
@@ -2348,16 +2348,16 @@ public class FmvAutomaton extends FSMActor {
 
                                                         } else if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(variableInfo._maxValue)
+                                                                .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(variableInfo._maxValue)
                                                                 && starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) >= Integer
-                                                                            .parseInt(variableInfo._minValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(variableInfo._minValue)) {
                                                             String updatedVariableValue = String
                                                                     .valueOf(starter
                                                                             * Integer
-                                                                                    .parseInt(newVariableValue));
+                                                                            .parseInt(newVariableValue));
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
                                                                     index + 1,
@@ -2400,7 +2400,7 @@ public class FmvAutomaton extends FSMActor {
 
                                         String newPremise = currentPremise
                                                 + " & " + keySetArray[index]
-                                                + "=" + "ls";
+                                                        + "=" + "ls";
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo == null) {
@@ -2430,13 +2430,13 @@ public class FmvAutomaton extends FSMActor {
 
                                                     while (starter
                                                             * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue)) {
+                                                            .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue)) {
 
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
-                                                                                .parseInt(newVariableValue));
+                                                                        .parseInt(newVariableValue));
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                 newPremise,
                                                                 index + 1,
@@ -2472,16 +2472,16 @@ public class FmvAutomaton extends FSMActor {
                                                             .parseInt(variableInfo._minValue) - 1;
                                                     while (starter
                                                             * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                                .parseInt(variableInfo._maxValue)) {
+                                                            .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(variableInfo._maxValue)) {
                                                         if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) < Integer
-                                                                    .parseInt(variableInfo._minValue)
+                                                                .parseInt(newVariableValue) < Integer
+                                                                .parseInt(variableInfo._minValue)
                                                                 && (starter + 1)
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) >= Integer
-                                                                            .parseInt(variableInfo._minValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(variableInfo._minValue)) {
 
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
@@ -2495,16 +2495,16 @@ public class FmvAutomaton extends FSMActor {
 
                                                         } else if (starter
                                                                 * Integer
-                                                                        .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(variableInfo._maxValue)
+                                                                .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(variableInfo._maxValue)
                                                                 && starter
-                                                                        * Integer
-                                                                                .parseInt(newVariableValue) >= Integer
-                                                                            .parseInt(variableInfo._minValue)) {
+                                                                * Integer
+                                                                .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(variableInfo._minValue)) {
                                                             String updatedVariableValue = String
                                                                     .valueOf(starter
                                                                             * Integer
-                                                                                    .parseInt(newVariableValue));
+                                                                            .parseInt(newVariableValue));
                                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                     newPremise,
                                                                     index + 1,
@@ -2550,23 +2550,23 @@ public class FmvAutomaton extends FSMActor {
                                         String newPremise = currentPremise
                                                 + " & "
                                                 + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                                        + "="
+                                                        + String.valueOf(vList.get(i)
+                                                                .intValue());
 
                                         String updatedVariableValue = String
                                                 .valueOf(vList.get(i)
                                                         .intValue()
                                                         - Integer
-                                                                .parseInt(newVariableValue));
+                                                        .parseInt(newVariableValue));
                                         VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo != null) {
                                             if (variableInfo._maxValue != null) {
                                                 if (vList.get(i).intValue()
                                                         - Integer
-                                                                .parseInt(newVariableValue) > Integer
-                                                            .parseInt(variableInfo._maxValue)) {
+                                                        .parseInt(newVariableValue) > Integer
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     // Use DOMAIN_LS to replace the value.
                                                     updatedVariableValue = "gt";
                                                 }
@@ -2590,9 +2590,9 @@ public class FmvAutomaton extends FSMActor {
                                     String newPremise = currentPremise
                                             + " & "
                                             + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue());
+                                                    + "="
+                                                    + String.valueOf(vList.get(i)
+                                                            .intValue());
 
                                     if (vList.get(i).intValue() == DOMAIN_LS) {
                                         newPremise = currentPremise + " & "
@@ -2654,14 +2654,14 @@ public class FmvAutomaton extends FSMActor {
                                 String updatedVariableValue = String
                                         .valueOf(vList.get(i).intValue()
                                                 / Integer
-                                                        .parseInt(newVariableValue));
+                                                .parseInt(newVariableValue));
                                 // retrieve the string and concatenate
                                 String newPremise = currentPremise
                                         + " & "
                                         + keySetArray[index]
-                                        + "="
-                                        + String.valueOf(vList.get(i)
-                                                .intValue());
+                                                + "="
+                                                + String.valueOf(vList.get(i)
+                                                        .intValue());
 
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     newPremise = currentPremise + " & "
@@ -2694,9 +2694,9 @@ public class FmvAutomaton extends FSMActor {
                                 String newPremise = currentPremise
                                         + " & "
                                         + keySetArray[index]
-                                        + "="
-                                        + String.valueOf(vList.get(i)
-                                                .intValue());
+                                                + "="
+                                                + String.valueOf(vList.get(i)
+                                                        .intValue());
 
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     newPremise = currentPremise + " & "

@@ -184,7 +184,7 @@ public class CollisionDetector extends TypedAtomicActor {
         // Create and configure the ports.
         message = new WirelessIOPort(this, "message", true, false);
         new SingletonParameter(message, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         power = new TypedIOPort(this, "power", true, false);
         power.setTypeEquals(BaseType.DOUBLE);
@@ -193,17 +193,17 @@ public class CollisionDetector extends TypedAtomicActor {
         duration = new TypedIOPort(this, "duration", true, false);
         duration.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(duration, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         received = new TypedIOPort(this, "received", false, true);
         received.setTypeSameAs(message);
         new SingletonParameter(received, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         collided = new TypedIOPort(this, "collided", false, true);
         collided.setTypeSameAs(message);
         new SingletonParameter(collided, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");

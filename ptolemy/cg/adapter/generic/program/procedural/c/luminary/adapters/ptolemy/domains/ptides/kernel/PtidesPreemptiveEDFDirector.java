@@ -68,8 +68,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating red (jiazou)
  */
 public class PtidesPreemptiveEDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
@@ -153,7 +153,7 @@ public class PtidesPreemptiveEDFDirector
                 if (actor.configuration().compareTo(
                         actor.supportedConfigurations().get(i)) == 0) {
                     GPHandlers[i
-                            + Integer.parseInt(actor.startingConfiguration())] = /*(String) devices.get(actor)*/actorName;
+                               + Integer.parseInt(actor.startingConfiguration())] = /*(String) devices.get(actor)*/actorName;
                     foundConfig = true;
                     break;
                 }
@@ -368,8 +368,8 @@ public class PtidesPreemptiveEDFDirector
             args.add("");
         }
         _templateParser.getCodeStream()
-                .append(_templateParser.getCodeStream().getCodeBlock(
-                        "FuncBlock", args));
+        .append(_templateParser.getCodeStream().getCodeBlock(
+                "FuncBlock", args));
 
         if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode.add(processCode(_templateParser.getCodeStream()

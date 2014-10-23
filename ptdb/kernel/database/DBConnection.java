@@ -252,7 +252,7 @@ public interface DBConnection {
      */
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
-            throws DBExecutionException;
+                    throws DBExecutionException;
 
     /**
      * Execute the necessary commands to save/update a model in the database

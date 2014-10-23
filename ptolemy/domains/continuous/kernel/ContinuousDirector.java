@@ -210,7 +210,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class ContinuousDirector extends FixedPointDirector implements
-        ContinuousStatefulDirector, ContinuousStepSizeController {
+ContinuousStatefulDirector, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -1059,8 +1059,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (!_commitIsPending) {
                 throw new IllegalActionException(this,
                         "Attempting to roll back time from " + currentTime
-                                + " to " + newTime
-                                + ", but state has been committed.");
+                        + " to " + newTime
+                        + ", but state has been committed.");
             }
             // We have to re-do the integration
             // with a smaller step size that brings us up to the current
@@ -1721,7 +1721,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // At the top level, we should not have missed a breakpoint.
                 throw new IllegalActionException(this,
                         "Missed a breakpoint time at " + breakpointTime
-                                + ", with index " + nextBreakpoint.index());
+                        + ", with index " + nextBreakpoint.index());
             } else if (comparison == 0 && nextBreakpoint.index() <= _index) {
                 if (_debugging) {
                     _debug("-- The current superdense time is a breakpoint, "

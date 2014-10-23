@@ -266,8 +266,8 @@ public class EventSource extends TypedAtomicActor {
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this, "Offset number " + _phase
                     + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is "
-                    + periodValue);
+                            + " must be less than the " + "period, which is "
+                            + periodValue);
         }
 
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);

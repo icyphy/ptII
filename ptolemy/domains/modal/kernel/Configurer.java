@@ -123,7 +123,7 @@ public class Configurer extends CompositeActor {
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class ContainmentExtender extends Attribute implements
-            ptolemy.data.expr.ContainmentExtender {
+    ptolemy.data.expr.ContainmentExtender {
 
         /** Construct a containment extender.
          *

@@ -147,10 +147,10 @@ public class LinkController extends BasicEdgeController {
             } catch (Exception ex) {
                 //do nothing - will default to ptii right-click menus
                 System.out
-                        .println("Unable to use the alternative right-click menu "
-                                + "handler that was specified in the "
-                                + "configuration; defaulting to ptii handler. "
-                                + "Exception was: " + ex);
+                .println("Unable to use the alternative right-click menu "
+                        + "handler that was specified in the "
+                        + "configuration; defaulting to ptii handler. "
+                        + "Exception was: " + ex);
             }
 
         }
@@ -432,7 +432,7 @@ public class LinkController extends BasicEdgeController {
             case ConnectorEvent.HEAD_END:
                 if (node == link.getTail()) {
                     MessageHandler
-                            .error("Cannot link both ends to the same object.");
+                    .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }
@@ -442,7 +442,7 @@ public class LinkController extends BasicEdgeController {
             case ConnectorEvent.TAIL_END:
                 if (node == link.getHead()) {
                     MessageHandler
-                            .error("Cannot link both ends to the same object.");
+                    .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }

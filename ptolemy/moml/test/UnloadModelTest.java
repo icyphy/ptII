@@ -86,7 +86,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         toplevel = (CompositeActor) parser.parse(null, new File(xmlFileName)
-                .toURI().toURL());
+        .toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
@@ -143,12 +143,12 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         long totalMemory = runtime.totalMemory() / 1024;
         long freeMemory = runtime.freeMemory() / 1024;
         return "Memory: "
-                + totalMemory
-                + "K Free: "
-                + freeMemory
-                + "K ("
-                + Math.round((double) freeMemory / (double) totalMemory * 100.0)
-                + "%)";
+        + totalMemory
+        + "K Free: "
+        + freeMemory
+        + "K ("
+        + Math.round((double) freeMemory / (double) totalMemory * 100.0)
+        + "%)";
     }
 
     /** Wait for the run to finish and the unload the model.

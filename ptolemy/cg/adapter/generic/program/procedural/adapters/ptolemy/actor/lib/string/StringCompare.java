@@ -76,7 +76,7 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
         String codeBlockName = ignoreCase
                 + (function.equals("equals") ? "EqualsBlock" : function
                         .equals("startsWith") ? "StartsWithBlock" : function
-                        .equals("endsWith") ? "EndsWithBlock" : "ContainsBlock");
+                                .equals("endsWith") ? "EndsWithBlock" : "ContainsBlock");
         ArrayList<String> args = new ArrayList<String>();
         code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
 

@@ -99,7 +99,7 @@ public abstract class RandomSource extends Source {
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
 
         new SingletonParameter(trigger, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

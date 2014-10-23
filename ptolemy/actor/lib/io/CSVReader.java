@@ -157,7 +157,7 @@ public class CSVReader extends LineReader {
         trimSpaces.setExpression("true");
 
         new SingletonParameter(endOfFile, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Base class declares the output to be of type string, so we
         // have to first undo that.

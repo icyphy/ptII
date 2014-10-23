@@ -72,7 +72,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
      *   actor with this name.
      */
     public PthalesCompositeActor() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         super();
 
         // By default, when exporting MoML, the class name is whatever
@@ -288,11 +288,11 @@ public class PthalesCompositeActor extends TypedCompositeActor {
      *   actor with this name.
      */
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (getAttribute("_iconDescription") != null) {
             ((SingletonConfigurableAttribute) getAttribute("_iconDescription"))
-                    .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/><text x=\"18\" y=\"31\" style=\"fill:#000080;font-size:35\">H</text></svg>");
+            .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/><text x=\"18\" y=\"31\" style=\"fill:#000080;font-size:35\">H</text></svg>");
         }
         if (getAttribute("repetitions") == null) {
             repetitions = new Parameter(this, "repetitions");

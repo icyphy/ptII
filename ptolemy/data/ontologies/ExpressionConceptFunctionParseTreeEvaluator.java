@@ -57,7 +57,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ExpressionConceptFunctionParseTreeEvaluator extends
-        ParseTreeEvaluator {
+ParseTreeEvaluator {
 
     /** Construct an ExpressionConceptFunctionParseTreeEvaluator for
      *  evaluating expressions that represent concept functions.
@@ -104,7 +104,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     public ExpressionConceptFunctionParseTreeEvaluator(
             Map<String, Concept> arguments, OntologySolverModel solverModel,
             List<Ontology> domainOntologies, Ontology outputRangeOntology)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _solverModel = solverModel;
         _scopeOntologies = new LinkedList<Ontology>(domainOntologies);
         _scopeOntologies.add(outputRangeOntology);
@@ -154,7 +154,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             return (ConceptToken) evaluatedToken;
         } else if (evaluatedToken instanceof ObjectToken
                 && ((ObjectToken) evaluatedToken).getValueClass()
-                        .isAssignableFrom(Concept.class)) {
+                .isAssignableFrom(Concept.class)) {
             return new ConceptToken(
                     (Concept) ((ObjectToken) evaluatedToken).getValue());
         } else {
@@ -224,7 +224,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         if (function == null) {
             throw new IllegalActionException(
                     "Unrecognized concept function name: " + functionName
-                            + " in the concept function expression string.");
+                    + " in the concept function expression string.");
         }
 
         if (function.isNumberOfArgumentsFixed()

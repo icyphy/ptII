@@ -54,8 +54,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 public class PtidesBasicReceiver
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
 
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
@@ -64,7 +64,7 @@ public class PtidesBasicReceiver
      */
     public PtidesBasicReceiver(
             ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(receiver);
     }
 
@@ -156,7 +156,7 @@ public class PtidesBasicReceiver
             sourceTime = "sourceTime = &Event_Head_"
                     + CodeGeneratorAdapter.generateName(sourcePort
                             .getContainer()) + "_"
-                    + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
+                            + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or

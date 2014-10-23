@@ -89,7 +89,7 @@ public abstract class FormSpec implements Serializable {
      * deserialized default alignments.
      */
     private static final DefaultAlignment[] VALUES = { LEFT_ALIGN, RIGHT_ALIGN,
-            TOP_ALIGN, BOTTOM_ALIGN, CENTER_ALIGN, FILL_ALIGN };
+        TOP_ALIGN, BOTTOM_ALIGN, CENTER_ALIGN, FILL_ALIGN };
 
     // Resizing Weights *****************************************************
 

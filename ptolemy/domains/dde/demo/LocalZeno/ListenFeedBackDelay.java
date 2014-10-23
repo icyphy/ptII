@@ -59,7 +59,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  name that is an empty string.
      */
     public ListenFeedBackDelay() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 

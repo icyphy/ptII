@@ -100,7 +100,7 @@ public class BasicGraphPane extends GraphPane {
                 PtolemyPreferences preferences = (PtolemyPreferences) list
                         .get(list.size() - 1);
                 getCanvas()
-                        .setBackground(preferences.backgroundColor.asColor());
+                .setBackground(preferences.backgroundColor.asColor());
                 return;
             }
             // There is no local preferences. If we have previously
@@ -127,8 +127,8 @@ public class BasicGraphPane extends GraphPane {
                 }
             } catch (IllegalActionException ex) {
                 System.err
-                        .println("Warning, failed to find Ptolemy Preferences "
-                                + "or set the background, using default.");
+                .println("Warning, failed to find Ptolemy Preferences "
+                        + "or set the background, using default.");
                 ex.printStackTrace();
             }
             if (_backgroundWarningCount < 1) {
@@ -136,8 +136,8 @@ public class BasicGraphPane extends GraphPane {
                 // If there is no actor library, do not issue a warning.
                 if (configuration.getEntity("actor library") != null) {
                     System.out
-                            .println("Configuration does not contain a PtolemyPreferences object. "
-                                    + "Using default background color.");
+                    .println("Configuration does not contain a PtolemyPreferences object. "
+                            + "Using default background color.");
                 }
             }
         }

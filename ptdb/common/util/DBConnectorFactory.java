@@ -152,7 +152,7 @@ public class DBConnectorFactory {
      */
     public static DBConnection getSyncConnection(
             DBConnectionParameters dbConnectionParameters)
-            throws DBConnectionException {
+                    throws DBConnectionException {
         return _createConnection(dbConnectionParameters);
     }
 
@@ -249,7 +249,7 @@ public class DBConnectorFactory {
      */
     private static DBConnection _createConnection(
             DBConnectionParameters dbConnectionParameters)
-            throws DBConnectionException {
+                    throws DBConnectionException {
 
         if (_dbClassName == null) {
             throw new DBConnectionException(
@@ -307,9 +307,9 @@ public class DBConnectorFactory {
 
             throw new DBConnectionException(
                     "PTDB invocation target exception - " + _dbClassName
-                            + " for url - " + dbConnectionParameters.getUrl()
-                            + " and container name - "
-                            + dbConnectionParameters.getContainerName(), e);
+                    + " for url - " + dbConnectionParameters.getUrl()
+                    + " and container name - "
+                    + dbConnectionParameters.getContainerName(), e);
 
         }
         return xmlDBConnection;
@@ -387,9 +387,9 @@ public class DBConnectorFactory {
         strBuf.append("_dbClassName = ").append(_dbClassName).append(";");
         strBuf.append("_dbUrl = ").append(_dbUrl).append(";");
         strBuf.append("_dbContainerName = ").append(_dbContainerName)
-                .append(";");
+        .append(";");
         strBuf.append("_cacheContainerName = ").append(_cacheContainerName)
-                .append(";");
+        .append(";");
 
         return strBuf.toString();
     }

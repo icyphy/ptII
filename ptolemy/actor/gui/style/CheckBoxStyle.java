@@ -162,7 +162,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != null && !(container instanceof Parameter)) {
             throw new IllegalActionException(this, container,
                     "CheckBoxStyle can only be contained by a Parameter.");

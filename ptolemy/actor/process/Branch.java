@@ -94,7 +94,7 @@ public class Branch implements Runnable {
      */
     public Branch(ProcessReceiver producerReceiver,
             ProcessReceiver consumerReceiver, BranchController controller)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _controller = controller;
 
         if (producerReceiver == null || consumerReceiver == null) {

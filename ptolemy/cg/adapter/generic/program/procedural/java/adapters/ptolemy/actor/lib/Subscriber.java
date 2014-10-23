@@ -42,8 +42,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  *
  */
 public class Subscriber
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Subscriber {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Subscriber {
     /**
      * Constructor method for the Subscriber adapter.
      * @param actor the associated actor

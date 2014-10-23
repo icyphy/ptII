@@ -82,7 +82,7 @@ public class SequenceDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public SequenceDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -98,7 +98,7 @@ public class SequenceDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public SequenceDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 

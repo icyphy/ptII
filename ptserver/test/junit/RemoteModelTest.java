@@ -217,7 +217,7 @@ public class RemoteModelTest {
         Ticket ticket = response.getTicket();
         ProxyModelInfrastructure model = new ProxyModelInfrastructure(
                 ProxyModelType.CLIENT, (CompositeActor) ServerUtility
-                .createMoMLParser().parse(response.getModelXML()),
+                        .createMoMLParser().parse(response.getModelXML()),
                 response.getModelTypes());
         model.setUpInfrastructure(ticket, _server.getBrokerUrl());
 

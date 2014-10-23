@@ -154,7 +154,7 @@ public class FMUModelExchange extends FMUDriver {
     @Override
     public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName)
-            throws Exception {
+                    throws Exception {
         // Avoid a warning from FindBugs.
         _setEnableLogging(enableLogging);
 
@@ -210,7 +210,7 @@ public class FMUModelExchange extends FMUDriver {
 
             fmiComponent = (Pointer) instantiateModelFunction.invoke(
                     Pointer.class, new Object[] { _modelIdentifier,
-                        fmiModelDescription.guid, callbacks, loggingOn });
+                            fmiModelDescription.guid, callbacks, loggingOn });
         } else {
             // FMI 1.5 and greater
             FMICallbackFunctions callbacks = new FMICallbackFunctions(
@@ -234,9 +234,9 @@ public class FMUModelExchange extends FMUDriver {
             }
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
-                        fmiModelDescription.guid,
-                        fmiModelDescription.fmuResourceLocation, callbacks,
-                        toBeVisible, loggingOn });
+                            fmiModelDescription.guid,
+                            fmiModelDescription.fmuResourceLocation, callbacks,
+                            toBeVisible, loggingOn });
 
         }
 
@@ -313,7 +313,8 @@ public class FMUModelExchange extends FMUDriver {
                 // update discrete states
                 eventInfo20Reference = new FMI20EventInfo.ByReference(
                         eventInfo20);
-                System.out.println("FMUModelExchange: " + eventInfo20Reference.toString());
+                System.out.println("FMUModelExchange: "
+                        + eventInfo20Reference.toString());
 
                 invoke(fmiModelDescription, "fmiNewDiscreteStates",
                         new Object[] { fmiComponent, eventInfo20Reference },
@@ -341,7 +342,7 @@ public class FMUModelExchange extends FMUDriver {
                 file = new PrintStream(outputFileName);
                 if (enableLogging) {
                     System.out
-                    .println("FMUModelExchange: about to write header");
+                            .println("FMUModelExchange: about to write header");
                 }
                 // Generate header row
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
@@ -378,12 +379,12 @@ public class FMUModelExchange extends FMUDriver {
                     invoke(getContinuousStates, new Object[] { fmiComponent,
                             states, numberOfStates },
                             "Could not get continuous states, time was " + time
-                            + ": ");
+                                    + ": ");
 
                     invoke(getDerivatives, new Object[] { fmiComponent,
                             derivatives, numberOfStates },
                             "Could not get derivatives, time was " + time
-                            + ": ");
+                                    + ": ");
 
                     // Update time.
                     double stepStartTime = time;
@@ -414,7 +415,7 @@ public class FMUModelExchange extends FMUDriver {
                     invoke(setContinuousStates, new Object[] { fmiComponent,
                             states, numberOfStates },
                             "Could not set continuous states, time was " + time
-                            + ": ");
+                                    + ": ");
                     if (enableLogging) {
                         System.out.println("Step " + numberOfSteps + " to t="
                                 + time);
@@ -471,7 +472,7 @@ public class FMUModelExchange extends FMUDriver {
                                         + time + ": ");
                         if (terminateSimulation != (byte) 0) {
                             System.out
-                            .println("Termination requested: " + time);
+                                    .println("Termination requested: " + time);
                             break;
                         }
                     }
@@ -498,12 +499,12 @@ public class FMUModelExchange extends FMUDriver {
                             if (enableLogging) {
                                 for (int i = 0; i < numberOfEventIndicators; i++) {
                                     System.out
-                                    .println("state event "
-                                            + (preEventIndicators[i] > 0
-                                                    && eventIndicators[i] < 0 ? "-\\-"
+                                            .println("state event "
+                                                    + (preEventIndicators[i] > 0
+                                                            && eventIndicators[i] < 0 ? "-\\-"
                                                             : "-/-")
-                                                            + " eventIndicator[" + i
-                                                            + "], time: " + time);
+                                                    + " eventIndicator[" + i
+                                                    + "], time: " + time);
                                 }
                             }
                         }
@@ -534,8 +535,8 @@ public class FMUModelExchange extends FMUDriver {
                             if (eventInfo.stateValueReferencesChanged != (byte) 0
                                     && enableLogging) {
                                 System.out
-                                .println("new state variables selected: "
-                                        + time);
+                                        .println("new state variables selected: "
+                                                + time);
                             }
                         } else {
                             // event iteration in one step, ignoring intermediate results
@@ -548,8 +549,8 @@ public class FMUModelExchange extends FMUDriver {
                                         eventInfo20);
                                 invoke(fmiModelDescription,
                                         "fmiNewDiscreteStates", new Object[] {
-                                        fmiComponent,
-                                        eventInfo20Reference },
+                                                fmiComponent,
+                                                eventInfo20Reference },
                                         "could not set a new discrete state");
                             }
 
@@ -567,15 +568,15 @@ public class FMUModelExchange extends FMUDriver {
                             if ((eventInfo20.valuesOfContinuousStatesChanged == (byte) 1)
                                     && enableLogging) {
                                 System.out
-                                .println("continuous state values changed at t="
-                                        + time);
+                                        .println("continuous state values changed at t="
+                                                + time);
                             }
 
                             if ((eventInfo20.nominalsOfContinuousStatesChanged == (byte) 1)
                                     && enableLogging) {
                                 System.out
-                                .println("nominals of continuous state changed  at t="
-                                        + time);
+                                        .println("nominals of continuous state changed  at t="
+                                                + time);
                             }
                         }
                     }
@@ -600,9 +601,9 @@ public class FMUModelExchange extends FMUDriver {
                             .intValue();
                     if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
                         System.err
-                        .println("Warning: Could not free slave instance: "
-                                + FMIModelDescription
-                                .fmiStatusDescription(fmiFlag));
+                                .println("Warning: Could not free slave instance: "
+                                        + FMIModelDescription
+                                                .fmiStatusDescription(fmiFlag));
                     }
                 } else {
                     if (!(eventInfo20.terminateSimulation == 1)) {

@@ -166,7 +166,7 @@ public class Scheduler extends Attribute {
      *  by the derived schedulers.
      */
     public Schedule getSchedule() throws IllegalActionException,
-            NotSchedulableException {
+    NotSchedulableException {
         try {
             workspace().getReadAccess();
 
@@ -241,7 +241,7 @@ public class Scheduler extends Attribute {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -329,7 +329,7 @@ public class Scheduler extends Attribute {
      *  @see ptolemy.kernel.CompositeEntity#deepEntityList()
      */
     protected Schedule _getSchedule() throws IllegalActionException,
-            NotSchedulableException {
+    NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) director
                 .getContainer();

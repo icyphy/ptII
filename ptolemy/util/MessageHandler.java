@@ -137,9 +137,9 @@ public class MessageHandler {
     public static boolean isRunningNightlyBuild() {
         if ((StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
                 .length() > 0 || StringUtilities.getProperty(
-                "ptolemy.ptII.batchMode").length() > 0)
-                && StringUtilities.getProperty(
-                        "ptolemy.ptII.testingMessageHandler").length() == 0) {
+                        "ptolemy.ptII.batchMode").length() > 0)
+                        && StringUtilities.getProperty(
+                                "ptolemy.ptII.testingMessageHandler").length() == 0) {
             return true;
         }
 
@@ -272,7 +272,7 @@ public class MessageHandler {
      */
     public static boolean yesNoCancelQuestion(String question,
             String trueOption, String falseOption, String exceptionOption)
-            throws ptolemy.util.CancelException {
+                    throws ptolemy.util.CancelException {
         return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
                 exceptionOption);
     }
@@ -388,7 +388,7 @@ public class MessageHandler {
      */
     protected boolean _yesNoCancelQuestion(String question, String trueOption,
             String falseOption, String exceptionOption)
-            throws ptolemy.util.CancelException {
+                    throws ptolemy.util.CancelException {
         System.out.print(question + " (" + trueOption + " or " + falseOption
                 + " or " + exceptionOption + ") ");
 

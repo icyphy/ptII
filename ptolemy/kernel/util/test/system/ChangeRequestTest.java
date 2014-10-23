@@ -67,7 +67,7 @@ public class ChangeRequestTest implements ChangeListener {
     /** Constructor.
      */
     public ChangeRequestTest() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();

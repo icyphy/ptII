@@ -70,7 +70,7 @@ import ptolemy.kernel.util.InvalidStateException;
  * @Pt.AcceptedRating Green (tfeng)
  */
 public class RendezvousReceiver extends AbstractReceiver implements
-        ProcessReceiver {
+ProcessReceiver {
 
     /**
      * Construct a RendezvousReceiver with no container.
@@ -218,7 +218,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     public static void getFromAnyPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
-            throws IllegalActionException, TerminateProcessException {
+                    throws IllegalActionException, TerminateProcessException {
         _getOrPutTokens(getReceivers, putReceivers, director, null, null,
                 GET_FROM_ANY_PUT_TO_ALL);
     }
@@ -313,7 +313,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -431,7 +431,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     @Override
     public void put(Token token) throws IllegalActionException,
-            TerminateProcessException {
+    TerminateProcessException {
         if (token == null) {
             return;
         }
@@ -976,7 +976,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     private static Map _getOrPutTokens(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director,
             Token token, Token[][] tokenArray, int flag)
-            throws IllegalActionException, TerminateProcessException {
+                    throws IllegalActionException, TerminateProcessException {
 
         // Extract information from the flag.
         boolean isGet = (flag & GET) == GET;

@@ -149,10 +149,10 @@ public class Separator extends GUIProperty {
             String value = orientation.stringValue();
             if (value.equalsIgnoreCase("Horizontal")) {
                 ((JSeparator) getComponent())
-                        .setOrientation(SwingConstants.HORIZONTAL);
+                .setOrientation(SwingConstants.HORIZONTAL);
             } else if (value.equalsIgnoreCase("Vertical")) {
                 ((JSeparator) getComponent())
-                        .setOrientation(SwingConstants.VERTICAL);
+                .setOrientation(SwingConstants.VERTICAL);
             } else {
                 throw new IllegalActionException(this, "Orientation of a "
                         + "separator must be either \"Horozontal\" or "
@@ -186,7 +186,7 @@ public class Separator extends GUIProperty {
      *   a parameter already in the container.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         orientation = new StringParameter(this, "orientation");
         orientation.setExpression("Horizontal");
     }

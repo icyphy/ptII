@@ -258,11 +258,11 @@ public class BrowserLauncher {
 
         if (!StringUtilities.getProperty("ptolemy.ptII.browser").equals("")) {
             Runtime.getRuntime()
-                    .exec(new String[] {
-                            "\""
-                                    + StringUtilities
-                                            .getProperty("ptolemy.ptII.browser")
-                                    + "\"", url });
+            .exec(new String[] {
+                    "\""
+                            + StringUtilities
+                            .getProperty("ptolemy.ptII.browser")
+                            + "\"", url });
             return;
         }
 
@@ -278,7 +278,7 @@ public class BrowserLauncher {
         case MRJ_2_0:
 
             errorMessage = "Command was a call to aeDescConstructor(" + url
-                    + ")";
+            + ")";
 
             Object aeDesc = null;
 
@@ -376,16 +376,16 @@ public class BrowserLauncher {
 
             errorMessage = "Command was: "
                     + args[0]
-                    + " "
-                    + args[1]
-                    + " "
-                    + args[2]
-                    + " "
-                    + args[3]
-                    + " "
-                    + args[4]
-                    + "\nNote: Under Windows, make sure that the file named by "
-                    + "the url is executable.";
+                            + " "
+                            + args[1]
+                                    + " "
+                                    + args[2]
+                                            + " "
+                                            + args[3]
+                                                    + " "
+                                                    + args[4]
+                                                            + "\nNote: Under Windows, make sure that the file named by "
+                                                            + "the url is executable.";
 
             // The return code returned by process.waitFor()
             // 0 usually indicates normal execution.
@@ -420,7 +420,7 @@ public class BrowserLauncher {
                     (String) browser,
                     NETSCAPE_REMOTE_PARAMETER,
                     NETSCAPE_OPEN_PARAMETER_START + url
-                            + NETSCAPE_OPEN_PARAMETER_END };
+                    + NETSCAPE_OPEN_PARAMETER_END };
             process = Runtime.getRuntime().exec(args);
 
             errorMessage = "Command was: " + args[0] + " " + args[1] + " "
@@ -784,7 +784,7 @@ public class BrowserLauncher {
                 Constructor constructor = linker
                         .getConstructor(new Class[] { Class.class });
                 /*linkage = */constructor
-                        .newInstance(new Object[] { BrowserLauncher.class });
+                .newInstance(new Object[] { BrowserLauncher.class });
             } catch (ClassNotFoundException cnfe) {
                 errorMessage = cnfe.getMessage();
                 return false;

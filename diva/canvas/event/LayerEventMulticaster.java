@@ -36,7 +36,7 @@ import java.util.EventListener;
  * @author         John Reekie
  */
 public class LayerEventMulticaster extends AWTEventMulticaster implements
-        LayerListener, LayerMotionListener {
+LayerListener, LayerMotionListener {
     /**
      * Create an event multicaster from two listeners.
      */

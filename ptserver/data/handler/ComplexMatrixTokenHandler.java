@@ -47,7 +47,7 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class ComplexMatrixTokenHandler implements
-        TokenHandler<ComplexMatrixToken> {
+TokenHandler<ComplexMatrixToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

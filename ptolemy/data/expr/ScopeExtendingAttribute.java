@@ -109,7 +109,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Nameable oldContainer = getContainer();
         super.setContainer(container);
 

@@ -301,7 +301,7 @@ public class LoadManager {
      *
      */
     public void getAllModelsFromDatabase() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
         DBConnection conn = DBConnectorFactory.getSyncConnection(false);
         _allModelsList = conn.executeGetListOfAllModels();
         if (_allModelsList != null) {
@@ -321,7 +321,7 @@ public class LoadManager {
      * query in the database.
      */
     public int getTotalNumberOfModels() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }
@@ -338,7 +338,7 @@ public class LoadManager {
      * query in the database.
      */
     public int getNoOfPages() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }

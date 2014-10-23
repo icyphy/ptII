@@ -402,9 +402,9 @@ public class URLDirectoryReader extends URLReader {
                                             if (endsWith == null
                                                     || endsWith.length() == 0
                                                     || target
-                                                            .endsWith(endsWith)) {
+                                                    .endsWith(endsWith)) {
                                                 resultsList
-                                                        .add(source + target);
+                                                .add(source + target);
                                             }
 
                                             sawHREF = false;

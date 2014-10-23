@@ -97,15 +97,15 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
             } else {
                 inputType = "Token";
                 ((ProceduralCodeGenerator) getCodeGenerator())
-                        .markFunctionCalled("equals_Token_Token",
-                                (ProceduralTemplateParser) _templateParser);
+                .markFunctionCalled("equals_Token_Token",
+                        (ProceduralTemplateParser) _templateParser);
                 //((ProceduralCodeGenerator) getCodeGenerator()).markFunctionCalled(
                 //        "isCloseTo_Token_Token",
                 //        (ProceduralTemplateParser) _templateParser);
             }
 
             codeStream
-                    .appendCodeBlock(inputType + "Block" + multiChannel, args);
+            .appendCodeBlock(inputType + "Block" + multiChannel, args);
         }
         return processCode(codeStream.toString());
     }

@@ -73,7 +73,7 @@ import ptolemy.kernel.util.KernelException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class DistributedServerRMIGeneric implements ServiceIDListener,
-        DiscoveryListener {
+DiscoveryListener {
     /** Construct a DistributedServerRMIGeneric with a configuration file.
      *  It performs the following tasks:
      * <ul>

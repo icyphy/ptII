@@ -258,7 +258,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
         // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) {
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
-                        .compareTo(_nextTimeFree) >= 0)) {
+                .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
             // FIXME:
             // Not only does this bus need to be fired

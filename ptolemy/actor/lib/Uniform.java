@@ -75,12 +75,12 @@ public class Uniform extends RandomSource {
         lowerBound = new PortParameter(this, "lowerBound", new DoubleToken(0.0));
         lowerBound.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(lowerBound.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         upperBound = new PortParameter(this, "upperBound", new DoubleToken(1.0));
         upperBound.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(upperBound.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

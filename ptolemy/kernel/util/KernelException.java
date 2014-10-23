@@ -227,19 +227,19 @@ public class KernelException extends Exception {
                 || whereString.equals("");
         boolean detailNullOrEmpty = detail == null || detail.equals("");
         return
-        // Do we print the detail?
-        (detailNullOrEmpty ? "" : detail)
-        // Do we add a \n?
+                // Do we print the detail?
+                (detailNullOrEmpty ? "" : detail)
+                // Do we add a \n?
                 + (!whereNullOrEmpty && !detailNullOrEmpty ? "\n" : "")
                 // Do we print the whereString?
                 + (whereNullOrEmpty ? "" : whereString)
                 // Do we add a \n?
                 + ((!whereNullOrEmpty || !detailNullOrEmpty) && cause != null ? "\n"
                         : "")
-                // Do we print the cause?
-                + (cause == null ? "" : "Because:\n"
-                        + (cause.getMessage() != null ? cause.getMessage()
-                                : cause.toString()));
+                        // Do we print the cause?
+                        + (cause == null ? "" : "Because:\n"
+                                + (cause.getMessage() != null ? cause.getMessage()
+                                        : cause.toString()));
     }
 
     /** Get the cause of this exception.

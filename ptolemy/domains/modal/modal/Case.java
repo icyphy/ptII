@@ -167,7 +167,7 @@ public class Case extends ModalModel {
     /** Initialize the model with a single state.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (!_printedDeprecatedMessage) {
             _printedDeprecatedMessage = true;
             System.out.println("Warning: " + getFullName()

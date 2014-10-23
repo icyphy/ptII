@@ -116,7 +116,7 @@ import ptolemy.util.StringUtilities;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
-        implements ParseTreeCodeGenerator {
+implements ParseTreeCodeGenerator {
 
     /**
      * Create a ProceduralParseTreeCodeGenerator that is used by
@@ -1024,7 +1024,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount() * columnCount];
+                                                                           .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -1384,7 +1384,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
                               ScalarToken leftScalar = (ScalarToken) leftToken;
                               ScalarToken rightScalar = (ScalarToken) rightToken;
-                 */
+         */
 
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();

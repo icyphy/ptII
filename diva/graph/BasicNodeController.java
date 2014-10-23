@@ -190,7 +190,7 @@ public class BasicNodeController implements NodeController {
             // place the new figure where the old one was, if there
             // was an old figure.
             CanvasUtilities
-                    .translateTo(newFigure, center.getX(), center.getY());
+            .translateTo(newFigure, center.getX(), center.getY());
         }
 
         _controller.dispatch(new GraphViewEvent(this,

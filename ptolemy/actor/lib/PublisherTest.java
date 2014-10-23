@@ -163,19 +163,19 @@ public class PublisherTest extends PublisherNonStrictTest {
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
-                                + ".\n" + "Width of input is " + width
-                                + ", but correctValues parameter "
-                                + "is not an array " + "of arrays.");
+                        + ".\n" + "Width of input is " + width
+                        + ", but correctValues parameter "
+                        + "is not an array " + "of arrays.");
             }
 
             if (width != reference.length) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
-                                + ".\n" + "Width of input is " + width
-                                + ", which does not match "
-                                + "the  width of the "
-                                + _numberOfInputTokensSeen + "-th element of"
-                                + " correctValues, " + reference.length);
+                        + ".\n" + "Width of input is " + width
+                        + ", which does not match "
+                        + "the  width of the "
+                        + _numberOfInputTokensSeen + "-th element of"
+                        + " correctValues, " + reference.length);
             }
         }
 
@@ -183,7 +183,7 @@ public class PublisherTest extends PublisherNonStrictTest {
             if (!input.hasToken(i)) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
-                                + ".\n" + "Empty input on channel " + i);
+                        + ".\n" + "Empty input on channel " + i);
             }
 
             Token token = input.get(i);
@@ -213,15 +213,15 @@ public class PublisherTest extends PublisherNonStrictTest {
                 // actor failed if there was more than one...
                 throw new IllegalActionException(this, ex,
                         "Test fails in iteration " + _numberOfInputTokensSeen
-                                + ".\n" + "Value was: " + token
-                                + ". Should have been: " + reference[i]);
+                        + ".\n" + "Value was: " + token
+                        + ". Should have been: " + reference[i]);
             }
 
             if (!isClose) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
-                                + ".\n" + "Value was: " + token
-                                + ". Should have been: " + reference[i]);
+                        + ".\n" + "Value was: " + token
+                        + ". Should have been: " + reference[i]);
             }
             output.send(i, token);
         }

@@ -679,7 +679,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             out.println("\\usepackage{pstricks}");
             // Not currently using anything from pst-sigsys.
             // out.println("\\usepackage{pst-sigsys}");
-out.println("\\begin{document}");
+            out.println("\\begin{document}");
             out.println("\\thispagestyle{empty}");
             // FIXME: The following fixes the width at 6 in
             // and the height at 4in. Should instead get these
@@ -1587,7 +1587,7 @@ out.println("\\begin{document}");
             // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20, 20));
             _resetButton
-                    .setToolTipText("Reset X and Y ranges to their original values");
+            .setToolTipText("Reset X and Y ranges to their original values");
             _resetButton.addActionListener(new ButtonListener());
             add(_resetButton);
         }
@@ -2341,9 +2341,9 @@ out.println("\\begin{document}");
         if (_specifiedPlotRectangle != null) {
             workingPlotRectangle = new Rectangle(Math.max(0,
                     _specifiedPlotRectangle.x), Math.max(0,
-                    _specifiedPlotRectangle.y), Math.min(drawRect.width,
-                    _specifiedPlotRectangle.width), Math.min(drawRect.height,
-                    _specifiedPlotRectangle.height));
+                            _specifiedPlotRectangle.y), Math.min(drawRect.width,
+                                    _specifiedPlotRectangle.width), Math.min(drawRect.height,
+                                            _specifiedPlotRectangle.height));
         }
 
         // Vertical space for title, if appropriate.
@@ -2636,7 +2636,7 @@ out.println("\\begin{document}");
 
                     for (double ypos = _gridStep(unlabeledgrid, yStart,
                             tmpStep, _ylog); ypos <= _ytickMax; ypos = _gridStep(
-                            unlabeledgrid, ypos, tmpStep, _ylog)) {
+                                    unlabeledgrid, ypos, tmpStep, _ylog)) {
                         int yCoord1 = _lry
                                 - (int) ((ypos - _ytickMin) * _ytickscale);
 
@@ -2663,7 +2663,7 @@ out.println("\\begin{document}");
                 graphics.setFont(_superscriptFont);
                 graphics.drawString(Integer.toString(_yExp),
                         _labelFontMetrics.stringWidth("x10") + 2, titley
-                                - halflabelheight);
+                        - halflabelheight);
                 graphics.setFont(_labelFont);
             }
         } else {
@@ -2823,7 +2823,7 @@ out.println("\\begin{document}");
                 if (unlabeledgrid.size() > 0) {
                     for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
                             tmpStep, _xlog); xpos <= _xtickMax; xpos = _gridStep(
-                            unlabeledgrid, xpos, tmpStep, _xlog)) {
+                                    unlabeledgrid, xpos, tmpStep, _xlog)) {
                         xCoord1 = _ulx
                                 + (int) ((xpos - _xtickMin) * _xtickscale);
 
@@ -2993,11 +2993,11 @@ out.println("\\begin{document}");
         boolean pointinside = ypos <= _lry && ypos >= _uly && xpos <= _lrx
                 && xpos >= _ulx;
 
-        if (!pointinside && clip) {
-            return;
-        }
+                if (!pointinside && clip) {
+                    return;
+                }
 
-        graphics.fillRect((int) xpos - 6, (int) ypos - 6, 6, 6);
+                graphics.fillRect((int) xpos - 6, (int) ypos - 6, 6, 6);
     }
 
     /** Return Latex plot data. This base class returns nothing.
@@ -3459,16 +3459,16 @@ out.println("\\begin{document}");
      *  distinct data sets.
      */
     static protected Color[] _colors = { new Color(0xff0000), // red
-            new Color(0x0000ff), // blue
-            new Color(0x00aaaa), // cyan-ish
-            new Color(0x000000), // black
-            new Color(0xffa500), // orange
-            new Color(0x53868b), // cadetblue4
-            new Color(0xff7f50), // coral
-            new Color(0x45ab1f), // dark green-ish
-            new Color(0x90422d), // sienna-ish
-            new Color(0xa0a0a0), // grey-ish
-            new Color(0x14ff14), // green-ish
+        new Color(0x0000ff), // blue
+        new Color(0x00aaaa), // cyan-ish
+        new Color(0x000000), // black
+        new Color(0xffa500), // orange
+        new Color(0x53868b), // cadetblue4
+        new Color(0xff7f50), // coral
+        new Color(0x45ab1f), // dark green-ish
+        new Color(0x90422d), // sienna-ish
+        new Color(0xa0a0a0), // grey-ish
+        new Color(0x14ff14), // green-ish
     };
 
     /** Width and height of component in pixels. */
@@ -3804,7 +3804,7 @@ out.println("\\begin{document}");
         // or equal to x.  This sets us up to process the first point.
         for (_gridCurJuke = -1; _gridCurJuke + 1 < grid.size()
                 && x >= ((Double) grid.elementAt(_gridCurJuke + 1))
-                        .doubleValue(); _gridCurJuke++) {
+                .doubleValue(); _gridCurJuke++) {
         }
 
         return grid;
@@ -4667,7 +4667,7 @@ out.println("\\begin{document}");
                 }
                 if (printPlatformProperty.equals("CrossPlatform")
                         || UIManager.getLookAndFeel().getName()
-                                .startsWith("Mac OS")) {
+                        .startsWith("Mac OS")) {
                     _printCrossPlatform();
                 } else {
                     _printNative();

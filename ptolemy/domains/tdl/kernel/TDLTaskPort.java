@@ -55,7 +55,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception IllegalActionException
      */
     public TDLTaskPort() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -72,7 +72,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception IllegalActionException Thrown if the initial value parameter cannot be created.
      */
     public TDLTaskPort(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -175,7 +175,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception NameDuplicationException Thrown if the initial value parameter cannot be created.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         initialValue = new Parameter(this, "initialValue");
         initialValue.setVisibility(Settable.FULL);
     }

@@ -122,7 +122,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CSPDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -134,7 +134,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CSPDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -335,7 +335,7 @@ public class CSPDirector extends CompositeProcessDirector {
      * @exception InvalidStateException
      */
     private String _receiverStatus() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) getContainer();
 

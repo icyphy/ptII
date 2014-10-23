@@ -63,7 +63,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  an attribute already in the container.
      */
     public UnitAttribute() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 

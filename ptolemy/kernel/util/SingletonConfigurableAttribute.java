@@ -46,7 +46,7 @@ package ptolemy.kernel.util;
  @Pt.AcceptedRating Green (janneck)
  */
 public class SingletonConfigurableAttribute extends ConfigurableAttribute
-        implements Singleton {
+implements Singleton {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  workspace directory.
@@ -119,7 +119,7 @@ public class SingletonConfigurableAttribute extends ConfigurableAttribute
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

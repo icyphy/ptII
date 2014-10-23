@@ -106,7 +106,7 @@ public abstract class Source extends TypedAtomicActor {
 
         // Parameter to get Vergil to label the trigger port.
         new SingletonParameter(trigger, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

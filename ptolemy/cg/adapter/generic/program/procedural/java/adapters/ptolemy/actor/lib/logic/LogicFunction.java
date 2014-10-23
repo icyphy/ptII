@@ -38,8 +38,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 @since Ptolemy II 10.0
  */
 public class LogicFunction
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.LogicFunction {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.LogicFunction {
     /**
      *  Construct a LogicFunction adapter.
      *  @param actor The given ptolemy.actor.lib.logic.LogicFunction actor.

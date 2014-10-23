@@ -96,7 +96,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class AtomicWirelessChannel extends TypedAtomicActor implements
-        WirelessChannel, ValueListener {
+WirelessChannel, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -524,7 +524,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
     @Override
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort source, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         RecordToken result = properties;
         Token defaultPropertiesValue = defaultProperties.getToken();
 
@@ -727,7 +727,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      */
     protected boolean _isInRange(WirelessIOPort source,
             WirelessIOPort destination, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return true;
     }
 
@@ -762,7 +762,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + " with container\n" + container + ".");
+                    + " with container\n" + container + ".");
         }
 
         // NOTE: We assume here that the implementation
@@ -807,7 +807,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         if (_receiversInRangeCache != null
                 && _receiversInRangeCache.containsKey(sourcePort)
                 && ((Long) _receiversInRangeCacheVersion.get(sourcePort))
-                        .longValue() == workspace().getVersion()
+                .longValue() == workspace().getVersion()
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
             return (List) _receiversInRangeCache.get(sourcePort);
@@ -877,7 +877,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      */
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (_debugging) {
             _debug(" * transmitting to: "
                     + receiver.getContainer().getFullName());

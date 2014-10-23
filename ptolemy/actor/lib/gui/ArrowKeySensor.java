@@ -484,7 +484,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     }
 
     private static class ActionListenerExceptionCatcher implements
-            ActionListener {
+    ActionListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

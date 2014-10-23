@@ -384,7 +384,7 @@ public class Solution {
                     + source.toString()
                     + " "
                     + ((UnitEquation) _constraints.elementAt(i))
-                            .descriptiveForm() + "\n");
+                    .descriptiveForm() + "\n");
         }
 
         retv.append("\\Header\n");
@@ -483,7 +483,7 @@ public class Solution {
             retv.append("" + _vectorA[i] + " " + _vectorA[i].descriptiveForm());
             retv.append(" "
                     + ((UnitEquation) _constraints.elementAt(i))
-                            .descriptiveForm());
+                    .descriptiveForm());
             retv.append("\n");
         }
 
@@ -847,7 +847,7 @@ public class Solution {
         } else {
             float[] colorArray = colorValue.getRGBComponents(null);
             return "{ " + colorArray[0] + ", " + colorArray[1] + ", "
-                    + colorArray[2] + ", " + colorArray[3] + " }";
+            + colorArray[2] + ", " + colorArray[3] + " }";
         }
     }
 

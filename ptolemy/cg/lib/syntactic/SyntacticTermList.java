@@ -52,7 +52,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class SyntacticTermList extends LinkedList<SyntacticTerm> implements
-        SyntacticTerm {
+SyntacticTerm {
 
     /** Constructs an empty term list with no rank information. */
     public SyntacticTermList() {

@@ -135,8 +135,8 @@ public class CustomizeDocumentationAction extends FigureAction {
 
                     if (docAttributeList.size() == 0) {
                         docApplicationSpecializer
-                                .handleDocumentationAttributeDoesNotExist(
-                                        getFrame(), target);
+                        .handleDocumentationAttributeDoesNotExist(
+                                getFrame(), target);
 
                     } else { //edit the existing attribute
                         final Attribute docAttribute = (Attribute) docAttributeList
@@ -154,12 +154,12 @@ public class CustomizeDocumentationAction extends FigureAction {
                     }
                 } catch (Throwable throwable) {
                     System.out
-                            .println("Failed to call doc application specializer "
-                                    + "class \""
-                                    + docApplicationSpecializerClassName
-                                    + "\" on class \""
-                                    + docApplicationSpecializerClassName
-                                    + "\".");
+                    .println("Failed to call doc application specializer "
+                            + "class \""
+                            + docApplicationSpecializerClassName
+                            + "\" on class \""
+                            + docApplicationSpecializerClassName
+                            + "\".");
                 }
                 done = true;
             }

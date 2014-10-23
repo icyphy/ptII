@@ -138,7 +138,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         _bindToContainer(container);
     }

@@ -118,7 +118,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * stopTime parameter.
      */
     public DDEDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -136,7 +136,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * stopTime parameter.
      */
     public DDEDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;

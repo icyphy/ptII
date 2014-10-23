@@ -63,7 +63,7 @@ public class ApplyBinaryFunctionToMultipleArguments extends ConceptFunction {
      */
     public ApplyBinaryFunctionToMultipleArguments(String name,
             Ontology inputOutputOntology, ConceptFunction binaryFunction)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(name, false, new LinkedList<Ontology>(), inputOutputOntology);
 
         if (!binaryFunction.isNumberOfArgumentsFixed()

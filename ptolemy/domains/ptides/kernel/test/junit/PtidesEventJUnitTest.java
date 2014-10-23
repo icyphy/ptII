@@ -60,6 +60,6 @@ public class PtidesEventJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
+        .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
     }
 }

@@ -330,7 +330,7 @@ public class ClientProcess extends Thread {
 
                     stdAre.setEditable(false);
                     stdScrPan
-                            .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     stdFra.add(stdScrPan);
                     stdFra.setVisible(true);
                 }

@@ -358,7 +358,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 && index <= getIndex()) {
             if (!(actor instanceof CompositeActor)
                     || ((CompositeActor) actor).getDirector()
-                            .scheduleContainedActors()) {
+                    .scheduleContainedActors()) {
                 newIndex = Math.max(getIndex(), index) + 1;
             }
         }
@@ -739,7 +739,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             for (PtidesEvent event : _outputEventQueue.get(set.first())) {
                 if (event.ioPort() instanceof MetroIIPtidesPort
                         && ((MetroIIPtidesPort) event.ioPort())
-                                .isActuatorPort()
+                        .isActuatorPort()
                         && getEnvironmentTime().compareTo(event.timeStamp()) > 0) {
                     //                    System.out.println("Warning: Missed Deadline at "
                     //                            + event.ioPort() + "!");
@@ -749,7 +749,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     handleModelError(event.ioPort(),
                             new IllegalActionException(event.ioPort(),
                                     "Missed Deadline at " + event.ioPort()
-                                            + "!"));
+                                    + "!"));
                 }
             }
             _setNextFireTime(set.first());
@@ -887,8 +887,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj) actor).getName(), " port " + ioPort
-                            + " time = " + getModelTime() + " microstep = "
-                            + _microstep + " depth = " + depth);
+                    + " time = " + getModelTime() + " microstep = "
+                    + _microstep + " depth = " + depth);
         }
 
         // Register this trigger event.
@@ -932,7 +932,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             } else if (((MetroIIPtidesPort) ioPort).isNetworkTransmitterPort()) {
                 if (localClock.getLocalTime().subtract(getModelTime())
                         .getDoubleValue() > _getDoubleParameterValue(ioPort,
-                        "platformDelayBound")) {
+                                "platformDelayBound")) {
                     newEvent = _handleTimingError(
                             (MetroIIPtidesPort) ioPort,
                             newEvent,
@@ -985,7 +985,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         .outputPortList().get(i)).sinkPortList().get(j));
                 if (newRelativeDeadline < Double.MAX_VALUE
                         && newRelativeDeadline < relativeDeadline
-                                .getDoubleValue()) {
+                        .getDoubleValue()) {
                     relativeDeadline = new Time(this, newRelativeDeadline);
                 }
             }
@@ -1218,15 +1218,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             _setDelayOffset(
                     port,
                     delayOffset
-                            - ((DoubleToken) clockSynchronizationErrorBound
-                                    .getToken()).doubleValue());
+                    - ((DoubleToken) clockSynchronizationErrorBound
+                            .getToken()).doubleValue());
         }
 
         // Calculate delayOffset to each actor
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
             if (entity instanceof TimeDelay
                     && ((TimeDelay) entity).delay.getPort()
-                            .isOutsideConnected()) {
+                    .isOutsideConnected()) {
                 _setDelayOffset((NamedObj) entity,
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
@@ -1456,7 +1456,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                             .timeValue()
                             + "("
                             + _getSuperdenseDependencyPair(srcPort, destPort)
-                                    .indexValue() + ")\t");
+                            .indexValue() + ")\t");
                 }
                 _debug(buf.toString());
             }
@@ -1502,7 +1502,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                             if (eventInQueue.receiver() instanceof MetroIIPtidesReceiver) {
                                 ((MetroIIPtidesReceiver) eventInQueue
                                         .receiver()).putToReceiver(eventInQueue
-                                        .token());
+                                                .token());
                             }
                         }
                     }
@@ -1520,19 +1520,19 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     if (sameTagEvent.receiver() != null) {
                         if (sameTagEvent.receiver() instanceof MetroIIPtidesReceiver) {
                             ((MetroIIPtidesReceiver) sameTagEvent.receiver())
-                                    .remove(sameTagEvent.token());
+                            .remove(sameTagEvent.token());
                         }
                     }
                 }
 
                 if (prefire
                         && (!_aspectsPresent || queue != _pureEvents
-                                && ptidesEvent.actor() instanceof TimeDelay || _schedule(
-                                    (NamedObj) ptidesEvent.actor(),
-                                    ptidesEvent.timeStamp()))) {
+                        && ptidesEvent.actor() instanceof TimeDelay || _schedule(
+                                (NamedObj) ptidesEvent.actor(),
+                                ptidesEvent.timeStamp()))) {
                     if (!(ptidesEvent.actor() instanceof CompositeActor)
                             || ((CompositeActor) ptidesEvent.actor())
-                                    .getDirector().scheduleContainedActors()) {
+                            .getDirector().scheduleContainedActors()) {
                         _currentLogicalTime = ptidesEvent.timeStamp();
                         _currentLogicalIndex = ptidesEvent.microstep();
                         _currentSourceTimestamp = ptidesEvent.sourceTimestamp();

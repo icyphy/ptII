@@ -107,7 +107,7 @@ public class AccessorOne extends JavaScript {
      */
     @Override
     protected void _addPort(TypedIOPort port) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super._addPort(port);
         SingletonParameter showName = new SingletonParameter(port, "_showName");
         showName.setExpression("true");

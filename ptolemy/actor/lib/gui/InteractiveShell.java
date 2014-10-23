@@ -100,7 +100,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 public class InteractiveShell extends TypedAtomicActor implements Placeable,
-        ShellInterpreter, UsesInvokeAndWait {
+ShellInterpreter, UsesInvokeAndWait {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -123,7 +123,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         prompt = new PortParameter(this, "prompt");
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(prompt.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
@@ -333,8 +333,8 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
                     if (containerEffigy == null) {
                         MessageHandler
-                                .error("Cannot find effigy for top level: "
-                                        + toplevel().getFullName());
+                        .error("Cannot find effigy for top level: "
+                                + toplevel().getFullName());
                         return;
                     }
 
@@ -359,7 +359,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                         MessageHandler.error(
                                 "Error creating effigy and tableau "
                                         + InteractiveShell.this.getFullName(),
-                                ex);
+                                        ex);
                         return;
                     }
 
@@ -506,7 +506,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {

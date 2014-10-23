@@ -258,9 +258,9 @@ public class CompositeActorSimpleApplication {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION
-                            + ", Build $Id$");
+            .println("Version "
+                    + VersionAttribute.CURRENT_VERSION
+                    + ", Build $Id$");
 
             // quit the program if the user asked for the version
             // Don't call System.exit(0) here, it will break the test suites

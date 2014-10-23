@@ -195,7 +195,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
                         if (port == null) {
                             throw new IllegalActionException(this,
                                     "Could not find a port named '" + portName
-                                            + "';");
+                                    + "';");
                         }
 
                         field.set(newEntity, port);
@@ -412,7 +412,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *   with the specified name.
      */
     public Port newPort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -547,7 +547,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *   name already in the entity.
      */
     protected void _addPort(T port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _portList.append(port);
     }
 
@@ -715,7 +715,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  ConcurrentModificationException.
      */
     protected class ContainedObjectsIterator extends
-            NamedObj.ContainedObjectsIterator {
+    NamedObj.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for Entities are attributes and then ports.
          */

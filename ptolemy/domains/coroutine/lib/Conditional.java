@@ -110,7 +110,7 @@ public class Conditional extends AtomicContinuationActor {
     ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         addExitLocation(trueExit);
         addExitLocation(falseExit);

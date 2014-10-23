@@ -67,7 +67,7 @@ public class CoroutineDirector extends Director implements Continuation {
 
     ///////////////////////////////////////////////////////////////////
     public CoroutineDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -84,7 +84,7 @@ public class CoroutineDirector extends Director implements Continuation {
     }
 
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         initContinuationName = new Parameter(this, "initContinuationName");
         initContinuationName.setStringMode(true);
 
@@ -538,7 +538,7 @@ public class CoroutineDirector extends Director implements Continuation {
     @Override
     public ControlExitToken controlEnterAt(
             ControlEntryToken.EntryLocation location)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }

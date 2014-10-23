@@ -143,7 +143,7 @@ public class TokenListener implements MqttSimpleCallback {
                 _LOGGER.info("Received pong token");
             } else if (token instanceof RemoteEventToken) {
                 _proxyModelInfrastructure
-                        .fireServerEvent((RemoteEventToken) token);
+                .fireServerEvent((RemoteEventToken) token);
             }
         }
     }

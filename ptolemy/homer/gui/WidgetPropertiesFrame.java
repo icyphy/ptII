@@ -179,17 +179,17 @@ public class WidgetPropertiesFrame extends JPanel {
         try {
             Point position = new Point(
                     ((SpinnerNumberModel) _xSpinner.getModel()).getNumber()
-                            .intValue(),
+                    .intValue(),
                     ((SpinnerNumberModel) _ySpinner.getModel()).getNumber()
-                            .intValue());
+                    .intValue());
             position.translate(-_widget.getPreferredLocation().x,
                     -_widget.getPreferredLocation().y);
 
             Dimension size = new Dimension(
                     ((SpinnerNumberModel) _widthSpinner.getModel()).getNumber()
-                            .intValue(),
+                    .intValue(),
                     ((SpinnerNumberModel) _heightSpinner.getModel())
-                            .getNumber().intValue());
+                    .getNumber().intValue());
 
             bounds = new Rectangle(position, size);
         } catch (NumberFormatException e) {

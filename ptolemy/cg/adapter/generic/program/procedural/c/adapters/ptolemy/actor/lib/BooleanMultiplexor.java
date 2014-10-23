@@ -38,8 +38,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 @since Ptolemy II 10.0
  */
 public class BooleanMultiplexor
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.BooleanMultiplexor {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.BooleanMultiplexor {
     /**
      *  Construct a BooleanMultiplexor adapter.
      *  @param actor The given ptolemy.actor.lib.BooleanMultiplexor actor.

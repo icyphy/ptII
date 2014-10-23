@@ -205,13 +205,13 @@ public class NameIcon extends EditorIcon {
             if (_roundingValue == 0.0) {
                 result = new CompositeFigure(new BasicRectangle(-_spacingValue,
                         -_spacingValue, width + 2 * _spacingValue, height + 2
-                                * _spacingValue, null, _getLineWidth()));
+                        * _spacingValue, null, _getLineWidth()));
                 result.add(new BasicRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth()));
             } else {
                 result = new CompositeFigure(new RoundedRectangle(
                         -_spacingValue, -_spacingValue, width + 2
-                                * _spacingValue, height + 2 * _spacingValue,
+                        * _spacingValue, height + 2 * _spacingValue,
                         null, _getLineWidth(), _roundingValue + _spacingValue,
                         _roundingValue + _spacingValue));
                 result.add(new RoundedRectangle(0, 0, width, height,
@@ -268,7 +268,7 @@ public class NameIcon extends EditorIcon {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container && previousContainer != null) {
             SingletonParameter hide = (SingletonParameter) previousContainer

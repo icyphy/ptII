@@ -84,7 +84,7 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
     @Override
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         Vector<Actor> result = null;
 
         _createGraph(independentList);

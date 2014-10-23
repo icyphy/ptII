@@ -66,7 +66,7 @@ public class ExecutionRequestPort extends CommunicationRequestPort {
         super(container, name);
 
         RecordType type = new RecordType(new String[] { "actor",
-                "executionTime" }, new Type[] { BaseType.OBJECT,
+        "executionTime" }, new Type[] { BaseType.OBJECT,
                 BaseType.DOUBLE });
         value.setTypeEquals(type);
     }

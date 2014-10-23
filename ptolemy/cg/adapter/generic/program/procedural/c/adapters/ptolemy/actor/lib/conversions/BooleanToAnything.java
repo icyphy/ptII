@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.AcceptedRating Red (rodiers)
  */
 public class BooleanToAnything
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.BooleanToAnything {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.BooleanToAnything {
     /**
      *  Construct a BooleanToAnything adapter.
      *  @param actor The given ptolemy.actor.lib.BooleanToAnything actor.

@@ -168,7 +168,7 @@ public class PTDBGenericAttribute {
             return _className.equals(genericAttribute.getClassName())
                     && _attributeName.equals(genericAttribute
                             .getAttributeName())
-                    && _values.equals(genericAttribute.getValues());
+                            && _values.equals(genericAttribute.getValues());
         }
 
         if (_className == null && _attributeName == null) {
@@ -194,7 +194,7 @@ public class PTDBGenericAttribute {
             return genericAttribute.getClassName() == null
                     && _attributeName.equals(genericAttribute
                             .getAttributeName())
-                    && _values.equals(genericAttribute.getValues());
+                            && _values.equals(genericAttribute.getValues());
         }
 
         if (_attributeName == null) {

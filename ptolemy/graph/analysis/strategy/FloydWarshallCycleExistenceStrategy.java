@@ -45,7 +45,7 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
  @version $Id$
  */
 public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
-        implements CycleExistenceAnalyzer {
+implements CycleExistenceAnalyzer {
     /** Construct an instance of this analyzer for a given graph.
      *
      *  @param graph The given graph.

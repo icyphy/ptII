@@ -174,7 +174,7 @@ public class TextEffigy extends Effigy {
                     } catch (Exception ex) {
                         IOException exception = new IOException(
                                 "Failed to open '" + in + "\", base: \"" + base
-                                        + "\"");
+                                + "\"");
                         exception.initCause(ex);
                         throw exception;
                     }
@@ -348,7 +348,7 @@ public class TextEffigy extends Effigy {
 
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
-                                URL.class });
+                        URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {

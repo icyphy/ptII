@@ -193,7 +193,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
     @Override
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Get the distance and set the "distance" variable.
         WirelessIOPort destination = (WirelessIOPort) receiver.getContainer();
         double d = _distanceBetween(sender, destination);

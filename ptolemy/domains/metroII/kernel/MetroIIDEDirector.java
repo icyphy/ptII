@@ -504,10 +504,10 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                         || next.microstep() < _microstep) {
                     throw new IllegalActionException(
                             "The tag of the next event (" + next.timeStamp()
-                                    + "." + next.microstep()
-                                    + ") can not be less than"
-                                    + " the current tag (" + getModelTime()
-                                    + "." + _microstep + ") !");
+                            + "." + next.microstep()
+                            + ") can not be less than"
+                            + " the current tag (" + getModelTime()
+                            + "." + _microstep + ") !");
                 } else {
                     // The next event has the same tag as the current tag,
                     // indicating that at least one actor is going to be
@@ -792,7 +792,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                 break;
                 // return;
             } // else if 0, keep executing
-              //if (!actorList.contains(actorAndState.first)) {
+            //if (!actorList.contains(actorAndState.first)) {
             if (actorAndState.getFirst() != null) {
                 // System.out.println(_eventQueue);
                 Actor actor = actorAndState.getFirst();
@@ -895,7 +895,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("false");

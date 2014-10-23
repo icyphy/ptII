@@ -654,7 +654,7 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void initialize() throws KernelException,
-            IllegalActionException {
+    IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -763,8 +763,8 @@ public class Manager extends NamedObj implements Runnable {
             if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                 setStatusMessage(timeAndMemory(startTime));
                 System.out
-                        .println("Manager.iterate(): preinitialize() finished: "
-                                + getStatusMessage());
+                .println("Manager.iterate(): preinitialize() finished: "
+                        + getStatusMessage());
             }
 
             if (!_typesResolved) {
@@ -881,9 +881,9 @@ public class Manager extends NamedObj implements Runnable {
                         // Set the new state to show that execution is paused
                         // on a breakpoint.
                         PAUSED_ON_BREAKPOINT
-                                .setDescription("pausing on breakpoint: "
-                                        + breakpointMessage
-                                        + ".  Click Resume to continue.");
+                        .setDescription("pausing on breakpoint: "
+                                + breakpointMessage
+                                + ".  Click Resume to continue.");
                         _setState(PAUSED_ON_BREAKPOINT);
 
                         _resumeNotifyWaiting = true;
@@ -1117,14 +1117,15 @@ public class Manager extends NamedObj implements Runnable {
         // OK, then we need to initialize this actor.  However, we
         // don't need to initialize any actors contained by this
         // actor.
-            if (actor instanceof CompositeEntity) {
-                    List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
-                    for (Actor otherActor : list) {
-                            if (((CompositeEntity)actor).deepContains((NamedObj)otherActor)) {
-                                _actorsToInitialize.remove(otherActor);
-                            }
-                    }
+        if (actor instanceof CompositeEntity) {
+            List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
+            for (Actor otherActor : list) {
+                if (((CompositeEntity) actor)
+                        .deepContains((NamedObj) otherActor)) {
+                    _actorsToInitialize.remove(otherActor);
+                }
             }
+        }
 
         // Lastly, add this actor to the actors to initialize.
         _actorsToInitialize.add(actor);
@@ -1567,25 +1568,27 @@ public class Manager extends NamedObj implements Runnable {
     protected void _registerShutdownHook() {
         try {
             Runtime.getRuntime().addShutdownHook(new Thread() {
-                    @Override
-                    public void run() {
-                        if (_state != IDLE) {
-                            System.out.println("# Manager._registerShutdownHook(): State is " + _state
-                                    + ", which is not IDLE.  Waiting for model to stop.");
-                        }
-                        finish();
-                        if (_thread != null && _thread.isAlive()) {
-                            try {
-                                // This seems dangerous. Could prevent the process
-                                // from dying. We use a timeout here of 30 seconds.
-                                _thread.join(SHUTDOWN_TIME);
-                            } catch (InterruptedException e) {
-                                // Failed to stop the thread.
-                                e.printStackTrace();
-                            }
+                @Override
+                public void run() {
+                    if (_state != IDLE) {
+                        System.out
+                                .println("# Manager._registerShutdownHook(): State is "
+                                        + _state
+                                        + ", which is not IDLE.  Waiting for model to stop.");
+                    }
+                    finish();
+                    if (_thread != null && _thread.isAlive()) {
+                        try {
+                            // This seems dangerous. Could prevent the process
+                            // from dying. We use a timeout here of 30 seconds.
+                            _thread.join(SHUTDOWN_TIME);
+                        } catch (InterruptedException e) {
+                            // Failed to stop the thread.
+                            e.printStackTrace();
                         }
                     }
-                });
+                }
+            });
         } catch (java.security.AccessControlException ex) {
             // This exception gets triggered by
             // http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/vergil/Vergil.htm
@@ -1755,8 +1758,8 @@ public class Manager extends NamedObj implements Runnable {
 
                 if (_executionListeners == null) {
                     System.err
-                            .println("No executionListeners? Error message was: "
-                                    + errorMessage);
+                    .println("No executionListeners? Error message was: "
+                            + errorMessage);
                     _throwable.printStackTrace();
                 } else {
 

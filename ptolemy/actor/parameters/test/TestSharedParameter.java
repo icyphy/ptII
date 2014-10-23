@@ -102,7 +102,7 @@ public class TestSharedParameter extends SharedParameter {
      */
     public TestSharedParameter(NamedObj container, String name,
             Class containerClass, String defaultValue)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, defaultValue);
     }
 

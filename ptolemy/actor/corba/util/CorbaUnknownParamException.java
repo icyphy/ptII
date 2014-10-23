@@ -8,7 +8,7 @@ package ptolemy.actor.corba.util;
  */
 @SuppressWarnings("serial")
 public final class CorbaUnknownParamException extends
-        org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
+org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
     public String paramName = null;
 
     public String message = null;

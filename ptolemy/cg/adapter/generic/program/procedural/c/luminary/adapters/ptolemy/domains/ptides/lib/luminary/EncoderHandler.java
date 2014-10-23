@@ -51,7 +51,7 @@ public class EncoderHandler extends GPInputHandler {
      */
     public EncoderHandler(
             ptolemy.domains.ptides.lib.luminary.EncoderHandler actor)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
 }

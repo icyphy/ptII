@@ -82,7 +82,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         for (OntologyAdapter adapter : _getSubAdapters()) {
 
             ((LatticeOntologyAdapter) adapter)
-                    ._addDefaultConstraints(actorConstraintType);
+            ._addDefaultConstraints(actorConstraintType);
         }
     }
 

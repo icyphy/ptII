@@ -80,7 +80,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             if (nodeToken != null) {
                 setAtLeast(node,
                         _constantRepresentative
-                                .getFlatTokenInfiniteConceptByToken(nodeToken));
+                        .getFlatTokenInfiniteConceptByToken(nodeToken));
             } else {
                 throw new IllegalActionException("A constant expression "
                         + "leaf node should not have a null token value.");

@@ -110,7 +110,7 @@ public class GRColorChanges extends MoMLFilterSimple {
                     && elementName.equals("property")
                     && container.getName().equals("diffuseColor")
                     && ((Settable) container).getExpression().trim()
-                            .startsWith("[")) {
+                    .startsWith("[")) {
                 // Found one in matrix format.
                 String value = ((Settable) container).getExpression().trim();
                 value = value.replace('[', '{');
@@ -127,7 +127,7 @@ public class GRColorChanges extends MoMLFilterSimple {
 
             if (actor != null
                     && actor.getClass().getName()
-                            .startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
+                    .startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -145,7 +145,7 @@ public class GRColorChanges extends MoMLFilterSimple {
 
             if (actor != null
                     && actor.getClass().getName()
-                            .equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
+                    .equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -163,7 +163,7 @@ public class GRColorChanges extends MoMLFilterSimple {
 
             if (actor != null
                     && actor.getClass().getName()
-                            .equals("ptolemy.domains.gr.lib.CircularSweep3D")) {
+                    .equals("ptolemy.domains.gr.lib.CircularSweep3D")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -196,20 +196,20 @@ public class GRColorChanges extends MoMLFilterSimple {
     static {
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Box3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.CircularSweep3D");
+        .add("ptolemy.domains.gr.lib.CircularSweep3D");
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Cone3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.Cylinder3D");
+        .add("ptolemy.domains.gr.lib.Cylinder3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.Loader3D");
+        .add("ptolemy.domains.gr.lib.Loader3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.PolyCylinder3D");
+        .add("ptolemy.domains.gr.lib.PolyCylinder3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.Sphere3D");
+        .add("ptolemy.domains.gr.lib.Sphere3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.TextString3D");
+        .add("ptolemy.domains.gr.lib.TextString3D");
         GRColorChanges._actorsWithRGBColor
-                .add("ptolemy.domains.gr.lib.Torus3D");
+        .add("ptolemy.domains.gr.lib.Torus3D");
     }
 
     /** Flag indicating that we found one whose name needed changing. */

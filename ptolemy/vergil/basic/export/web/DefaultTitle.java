@@ -68,7 +68,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
 
         _icon.setIconText("T");
         displayText
-                .setExpression("Default title to give to icons in the model.");
+        .setExpression("Default title to give to icons in the model.");
 
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("true");

@@ -113,7 +113,7 @@ public class Triangulator extends TypedAtomicActor {
 
         TypeAttribute inputType = new TypeAttribute(input, "type");
         inputType
-                .setExpression("{location = arrayType(double,2), time = double}");
+        .setExpression("{location = arrayType(double,2), time = double}");
 
         output = new TypedIOPort(this, "output", false, true);
 
@@ -407,10 +407,10 @@ public class Triangulator extends TypedAtomicActor {
         double[] b = { 2 * v2 * (t2 - t1), 2 * v2 * (t3 - t1) };
         double[] c = {
                 t1 * t1 * v2 - t2 * t2 * v2 + x2 * x2 - x1 * x1 + y2 * y2 - y1
-                        * y1,
+                * y1,
 
                 t1 * t1 * v2 - t3 * t3 * v2 + x3 * x3 - x1 * x1 + y3 * y3 - y1
-                        * y1 };
+                * y1 };
 
         // FIXME: what if det_m is 0? That is, the three sensors are located on
         // a straight line.
