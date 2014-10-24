@@ -274,6 +274,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[312.5, -245.0]">
         </property>
     </property>
+    <property name="Annotation19" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires a password to a server, so it is not likely to run for most users.&#10; ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-565.0, -215.0]">
+        </property>
+    </property>
     <port name="init" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
