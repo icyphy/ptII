@@ -1,0 +1,123 @@
+<HTML>
+<HEAD>
+<title>The Distributed-SDF Domain Sleep Demo</title
+</HEAD>
+<BODY>
+
+<H1>The Distributed-SDF Domain Sleep Demo</H1>
+
+The Sleep Demo illustrates the usage and advantages of the
+Distributed-SDF domain.
+
+<p> The model is an standard SDF Model with a Distributed-SDF
+Director. Any non hierarchical SDF model can be simulated in a
+distributed manner unless the actors have external dependencies.
+
+<p>
+<B>(Note that models that use actors that have GUI dependencies might
+generate errors!)</B>
+
+<p>
+So try your own SDF models, you just change the standard SDF director
+by the Distributed-SDF Director.
+
+<p> By configuring the Distributed-SDF Director, we can choose to run
+the model either sequential or parallel (default).
+Make sure that the distributed platform is running before you start a
+distributed simulation. To do this we provide a script under:
+
+<dl>
+<dt><B>Windows:</B>
+<dd><code>$PTII/ptolemy/distributed/demo/Sleep/startplatform.bat</code>
+<dt><B>Cygwin,Unix,Linux:</B>
+<dd><code>$PTII/ptolemy/distributed/demo/Sleep/startplatform</code>
+</dl>
+
+This script starts the following services:
+<UL>
+<LI>Http daemon (on port 8080)
+<LI>Reggie (a registration/lookup service using JINI)
+<LI>5 DistributedSeverRMIGeneric servers (one for each actor in this
+particular demo.)
+</UL>
+
+If you run the DOS batch file you will get 6 command windows, the
+first for the first 2 services and the remaining 5 one for each
+server. This allows you to follow each server individually.
+
+<p>
+
+We provide 3 more scripts under <I>$PTII/ptolemy/distributed/jini</I>:
+<dl>
+
+<dt><code>startjinilocal</code> and <code>startjinilocal.bat</code>
+<dd>launches a local http server (daemon) and the reggie service
+(registration and lookup service).
+
+<dt><code>startserver</code> and <code>startserver.bat</code>
+<dd>launches a starts a DistributedServerRMIGeneric server.
+<dt><code>starttservers</code> and <code>starservers.bat</code>
+
+<dd>launches a given number of DistributedServerRMIGeneric servers
+depending on the parameter. (e.g. <code>startservers 5</code>
+launches 5 servers).
+
+</dl>
+
+In order to illustrate the distributed simulation advantages to users
+that have only access to a single machine this demo uses Sleep
+actors. For every fire of the Sleep actors, they will stall for 5
+seconds.  In a sequential simulation this means that a 10 seconds
+stall is performed since the Sleep actors are executed one after the
+other. In the case of parallel simulation, those two actors can stall
+at the same time, reducing this time to 5 seconds for both.
+
+<p>On the standard output for the model, you can check the execution time
+for the simulation. Try to run both a sequential an a parallel
+simulation and compare the times.
+
+<p><B>(Note that the more iterations and the bigger the sleep times, the
+more advantage you will get from using the distributed platform.)</B>
+
+<p>For a more realistic demo, please run the individual servers on
+different machines.
+
+<p><B>(Note that if your network blocks broadcast packets you might
+need to configure unicast locators.)</B>
+
+<p>Look at the documentation of the Distributed-SDF Director in
+particular and the classes and configuration files under
+ptolemy.distributed for further information.
+
+<p> You can also contact the author for further questions on
+kapokasa@kom.aau.dk.
+
+<h2>Problems</h2>
+If, under Eclipse, you have security problems,then 
+in Eclipse, go to Run -&gt; Open Run Dialog -&gt;
+In the "Arguments" tab, enter the following line <b>including the double
+quotes</b>.
+<pre>
+"-Djava.security.policy=${workspace_loc:ptII/bin/policy.all}"
+</pre>
+
+<p>Last updated: $Id: Sleep.htm 56598 2009-12-11 09:22:17Z cxh $
+</BODY>
+</HTML>
+<!-- PT DEPLOYJAVA CONVERTER -->
+<p>
+Sleep is available as:
+<ul>
+<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+<script src="../../../../doc/deployJava.js"></script>
+<script >
+    var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+    var url = dir + "Sleep.jnlp";
+    deployJava.createWebStartLaunchButton(url);
+</script>
+ <li>An <a href="SleepVergil.htm">applet</a>.
+</ul>  
+<script>
+
+deployJava.displayWebStartMessage("../../../../"); </script>
+<!-- /PT DEPLOYJAVA CONVERTER -->
