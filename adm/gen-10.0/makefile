@@ -3247,6 +3247,10 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 clean_ptrelease_scpDemos.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
+# Location of the ptolemy/ptplot directory in the ptII tree on the website
+PTII_FTP_PTPLOT = $(PTII_FTP)/ptII$(VERSION)/ptolemy/plot
+PTII_FTP_PTPLOT_MASTER = /home/www/ptweb/java/ptplot5.10.$(MINOR_VERSION)/ptolemy/plot
+
 dists.out: $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 $(PTBUILDRELEASE)/ptolemy/plot/dists.out:
 	@echo "#"
@@ -3255,6 +3259,12 @@ $(PTBUILDRELEASE)/ptolemy/plot/dists.out:
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/plot; rm -rf adm tmp; make dists >& dists.out && make update_ftp)
+	@echo "# Update links to distributions and the Java Version Applet."
+	ssh moog rm -f $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)/doc/download
+	ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)
+	ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)
+	ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/doc/download $(PTII_FTP_PTPLOT)/doc
+
 clean_ptrelease_dists.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 

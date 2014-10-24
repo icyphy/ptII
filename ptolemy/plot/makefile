@@ -598,7 +598,8 @@ fixtmpdist:
 	# Setting up doc/codeDoc directory
 	#
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
-	cd $(PTTMPDIR)/$(PTDIST); \
+	# Javadoc 1.8 returns a non-zero value for minor reasons.
+	-cd $(PTTMPDIR)/$(PTDIST); \
 	CLASSPATH=. "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
 		com.microstar.xml \
 		ptolemy.gui \
