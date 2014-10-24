@@ -100,6 +100,16 @@ run: $(NODE_MODULES) $(EP_LIBRARY) $(GDP_LIBRARY)
 	@echo "# Compare the above results with a run of reader-test:"
 	../src/gdp/apps/reader-test xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA 2>&1 | tail
 
+
+runWriterTest: $(NODE_MODULES) $(EP_LIBRARY) $(GDP_LIBRARY)
+	@echo "# This test reads the last item in the gcl, so we prime the gcl."
+	cp gcl/* /var/tmp/gcl
+	@echo "# Make sure that ../src/gdp/gdpd/gdpd & is running in the background."
+	@echo "# Now we invoke the node binary on our .js file:"
+	$(NODE) writerTest.js
+	@echo "# Compare the above results with a run of reader-test:"
+	../src/gdp/apps/reader-test xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA 2>&1 | tail
+
 node_modules/ffi:
 	npm install ffi
 node_modules/ref:
@@ -111,6 +121,10 @@ $(EP_LIBRARY) $(GDP_LIBRARY):
 	@echo "$@ does not exist?  Perhaps the gdp is not installed?"
 	@echo "See the org/terraswarm/gdp/js/README.txt file"
 	$@
+
+lib:
+	$(CC) -g -Wall -O  -I../src/gdp/ -fPIC   -c  epStatUtilities.c
+	$(CC) -shared -o libepStatUtilities.dylib epStatUtilities.o
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
