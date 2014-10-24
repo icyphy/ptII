@@ -49,9 +49,7 @@ DOMAINS =	algebraic ca ci continuous \
 		coroutine \
 		csp curriculum \
 	        dde ddf de hdf modal pn sdf dt giotto \
-		$(PTMETROII_DIR) \
 		ontologies \
-		openmodelica \
 		petrinet rendezvous sysml \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos \
 		scr $(PTSPACE_DIR) \
