@@ -6489,6 +6489,7 @@
          destfile="${basedir}/ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/CruiseControl/*.ptln"/>
         <include name="ptolemy/actor/ptalon/demo/CruiseControl/*.xml"/>
        </fileset>
     </jar>
@@ -6497,6 +6498,7 @@
          destfile="${basedir}/ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/EightChannelFFT/*.ptln"/>
         <include name="ptolemy/actor/ptalon/demo/EightChannelFFT/*.xml"/>
        </fileset>
     </jar>
@@ -6505,6 +6507,7 @@
          destfile="${basedir}/ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/GameOfLife/*.ptln"/>
         <include name="ptolemy/actor/ptalon/demo/GameOfLife/*.xml"/>
        </fileset>
     </jar>
@@ -6513,6 +6516,8 @@
          destfile="${basedir}/ptolemy/actor/ptalon/demo/MapReduce/MapReduce.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/MapReduce/*.map"/>
+        <include name="ptolemy/actor/ptalon/demo/MapReduce/*.ptln"/>
         <include name="ptolemy/actor/ptalon/demo/MapReduce/*.xml"/>
        </fileset>
     </jar>
@@ -6521,6 +6526,7 @@
          destfile="${basedir}/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/SmallWorld/*.ptln"/>
         <include name="ptolemy/actor/ptalon/demo/SmallWorld/*.xml"/>
        </fileset>
     </jar>
@@ -6529,6 +6535,7 @@
          destfile="${basedir}/ptolemy/actor/ptalon/demo/Unicycle/Unicycle.jar"
          >
        <fileset dir="${basedir}">
+        <include name="ptolemy/actor/ptalon/demo/Unicycle/*.ptln"/>
         <include name="ptolemy/actor/ptalon/demo/Unicycle/*.xml"/>
        </fileset>
     </jar>
