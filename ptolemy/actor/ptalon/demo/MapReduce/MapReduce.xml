@@ -73,7 +73,7 @@
                 <ptalonParameter name="map" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Map"/>
                 <ptalonParameter name="reduce" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Reduce"/>
                 <ptalonParameter name="stop" value="ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.WaitingStop"/>
-                <ptalonExpressionParameter name="fileNamePrefix" value="&quot;ReadTest&quot;"/>
+                <ptalonExpressionParameter name="fileNamePrefix" value="&quot;$CLASSPATH/ptolemy/actor/ptalon/demo/MapReduce/ReadTest&quot;"/>
                 <ptalonExpressionParameter name="className" value="&quot;ptolemy.actor.ptalon.lib.WordCount&quot;"/>
                 <ptalonExpressionParameter name="numberOfMachines" value="5"/>
             </ptalon>
