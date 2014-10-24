@@ -467,12 +467,11 @@
 
   <p>To make a branch for 10.0.beta, use the following command:
     <pre>
-      svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 -m "Creating Ptolemy II 10.0.beta branch"
+      svn copy https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta -m "Creating Ptolemy II 10.0.beta branch."
     </pre>
     Then check out the release branch  with
     <pre>
-      svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
-
+      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta ptII10.0.beta
     </pre>
     <i>Note that you should avoid dots in the tag name</i>
     <li> Update the version numbers, see
@@ -493,7 +492,7 @@
     <li> We build a separate src.tar.gz file under Unix so that the line
       endings are correct. 
       <pre>
-	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
+        svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta ptII10.0.beta
 	cd ptII10.0.beta
 	export PTII=`pwd`
 	export JAVA_HOME=/usr/lib/jvm/java-1.6.0
@@ -530,7 +529,7 @@
 
     <li> We build the webstart jar files under Windows
       <pre>
-	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-10-0-beta-2 ptII10.0.beta
+      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta ptII10.0.beta
 	cd ptII10.0.beta
 	export PTII=c:/tmp/cxh/ptII10.0.beta
       </pre>
