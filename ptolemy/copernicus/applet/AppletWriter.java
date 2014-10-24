@@ -733,6 +733,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             Map<String, String> attributeMap = new HashMap<String, String>();
+            attributeMap.put("ptolemy.cg", "ptolemy/cg/cg.jar");
             attributeMap.put("ptolemy.codegen", "ptolemy/codegen/codegen.jar");
             attributeMap.put("ptolemy.data.ontologies",
                     "ptolemy/data/ontologies/ontologies.jar");
@@ -886,6 +887,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             Map<String, String> atomicMap = new HashMap<String, String>();
             atomicMap.put("lbnl", "lbnl/lbnl.jar");
+            atomicMap.put("org.ptolemy.machineLearning.particleFilter", 
+                    "org/ptolemy/machineLearning/particleFilter/particleFilter.jar");
             atomicMap.put("ptolemy.backtrack",
                     "ptolemy/backtrack/backtrack.jar");
             atomicMap.put("ptolemy.actor.lib.aspect",
@@ -1726,6 +1729,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/domains/sdf/sdf.jar");
             auxiliaryClassMap.put("distributed sdf.jar needs client.jar",
                     "ptolemy/distributed/client/client.jar");
+            auxiliaryClassMap.put("distributed sdf.jar needs distributed.jar",
+                    "ptolemy/distributed/distributed.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(fmiJar)) {
@@ -1733,6 +1738,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "org/ptolemy/fmi/fmi.jar");
             auxiliaryClassMap.put("fmi needs lib/jna-4.0.0-variadic.jar",
                     "lib/jna-4.0.0-variadic.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/modal/kernel/fmv/fmv.jar")) {
+            auxiliaryClassMap.put("fmv needs the rest of modal",
+                    "ptolemy/domains/modal/modal.jar");
+            auxiliaryClassMap.put("fmv needs vergil/modal/fmv",
+                    "ptolemy/vergil/modal/fmv/fmv.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
