@@ -33,7 +33,7 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		bcvtb doc dsp full fullViewer hyvisual jxta test \
+DIRS =		bcvtb doc dsp full fullViewer hyvisual test \
 		pn ptdb ptiny ptinyKepler \
 		ptinyViewer ptserver \
 		space viptos visualsense
