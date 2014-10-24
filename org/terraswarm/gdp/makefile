@@ -149,38 +149,43 @@ jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
 	# Fix up some issues:
 	for file in *.java; do \
 	echo "Fixing $$file"; \
-	sed -e 's@NativeSize@NativeSizeT@g' \
-	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize@' \
-	    -e 's@\(import com.ochafik.lang.jnaerator.runtime.\)@// \1@' \
+	sed \
+	    -e 's@NativeSize\([^T]\)@NativeSizeT\1@g' \
+	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize.  Fixed in makefile@' \
+	    -e 's@\(import com.ochafik.lang.jnaerator.runtime.\)@// \1 // Commented out by cxh in makefile@' \
 	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.@' \
-	    -e 's@\(.*CharByReference.*\)@// \1@' \
-	    -e 's@\(public static final GlobalInt\)@// \1@' \
-	    -e 's@\(public static final GlobalPointerType\)@// \1@' \
-	    -e 's@\(public static final GlobalStruct\)@// \1@' \
-	    -e 's@\(public static final Pointer PTHREAD_CANCELED = (Pointer)-1;\)@// \1@' \
-	    -e 's@\(.*NativeSizeTByReference.*\)@// \1 // Commented out by makefile because NativeSizeTByReference is not in jna.@' \
-	    -e 's@\(.*time_tPtr1.*\)@// \1@' \
-	    -e 's@\(.*time_t1.*\)@// \1@' \
-	    -e 's@\(.*tmPtr1.*\)@// \1@' \
-	    -e 's#\(.*@Deprecated.*\)#// \1#' \
-	    -e 's@\(.*(Pointer)1.*\)@// \1@' \
-	    -e 's@public static final int EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);@public static final long /* Fixed by makefile, was int, Coverity warned about bad shift. */ EP_STAT_MAX_DETAIL = (long)((1 << 42) - 1);@' \
-	    -e 's@public static final int _EP_STAT_SEVSHIFT = (int)((10 + 8) + 11);@public static final int _EP_STAT_SEVSHIFT = (int)((42 + 8) + 11); // Fixed by makefile, see http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit@' \
+	    -e 's@\(public static final GlobalInt\)@// \1 // Fixed by cxh in makefile.@' \
 		$$file > /tmp/gdp.fix; \
 	mv /tmp/gdp.fix $$file; \
         done
 
+# This target contains old sed rules that were used at various points
+# oldSedRules:
+# 	    -e 's@\(.*CharByReference.*\)@// \1@' \
+# 	    -e 's@\(public static final GlobalPointerType\)@// \1@' \
+# 	    -e 's@\(public static final GlobalStruct\)@// \1@' \
+# 	    -e 's@\(public static final Pointer PTHREAD_CANCELED = (Pointer)-1;\)@// \1@' \
+# 	    -e 's@\(.*NativeSizeTByReference.*\)@// \1 // Commented out by makefile because NativeSizeTByReference is not in jna.@' \
+# 	    -e 's@\(.*time_tPtr1.*\)@// \1@' \
+# 	    -e 's@\(.*time_t1.*\)@// \1@' \
+# 	    -e 's@\(.*tmPtr1.*\)@// \1@' \
+# 	    -e 's#\(.*@Deprecated.*\)#// \1#' \
+# 	    -e 's@\(.*(Pointer)1.*\)@// \1@' \
+# 	    -e 's@public static final int EP_STAT_MAX_DETAIL = (int)((1 << 42) - 1);@public static final long /* Fixed by makefile, was int, Coverity warned about bad shift. */ EP_STAT_MAX_DETAIL = (long)((1 << 42) - 1);@' \
+# 	    -e 's@public static final int _EP_STAT_SEVSHIFT = (int)((10 + 8) + 11);@public static final int _EP_STAT_SEVSHIFT = (int)((42 + 8) + 11); // Fixed by makefile, see http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit@' \
+
+
 
 # Not needed, but we leave it here for now.
-fix_gdp_datum:
-	@echo "gdp_datum.java will need some edits because the JNAerator does not understand bitfields."
-	sed -e 's@abstract@/* abstract Fixed in makefile.*/@' \
-            -e 's@return Arrays.asList("mutex", "next", "recno", "ts", "dlen", "dbuf");@return Arrays.asList("mutex", "next", "inuse" /*Fixed in makefile.*/, "recno", "ts", "dlen", "dbuf");@' \
-	    -e 's@\(/\*\* Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) \*/\)@ \1 public byte inuse;@' \
-	    -e 's@mutex, gdp_datum.ByReference next, long recno@mutex, gdp_datum.ByReference next, byte inuse /*Fixed in makefile*/,long recno@' \
-	    -e 's@this.next = next;@this.next = next; this.inuse = inuse; /*Fixed in makefile. */@' \
-		gdp_datum.java > /tmp/gdp.fix
-	cp /tmp/gdp.fix gdp_datum.java
+# fix_gdp_datum:
+# 	@echo "gdp_datum.java will need some edits because the JNAerator does not understand bitfields."
+# 	sed -e 's@abstract@/* abstract Fixed in makefile.*/@' \
+#             -e 's@return Arrays.asList("mutex", "next", "recno", "ts", "dlen", "dbuf");@return Arrays.asList("mutex", "next", "inuse" /*Fixed in makefile.*/, "recno", "ts", "dlen", "dbuf");@' \
+# 	    -e 's@\(/\*\* Conversion Error : inuse:1 (This runtime does not support bit fields : JNA (please use BridJ instead)) \*/\)@ \1 public byte inuse;@' \
+# 	    -e 's@mutex, gdp_datum.ByReference next, long recno@mutex, gdp_datum.ByReference next, byte inuse /*Fixed in makefile*/,long recno@' \
+# 	    -e 's@this.next = next;@this.next = next; this.inuse = inuse; /*Fixed in makefile. */@' \
+# 		gdp_datum.java > /tmp/gdp.fix
+# 	cp /tmp/gdp.fix gdp_datum.java
 
 # libevent:
 # "The libevent API provides a mechanism to execute a callback function
@@ -196,6 +201,7 @@ $(LIBEVENT_SRC):
 	@if [ ! -d $(LIBEVENT_SRC) ]; then \
 		echo "Github is too stupid to handle wget, so you will need to go to http://libevent.org, download it and then run"; \
 		echo " cd src; tar -zxf ~/Downloads/$(LIBEVENT).tar.gz; cd .."; \
+		echo "Then rerun make."
 		exit 2; \
 	else \
 		echo "$(LIBEVENT_SRC) exists!"; \
@@ -210,7 +216,8 @@ gdp: $(GDP_SRC)
 $(GDP_SRC):
 	# You will need a password for this, ask Eric.
 	@if [ ! -d src ]; then mkdir src; echo "making the src/ directory."; fi
-	cd src; git clone https://$(USER)@repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git
+	cd src; git clone https://$(USER)@repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git; make
+	@echo "If the above fails, read src/gdp/README and install dependencies."
 
 #patch_gdp:
 #	@echo "Patching the gdp so that /usr/local/include is searched for event2 and so that .dylib is created."

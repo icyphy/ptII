@@ -70,7 +70,7 @@ public class GdpUtilities {
      *  @return true if the code is less than EP_STAT_SEV_WARN
      */
     public static boolean EP_STAT_ISOK(EP_STAT estat) {
-        long code = estat.code.longValue();
+        long code = (long)estat.code;
 
         // For a discussion about unsigned longs, see
         // See http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit
@@ -126,7 +126,13 @@ public class GdpUtilities {
         long code = ((((s) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT)
                 | (((r) & ((1l << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT)
                 | (((m) & ((1l << Gdp10Library._EP_STAT_MODBITS) - 1)) << Gdp10Library._EP_STAT_MODSHIFT) | (((d) & ((1l << Gdp10Library._EP_STAT_DETBITS) - 1))));
-        return new EP_STAT(new NativeLong(code));
+
+
+        // FIXME: Should not need to cast to an int here?
+
+
+
+        return new EP_STAT((int)code);
     }
 
     /** Print the datum to standard out.  This is a port of
