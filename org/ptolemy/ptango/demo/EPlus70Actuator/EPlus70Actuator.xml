@@ -4,7 +4,7 @@
 <entity name="EPlus70Actuator" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 0, 1183, 1028}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 22, 1189, 1021}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[955, 911]">
     </property>
@@ -387,11 +387,13 @@
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes a model that requires EnergyPlus.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes a model that requires EnergyPlus and having environment variables set,&#10;so it probably won't run under WebStart.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 110.0]">
         </property>
     </property>
     <class name="SequenceToJSONItemClass" extends="ptolemy.actor.TypedCompositeActor">

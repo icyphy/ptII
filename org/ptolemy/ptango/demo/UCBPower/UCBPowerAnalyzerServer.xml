@@ -111,6 +111,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 455.0]">
         </property>
     </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model exports a model to the web, which is not yet supported in WebStart.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 575.0]">
+        </property>
+    </property>
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/UCBPower/*">
         </property>
