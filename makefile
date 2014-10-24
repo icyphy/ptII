@@ -56,6 +56,7 @@ PTPACKAGE = 	ptII
 # adm/test/Nightly*.tcl, doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
+# ptolemy/copernicus/applet/scpDemos
 # Also, create a new build director:
 #  cd $PTII/adm
 #  svn cp gen-N.M gen-N.O
