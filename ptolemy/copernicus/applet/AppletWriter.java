@@ -1540,8 +1540,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.fmi.FMUImport", fmiJar);
 
         String gtJar = "ptolemy/actor/gt/gt.jar";
+        auxiliaryJarMap.put("ptolemy.actor.gt.DefaultModelAttribute", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.GTIngredientsAttribute", gtJar);
+        auxiliaryJarMap.put("ptolemy.vergil.gt.GTIngredientsEditor$Factory", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelGenerator", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.PatternObjectAttribute", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.ContainerIgnoringAttribute", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationMode", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule", gtJar);
         auxiliaryJarMap.put(
@@ -1979,6 +1984,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Given a domain package, return the corresponding jar file
     private static String _getDomainJar(String domainPackage) {
+        if (domainPackage.equals("ptolemy.actor.gt")) {
+            return "ptolemy/actor/gt/gt.jar";
+        }
         if (domainPackage.equals("ptolemy.domains.sdf.lib.vq")) {
             return "ptolemy/domains/sdf/lib/vq/vq.jar";
         }
