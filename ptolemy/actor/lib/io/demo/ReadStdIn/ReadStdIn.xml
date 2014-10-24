@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 213.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates how to read from Standard Input.&#10;The fireOrURL parameter in LineReader is set to System.in.&#10;&#10;Note that the model does not complete inferring its types&#10;until after the first input is entered and the Enter key is hit.&#10;&#10;Note also that there is a delay, the user does not see&#10;the first input until the second input is entered.&#10;&#10;However, because it uses java.io.BufferedReader, &#10;clicking on the stop button will not stop the execution.&#10;&#10;To stop the execution, type a Control-D in stdout.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates how to read from Standard Input.&#10;The fireOrURL parameter in LineReader is set to System.in.&#10;&#10;Note that the model does not complete inferring its types&#10;until after the first input is entered and the Enter key is hit.&#10;&#10;Note also that there is a delay, the user does not see&#10;the first input until the second input is entered.&#10;&#10;However, because it uses java.io.BufferedReader, &#10;clicking on the stop button will not stop the execution.&#10;&#10;To stop the execution, type a Control-D.&#10;&#10;As WebStart does not have a notion of Stdin, this model&#10;will probably not run under WebStart.&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 135.0]">
         </property>
@@ -33,7 +33,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 425.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>

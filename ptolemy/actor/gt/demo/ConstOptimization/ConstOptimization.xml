@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConstOptimization" class="ptolemy.actor.gt.controller.ModelBasedTransformation">
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.domains.sdf.kernel.SDFDirector&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;}}">
+    </property>
     <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
         </property>
@@ -269,7 +271,7 @@
             </property>
         </entity>
         <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
-            <property name="modelFile" class="ptolemy.data.expr.FileParameter" value="BaseModel.xml">
+            <property name="modelFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/BaseModel.xml">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>

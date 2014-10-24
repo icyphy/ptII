@@ -81,7 +81,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/actor/ptalon/demo/CruiseControl/LinearStateSpace.ptln">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/ptalon/demo/CruiseControl/LinearStateSpace.ptln">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
