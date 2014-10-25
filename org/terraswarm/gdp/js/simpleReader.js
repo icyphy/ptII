@@ -115,7 +115,7 @@ var libgdp = ffi.Library('../src/gdp/libs/libgdp.1.0', {
     // From gdp/gdp.h
     //CJS // free an event (required after gdp_event_next)
     //CJS extern EP_STAT                  gdp_event_free(gdp_event_t *gev);
-    'gdp_event_free': [ 'ulong', [ gdp_event_tPtr ] ],
+    'gdp_event_free': [ 'uint', [ gdp_event_tPtr ] ],
 
     //CJS // get next event (fills in gev structure)
     //CJS extern gdp_event_t              *gdp_event_next(bool wait);
@@ -135,23 +135,23 @@ var libgdp = ffi.Library('../src/gdp/libs/libgdp.1.0', {
 
     //CJS // initialize the library
     //CJS EP_STAT gdp_init( const char *gdpd_addr );          // address of gdpd
-    'gdp_init': [ 'ulong', [ 'string' ] ],
+    'gdp_init': [ 'uint', [ 'string' ] ],
 
     //CJS // create a new GCL
     //CJS EP_STAT gdp_gcl_create( gcl_name_t, gdp_gcl_t ** ); // pointer to result GCL handle
-    'gdp_gcl_create': [ 'ulong', [ gcl_name_t, gdp_gcl_tPtrPtr ] ],
+    'gdp_gcl_create': [ 'uint', [ gcl_name_t, gdp_gcl_tPtrPtr ] ],
 
     //CJS // open an existing GCL
     //CJS extern EP_STAT  gdp_gcl_open( gcl_name_t name, gdp_iomode_t rw, gdp_gcl_t **gclh);              // pointer to result GCL handle
-    'gdp_gcl_open': [ 'ulong', [ gcl_name_t, gdp_iomode_t, gdp_gcl_tPtrPtr ] ],
+    'gdp_gcl_open': [ 'uint', [ gcl_name_t, gdp_iomode_t, gdp_gcl_tPtrPtr ] ],
 
     //CJS // close an open GCL
     //CJS EP_STAT  gdp_gcl_close( gdp_gcl_t *gclh);           // GCL handle to close
-    'gdp_gcl_close': [ 'ulong', [ gdp_gcl_tPtr ] ],
+    'gdp_gcl_close': [ 'uint', [ gdp_gcl_tPtr ] ],
 
     //CJS // parse a (possibly human-friendly) GCL name
     //CJS EP_STAT gdp_gcl_parse_name( const char *ext, gcl_name_t internal );
-    'gdp_gcl_parse_name': [ 'ulong', [ 'string', gcl_name_t ] ],
+    'gdp_gcl_parse_name': [ 'uint', [ 'string', gcl_name_t ] ],
 
     //CJS // allocate a new message
     //CJS gdp_datum_t             *gdp_datum_new(void);
@@ -179,7 +179,7 @@ var libgdp = ffi.Library('../src/gdp/libs/libgdp.1.0', {
     // From gdp/gdp.h
     //CJS // append to a writable GCL
     //CJS extern EP_STAT  gdp_gcl_publish( gdp_gcl_t *gclh, gdp_datum_t *);
-    'gdp_gcl_publish': [ 'ulong', [ gdp_gcl_tPtr, gdp_datum_tPtr ] ],
+    'gdp_gcl_publish': [ 'uint', [ gdp_gcl_tPtr, gdp_datum_tPtr ] ],
 
     //CJS extern EP_STAT  gdp_gcl_subscribe(
     //CJS                                         gdp_gcl_t *gclh,                // readable GCL handle
@@ -192,11 +192,11 @@ var libgdp = ffi.Library('../src/gdp/libs/libgdp.1.0', {
     //CJS                                         void *cbarg);                   // argument passed to callback
     // Note, in our call to this function in do_multiread() below we do not
     //       use the last 3 (pointer) arguments.
-    'gdp_gcl_subscribe': [ 'ulong', [ gdp_gcl_tPtr, gdp_recno_t, int32_t, 'pointer', 'pointer', 'pointer' ] ],
+    'gdp_gcl_subscribe': [ 'uint', [ gdp_gcl_tPtr, gdp_recno_t, int32_t, 'pointer', 'pointer', 'pointer' ] ],
 
     //CJS // read from a readable GCL
     //CJS extern EP_STAT  gdp_gcl_read( gdp_gcl_t *gclh, gdp_recno_t recno, gdp_datum_t *datum);    // pointer to result message
-    'gdp_gcl_read': [ 'ulong', [ gdp_gcl_tPtr, gdp_recno_t, gdp_datum_tPtr ] ],
+    'gdp_gcl_read': [ 'uint', [ gdp_gcl_tPtr, gdp_recno_t, gdp_datum_tPtr ] ],
 
     // From gdp/gdp.h
     //CJS // get the data length from a datum
