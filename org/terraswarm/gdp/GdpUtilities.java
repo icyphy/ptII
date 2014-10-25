@@ -70,16 +70,16 @@ public class GdpUtilities {
      *  @return true if the code is less than EP_STAT_SEV_WARN
      */
     public static boolean EP_STAT_ISOK(EP_STAT estat) {
-        long code = (long)estat.code;
+        int code = estat.code;
 
         // For a discussion about unsigned longs, see
         // See http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit
 
         //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
-        long EP_STAT_SEVERITY = (code >>> Gdp10Library._EP_STAT_SEVSHIFT)
-                & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1);
+        int EP_STAT_SEVERITY = (code >>> Gdp10Library._EP_STAT_SEVSHIFT)
+                & ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1);
         //BigInteger big = BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT).and(
-        //        BigInteger.valueOf(((1l << Gdp10Library._EP_STAT_SEVBITS) - 1l)));
+        //        BigInteger.valueOf(((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)));
         //         System.out.println("EP_STAT_ISOK(): code: " + code + " " + Long.toHexString(code)
         //                 + ", (code >> Gdp10Library._EP_STAT_SEVSHIFT): " + (code >> Gdp10Library._EP_STAT_SEVSHIFT) + " " + Long.toHexString((code >> Gdp10Library._EP_STAT_SEVSHIFT))
         //                 + ", (code >>> Gdp10Library._EP_STAT_SEVSHIFT): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> Gdp10Library._EP_STAT_SEVSHIFT))
@@ -88,10 +88,10 @@ public class GdpUtilities {
 
         //                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT +3): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+3)))
 
-        //                 + ", ((1l << Gdp10Library._EP_STAT_SEVBITS)): " + ((1l << Gdp10Library._EP_STAT_SEVBITS))
-        //                 + ", ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1): " + ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)
+        //                 + ", ((1 << Gdp10Library._EP_STAT_SEVBITS)): " + ((1 << Gdp10Library._EP_STAT_SEVBITS))
+        //                 + ", ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1): " + ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)
         //                 //+ ", BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT): " + BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT)
-        //                 //+ ", BigInteger.valueOf(((1l << Gdp10Library._EP_STAT_SEVBITS) - 1l)): " + BigInteger.valueOf(((1l << Gdp10Library._EP_STAT_SEVBITS) - 1l))
+        //                 //+ ", BigInteger.valueOf(((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)): " + BigInteger.valueOf(((1 << Gdp10Library._EP_STAT_SEVBITS) - 1))
         //                 + ", EP_STAT_SEVERITY: " + EP_STAT_SEVERITY + " " + Long.toHexString(EP_STAT_SEV_WARN)
         //                 //+ ", EP_STAT_SEVERITY as big: " + big
         //                 + ", EP_STAT_SEV_WARN: " + EP_STAT_SEV_WARN + " " + Long.toHexString(EP_STAT_SEV_WARN)
@@ -123,14 +123,9 @@ public class GdpUtilities {
     public static EP_STAT EP_STAT_NEW(int s, int r, int m, int d) {
         // We use the same parameter names as are in the original C
         // code for ease of maintenance.
-        long code = ((((s) & ((1l << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT)
-                | (((r) & ((1l << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT)
-                | (((m) & ((1l << Gdp10Library._EP_STAT_MODBITS) - 1)) << Gdp10Library._EP_STAT_MODSHIFT) | (((d) & ((1l << Gdp10Library._EP_STAT_DETBITS) - 1))));
-
-
-        // FIXME: Should not need to cast to an int here?
-
-
+        int code = ((((s) & ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT)
+                | (((r) & ((1 << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT)
+                | (((m) & ((1 << Gdp10Library._EP_STAT_MODBITS) - 1)) << Gdp10Library._EP_STAT_MODSHIFT) | (((d) & ((1 << Gdp10Library._EP_STAT_DETBITS) - 1))));
 
         return new EP_STAT((int)code);
     }
