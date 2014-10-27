@@ -184,7 +184,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/actor/lib/jai/test/auto/file.png} {
 ?       ptolemy/actor/lib/test/cobertura.ser} {
 ?       ptolemy/configs/doc/ClassesIllustrated} {
-?       ptolemy/matlab/META-INF} {
 ?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
