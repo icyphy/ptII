@@ -9,17 +9,18 @@
 package ptolemy.actor.lib.fmi.fmipp.swig;
 
 public class SWIGTYPE_p_std__string {
-    private long swigCPtr;
+  private long swigCPtr;
 
-    protected SWIGTYPE_p_std__string(long cPtr, boolean futureUse) {
-        swigCPtr = cPtr;
-    }
+  protected SWIGTYPE_p_std__string(long cPtr, boolean futureUse) {
+    swigCPtr = cPtr;
+  }
 
-    protected SWIGTYPE_p_std__string() {
-        swigCPtr = 0;
-    }
+  protected SWIGTYPE_p_std__string() {
+    swigCPtr = 0;
+  }
 
-    protected static long getCPtr(SWIGTYPE_p_std__string obj) {
-        return (obj == null) ? 0 : obj.swigCPtr;
-    }
+  protected static long getCPtr(SWIGTYPE_p_std__string obj) {
+    return (obj == null) ? 0 : obj.swigCPtr;
+  }
 }
+

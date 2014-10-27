@@ -9,45 +9,38 @@
 package ptolemy.actor.lib.fmi.fmipp.swig;
 
 public class helper {
-    public static SWIGTYPE_p_double new_double_array(int nelements) {
-        long cPtr = helperJNI.new_double_array(nelements);
-        return (cPtr == 0) ? null : new SWIGTYPE_p_double(cPtr, false);
-    }
+  public static SWIGTYPE_p_double new_double_array(int nelements) {
+    long cPtr = helperJNI.new_double_array(nelements);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_double(cPtr, false);
+  }
 
-    public static void delete_double_array(SWIGTYPE_p_double ary) {
-        helperJNI.delete_double_array(SWIGTYPE_p_double.getCPtr(ary));
-    }
+  public static void delete_double_array(SWIGTYPE_p_double ary) {
+    helperJNI.delete_double_array(SWIGTYPE_p_double.getCPtr(ary));
+  }
 
-    public static double double_array_getitem(SWIGTYPE_p_double ary, int index) {
-        return helperJNI.double_array_getitem(SWIGTYPE_p_double.getCPtr(ary),
-                index);
-    }
+  public static double double_array_getitem(SWIGTYPE_p_double ary, int index) {
+    return helperJNI.double_array_getitem(SWIGTYPE_p_double.getCPtr(ary), index);
+  }
 
-    public static void double_array_setitem(SWIGTYPE_p_double ary, int index,
-            double value) {
-        helperJNI.double_array_setitem(SWIGTYPE_p_double.getCPtr(ary), index,
-                value);
-    }
+  public static void double_array_setitem(SWIGTYPE_p_double ary, int index, double value) {
+    helperJNI.double_array_setitem(SWIGTYPE_p_double.getCPtr(ary), index, value);
+  }
 
-    public static SWIGTYPE_p_std__string new_string_array(int nelements) {
-        long cPtr = helperJNI.new_string_array(nelements);
-        return (cPtr == 0) ? null : new SWIGTYPE_p_std__string(cPtr, false);
-    }
+  public static SWIGTYPE_p_std__string new_string_array(int nelements) {
+    long cPtr = helperJNI.new_string_array(nelements);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_std__string(cPtr, false);
+  }
 
-    public static void delete_string_array(SWIGTYPE_p_std__string ary) {
-        helperJNI.delete_string_array(SWIGTYPE_p_std__string.getCPtr(ary));
-    }
+  public static void delete_string_array(SWIGTYPE_p_std__string ary) {
+    helperJNI.delete_string_array(SWIGTYPE_p_std__string.getCPtr(ary));
+  }
 
-    public static String string_array_getitem(SWIGTYPE_p_std__string ary,
-            int index) {
-        return helperJNI.string_array_getitem(
-                SWIGTYPE_p_std__string.getCPtr(ary), index);
-    }
+  public static String string_array_getitem(SWIGTYPE_p_std__string ary, int index) {
+    return helperJNI.string_array_getitem(SWIGTYPE_p_std__string.getCPtr(ary), index);
+  }
 
-    public static void string_array_setitem(SWIGTYPE_p_std__string ary,
-            int index, String value) {
-        helperJNI.string_array_setitem(SWIGTYPE_p_std__string.getCPtr(ary),
-                index, value);
-    }
+  public static void string_array_setitem(SWIGTYPE_p_std__string ary, int index, String value) {
+    helperJNI.string_array_setitem(SWIGTYPE_p_std__string.getCPtr(ary), index, value);
+  }
 
 }
