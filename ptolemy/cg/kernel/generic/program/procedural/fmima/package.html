@@ -4,7 +4,22 @@
 <title>ptolemy.cg.kernel.generic.program.fmima</title>
 </head>
 <body>
-Generate code for the Functional Mockup Unit Master Algorithm (FMIMA)
+<p>Generate code for the Functional Mockup Unit Master Algorithm (FMIMA).</p>
+
+<p><b>This is a work in progress and does not generate working code.</b></p>
+
+<p>This code generator will implement an algorithm defined in
+<br/>David Broman, Christopher Brooks, Lev Greenberg, Edward A. Lee, Michael Masin, Stavros Tripakis and Michael Wetter, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-153.html">Determinate Composition of FMUs for Co-Simulation</a>," EECS Department
+University of California, Berkeley
+Technical Report No. UCB/EECS-2013-153
+August 18, 2013.  Which is a version of a <a href="https://dl.acm.org/citation.cfm?id=2555756">EMSOFT '13 paper</a>.</p>
+
+<h2>Resources</h2>
+<ul>
+<li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/CodeGeneration">CHESS Code Generation Wiki</a></li>
+<li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU">CHESS FMU Wiki</a></li>
+
+<h2>Sample Invocation of the FMI MA code generator</h2>
 <pre>
 $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
     -generatorPackagelist generic.program.procedural.fmima \
