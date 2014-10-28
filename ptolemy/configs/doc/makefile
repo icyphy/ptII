@@ -87,7 +87,8 @@ OTHER_FILES_TO_BE_JARED = \
 	whatsNew6.0.htm \
 	whatsNew7.0.htm \
 	whatsNew8.0.htm \
-	whatsNew10.0.htm
+	whatsNew10.0.htm \
+	whatsNew11.0.htm
 
 EXTRA_SRCS = \
 	 \

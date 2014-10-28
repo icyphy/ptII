@@ -93,6 +93,12 @@ tag specially.
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
+    <code>ptolemy/configs/doc/whatsNew11.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew11.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
     <code>ptolemy/configs/doc/whatsNew10.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
     <td><a href="about:links#ptolemy/configs/doc/whatsNew10.0.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
@@ -279,6 +285,9 @@ For each of the files below, we list demos that are not included in <a href="fil
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/demos.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew11.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew11.0.htm</code></a></h2>
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>

@@ -21,7 +21,7 @@
   </head>
   <body>
 
-    <h1>Tour of What's New in Version 11.0.devel</h1>
+    <h1>Tour of What's New in Version 10.0.beta</h1>
     See also <a href="whatsNew.htm">What's New in other versions</a> or the <a href="completeDemos.htm">Complete List of Ptolemy II Demos</a>.
     <p>Contents:</p>
     <ul>
@@ -134,7 +134,7 @@
     </ul>
 
     <h3><a name="demos" id="demos">New demonstrations</a></h3>
-    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
+    <!-- grep "Only in" /tmp/pt78.diff | grep 10.0.beta | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII10.0.beta/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
 
          OR
          $PTII/adm/bin/updateNewDemos
@@ -405,7 +405,7 @@
     <ul>
       <li>Features
 	<!--
-            grep "Only in .*ptII11.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+            grep "Only in .*ptII10.0.beta" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
           -->
 	<ul>
 	  <li>Models for books located in $PTII/doc/books.  We link to the book itself so that the models correspond with the book
@@ -437,7 +437,7 @@
 
     <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
     <!--
-        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel" |  sort | sed 's@Only in .*ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
+        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII10.0.beta" |  sort | sed 's@Only in .*ptII10.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
       -->
     <ul>
       <li><em>New Domain Polymorphic actors</em>:
