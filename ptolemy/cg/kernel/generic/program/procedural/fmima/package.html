@@ -1,92 +1,93 @@
 <!-- $Id$ -->
 <html>
-<head>
-<title>ptolemy.cg.kernel.generic.program.fmima</title>
-</head>
-<body>
-<p>Generate code for the Functional Mockup Unit Master Algorithm (FMIMA).</p>
+  <head>
+    <title>ptolemy.cg.kernel.generic.program.fmima</title>
+  </head>
+  <body>
+    <p>Generate code for the Functional Mockup Unit Master Algorithm (FMIMA).</p>
 
-<p><b>This is a work in progress and does not generate working code.</b></p>
+    <p><b>This is a work in progress and does not generate working code.</b></p>
 
-<p>This code generator will implement an algorithm defined in
-<br/>David Broman, Christopher Brooks, Lev Greenberg, Edward A. Lee, Michael Masin, Stavros Tripakis and Michael Wetter, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-153.html">Determinate Composition of FMUs for Co-Simulation</a>," EECS Department
-University of California, Berkeley
-Technical Report No. UCB/EECS-2013-153
-August 18, 2013.  Which is a version of a <a href="https://dl.acm.org/citation.cfm?id=2555756">EMSOFT '13 paper</a>.</p>
+    <p>This code generator will implement an algorithm defined in
+      <br/>David Broman, Christopher Brooks, Lev Greenberg, Edward A. Lee, Michael Masin, Stavros Tripakis and Michael Wetter, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-153.html">Determinate Composition of FMUs for Co-Simulation</a>," EECS Department
+      University of California, Berkeley
+      Technical Report No. UCB/EECS-2013-153
+      August 18, 2013.  Which is a version of a <a href="https://dl.acm.org/citation.cfm?id=2555756">EMSOFT '13 paper</a>.</p>
 
-<h2>Resources</h2>
-<ul>
-<li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/CodeGeneration">CHESS Code Generation Wiki</a></li>
-<li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU">CHESS FMU Wiki</a></li>
+    <h2>Resources</h2>
+    <ul>
+      <li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/CodeGeneration">CHESS Code Generation Wiki</a></li>
+      <li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU">CHESS FMU Wiki</a></li>
+    </ul>
 
-<h2>Sample Invocation of the FMI MA code generator</h2>
-<pre>
-$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
-    -generatorPackagelist generic.program.procedural.fmima \
-    $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
-</pre>
+    <h2>Sample Invocation of the FMI MA code generator</h2>
+    <pre>
+      $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
+      -generatorPackagelist generic.program.procedural.fmima \
+      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
+    </pre>
 
-<h2>Overview</h2>
-<p>The <code>ptolemy.cg</code> has a lot of classes, but the FMIMA work consists of only a few classes.</p>
+    <h2>Overview</h2>
+    <p>The <code>ptolemy.cg</code> has a lot of classes, but the FMIMA work consists of only a few classes.</p>
 
-<p>The easist way to work with the code is to look for the <code>fmima</code> directories and then the <code>.java</code> files</p>
-<pre>
-bash-3.2$ cd $PTII/ptolemy/cg
-bash-3.2$ find . -name fmima
-./adapter/generic/program/procedural/fmima
-./kernel/generic/program/procedural/fmima
-bash-3.2$ find ./adapter/generic/program/procedural/fmima -name "*.java"
-./adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java
-./adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java
-./adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java
-./adapter/generic/program/procedural/fmima/test/junit/JUnitTclTest.java
-bash-3.2$ find ./kernel/generic/program/procedural/fmima -name "*.java"
-./kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java
-./kernel/generic/program/procedural/fmima/FMIMACodeGeneratorAdapter.java
-./kernel/generic/program/procedural/fmima/test/junit/JUnitTclTest.java
-bash-3.2$ 
-</pre>
+    <p>The easist way to work with the code is to look for the <code>fmima</code> directories and then the <code>.java</code> files</p>
+    <pre>
+      bash-3.2$ cd $PTII/ptolemy/cg
+      bash-3.2$ find . -name fmima
+      ./adapter/generic/program/procedural/fmima
+      ./kernel/generic/program/procedural/fmima
+      bash-3.2$ find ./adapter/generic/program/procedural/fmima -name "*.java"
+      ./adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java
+      ./adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java
+      ./adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java
+      ./adapter/generic/program/procedural/fmima/test/junit/JUnitTclTest.java
+      bash-3.2$ find ./kernel/generic/program/procedural/fmima -name "*.java"
+      ./kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java
+      ./kernel/generic/program/procedural/fmima/FMIMACodeGeneratorAdapter.java
+      ./kernel/generic/program/procedural/fmima/test/junit/JUnitTclTest.java
+      bash-3.2$ 
+    </pre>
 
-<h2>Invoking</h2>
-<p>The main entry point is <code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code>.  When the code generator is invoked, that class is instantiated.</p>
+    <h2>Invoking</h2>
+    <p>The main entry point is <code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code>.  When the code generator is invoked, that class is instantiated.</p>
 
-<p>Below is the command to run a sample model:</p>
+    <p>Below is the command to run a sample model:</p>
 
-<pre>
-$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
-    -generatorPackagelist generic.program.procedural.fmima \
-    $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
-</pre>
+    <pre>
+      $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
+      -generatorPackagelist generic.program.procedural.fmima \
+      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
+    </pre>
 
-<dl>
-  <dt><code>$PTII/bin/ptcg</code></dt>
-  <dd>The command that invokes ptolemy.cg.kernel.generic.GenericCodeGenerator with the appropriate classpath.</dd>
-  <dt><code>-generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima</code></dt>
-  <dd>The Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c</dd>
-  <dt><code>-generatorPackagelist generic.program.procedural.fmima</code></dt>
-  <dd>Semicolon or * separated list of Java packages to be searched for adapters. The "ptolemy.cg.adapter." string is prepended </dd>
-  <dt>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml</dt>
-  <dd>The Ptolemy model to be invoked</dd>
-</dl>
+    <dl>
+      <dt><code>$PTII/bin/ptcg</code></dt>
+      <dd>The command that invokes ptolemy.cg.kernel.generic.GenericCodeGenerator with the appropriate classpath.</dd>
+      <dt><code>-generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima</code></dt>
+      <dd>The Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c</dd>
+      <dt><code>-generatorPackagelist generic.program.procedural.fmima</code></dt>
+      <dd>Semicolon or * separated list of Java packages to be searched for adapters. The "ptolemy.cg.adapter." string is prepended </dd>
+      <dt>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml</dt>
+      <dd>The Ptolemy model to be invoked</dd>
+    </dl>
 
-<p>Run <code>$PTII/bin/ptcg -help</code> to see other command line arguments.</p> 
+    <p>Run <code>$PTII/bin/ptcg -help</code> to see other command line arguments.</p> 
 
-<h2>How it works</h2>
-<p>In a nut shell, the code iterates through the model, finding actors and attributes.  An adapter class is searched for that will handle each actor and attribute.  If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
+    <h2>How it works</h2>
+    <p>In a nut shell, the code iterates through the model, finding actors and attributes.  An adapter class is searched for that will handle each actor and attribute.  If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
 
-<h2>What needs to be done</h2>
-As of late October, 2014, the file that is generated (<code>~/cg/FMUIncScale20RC1pt.c</code>) file has no contents.
+    <h2>What needs to be done</h2>
+    As of late October, 2014, the file that is generated (<code>~/cg/FMUIncScale20RC1pt.c</code>) file has no contents.
 
-<p>The body of the file contains comments about where the text is generated.</p>
+    <p>The body of the file contains comments about where the text is generated.</p>
 
-<p>One way to find where a comment is generated is to use <code>find</code>:</p>
-<pre>
-cd $PTII/ptolemy/cg
-find . -type f | xargs grep "wrapup entry code"
-</pre>
+    <p>One way to find where a comment is generated is to use <code>find</code>:</p>
+    <pre>
+      cd $PTII/ptolemy/cg
+      find . -type f | xargs grep "wrapup entry code"
+    </pre>
 
-<p>Probably the best way to proceed would be to write code by hand that should be the output of the code generator for the model.  Then start modifying the code generator by determining where in the code generator the code should be emitted.</p>
-<p>
-@since Ptolemy II 10.0
-</body>
+    <p>Probably the best way to proceed would be to write code by hand that should be the output of the code generator for the model.  Then start modifying the code generator by determining where in the code generator the code should be emitted.</p>
+    <p>
+      @since Ptolemy II 10.0
+  </body>
 </html>
