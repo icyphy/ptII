@@ -484,7 +484,7 @@ METROII_JARS = \
 	ptolemy/domains/metroII/metroII.jar \
 	ptolemy/domains/metroII/demo/demo.jar
 
-FULL_10_0_JARS = \
+FULL_11_0_JARS = \
 	com/cureos/cureos.jar \
 	org/ptolemy/faultModels/faultModels.jar \
 	org/ptolemy/machineImprovisation/machineImprovisation.jar \
@@ -612,7 +612,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/vergil/scr/scr.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(FULL_8_1_JARS) \
-	$(FULL_10_0_JARS) \
+	$(FULL_11_0_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
 	$(WIRELESS_JARS)
@@ -1334,7 +1334,7 @@ key_list:
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII10.0/jnlp-$(PTVERSION)
+DIST_BASE = ptolemyII/ptII11.0/jnlp-$(PTVERSION)
 DIST_DIR = /home/www/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -1367,13 +1367,14 @@ jnlp_dist_update:
 		ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_DIR); tar -xvmf -"
 	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chgrp -R cvs $(DIST_DIR)
 	-ssh $(WEBSERVER_USER)@$(WEBSERVER) chmod -R g+rwX $(DIST_DIR)
+	-ssh $(WEBSERVER_USER)@$(WEBSERVER) mkdir -p $(DIST_DIR)/doc
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)/doc
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/home/www/ptweb/ptolemyII/ptII10.0/$(PTVERSION)
+DIST_JAR=/home/www/ptweb/ptolemyII/ptII11.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_JAR)/ptolemy/domains/gr
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
@@ -1533,7 +1534,7 @@ ptplot.exe: ptplot_l4j.xml
 
 
 vergil_l4j.xml:
-	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/adm/dists/ptII10.0devel/vendors/oracle/javamail/javax.mail.jar and /home/hudson/jobs/ptII/workspace/adm/dists/ptII10.0.devel/lib/jsoup-1.7.3.jar
+	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/adm/dists/ptII11.0devel/vendors/oracle/javamail/javax.mail.jar and /home/hudson/jobs/ptII/workspace/adm/dists/ptII11.0.devel/lib/jsoup-1.7.3.jar
 	$(MKL4J) vergil ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
 		"" `echo $(FULL_JNLP_JARS) | sed 's@$(PTII)/@@g'` > $@
@@ -1803,16 +1804,16 @@ osgi_demo_test:
 # 1. To build all the jars and copy them to the webserver:
 #   First: create the directory on moog.  You must have an ssh account on moog
 #   and be in the ptolemy group:
-#     ssh moog "mkdir ~www/ptweb/ptolemyII/ptII10.0/jnlp-modularSemantics"
+#     ssh moog "mkdir ~www/ptweb/ptolemyII/ptII11.0/jnlp-modularSemantics"
 #   Then, run these commands:
 #     cd $PTII
 #     ant build javadoc
 #     ant -f jars.xml jars
 #     rm -rf signed
 #   
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII10.0/jnlp-modularSemantics jnlp_dist
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII11.0/jnlp-modularSemantics jnlp_dist
 
-# This will create /home/www/ptweb/ptolemyII/ptII10.0/jnlp-modularSemantics
+# This will create /home/www/ptweb/ptolemyII/ptII11.0/jnlp-modularSemantics
 #
 # 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
 # the passwords and the alias.  This file is used by copernicus to create signed jars.
@@ -1827,11 +1828,11 @@ osgi_demo_test:
 #   make book_real_clean JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem JNLP_MODEL=FuelSystem
 #
 # 5. To create a JNLP file for one model and upload it:
-#   make JNLP_MODEL=FuelSystem JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII10.0/jnlp-modularSemantics book_dist_update
+#   make JNLP_MODEL=FuelSystem JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII11.0/jnlp-modularSemantics book_dist_update
 #
 # 6. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
 #   cd $PTII/doc/books/11/modularSemantics
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII10.0/jnlp-modularSemantics jnlps
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII11.0/jnlp-modularSemantics jnlps
 
 
 # The name of the model, without the .xml extension.
@@ -1935,7 +1936,7 @@ $(HTML_MODEL):
 
 # Update the website, create links.
 update_html_model: html_model
-	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd /home/www/ptweb/ptolemyII/ptII10.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
+	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd /home/www/ptweb/ptolemyII/ptII11.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
 
 # We have two sets (!) of jar files: unsigned for applets and signed for JNLP Web Start
 #
@@ -1985,12 +1986,12 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL) jnlps_index
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):~www/ptweb/ptolemyII/ptIIlatest/ptII/doc/
 
 
-# Update the 10.0 tree.
-# To use: cd $PTII; make JNLP_MODEL_DIRECTORY=ptolemy/domains/sdf/demo/MaximumEntropySpectrum JNLP_MODEL=MaximumEntropySpectrum 10_0_update_model
-10_0_update_model:
-	$(MAKE) KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat ${HOME}/.certpw`" KEYPASSWORD="-storepass `cat ${HOME}/.certpw`" DIST_BASE=ptolemyII/ptII10.0/jnlp-10.0.devel book_dist_update
+# Update the 11.0 tree.
+# To use: cd $PTII; make JNLP_MODEL_DIRECTORY=ptolemy/domains/sdf/demo/MaximumEntropySpectrum JNLP_MODEL=MaximumEntropySpectrum 11_0_update_model
+11_0_update_model:
+	$(MAKE) KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat ${HOME}/.certpw`" KEYPASSWORD="-storepass `cat ${HOME}/.certpw`" DIST_BASE=ptolemyII/ptII11.0/jnlp-11.0.devel book_dist_update
 
-10_0_update_all_models: ptolemy/configs/doc/models.txt
+11_0_update_all_models: ptolemy/configs/doc/models.txt
 	sed 's@\$$CLASSPATH/@@' ptolemy/configs/doc/models.txt | \
 	egrep -v '(/cg/|/codegen/|/ExecDemos/|lbnl/demo/|/matlab/|SMVLegacyCodeActor|/SystemLevelType/|/taskpt/|/verification/)' | \
 	awk -F / '{dir=$$1; for(i = 2; i < (NF); i++) {dir = dir "/" $$i}; print "make JNLP_MODEL_DIRECTORY=" dir " JNLP_MODEL=" substr($$NF, 0, length($$NF)-4) " 9_0_update_model"}'
