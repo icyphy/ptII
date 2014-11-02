@@ -279,6 +279,46 @@
 	constructor.
       </dd>
     </dl>
+
+    <h2>Packaging for the Mac</h2>
+    Between Java 1.6, distributed by Apple, and Java 1.8, distributed by Oracle, the process for creating a Java Mac application changed.
+
+    <h3>How the Mac apps are created</h3>
+    <p><code>$PTII/bin/ptinvoke.in</code> is read by <code>$PTII/configure</code> and 
+      <code>$PTII/bin/ptinvoke</code> is created.  <code>$PTII/bin/makeapp</code> is 
+      a symbolic link to <code>ptinvoke</code>.  Running <code>make</code> in 
+      <code>$PTII/bin</code> invokes <code>makeapp</code> and creates
+      <code>$PTII/bin/Ptiny.app/</code> and <code>$PTII/bin/Vergil.app/</code>.  
+
+    <p>Double clicking on <code>Ptiny.app</code> or <code>Vergil.app</code> invokes
+      a binary listed in <code>Info.plist</code>.  The binary changed between
+      Java 1.6 and 1.8.</p>
+
+    <h3>Packaging Java for distribution on the Mac under Java 1.8</h3>
+
+    <p>In Java 1.8, we used <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/package_for_mac.html#in_browser" target="_top"><code>http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/package_for_mac.html</code></a>, which uses the <a href="http://java.net/projects/appbundler#in_browser" target="_top">Application Bundler</a>.</p>
+    
+    <p>Application Bundler is GPL'd, but Oracle releases it using the
+      Classpath exception.  The Application Bundler jar file
+      includes <code>JavaAppLauncher</code>, which gets copied
+      to <code>Contents/MacOS/</code>.  That executable processes
+      the <code>Info.plist</code> file.  The
+      executable substitutes <code>$APP_ROOT</code> when it is present in the 
+      <code>Info.plist</code> file.</p>
+
+    <p>The Application Bundler will include a JRE
+      if <code>runtime</code> parameter is set in the build.xml file.
+      We do not set <code>runtime</code>.</p>
+
+    <p>The Application Builder wants to copy the jar files
+      into <code>Contents/Java/</code>.  Instead, we
+      use <code>$APP_ROOT/../..</code> to refer to the jar files.</p>
+
+    <p>We used created a temporary Ant target to create a prototype
+      app directory and then modified the <code>ptinvoke.in</code>
+      file to generate the proper
+      <code>Info.plist</code> file.</p>
+
     <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
   </body>
 </html>
