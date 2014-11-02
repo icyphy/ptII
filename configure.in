@@ -146,6 +146,16 @@ else
     PTII to use forward slashes.])
 fi
 
+AC_MSG_CHECKING([if \$PTII ('$PTII') and the current directory are the same"])
+canonicalPTII=`cd "$PTII"; pwd`
+if test "$canonicalPTII" != "`pwd`" ; then
+    currentDirectory="`pwd`"
+    AC_MSG_WARN([Perhaps $PTII is set to a directory other
+    than the current directory?
+    'cd "$PTII"; pwd' yields "$canonicalPTII", which is not the
+    same as 'pwd', which is "$currentDirectory".])  
+fi
+
 AC_MSG_CHECKING([if \$PTII ('$PTII') contains "cygdrive"])
 echo "$PTII" | egrep 'cygdrive|cygwin' > /dev/null
 status=$?
