@@ -341,6 +341,14 @@ if test "`uname -s`" = "CYGWIN_NT-5.1"; then
    esac
 fi
 
+case "$JVERSION" in
+    1.6*) 
+	# The contents of the Info.plist file differs between Java
+	# 1.6 (Apple JVM) and 1.8 (Oracle JVM).
+	JAVA16=yes
+	;;
+esac
+
 #### Java 3D
 # PTJAVA3D_DIR is set to gr if configure found Java 3D
 PTJAVA3D_DIR=@PTJAVA3D_DIR@
@@ -1504,8 +1512,6 @@ if [ "$error" = "none" ]; then
     <string>false</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
-    <key>CFBundleExecutable</key>
-    <string>JavaApplicationStub</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundlePackageType</key>
@@ -1514,6 +1520,14 @@ if [ "$error" = "none" ]; then
     <string>PTOL</string>
     <key>CFBundleIconFile</key>
     <string>ptolemy.icns</string>
+EOF
+
+
+   if [ "$JAVA16" = "yes" ]; then
+       # Use a different Info.plist file for Java 1.6    
+     cat >>$MACAPP_PLIST <<EOF1
+    <key>CFBundleExecutable</key>
+    <string>JavaApplicationStub</string>
     <key>Java</key>
     <dict>
       <key>MainClass</key>
@@ -1524,7 +1538,7 @@ if [ "$error" = "none" ]; then
       <array>
        <string>\$USER_HOME/.ptolemyII</string>
        <string>\$USER_HOME/.ptolemyII/*</string>
-EOF
+EOF1
         # Unfortunately, Java 1.6.0_31 does not support Java wildcards in the classpath
 	(cd $HOME/.ptolemyII; find . -name "*.jar") | \
 	  awk '{ for(i=1;i<=NF;i++) { print "       <string>$USER_HOME/.ptolemyII/" $i "</string>"}}' >> $MACAPP_PLIST
@@ -1557,7 +1571,36 @@ EOF2
   </dict>
 </plist>
 EOF3
+           else
+       # Not Java 1.6.  See
+       # http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/package_for_mac.html
+       # and http://java.net/projects/appbundler
+     cat >>$MACAPP_PLIST <<EOF4
+    <key>CFBundleExecutable</key>
+    <string>JavaAppLauncher</string>
+    <key>JVMMainClassName</key>
+    <string>ptolemy.vergil.VergilApplication</string>
+    <key>JVMOptions</key>
+    <array>
+      <string>-Xmx1024m</string>
+      <string>-Dptolemy.ptII.dir=\$APP_ROOT/../..</string>
+      <string>-classpath</string>
+EOF4
+        echo "foo" | awk '{printf("     <string>$USER_HOME/.ptolemyII/*:$APP_ROOT/../../contrib/contrib.jar:$APP_ROOT/../..")}' >> $MACAPP_PLIST
+	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
+	  awk '{ for(i=1;i<=NF;i++) { printf(":$APP_ROOT/../../%s", $i)}}
+		   END {printf("</string>\n")}' >> $MACAPP_PLIST
 
+	cat >>$MACAPP_PLIST <<EOF6
+      </array>
+      <key>JVMArguments</key>
+      <array>
+      <string>$MACAPP_ARGUMENT</string>
+      </array>
+   </dict>
+</plist>
+EOF6
+           fi
 	else    
 	    eval exec $str
         fi	    
