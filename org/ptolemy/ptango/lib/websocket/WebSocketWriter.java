@@ -165,7 +165,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
         WebSocketWriter newObject = (WebSocketWriter) super.clone(workspace);
 
         newObject._connection = null;
-        newObject._connectionManager = WebSocketConnectionManager.getInstance();
+        newObject._connectionManager = null;
         newObject._connectionMonitor = new Object();
         newObject._connectionTimeout = 5000;
         newObject._isLocal = false;
@@ -272,6 +272,11 @@ public class WebSocketWriter extends TypedAtomicActor implements
      * @exception IllegalActionException If the websocket cannot be opened.
      */
     public void open(URI path) throws IllegalActionException {
+        // Might be null for clones.  clone() appears to 
+        // complain about using WebSocketConnectionManager.getInstance();
+        if (_connectionManager == null) {
+            _connectionManager = WebSocketConnectionManager.getInstance();
+        }
 
         if (_isLocal || !_isShared) {
             _connectionManager.newConnection(path, this);
