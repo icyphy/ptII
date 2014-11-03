@@ -305,8 +305,10 @@ test Ramp-4.1 {Test with 5 actors} {
 } {0.0 1.4641 2.9282 4.3923 5.8564}
 
 test Ramp-4.2 {Test with 50 actors} {
-    manyScales 50
-} {0.0 106.7189571633598 213.4379143267195 320.1568714900794 426.875828653439}
+    # Upgrading from Java 1.6 to 1.8 resulted in a change in least
+    # significant digit in the second value.
+    epsilonDiff [manyScales 50] {0.0 106.7189571633598 213.4379143267195 320.1568714900794 426.875828653439}
+} {}
 
  test Ramp-4.3 {Test with 500 actors} {
      manyScales 500
