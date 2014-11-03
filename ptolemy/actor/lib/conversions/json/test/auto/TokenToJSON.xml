@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TokenToJSON" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=false}">
     </property>
@@ -307,7 +307,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{\&quot;b\&quot;:[[false,false],[false,true]],\&quot;a\&quot;:[[true,true],[true,false]]}&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{\&quot;a\&quot;:[[true,true],[true,false]],\&quot;b\&quot;:[[false,false],[false,true]]}&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -317,7 +317,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[{\&quot;b\&quot;:false,\&quot;a\&quot;:{\&quot;aa\&quot;:1,\&quot;ab\&quot;:2}},{\&quot;b\&quot;:true,\&quot;a\&quot;:{\&quot;aa\&quot;:1,\&quot;ab\&quot;:2}}]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[{\&quot;a\&quot;:{\&quot;aa\&quot;:1,\&quot;ab\&quot;:2},\&quot;b\&quot;:false},{\&quot;a\&quot;:{\&quot;aa\&quot;:1,\&quot;ab\&quot;:2},\&quot;b\&quot;:true}]&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
