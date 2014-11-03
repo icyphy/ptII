@@ -501,6 +501,9 @@ PTGDP_PACKAGES =	@PTGDP_PACKAGES@
 # This variable is used with the Java Network Launching Protocol files
 PTII_LOCALURL = @PTII_LOCALURL@
 
+# Directory that contains the 32-bit JVM, if any.
+PTJAVA32_DIR = @PTJAVA32_DIR@
+
 # JAVA3D_JARS is the jar files to use with Java 3D.  Usually, this is
 # empty, because most installations have Java 3D in the jdk
 # jre/lib/ext directory, but some do not. If --with-java3D was used

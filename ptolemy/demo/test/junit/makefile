@@ -37,7 +37,7 @@ ME =		ptolemy/demo/test/junit
 ROOT =		../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -78,8 +78,11 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
-tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test32 #test_jsimple
 	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.demo.test.junit.JUnitTclTest)
+
+test32:
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(PTJAVA32_DIR)/bin/java" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.demo.test.junit.JUnitAuto32Test)
 
 test_java: jclass
 
