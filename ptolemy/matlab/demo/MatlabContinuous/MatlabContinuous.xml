@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabContinuous" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[838, 606]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 647]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[10, 161]">
     </property>
@@ -32,14 +32,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 560.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 56, 1051, 716}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 56, 1074, 760}, maximized=false}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -48,6 +46,8 @@
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
@@ -60,7 +60,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.0, 303.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{423.0, 323.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the integration of MATLAB with&#10;HyVisual and Ptolemy II. The MatlabExpression actor&#10;on the right invokes a command in MATLAB. In this case,&#10;the function &quot;surf&quot; (which renders a matrix as a surface&#10;plot) is invoked on the matrix input.&#10;&#10;This model also illustrates the use of the Ptolemy II&#10;expression language in the Expression actors.">
@@ -73,9 +73,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that Matlab be installed on&#10;your local machine.&#10;&#10;In addition, you must have the Matlab shared libraries&#10;in DYLD_LIBRARY_PATH, LD_LIBRARY_PATH or PATH.&#10;If you invoked Ptolemy via $PTII/bin/vergil, then you&#10;need not make any changes, the model should work.&#10;&#10;If you are running via Eclipse, then you may need&#10;to make changes.  If $MATLAB is the location of&#10;your Matlab installation, then make the appropriate&#10;settings and restart.&#10;&#10;32 Bit Mac (10.5?, Edit ~/.MacOSX/environment.plist)&#10;    export DYLD_LIBRARY_PATH=$MATLAB/bin/maci&#10;64 Bit Mac (10.6?, Edit ~/.MacOSX/environment.plist)&#10;    export DYLD_LIBRARY_PATH=$MATLAB/bin/maci64 &#10;32 Bit Linux (Edit .bashrc)&#10;    export LD_LIBRARY_PATH=$MATLAB/bin/gnlx86 &#10;64 Bit Linux (Edit .bashrc)&#10;    export LD_LIBRARY_PATH=$MATLAB/bin/glnxa64 &#10;Windows (Start|My Computer|Properties|Advanced&#10;       Environment Variables| Add the directory that contains&#10;       matlab.exe to your path)&#10;    Be sure that the matlab binary directory is in your PATH">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that Matlab be installed on&#10;your local machine.&#10;&#10;In addition, you must have the Matlab shared libraries&#10;in DYLD_LIBRARY_PATH, LD_LIBRARY_PATH or PATH.&#10;If you invoked Ptolemy via $PTII/bin/vergil, then you&#10;need not make any changes, the model should work.&#10;&#10;If you are running via Eclipse, then you may need&#10;to make changes.  If $MATLAB is the location of&#10;your Matlab installation, then make the appropriate&#10;settings and restart.&#10;&#10;32 Bit Mac (10.5?, Edit ~/.MacOSX/environment.plist)&#10;    export DYLD_LIBRARY_PATH=$MATLAB/bin/maci&#10;64 Bit Mac (10.6?, Edit ~/.MacOSX/environment.plist)&#10;    export DYLD_LIBRARY_PATH=$MATLAB/bin/maci64 &#10;32 Bit Linux (Edit .bashrc)&#10;    export LD_LIBRARY_PATH=$MATLAB/bin/gnlx86 &#10;64 Bit Linux (Edit .bashrc)&#10;    export LD_LIBRARY_PATH=$MATLAB/bin/glnxa64 &#10;Windows (Start|My Computer|Properties|Advanced&#10;       Environment Variables| Add the directory that contains&#10;       the Matlab .dll files to your path, typically &#10;       c:\Program Files\MATLAB\R2014b\bin\win64)&#10;    Be sure that the matlab binary directory is in your PATH">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 225.0]">
         </property>
     </property>
     <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
