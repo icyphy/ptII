@@ -1030,6 +1030,7 @@ update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
+		$(PTSETUP_MAC).jar $(PTSETUP_MAC).app.tar.gz \
 		moog:$(PTII_FTP)
 untar:
 	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
