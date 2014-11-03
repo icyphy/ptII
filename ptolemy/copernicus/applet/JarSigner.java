@@ -634,7 +634,7 @@ public class JarSigner {
         private Method getMetaNameMethod;
         private Method writeMethod;
 
-        private static final String JDK_SIGNATURE_FILE = "sun.security.tools.SignatureFile";
+        private static String JDK_SIGNATURE_FILE = "sun.security.tools.SignatureFile";
         private static final String GETMETANAME_METHOD = "getMetaName";
         private static final String WRITE_METHOD = "write";
 
@@ -644,8 +644,13 @@ public class JarSigner {
                         InstantiationException, IllegalAccessException,
                         InvocationTargetException {
 
-            JDKsfClass = Class.forName(JDK_SIGNATURE_FILE);
-
+            try {
+                JDKsfClass = Class.forName(JDK_SIGNATURE_FILE);
+            } catch (ClassNotFoundException ex) {
+                // Java 1.8
+                JDK_SIGNATURE_FILE = "sun.security.tools.jarsigner.SignatureFile";
+                JDKsfClass = Class.forName(JDK_SIGNATURE_FILE);
+            }
             Constructor constructor = _findConstructor(JDKsfClass,
                     MessageDigest[].class, Manifest.class,
                     ManifestDigester.class, String.class, Boolean.TYPE);
@@ -708,18 +713,38 @@ public class JarSigner {
                 Class contentSignerClass = Class.forName(JDK_CONTENT_SIGNER);
 
                 Constructor constructor = null;
+                // Most recent JVM first for efficiency.
                 try {
-                    // Java 1.5
-                    constructor = _findConstructor(blockClass,
-                            sfg.getJDKSignatureFileClass(), PrivateKey.class,
-                            X509Certificate[].class, Boolean.TYPE,
-                            String.class, X509Certificate.class,
-                            contentSignerClass, String[].class, ZipFile.class);
+                        // Java 1.8
+                        // javap -classpath /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/../lib/tools.jar sun.security.tools.jarsigner.SignatureFile\$Block
 
-                    block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
-                            privateKey, certChain, externalSF, null, null,
-                            null, null, zipFile);
+                        //sun.security.tools.jarsigner.SignatureFile$Block(sun.security.tools.jarsigner.SignatureFile, 
+                        //        java.security.PrivateKey, 
+                        //        java.lang.String, 
+                        //        java.security.cert.X509Certificate[], boolean, 
+                        //        java.lang.String, java.security.cert.X509Certificate,
+                        //        java.lang.String, 
+                        //        com.sun.jarsigner.ContentSigner, 
+                        //        java.lang.String[], java.util.zip.ZipFile)
 
+                        constructor = _findConstructor(blockClass,
+                                sfg.getJDKSignatureFileClass(), PrivateKey.class,
+                                String.class,
+                                X509Certificate[].class, Boolean.TYPE,
+                                String.class, X509Certificate.class,
+                                // Is this the only difference betwee 1.6 and 1.8?
+                                // Running jode indicates that this is tSAPolicyID
+                                // and passed to
+                                // sun.security.tools.jarsigner.JarSignerParameters.
+                                // Presumably, this is at Time Stamp Authority Policy.
+                                // See http://docs.oracle.com/javase/8/docs/technotes/guides/security/time-of-signing.html
+                                String.class,
+                                contentSignerClass, String[].class, ZipFile.class);
+
+                        block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
+                                privateKey,
+                                /*signatureAlgorithm*/null, certChain, externalSF,
+                                null, null, null, null, null, zipFile);
                 } catch (NoSuchMethodException ex) {
                     // Java 1.6
 
@@ -730,18 +755,40 @@ public class JarSigner {
                     // and see
                     // http://www.docjar.com/docs/api/sun/security/tools/SignatureFile.html
 
-                    constructor = _findConstructor(blockClass,
-                            sfg.getJDKSignatureFileClass(), PrivateKey.class,
-                            /* Is this the only difference between 1.5 and 1.6?*/
-                            /* signatureAlgorithm */String.class,
-                            X509Certificate[].class, Boolean.TYPE,
-                            String.class, X509Certificate.class,
-                            contentSignerClass, String[].class, ZipFile.class);
+                    try {
+                        constructor = _findConstructor(blockClass,
+                                sfg.getJDKSignatureFileClass(), PrivateKey.class,
+                                /* Is this the only difference between 1.5 and 1.6?*/
+                                /* signatureAlgorithm */String.class,
+                                X509Certificate[].class, Boolean.TYPE,
+                                String.class, X509Certificate.class,
+                                contentSignerClass, String[].class, ZipFile.class);
 
-                    block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
-                            privateKey,
-                            /*signatureAlgorithm*/null, certChain, externalSF,
-                            null, null, null, null, zipFile);
+                        block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
+                                privateKey,
+                                /*signatureAlgorithm*/null, certChain, externalSF,
+                                null, null, null, null, zipFile);
+
+                    } catch (NoSuchMethodException ex2) {
+                        try {
+                            // Java 1.5
+                            constructor = _findConstructor(blockClass,
+                                    sfg.getJDKSignatureFileClass(), PrivateKey.class,
+                                    X509Certificate[].class, Boolean.TYPE,
+                                    String.class, X509Certificate.class,
+                                    contentSignerClass, String[].class, ZipFile.class);
+
+                            block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
+                                    privateKey, certChain, externalSF, null, null,
+                                    null, null, zipFile);
+                        } catch (NoSuchMethodException ex3) {
+                            throw new NoSuchMethodException("Failed to find the Block "
+                                    + "constructor. Tried these constructors: "
+                                    + "\nJava 1.8: " + ex
+                                    + "\nJava 1.6: " + ex2
+                                    + "\nJava 1.5: " + ex3);
+                        }
+                    }
                 }
                 getMetaNameMethod = _findMethod(blockClass, GETMETANAME_METHOD);
                 writeMethod = _findMethod(blockClass, WRITE_METHOD,
