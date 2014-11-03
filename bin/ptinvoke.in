@@ -192,11 +192,12 @@ fi
 # Solaris: set PATH and then export. See
 # http://serverfault.com/questions/103999/how-should-i-export-a-shell-variable-in-bash
 BCVTB_HOME="${PTII}/lbnl"; export BCVTB_HOME
-if [ "$MATLABPATH" != "" ]; then
-    MATLABPATH="${MATLABPATH}:${BCVTB_HOME}/lib/matlab"; export MATLABPATH
-else
-    MATLABPATH="${BCVTB_HOME}/lib/matlab"; export MATLABPATH
-fi
+# Matlab R2014b fails to start, the error message is "Undefined function or variable 'matlabrc'".  Mathworks suggests not setting MATLABPATH.
+#if [ "$MATLABPATH" != "" ]; then
+#    MATLABPATH="${MATLABPATH}:${BCVTB_HOME}/lib/matlab"; export MATLABPATH
+#else
+#    MATLABPATH="${BCVTB_HOME}/lib/matlab"; export MATLABPATH
+#fi
 
 #### Cal 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
