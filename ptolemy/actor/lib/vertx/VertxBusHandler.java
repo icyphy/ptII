@@ -210,44 +210,46 @@ public class VertxBusHandler extends TypedAtomicActor {
     /** Open a web socket that serves as a connection to the event bus.
      */
     private void _openWebSocket() {
-        MultiMap map = new CaseInsensitiveMultiMap();
-        map.add("connectTimeout", "10000000");
-        _client.connectWebsocket("/eventbus/websocket",
-                WebSocketVersion.RFC6455, map, new Handler<WebSocket>() {
-            @Override
-            public void handle(WebSocket websocket) {
-                //register
-                JsonObject msg = new JsonObject().putString("type",
-                        "register").putString("address", _address);
-                websocket.writeTextFrame(msg.encode());
-                _websocket = websocket;
-
-                websocket.dataHandler(new Handler<Buffer>() {
-                    @Override
-                    public void handle(Buffer buff) {
-                        String msg = buff.toString();
-                        JsonObject received = new JsonObject(msg);
-                        try {
-                            subscribe.send(0,
-                                    new StringToken(received.getField("body").toString()));
-                        } catch (NoRoomException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (IllegalActionException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+        if (!_stopRequested) {
+            MultiMap map = new CaseInsensitiveMultiMap();
+            map.add("connectTimeout", "10000000");
+            _client.connectWebsocket("/eventbus/websocket",
+                    WebSocketVersion.RFC6455, map, new Handler<WebSocket>() {
+                @Override
+                public void handle(WebSocket websocket) {
+                    //register
+                    JsonObject msg = new JsonObject().putString("type",
+                            "register").putString("address", _address);
+                    websocket.writeTextFrame(msg.encode());
+                    _websocket = websocket;
+    
+                    websocket.dataHandler(new Handler<Buffer>() {
+                        @Override
+                        public void handle(Buffer buff) {
+                            String msg = buff.toString();
+                            JsonObject received = new JsonObject(msg);
+                            try {
+                                subscribe.send(0,
+                                        new StringToken(received.getField("body").toString()));
+                            } catch (NoRoomException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (IllegalActionException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-
-                _websocket.closeHandler(new Handler<Void>() {
-                    @Override
-                    public void handle(final Void event) {
-                        _openWebSocket();
-                    }
-                });
-            }
-        });
+                    });
+    
+                    _websocket.closeHandler(new Handler<Void>() {
+                        @Override
+                        public void handle(final Void event) {
+                            _openWebSocket();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private HttpClient _client;
