@@ -292,15 +292,9 @@ initially
 #################################################################
 #####
 #
-test verification-1.3 {SimpleTrafficLightBooleanToken} {
-    set results [runAndReturnFile $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightBooleanToken.xml  $PTII/ptolemy/verification/demo/SimpleTrafficLight/stlbt.kripke]
 
-    # The model does not produce the same results each time, so we blank out the differences.
 
-    regsub {state : \{C[^\}]*\}} $results {state : \{C XXXXXX\}} results2
-    regsub {state : \{P[^\}]*\}} $results2 {state : \{P XXXXXX\}} results3
-    list $results3
-} {{
+    set results1_6 {
 MODULE CarLightNormal( Sec_isPresent )
 	VAR 
 		state : {C XXXXXX};
@@ -418,16 +412,151 @@ MODULE main
 
 	SPEC 
 		! EF (CarLightNormal.state = Cgrn & PedestrianLightNormal.state = Pgreen)
-}}
+}
+
+
+
+    set results1_8 {
+MODULE CarLightNormal( Sec_isPresent )
+	VAR 
+		state : {C XXXXXX};
+		count : { ls,0,1,2,gt };
+	ASSIGN 
+		init(state) := Cinit;
+		next(state) :=
+			case
+				state=Cinit & count=ls :{ Cred };
+				state=Cinit & count=0 :{ Cred };
+				state=Cinit & count=1 :{ Cred };
+				state=Cinit & count=2 :{ Cred };
+				state=Cinit & count=gt :{ Cred };
+				Sec_isPresent & state=Cred & count=ls :{ Cred };
+				Sec_isPresent & state=Cred & count=0 :{ Cred };
+				Sec_isPresent & state=Cred & count=1 :{ Cred };
+				Sec_isPresent & state=Cred & count=2 :{ Credyel };
+				Sec_isPresent & state=Credyel & count=ls :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=0 :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=1 :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=2 :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=gt :{ Cgrn };
+				Sec_isPresent & state=Cgrn & count=1 :{ Cyel };
+				Sec_isPresent & state=Cgrn & count=ls :{ Cgrn };
+				Sec_isPresent & state=Cgrn & count=0 :{ Cgrn };
+				Sec_isPresent & state=Cyel & count=ls :{ Cred };
+				Sec_isPresent & state=Cyel & count=0 :{ Cred };
+				Sec_isPresent & state=Cyel & count=1 :{ Cred };
+				Sec_isPresent & state=Cyel & count=2 :{ Cred };
+				Sec_isPresent & state=Cyel & count=gt :{ Cred };
+				TRUE             : state;
+			esac;
+
+		init(count) := 0;
+		next(count) :=
+			case
+				state=Cinit & count=ls :{ 0 };
+				state=Cinit & count=0 :{ 0 };
+				state=Cinit & count=1 :{ 0 };
+				state=Cinit & count=2 :{ 0 };
+				state=Cinit & count=gt :{ 0 };
+				Sec_isPresent & state=Cred & count=ls :{ ls };
+				Sec_isPresent & state=Cred & count=ls :{ 0 };
+				Sec_isPresent & state=Cred & count=0 :{ 1 };
+				Sec_isPresent & state=Cred & count=1 :{ 2 };
+				Sec_isPresent & state=Cred & count=2 :{ 0 };
+				Sec_isPresent & state=Credyel & count=ls :{ 0 };
+				Sec_isPresent & state=Credyel & count=0 :{ 0 };
+				Sec_isPresent & state=Credyel & count=1 :{ 0 };
+				Sec_isPresent & state=Credyel & count=2 :{ 0 };
+				Sec_isPresent & state=Credyel & count=gt :{ 0 };
+				Sec_isPresent & state=Cgrn & count=ls :{ ls };
+				Sec_isPresent & state=Cgrn & count=ls :{ 0 };
+				Sec_isPresent & state=Cgrn & count=0 :{ 1 };
+				Sec_isPresent & state=Cyel & count=ls :{ 0 };
+				Sec_isPresent & state=Cyel & count=0 :{ 0 };
+				Sec_isPresent & state=Cyel & count=1 :{ 0 };
+				Sec_isPresent & state=Cyel & count=2 :{ 0 };
+				Sec_isPresent & state=Cyel & count=gt :{ 0 };
+				TRUE             : count;
+			esac;
+
+
+	DEFINE
+		Cred_value :=  ( state=Cinit & Cred_isPresent  & count=ls )   | ( state=Cinit & Cred_isPresent  & count=0 )   | ( state=Cinit & Cred_isPresent  & count=1 )   | ( state=Cinit & Cred_isPresent  & count=2 )   | ( state=Cinit & Cred_isPresent  & count=gt )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=ls)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=0)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=1)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=2)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=gt)  )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=ls )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=0 )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=1 )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=2 )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=gt ) ;
+
+ 		Pgo_value :=  (  !(Sec_isPresent & state=Cyel & Pgo_isPresent  & count=ls)  )   & (  !(Sec_isPresent & state=Cyel & Pgo_isPresent  & count=0)  )   & (  !(Sec_isPresent & state=Cyel & Pgo_isPresent  & count=1)  )   & (  !(Sec_isPresent & state=Cyel & Pgo_isPresent  & count=2)  )   & (  !(Sec_isPresent & state=Cyel & Pgo_isPresent  & count=gt)  ) ;
+
+ 		Pstop_isPresent :=  ( Sec_isPresent & state=Cred & count=2 ) ;
+
+  		Pgo_isPresent :=  ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Pstop_value :=  ( Sec_isPresent & state=Cred & count=2 & Pstop_isPresent  ) ;
+
+  		Cred_isPresent :=  ( state=Cinit & count=ls )   | ( state=Cinit & count=0 )   | ( state=Cinit & count=1 )   | ( state=Cinit & count=2 )   | ( state=Cinit & count=gt )   | ( Sec_isPresent & state=Credyel & count=ls )   | ( Sec_isPresent & state=Credyel & count=0 )   | ( Sec_isPresent & state=Credyel & count=1 )   | ( Sec_isPresent & state=Credyel & count=2 )   | ( Sec_isPresent & state=Credyel & count=gt )   | ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Cyel_isPresent :=  ( state=Cinit & count=ls )   | ( state=Cinit & count=0 )   | ( state=Cinit & count=1 )   | ( state=Cinit & count=2 )   | ( state=Cinit & count=gt )   | ( Sec_isPresent & state=Cred & count=2 )   | ( Sec_isPresent & state=Credyel & count=ls )   | ( Sec_isPresent & state=Credyel & count=0 )   | ( Sec_isPresent & state=Credyel & count=1 )   | ( Sec_isPresent & state=Credyel & count=2 )   | ( Sec_isPresent & state=Credyel & count=gt )   | ( Sec_isPresent & state=Cgrn & count=1 )   | ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Cyel_value :=  (  !(state=Cinit & count=ls & Cyel_isPresent )  )   & (  !(state=Cinit & count=0 & Cyel_isPresent )  )   & (  !(state=Cinit & count=1 & Cyel_isPresent )  )   & (  !(state=Cinit & count=2 & Cyel_isPresent )  )   & (  !(state=Cinit & count=gt & Cyel_isPresent )  )   | ( Sec_isPresent & state=Cred & count=2 & Cyel_isPresent  )   & (  !(Sec_isPresent & state=Credyel & count=ls & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=0 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=1 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=2 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=gt & Cyel_isPresent )  )   | ( Sec_isPresent & state=Cgrn & count=1 & Cyel_isPresent  )   & (  !(Sec_isPresent & state=Cyel & count=ls & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=0 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=1 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=2 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=gt & Cyel_isPresent )  ) ;
+
+ 		Cgrn_isPresent :=  ( state=Cinit & count=ls )   | ( state=Cinit & count=0 )   | ( state=Cinit & count=1 )   | ( state=Cinit & count=2 )   | ( state=Cinit & count=gt )   | ( Sec_isPresent & state=Credyel & count=ls )   | ( Sec_isPresent & state=Credyel & count=0 )   | ( Sec_isPresent & state=Credyel & count=1 )   | ( Sec_isPresent & state=Credyel & count=2 )   | ( Sec_isPresent & state=Credyel & count=gt )   | ( Sec_isPresent & state=Cgrn & count=1 )   | ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Cgrn_value :=  (  !(state=Cinit & count=ls & Cgrn_isPresent )  )   & (  !(state=Cinit & count=0 & Cgrn_isPresent )  )   & (  !(state=Cinit & count=1 & Cgrn_isPresent )  )   & (  !(state=Cinit & count=2 & Cgrn_isPresent )  )   & (  !(state=Cinit & count=gt & Cgrn_isPresent )  )   | ( Sec_isPresent & state=Credyel & count=ls & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=0 & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=1 & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=2 & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=gt & Cgrn_isPresent  )   & (  !(Sec_isPresent & state=Cgrn & count=1 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=ls & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=0 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=1 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=2 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=gt & Cgrn_isPresent )  ) ;
+
+ 
+MODULE PedestrianLightNormal( Pgo_value,Pgo_isPresent,Pstop_isPresent,Pstop_value )
+	VAR 
+		state : {P XXXXXX};
+	ASSIGN 
+		init(state) := Pinit;
+		next(state) :=
+			case
+				state=Pinit :{ Pred };
+				state=Pred & Pgo_value=0 & Pgo_isPresent  :{ Pgreen };
+				state=Pgreen & Pstop_value=1 & Pstop_isPresent  :{ Pred };
+				TRUE             : state;
+			esac;
+
+
+	DEFINE
+		Pgrn_isPresent :=  ( state=Pinit )   | ( state=Pred & Pgo_value=0 & Pgo_isPresent  )   | ( state=Pgreen & Pstop_value=1 & Pstop_isPresent  ) ;
+
+ 		Pred_value :=  ( state=Pinit & Pred_isPresent  )   & (  !(state=Pred & Pgo_value=0 & Pgo_isPresent  & Pred_isPresent )  )   | ( state=Pgreen & Pred_isPresent  & Pstop_value=1 & Pstop_isPresent  ) ;
+
+ 		Pgrn_value :=  (  !(state=Pinit & Pgrn_isPresent )  )   | ( state=Pred & Pgo_value=0 & Pgo_isPresent  & Pgrn_isPresent  )   & (  !(state=Pgreen & Pstop_value=1 & Pstop_isPresent  & Pgrn_isPresent )  ) ;
+
+ 		Pred_isPresent :=  ( state=Pinit )   | ( state=Pred & Pgo_value=0 & Pgo_isPresent  )   | ( state=Pgreen & Pstop_value=1 & Pstop_isPresent  ) ;
+
+ 
+
+MODULE main 
+	VAR 
+		CarLightNormal: CarLightNormal( TRUE);
+		PedestrianLightNormal: PedestrianLightNormal(CarLightNormal.Pgo_value, CarLightNormal.Pgo_isPresent, CarLightNormal.Pstop_isPresent, CarLightNormal.Pstop_value );
+
+	SPEC 
+		! EF (CarLightNormal.state = Cgrn & PedestrianLightNormal.state = Pgreen)
+}
+
+test verification-1.3 {SimpleTrafficLightBooleanToken} {
+    set results [runAndReturnFile $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightBooleanToken.xml  $PTII/ptolemy/verification/demo/SimpleTrafficLight/stlbt.kripke]
+
+    # The model does not produce the same results each time, so we blank out the differences.
+
+    regsub {state : \{C[^\}]*\}} $results {state : \{C XXXXXX\}} results2
+    regsub {state : \{P[^\}]*\}} $results2 {state : \{P XXXXXX\}} results3
+
+if { $results3 != $results1_6 } {
+    if { $results3 != $results1_8 } {
+	puts "Results was: $results3\n which is not the same as the Java 1.6 results:\n $results1_6\nDiffs:\n[diffText $results1_6 $results3]\n or 1.8 results:\n $results1_8\nDiffs:\n[diffText $results1_8 $results3]"
+	error 
+    }
+ }
+} {}
+ 
 
 #################################################################
 #####
 #
-test verification-1.4 {SimpleTrafficLightSMVModule} {
-    set results [runAndReturnFile $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml  $PTII/ptolemy/verification/demo/SimpleTrafficLight/test.kripke]
-    regsub {state : \{C[^\}]*\}} $results {state : \{C XXXXXX\}} results2
-    list $results2
-} {{
+set results1_4jdk1_6 {
 MODULE CarLightNormal( Sec_isPresent )
 	VAR 
 		state : {C XXXXXX};
@@ -544,4 +673,136 @@ MODULE main
 
 	SPEC 
 		! EF (CarLightNormal.state = Cgrn & PedestrianLightSMV.state = Pgreen)
-}}
+}
+
+
+set results1_4jdk1_8 {
+MODULE CarLightNormal( Sec_isPresent )
+	VAR 
+		state : {C XXXXXX};
+		count : { ls,0,1,2,gt };
+	ASSIGN 
+		init(state) := Cinit;
+		next(state) :=
+			case
+				state=Cinit & count=ls :{ Cred };
+				state=Cinit & count=0 :{ Cred };
+				state=Cinit & count=1 :{ Cred };
+				state=Cinit & count=2 :{ Cred };
+				state=Cinit & count=gt :{ Cred };
+				Sec_isPresent & state=Cred & count=ls :{ Cred };
+				Sec_isPresent & state=Cred & count=0 :{ Cred };
+				Sec_isPresent & state=Cred & count=1 :{ Cred };
+				Sec_isPresent & state=Cred & count=2 :{ Credyel };
+				Sec_isPresent & state=Credyel & count=ls :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=0 :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=1 :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=2 :{ Cgrn };
+				Sec_isPresent & state=Credyel & count=gt :{ Cgrn };
+				Sec_isPresent & state=Cgrn & count=1 :{ Cyel };
+				Sec_isPresent & state=Cgrn & count=ls :{ Cgrn };
+				Sec_isPresent & state=Cgrn & count=0 :{ Cgrn };
+				Sec_isPresent & state=Cyel & count=ls :{ Cred };
+				Sec_isPresent & state=Cyel & count=0 :{ Cred };
+				Sec_isPresent & state=Cyel & count=1 :{ Cred };
+				Sec_isPresent & state=Cyel & count=2 :{ Cred };
+				Sec_isPresent & state=Cyel & count=gt :{ Cred };
+				TRUE             : state;
+			esac;
+
+		init(count) := 0;
+		next(count) :=
+			case
+				state=Cinit & count=ls :{ 0 };
+				state=Cinit & count=0 :{ 0 };
+				state=Cinit & count=1 :{ 0 };
+				state=Cinit & count=2 :{ 0 };
+				state=Cinit & count=gt :{ 0 };
+				Sec_isPresent & state=Cred & count=ls :{ ls };
+				Sec_isPresent & state=Cred & count=ls :{ 0 };
+				Sec_isPresent & state=Cred & count=0 :{ 1 };
+				Sec_isPresent & state=Cred & count=1 :{ 2 };
+				Sec_isPresent & state=Cred & count=2 :{ 0 };
+				Sec_isPresent & state=Credyel & count=ls :{ 0 };
+				Sec_isPresent & state=Credyel & count=0 :{ 0 };
+				Sec_isPresent & state=Credyel & count=1 :{ 0 };
+				Sec_isPresent & state=Credyel & count=2 :{ 0 };
+				Sec_isPresent & state=Credyel & count=gt :{ 0 };
+				Sec_isPresent & state=Cgrn & count=ls :{ ls };
+				Sec_isPresent & state=Cgrn & count=ls :{ 0 };
+				Sec_isPresent & state=Cgrn & count=0 :{ 1 };
+				Sec_isPresent & state=Cyel & count=ls :{ 0 };
+				Sec_isPresent & state=Cyel & count=0 :{ 0 };
+				Sec_isPresent & state=Cyel & count=1 :{ 0 };
+				Sec_isPresent & state=Cyel & count=2 :{ 0 };
+				Sec_isPresent & state=Cyel & count=gt :{ 0 };
+				TRUE             : count;
+			esac;
+
+
+	DEFINE
+		Cred_value :=  ( state=Cinit & Cred_isPresent  & count=ls )   | ( state=Cinit & Cred_isPresent  & count=0 )   | ( state=Cinit & Cred_isPresent  & count=1 )   | ( state=Cinit & Cred_isPresent  & count=2 )   | ( state=Cinit & Cred_isPresent  & count=gt )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=ls)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=0)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=1)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=2)  )   & (  !(Sec_isPresent & state=Credyel & Cred_isPresent  & count=gt)  )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=ls )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=0 )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=1 )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=2 )   | ( Sec_isPresent & state=Cyel & Cred_isPresent  & count=gt ) ;
+
+ 		Pgo_value :=  ( Sec_isPresent & state=Cyel & Pgo_isPresent  & count=ls )   | ( Sec_isPresent & state=Cyel & Pgo_isPresent  & count=0 )   | ( Sec_isPresent & state=Cyel & Pgo_isPresent  & count=1 )   | ( Sec_isPresent & state=Cyel & Pgo_isPresent  & count=2 )   | ( Sec_isPresent & state=Cyel & Pgo_isPresent  & count=gt ) ;
+
+ 		Pstop_isPresent :=  ( Sec_isPresent & state=Cred & count=2 ) ;
+
+  		Pgo_isPresent :=  ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Pstop_value :=  ( Sec_isPresent & state=Cred & count=2 & Pstop_isPresent  ) ;
+
+  		Cred_isPresent :=  ( state=Cinit & count=ls )   | ( state=Cinit & count=0 )   | ( state=Cinit & count=1 )   | ( state=Cinit & count=2 )   | ( state=Cinit & count=gt )   | ( Sec_isPresent & state=Credyel & count=ls )   | ( Sec_isPresent & state=Credyel & count=0 )   | ( Sec_isPresent & state=Credyel & count=1 )   | ( Sec_isPresent & state=Credyel & count=2 )   | ( Sec_isPresent & state=Credyel & count=gt )   | ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Cyel_isPresent :=  ( state=Cinit & count=ls )   | ( state=Cinit & count=0 )   | ( state=Cinit & count=1 )   | ( state=Cinit & count=2 )   | ( state=Cinit & count=gt )   | ( Sec_isPresent & state=Cred & count=2 )   | ( Sec_isPresent & state=Credyel & count=ls )   | ( Sec_isPresent & state=Credyel & count=0 )   | ( Sec_isPresent & state=Credyel & count=1 )   | ( Sec_isPresent & state=Credyel & count=2 )   | ( Sec_isPresent & state=Credyel & count=gt )   | ( Sec_isPresent & state=Cgrn & count=1 )   | ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Cyel_value :=  (  !(state=Cinit & count=ls & Cyel_isPresent )  )   & (  !(state=Cinit & count=0 & Cyel_isPresent )  )   & (  !(state=Cinit & count=1 & Cyel_isPresent )  )   & (  !(state=Cinit & count=2 & Cyel_isPresent )  )   & (  !(state=Cinit & count=gt & Cyel_isPresent )  )   | ( Sec_isPresent & state=Cred & count=2 & Cyel_isPresent  )   & (  !(Sec_isPresent & state=Credyel & count=ls & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=0 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=1 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=2 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Credyel & count=gt & Cyel_isPresent )  )   | ( Sec_isPresent & state=Cgrn & count=1 & Cyel_isPresent  )   & (  !(Sec_isPresent & state=Cyel & count=ls & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=0 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=1 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=2 & Cyel_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=gt & Cyel_isPresent )  ) ;
+
+ 		Cgrn_isPresent :=  ( state=Cinit & count=ls )   | ( state=Cinit & count=0 )   | ( state=Cinit & count=1 )   | ( state=Cinit & count=2 )   | ( state=Cinit & count=gt )   | ( Sec_isPresent & state=Credyel & count=ls )   | ( Sec_isPresent & state=Credyel & count=0 )   | ( Sec_isPresent & state=Credyel & count=1 )   | ( Sec_isPresent & state=Credyel & count=2 )   | ( Sec_isPresent & state=Credyel & count=gt )   | ( Sec_isPresent & state=Cgrn & count=1 )   | ( Sec_isPresent & state=Cyel & count=ls )   | ( Sec_isPresent & state=Cyel & count=0 )   | ( Sec_isPresent & state=Cyel & count=1 )   | ( Sec_isPresent & state=Cyel & count=2 )   | ( Sec_isPresent & state=Cyel & count=gt ) ;
+
+ 		Cgrn_value :=  (  !(state=Cinit & count=ls & Cgrn_isPresent )  )   & (  !(state=Cinit & count=0 & Cgrn_isPresent )  )   & (  !(state=Cinit & count=1 & Cgrn_isPresent )  )   & (  !(state=Cinit & count=2 & Cgrn_isPresent )  )   & (  !(state=Cinit & count=gt & Cgrn_isPresent )  )   | ( Sec_isPresent & state=Credyel & count=ls & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=0 & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=1 & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=2 & Cgrn_isPresent  )   | ( Sec_isPresent & state=Credyel & count=gt & Cgrn_isPresent  )   & (  !(Sec_isPresent & state=Cgrn & count=1 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=ls & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=0 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=1 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=2 & Cgrn_isPresent )  )   & (  !(Sec_isPresent & state=Cyel & count=gt & Cgrn_isPresent )  ) ;
+
+ 
+MODULE PedestrianLightSMV (Pgo_isPresent, Pgo_value ,Pstop_isPresent, Pstop_value ,Sec_isPresent, Sec_value )
+
+/* The file contains contents in formats acceptable by SMV.
+ * Currently there is no content checking functionality.
+ * It is the designer's responsibility to keep it correct.
+ */
+
+	VAR 
+		state : {Pgreen,Pinit,Pred};
+	ASSIGN 
+		init(state) := Pinit;
+		next(state) :=
+			case
+				state=Pinit :{ Pred };
+				Pgo_isPresent & state=Pred :{ Pgreen };
+				Pstop_isPresent & state=Pgreen :{ Pred };
+				1             : state;
+			esac;
+
+	DEFINE
+		Pred_isPresent :=  ( state=Pinit ) |  ( Pgo_isPresent & state=Pred ) |  ( Pstop_isPresent & state=Pgreen ) ;
+
+ 		Pgrn_isPresent :=  ( state=Pinit ) |  ( Pgo_isPresent & state=Pred ) |  ( Pstop_isPresent & state=Pgreen ) ;
+
+MODULE main 
+	VAR 
+		CarLightNormal: CarLightNormal( TRUE);
+		PedestrianLightSMV: PedestrianLightSMV(CarLightNormal.Pgo_isPresent, CarLightNormal.Pgo_value, CarLightNormal.Pstop_isPresent, CarLightNormal.Pstop_value,  1, 1);
+
+	SPEC 
+		! EF (CarLightNormal.state = Cgrn & PedestrianLightSMV.state = Pgreen)
+}
+
+
+test verification-1.4 {SimpleTrafficLightSMVModule} {
+    set results [runAndReturnFile $PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml  $PTII/ptolemy/verification/demo/SimpleTrafficLight/test.kripke]
+    regsub {state : \{C[^\}]*\}} $results {state : \{C XXXXXX\}} results2
+    if { $results2 != $results1_4jdk1_6 } {
+	if { $results2 != $results1_4jdk1_8 } {
+	    puts "Results was: $results2\n which is not the same as the Java 1.6 results:\n $results1_4jdk1_6\nDiffs:\n[diffText $results1_4jdk1_6 $results2]\n or 1.8 results:\n $results1_4jdk1_8\nDiffs:\n[diffText $results1_4jdk1_8 $results2]"
+	    error 
+	}
+    }
+} {}
