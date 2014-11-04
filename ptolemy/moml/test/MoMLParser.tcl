@@ -4700,7 +4700,8 @@ test MoMLParser-35.1 {test missing classes } {
     # This used to fail because LevelCrossing Links had problems, now we
     # try to link to a non-existent relation
     list $errMsg [string range [$recorderErrorHandler getMessages] 0 130]
-} {{Warning: Missing Classes: NotAClassC2, NotAClassC1
+} {{Warning: Missing Classes: NotAClassC1, NotAClassC2
 } {RecorderErrorHandler: Error encountered in:
 <entity name="C1" class="NotAClassC1">
 ptolemy.kernel.util.IllegalActionException: Cann}}
+
