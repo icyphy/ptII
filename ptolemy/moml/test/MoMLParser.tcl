@@ -4699,9 +4699,15 @@ test MoMLParser-35.1 {test missing classes } {
     java::call ptolemy.moml.MoMLParser setErrorHandler [java::null]
     # This used to fail because LevelCrossing Links had problems, now we
     # try to link to a non-existent relation
-    list $errMsg [string range [$recorderErrorHandler getMessages] 0 130]
-} {{Warning: Missing Classes: NotAClassC1, NotAClassC2
-} {RecorderErrorHandler: Error encountered in:
+    set err1_6 {Warning: Missing Classes: NotAClassC2, NotAClassC1
+}
+    set err1_8 {Warning: Missing Classes: NotAClassC1, NotAClassC2
+}
+    if { $errMsg != $err1_6 && $errMsg != $err1_8 } {
+	error "Error message\n$errMsg\n was not the same as the Java 1.6 error:\n$err1_6\n or the Java 1.8 error:\n$err1_8"
+    }
+    list [string range [$recorderErrorHandler getMessages] 0 130]
+} {{RecorderErrorHandler: Error encountered in:
 <entity name="C1" class="NotAClassC1">
 ptolemy.kernel.util.IllegalActionException: Cann}}
 
