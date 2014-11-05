@@ -68,9 +68,9 @@
   <!-- model names the model to be opened.  The default is the empty string.  To use this, run 'ant vergil -Dmodel=foo.xml' -->
   <property name="model" value="" />
 
-  <property name="source" value="1.6" />
+  <property name="source" value="1.8" />
 
-  <property name="target" value="1.6" />
+  <property name="target" value="1.8" />
 
   <!-- The pathname of the tests that are run by the test.cobertura, test.report, test.short targets. -->
   <property name="test.batch" value="**/junit/*.java" />
