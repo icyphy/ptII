@@ -87,7 +87,9 @@ public class EDF extends Director {
         super(container, name);
         _jobs = new ArrayList<Job>();
         _taskPlotEditorFactory = new TaskPlotEditorFactory(this,
-                this.uniqueName("_editorFactory"));
+                this.uniqueName("_taskPlotEditorFactory"));
+        _dbfPlotEditorFactor = new DBFPlotEditorFactory(this, 
+                this.uniqueName("_dbfPlotEditorFactory"));
         _schedulableTasks = new ArrayList<Task>();
         createPlot = new Parameter(this, "Create Plot");
         createPlot.setTypeEquals(BaseType.BOOLEAN);
@@ -150,6 +152,7 @@ public class EDF extends Director {
                 JFrame jframe = effigy.entityList(Tableau.class).get(0)
                         .getFrame();
                 _taskPlotEditorFactory.createEditor(this, jframe);
+                _dbfPlotEditorFactor.createEditor(this, jframe);
             } else {
                 throw new IllegalActionException(this,
                         "Can't find top level effigy or any open tableaux");
@@ -169,6 +172,10 @@ public class EDF extends Director {
 
         if (_taskPlotEditorFactory.getTaskPlot() != null) {
             _taskPlotEditorFactory.getTaskPlot().clear();
+        }
+        
+        if (_dbfPlotEditorFactor.getTaskPlot() != null) {
+            _dbfPlotEditorFactor.getTaskPlot().clear();
         }
     }
 
@@ -285,12 +292,19 @@ public class EDF extends Director {
         _jobs.add(job);
         if (_taskPlotEditorFactory.getTaskPlot() != null) {
             _taskPlotEditorFactory.getTaskPlot().addJob(job);
+            _dbfPlotEditorFactor.getTaskPlot().addJob(job);
         }
         if (_debugging) {
             _debug("Added job " + job);
         }
     }
 
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _dbfPlotEditorFactor.getTaskPlot().finalize();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -341,4 +355,5 @@ public class EDF extends Director {
     private List<Task> _schedulableTasks;
     private int _simulationEndTime = 20;
     private TaskPlotEditorFactory _taskPlotEditorFactory;
+    private DBFPlotEditorFactory _dbfPlotEditorFactor;
 }

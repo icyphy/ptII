@@ -48,6 +48,8 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Channel.java \
+	DBFPlot.java \
+	DBFPlotEditorFactory.java \
     EDF.java \
     InputModelAttributes.java \
     Job.java \
