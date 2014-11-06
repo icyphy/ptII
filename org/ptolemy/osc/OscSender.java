@@ -223,7 +223,7 @@ public class OscSender extends TypedAtomicActor {
             OscMessage m = new OscMessage(prefix + "/" + label);
 
             if (o instanceof Double) {
-                m.add((Double) o);
+                m.add(new Float((double)o));
             } else if (o instanceof Integer) {
                 m.add((Integer) o);
             } else if (o instanceof String) {
