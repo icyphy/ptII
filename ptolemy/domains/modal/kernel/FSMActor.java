@@ -4441,7 +4441,7 @@ ExplicitChangeContext {
                     // no record has been found; evaluate.
                     if (_guardProbability + _oldThreshold > 1.0
                             || (_guardProbability > 1.0)) {
-                        throw new IllegalActionException(
+                        System.err.println(
                                 "Probability range exceeds [0.0,1.0]");
                     } else if ((_oldThreshold <= _randomValue)
                             && _randomValue <= (_oldThreshold + _guardProbability)) {
