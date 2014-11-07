@@ -133,11 +133,9 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                     param.setExpression(p.getExpression());
                 }
             }
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
-        } catch (NameDuplicationException e) {
-            throw new InternalErrorException(e);
-        }
+        } 
     }
 
     @Override
@@ -167,9 +165,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                         port.setContainer(null);
                     }
                 } 
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
-            } catch (NameDuplicationException e) {
+            } catch (IllegalActionException | NameDuplicationException e) {
                 throw new InternalErrorException(e);
             } 
         } else {
@@ -188,11 +184,9 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                     new TypedIOPort(container, portName, true, false);
                 }
             }
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
-        } catch (NameDuplicationException e) {
-            throw new InternalErrorException(e);
-        }
+        }  
     }
     
     /**
@@ -206,11 +200,9 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                     container.getPort(portName).setContainer(null);
                 }
             }
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
-        } catch (NameDuplicationException e) {
-            throw new InternalErrorException(e);
-        }
+        }  
     }
     
     /** Create the parameters. Including any parameter the decorator already includes.
@@ -237,7 +229,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
             // This should not occur.
             throw new InternalErrorException(ex);
         }
-        _addedPorts = new ArrayList<String>();
+        _addedPorts = new ArrayList<>();
     }
 
     /** Boolean indicating  enable status of the decorator */
