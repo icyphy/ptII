@@ -708,8 +708,8 @@ See $PTII/doc/coding/maven.htm
 	<artifactId>maven-compiler-plugin</artifactId>
 	<version>2.3.2</version>
 	<configuration>
-	  <source>1.5</source>
-	  <target>1.5</target>
+	  <source>1.8</source>
+	  <target>1.8</target>
 	  <verbose>true</verbose>
 	  <maxmem>1024m</maxmem>
 	  <excludes>
@@ -983,7 +983,7 @@ See $PTII/doc/coding/maven.htm
         <dependency>
           <groupId>com.sun</groupId>
           <artifactId>tools</artifactId>
-          <version>1.5.0</version>
+          <version>1.8.0</version>
           <scope>system</scope>
           <systemPath>${java.home}/../lib/tools.jar</systemPath>
 	</dependency>
