@@ -80,7 +80,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     public MirrorDecorator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
-        _listeners = new ArrayList<>(); 
+        _listeners = new ArrayList<MirrorDecoratorListener>(); 
     }
     
     /** Construct a MirrorDecorator in the given workspace.
