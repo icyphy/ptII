@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="StateSpaceModel" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>State Space Model Actors</doc> 
+  <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
+  </entity> 
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
