@@ -1,5 +1,7 @@
 package org.ptolemy.ssm; 
 
+import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -15,9 +17,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-public class StateSpaceModel extends MirrorDecorator{
+public class StateSpaceModel extends MirrorDecorator {
 
-    /** Construct a MirrorDecorator with a name and a container.
+    /** Construct a StateSpaceModel with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -36,7 +38,7 @@ public class StateSpaceModel extends MirrorDecorator{
         _init();
     }
 
-    /** Construct a MirrorDecorator in the given workspace.
+    /** Construct a StateSpaceModel in the given workspace.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -69,22 +71,26 @@ public class StateSpaceModel extends MirrorDecorator{
                                 .stringValue();
                         if (this.getAttribute(stateName) == null
                                 && stateName.length() != 0) {
-                            Parameter y = new Parameter(this, stateName);
+                            Parameter y = new Parameter(this, stateName); 
                             y.setExpression("0.0");
-                            y.setVisibility(Settable.EXPERT);
+                            y.setVisibility(Settable.EXPERT); 
+                            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
+                        } 
+                        if (this.getAttribute(stateName+"_update") == null) {
                             Parameter yUpdate = new Parameter(this, stateName+"_update");
                             yUpdate.setExpression(stateName); 
-                        } 
+                            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, yUpdate);
+
+                        }
                     } 
 
                 } catch (NameDuplicationException e) {
                     // should not happen
-                    System.err.println("Duplicate field in " + this.getName());
+                    throw new InternalErrorException("Duplicate field in " + this.getName());
                 }
             }
-        }  else {
-            super.attributeChanged(attribute);
-        } 
+        }  
+        super.attributeChanged(attribute); 
     }
 
     @Override
@@ -154,7 +160,6 @@ public class StateSpaceModel extends MirrorDecorator{
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
-        t.setExpression("0.0"); 
-    }
-
+        t.setExpression("0.0");    
+    } 
 }

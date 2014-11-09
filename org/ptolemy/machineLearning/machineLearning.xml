@@ -9,6 +9,7 @@
   
   <input source="hmm/hmm.xml"/>
   <input source="particleFilter/particleFilter.xml"/>
+  <input source="../ssm/ssm.xml"/>
 	
       </group>
     ?>
