@@ -111,7 +111,9 @@ public class DateToEvent extends Transformer {
             DateToken token = (DateToken) input.get(0);
             if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
                 throw new IllegalActionException(this,
-                        "The date on the input port lies in the past.");
+                        "The date on the input port ("
+                        + token.toString()
+                        + ") lies in the past.");
             } else {
                 Time fireTime = new Time(
                         _director,
