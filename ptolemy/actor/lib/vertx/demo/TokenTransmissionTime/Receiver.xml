@@ -1,0 +1,244 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Receiver" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="localClock" class="ptolemy.actor.LocalClock">
+            <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-3">
+            </property>
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 120.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 261, 1259, 639}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1025, 529]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000007">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{500.1349012586806, 308.08452690972257}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="hostName" class="ptolemy.data.expr.StringParameter" value="localhost">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 155.0]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This VertxBusHandler receives a DateToken.&#10;The DateToken is compared to the current time &#10;in two ways:&#10;- comparing the date elements&#10;- converting the date to model time and comparing&#10;model time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
+        </property>
+    </property>
+    <entity name="VertxBusHandler" class="ptolemy.actor.lib.vertx.VertxBusHandler">
+        <property name="address" class="ptolemy.data.expr.Parameter" value="&quot;publish.out1&quot;">
+        </property>
+        <property name="host" class="ptolemy.data.expr.Parameter" value="hostName">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="port">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="DateToModelTime3" class="ptolemy.domains.de.lib.DateToModelTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
+        <doc>Output the current date.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="JsonToToken" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 280.0]">
+        </property>
+        <port name="port_0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="port_1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.00000000000006, 310.0]">
+            </property>
+        </entity>
+        <entity name="ArrayToElements2" class="ptolemy.actor.lib.ArrayToElements">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 310.0]">
+            </property>
+        </entity>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation_0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port_0" relation="relation_0"/>
+        <link port="port_1" relation="relation13"/>
+        <link port="JSONToToken.input" relation="relation_0"/>
+        <link port="JSONToToken.output" relation="relation16"/>
+        <link port="ArrayToElements2.input" relation="relation16"/>
+        <link port="ArrayToElements2.output" relation="relation13"/>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={851, 26, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 320.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="11.531" max="971.5260000000001"/>
+<yRange min="-0.0020000000000007677" max="0.20300000000000154"/>
+<default marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="DateElements" class="ptolemy.actor.lib.DateElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="DateElements2" class="ptolemy.actor.lib.DateElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 375.0}">
+        </property>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 375.0]">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value=".001">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 375.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[150.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[370.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13_1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[550.0, 215.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[275.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="VertxBusHandler.subscribe" relation="relation"/>
+    <link port="StringToDate.input" relation="relation13_1"/>
+    <link port="StringToDate.output" relation="relation19"/>
+    <link port="DateToModelTime3.input" relation="relation19"/>
+    <link port="DateToModelTime3.output" relation="relation5"/>
+    <link port="CurrentTime.output" relation="relation2"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="CurrentDate.output" relation="relation3"/>
+    <link port="CurrentDate.trigger" relation="relation"/>
+    <link port="JsonToToken.port_0" relation="relation"/>
+    <link port="JsonToToken.port_1" relation="relation13_1"/>
+    <link port="TimedPlotter2.input" relation="relation6"/>
+    <link port="TimedPlotter2.input" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.minus" relation="relation5"/>
+    <link port="AddSubtract.output" relation="relation6"/>
+    <link port="DateElements.input" relation="relation3"/>
+    <link port="DateElements.millisecond" relation="relation10"/>
+    <link port="DateElements2.input" relation="relation19"/>
+    <link port="DateElements2.millisecond" relation="relation9"/>
+    <link port="AddSubtract2.plus" relation="relation10"/>
+    <link port="AddSubtract2.minus" relation="relation9"/>
+    <link port="AddSubtract2.output" relation="relation7"/>
+    <link port="Scale.input" relation="relation7"/>
+    <link port="Scale.output" relation="relation4"/>
+</entity>
