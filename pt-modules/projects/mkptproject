@@ -3,7 +3,7 @@
 # mkptproject - read in a pt-jar.files and generate a .project file
 # This is used in $PTII/pt-modules
 
-projects="pt-akore pt-ddf pt-de pt-junit pt-kore pt-kore-test pt-lib pt-modal pt-moml pt-momlapp pt-ptera pt-sdf pt-sr"
+projects="pt-akore pt-ddf pt-de pt-junit pt-kore pt-kore-test pt-lib pt-modal pt-moml pt-momlapp pt-ptera pt-test pt-sdf pt-sr"
 
 for project in $projects
 do
