@@ -41,6 +41,7 @@
     <include name="org/ptolemy/ptango/ptango.jar" />
     <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
+    <include name="org/ptolemy/ssm/ssm.jar" />
     <include name="org/terraswarm/terraswarm.jar" />
     <include name="org/terraswarm/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
@@ -4109,6 +4110,15 @@
       <fileset dir="${basedir}">
         <include name="org/ptolemy/qss/demo/*/*.xml"/>
         <include name="org/ptolemy/qss/demo/RLC/*.mo"/>
+      </fileset>
+  </jar>
+
+    <!-- org/ptolemy/ssm/ssm.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/ssm/ssm.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/ptolemy/ssm/*.class"/>
       </fileset>
   </jar>
 
