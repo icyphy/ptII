@@ -594,7 +594,8 @@ public class JavaScript extends TypedAtomicActor {
         }
     }
 
-    /** Return true if the specified string is not a JavaScript keyword and is a valid JavaScript identifier.
+    /** Return true if the specified string is not a JavaScript keyword and
+     *  is a valid JavaScript identifier.
      *  @param identifier The proposed name.
      *  @return True if it is a valid identifier name.
      */
