@@ -42,7 +42,8 @@ import ptolemy.kernel.util.StringAttribute;
  An actor that throws an IllegalActionException when it receives a true token
  on any input channel.  The message reported in the exception is
  given by the <i>message</i> parameter.
- The inputs are read and checked in the postfire() method only.
+ By default, inputs are read and checked in the fire() method, but if
+ <i>throwInPostfire</i> is set to true, then they will be checked in postfire() only.
 
  @author Edward A. Lee
  @version $Id$
