@@ -6,6 +6,16 @@
     <?moml
       <group>
         <doc>Actors that stop execution of the model.</doc>
+		<property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
+			<property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            	<property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
+            	</property>
+            	<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            	</property>
+            	<property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            	</property>
+        	</property>
+		</property>
         <entity name="Exit" class="ptolemy.actor.lib.Exit"/>
         <entity name="Stop" class="ptolemy.actor.lib.Stop"/>
         <entity name="Pause" class="ptolemy.actor.lib.Pause"/>
