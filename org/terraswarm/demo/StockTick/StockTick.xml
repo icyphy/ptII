@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.102552073753671">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{513.7149177888072, 219.99009754378585}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{513.714917788807, 219.99009754378585}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Display the stock prices of the publicly&#10;held sponsors of the TerraSwarm project.&#10;updated every five seconds.">
@@ -55,7 +55,7 @@
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 391, 864, 500}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={582, 584, 864, 500}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[864, 456]">
         </property>
@@ -63,7 +63,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="25">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{831.5, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{830.0, 290.0}">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -103,7 +103,7 @@
         </property>
     </entity>
     <entity name="StockTick" class="org.terraswarm.kernel.AccessorOne">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// &#10;function fire() {&#10;  var stock = get(symbol);&#10;  var url = &quot;http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22&quot;&#10;	+ stock&#10;	+ &quot;%22)%0A%09%09&amp;env=http%3A%2F%2Fdatatables.org%2Falltables.env&amp;format=json&quot;;&#10;  var record = readURL(url);&#10;  var json = JSON.parse(record);&#10;  var tick = json.query.results.quote.BidRealtime;&#10;  var str = json.query.created;&#10;&#10;  var parts = str.split('T'),&#10;  dateParts = parts[0].split('-'),&#10;  timeParts = parts[1].split('Z'),&#10;  timeSubParts = timeParts[0].split(':'),&#10;  timeSecParts = timeSubParts[2].split('.'),&#10;  timeHours = Number(timeSubParts[0]),&#10;  date = new Date();&#10;&#10;  date.setUTCFullYear(Number(dateParts[0]));&#10;  date.setUTCMonth(Number(dateParts[1])-1);&#10;  date.setUTCDate(Number(dateParts[2]));&#10;  date.setUTCHours(Number(timeHours));&#10;  date.setUTCMinutes(Number(timeSubParts[1]));&#10;  date.setUTCSeconds(Number(timeSecParts[0]));&#10;  if (timeSecParts[1]) {&#10;    date.setUTCMilliseconds(Number(timeSecParts[1]));&#10;  }&#10;&#10;  var d = new Date(date);&#10;&#10;  send(tick, price);&#10;  send(d.getTime(), created);&#10;}&#10;// ">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// &#10;function fire() {&#10;  var stock = get(symbol);&#10;  var url = &quot;http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22&quot;&#10;	+ stock&#10;	+ &quot;%22)%0A%09%09&amp;env=http%3A%2F%2Fdatatables.org%2Falltables.env&amp;format=json&quot;;&#10;  var record = readURL(url);&#10;  var json = JSON.parse(record);&#10;  var tick = json.query.results.quote.BidRealtime;&#10;&#10;  var str = json.query.created;&#10;&#10;  var parts = str.split('T'),&#10;  dateParts = parts[0].split('-'),&#10;  timeParts = parts[1].split('Z'),&#10;  timeSubParts = timeParts[0].split(':'),&#10;  timeSecParts = timeSubParts[2].split('.'),&#10;  timeHours = Number(timeSubParts[0]),&#10;  date = new Date();&#10;&#10;  date.setUTCFullYear(Number(dateParts[0]));&#10;  date.setUTCMonth(Number(dateParts[1])-1);&#10;  date.setUTCDate(Number(dateParts[2]));&#10;  date.setUTCHours(Number(timeHours));&#10;  date.setUTCMinutes(Number(timeSubParts[1]));&#10;  date.setUTCSeconds(Number(timeSecParts[0]));&#10;  if (timeSecParts[1]) {&#10;    date.setUTCMilliseconds(Number(timeSecParts[1]));&#10;  }&#10;&#10;  var d = new Date(date);&#10;&#10;  send(tick, price);&#10;  send(d.getTime(), created);&#10;}&#10;// ">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -111,9 +111,11 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{511.5, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 225.0}">
         </property>
         <property name="symbol" class="ptolemy.actor.parameters.PortParameter" value="&quot;UTX&quot;">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <port name="symbol" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -139,10 +141,6 @@
             </property>
         </port>
     </entity>
-    <entity name="LongToDate" class="ptolemy.actor.lib.conversions.LongToDate">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 185.0]">
-        </property>
-    </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;     &quot;">
         </property>
@@ -155,65 +153,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 220.0]">
         </property>
-    </entity>
-    <entity name="DateElements" class="ptolemy.actor.lib.DateElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 80.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="year" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="month" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="day" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="hour" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="minute" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="second" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="millisecond" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="microsecond" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="nanosecond" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="timezone" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="ConvertToEasternTime" class="ptolemy.actor.lib.DateConstructor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 80.0]">
@@ -268,14 +207,9 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeAsLong" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(hour &gt;= 9 &amp;&amp; minute &gt; 30 &#10;    &amp;&amp; hour &lt; 4) || &#10;    (hour &gt; 9 &amp;&amp; hour &lt; 4) ? &#10;&quot; - market value&quot; : &quot; - market closed&quot;">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(hour &gt;= 9 &amp;&amp; minute &gt; 30 &#10;    &amp;&amp; hour &lt; 4) || &#10;    (hour &gt; 9 &amp;&amp; hour &lt; 16) ? &#10;&quot; - market value&quot; : &quot; - market closed&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -310,7 +244,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 120.0]">
         </property>
     </entity>
     <entity name="DateElements2" class="ptolemy.actor.lib.DateElements">
@@ -382,19 +316,11 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{680.0, 145.0}">
-        </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -404,15 +330,18 @@
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{520.0, 80.0}">
+        </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display.input" relation="relation5"/>
     <link port="Const.output" relation="relation2"/>
     <link port="ArrayToSequence.input" relation="relation2"/>
     <link port="ArrayToSequence.output" relation="relation"/>
-    <link port="AddSubtract.plus" relation="relation13"/>
     <link port="AddSubtract.plus" relation="relation8"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation9"/>
@@ -421,21 +350,17 @@
     <link port="AddSubtract.output" relation="relation5"/>
     <link port="Const2.output" relation="relation9"/>
     <link port="StockTick.symbol" relation="relation"/>
-    <link port="StockTick.created" relation="relation6"/>
+    <link port="StockTick.created" relation="relation4"/>
     <link port="StockTick.price" relation="relation3"/>
-    <link port="LongToDate.input" relation="relation6"/>
-    <link port="LongToDate.output" relation="relation13"/>
     <link port="Const3.output" relation="relation8"/>
-    <link port="DateElements.input" relation="relation13"/>
-    <link port="DateElements.timeAsLong" relation="relation4"/>
-    <link port="ConvertToEasternTime.output" relation="relation7"/>
+    <link port="ConvertToEasternTime.output" relation="relation10"/>
     <link port="ConvertToEasternTime.timeZone" relation="relation21"/>
-    <link port="ConvertToEasternTime.timeAsLong" relation="relation4"/>
+    <link port="ConvertToEasternTime.timeInMillis" relation="relation4"/>
     <link port="Expression2.output" relation="relation17"/>
     <link port="Expression2.hour" relation="relation18"/>
     <link port="Expression2.minute" relation="relation22"/>
     <link port="Const4.output" relation="relation21"/>
-    <link port="DateElements2.input" relation="relation7"/>
+    <link port="DateElements2.input" relation="relation10"/>
     <link port="DateElements2.hour" relation="relation18"/>
     <link port="DateElements2.minute" relation="relation22"/>
 </entity>
