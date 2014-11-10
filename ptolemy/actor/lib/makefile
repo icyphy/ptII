@@ -409,6 +409,7 @@ OPTIONAL_FILES = \
 	jmf \
 	jni \
 	joystick \
+	jjs \
 	js \
 	mail \
 	opencv \
