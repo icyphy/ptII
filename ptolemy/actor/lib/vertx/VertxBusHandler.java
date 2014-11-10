@@ -29,6 +29,9 @@
 
 package ptolemy.actor.lib.vertx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.Vertx;
@@ -40,9 +43,11 @@ import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketVersion;
 import org.vertx.java.core.json.JsonObject;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -140,6 +145,7 @@ public class VertxBusHandler extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
+        // publish values
         for (int i = 0; i < publish.getWidth(); i++) {
             if (publish.hasToken(i)) {
                 StringToken token = (StringToken) publish.get(i);
@@ -148,7 +154,22 @@ public class VertxBusHandler extends TypedAtomicActor {
                 JsonObject msg = new JsonObject().putString("type", "publish")
                         .putString("address", _address)
                         .putString("body", tokenString);
+                //while (_websocket == null && !_stopRequested) {
+                    // FIXME wait
+                //}
                 _websocket.writeTextFrame(msg.encode());
+            }
+        }
+        
+        // send out tokens received as subscriber
+        if (_buffer != null && _buffer.size() > 0) {
+            List<StringToken> _bufferCopy = new ArrayList<StringToken>();
+            synchronized(_buffer) {
+                _bufferCopy.addAll(_buffer);
+                _buffer.clear();
+            }
+            for (int i = 0; i < _bufferCopy.size(); i++) {
+                subscribe.send(0, _bufferCopy.get(i));
             }
         }
     }
@@ -187,7 +208,7 @@ public class VertxBusHandler extends TypedAtomicActor {
     /** Wrap up, close web socket if open, stop vertx.
      */
     @Override
-    public void wrapup() throws IllegalActionException {
+    public synchronized void wrapup() throws IllegalActionException {
         super.wrapup();
         _websocket.close();
         _client.close();
@@ -209,7 +230,7 @@ public class VertxBusHandler extends TypedAtomicActor {
 
     /** Open a web socket that serves as a connection to the event bus.
      */
-    private void _openWebSocket() {
+    private synchronized void _openWebSocket() {
         if (!_stopRequested) {
             MultiMap map = new CaseInsensitiveMultiMap();
             map.add("connectTimeout", "10000000");
@@ -228,16 +249,21 @@ public class VertxBusHandler extends TypedAtomicActor {
                         public void handle(Buffer buff) {
                             String msg = buff.toString();
                             JsonObject received = new JsonObject(msg);
+                            
+                            if (_buffer == null) {
+                                _buffer = new ArrayList<StringToken>();
+                            }
+                            synchronized(_buffer) {
+                                _buffer.add(new StringToken(received.getField("body").toString()));
+                            }
                             try {
-                                subscribe.send(0,
-                                        new StringToken(received.getField("body").toString()));
-                            } catch (NoRoomException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                getDirector().fireAtCurrentRealTime((Actor) subscribe.getContainer());
                             } catch (IllegalActionException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
+                            //subscribe.send(0, new StringToken(received.getField("body").toString()));
+                            
                         }
                     });
     
@@ -251,6 +277,8 @@ public class VertxBusHandler extends TypedAtomicActor {
             });
         }
     }
+    
+    private List<StringToken> _buffer;
 
     private HttpClient _client;
     private Vertx _vertx;

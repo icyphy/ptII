@@ -702,6 +702,27 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             throws IllegalActionException {
         fireAt(actor, time.add(getModelTime()));
     }
+    
+    /** Schedule an actor to be fired at the model time that corresponds
+     * to current real time. This only makes sense in models that use
+     * sycnhronzeToRealTime. If synchronizeToRealTime is false, a call to
+     * this method does the same as fireAtCurrentTime.
+     * @param actor The scheduled actor to fire.
+     * @return The scheduled time to fire.
+     * @throws IllegalActionException If the specified time contains
+     *  a negative time value, or event queue is not ready.
+     */
+    @Override
+    public Time fireAtCurrentRealTime(Actor actor) throws IllegalActionException {
+        if (_synchronizeToRealTime) {
+            return fireAt(actor, new Time(this,
+                    (System.currentTimeMillis() - this
+                            .getRealStartTimeMillis())
+                            * this.localClock.getTimeResolution()));
+        } else {
+            return fireAtCurrentTime(actor);
+        }
+    }
 
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an

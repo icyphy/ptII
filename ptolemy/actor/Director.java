@@ -482,6 +482,19 @@ public class Director extends Attribute implements Executable {
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
         return fireAt(actor, getModelTime());
     }
+    
+    /** Schedule an actor to be fired at the model time that corresponds
+     * to current real time. This only makes sense in models that use
+     * sycnhronzeToRealTime. This base class does not have synchronization
+     * to real time, thus does the same thing fireAtCurrentTime does.
+     * @param actor The scheduled actor to fire.
+     * @return The scheduled time to fire.
+     * @throws IllegalActionException If the specified time contains
+     *  a negative time value, or event queue is not ready.
+     */
+    public Time fireAtCurrentRealTime(Actor actor) throws IllegalActionException {
+        return fireAt(actor, getModelTime());
+    }
 
     /** Request a firing of the container of this director at the specified time
      *  and throw an exception if the executive director does not agree to
