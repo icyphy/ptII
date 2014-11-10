@@ -269,21 +269,21 @@ public class DateConstructor extends TypedAtomicActor {
                 datePrecision = DateToken.PRECISION_NANOSECOND;
             }
             String timeZoneValue = TimeZone.getDefault().getID();
-            if (timeZone.connectedPortList().size() > 0 && timeZone.hasToken(0)) {
+            if ((timeZone.connectedPortList().size() > 0)
+                    && timeZone.hasToken(0)) {
                 timeZoneValue = ((StringToken) timeZone.get(0)).stringValue();
             }
-            dateToken = new DateToken();
-            dateToken.getCalendarInstance().setTimeZone(
-                    TimeZone.getTimeZone(timeZoneValue));
-            dateToken.getCalendarInstance().set(Calendar.YEAR, yearValue);
-            dateToken.getCalendarInstance().set(Calendar.MONTH, monthValue);
-            dateToken.getCalendarInstance()
-                    .set(Calendar.DAY_OF_MONTH, dayValue);
-            dateToken.getCalendarInstance().set(Calendar.HOUR, hourValue);
-            dateToken.getCalendarInstance().set(Calendar.MINUTE, minuteValue);
-            dateToken.getCalendarInstance().set(Calendar.SECOND, secondValue);
-            dateToken.getCalendarInstance().set(Calendar.MILLISECOND,
-                    millisecondValue);
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, yearValue);
+            c.set(Calendar.MONTH, monthValue);
+            c.set(Calendar.DAY_OF_MONTH, dayValue);
+            c.set(Calendar.HOUR, hourValue);
+            c.set(Calendar.MINUTE, minuteValue);
+            c.set(Calendar.SECOND, secondValue);
+            c.set(Calendar.MILLISECOND, millisecondValue);
+            c.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
+            dateToken = new DateToken(c.getTimeInMillis(), 
+                    DateToken.PRECISION_MILLISECOND, TimeZone.getTimeZone(timeZoneValue));
             dateToken.addMicroseconds(microsecondValue);
             dateToken.addNanoseconds(nanosecondValue);
         }
