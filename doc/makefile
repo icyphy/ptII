@@ -582,6 +582,7 @@ ALLPACKAGES = \
 	$(USER_PACKAGES) \
 	doc.doclets \
 	org.ptolemy.qss \
+	org.ptolemy.ssm \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
 	ptolemy.actor.lib.net \

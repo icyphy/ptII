@@ -563,6 +563,9 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/lib/smackx.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
+            <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/ssm/ssm.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/ssm"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/fmi/fmi.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/fmi"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/gui/run/run.jar"

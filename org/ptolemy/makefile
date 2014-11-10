@@ -31,7 +31,7 @@
 
 # PTANGO_DIR is set by configure in $PTII/mk if jetty and javax.servlet are found.
 DIRS = faultModels fmi machineImprovisation machineLearning optimization $(PTOSCP5_DIR) \
-	ptulip $(PTANGO_DIR) qss
+	ptulip $(PTANGO_DIR) qss ssm
 
 # Root of Ptolemy II directory
 ROOT =		../..
