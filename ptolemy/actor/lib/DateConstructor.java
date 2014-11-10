@@ -116,9 +116,9 @@ public class DateConstructor extends TypedAtomicActor {
         new SingletonParameter(timeZone, "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        timeAsLong = new TypedIOPort(this, "timeAsLong", true, false);
-        timeAsLong.setTypeEquals(BaseType.LONG);
-        new SingletonParameter(timeAsLong, "_showName")
+        timeInMillis = new TypedIOPort(this, "timeInMillis", true, false);
+        timeInMillis.setTypeEquals(BaseType.LONG);
+        new SingletonParameter(timeInMillis, "_showName")
                 .setToken(BooleanToken.TRUE);
 
         precision = new StringParameter(this, "precision");
@@ -176,7 +176,7 @@ public class DateConstructor extends TypedAtomicActor {
     /** The time as a long value representing the milliseconds since
      *  January 1, 1970.
      */
-    public TypedIOPort timeAsLong;
+    public TypedIOPort timeInMillis;
 
     /** The precision of the date. The precision defaults to
      *  milliseconds.
@@ -198,9 +198,9 @@ public class DateConstructor extends TypedAtomicActor {
         DateToken dateToken = null;
         int datePrecision = DateToken.PRECISION_MILLISECOND;
 
-        if (timeAsLong.connectedPortList().size() > 0 && timeAsLong.hasToken(0)) {
+        if (timeInMillis.connectedPortList().size() > 0 && timeInMillis.hasToken(0)) {
             long timeAsLongValue = 1l;
-            timeAsLongValue = ((LongToken) timeAsLong.get(0)).longValue();
+            timeAsLongValue = ((LongToken) timeInMillis.get(0)).longValue();
             String precisionValue = "second";
             precisionValue = ((StringToken) precision.getToken()).stringValue();
             if (precisionValue.equals("second")) {

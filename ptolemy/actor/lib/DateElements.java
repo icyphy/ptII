@@ -33,6 +33,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.SingletonParameter;
@@ -112,6 +113,11 @@ public class DateElements extends TypedAtomicActor {
         timezone.setTypeEquals(BaseType.STRING);
         new SingletonParameter(timezone, "_showName")
                 .setToken(BooleanToken.TRUE);
+        
+        timeInMillis = new TypedIOPort(this, "timeInMillis", false, true);
+        timeInMillis.setTypeEquals(BaseType.LONG);
+        new SingletonParameter(timeInMillis, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     /** Input for date token.
@@ -153,6 +159,10 @@ public class DateElements extends TypedAtomicActor {
     /** Nanosecond of date received on input.
      */
     public TypedIOPort nanosecond;
+    
+    /** Time in UTC milliseconds since epoch.
+     */
+    public TypedIOPort timeInMillis;
 
     /** Time zone of date received on input.
      */
@@ -181,6 +191,7 @@ public class DateElements extends TypedAtomicActor {
                 microsecond.send(0, new IntToken(dateToken.getMicrosecond()));
                 nanosecond.send(0, new IntToken(dateToken.getNanosecond()));
                 timezone.send(0, new StringToken(dateToken.getTimezoneID()));
+                timeInMillis.send(0, new LongToken(dateToken.getCalendarInstance().getTimeInMillis()));
             }
         }
     }

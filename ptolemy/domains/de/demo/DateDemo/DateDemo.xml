@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DateDemo" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -20.0]">
@@ -14,7 +14,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000003">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.6204124273256, 359.26921329941865}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.6204124273256, 359.2692132994187}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -470,11 +470,6 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeAsLong" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1000000000000l">
@@ -559,11 +554,6 @@
             </property>
         </port>
         <port name="timeZone" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="timeAsLong" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -719,11 +709,6 @@
             </property>
         </port>
         <port name="timeZone" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="timeAsLong" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1070,7 +1055,7 @@
     <link port="now14.input" relation="relation17"/>
     <link port="DateConstructor.output" relation="relation10"/>
     <link port="DateConstructor.timeZone" relation="relation28"/>
-    <link port="DateConstructor.timeAsLong" relation="relation27"/>
+    <link port="DateConstructor.timeInMillis" relation="relation27"/>
     <link port="Const2.output" relation="relation27"/>
     <link port="Const2.trigger" relation="relation23"/>
     <link port="constructed date.input" relation="relation10"/>
@@ -1098,7 +1083,7 @@
     <link port="output 2 seconds later.input" relation="relation24"/>
     <link port="DateConstructor3.output" relation="relation37"/>
     <link port="DateConstructor3.timeZone" relation="relation18"/>
-    <link port="DateConstructor3.timeAsLong" relation="relation27"/>
+    <link port="DateConstructor3.timeInMillis" relation="relation27"/>
     <link port="Const5.output" relation="relation18"/>
     <link port="Const5.trigger" relation="relation23"/>
     <link port="StringToDate.input" relation="relation29"/>
