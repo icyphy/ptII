@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.ptolemy.machineLearning.Algorithms;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
@@ -215,17 +217,14 @@ public class ParticleFilter extends TypedCompositeActor {
     /** The process noise. If the system contains multiple state variables, the process noise
      * should be an expression that returns an ArrayToken. See multivariateGaussian for one such function.
      */
-    public Parameter processNoise;
-
-    /** An expression for a prior distribution from which the initial particles are sampled
-     */
-    public Parameter priorDistribution;
+    public Parameter processNoise; 
 
     /** The output port that outputs the produced particles at each firing.
      */
     public TypedIOPort particleOutput;
 
     /** State estimate output. A record token with one field per state variable */
+
     public TypedIOPort stateEstimate;
     /** The names of the state variables, in an array of strings.
      *  The default is an ArrayToken of an empty String.
@@ -341,8 +340,8 @@ public class ParticleFilter extends TypedCompositeActor {
             // If the attribute name matches an input port name,
             // do not reinitialize.
             TypedIOPort port = (TypedIOPort) getPort(attribute.getName());
-            if (port == null || !port.isInput()) {
-                // Change of any parameter triggers reinitialization.
+
+            if (port == null || !port.isInput()) { 
                 _requestInitialization();
             }
         }
@@ -409,105 +408,50 @@ public class ParticleFilter extends TypedCompositeActor {
         if (_upToDate) {
             super.preinitialize();
             return;
-        }
-        // Check parameters.
+        } 
+
+        // Make sure all necessary parameters are provided.
         _checkParameters();
 
         if (_resetOnEachRun || _random == null) {
             _createRandomGenerator();
         }
 
-        ArrayToken stateNames = (ArrayToken) stateVariableNames.getToken();
-        int n = stateNames.length(); // number of state variables
         int m = inputPortList().size(); // number of control inputs
-        _stateSpaceSize = n;
+        _stateSpaceSize = _stateNames.length(); 
+
         try {
             _workspace.getWriteAccess();
             removeAllEntities();
             removeAllRelations();
 
-            _stateVariables = new String[n];
-            _updateEquations = new HashMap<String, Expression>();
-            _updateTrees = new HashMap<String, ASTPtRootNode>();
-            _measurementEquations = new LinkedList<Expression>();
+            _stateVariables = new String[_stateSpaceSize];
 
-            for (int i = 0; i < n; i++) {
-                _stateVariables[i] = ((StringToken) stateNames.getElement(i))
-                        .stringValue().trim();
-                // find the state update equation for the current state variable
-                Expression e = new Expression(this, _stateVariables[i]
-                        + "_update");
-                //e.setPersistent(false);
-                String updateEqnName = _stateVariables[i] + "_update";
-                e.expression
-                .setExpression(((Parameter) getAttribute(updateEqnName))
-                        .getExpression());
-                if (_stateVariables[i] == null) {
-                    System.err.println("One state variable is null at index "
-                            + i);
-                } else {
-                    _updateEquations.put(_stateVariables[i], e);
-                    _updateTrees.put(_stateVariables[i], new PtParser()
-                    .generateParseTree(_updateEquations
-                            .get(_stateVariables[i]).expression
-                            .getExpression()));
-                }
-            }
-            // put an update tree for the process noise
-            _updateTrees.put("processNoise", new PtParser()
-            .generateParseTree(processNoise.getExpression()));
-            // update tree for the prior distribution
-            _updateTrees.put("priorDistribution",
-                    new PtParser().generateParseTree(prior.getExpression()));
+            _updateEquations = new HashMap<>();
+            _updateTrees = new HashMap<>();
+            _measurementEquations = new LinkedList<>();
+
+            _setUpdateEquations();
 
             // Inputs-make connections
             String[] inputs = new String[m];
-            IORelation[] inputRelations = new IORelation[m];
-            Iterator inputPorts = inputPortList().iterator();
-            int measurementIndex = 0;
+            _inputRelations = new IORelation[m]; 
             int inputIndex = 0;
             _controlInputs = new HashMap<String, Double>();
             _parameterInputs = new LinkedList<String>();
 
-            while (inputPorts.hasNext()) {
-                IOPort p1 = (IOPort) inputPorts.next();
+            for (Object p : this.inputPortList()) {
+
+                IOPort p1 = (IOPort) p;
                 inputs[inputIndex] = ((NamedObj) p1).getName();
-                inputRelations[inputIndex] = new TypedIORelation(this,
+                _inputRelations[inputIndex] = new TypedIORelation(this,
                         "relation_" + inputs[inputIndex]);
-                inputRelations[inputIndex].setPersistent(false);
-                getPort(inputs[inputIndex]).link(inputRelations[inputIndex]);
+                _inputRelations[inputIndex].setPersistent(false);
+                getPort(inputs[inputIndex]).link(_inputRelations[inputIndex]);
                 String inputName = inputs[inputIndex];
-                if (inputName.endsWith("_m")) {
-                    measurementIndex = inputIndex;
-                    String eqnName = inputName.substring(0,
-                            inputName.length() - 2);
-                    Expression _measurementEquation = new Expression(this,
-                            inputName + "_equation");
-                    _measurementEquation.expression
-                    .setExpression(((Parameter) getAttribute(eqnName))
-                            .getExpression());
-                    _measurementEquations.add(_measurementEquation);
 
-                    _measurementCovariance = new Expression(this, inputName
-                            + "_covariance");
-                    _measurementCovariance.expression
-                    .setExpression(((Parameter) getAttribute("measurementCovariance"))
-                            .getExpression());
-
-                    SetVariable zm = new SetVariable(this, "set" + inputName);
-                    // add new parameter to the actor
-                    Parameter measure1;
-                    if (this.getAttribute(inputName) == null) {
-                        measure1 = new Parameter(this, inputName);
-                        measure1.setVisibility(Settable.EXPERT);
-                    } else {
-                        measure1 = (Parameter) this.getAttribute(inputName);
-                    }
-                    _measurementParameters.put(inputName, measure1);
-                    zm.delayed.setExpression("false");
-                    zm.variableName.setExpression(inputName);
-                    zm.input.link(inputRelations[measurementIndex]);
-
+                if (inputName.endsWith(MEASUREMENT_POSTFIX)) {
+                    _setMeasurementEquations(inputName, inputIndex);
                 } else {
                     if (p1 instanceof ParameterPort) {
                         _parameterInputs.add(inputName);
@@ -522,17 +466,20 @@ public class ParticleFilter extends TypedCompositeActor {
             for (int i = 0; i < _stateVariables.length; i++) {
 
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = (Parameter) getAttribute(_stateVariables[i]
-                            + "_update");
+                    Parameter stateUpdateSpec = 
+                            (Parameter) getUserDefinedParameter(_stateVariables[i]
+                                    + UPDATE_POSTFIX);
                     Set<String> freeIdentifiers = stateUpdateSpec
                             .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
                     if (freeIdentifiers.contains(inputs[k])) {
                         TypedIOPort port = new TypedIOPort(
                                 _updateEquations.get(_stateVariables[i]),
-                                inputs[k], true, false);
-                        //port.setTypeEquals(BaseType.DOUBLE);
-                        port.link(inputRelations[k]);
+                                inputs[k], 
+                                true, 
+                                false);
+
+                        port.link(_inputRelations[k]);
                     }
                 }
             }
@@ -549,44 +496,24 @@ public class ParticleFilter extends TypedCompositeActor {
         super.preinitialize();
     }
 
+
     @Override
     public void wrapup() throws IllegalActionException {
         _firstIteration = true;
         super.wrapup();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    /**
-     * Do a binary interval search for the key in array A. The bin index in which
-     * key is found is returned.
-     */
-    private int _binarySearch(double[] A, double key, int imin, int imax) {
-        if (imax < imin) {
-            return -1;
-        } else {
-            int imid = imin + ((imax - imin) / 2);
-            if (imid >= A.length - 1) {
-                return -1;
-            } else if (A[imid] <= key && A[imid + 1] > key) {
-                return imid;
-            } else if (A[imid] > key) {
-                return _binarySearch(A, key, imin, imid - 1);
-            } else if (A[imid] < key) {
-                return _binarySearch(A, key, imid + 1, imax);
-            } else {
-                return imid;
-            }
-        }
-    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////                         protected methods                   ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    private void _checkParameters() throws IllegalActionException {
+    protected void _checkParameters() throws IllegalActionException {
         // Check state variable names.
-        ArrayToken stateNames = (ArrayToken) stateVariableNames.getToken();
-        int n = stateNames.length();
+        _stateNames = (ArrayToken) stateVariableNames.getToken();
+        int n = _stateNames.length();
 
         if (n < 1) {
             throw new IllegalActionException(this, "There must be at "
@@ -595,7 +522,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
         // Check if any of the state variable names is an empty string.
         for (int i = 0; i < n; i++) {
-            String name = ((StringToken) stateNames.getElement(i))
+            String name = ((StringToken) _stateNames.getElement(i))
                     .stringValue().trim();
 
             if (name.equals("")) {
@@ -604,7 +531,7 @@ public class ParticleFilter extends TypedCompositeActor {
             }
 
             // Check state equations.
-            String equation = name + "_update";
+            String equation = name + UPDATE_POSTFIX;
 
             if (getAttribute(equation) == null) {
                 throw new IllegalActionException(
@@ -617,6 +544,73 @@ public class ParticleFilter extends TypedCompositeActor {
             }
         }
     }
+
+    /**
+     * Return the expression for a user-defined parameter.
+     * @param parameterName Name of parameter
+     * @return parameter expression
+     * @throws IllegalActionException
+     */
+    protected String getUserDefinedParameterExpression(String parameterName) 
+            throws IllegalActionException {
+        Parameter param = getUserDefinedParameter(parameterName);
+        if (param != null) {
+            return param.getExpression();
+        } else {
+            throw new IllegalActionException("Parameter " 
+                    + parameterName + " value is null.");
+        }
+    }
+
+    /**
+     * Return the Parameter that is part of a state space model.
+     * @param parameterName Name of parameter
+     * @return Parameter object
+     * @throws IllegalActionException
+     */
+    protected Parameter getUserDefinedParameter(String parameterName) 
+            throws IllegalActionException {
+        Attribute attr = this.getAttribute(parameterName); 
+        if (attr != null) {
+            return ((Parameter)attr);
+        } else {
+            throw new IllegalActionException("Missing Parameter named: " + parameterName);
+        } 
+    }
+
+ 
+    /** Flag indicating whether the contained model is up to date. */
+    protected boolean _upToDate;
+
+    protected ArrayToken _stateNames;
+
+    protected IORelation[] _inputRelations;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+//    /**
+//     * Do a binary interval search for the key in array A. The bin index in which
+//     * key is found is returned.
+//     */
+//    private static int _binarySearch(double[] A, double key, int imin, int imax) {
+//        if (imax < imin) {
+//            return -1;
+//        } else {
+//            int imid = imin + ((imax - imin) / 2);
+//            if (imid >= A.length - 1) {
+//                return -1;
+//            } else if (A[imid] <= key && A[imid + 1] > key) {
+//                return imid;
+//            } else if (A[imid] > key) {
+//                return _binarySearch(A, key, imin, imid - 1);
+//            } else if (A[imid] < key) {
+//                return _binarySearch(A, key, imid + 1, imax);
+//            } else {
+//                return imid;
+//            }
+//        }
+//    }
+
 
     private void _createRandomGenerator() throws IllegalActionException {
 
@@ -826,7 +820,7 @@ public class ParticleFilter extends TypedCompositeActor {
             double baseValue = _random.nextDouble() * (1.0 / Nparticles);
             for (int i = 0; i < Nparticles; i++) {
                 randomValue = baseValue + i * 1.0 / Nparticles;
-                intervalIndex = _binarySearch(cumulativeSums, randomValue, 0,
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
                         Nparticles);
                 //FIXME: check intervalIndex and remove the failure condition
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
@@ -847,7 +841,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
             for (int i = 0; i < Nparticles; i++) {
                 randomValue = _random.nextDouble() * cumulativeSums[Nparticles];
-                intervalIndex = _binarySearch(cumulativeSums, randomValue, 0,
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
                         Nparticles);
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
                     System.out.println("Index does not exist!");
@@ -886,10 +880,77 @@ public class ParticleFilter extends TypedCompositeActor {
 
     }
 
+    private void _setMeasurementEquations(String inputName, int inputIndex) 
+            throws IllegalActionException, NameDuplicationException {
+        String eqnName = inputName.substring(0,
+                inputName.length() - 2);
+        Expression _measurementEquation = new Expression(this,
+                inputName + "_equation");
+        _measurementEquation.expression
+        .setExpression(getUserDefinedParameterExpression(eqnName));
+
+        _measurementEquations.add(_measurementEquation);
+
+        _measurementCovariance = new Expression(this, inputName
+                + "_covariance");
+        _measurementCovariance.expression
+        .setExpression(getUserDefinedParameterExpression("measurementCovariance"));
+
+        SetVariable zm = new SetVariable(this, "set" + inputName);
+        // add new parameter to the actor
+        Parameter measure1;
+        if (this.getAttribute(inputName) == null) {
+            measure1 = new Parameter(this, inputName);
+            measure1.setVisibility(Settable.EXPERT);
+        } else {
+            measure1 = (Parameter) this.getUserDefinedParameter(inputName);
+        }
+        _measurementParameters.put(inputName, measure1);
+        zm.delayed.setExpression("false");
+        zm.variableName.setExpression(inputName);
+        zm.input.link(_inputRelations[inputIndex]);
+
+    } 
+
+    private void _setUpdateEquations() 
+            throws NameDuplicationException, IllegalActionException {
+        for (int i = 0; i < _stateSpaceSize; i++) {
+            _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
+                    .stringValue().trim();
+            // find the state update equation for the current state variable
+            Expression e = new Expression(this, _stateVariables[i]
+                    + UPDATE_POSTFIX);
+            //e.setPersistent(false);
+            String updateEqnName = _stateVariables[i] + UPDATE_POSTFIX;
+            e.expression
+            .setExpression(getUserDefinedParameterExpression(updateEqnName));
+            if (_stateVariables[i] == null) {
+                System.err.println("One state variable is null at index "
+                        + i);
+            } else {
+                _updateEquations.put(_stateVariables[i], e);
+                _updateTrees.put(_stateVariables[i], new PtParser()
+                .generateParseTree(_updateEquations
+                        .get(_stateVariables[i]).expression
+                        .getExpression()));
+            }
+        }
+        // put an update tree for the process noise
+        _updateTrees.put(PROCESS_NOISE, new PtParser()
+        .generateParseTree(processNoise.getExpression()));
+        // update tree for the prior distribution
+        _updateTrees.put("priorDistribution",
+                new PtParser().generateParseTree(prior.getExpression()));
+
+    } 
+    /**
+     * Return a subsample of particles at the chosen indices. Used for low-variance
+     * resampling.
+     * @return an array of particles.
+     */
     private int[] _subsampleIndices() {
         int N = Noutput;
-        int[] outputIndices = new int[N];
-        // return a subsample of particles at the chosen indices
+        int[] outputIndices = new int[N]; 
         double randomValue;
         int intervalIndex;
         double[] cumulativeSums = new double[Nparticles + 1];
@@ -907,7 +968,7 @@ public class ParticleFilter extends TypedCompositeActor {
             double baseValue = _random.nextDouble() * (1.0 / Noutput);
             for (int i = 0; i < Noutput; i++) {
                 randomValue = baseValue + i * 1.0 / Noutput;
-                intervalIndex = _binarySearch(cumulativeSums, randomValue, 0,
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
                         Nparticles - 1);
                 //FIXME: check intervalIndex and remove the failure condition
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
@@ -923,7 +984,7 @@ public class ParticleFilter extends TypedCompositeActor {
             // resampling to set equal weights
             for (int i = 0; i < Noutput; i++) {
                 randomValue = _random.nextDouble() * cumulativeSums[Nparticles];
-                intervalIndex = _binarySearch(cumulativeSums, randomValue, 0,
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
                         Nparticles - 1);
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
                     System.out.println("Index does not exist!");
@@ -945,11 +1006,7 @@ public class ParticleFilter extends TypedCompositeActor {
     private boolean _doBootstrap;
 
     /** Boolean choice to use a low-variance sampler for sampling particles */
-    private boolean _lowVarianceSampler;
-
-    /** Flag indicating whether the contained model is up to date. */
-    private boolean _upToDate;
-
+    private boolean _lowVarianceSampler; 
     /** List that holds the measurement equation expression objects */
     private List<Expression> _measurementEquations;
 
@@ -1007,6 +1064,13 @@ public class ParticleFilter extends TypedCompositeActor {
     private HashMap<String, Token> _measurementValues;
     private Expression _measurementCovariance;
 
+
+    protected static final String PROCESS_NOISE = "processNoise";
+    protected static final String MEASUREMENT_NOISE = "measurementNoise";
+    protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
+    protected static final String UPDATE_POSTFIX = "_update";
+    protected static final String MEASUREMENT_POSTFIX = "_m";
+
     // set particle dimensions to be equal to the state space dimension
     private class Particle {
         public Particle(int size) {
@@ -1032,13 +1096,14 @@ public class ParticleFilter extends TypedCompositeActor {
                         "Particle dimensions must be equal to the state space dimension");
             } else {
                 for (int i = 0; i < _stateVariables.length; i++) {
-                    if ((ParticleFilter.this).getAttribute(_stateVariables[i]) == null) {
+                    if ((ParticleFilter.this)
+                            .getUserDefinedParameter(_stateVariables[i]) == null) {
                         p = new Parameter(ParticleFilter.this,
                                 _stateVariables[i]);
                         p.setVisibility(Settable.EXPERT);
                     } else {
                         p = (Parameter) (ParticleFilter.this)
-                                .getAttribute(_stateVariables[i]);
+                                .getUserDefinedParameter(_stateVariables[i]);
                     }
                     p.setExpression(((Double) _particleValue[i]).toString());
                     _tokenMap.put(_stateVariables[i], new DoubleToken(
@@ -1099,7 +1164,7 @@ public class ParticleFilter extends TypedCompositeActor {
                                     / (Math.pow(2 * Math.PI, 0.5) * DoubleMatrixMath
                                             .determinant(_Sigma))
                                             * Math.exp(-Math
-                                            .pow(z_t - _meanEstimate, 2)
+                                                    .pow(z_t - _meanEstimate, 2)
                                                     / (2 * Math.pow(_Sigma[0][0], 2)));
                         }
                     }
@@ -1195,15 +1260,20 @@ public class ParticleFilter extends TypedCompositeActor {
 
         public void setNextParticle() throws NameDuplicationException,
         IllegalActionException {
+
             Token _result;
             //FIXME: the noise sample does not have to be an arrayToken
+
             Token processNoiseSample;
             double[] newParticle = new double[this.getSize()];
+
             for (int i = 0; i < _stateSpaceSize; i++) {
                 // every component of the particle will be propagated according to its own update equation.
-                //Parameter p = new Parameter(_updateEquations.get(_stateVariables[i]), _stateVariables[i]);
-                Parameter p = (Parameter) (_updateEquations
-                        .get(_stateVariables[i]))
+
+                Expression updateExpression = _updateEquations
+                        .get(_stateVariables[i]);
+
+                Parameter p = (Parameter) updateExpression
                         .getAttribute(_stateVariables[i]);
                 if (p != null) {
                     p.setExpression(((Double) _particleValue[i]).toString());
@@ -1213,11 +1283,10 @@ public class ParticleFilter extends TypedCompositeActor {
                     p.setExpression(((Double) _particleValue[i]).toString());
                 }
                 _tokenMap.put(_stateVariables[i], new DoubleToken(
-                        _particleValue[i]));
-                Iterator ci = _controlInputs.keySet().iterator();
+                        _particleValue[i])); 
                 // set the control input values in scope
-                while (ci.hasNext()) {
-                    String controlVarName = (String) ci.next();
+                for (String controlVarName : _controlInputs.keySet()) {
+
                     Parameter c = (Parameter) (_updateEquations
                             .get(_stateVariables[i]))
                             .getAttribute(controlVarName);
@@ -1237,7 +1306,7 @@ public class ParticleFilter extends TypedCompositeActor {
             }
 
             try {
-                _parseTree = _updateTrees.get("processNoise");
+                _parseTree = _updateTrees.get(PROCESS_NOISE);
                 processNoiseSample = _parseTreeEvaluator.evaluateParseTree(
                         _parseTree, _scope);
             } catch (Throwable throwable) {
