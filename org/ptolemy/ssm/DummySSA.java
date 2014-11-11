@@ -4,6 +4,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 public class DummySSA extends TypedAtomicActor implements StateSpaceActor{
     
@@ -23,6 +24,11 @@ public class DummySSA extends TypedAtomicActor implements StateSpaceActor{
     public DummySSA(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);  
+    }
+    
+    public DummySSA(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);  
     }
 
 }

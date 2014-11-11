@@ -8,12 +8,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -91,24 +88,8 @@ public class StateSpaceModel extends MirrorDecorator {
             }
         }  
         super.attributeChanged(attribute); 
-    }
-
-    @Override
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof StateSpaceActor) {
-            try {
-                MirrorDecoratorAttributes ssa = new MirrorDecoratorAttributes(target, this);
-                registerListener(ssa);
-                return ssa;
-            } catch (KernelException ex) {
-                // This should not occur.
-                throw new InternalErrorException(ex);
-            }
-        } else {
-            return null;
-        }
-    }
-
+    } 
+    
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
      * at the moment)
      */
@@ -144,7 +125,7 @@ public class StateSpaceModel extends MirrorDecorator {
     NameDuplicationException {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
-        empty[0] = new StringToken("");
+        empty[0] = new StringToken("x");
         stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
 
         processNoise = new Parameter(this, "processNoise");
@@ -161,5 +142,5 @@ public class StateSpaceModel extends MirrorDecorator {
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");    
-    } 
+    }  
 }

@@ -36,6 +36,8 @@ import java.util.List;
 
 
 
+
+
 import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -65,8 +67,7 @@ A  special decorator that mirrors its parameters and ports to the decorated acto
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public class MirrorDecorator extends TypedAtomicActor implements Decorator {
-
+public class MirrorDecorator extends TypedAtomicActor implements Decorator { 
 
     /** Construct a MirrorDecorator with a name and a container.
      *  The container argument must not be null, or a
@@ -109,6 +110,22 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER, (Parameter) attribute);
         }
         super.attributeChanged(attribute);
+    }
+    
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MirrorDecorator newObject = (MirrorDecorator) super
+                .clone(workspace);
+        newObject._listeners = null;
+        newObject._addedPortNames = null;
+        newObject._addedParameters = null;
+        return newObject;
     }
 
     @Override
@@ -228,11 +245,22 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     /** Listeners registered to receive events from this object. */
     private ArrayList<MirrorDecoratorListener> _listeners;
 
-    private List<String> _addedPortNames; 
-    private List<Parameter> _addedParameters;
+    private List<String> _addedPortNames = new ArrayList<>(); 
+    
+    public List<String> getAddedPortNames() {
+        return _addedPortNames;
+    }
 
-    public class MirrorDecoratorAttributes 
-    extends DecoratorAttributes implements MirrorDecoratorListener{
+    public List<Parameter> getAddedParameters() {
+        return _addedParameters;
+    }
+
+
+
+
+    private List<Parameter> _addedParameters = new ArrayList<>(); 
+
+   static public class MirrorDecoratorAttributes extends DecoratorAttributes implements MirrorDecoratorListener{
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -240,7 +268,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
          *  @exception IllegalActionException If the superclass throws it.
          *  @exception NameDuplicationException If the superclass throws it.
          */
-        public MirrorDecoratorAttributes(NamedObj target, MirrorDecorator decorator)
+        public MirrorDecoratorAttributes(NamedObj target, Decorator decorator)
                 throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
@@ -278,8 +306,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         @Override
         public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
-            MirrorDecoratorAttributes result = (MirrorDecoratorAttributes) super.clone(workspace);
-            result._enabled = false;
+            MirrorDecoratorAttributes result = (MirrorDecoratorAttributes) super.clone(workspace); 
             return result;
         }
 
@@ -309,7 +336,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                     if (param == null) {
                         Parameter newP = new Parameter(this, p.getName());
                         newP.setExpression(p.getExpression());
-                        
+                        newP.setVisibility(p.getVisibility());
                     }
                 } else if (eventType == DecoratorEvent.REMOVED_PARAMETER) {
                     if (param != null) {
@@ -318,6 +345,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                 } else if (eventType == DecoratorEvent.CHANGED_PARAMETER) {
                     if (param != null) {
                         param.setExpression(p.getExpression());
+                        param.setVisibility(p.getVisibility());
                     }
                 }
             } catch (IllegalActionException | NameDuplicationException e) {
@@ -349,7 +377,8 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                 } else if (eventType == DecoratorEvent.REMOVED_PORT) {
                     // if the container has a port of this name AND this port
                     // is known to have been added by this decorator, remove it.
-                    if (port != null && _addedPortNames.contains(portName)) {
+                    if (port != null && 
+                            ((MirrorDecorator)this._decorator).getAddedPortNames().contains(portName)) {
                         port.setContainer(null);
                     }
                 } 
@@ -363,7 +392,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
          * Add all decorated ports to the container
          */
         private void _addAllPorts() {
-            for (String decoratorPort : _addedPortNames) {
+            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
                 event((MirrorDecorator)this._decorator,
                         DecoratorEvent.ADDED_PORT, decoratorPort); 
             }  
@@ -374,7 +403,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
          */
         private void _removeAllPorts() {
             try{
-                for (String port : _addedPortNames) {
+                for (String port : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
                     ComponentEntity container = (ComponentEntity) this.getContainer();
                     if (container.getPort(port) != null) {
                         container.getPort(port).setContainer(null);
@@ -393,13 +422,18 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                 enable = new Parameter(this, "enable");
                 enable.setExpression("false");
                 enable.setTypeEquals(BaseType.BOOLEAN);
+                enable.setPersistent(true);
 
                 if (enabled()) {
                     _addAllPorts();
                 } else {
                     _removeAllPorts();
-                }
-                for (Parameter p : _addedParameters) {
+                } 
+                
+                
+                
+                
+                for (Parameter p : ((MirrorDecorator)this._decorator).getAddedParameters()) {
                     event((MirrorDecorator)this._decorator,
                             DecoratorEvent.ADDED_PARAMETER, p);                      
                 }
