@@ -351,6 +351,11 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai/demo"/>
+
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/demo"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/jjs.jar"
+
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jmf/jmf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jmf"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jmf/demo/demo.jar"

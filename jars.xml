@@ -73,6 +73,8 @@
     <include name="ptolemy/actor/lib/jai/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jai/jai.jar" />
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/jjs.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
     <include name="ptolemy/actor/lib/joystick/joystick.jar" />
@@ -1744,23 +1746,36 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/actor/lib/jjs/jjs.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/jjs.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/*.htm"/>
+	<include name="ptolemy/actor/lib/jjs/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/demo/*/*.txt"/>
+	<include name="ptolemy/actor/lib/jjs/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/actor/lib/jmf/jmf.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/lib/jmf/jmf.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jmf/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jmf/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jmf/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jmf/*.mov"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jmf/*.xml"/>
       </fileset>
     </jar>

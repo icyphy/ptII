@@ -47,12 +47,13 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Factorial/Factorial.jar \
-	GoogleOAuth/GoogleOAuth.jar \
-	JavaScriptShell/JavaScriptShell.jar \
-	ModelBuilder/ModelBuilder.jar \
-	Spontaneous/Spontaneous.jar \
-	StockPrice/StockPrice.jar
+	JavaScriptShell/JavaScriptShell.jar
+
+#	Factorial/Factorial.jar
+#	GoogleOAuth/GoogleOAuth.jar
+#	ModelBuilder/ModelBuilder.jar
+#	Spontaneous/Spontaneous.jar
+#	StockPrice/StockPrice.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

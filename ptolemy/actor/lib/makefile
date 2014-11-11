@@ -70,11 +70,11 @@ ME =		ptolemy/actor/lib
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTVERTX_DIR is empty.
 #
 DIRS = 		aspect conversions gui logic hoc image test \
-		javasound jopio net io xslt \
+		javasound jjs jopio net io xslt \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
-		$(PTJAVASCRIPT) \
+		$(PTJAVASCRIPT_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTOPENCV_DIR) \
 		$(PTVERTX_DIR)

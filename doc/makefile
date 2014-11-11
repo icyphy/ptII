@@ -585,6 +585,7 @@ ALLPACKAGES = \
 	org.ptolemy.ssm \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
+	ptolemy.actor.lib.jjs \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \

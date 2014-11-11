@@ -51,7 +51,7 @@ JSRCS = \
 	JavaScript.java
 
 OTHER_FILES_TO_BE_JARED = \
-    basicFunctions.js \
+	basicFunctions.js \
 	JavaScriptIcon.xml \
 	js.xml \
 	localFunctions.js
@@ -67,11 +67,9 @@ MISC_FILES =	doc test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	JavaScript$ParameterProxy.class \
-	JavaScript$PortProxy.class \
-	JavaScript$PtolemyFunctionObject.class \
-	JavaScript$PtolemyJavaScript.class \
-	JavaScript$PtolemyJavaScript$1.class \
+	'JavaScript$$ParameterProxy.class' \
+	'JavaScript$$PortProxy.class' \
+	'JavaScript$$PtolemyJavaScript.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
