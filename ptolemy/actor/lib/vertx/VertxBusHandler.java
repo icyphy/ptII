@@ -33,25 +33,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
 import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.http.CaseInsensitiveMultiMap;
 import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.WebSocket;
-import org.vertx.java.core.http.WebSocketVersion;
 import org.vertx.java.core.json.JsonObject;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -145,6 +139,9 @@ public class VertxBusHandler extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
+        if (_exception != null) {
+            throw new IllegalActionException(this, _exception, _exception.getMessage());
+        }
         // publish values
         for (int i = 0; i < publish.getWidth(); i++) {
             if (publish.hasToken(i)) {
@@ -155,25 +152,18 @@ public class VertxBusHandler extends TypedAtomicActor {
                         .putString("address", _address)
                         .putString("body", tokenString);
                 
-                synchronized(workspace()) {
-                    while ((_websocket == null) && !_stopRequested) {
-                        try {
-                            workspace().wait(1);
-                        } catch (InterruptedException e) {
-                            throw new IllegalActionException(this, e.getCause(), e.getMessage());
-                        }
-                    }
-                    _websocket.writeTextFrame(msg.encode());
-                }
+                _sendTextFrame(msg);
             }
         }
         
         // send out tokens received as subscriber
-        if (_buffer != null && _buffer.size() > 0) {
+        if (_buffer != null) {
             List<StringToken> _bufferCopy = new ArrayList<StringToken>();
             synchronized(_buffer) {
-                _bufferCopy.addAll(_buffer);
-                _buffer.clear();
+                if (_buffer.size() > 0) {
+                    _bufferCopy.addAll(_buffer);
+                    _buffer.clear();
+                }
             }
             for (int i = 0; i < _bufferCopy.size(); i++) {
                 subscribe.send(0, _bufferCopy.get(i));
@@ -204,18 +194,25 @@ public class VertxBusHandler extends TypedAtomicActor {
 
     /** Initialize verticle, create http client and open web socket to connect
      *  to event bus.
+     * @throws IllegalActionException 
      */
     @Override
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        _exception = null;
         _vertx = VertxFactory.newVertx();
         _client = _vertx.createHttpClient().setHost(_host).setPort(_port);
         _openWebSocket();
         
-        _vertx.setPeriodic(1000, new Handler<Long>() {
+        _periodicPing = _vertx.setPeriodic(1000, new Handler<Long>() {
             @Override
             public void handle(Long timerID) {
                 JsonObject json = new JsonObject().putString("type", "ping");
-                _websocket.writeTextFrame(json.encode());
+                try {
+                    _sendTextFrame(json);
+                } catch (IllegalActionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
           });
     }
@@ -225,8 +222,12 @@ public class VertxBusHandler extends TypedAtomicActor {
     @Override
     public synchronized void wrapup() throws IllegalActionException {
         super.wrapup();
-        _websocket.close();
-        _client.close();
+        if (_websocket != null) {
+            _websocket.close();
+        }
+        if (_client != null) {
+            _client.close();
+        }
         _vertx.stop();
     }
 
@@ -247,11 +248,7 @@ public class VertxBusHandler extends TypedAtomicActor {
      */
     private synchronized void _openWebSocket() {
         if (!_stopRequested) {
-            MultiMap map = new CaseInsensitiveMultiMap();
-            map.add("connectTimeout", "10000000");
-            _client.setConnectTimeout(100000000);
-            _client.connectWebsocket("/eventbus/websocket",
-                    WebSocketVersion.RFC6455, map, new Handler<WebSocket>() {
+            _client.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
                 
                 @Override
                 public void handle(WebSocket websocket) {
@@ -280,16 +277,35 @@ public class VertxBusHandler extends TypedAtomicActor {
                             }
                         }
                     });
-                    
-    
-                    websocket.closeHandler(new Handler<Void>() {
-                        @Override
-                        public void handle(final Void event) {
-                            
-                        }
-                    });
                 }
             });
+            
+            _client.exceptionHandler(new Handler<Throwable>() {
+
+                @Override
+                public void handle(Throwable event) {
+                    _exception = event;
+                    _vertx.cancelTimer(_periodicPing);
+                }
+                
+            });
+        }
+    }
+    
+    private void _sendTextFrame(JsonObject msg) throws IllegalActionException {
+        synchronized(workspace()) {
+            while ((_websocket == null) && !_stopRequested) {
+                try {
+                    workspace().wait(1);
+                } catch (InterruptedException e) {
+                    throw new IllegalActionException(this, e.getCause(), e.getMessage());
+                }
+            }
+            if (_websocket != null) {
+                _websocket.writeTextFrame(msg.encode());
+            } else {
+                throw new IllegalActionException(this, "Websocket is not initialized.");
+            }
         }
     }
     
@@ -298,7 +314,9 @@ public class VertxBusHandler extends TypedAtomicActor {
     private HttpClient _client;
     private Vertx _vertx;
     private String _address;
+    private Throwable _exception;
     private String _host;
+    private long _periodicPing;
     private int _port;
     private WebSocket _websocket;
 
