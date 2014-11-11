@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="JointParticleFilter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
@@ -291,23 +291,23 @@
         <link port="Merge2.output" relation="relation3"/>
     </class>
     <entity name="Joint PF" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
-        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
-        </property>
         <property name="lowVarianceSampler" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
-        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
-        </property>
         <property name="t" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
+        </property>
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 670.0]">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="-0.5437696482713346">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-0.37438386562146864">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="4.799570019744332">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="6.923378797316809">
         </property>
         <property name="z2" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position2.x-x)^2+(robot_position2.y- y)^2)">
         </property>
@@ -317,9 +317,9 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.1622061009582">
+        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.1222056115102">
         </property>
-        <property name="z2_m" class="ptolemy.data.expr.Parameter" value="11.23643732039">
+        <property name="z2_m" class="ptolemy.data.expr.Parameter" value="11.0042442972387">
         </property>
         <property name="robot_position1" class="ptolemy.actor.parameters.PortParameter" value="{x = 10.0, y = 0.0}">
         </property>
@@ -363,7 +363,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="-0.013590483725598956">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-0.27242319125870695">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -376,7 +376,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="6.110587776383934">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.4240909860254165">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -462,23 +462,23 @@
         </entity>
     </entity>
     <entity name="Robot1PF" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
-        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
-        </property>
         <property name="lowVarianceSampler" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
-        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
-        </property>
         <property name="t" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
+        </property>
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 520.0]">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="17.645703137622046">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="19.1254245554669">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="-9.909915770219534">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="9.0805340523425">
         </property>
         <property name="z1" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position1.x-x)^2+(robot_position1.y- y)^2)">
         </property>
@@ -486,7 +486,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.1622061009582">
+        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.1222056115102">
         </property>
         <property name="robot_position1" class="ptolemy.actor.parameters.PortParameter" value="{x = 10.0, y = 0.0}">
         </property>
@@ -514,7 +514,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="17.001327367761743">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="17.35079778240793">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -527,7 +527,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="-8.98381677421469">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="7.330031943563991">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -575,23 +575,23 @@
         </entity>
     </entity>
     <entity name="Robot2PF" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
-        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
-        </property>
         <property name="lowVarianceSampler" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
-        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
-        </property>
         <property name="t" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
+        </property>
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*40-20,random()*40-20}">
         </property>
         <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[0.5]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 815.0]">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="1.2410719264806724">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-22.7821958791241">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="6.732643248937214">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-3.7006578841213753">
         </property>
         <property name="z1" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position2.x-x)^2+(robot_position2.y- y)^2)">
         </property>
@@ -599,7 +599,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.23643732039">
+        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.0042442972387">
         </property>
         <property name="robot_position2" class="ptolemy.actor.parameters.PortParameter" value="{x = -10.0, y = 0.0}">
         </property>
@@ -627,7 +627,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="0.17269803694881736">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-21.90146003440109">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -640,7 +640,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="6.067517219871623">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="-1.5248022039831084">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1214,8 +1214,8 @@
 <title>Individual Particle Outputs</title>
 <xLabel>x</xLabel>
 <yLabel>y</yLabel>
-<xRange min="-21.393467565256117" max="21.68023810505425"/>
-<yRange min="-12.09083825224128" max="12.07558455842291"/>
+<xRange min="-10.92053358763316" max="-6.04490832838167"/>
+<yRange min="-2.8698152712400624" max="0.9725746682726211"/>
 <default connected="no" marks="dots"/>
 </plot>?>
             </configure>
@@ -1502,13 +1502,13 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[355.0, 760.0]">
         </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Joint PF.particleOutput" relation="relation"/>
     <link port="Joint PF.robot_position1" relation="relation9"/>
@@ -1518,7 +1518,7 @@
     <link port="Robot1PF.particleOutput" relation="relation6"/>
     <link port="Robot1PF.robot_position1" relation="relation9"/>
     <link port="Robot1PF.z1_m" relation="relation2"/>
-    <link port="Robot2PF.stateEstimate" relation="relation8"/>
+    <link port="Robot2PF.particleOutput" relation="relation4"/>
     <link port="Robot2PF.robot_position2" relation="relation10"/>
     <link port="Robot2PF.z1_m" relation="relation7"/>
     <link port="Controller.port_4" relation="relation3"/>
@@ -1526,7 +1526,7 @@
     <link port="Particle Visualization.robot1 position" relation="relation9"/>
     <link port="Particle Visualization.robot2 position" relation="relation10"/>
     <link port="Particle Visualization.robot 1 particles" relation="relation6"/>
-    <link port="Particle Visualization.robot 2 particles" relation="relation8"/>
+    <link port="Particle Visualization.robot 2 particles" relation="relation4"/>
     <link port="Particle Visualization.joint particles" relation="relation"/>
     <link port="Robot1.controlInput" relation="relation3"/>
     <link port="Robot1.measurement" relation="relation2"/>
