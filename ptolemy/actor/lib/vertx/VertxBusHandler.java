@@ -154,10 +154,17 @@ public class VertxBusHandler extends TypedAtomicActor {
                 JsonObject msg = new JsonObject().putString("type", "publish")
                         .putString("address", _address)
                         .putString("body", tokenString);
-                //while (_websocket == null && !_stopRequested) {
-                    // FIXME wait
-                //}
-                _websocket.writeTextFrame(msg.encode());
+                
+                synchronized(workspace()) {
+                    while ((_websocket == null) && !_stopRequested) {
+                        try {
+                            workspace().wait(1);
+                        } catch (InterruptedException e) {
+                            throw new IllegalActionException(this, e.getCause(), e.getMessage());
+                        }
+                    }
+                    _websocket.writeTextFrame(msg.encode());
+                }
             }
         }
         
@@ -203,6 +210,14 @@ public class VertxBusHandler extends TypedAtomicActor {
         _vertx = VertxFactory.newVertx();
         _client = _vertx.createHttpClient().setHost(_host).setPort(_port);
         _openWebSocket();
+        
+        _vertx.setPeriodic(1000, new Handler<Long>() {
+            @Override
+            public void handle(Long timerID) {
+                JsonObject json = new JsonObject().putString("type", "ping");
+                _websocket.writeTextFrame(json.encode());
+            }
+          });
     }
 
     /** Wrap up, close web socket if open, stop vertx.
@@ -234,8 +249,10 @@ public class VertxBusHandler extends TypedAtomicActor {
         if (!_stopRequested) {
             MultiMap map = new CaseInsensitiveMultiMap();
             map.add("connectTimeout", "10000000");
+            _client.setConnectTimeout(100000000);
             _client.connectWebsocket("/eventbus/websocket",
                     WebSocketVersion.RFC6455, map, new Handler<WebSocket>() {
+                
                 @Override
                 public void handle(WebSocket websocket) {
                     //register
@@ -243,8 +260,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                             "register").putString("address", _address);
                     websocket.writeTextFrame(msg.encode());
                     _websocket = websocket;
-    
-                    websocket.dataHandler(new Handler<Buffer>() {
+                websocket.dataHandler(new Handler<Buffer>() {
                         @Override
                         public void handle(Buffer buff) {
                             String msg = buff.toString();
@@ -262,15 +278,14 @@ public class VertxBusHandler extends TypedAtomicActor {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
-                            //subscribe.send(0, new StringToken(received.getField("body").toString()));
-                            
                         }
                     });
+                    
     
-                    _websocket.closeHandler(new Handler<Void>() {
+                    websocket.closeHandler(new Handler<Void>() {
                         @Override
                         public void handle(final Void event) {
-                            _openWebSocket();
+                            
                         }
                     });
                 }
