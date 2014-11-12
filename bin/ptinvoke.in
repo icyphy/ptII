@@ -1637,7 +1637,7 @@ EOF6
 	       fi
            else
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
-	       if [ -f ${PTII}/adm/gen-11.0/MacJVM.tar ]; then
+	       if [ -f ${PTII}/adm/gen-10.0/MacJVM.tar ]; then
 		   (cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-10.0/MacJVM.tar)
 	       fi	   
 	   fi # Darwin
