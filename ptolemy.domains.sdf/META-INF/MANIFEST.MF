@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ptolemy SDF domain
+Bundle-SymbolicName: ptolemy.domains.sdf
+Bundle-Version: 10.0.0.qualifier
+Bundle-Vendor: CHESS
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: ptolemy.actor,
+ ptolemy.actor.lib,
+ ptolemy.actor.parameters,
+ ptolemy.actor.sched,
+ ptolemy.actor.util,
+ ptolemy.data,
+ ptolemy.data.expr,
+ ptolemy.data.type,
+ ptolemy.graph,
+ ptolemy.kernel,
+ ptolemy.kernel.util,
+ ptolemy.math
+Export-Package: ptolemy.domains.sdf.kernel,
+ ptolemy.domains.sdf.lib

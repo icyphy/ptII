@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ptolemy actor lib
+Bundle-SymbolicName: ptolemy.actor.lib
+Bundle-Version: 10.0.0.qualifier
+Bundle-Vendor: CHESS
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: ptolemy.actor,
+ ptolemy.actor.parameters,
+ ptolemy.actor.util,
+ ptolemy.data,
+ ptolemy.data.expr,
+ ptolemy.data.type,
+ ptolemy.graph,
+ ptolemy.kernel,
+ ptolemy.kernel.util,
+ ptolemy.math
+Export-Package: ptolemy.actor.lib,
+ ptolemy.actor.lib.conversions,
+ ptolemy.actor.lib.logic,
+ ptolemy.actor.lib.string

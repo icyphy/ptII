@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ptolemy Moml
+Bundle-SymbolicName: ptolemy.moml
+Bundle-Version: 10.0.0.qualifier
+Bundle-Vendor: CHESS
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: ptolemy.actor,
+ ptolemy.actor.parameters,
+ ptolemy.data.expr,
+ ptolemy.data.unit,
+ ptolemy.kernel,
+ ptolemy.kernel.attributes,
+ ptolemy.kernel.undo,
+ ptolemy.kernel.util,
+ ptolemy.util
+Export-Package: ptolemy.moml,
+ ptolemy.moml.filter,
+ ptolemy.moml.unit
