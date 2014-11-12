@@ -1,4 +1,4 @@
-/* This is a simple "builder" class to specify and assert flow execution expectations.
+/* This is a simple "builder" class to specify and assert model execution expectations.
  Copyright (c) 2014 The Regents of the University of California.
  
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 
 /**
- * This is a simple "builder" class to specify and assert flow execution expectations :
+ * This is a simple "builder" class to specify and assert model execution expectations :
  * <ul>
  * <li>Number of messages that have been received by input ports</li>
  * <li>Number of messages that have been sent by output ports</li>
@@ -45,10 +45,10 @@ import ptolemy.kernel.ComponentEntity;
  * </ul>
  * <p>
  * The ports and actors are specified by their full name, optionally including the root model name.<br/>
- * E.g. the input port of the <code>Console</code> actor can be named <code>"Console.input"</code> or, when used within a known flow called
+ * E.g. the input port of the <code>Console</code> actor can be named <code>"Console.input"</code> or, when used within a known model called
  * <code>"HelloWorld"</code>, it can be named as <code>".HelloWorld.Console.input"</code>, which is the result of the method <code>Port.getFullName()</code>.
  * </p>
- * If a port or an actor is inside a submodel in a hierarchic model/flow, its hierarchic path must always be specified. E.g. for a <code>Console</code> actor
+ * If a port or an actor is inside a submodel in a hierarchic model, its hierarchic path must always be specified. E.g. for a <code>Console</code> actor
  * inside a submodel <code>"SayHello"</code> of the model <code>"HelloWorld"</code>, the actor can be referred to as <code>"SayHello.Console"</code> or
  * <code>".HelloWorld.SayHello.Console"</code>, but not simply as <code>"Console"</code>.
  * <p>
@@ -62,14 +62,14 @@ import ptolemy.kernel.ComponentEntity;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Red (ErwinDL)
  */
-public class FlowExecutionAssertion {
+public class ModelExecutionAssertion {
   /**
    * The default constructor creates an instance without initial test outcome expectations. 
    * 
    * The expectations should all be defined by repeatedly invoking the
    * methods <code>expectMsg...</code> and <code>expectActor...</code>
    */
-  public FlowExecutionAssertion() {
+  public ModelExecutionAssertion() {
   }
 
   /**
@@ -82,7 +82,7 @@ public class FlowExecutionAssertion {
    * @param portMsgSentCounts a map with the expected count of sent messages per (fully) named port
    * @param actorIterationCounts a map with the expected count of iterations per (fully) named actor
    */
-  public FlowExecutionAssertion(Map<String, Long> portMsgReceiptCounts, Map<String, Long> portMsgSentCounts, Map<String, Long> actorIterationCounts) {
+  public ModelExecutionAssertion(Map<String, Long> portMsgReceiptCounts, Map<String, Long> portMsgSentCounts, Map<String, Long> actorIterationCounts) {
     this._portMsgReceiptCounts = portMsgReceiptCounts;
     this._portMsgSentCounts = portMsgSentCounts;
     this._actorIterationCounts = actorIterationCounts;
@@ -96,7 +96,7 @@ public class FlowExecutionAssertion {
    * 
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion clear() {
+  public ModelExecutionAssertion clear() {
     _portMsgReceiptCounts.clear();
     _portMsgSentCounts.clear();
     _actorIterationCounts.clear();
@@ -104,20 +104,20 @@ public class FlowExecutionAssertion {
   }
 
   /**
-   * Assert all configured expectations on the given flow. The assertions are done using JUnit's <code>Assert.assert...()</code> methods, so any discovered
+   * Assert all configured expectations on the given model. The assertions are done using JUnit's <code>Assert.assert...()</code> methods, so any discovered
    * deviation will result in a JUnit test failure.
    * <p>
    * If all expectations are ok, further tests can be chained through the returned reference to this <code>FlowStatisticsAssertion</code> instance.
    * </p>
    * 
-   * @param flow
-   *          the flow that has been executed and for which test result expectations must be asserted.
+   * @param model
+   *          the model that has been executed and for which test result expectations must be asserted.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion assertFlow(CompositeActor flow) {
-    assertPortReceiptStatistics(flow, _portMsgReceiptCounts);
-    assertPortSentStatistics(flow, _portMsgSentCounts);
-    assertActorIterationStatistics(flow, _actorIterationCounts);
+  public ModelExecutionAssertion assertModel(CompositeActor model) {
+    assertPortReceiptStatistics(model, _portMsgReceiptCounts);
+    assertPortSentStatistics(model, _portMsgSentCounts);
+    assertActorIterationStatistics(model, _actorIterationCounts);
     return this;
   }
 
@@ -132,7 +132,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages received on the default input port of the given actor.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgReceiptCount(ComponentEntity<?> actor, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgReceiptCount(ComponentEntity<?> actor, Long expectedCount) {
     return expectMsgReceiptCount(actor, "input", expectedCount);
   }
 
@@ -147,7 +147,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages sent on the default output port of the given actor.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgSentCount(ComponentEntity<?> actor, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgSentCount(ComponentEntity<?> actor, Long expectedCount) {
     return expectMsgSentCount(actor, "output", expectedCount);
   }
 
@@ -162,7 +162,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages received on the given port.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgReceiptCount(IOPort port, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgReceiptCount(IOPort port, Long expectedCount) {
     if (port == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -186,7 +186,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages sent on the given port.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgSentCount(IOPort port, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgSentCount(IOPort port, Long expectedCount) {
     if (port == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -213,7 +213,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages received on the given named input port of the given actor.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgReceiptCount(ComponentEntity<?> actor, String portName, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgReceiptCount(ComponentEntity<?> actor, String portName, Long expectedCount) {
     if (actor == null || portName == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -242,7 +242,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages sent on the given named output port of the given actor.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgSentCount(ComponentEntity<?> actor, String portName, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgSentCount(ComponentEntity<?> actor, String portName, Long expectedCount) {
     if (actor == null || portName == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -268,7 +268,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages received on the port with given name.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgReceiptCount(String portName, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgReceiptCount(String portName, Long expectedCount) {
     if (portName == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -288,7 +288,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for messages sent on the port with given name.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectMsgSentCount(String portName, Long expectedCount) {
+  public ModelExecutionAssertion expectMsgSentCount(String portName, Long expectedCount) {
     if (portName == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -307,7 +307,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for fire/process iterations for the given actor.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectActorIterationCount(ComponentEntity<?> actor, Long expectedCount) {
+  public ModelExecutionAssertion expectActorIterationCount(ComponentEntity<?> actor, Long expectedCount) {
     if (actor == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -327,7 +327,7 @@ public class FlowExecutionAssertion {
    * @param expectedCount the expected count for fire/process iterations for the actor with given name.
    * @return this FlowStatisticsAssertion instance to allow fluent method chaining
    */
-  public FlowExecutionAssertion expectActorIterationCount(String actorName, Long expectedCount) {
+  public ModelExecutionAssertion expectActorIterationCount(String actorName, Long expectedCount) {
     if (actorName == null || expectedCount == null) {
       throw new NullPointerException("null arguments not allowed");
     } else {
@@ -337,22 +337,22 @@ public class FlowExecutionAssertion {
   }
 
   /**
-   * Assert all specified expectations for message receipts on input ports, applied on the given flow instance.
+   * Assert all specified expectations for message receipts on input ports, applied on the given model instance.
    * 
-   * @param flow
+   * @param model
    * @param receivedCounts a map with full portNames and their expected counts of received messages
    */
-  protected void assertPortReceiptStatistics(CompositeActor flow, Map<String, Long> receivedCounts) {
+  protected void assertPortReceiptStatistics(CompositeActor model, Map<String, Long> receivedCounts) {
     if (receivedCounts != null) {
       for (Entry<String, Long> rcvCountEntry : receivedCounts.entrySet()) {
         String portName = rcvCountEntry.getKey();
         long expCount = rcvCountEntry.getValue();
-        if (portName.startsWith("." + flow.getName())) {
-          // chop flow name
+        if (portName.startsWith("." + model.getName())) {
+          // chop model name
           portName = portName.split("\\.", 3)[2];
         }
-        IOPort p = (IOPort) flow.getPort(portName);
-        assertNotNull("No port " + portName + " found in flow " + flow.getName(), p);
+        IOPort p = (IOPort) model.getPort(portName);
+        assertNotNull("No port " + portName + " found in model " + model.getName(), p);
         assertTrue("Port " + portName + " is not an input port.", p.isInput());
         assertEquals("Wrong received count for port " + portName, expCount, TestUtilities.getStatistics(p).getNrReceivedMessages());
       }
@@ -360,22 +360,22 @@ public class FlowExecutionAssertion {
   }
 
   /**
-   * Assert all specified expectations for message sent by output ports, applied on the given flow instance.
+   * Assert all specified expectations for message sent by output ports, applied on the given model instance.
    * 
-   * @param flow
+   * @param model
    * @param sentCounts a map with full portNames and their expected counts of sent messages
    */
-  protected void assertPortSentStatistics(CompositeActor flow, Map<String, Long> sentCounts) {
+  protected void assertPortSentStatistics(CompositeActor model, Map<String, Long> sentCounts) {
     if (sentCounts != null) {
       for (Entry<String, Long> rcvCountEntry : sentCounts.entrySet()) {
         String portName = rcvCountEntry.getKey();
         long expCount = rcvCountEntry.getValue();
-        if (portName.startsWith("." + flow.getName())) {
-          // chop flow name
+        if (portName.startsWith("." + model.getName())) {
+          // chop model name
           portName = portName.split("\\.", 3)[2];
         }
-        IOPort p = (IOPort) flow.getPort(portName);
-        assertNotNull("No port " + portName + " found in flow " + flow.getName(), p);
+        IOPort p = (IOPort) model.getPort(portName);
+        assertNotNull("No port " + portName + " found in model " + model.getName(), p);
         assertTrue("Port " + portName + " is not an output port.", p.isOutput());
         assertEquals("Wrong sent count for port " + portName, expCount, TestUtilities.getStatistics(p).getNrSentMessages());
       }
@@ -383,22 +383,22 @@ public class FlowExecutionAssertion {
   }
 
   /**
-   * Assert all specified expectations for actor iteration counts, applied on the given flow instance.
+   * Assert all specified expectations for actor iteration counts, applied on the given model instance.
    * 
-   * @param flow
+   * @param model
    * @param iterationCounts a map with full actorNames and their expected iteration counts
    */
-  protected void assertActorIterationStatistics(CompositeActor flow, Map<String, Long> iterationCounts) {
+  protected void assertActorIterationStatistics(CompositeActor model, Map<String, Long> iterationCounts) {
     if (iterationCounts != null) {
       for (Entry<String, Long> itrCountEntry : iterationCounts.entrySet()) {
         String actorName = itrCountEntry.getKey();
         long expCount = itrCountEntry.getValue();
-        if (actorName.startsWith("." + flow.getName())) {
-          // chop flow name
+        if (actorName.startsWith("." + model.getName())) {
+          // chop model name
           actorName = actorName.split("\\.", 3)[2];
         }
-        ComponentEntity<?> a = flow.getEntity(actorName);
-        assertNotNull("No actor " + actorName + " found in flow " + flow.getName(), a);
+        ComponentEntity<?> a = model.getEntity(actorName);
+        assertNotNull("No actor " + actorName + " found in model " + model.getName(), a);
         if (expCount != 0) {
           assertNotNull("Actor statistics not enabled for actor " + actorName, TestUtilities.getStatistics(a));
           assertEquals("Wrong iteration count for actor " + actorName, expCount, TestUtilities.getStatistics(a).getNrCycles());

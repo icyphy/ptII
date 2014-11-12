@@ -1,4 +1,4 @@
-/* A builder class to specify expected elements of a Flow definition.
+/* A builder class to specify expected elements of a defined model.
  Copyright (c) 2014 The Regents of the University of California; iSencia Belgium NV.
  
  All rights reserved.
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A builder class to specify expected elements of a Flow definition :
+ * A builder class to specify expected elements of a defined model :
  * <ul>
  * <li>directors, actors, parameters and other NamedObj instances : define expected presence by name or by instance</li>
  * <li>parameters : define expected value</li>
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Red (ErwinDL)
  */
-public class FlowDefinitionAssertion {
+public class ModelDefinitionAssertion {
 
   /**
    * Clear all test result expectations.
@@ -60,9 +60,9 @@ public class FlowDefinitionAssertion {
    * New expectations can be defined again by repeatedly invoking the methods <code>expectActor...</code> etc.
    * </p>
    * 
-   * @return this FlowDefinitionAssertion instance to allow fluent method chaining
+   * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
-  public FlowDefinitionAssertion clear() {
+  public ModelDefinitionAssertion clear() {
     _expectedActorNames.clear();
     _expectedParameterNames.clear();
     _expectedRelations.clear();
@@ -70,21 +70,21 @@ public class FlowDefinitionAssertion {
   }
 
   /**
-   * Assert all configured expectations on the given flow. The assertions are done using JUnit's
+   * Assert all configured expectations on the given model. The assertions are done using JUnit's
    * <code>Assert.assert...()</code> methods, so any discovered deviation will result in a JUnit test failure.
    * <p>
    * If all expectations are ok, further tests can be chained through the returned reference to this
-   * <code>FlowDefinitionAssertion</code> instance.
+   * <code>ModelDefinitionAssertion</code> instance.
    * </p>
    * 
-   * @param flow
-   *          the flow that has been executed and for which test result expectations must be asserted.
-   * @return this FlowDefinitionAssertion instance to allow fluent method chaining
+   * @param model
+   *          the model for which expected contents must be asserted.
+   * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
-  public FlowDefinitionAssertion assertFlow(CompositeActor flow) {
-    _assertActorNames(flow, _expectedActorNames);
-    _assertParameterNames(flow, _expectedParameterNames);
-    _assertRelations(flow, _expectedRelations);
+  public ModelDefinitionAssertion assertModel(CompositeActor model) {
+    _assertActorNames(model, _expectedActorNames);
+    _assertParameterNames(model, _expectedParameterNames);
+    _assertRelations(model, _expectedRelations);
     return this;
   }
 
@@ -92,9 +92,9 @@ public class FlowDefinitionAssertion {
    * 
    * @param actorName
    *          the NamedObj.getFullName() of the actor
-   * @return this FlowDefinitionAssertion instance to allow fluent method chaining
+   * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
-  public FlowDefinitionAssertion expectActor(String actorName) {
+  public ModelDefinitionAssertion expectActor(String actorName) {
     _expectedActorNames.add(actorName);
     return this;
   }
@@ -103,9 +103,9 @@ public class FlowDefinitionAssertion {
    * 
    * @param parameterName
    *          the NamedObj.getFullName() of the parameter
-   * @return this FlowDefinitionAssertion instance to allow fluent method chaining
+   * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
-  public FlowDefinitionAssertion expectParameter(String parameterName) {
+  public ModelDefinitionAssertion expectParameter(String parameterName) {
     _expectedParameterNames.add(parameterName);
     return this;
   }
@@ -116,9 +116,9 @@ public class FlowDefinitionAssertion {
    *          the NamedObj.getFullName() of the output port that must be connected to the <b>to</b> port
    * @param to
    *          the NamedObj.getFullName() of the input port that must be connected to the <b>from</b> port
-   * @return this FlowDefinitionAssertion instance to allow fluent method chaining
+   * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
-  public FlowDefinitionAssertion expectRelation(String from, String to) {
+  public ModelDefinitionAssertion expectRelation(String from, String to) {
     _expectedRelations.add(new Relation(from, to));
     return this;
   }
@@ -126,41 +126,41 @@ public class FlowDefinitionAssertion {
   // protected methods
   
   /**
-   * Asserts whether all expected actors are present in the given flow, 
+   * Asserts whether all expected actors are present in the given model, 
    * based on the given actor names.
    * <p>
    * The implementation is based on JUnit's {@link Assert} methods.
    * </p> 
-   * @param flow
+   * @param model
    * @param expectedActorNames
    */
-  protected void _assertActorNames(CompositeActor flow, Collection<String> expectedActorNames) {
+  protected void _assertActorNames(CompositeActor model, Collection<String> expectedActorNames) {
     for (String name : expectedActorNames) {
-      Object actor = flow.getEntity(TestUtilities.getFullNameButWithoutModelName(flow, name));
-      Assert.assertNotNull("No actor " + name + " found in flow " + flow.getFullName(), actor);
-      Assert.assertTrue(name + " is not an Actor in flow " + flow.getFullName(), (actor instanceof Actor));
+      Object actor = model.getEntity(TestUtilities.getFullNameButWithoutModelName(model, name));
+      Assert.assertNotNull("No actor " + name + " found in model " + model.getFullName(), actor);
+      Assert.assertTrue(name + " is not an Actor in model " + model.getFullName(), (actor instanceof Actor));
     }
   }
 
   /**
-   * Asserts whether all expected parameters are present in the given flow, 
+   * Asserts whether all expected parameters are present in the given model, 
    * based on the given parameter names.
    * <p>
    * The implementation is based on JUnit's {@link Assert} methods.
    * </p> 
-   * @param flow
+   * @param model
    * @param expectedParameterNames
    */
-  protected void _assertParameterNames(CompositeActor flow, Collection<String> expectedParameterNames) {
+  protected void _assertParameterNames(CompositeActor model, Collection<String> expectedParameterNames) {
     for (String name : expectedParameterNames) {
-      Object parameter = flow.getAttribute(TestUtilities.getFullNameButWithoutModelName(flow, name));
-      Assert.assertNotNull("No parameter " + name + " found in flow " + flow.getFullName(), parameter);
-      Assert.assertTrue(name + " is not an Attribute in flow " + flow.getFullName(), (parameter instanceof Attribute));
+      Object parameter = model.getAttribute(TestUtilities.getFullNameButWithoutModelName(model, name));
+      Assert.assertNotNull("No parameter " + name + " found in model " + model.getFullName(), parameter);
+      Assert.assertTrue(name + " is not an Attribute in model " + model.getFullName(), (parameter instanceof Attribute));
     }
   }
 
   /**
-   * Asserts whether all expected relations are present in the given flow, 
+   * Asserts whether all expected relations are present in the given model, 
    * based on the given {@link Relation}s, which are simple pairs of from- & to- port names.
    * <p>
    * The method checks for the presence of the from&to ports for a given Relation,
@@ -170,16 +170,16 @@ public class FlowDefinitionAssertion {
    * <p>
    * The implementation is based on JUnit's {@link Assert} methods.<br/>
    * </p> 
-   * @param flow
+   * @param model
    * @param expectedRelations
    */
-  protected void _assertRelations(CompositeActor flow, Collection<Relation> expectedRelations) {
+  protected void _assertRelations(CompositeActor model, Collection<Relation> expectedRelations) {
     for (Relation relation : expectedRelations) {
-      TypedIOPort outputPort = (TypedIOPort) flow.getPort(TestUtilities.getFullNameButWithoutModelName(flow, relation.from));
-      TypedIOPort inputPort = (TypedIOPort) flow.getPort(TestUtilities.getFullNameButWithoutModelName(flow, relation.to));
-      Assert.assertNotNull("No port " + relation.from + " found in flow " + flow.getFullName(), outputPort);
-      Assert.assertNotNull("No port " + relation.to + " found in flow " + flow.getFullName(), inputPort);
-      Assert.assertTrue(relation.from + " not connected to " + relation.to + " in flow " + flow.getFullName(), outputPort.sinkPortList().contains(inputPort));
+      TypedIOPort outputPort = (TypedIOPort) model.getPort(TestUtilities.getFullNameButWithoutModelName(model, relation.from));
+      TypedIOPort inputPort = (TypedIOPort) model.getPort(TestUtilities.getFullNameButWithoutModelName(model, relation.to));
+      Assert.assertNotNull("No port " + relation.from + " found in model " + model.getFullName(), outputPort);
+      Assert.assertNotNull("No port " + relation.to + " found in model " + model.getFullName(), inputPort);
+      Assert.assertTrue(relation.from + " not connected to " + relation.to + " in model " + model.getFullName(), outputPort.sinkPortList().contains(inputPort));
       boolean linkedViaReceiver = false;
       try {
         Receiver[][] remoteReceivers = outputPort.getRemoteReceivers();
@@ -194,7 +194,7 @@ public class FlowDefinitionAssertion {
             break;
           }
         }
-        Assert.assertTrue(relation.from + " not connected via a Receiver to " + relation.to + " in flow " + flow.getFullName(), linkedViaReceiver);
+        Assert.assertTrue(relation.from + " not connected via a Receiver to " + relation.to + " in model " + model.getFullName(), linkedViaReceiver);
       } catch (IllegalActionException e) {
         Assert.fail("Error obtaining remote receivers " + e.getMessage());
       }
