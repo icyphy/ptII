@@ -3200,28 +3200,37 @@ $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "# Building in the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
+	@echo "We build with Java 1.6 so that copernicus works"
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
+		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
+		export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
 	@echo "# Creating the $(PTBUILDRELEASE)/signed directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; make jnlp_dist USER=`whoami` STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`")
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
+		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
+		make jnlp_dist USER=`whoami` STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`")
 
 $(PTBUILDRELEASE)/test.out:
 	@echo "#"
 	@echo "# Creating the $(PTBUILDRELEASE)/test.out by running the longest tests, which export the models.  This will take about 100 minutes."
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:2.0; echo "DISPLAY=$$DISPLAY"; ant test.longest >& test.out)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
+		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
+		export DISPLAY=localhost:2.0; echo "DISPLAY=$$DISPLAY"; ant test.longest >& test.out)
 
 $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit:
 	@echo "#"
 	@echo "# Creating the $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit by running a script."
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./updateDemos >& doit)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
+		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
+		cd ptolemy/copernicus/applet; ./updateDemos >& doit)
 
 clean_ptrelease_doit:
 	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit
@@ -3232,7 +3241,9 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out:
 	@echo "# This will run export the models for WebStart."
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export DISPLAY=localhost:2.0; cp $(HOME)/ptKeystore.properties . ; (cd bin; make); cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
+		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
+		export DISPLAY=localhost:2.0; cp $(HOME)/ptKeystore.properties . ; (cd bin; make); cd ptolemy/copernicus/applet; sh ./doit >& doit.out)
 
 clean_ptrelease_doit.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/doit.out
@@ -3243,7 +3254,9 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 	@echo "# This will copy the JNLP and WebStart demos to the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./scpDemos >& scpDemos.out)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
+		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
+		cd ptolemy/copernicus/applet; ./scpDemos >& scpDemos.out)
 
 clean_ptrelease_scpDemos.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
@@ -3261,7 +3274,7 @@ $(PTBUILDRELEASE)/ptolemy/plot/dists.out:
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/plot; rm -rf adm tmp; make dists >& dists.out && make update_ftp)
 	@echo "# Update links to distributions and the Java Version Applet."
-	ssh moog rm -f $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)/doc/download
+	ssh moog rm -rf $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)/doc/download
 	ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)
 	ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)
 	ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/doc/download $(PTII_FTP_PTPLOT)/doc
