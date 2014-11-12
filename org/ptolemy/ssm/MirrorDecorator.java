@@ -172,7 +172,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     public void registerListener(MirrorDecoratorListener monitor) {
         _listeners.add(monitor);
     }
-    /** Notify the monitor that a Port event happened. 
+    /** Notify the monitor that an event happened. 
      *  @param eventType Type of event.
      *  @param portName Name of port to be added/removed
      */
@@ -247,8 +247,6 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
 
     private List<String> _addedPortNames = new ArrayList<>(); 
 
-    private List<Parameter> _addedParameters = new ArrayList<>(); 
-
     public List<String> getAddedPortNames() {
         return _addedPortNames;
     }
@@ -256,6 +254,11 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     public List<Parameter> getAddedParameters() {
         return _addedParameters;
     }
+
+
+
+
+    private List<Parameter> _addedParameters = new ArrayList<>(); 
 
     static public class MirrorDecoratorAttributes extends DecoratorAttributes implements MirrorDecoratorListener{
 
@@ -360,7 +363,6 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                     if (enabled()) {
                         if (port == null) {
                             new TypedIOPort(container, portName, true, false);
-                            _decoratorPorts.add(portName);
                         } else {
                             // the decorator is attempting to add an input port
                             // which has the same name as an existing output port
@@ -378,7 +380,6 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                     if (port != null && 
                             ((MirrorDecorator)this._decorator).getAddedPortNames().contains(portName)) {
                         port.setContainer(null);
-                        _decoratorPorts.remove(portName);
                     }
                 } 
             } catch (IllegalActionException | NameDuplicationException e) {
@@ -395,7 +396,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                 for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
                     event((MirrorDecorator)this._decorator,
                             DecoratorEvent.ADDED_PORT, decoratorPort); 
-                }  
+                }
             }
         }
 
@@ -403,18 +404,18 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
          * Remove all decorated ports from the container
          */
         private void _removeAllPorts() {
-            if (this._decorator != null) {
-                try{
+            try{
+                if (this._decorator != null) {
                     for (String port : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
                         ComponentEntity container = (ComponentEntity) this.getContainer();
                         if (container.getPort(port) != null) {
                             container.getPort(port).setContainer(null);
                         }
                     }
-                } catch (IllegalActionException | NameDuplicationException e) {
-                    throw new InternalErrorException(e);
-                }  
-            }
+                }
+            } catch (IllegalActionException | NameDuplicationException e) {
+                throw new InternalErrorException(e);
+            }  
         }
 
         /** Create the parameters. Including any parameter the decorator already includes.
@@ -427,6 +428,21 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
                 enable.setTypeEquals(BaseType.BOOLEAN);
                 enable.setPersistent(true);
 
+                if (enabled()) {
+                    _addAllPorts();
+                } else {
+                    _removeAllPorts();
+                } 
+
+                if (this._decorator != null) {
+                    for (Parameter p : ((MirrorDecorator)this._decorator).getAddedParameters()) {
+                        event((MirrorDecorator)this._decorator,
+                                DecoratorEvent.ADDED_PARAMETER, p);                      
+                    }
+                }
+
+
+                
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
@@ -435,8 +451,6 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
 
         /** Boolean indicating  enable status of the decorator */
         private boolean _enabled; 
-
-        private static List<String> _decoratorPorts = new ArrayList<>();
 
     }
 }
