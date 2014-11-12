@@ -1465,7 +1465,7 @@ if [ "$error" = "none" ]; then
     else
 	if [ "$makeapp" = "1" ]; then   
 	    # Create a Mac OS X .app file
-	    PTVERSION=10.0.devel
+	    PTVERSION=11.0.devel
 	    MACAPP_BASE=`basename $MACAPP_APP .app`
 	    MACAPP_PLIST=$MACAPP_APP/Contents/Info.plist 
 	    
@@ -1579,6 +1579,8 @@ EOF3
      cat >>$MACAPP_PLIST <<EOF4
     <key>CFBundleExecutable</key>
     <string>JavaAppLauncher</string>
+    <key>JVMRuntime</key>
+    <string>jdk1.8.0_20.jdk</string>
     <key>JVMMainClassName</key>
     <string>ptolemy.vergil.VergilApplication</string>
     <key>JVMOptions</key>
@@ -1601,8 +1603,47 @@ EOF4
    </dict>
 </plist>
 EOF6
-           fi
-	else    
+           # Under Mac Java 1.8, OS X, copy the JVM.  Under other OS's check for a tar file and untar.
+	set -x
+           case "`uname -s`" in
+           Darwin*) Darwin=yes;;
+	   *) Darwin=no;    
+           esac
+	   if [ "${Darwin}" = "yes" ]; then
+	       if [ -z "${JAVA_HOME}" -o ! -d ${JAVA_HOME} ]; then
+		   echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
+		   echo "   not setting up the JVM for the app."
+               else
+		   echo "Copying the jre into $MACAPP_APP"
+		   # Copy the jvm
+		   ContentsDirectory=`dirname "${JAVA_HOME}"`
+		   jdkVersionDirectory=`dirname ${ContentsDirectory}`
+		   jdkVersion=`basename "${jdkVersionDirectory}"`
+		   jdkApp=$MACAPP_APP/Contents/PlugIns/$jdkVersion
+		   jreApp=$jdkApp/Contents/Home/jre
+		   mkdir -p $jreApp/lib
+
+		   cp $ContentsDirectory/Info.plist $jdkApp/Contents/
+
+		   cp $JAVA_HOME/jre/{COPYRIGHT,LICENSE,README,THIRDPARTYLICENSEREADME-JAVAFX.txt,THIRDPARTYLICENSEREADME.txt,Welcome.html} $jreApp
+
+		   (cd $JAVA_HOME/jre; tar -cf - lib) | (cd $jreApp; tar -xf -)
+		   rm -rf $jreApp/lib/{applet,deploy.jar,javaws.jar,libdeploy.dylib,plugin.jar}
+
+		   # Deal with extensions
+		   # RXTX SerialComm
+		   cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
+		   cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
+		   cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
+	       fi
+           else
+	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
+	       if [ -f ${PTII}/adm/gen-11.0/MacJVM.tar ]; then
+		   (cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-11.0/MacJVM.tar)
+	       fi	   
+	   fi # Darwin
+           fi # JAVA16
+  	else    
 	    eval exec $str
         fi	    
     fi
