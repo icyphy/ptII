@@ -147,14 +147,11 @@
     <include name="ptolemy/domains/hdf/demo/demo.jar" />
     <include name="ptolemy/domains/hdf/doc/doc.jar" />
     <include name="ptolemy/domains/hdf/hdf.jar" />
-    <include name="ptolemy/domains/metroII/metroII.jar" />
-    <include name="ptolemy/domains/metroII/demo/demo.jar" />
     <include name="ptolemy/domains/modal/demo/demo.jar" />
     <include name="ptolemy/domains/modal/doc/doc.jar" />
     <include name="ptolemy/domains/modal/kernel/fmv/fmv.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
     <include name="ptolemy/domains/modal/modal/modal.jar" />
-    <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
     <include name="ptolemy/domains/petrinet/petrinet.jar" />
     <include name="ptolemy/domains/petrinet/demo/demo.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
@@ -445,7 +442,6 @@
     <include name="ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.jar" />
     <include name="ptolemy/domains/modal/demo/StateTracker/StateTracker.jar" />
     <include name="ptolemy/domains/modal/demo/SystemLevelType/SystemLevelType.jar" />
-    <include name="ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.jar" />
     <include name="ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.jar" />
