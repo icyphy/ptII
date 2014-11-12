@@ -1604,7 +1604,6 @@ EOF4
 </plist>
 EOF6
            # Under Mac Java 1.8, OS X, copy the JVM.  Under other OS's check for a tar file and untar.
-	set -x
            case "`uname -s`" in
            Darwin*) Darwin=yes;;
 	   *) Darwin=no;    
