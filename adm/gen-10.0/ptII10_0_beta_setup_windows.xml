@@ -144,6 +144,9 @@ The Ptiny pack is required.
 
 		 Then add missing jars
 	      -->
+
+            <file src="../dists/ptII10.0.beta/jar_dist/contrib/contrib.jar"
+                   targetdir="$INSTALL_PATH/contrib"/>
             <file src="../dists/ptII10.0.beta/jar_dist/doc/docConfig.jar"
                   targetdir="$INSTALL_PATH/doc"/>
             <file src="../dists/ptII10.0.beta/jar_dist/lib/diva.jar"
@@ -275,6 +278,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/plot"/>
 
 
+
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
@@ -315,6 +319,10 @@ The Ptiny pack is required.
 
 		 Then add missing jars
 	      -->
+            <file src="../dists/ptII10.0.beta/jar_dist/doc/books/systems/vergil/vergil.jar"
+                   targetdir="$INSTALL_PATH/doc/books/systems/vergil"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/doc/papers/papers.jar"
+                   targetdir="$INSTALL_PATH/doc/papers"/>
             <file src="../dists/ptII10.0.beta/jar_dist/lib/jasminclasses.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII10.0.beta/jar_dist/lib/sootclasses.jar"
@@ -376,7 +384,7 @@ The Ptiny pack is required.
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/lib/mail/mail.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail/demo"/>
             <file src="../dists/ptII10.0.beta/jar_dist/lib/javax.mail.jar"
                   targetdir="$INSTALL_PATH/vendors/lib/javax.mail.jar"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/ptalon/gt/gt.jar"
@@ -403,6 +411,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/distributed"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/distributed/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/distributed/demo"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/distributed/domains/sdf/sdf.jar"
+                   targetdir="$INSTALL_PATH/ptolemy/distributed/domains/sdf"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/demo"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/experimentalDomains.jar"
@@ -445,6 +455,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/psdf/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf/demo"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf/demo/BlindCommunication"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/psdf/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf/doc"/>
             <file src="../dists/ptII10.0.beta/jar_dist/lib/mapss.jar"
@@ -469,6 +481,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/tester"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/tdl/tdl.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tdl"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/tdl/demo/demo.jar"
+                   targetdir="$INSTALL_PATH/ptolemy/domains/tdl/demo"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/tm/tm.jar"
+                   targetdir="$INSTALL_PATH/ptolemy/domains/tm"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/tm/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/tm/doc/doc.jar"
@@ -479,6 +495,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/verification/demo"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/ptera/ptera.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptera"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/vergil/basic/export/export.jar"
+                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/vergil/basic/export/html/html.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
@@ -563,8 +581,17 @@ The Ptiny pack is required.
             <file src="../dists/ptII10.0.beta/jar_dist/lib/smackx.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
+            <file src="../dists/ptII10.0.beta/jar_dist/org/ptolemy/qss/demo/demo.jar"
+                   targetdir="$INSTALL_PATH/org/ptolemy/qss/demo"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/org/ptolemy/qss/qss.jar"
+                   targetdir="$INSTALL_PATH/org/ptolemy/qss"/>
+
             <file src="../dists/ptII10.0.beta/jar_dist/org/ptolemy/fmi/fmi.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/fmi"/>
+
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/gui/jnlp/FullApplication.jar"
+                   targetdir="$INSTALL_PATH/ptolemy/actor/gui/jnlp"/>
+
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/gui/run/run.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gui/run"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/wireless/wireless.jar"
@@ -625,12 +652,12 @@ The Ptiny pack is required.
             <!-- file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/openmodelica/openmodelica.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/openmodelica"/ -->
 
-            <!-- file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/scr/scr.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/scr"/ -->
-            <!-- file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/scr/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/scr/demo"/-->
-            <!-- file src="../dists/ptII10.0.beta/jar_dist/ptolemy/vergil/scr/scr.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/scr"/-->
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/scr/scr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/scr"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/scr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/scr/demo"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/vergil/scr/scr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/scr"/>
 
             <file src="../dists/ptII10.0.beta/jar_dist/lib/g4ltl.jar"
                   targetdir="$INSTALL_PATH/lib"/>
@@ -638,6 +665,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl/demo"/>
+
 
         </pack>
 
