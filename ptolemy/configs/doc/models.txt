@@ -82,6 +82,7 @@ $CLASSPATH/ptolemy/actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml
