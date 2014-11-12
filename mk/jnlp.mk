@@ -479,10 +479,10 @@ FULL_8_1_JARS = \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 
-METROII_JARS = \
-	lib/protobuf-java-2.4.1.jar \
-	ptolemy/domains/metroII/metroII.jar \
-	ptolemy/domains/metroII/demo/demo.jar
+METROII_JARS =
+#	lib/protobuf-java-2.4.1.jar 
+#	ptolemy/domains/metroII/metroII.jar 
+#	ptolemy/domains/metroII/demo/demo.jar
 
 FULL_10_0_JARS = \
 	com/cureos/cureos.jar \
@@ -494,7 +494,6 @@ FULL_10_0_JARS = \
 	org/ptolemy/osc/osc.jar \
 	$(PTOSCP5_JAR) \
 	$(METROII_JARS) \
-	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/vergil/scr/scr.jar \
@@ -746,6 +745,7 @@ ALL_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR) \
 	$(SPACE_MAIN_JAR) \
+	$(VISUAL_SENSE_MAIN_JAR) \
 	$(VIPTOS_MAIN_JAR)
 
 # Makefile variables used to set up keys for jar signing.
@@ -1235,7 +1235,8 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
-	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	# Mac apps need all the jars
+	set $(ALL_JNLP_JARS); \
 	for x do \
 		jarfile=`echo $$x | sed "s@$(PTII)/@@"`; \
 		if [ ! -f $(JAR_DIST_DIR)/$$jarfile ]; then \
@@ -1591,7 +1592,7 @@ echo_jars:
 # The echo_plist_jars rule is used by $PTII/bin/makeapp to create Contents/Info.plist.
 # sed is used to make the paths relative for things like lib/js.jar
 echo_plist_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | sed 's@$(PTII)/@@g'
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | sort | uniq | sed 's@$(PTII)/@@g'
 
 # make echo_classpath_jars JARS=PTINY_JNLP_JARS
 echo_classpath_jars:
