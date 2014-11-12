@@ -294,6 +294,34 @@ For example:
 	 target="build-all"/>
   </target>
 
+  <!-- Bundle for Java 1.8 under Mac OS X.  See $PTII/doc/coding/installers.htm 
+       Get vendors/misc/appbundler-1.0.jar from https://java.net/projects/appbundler/downloads
+    -->
+  <!--
+  <taskdef name="bundleapp" 
+	   classname="com.oracle.appbundler.AppBundlerTask"
+	   classpath="vendors/misc/appbundler-1.0.jar"/>
+   -->
+  <!--
+  <target name="bundle.ptiny">
+    <bundleapp
+       applicationCategory="public.app-category.developer-tools"
+       name="Ptiny"
+       copyright="Copyright (c) 1995-2014 The Regents of the University of California. All rights reserved."
+       displayname="Ptiny"
+       identifier="ptole"
+       mainclassname="ptolemy.vergil.VergilApplication"
+       outputdirectory="."
+       shortversion="1.0"
+       signature="PTOL"   
+       >
+      <runtime dir="${env.JAVA_HOME}"/>
+      <option value="-classpath $APP_ROOT"/>
+      <argument value="-ptiny"/>
+    </bundleapp>
+  </target>
+  -->
+
   <target name="checkstyle" depends="initReports"
 	  description="Run checkstyle and find common code style problems." >
     <echo>To avoid an 'OutOfMemoryError' exception, under bash, try 'export ANT_OPTS=-Xmx1024m'</echo>
