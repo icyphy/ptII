@@ -105,8 +105,8 @@ EXTRA_SRCS = \
 
 
 # Mac OS X applications, created by running ./makeapp
-# We don't include Ptiny.app because we end up copying the jre into the *.app directory, which is very large.
 MAC_APPS = \
+	Ptiny.app \
 	Vergil.app
 
 
