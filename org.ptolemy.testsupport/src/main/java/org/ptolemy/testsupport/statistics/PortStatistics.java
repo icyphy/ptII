@@ -39,7 +39,7 @@ import ptolemy.kernel.util.DebugListener;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Yellow (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
 public class PortStatistics implements NamedStatistics, DebugListener {
 
@@ -73,44 +73,73 @@ public class PortStatistics implements NamedStatistics, DebugListener {
     // nothing needed here
   }
 
+  /**
+   * Log the count and timing of a new received message.
+   * 
+   * @param msg
+   */
   public void acceptReceivedMessage(Object msg) {
     _receiptStatistics.acceptEvent(msg);
   }
 
+  /**
+   * Log the count and timing of a new sent message.
+   * 
+   * @param msg
+   */
   public void acceptSentMessage(Object msg) {
     _sendingStatistics.acceptEvent(msg);
   }
 
+  /**
+   * 
+   * @return the statistics of received messages
+   */
   public EventStatistics getReceiptStatistics() {
     return _receiptStatistics;
   }
 
+  /**
+   * 
+   * @return the statistics of sent messages
+   */
   public EventStatistics getSendingStatistics() {
     return _sendingStatistics;
   }
 
+  /**
+   * 
+   * @return the count of sent messages
+   */
   public long getNrSentMessages() {
     return _sendingStatistics.getNrEvents();
   }
 
   /**
-   * in msec
+   * @return the average interval in msec between sending two messages
    */
   public long getAvgIntervalSentMessages() {
     return _sendingStatistics.getAvgInterval();
   }
 
+  /**
+   * 
+   * @return the count of received messages
+   */
   public long getNrReceivedMessages() {
     return _receiptStatistics.getNrEvents();
   }
 
   /**
-   * in msec
+   * @return the average interval in msec between receiving two messages
    */
   public long getAvgIntervalReceivedMessages() {
     return _receiptStatistics.getAvgInterval();
   }
 
+  /**
+   * clear all statistical data
+   */
   public void reset() {
     _receiptStatistics.reset();
     _sendingStatistics.reset();

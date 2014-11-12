@@ -47,7 +47,7 @@ import java.util.Date;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Green (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
 final class CycleStatistics {
 
@@ -66,7 +66,7 @@ final class CycleStatistics {
   /**
    * Log the count and timing of a cycle start.
    * 
-   * @throws IllegalStateException
+   * @throws IllegalStateException if the element is not idle, i.e. there's already a cycle ongoing
    */
   public void acceptCycleBegin() throws IllegalStateException {
     if (!_idle) {
@@ -80,7 +80,7 @@ final class CycleStatistics {
   /**
    * Log the count and timing of a cycle end.
    * 
-   * @throws IllegalStateException
+   * @throws IllegalStateException if the element is idle, i.e. there's no cycle ongoing that could be ended
    */
   public void acceptCycleEnd() throws IllegalStateException {
     if (_idle) {

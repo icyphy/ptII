@@ -51,9 +51,9 @@ import ptolemy.kernel.util.NamedObj;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Yellow (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
-public class TestUtils {
+public class TestUtilities {
 
   /**
    * Gets the full name but without leading model name.
@@ -78,7 +78,7 @@ public class TestUtils {
   }
 
   /**
-   * Get the statistics for the given actor.
+   * Get the execution statistics for the given actor.
    *
    * @param actor the actor
    * @return the statistics for the actor
@@ -113,9 +113,10 @@ public class TestUtils {
    *
    * @param model the model
    * @return the (enriched) model
-   * @throws Exception the exception
+   * @throws NameDuplicationException 
+   * @throws IllegalActionException 
    */
-  public static CompositeEntity enableStatistics(CompositeEntity model) throws Exception {
+  public static CompositeEntity enableStatistics(CompositeEntity model) throws IllegalActionException, NameDuplicationException  {
     for (Object entity : model.entityList()) {
       if (entity instanceof ComponentEntity) {
         _enableStatistics((ComponentEntity<?>) entity);
@@ -128,11 +129,16 @@ public class TestUtils {
 
   /**
    * Enable gathering execution statistics on the given model entity and its sub-components.
+   * <p>
+   * This is implemented by registering an {@link Attribute} that binds a {@link NamedStatistics} instance 
+   * to each relevant contained model element.
+   * </p>
    *
-   * @param entity the entity
-   * @throws Exception for any problem while enabling statistics
+   * @param entity the entity for which execution statistics must be enabled
+   * @throws NameDuplicationException i.c.o. a failure caused by duplicate attribute names on some model element
+   * @throws IllegalActionException i.c.o. some other error while enabling statistics gathering
    */
-  private static void _enableStatistics(ComponentEntity<?> entity) throws Exception {
+  private static void _enableStatistics(ComponentEntity<?> entity) throws IllegalActionException, NameDuplicationException {
     ActorStatistics actorStats = new ActorStatistics(entity);
     entity.addDebugListener(actorStats);
     new StatisticsAttribute(entity, actorStats);

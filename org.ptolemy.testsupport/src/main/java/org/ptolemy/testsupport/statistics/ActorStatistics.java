@@ -39,7 +39,7 @@ import ptolemy.kernel.util.DebugListener;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Yellow (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
 public class ActorStatistics implements NamedStatistics, DebugListener {
 

@@ -34,7 +34,7 @@ package org.ptolemy.testsupport.statistics;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Green (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
 public interface NamedStatistics {
 

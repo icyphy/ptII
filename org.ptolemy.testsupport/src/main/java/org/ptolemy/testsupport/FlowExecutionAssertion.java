@@ -60,7 +60,7 @@ import ptolemy.kernel.ComponentEntity;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Yellow (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
 public class FlowExecutionAssertion {
   /**
@@ -78,9 +78,9 @@ public class FlowExecutionAssertion {
    * Further expectations can still be defined by repeatedly invoking the methods <code>expectMsg...</code> and <code>expectActor...</code>
    * </p>
    * 
-   * @param portMsgReceiptCounts
-   * @param portMsgSentCounts
-   * @param actorIterationCounts
+   * @param portMsgReceiptCounts a map with the expected count of received messages per (fully) named port
+   * @param portMsgSentCounts a map with the expected count of sent messages per (fully) named port
+   * @param actorIterationCounts a map with the expected count of iterations per (fully) named actor
    */
   public FlowExecutionAssertion(Map<String, Long> portMsgReceiptCounts, Map<String, Long> portMsgSentCounts, Map<String, Long> actorIterationCounts) {
     this._portMsgReceiptCounts = portMsgReceiptCounts;
@@ -354,7 +354,7 @@ public class FlowExecutionAssertion {
         IOPort p = (IOPort) flow.getPort(portName);
         assertNotNull("No port " + portName + " found in flow " + flow.getName(), p);
         assertTrue("Port " + portName + " is not an input port.", p.isInput());
-        assertEquals("Wrong received count for port " + portName, expCount, TestUtils.getStatistics(p).getNrReceivedMessages());
+        assertEquals("Wrong received count for port " + portName, expCount, TestUtilities.getStatistics(p).getNrReceivedMessages());
       }
     }
   }
@@ -377,7 +377,7 @@ public class FlowExecutionAssertion {
         IOPort p = (IOPort) flow.getPort(portName);
         assertNotNull("No port " + portName + " found in flow " + flow.getName(), p);
         assertTrue("Port " + portName + " is not an output port.", p.isOutput());
-        assertEquals("Wrong sent count for port " + portName, expCount, TestUtils.getStatistics(p).getNrSentMessages());
+        assertEquals("Wrong sent count for port " + portName, expCount, TestUtilities.getStatistics(p).getNrSentMessages());
       }
     }
   }
@@ -400,12 +400,12 @@ public class FlowExecutionAssertion {
         ComponentEntity<?> a = flow.getEntity(actorName);
         assertNotNull("No actor " + actorName + " found in flow " + flow.getName(), a);
         if (expCount != 0) {
-          assertNotNull("Actor statistics not enabled for actor " + actorName, TestUtils.getStatistics(a));
-          assertEquals("Wrong iteration count for actor " + actorName, expCount, TestUtils.getStatistics(a).getNrCycles());
+          assertNotNull("Actor statistics not enabled for actor " + actorName, TestUtilities.getStatistics(a));
+          assertEquals("Wrong iteration count for actor " + actorName, expCount, TestUtilities.getStatistics(a).getNrCycles());
         } else {
           // in some test cases, actors may not even have been initialized if we look for 0 iterations
-          if (TestUtils.getStatistics(a) != null) {
-            assertEquals("Wrong iteration count for actor " + actorName, expCount, TestUtils.getStatistics(a).getNrCycles());
+          if (TestUtilities.getStatistics(a) != null) {
+            assertEquals("Wrong iteration count for actor " + actorName, expCount, TestUtilities.getStatistics(a).getNrCycles());
           }
         }
       }

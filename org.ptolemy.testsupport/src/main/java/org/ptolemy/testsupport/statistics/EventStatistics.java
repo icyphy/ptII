@@ -45,7 +45,7 @@ import java.util.Date;
  * @version $Id$
  * @since Ptolemy II 10.1
  * @Pt.ProposedRating Green (ErwinDL)
- * @Pt.AcceptedRating Red (?)
+ * @Pt.AcceptedRating Red (ErwinDL)
  */
 final class EventStatistics {
 
@@ -64,7 +64,7 @@ final class EventStatistics {
    * Loose all statistical data and start all-over again.
    * 
    */
-  void reset() {
+  public void reset() {
     _lastTime = new Date();
     _statData.reset();
   }
