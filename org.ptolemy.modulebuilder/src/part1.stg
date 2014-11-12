@@ -1,0 +1,44 @@
+projectFileTemplate(project, linkedFiles) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+  <name>$project$</name>
+  <comment></comment>
+  <projects>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+      <arguments>
+      </arguments>
+    </buildCommand>
+	<buildCommand>
+		<name>org.eclipse.pde.ManifestBuilder</name>
+		<arguments>
+		</arguments>
+	</buildCommand>
+	<buildCommand>
+		<name>org.eclipse.pde.SchemaBuilder</name>
+		<arguments>
+		</arguments>
+	</buildCommand>
+  </buildSpec>
+  <natures>
+	<nature>org.eclipse.pde.PluginNature</nature>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+  <linkedResources>
+  $linkedFiles : { linkedFile |
+    <link>
+      <name>linked-src$linkedFile$</name>
+      <type>1</type>
+      <locationURI>PT_LOC$linkedFile$</locationURI>
+    </link>}$
+  </linkedResources>
+  <variableList>
+    <variable>
+      <name>PT_LOC</name>
+      <value>file:/C:/data/build-folders/ptolemy</value>
+    </variable>
+  </variableList>
+</projectDescription>
+>>  
