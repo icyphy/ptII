@@ -313,9 +313,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                         varPar = new Parameter(this, variableName);
                         varPar.setTypeEquals(BaseType.DOUBLE);
                         varPar.setExpression("0.0");
-                    } else {
-                        ((Parameter)varPar).setVisibility(Settable.EXPERT); 
-                    }
+                    } 
+                    ((Parameter)varPar).setVisibility(Settable.NONE); 
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
                 }

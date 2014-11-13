@@ -65,18 +65,18 @@ public class StateSpaceModel extends MirrorDecorator {
                     for (int i = 0; i < names.length(); i++) {
                         stateName = ((StringToken) names.getElement(i))
                                 .stringValue();
-                        if (this.getAttribute(stateName) == null
+                        Parameter y = (Parameter) this.getAttribute(stateName);
+                        if ( y == null
                                 && stateName.length() != 0) {
-                            Parameter y = new Parameter(this, stateName); 
-                            y.setExpression("0.0");
-                            y.setVisibility(Settable.NONE);  
+                            y = new Parameter(this, stateName); 
+                            y.setExpression("0.0"); 
                             sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
                         } 
+                        y.setVisibility(Settable.NONE); 
                         if (this.getAttribute(stateName+"_update") == null) {
                             Parameter yUpdate = new Parameter(this, stateName+"_update");
                             yUpdate.setExpression(stateName); 
-                            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, yUpdate);
-
+                            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, yUpdate); 
                         }
                     } 
 
