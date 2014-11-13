@@ -77,7 +77,7 @@ WARNING_CC_FLAGS = -Wall
 # We need -D__int64="long long" when invoking jni interface under cygwin
 
 
-INCFLAGS= -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser
+INCFLAGS= -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser -Ifmi/shared
 # Set CFLAGS to -m32 to build for linux32
 CFLAGS= -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC $(INCFLAGS)
 LIBFLAGS= -lexpat -ldl -lxml2

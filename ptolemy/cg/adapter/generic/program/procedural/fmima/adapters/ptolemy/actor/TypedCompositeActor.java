@@ -31,6 +31,16 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.modal.ModalController;
+import ptolemy.kernel.util.NamedObj;
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
@@ -107,4 +117,53 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                         "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java end"));
         return /*processCode(code.toString())*/code.toString();
     }
+
+    /**
+     * Generate the preinitialize code. We do not call the super
+     * method, because we have arguments to add here
+     * This code contains the variable declarations
+     *
+     * @return The generated preinitialize code.
+     * @exception IllegalActionException If thrown while appending to the
+     * the block or processing the macros.
+     */
+    @Override
+    public String generatePreinitializeCode() throws IllegalActionException {
+        CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+
+        ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
+
+        codeStream.appendCodeBlock("variableDeclareBlock");
+
+//         // Here we declare the contained actors
+//         List actorList = TopActor.deepEntityList();
+//         Iterator<?> actors = actorList.iterator();
+//         while (actors.hasNext()) {
+//             NamedObj actor = (NamedObj) actors.next();
+//             if (actor instanceof CompositeActor || actor instanceof AtomicActor
+//                     || actor instanceof FSMActor) {
+//                 if (actor instanceof ModalController) {
+//                     continue;
+//                 }
+//                 String actorName = CodeGeneratorAdapter.generateName(actor);
+//                 codeStream.append("$include(\"" + actorName + ".h\")");
+//             }
+//         }
+
+//         // After the actors we declare the receivers of this container
+//         Director director = TopActor.getDirector();
+//         ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
+//         String directorName = CodeGeneratorAdapter
+//                 .generateName(directorAdapter);
+//         codeStream.append("$include(\"" + directorName + ".h\")");
+
+//         // Appends the enum definition for the ports
+//         if (_enumPortNumbersDefinition != null) {
+//             codeStream.append(_enumPortNumbersDefinition);
+//         }
+
+        return processCode(codeStream.toString());
+    }
+
 }
