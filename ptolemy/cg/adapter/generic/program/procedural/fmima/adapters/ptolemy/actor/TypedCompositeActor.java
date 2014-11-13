@@ -132,7 +132,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
 
-        ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
+        //ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
 
         codeStream.appendCodeBlock("variableDeclareBlock");
 
