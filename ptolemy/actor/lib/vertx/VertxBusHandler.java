@@ -210,8 +210,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                 try {
                     _sendTextFrame(json);
                 } catch (IllegalActionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    _exception = e;
                 }
             }
           });
@@ -222,12 +221,10 @@ public class VertxBusHandler extends TypedAtomicActor {
     @Override
     public synchronized void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (_websocket != null) {
-            _websocket.close();
-        }
-        if (_client != null) {
-            _client.close();
-        }
+        // From the vertx documentation: Servers, clients, event bus handlers 
+        // and timers will be automatically closed / cancelled when the 
+        // verticle is stopped.
+        _vertx.cancelTimer(_periodicPing);
         _vertx.stop();
     }
 
