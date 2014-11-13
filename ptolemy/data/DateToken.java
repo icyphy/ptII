@@ -631,8 +631,9 @@ public class DateToken extends AbstractConvertibleToken implements
                 this, rightArgument));
     }
 
-    /** The isCloseTo() method is not supported for Dates because
-     *  epsilon is not losslessly convertable to Long.
+    /** The isCloseTo() method brings both tokens to the same precision. 
+     *  Then compute difference between time value in given lower precision. 
+     *  If difference is less than epsilon (casted to an int), return true.
      *  @param token The token to compare to this token
      *  @param epsilon the epsilon
      *  @return A new token containing the result.
@@ -642,13 +643,30 @@ public class DateToken extends AbstractConvertibleToken implements
     @Override
     protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
-        // FIXME: If we convert the two tokens to longs and the
+        // Christopher Brooks: If we convert the two tokens to longs and the
         // epsilon to a long, then this might make sense?
         // However, double is not losslessly convertible to long?
         // Probably throw an IllegalActionException here.
-
-        throw new IllegalActionException(null, notSupportedMessage("isCloseTo",
-                this, token));
+        
+        // Patricia Derler - first trial of an implementation of isCloseTo below.
+        // First get both tokens to the same precision. Then compare the difference. 
+        // If difference is less than epsilon (casted to an int), return true.
+        if (token instanceof DateToken) {
+            DateToken dateToken = (DateToken) token;
+            long dateValue = dateToken._value;
+            if (dateToken.getPrecision() > getPrecision()) {
+                int precisionDifference = dateToken.getPrecision() - getPrecision();
+                dateValue = (long) (dateValue / Math.pow(1000, precisionDifference));
+            }
+            if (Math.abs(dateValue - _value) < epsilon) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+        } else {
+            throw new IllegalActionException(null, "Cannot compute _isCloseTo for DateToken and " 
+                    + token.getType());
+        }
     }
 
     /** Return true of the the value of this token is equal
