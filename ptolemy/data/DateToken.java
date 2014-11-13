@@ -179,11 +179,13 @@ public class DateToken extends AbstractConvertibleToken implements
                             + "format: " + dateString + " is not formatted as "
                             + _SIMPLE_DATE_FORMAT);
                 }
+                
+                String timeZoneOffset = value.substring(24, 29);
 
                 // Calculate and set time zone.
                 int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar
                         .get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
-                _timeZone = TimeZone.getTimeZone("GMT" + offset);
+                _timeZone = TimeZone.getTimeZone("GMT" + timeZoneOffset);
                 calendar.setTimeZone(_timeZone);
                 _calendar = calendar;
             } catch (ParseException ex) {
@@ -428,6 +430,8 @@ public class DateToken extends AbstractConvertibleToken implements
         Calendar calendar = getCalendarInstance();
         return calendar.get(Calendar.YEAR);
     }
+    
+    
 
     /** Check whether the value of this token is strictly greater than
      *  that of the argument token.  The argument and this token are

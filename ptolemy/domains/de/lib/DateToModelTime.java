@@ -40,7 +40,14 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that outputs the model time that corresponds to the date.
+/** A timed actor that outputs the local clock value that corresponds to the date.
+ *  Such a correspondence is only given in models that synchronize to real time. 
+ *  In such models, the real time (date) when the model starts is recorded. An input
+ *  date to this actor is compared to the model start date. The difference between
+ *  those dates (in millisecond resolution) is multiplied by the time resolution of 
+ *  the local clock and then send to the output.
+ *  
+ *  Currently, this actor only works in the DE domain.
  * @author Patricia Derler
 @version $Id$
 @since Ptolemy II 10.0
@@ -91,21 +98,23 @@ public class DateToModelTime extends Transformer {
         }
     }
 
+    /** Read DateToken on input and output corresponding model time value.
+     *  @exception Not thrown here.
+     */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                DateToken token = (DateToken) input.get(i);
-                Time fireTime = new Time(
+        for (int channel = 0; channel < input.getWidth(); channel++) {
+            if (input.hasToken(channel)) {
+                DateToken token = (DateToken) input.get(channel);
+                Time modelTime = new Time(
                         _director,
                         (token.getCalendarInstance().getTimeInMillis() - _director
                                 .getRealStartTimeMillis())
                                 * _director.localClock.getTimeResolution());
-                output.send(0, new DoubleToken(fireTime.getDoubleValue()));
+                output.send(channel, new DoubleToken(modelTime.getDoubleValue()));
             }
         }
-
     }
 
     private DEDirector _director;

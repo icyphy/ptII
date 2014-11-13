@@ -33,54 +33,56 @@
         </property>
     </property>
     <entity name="DateConstructor" class="ptolemy.actor.lib.DateConstructor">
+        <property name="useTimeInMillis" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 160.0]">
         </property>
-        <port name="year" class="ptolemy.actor.TypedIOPort">
+        <port name="year" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="month" class="ptolemy.actor.TypedIOPort">
+        <port name="month" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="day" class="ptolemy.actor.TypedIOPort">
+        <port name="day" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="hour" class="ptolemy.actor.TypedIOPort">
+        <port name="hour" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="minute" class="ptolemy.actor.TypedIOPort">
+        <port name="minute" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="second" class="ptolemy.actor.TypedIOPort">
+        <port name="second" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="millisecond" class="ptolemy.actor.TypedIOPort">
+        <port name="millisecond" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="microsecond" class="ptolemy.actor.TypedIOPort">
+        <port name="microsecond" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="nanosecond" class="ptolemy.actor.TypedIOPort">
+        <port name="nanosecond" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeZone" class="ptolemy.actor.TypedIOPort">
+        <port name="timeZone" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -121,7 +123,7 @@
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;GMT&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;+0000&quot;">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -130,7 +132,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 185.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -223,7 +225,7 @@
         </port>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;8&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -307,7 +309,7 @@
         </port>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;GMT-07:00&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;+0000&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -322,7 +324,7 @@
     </entity>
     <entity name="constructed date2" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="50">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -330,7 +332,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 640.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 640.0]">
         </property>
     </entity>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">

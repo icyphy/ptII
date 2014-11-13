@@ -28,8 +28,11 @@
 
 package ptolemy.domains.de.lib;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
@@ -42,12 +45,21 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that outputs the date token provided on the input
- *  at the date of the date token. If the
- *  date lies in the past, an exception is thrown.
+/** A timed actor that excepts DateTokens on the input. If the date in 
+ *  the DateToken is in the future, the output is generated at this 
+ *  future date. If the date is in the past, an exception is thrown. 
+ *  The output is a DateToken with the system time obtained when producing
+ *  the output. Internally, the input date is converted to model time, which
+ *  is used in the local clock of the director. 
+ *  Because we are using system time here, the output time will not be
+ *  exact and the output DateToken will not be exactly the same as the
+ *  DateToken received on the input.
+ *  
+ *  Using this actor makes sense in models that synchronize to real time
+ *  (e.g. in the DE domain by enabling the synchronizeToRealTime property).
  * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 10.0
+ * @version $Id$
+ * @since Ptolemy II 10.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -95,41 +107,56 @@ public class DateToEvent extends Transformer {
         }
     }
 
+    /** Read date tokens from the input and store them until the real
+     *  time equals the date in the token. If the date token on the input
+     *  contains a date in the past, an exception is thrown.
+     *  @exception Thrown if the input date in the date token lies in the past.
+     */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
         long systemTime = System.currentTimeMillis();
         Time time = _director.getModelTime();
-        if (_outputTimes != null && _outputTimes.size() > 0) {
-            Time t = (Collections.min(_outputTimes));
+        if (_outputTokensForChannel != null && _outputTokensForChannel.size() > 0) {
+            Time t = (Collections.min(_outputTokensForChannel.keySet()));
             if (t.compareTo(time) == 0) {
-                output.send(0, new DateToken(systemTime));
-                _outputTimes.remove(t);
+                List<Integer> channels = _outputTokensForChannel.get(t);
+                for (int i = 0; i < channels.size(); i++) {
+                    output.send(channels.get(i), new DateToken(systemTime));
+                }
+                _outputTokensForChannel.remove(t);
             }
         }
-        if (input.hasToken(0)) {
-            DateToken token = (DateToken) input.get(0);
-            if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
-                throw new IllegalActionException(this,
-                        "The date on the input port ("
-                        + token.toString()
-                        + ") lies in the past.");
-            } else {
-                Time fireTime = new Time(
-                        _director,
-                        (token.getCalendarInstance().getTimeInMillis() - _director
-                                .getRealStartTimeMillis())
-                                * _director.localClock.getTimeResolution());
-                _director.fireAt(this, fireTime);
-                if (_outputTimes == null) {
-                    _outputTimes = new HashSet<Time>();
+        for (int channel = 0; channel < input.getWidth(); channel++) {
+            if (input.hasToken(0)) {
+                DateToken token = (DateToken) input.get(0);
+                if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
+                    throw new IllegalActionException(this,
+                            "The date on the input port ("
+                            + token.toString()
+                            + ") lies in the past.");
+                } else {
+                    Time fireTime = new Time(
+                            _director,
+                            (token.getCalendarInstance().getTimeInMillis() - _director
+                                    .getRealStartTimeMillis())
+                                    * _director.localClock.getTimeResolution());
+                    _director.fireAt(this, fireTime);
+                    if (_outputTokensForChannel == null) {
+                        _outputTokensForChannel = new HashMap<Time, List<Integer>>();
+                    }
+                    List<Integer> channels = _outputTokensForChannel.get(fireTime);
+                    if (channels == null) {
+                        channels = new ArrayList<Integer>();
+                    }
+                    channels.add(channel);
+                    _outputTokensForChannel.put(fireTime, channels);
                 }
-                _outputTimes.add(fireTime);
             }
         }
     }
 
-    private HashSet<Time> _outputTimes;
+    private HashMap<Time, List<Integer>> _outputTokensForChannel;
 
     private DEDirector _director;
 

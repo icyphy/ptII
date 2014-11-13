@@ -28,6 +28,8 @@
  */
 package ptolemy.actor.lib;
 
+import java.text.SimpleDateFormat;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -190,7 +192,9 @@ public class DateElements extends TypedAtomicActor {
                 millisecond.send(0, new IntToken(dateToken.getMillisecond()));
                 microsecond.send(0, new IntToken(dateToken.getMicrosecond()));
                 nanosecond.send(0, new IntToken(dateToken.getNanosecond()));
-                timezone.send(0, new StringToken(dateToken.getTimezoneID()));
+                SimpleDateFormat sdf = new SimpleDateFormat("ZZZZZ");
+                sdf.setTimeZone(dateToken.getTimeZone());
+                timezone.send(0, new StringToken(sdf.format(dateToken.getCalendarInstance().getTime())));
                 timeInMillis.send(0, new LongToken(dateToken.getCalendarInstance().getTimeInMillis()));
             }
         }

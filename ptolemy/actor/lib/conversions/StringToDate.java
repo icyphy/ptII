@@ -79,7 +79,6 @@ public class StringToDate extends Converter {
     public void fire() throws IllegalActionException {
         super.fire();
         String inputValue = ((StringToken) input.get(0)).stringValue();
-
         output.send(0, new DateToken(inputValue));
     }
 
