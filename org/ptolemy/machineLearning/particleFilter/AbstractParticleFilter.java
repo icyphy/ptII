@@ -144,7 +144,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     public Parameter particleCount;
 
     public Parameter outputParticleCount;
-  
+
 
     /** The output port that outputs the produced particles at each firing.
      */
@@ -253,22 +253,20 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         // The Sequential Monte Carlo algorithm
         try {
             if (_firstIteration) {
-                _initializeParticles();
-                _normalizeWeights();
-                _sendStateEstimate();
-                _generateOutputParticles();
+                _initializeParticles(); 
                 _firstIteration = false;
 
             } else {
-                _propagate();
-                _normalizeWeights();
-                _sendStateEstimate();
-                _generateOutputParticles();
-                if (_doBootstrap) {
-                    _resample();
-                } else if (_getEffectiveSampleSize() < 0.5 * Nparticles) {
-                    _resample();
-                }
+                _propagate(); 
+            }
+
+            _normalizeWeights();
+            _sendStateEstimate();
+            _generateOutputParticles();
+            if (_doBootstrap) {
+                _resample();
+            } else if (_getEffectiveSampleSize() < 0.5 * Nparticles) {
+                _resample();
             }
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(this,
@@ -297,6 +295,47 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
         int m = inputPortList().size(); // number of control inputs
         _stateSpaceSize = _stateNames.length(); 
+        if (_stateSpaceSize > 0) {
+            // Set the output type according to the state variables
+            _particleLabels = new String[_stateSpaceSize + 1];
+            _particleTypes = new Type[_stateSpaceSize + 1];
+            _stateLabels = new String[_stateSpaceSize];
+            _stateTypes = new Type[_stateSpaceSize];
+            Token[] nameTokens = ((ArrayToken)_stateNames).arrayValue();
+            for (int i = 0; i < _stateSpaceSize; i++) {
+                
+                String variableName = ((StringToken)nameTokens[i]).stringValue();
+                
+                try {
+                    // add a hidden parameter for each state variable name
+                    Parameter varPar = (Parameter) this.getAttribute(variableName);
+                    if ( varPar == null) {
+                        varPar = new Parameter(this, variableName);
+                        varPar.setTypeEquals(BaseType.DOUBLE);
+                        varPar.setExpression("0.0");
+                    } else {
+                        ((Parameter)varPar).setVisibility(Settable.EXPERT); 
+                    }
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+                
+                _particleLabels[i] = variableName;
+                _particleTypes[i] = BaseType.DOUBLE; // preset to be double
+
+                _stateLabels[i] = variableName;
+                _stateTypes[i] = BaseType.DOUBLE; // preset to be double
+            }
+            _particleLabels[nameTokens.length] = "weight";
+            _particleTypes[nameTokens.length] = BaseType.DOUBLE;
+
+            particleOutput.setTypeEquals(new RecordType(
+                    _particleLabels, _particleTypes));
+            stateEstimate.setTypeEquals(new RecordType(_stateLabels,
+                    _stateTypes));
+        }
+        
+        
 
         try {
             _workspace.getWriteAccess();
@@ -327,6 +366,11 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                 _inputRelations[inputIndex].setPersistent(false);
                 getPort(inputs[inputIndex]).link(_inputRelations[inputIndex]);
                 String inputName = inputs[inputIndex];
+                
+                if (getUserDefinedParameter(MEASUREMENT_NOISE) != null) {
+                    _Sigma = ((DoubleMatrixToken)
+                            getUserDefinedParameter(MEASUREMENT_NOISE).getToken()).doubleMatrix();
+                }
 
                 if (inputName.endsWith(MEASUREMENT_POSTFIX)) {
                     _setMeasurementEquations(inputName, inputIndex);
@@ -394,10 +438,17 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * @param parameterName Name of parameter
      * @return parameter expression
      * @throws IllegalActionException
-     */
-    protected abstract String getUserDefinedParameterExpression(String parameterName) 
-            throws IllegalActionException;
-
+     */ 
+    protected String getUserDefinedParameterExpression(String parameterName) 
+            throws IllegalActionException {
+        Parameter param = getUserDefinedParameter(parameterName);
+        if (param != null) {
+            return param.getExpression();
+        } else {
+            throw new IllegalActionException("Parameter " 
+                    + parameterName + " value is null.");
+        }
+    }
     /**
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
@@ -407,13 +458,33 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     protected abstract Parameter getUserDefinedParameter(String parameterName) 
             throws IllegalActionException;
 
- 
+
     /** Flag indicating whether the contained model is up to date. */
     protected boolean _upToDate;
 
+    /** Cached State variable names */
     protected ArrayToken _stateNames;
 
+    /** Array of input Relations */
     protected IORelation[] _inputRelations;
+
+    /** Labels of particles, that contains state names and a weight label */
+    protected String[] _particleLabels;
+
+    /** Types of each particle dimension */
+    protected Type[] _particleTypes;
+
+    /** Labels of states */
+    protected String[] _stateLabels;
+
+    /** Types of each state dimension */
+    protected Type[] _stateTypes;
+
+    /** Measurement covariance matrix */
+    protected double[][] _Sigma;
+
+    //////////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private void _createRandomGenerator() throws IllegalActionException {
 
@@ -498,7 +569,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         outputParticleCount = new Parameter(this, "outputParticleCount");
         outputParticleCount.setExpression("100");
         Noutput = 100;
-  
+
         particleOutput = new TypedIOPort(this, "particleOutput", false, true);
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
         //setClassName("org.ptolemy.machineLearning.ParticleFilter");
@@ -516,13 +587,13 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
         stateEstimate = new TypedIOPort(this, "stateEstimate", false, true);
         stateEstimate.setTypeEquals(RecordType.EMPTY_RECORD);
- 
+
 
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");
- 
+
 
         _measurementParameters = new HashMap<String, Parameter>();
         _measurementValues = new HashMap<String, Token>();
@@ -694,7 +765,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             measure1 = new Parameter(this, inputName);
             measure1.setVisibility(Settable.EXPERT);
         } else {
-            measure1 = (Parameter) this.getUserDefinedParameter(inputName);
+            measure1 = (Parameter) this.getAttribute(inputName);
         }
         _measurementParameters.put(inputName, measure1);
         zm.delayed.setExpression("false");
@@ -703,7 +774,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
     } 
 
-    protected void _setUpdateEquations() 
+    private void _setUpdateEquations() 
             throws NameDuplicationException, IllegalActionException {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
@@ -734,7 +805,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                 new PtParser()
         .generateParseTree(getUserDefinedParameterExpression(PRIOR_NAME)));
     }
-    
+
     /**
      * Return a subsample of particles at the chosen indices. Used for low-variance
      * resampling.
@@ -834,18 +905,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
     private HashMap _tokenMap;
 
-    protected String[] _particleLabels;
-
-    protected Type[] _particleTypes;
-
     private boolean _resetOnEachRun;
-
-    protected String[] _stateLabels;
-
-    protected Type[] _stateTypes;
-
-    protected double[][] _Sigma;
-
     private ASTPtRootNode _parseTree;
     private HashMap<String, ASTPtRootNode> _updateTrees;
     private ParseTreeEvaluator _parseTreeEvaluator;
@@ -857,9 +917,9 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     private Expression _measurementCovariance;
 
 
+
     protected static final String PROCESS_NOISE = "processNoise";
-    protected static final String MEASUREMENT_NOISE = "measurementNoise";
-    protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
+    protected static final String MEASUREMENT_NOISE = "measurementCovariance"; 
     protected static final String UPDATE_POSTFIX = "_update";
     protected static final String MEASUREMENT_POSTFIX = "_m";
     protected static final String PRIOR_NAME = "prior";
@@ -1028,7 +1088,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             }
 
             Type t = priorSample.getType();
-            
+
             if (t.equals(BaseType.DOUBLE)) {
                 // one dimensional
                 if (this.getSize() != 1) {

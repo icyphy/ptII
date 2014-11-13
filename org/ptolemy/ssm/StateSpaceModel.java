@@ -60,8 +60,7 @@ public class StateSpaceModel extends MirrorDecorator {
             String stateName = ((StringToken) names.getElement(0))
                     .stringValue();
             if (stateName.length() > 0) {
-                // Set the output type according to the state variables
-
+                // Set the output type according to the state variables 
                 try {
                     for (int i = 0; i < names.length(); i++) {
                         stateName = ((StringToken) names.getElement(i))
@@ -70,7 +69,7 @@ public class StateSpaceModel extends MirrorDecorator {
                                 && stateName.length() != 0) {
                             Parameter y = new Parameter(this, stateName); 
                             y.setExpression("0.0");
-                            y.setVisibility(Settable.EXPERT); 
+                            y.setVisibility(Settable.NONE);  
                             sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
                         } 
                         if (this.getAttribute(stateName+"_update") == null) {
@@ -86,8 +85,11 @@ public class StateSpaceModel extends MirrorDecorator {
                     throw new InternalErrorException("Duplicate field in " + this.getName());
                 }
             }
-        }  
-        super.attributeChanged(attribute); 
+        } else {
+            // FIXME: If the attribute is changed in the SSM, this needs to be propagated to the
+            // container StateSpaceActor b/c we likely would like to change the expressions accordingly
+            super.attributeChanged(attribute);
+        }
     } 
     
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise

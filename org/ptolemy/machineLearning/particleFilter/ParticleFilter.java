@@ -275,25 +275,7 @@ public class ParticleFilter extends AbstractParticleFilter {
             }
         }
     }
-
-    /**
-     * Return the expression for a user-defined parameter.
-     * @param parameterName Name of parameter
-     * @return parameter expression
-     * @throws IllegalActionException
-     */
-    @Override
-    protected String getUserDefinedParameterExpression(String parameterName) 
-            throws IllegalActionException {
-        Parameter param = getUserDefinedParameter(parameterName);
-        if (param != null) {
-            return param.getExpression();
-        } else {
-            throw new IllegalActionException("Parameter " 
-                    + parameterName + " value is null.");
-        }
-    }
-
+  
     /**
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter

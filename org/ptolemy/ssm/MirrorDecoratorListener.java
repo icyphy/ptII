@@ -54,6 +54,9 @@ public interface MirrorDecoratorListener {
         REMOVED_PORT,
         ADDED_PARAMETER,
         REMOVED_PARAMETER,
-        CHANGED_PARAMETER 
+        CHANGED_PARAMETER,
+        ADDED_PORT_PARAMETER,
+        REMOVED_PORT_PARAMETER,
+        CHANGED_PORT_PARAMETER
     }
 }
