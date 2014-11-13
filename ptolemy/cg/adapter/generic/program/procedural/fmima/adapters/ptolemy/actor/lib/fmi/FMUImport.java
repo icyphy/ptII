@@ -71,11 +71,28 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
                                 + " is a FMUImport: "));
         for (TypedIOPort input : actor.inputPortList()) {
             code.append(getCodeGenerator().comment(" input " + input.getName()));
+            if (input.getName().equals("inc20RC1pt")) {
+                code.append("connections[1].sourceFMU = &fmus[1];\n"
+                        + "connections[1].sourcePort = getValueReference(getScalarVariable(fmus[1].modelDescription, 1));\n"
+                        + "connections[1].sourceType = fmi_Real;\n"
+                        + "connections[1].sinkFMU = &fmus[2];\n"
+                        + "connections[1].sinkPort = getValueReference(getScalarVariable(fmus[2].modelDescription, 0));\n"
+                        + "connections[1].sinkType = fmi_Real;\n");
+            }
         }
 
         for (TypedIOPort output : actor.outputPortList()) {
             code.append(getCodeGenerator().comment(
                     " output " + output.getName()));
+            if (output.getName().equals("inc20RC1pt")) {
+                code.append("connections[0].sourceFMU = &fmus[0];\n"
+                        + "connections[0].sourcePort = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));\n"
+                        + "connections[0].sourceType = fmi_Integer;\n"
+                        + "connections[0].sinkFMU = &fmus[1];\n"
+                        + "connections[0].sinkPort = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));\n"
+                        + "connections[0].sinkType = fmi_Real;\n");
+            }
+
         }
 
         return /*processCode(code.toString())*/code.toString();

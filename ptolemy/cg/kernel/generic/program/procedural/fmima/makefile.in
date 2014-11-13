@@ -103,7 +103,8 @@ main: main.o fmi/shared/sim_support.o
 
 
 run: @modelName@
-	./@modelName@ $(PTII)/ptolemy/actor/lib/fmi/fmus/inc20RC1/inc20RC1.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/scale20RC1/scale20RC1.fmu 1.0 0.1 1
+	@echo "FIXME: Update ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in so that the names of the fmus are not hardwired in to the 'run' rule."
+	./@modelName@ $(PTII)/ptolemy/actor/lib/fmi/fmus/inc20RC1pt/inc20RC1pt.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/scale20RC1pt/scale20RC1pt.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/output20RC1pt/output20RC1pt.fmu 1.0 0.1 1 
 
 
 # Rule to compile with different optimizers
