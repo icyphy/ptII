@@ -234,8 +234,7 @@ public class DateConstructor extends TypedAtomicActor {
             int secondValue = _getIntValue(second);
             int millisecondValue = _getIntValue(millisecond);
             
-            Calendar c = Calendar.getInstance();
-            c.setTimeZone(TimeZone.getTimeZone("GMT+0000"));
+            Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT" + timeZoneValue));
             c.set(Calendar.YEAR, yearValue);
             c.set(Calendar.MONTH, monthValue);
             c.set(Calendar.DAY_OF_MONTH, dayValue);
