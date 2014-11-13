@@ -235,15 +235,22 @@ public class DateConstructor extends TypedAtomicActor {
             int millisecondValue = _getIntValue(millisecond);
             
             Calendar c = Calendar.getInstance();
+            c.setTimeZone(TimeZone.getTimeZone("GMT+0000"));
             c.set(Calendar.YEAR, yearValue);
             c.set(Calendar.MONTH, monthValue);
             c.set(Calendar.DAY_OF_MONTH, dayValue);
-            c.set(Calendar.HOUR, hourValue);
+            c.set(Calendar.HOUR_OF_DAY, hourValue);
             c.set(Calendar.MINUTE, minuteValue);
             c.set(Calendar.SECOND, secondValue);
             c.set(Calendar.MILLISECOND, millisecondValue);
-            //c.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
             timeAsLongValue = c.getTimeInMillis();
+            if (datePrecision == DateToken.PRECISION_SECOND) {
+                timeAsLongValue = timeAsLongValue / 1000;
+            } else if (datePrecision == DateToken.PRECISION_MICROSECOND) {
+                timeAsLongValue = timeAsLongValue * 1000;
+            } else if (datePrecision == DateToken.PRECISION_NANOSECOND) {
+                timeAsLongValue = timeAsLongValue * 1000 * 1000;
+            }
         }
         dateToken = new DateToken(timeAsLongValue, datePrecision,
                 TimeZone.getTimeZone("GMT" + timeZoneValue));
