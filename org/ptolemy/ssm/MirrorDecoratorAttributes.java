@@ -1,5 +1,5 @@
 package org.ptolemy.ssm;
-  
+
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -89,6 +89,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
     public void event(MirrorDecorator ssm, DecoratorEvent eventType, Parameter p) {
 
         Parameter param = (Parameter) this.getAttribute(p.getName());
+        Parameter containerParam = (Parameter) this.getContainer().getAttribute(p.getName());
         try {
             if (eventType == DecoratorEvent.ADDED_PARAMETER) {
                 if (param == null) {
@@ -105,25 +106,29 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                     param.setExpression(p.getExpression());
                     param.setVisibility(p.getVisibility());
                 }
-            } else if (eventType == DecoratorEvent.CHANGED_PORT_PARAMETER) {
-                param = (Parameter) this.getContainer().getAttribute(p.getName());
-                if (param != null) {
-                    param.setExpression(p.getExpression());
-                    param.setVisibility(p.getVisibility());
+            } else if (eventType == DecoratorEvent.CHANGED_PORT_PARAMETER) { 
+                if (containerParam != null) {
+                    containerParam.setExpression(p.getExpression());
+                    containerParam.setVisibility(p.getVisibility());
                 }
             } else if (eventType == DecoratorEvent.ADDED_PORT_PARAMETER) {
                 if (enabled()) {
-                    if (param == null) {
+                    if (containerParam == null) {
                         new PortParameter(this.getContainer(), p.getName());
                     }  
+                    if (param == null) {
+                        new Parameter(this, p.getName());
+                    }
                 }
             } else if (eventType == DecoratorEvent.REMOVED_PORT_PARAMETER) {
-                PortParameter pp = (PortParameter) this.getContainer().getAttribute(p.getName());
-                if (pp!=null) {
-                    pp.setContainer(null);
+                if (containerParam!=null) {
+                    containerParam.setContainer(null);
+                }
+                if (param != null) {
+                    param.setContainer(null);
                 }
             }
-            
+
         } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
         } 
@@ -176,6 +181,11 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                 event((MirrorDecorator)this._decorator,
                         DecoratorEvent.ADDED_PORT, decoratorPort); 
             }
+            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortParameterNames()) {
+                event((MirrorDecorator)this._decorator,
+                        DecoratorEvent.ADDED_PORT_PARAMETER, 
+                        (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort)); 
+            }
         }
     }
 
@@ -191,12 +201,17 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                         container.getPort(port).setContainer(null);
                     }
                 }
+                for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortParameterNames()) {
+                    event((MirrorDecorator)this._decorator,
+                            DecoratorEvent.REMOVED_PORT_PARAMETER, 
+                            (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort)); 
+                }
             }
         } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
         }  
     }
-    
+
     private void _addAllParameters() {
         if (this._decorator != null) {
             for (Parameter p : ((MirrorDecorator)this._decorator).getAddedParameters()) {
@@ -205,7 +220,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
             }
         }
     }
-     
+
 
     /** Create the parameters. Including any parameter the decorator already includes.
      */
@@ -226,7 +241,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
             _addAllParameters();
 
 
-            
+
         } catch (KernelException ex) {
             // This should not occur.
             throw new InternalErrorException(ex);

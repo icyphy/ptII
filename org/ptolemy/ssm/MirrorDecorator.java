@@ -39,10 +39,12 @@ import java.util.List;
 
 
 
+
 import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort; 
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -104,7 +106,8 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             throws IllegalActionException {
         if (attribute instanceof PortParameter) {
             sendParameterEvent(DecoratorEvent.CHANGED_PORT_PARAMETER, (Parameter) attribute);
-        } else if (attribute instanceof Parameter) {
+        } 
+        if (attribute instanceof Parameter) {
             sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER, (Parameter) attribute);
         }
         super.attributeChanged(attribute);
@@ -162,6 +165,10 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     public List<String> getAddedPortNames() {
         return _addedPortNames;
     }
+    
+    public List<String> getAddedPortParameterNames() {
+        return _addedPortParameterNames;
+    }
 
     public List<Parameter> getAddedParameters() {
         return _addedParameters;
@@ -209,13 +216,20 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     protected void _addPort(TypedIOPort port) throws IllegalActionException,
     NameDuplicationException { 
         super._addPort(port);
-        _addedPortNames.add(port.getName());
-        sendPortEvent(DecoratorEvent.ADDED_PORT, port.getName());
+        if (port instanceof ParameterPort) {
+            _addedPortParameterNames.add(port.getName());
+        } else {
+            _addedPortNames.add(port.getName());
+            sendPortEvent(DecoratorEvent.ADDED_PORT, port.getName());
+        }
     }
 
     @Override
     protected void _removePort(Port port) { 
         super._removePort(port);
+        if (port instanceof ParameterPort) {
+            _addedPortParameterNames.remove(port.getName());
+        }
         sendPortEvent(DecoratorEvent.REMOVED_PORT, port.getName()); 
         _addedPortNames.remove(port.getName());
     }
@@ -246,6 +260,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     private void _init() throws IllegalActionException {
         _listeners = new ArrayList<>(); 
         _addedPortNames = new ArrayList<>();
+        _addedPortParameterNames = new ArrayList<>();
         _addedParameters = new ArrayList<>();
         
         for (NamedObj n : decoratedObjects()) {
@@ -266,6 +281,8 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     private ArrayList<MirrorDecoratorListener> _listeners;
 
     private List<String> _addedPortNames = new ArrayList<>();  
+    
+    private List<String> _addedPortParameterNames = new ArrayList<>();
     
     private List<Parameter> _addedParameters = new ArrayList<>(); 
 

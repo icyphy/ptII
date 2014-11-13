@@ -38,41 +38,60 @@ implements StateSpaceActor {
     protected void _checkParameters() throws IllegalActionException {
         // Check state variable names. 
 
-        for (Decorator d : this.decorators()) {
-            if (d instanceof MirrorDecorator) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if (((BooleanToken)isEnabled.getToken()).booleanValue()) {
-                    _decorator = (StateSpaceModel) d;
-                    Parameter stateVariableNames = (Parameter) this.getDecoratorAttribute(d, "stateVariableNames");
-                    _stateNames = (ArrayToken) stateVariableNames.getToken();
-                    int n = _stateNames.length(); 
-                    if (n < 1) {
-                        throw new IllegalActionException(this, "There must be at "
-                                + "least one state variable for the state space model.");
-                    }
-                    for (int i = 0; i < n; i++) {
-                        String name = ((StringToken) _stateNames.getElement(i))
-                                .stringValue().trim();
+        if (validUniqueDecoratorAssociationExists()) { 
+            Parameter stateVariableNames = 
+                    (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
+            _stateNames = (ArrayToken) stateVariableNames.getToken();
+            int n = _stateNames.length(); 
+            if (n < 1) {
+                throw new IllegalActionException(this, "There must be at "
+                        + "least one state variable for the state space model.");
+            }
+            for (int i = 0; i < n; i++) {
+                String name = ((StringToken) _stateNames.getElement(i))
+                        .stringValue().trim();
 
-                        if (name.equals("")) {
-                            throw new IllegalActionException(this, "A state variable "
-                                    + "name should not be an empty string.");
-                        } 
-                        // Check state equations.
-                        String equation = name + "_update"; 
-                        if (this.getUserDefinedParameter(equation) == null) {
-                            throw new IllegalActionException(
-                                    this,
-                                    "Please add a "
-                                            + "parameter with name \""
-                                            + equation
-                                            + "\" that gives the state update expression for state "
-                                            + name + ".");
-                        }
-                    }
+                if (name.equals("")) {
+                    throw new IllegalActionException(this, "A state variable "
+                            + "name should not be an empty string.");
+                } 
+                // Check state equations.
+                String equation = name + "_update"; 
+                if (this.getUserDefinedParameter(equation) == null) {
+                    throw new IllegalActionException(
+                            this,
+                            "Please add a "
+                                    + "parameter with name \""
+                                    + equation
+                                    + "\" that gives the state update expression for state "
+                                    + name + ".");
                 }
             }
         } 
+    }
+
+    /**
+     * Check if the Actor is associated with a unique enabled StateSpaceModel.
+     * @throws IllegalActionException 
+     */
+    private boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
+        boolean found = false;
+        for (Decorator d : this.decorators()) {
+            if (d instanceof StateSpaceModel) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
+                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                    if (!found) {
+                        found = true;
+                        _decorator = (StateSpaceModel) d;
+                    } else {
+                        throw new IllegalActionException(this, "A StateSpaceActor "
+                                + "can be associated with exactly one StateSpaceModel "
+                                + "at a time.");
+                    }
+                }
+            }
+        }
+        return found;
     }
 
     @Override

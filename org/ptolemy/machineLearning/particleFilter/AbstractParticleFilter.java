@@ -917,6 +917,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
 
 
+
+    protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
     protected static final String PROCESS_NOISE = "processNoise";
     protected static final String MEASUREMENT_NOISE = "measurementCovariance"; 
     protected static final String UPDATE_POSTFIX = "_update";

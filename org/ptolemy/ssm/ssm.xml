@@ -8,6 +8,8 @@
   <doc>State Space Model Actors</doc> 
   <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
   </entity> 
+  <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+  </entity> 
       </group>
     ?>
   </configure>
