@@ -342,20 +342,4 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
     return returnValue; // 1=success, 0=not success
 }
 
-void setupConnections(FMU* fmus, portConnection* connections) {
-    connections[0].sourceFMU = &fmus[0];
-    connections[0].sourcePort = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
-    connections[0].sourceType = fmi_Integer;
-    connections[0].sinkFMU = &fmus[1];
-    connections[0].sinkPort = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
-    connections[0].sinkType = fmi_Real;
-
-    connections[1].sourceFMU = &fmus[1];
-    connections[1].sourcePort = getValueReference(getScalarVariable(fmus[1].modelDescription, 1));
-    connections[1].sourceType = fmi_Real;
-    connections[1].sinkFMU = &fmus[2];
-    connections[1].sinkPort = getValueReference(getScalarVariable(fmus[2].modelDescription, 0));
-    connections[1].sinkType = fmi_Real;
-}
-
 /**/

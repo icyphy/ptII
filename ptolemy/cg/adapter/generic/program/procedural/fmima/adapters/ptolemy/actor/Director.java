@@ -32,6 +32,7 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,6 +95,20 @@ public class Director extends FMIMACodeGeneratorAdapter {
         // code.append("<li>" + /*adapter.*/getComponent().getName() + "</li>" + _eol);
         // Extending GenericCodeGenerator start.
 
+
+        // Generate the start of the main() method.
+        // FIXME: we should generate the start of the main() method from some other cg method.
+        CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+
+        //ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
+
+        System.out.println("!!!!!!!! Director.java!!!!!");
+        codeStream.appendCodeBlock("mainStartBlock");
+        code.append(processCode(codeStream.toString()));
+
+                
+        // Iterate through the actors and generate connection list.
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             FMIMACodeGeneratorAdapter codeGeneratorAdapter = null;
@@ -119,9 +134,34 @@ public class Director extends FMIMACodeGeneratorAdapter {
             }
             code.append(codeGeneratorAdapter.generateFMIMA());
         }
+
+        // Generate the end of the main() method.
+        // FIXME: we should generate the start of the main() method from some other cg method.
+        codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+
+        System.out.println("!!!!!!!! Director.java!!!!!");
+        codeStream.appendCodeBlock("mainEndBlock");
+        code.append(processCode(codeStream.toString()));
+
+
+
         code.append(getCodeGenerator()
                 .comment(
                         "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
         return code.toString();
     }
+    /**
+     * Generate the preinitialize code. We do not call the super
+     * method, because we have arguments to add here
+     * This code contains the variable declarations
+     *
+     * @return The generated preinitialize code.
+     * @exception IllegalActionException If thrown while appending to the
+     * the block or processing the macros.
+     */
+    //    @Override
+    //public String generatePreinitializeCode() throws IllegalActionException {
+
+    //    }
 }
