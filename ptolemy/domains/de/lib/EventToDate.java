@@ -37,11 +37,16 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that outputs a date token that corresponds to
- *  the real time value of the timestamp of the input event.
+/** A timed actor that outputs a date token that corresponds to the current
+ *  model time (maintained by the local clock in the director). 
+ *   Such a correspondence is only given in models that synchronize to real time. 
+ *  In such models, the real time (date) when the model starts is recorded. An input
+ *  to this actor is compared to the model start time (in model time). The difference between
+ *  those dates (in millisecond resolution) is divided by the time resolution of 
+ *  the local clock, added to the start date of the model and then sent to the output.
  * @author Patricia Derler
-@version $Id$
-@since Ptolemy II 10.0
+ * @version $Id$
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -79,16 +84,22 @@ public class EventToDate extends Transformer {
         }
     }
 
+    /** Output a DateToken with a date that corresponds to the current model
+     *  time.
+     *  @exception IllegalActionException Not thrown here. 
+     */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                input.get(i);
+        for (int channel = 0; channel < input.getWidth(); channel++) {
+            if (input.hasToken(channel)) {
+                input.get(channel);
             }
-            long time = (long) (_director.getModelTime().getDoubleValue() / _director.localClock
+            double modelTimeSinceStart = _director.getModelTime().getDoubleValue() - 
+                    _director.getModelStartTime().getDoubleValue();
+            long time = (long) (modelTimeSinceStart / _director.localClock
                     .getTimeResolution()) + _director.getRealStartTimeMillis();
-            output.send(0, new DateToken(time));
+            output.send(channel, new DateToken(time));
         }
     }
 

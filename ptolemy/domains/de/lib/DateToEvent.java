@@ -31,7 +31,6 @@ package ptolemy.domains.de.lib;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.actor.Director;
@@ -110,7 +109,8 @@ public class DateToEvent extends Transformer {
     /** Read date tokens from the input and store them until the real
      *  time equals the date in the token. If the date token on the input
      *  contains a date in the past, an exception is thrown.
-     *  @exception Thrown if the input date in the date token lies in the past.
+     *  @exception IllegalActionException Thrown if the input date in the date 
+     *  token lies in the past.
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -136,11 +136,11 @@ public class DateToEvent extends Transformer {
                             + token.toString()
                             + ") lies in the past.");
                 } else {
+                    long realTimeDifference = token.getCalendarInstance().getTimeInMillis() - _director
+                    .getRealStartTimeMillis();
                     Time fireTime = new Time(
                             _director,
-                            (token.getCalendarInstance().getTimeInMillis() - _director
-                                    .getRealStartTimeMillis())
-                                    * _director.localClock.getTimeResolution());
+                            realTimeDifference * _director.localClock.getTimeResolution());
                     _director.fireAt(this, fireTime);
                     if (_outputTokensForChannel == null) {
                         _outputTokensForChannel = new HashMap<Time, List<Integer>>();
