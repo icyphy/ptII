@@ -112,6 +112,18 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
       </external-property>
     </entry>
     <entry>
+      <string>hudson-tasks-junit-JUnitResultArchiver</string>
+      <external-property>
+        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
+          <testResults>reports/junit/*.xml</testResults>
+          <keepLongStdio>false</keepLongStdio>
+          <testDataPublishers/>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>true</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>htmlpublisher-HtmlPublisher</string>
       <external-property>
         <originalValue class="htmlpublisher.HtmlPublisher">
@@ -131,18 +143,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
               <wrapperName>htmlpublisher-wrapper.html</wrapperName>
             </htmlpublisher.HtmlPublisherTarget>
           </reportTargets>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>true</modified>
-      </external-property>
-    </entry>
-    <entry>
-      <string>hudson-tasks-junit-JUnitResultArchiver</string>
-      <external-property>
-        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
-          <testResults>reports/junit/*.xml</testResults>
-          <keepLongStdio>false</keepLongStdio>
-          <testDataPublishers/>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
@@ -420,28 +420,6 @@ $WORKSPACE/adm/bin/killXServer</command>
       </string-property>
     </entry>
     <entry>
-      <string>scm</string>
-      <scm-property>
-        <originalValue class="hudson.scm.SubversionSCM">
-          <locations>
-            <hudson.scm.SubversionSCM_-ModuleLocation>
-              <remote>https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk</remote>
-              <local>.</local>
-              <depthOption>infinity</depthOption>
-              <ignoreExternalsOption>false</ignoreExternalsOption>
-            </hudson.scm.SubversionSCM_-ModuleLocation>
-          </locations>
-          <excludedRegions></excludedRegions>
-          <includedRegions></includedRegions>
-          <excludedUsers></excludedUsers>
-          <excludedRevprop></excludedRevprop>
-          <excludedCommitMessages></excludedCommitMessages>
-          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </scm-property>
-    </entry>
-    <entry>
       <string>hudson-plugins-findbugs-FindBugsPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.findbugs.FindBugsPublisher">
@@ -474,6 +452,28 @@ $WORKSPACE/adm/bin/killXServer</command>
       </external-property>
     </entry>
     <entry>
+      <string>scm</string>
+      <scm-property>
+        <originalValue class="hudson.scm.SubversionSCM">
+          <locations>
+            <hudson.scm.SubversionSCM_-ModuleLocation>
+              <remote>https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk</remote>
+              <local>.</local>
+              <depthOption>infinity</depthOption>
+              <ignoreExternalsOption>false</ignoreExternalsOption>
+            </hudson.scm.SubversionSCM_-ModuleLocation>
+          </locations>
+          <excludedRegions></excludedRegions>
+          <includedRegions></includedRegions>
+          <excludedUsers></excludedUsers>
+          <excludedRevprop></excludedRevprop>
+          <excludedCommitMessages></excludedCommitMessages>
+          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </scm-property>
+    </entry>
+    <entry>
       <string>hudson-triggers-TimerTrigger</string>
       <trigger-property>
         <originalValue class="hudson.triggers.TimerTrigger">
@@ -492,31 +492,31 @@ $WORKSPACE/adm/bin/killXServer</command>
       <permission>hudson.model.Run.Delete:cxh</permission>
       <permission>hudson.model.Run.Delete:cxbrooks</permission>
       <permission>hudson.model.Run.Delete:marten</permission>
-      <permission>hudson.model.Item.Configure:eal</permission>
-      <permission>hudson.model.Item.Configure:cxh</permission>
-      <permission>hudson.model.Item.Configure:cxbrooks</permission>
-      <permission>hudson.model.Item.Configure:marten</permission>
+      <permission>hudson.model.Item.Build:eal</permission>
+      <permission>hudson.model.Item.Build:cxh</permission>
+      <permission>hudson.model.Item.Build:cxbrooks</permission>
+      <permission>hudson.model.Item.Build:marten</permission>
       <permission>hudson.model.Item.Delete:eal</permission>
       <permission>hudson.model.Item.Delete:cxh</permission>
       <permission>hudson.model.Item.Delete:cxbrooks</permission>
       <permission>hudson.model.Item.Delete:marten</permission>
-      <permission>hudson.model.Run.Update:eal</permission>
-      <permission>hudson.model.Run.Update:cxh</permission>
-      <permission>hudson.model.Run.Update:cxbrooks</permission>
-      <permission>hudson.model.Run.Update:marten</permission>
       <permission>hudson.model.Item.Workspace:eal</permission>
       <permission>hudson.model.Item.Workspace:cxh</permission>
       <permission>hudson.model.Item.Workspace:cxbrooks</permission>
       <permission>hudson.model.Item.Workspace:marten</permission>
+      <permission>hudson.model.Run.Update:eal</permission>
+      <permission>hudson.model.Run.Update:cxh</permission>
+      <permission>hudson.model.Run.Update:cxbrooks</permission>
+      <permission>hudson.model.Run.Update:marten</permission>
+      <permission>hudson.model.Item.Configure:eal</permission>
+      <permission>hudson.model.Item.Configure:cxh</permission>
+      <permission>hudson.model.Item.Configure:cxbrooks</permission>
+      <permission>hudson.model.Item.Configure:marten</permission>
       <permission>hudson.model.Item.Read:anonymous</permission>
       <permission>hudson.model.Item.Read:eal</permission>
       <permission>hudson.model.Item.Read:cxh</permission>
       <permission>hudson.model.Item.Read:cxbrooks</permission>
       <permission>hudson.model.Item.Read:marten</permission>
-      <permission>hudson.model.Item.Build:eal</permission>
-      <permission>hudson.model.Item.Build:cxh</permission>
-      <permission>hudson.model.Item.Build:cxbrooks</permission>
-      <permission>hudson.model.Item.Build:marten</permission>
     </hudson.security.AuthorizationMatrixProperty>
   </properties>
   <cascadingChildrenNames class="java.util.concurrent.CopyOnWriteArraySet"/>
