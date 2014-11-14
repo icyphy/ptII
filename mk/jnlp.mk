@@ -493,6 +493,7 @@ FULL_11_0_JARS = \
 	org/ptolemy/optimization/optimization.jar \
 	org/ptolemy/osc/osc.jar \
 	$(PTOSCP5_JAR) \
+	org/ptolemy/ssm/ssm.jar \
 	$(METROII_JARS) \
 	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \
