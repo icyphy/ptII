@@ -57,9 +57,7 @@ function httpRequest(url, method, properties, body, timeout) {
 
 ////////////////////
 // Print a message to the console.
-function print(message) {
-    console.log(message);
-}
+// print is built in to Nashorn.
 
 ////////////////////
 // Method for synchronously reading a URL.
@@ -81,6 +79,26 @@ function readURL(url) {
         throw "readURL did not complete: " + url;
     }
 }
+
+////////////////////
+// Require the named module.
+// If no src is given, then this function searches in the local jjs director
+// for a file named name.js and loads that file. That file is expected to define
+// a single JavaScript object whose name is the value of the name argument.
+// That object may then have fields defining the functions or variables of the module.
+function require(name, src) {
+    if (!src) {
+        // If no source is specified, then find the module locally.
+        var FileUtilities = Java.type('ptolemy.util.FileUtilities');
+        // The following may throw an IOException.
+        var file = FileUtilities.nameToFile(
+            '$CLASSPATH/ptolemy/actor/lib/jjs/' + name + ".js", null);
+        load(file.getAbsolutePath());
+        return eval(name);
+    } else {
+        throw "FIXME: src argument to require function not supported yet.";
+    }
+}        
 
 ////////////////////
 // Set a timeout to call the specified function after the specified time.
