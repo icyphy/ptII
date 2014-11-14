@@ -668,6 +668,11 @@ See $PTII/doc/install.htm for details.'])
 
 fi
 
+# The Major and Minor version of the JDK.  1.6, 1.8 etc.  Used by ant in build.xml.in.
+changequote(<<, >>)dnl
+JVERSION_TARGET=`echo "$JVERSION" | sed 's/\([1-9]*\.[^._]*\).*/\1/'`
+changequote([, ])dnl
+
 cd "$startdir"
 
 #--------------------------------------------------------------------
@@ -6099,9 +6104,11 @@ AC_SUBST(JJTREE)
 # jjtree command line arguments, -STATIC=false if javacc is 5.0 or later.
 AC_SUBST(JJTREE_OPTIONS)
 
-
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)
+
+# The Major and Minor version of the JDK.  1.6, 1.8 etc.  Used by ant in build.xml.in.
+AC_SUBST(JVERSION_TARGET)
 
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 AC_SUBST(JMF_JARS)
