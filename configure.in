@@ -1075,6 +1075,23 @@ case "`uname -s`" in
 esac
 
 
+case "$JVERSION" in
+     1.6.*) PRE1_8=yes;;
+     1.7.*) PRE1_8=yes;;
+esac
+
+if test $PRE1_8 = "yes" ; then
+    # These must have trailing slash or the updateExcludes shell function will not work.
+    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/"
+    AC_MSG_WARN([A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
+    The following packages will not be compiled:
+        $pre1_8packages])
+    for package in $pre1_8packages
+    do
+	updateExcludes $package
+    done
+fi
+
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
