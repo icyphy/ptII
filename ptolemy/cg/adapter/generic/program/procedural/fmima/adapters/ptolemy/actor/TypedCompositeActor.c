@@ -226,7 +226,12 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
 
     // Set input values
     for (i = 0 ; i < NUMBER_OF_EDGES; i++) {
-        setValue(&connections[i]);
+        // Don't segfault if we don't have the correct number of FMUS.
+        if (connections[i].sourceFMU != NULL) {
+            setValue(&connections[i]);
+        } else {
+            fprintf(stderr, "Warning: The connection %d sourceFMU was null? Perhaps the model upon which the code generator was run does not have that many FMUImport actors?\n", i);
+        }
     }
 
     // TODO: Should be done by an FMU
@@ -242,7 +247,11 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
 
         // Set input values
         for (i = 0 ; i < NUMBER_OF_EDGES; i++) {
-            setValue(&connections[i]);
+            if (connections[i].sourceFMU != NULL) {
+                setValue(&connections[i]);
+            } else {
+                fprintf(stderr, "Warning: The connection %d sourceFMU was null? Perhaps the model upon which the code generator was run does not have that many FMUImport actors?\n", i);
+            }
         }
 
 /* TODO: getMaxStepSize() support. Needs change of FMI header files.
