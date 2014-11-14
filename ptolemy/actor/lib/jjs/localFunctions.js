@@ -84,6 +84,10 @@ function convertFromToken(value) {
             result[label] = convertFromToken(value.get(label));
         }
         return result;
+    } else if (value instanceof DateToken) {
+        alert(value.toString());
+        alert(value.getValue());
+        return new Date(value.getValue());
     }
     // FIXME: Handle DateToken and ActorToken
     // If all else fails, just return the token object.
@@ -129,9 +133,9 @@ function convertToToken(value) {
             // Is this the right thing to do?
             return Token.NIL;
         } else if (value instanceof Date) {
-            // Have to go through a string representation, unfortunately.
-            // FIXME: Doesn't work. Format doesn't match.
-            return new DateToken(value.toString());
+            // NOTE: DateToken constructor takes a long, which JavaScript doesn't support.
+            // But the following seems to work. Consequences?
+            return new DateToken(value.getTime());
         } else {
             // Using Nashorn-specific extension here to create Java array.
             var TokenArray = Java.type('ptolemy.data.Token[]');
