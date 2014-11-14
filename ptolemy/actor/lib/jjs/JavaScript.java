@@ -325,7 +325,7 @@ public class JavaScript extends TypedAtomicActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */
+     */ 
     public JavaScript(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -533,6 +533,14 @@ public class JavaScript extends TypedAtomicActor {
         	_inFire = false;
             }
         }
+    }
+    
+    /** If this actor has been initialized, return the JavaScript engine,
+     *  otherwise return null.
+     *  @return The JavaScript engine for this actor.
+     */
+    public ScriptEngine getEngine() {
+	return _engine;
     }
 
     /** Create a new JavaScript engine, load the default functions, and
