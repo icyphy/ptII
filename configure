@@ -4457,12 +4457,13 @@ $as_echo "$as_me: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
 esac
 
 
+PRE_JDK18=no
 case "$JVERSION" in
-     1.6.*) PRE1_8=yes;;
-     1.7.*) PRE1_8=yes;;
+     1.6.*) PRE_JDK18=yes;;
+     1.7.*) PRE_JDK18=yes;;
 esac
 
-if test $PRE1_8 = "yes" ; then
+if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
     pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
@@ -12774,12 +12775,7 @@ if test ! -d "$PTVERTX_USER_DIR"; then
 $as_echo "$PTVERTX_USER_DIR is not present,
     so we need not find the Vertx application platform interface." >&6; }; fi
 else
-    case "$JVERSION" in
-        1.6.*) PRE_JDK18=yes;;
-        1.7.*) PRE_JDK18=yes;;
-        *) PRE_JDK18=no;;
-    esac
-
+    # PRE_JDK18 is set above.
     if test "$PRE_JDK18" = "yes"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Vertx requires Java 1.8 or later, you are running $JVERSION.
     Vertx is the application platform interface used in actor.lib.vertx
@@ -12802,7 +12798,8 @@ fi
 
             if test -d "$PTVERTX_JAR_DIR"; then
     	    PTVERTX_DIR=vertx
-            jars="vertx-platform-*.jar vertx-hazelcast-*.jar vertx-core-*.jar java-xmlhttprequest-*.jar jackson-databind-*.jar jackson-core-*.jar jackson-annotations-*.jar hazelcast-*.jar"
+	    # Keep these alphabetic
+            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
             for jar in $jars
     	    do
 	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
