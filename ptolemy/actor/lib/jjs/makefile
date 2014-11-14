@@ -48,13 +48,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JavaScript.java
+	JavaScript.java \
+	WebSocketHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	basicFunctions.js \
 	JavaScriptIcon.xml \
 	js.xml \
-	localFunctions.js
+	localFunctions.js \
+	webSocket.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
