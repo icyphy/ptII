@@ -126,6 +126,8 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         newObject._listeners = null;
         newObject._addedPortNames = null;
         newObject._addedParameters = null;
+        newObject._addedPortParameterNames = null;
+        newObject._decoratedObjects = null;
         return newObject;
     }
 
@@ -272,18 +274,18 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     }
  
     /** Cached list of decorated objects. */
-    private List<NamedObj> _decoratedObjects;
+    protected List<NamedObj> _decoratedObjects;
 
     /** Version for _decoratedObjects. */
-    private long _decoratedObjectsVersion = -1L;
+    protected long _decoratedObjectsVersion = -1L;
 
     /** Listeners registered to receive events from this object. */
-    private ArrayList<MirrorDecoratorListener> _listeners;
+    protected ArrayList<MirrorDecoratorListener> _listeners;
 
-    private List<String> _addedPortNames = new ArrayList<>();  
+    protected List<String> _addedPortNames = new ArrayList<>();  
     
-    private List<String> _addedPortParameterNames = new ArrayList<>();
+    protected List<String> _addedPortParameterNames = new ArrayList<>();
     
-    private List<Parameter> _addedParameters = new ArrayList<>(); 
+    protected List<Parameter> _addedParameters = new ArrayList<>(); 
 
 }
