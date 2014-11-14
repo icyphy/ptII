@@ -502,7 +502,8 @@ FULL_11_0_JARS = \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	$(PTG4LTL_JAR) \
 	ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar \
-	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
+	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar \
+	$(PTVERTX_JARS)
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
