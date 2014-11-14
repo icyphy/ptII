@@ -534,7 +534,7 @@ FULL_ONLY_JNLP_JARS = \
 	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
-	ptolemy/actor/lib/jjs/jmf.jar \
+	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/jmf/demo/demo.jar \
