@@ -356,6 +356,13 @@ PTJAVA3D_DIR=@PTJAVA3D_DIR@
 JAVA3D_JARS=@JAVA3D_JARS@
 if [ "$PTJAVA3D_DIR" = "gr" ]; then 
     JAVA3D_JARS="${CLASSPATHSEPARATOR}${JAVA3D_JARS}"
+    # Mac needs Jogl with Java 3D.
+    PTJOGL_DIR=@PTJOGL_DIR@
+    if [ "$DYLD_LIBRARY_PATH" != "" ]; then
+        export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal:${DYLD_LIBRARY_PATH}"
+    else
+        export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal"
+    fi
 fi
 
 #### JavaCV GPL'd interface to Open Computer Vision
@@ -1465,7 +1472,7 @@ if [ "$error" = "none" ]; then
     else
 	if [ "$makeapp" = "1" ]; then   
 	    # Create a Mac OS X .app file
-	    PTVERSION=10.0.beta
+	    PTVERSION=11.0.devel
 	    MACAPP_BASE=`basename $MACAPP_APP .app`
 	    MACAPP_PLIST=$MACAPP_APP/Contents/Info.plist 
 	    
@@ -1634,11 +1641,29 @@ EOF6
 		   cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
 		   cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
 		   cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
+
+		   # Java3D
+		   JAVA3D_DIR="$PTII/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental"
+		   if [ ! -d "$JAVA3D_DIR" ]; then
+		       echo "$0: Java 3D directory \"$JAVA3D_DIR\" not found.  Java 3D probably won't work."
+                   else 
+		       cp $JAVA3D_DIR/lib/ext/*.jar $jreApp/lib/ext/ 
+		       cp $JAVA3D_DIR/*.txt $jreApp
+  		       # Jogl, needed by Java 3D
+		       JOGL_DIR=$PTII/vendors/jogl/jogamp-all-platforms/    
+		       if [ ! -d "$JOGL_DIR" ]; then
+			   echo "$0: Jogl directory \"$JOGL_DIR\" not found.  Java 3D probably won't work."
+		       else
+		           cp $JOGL_DIR/lib/macosx-universal/*.jnilib $MACAPP_APP/Contents/MacOS/
+		           cp "$JOGL_DIR/jar/jogl-all.jar" $jreApp/lib/ext/ 
+		           cp "$JOGL_DIR/jar/gluegen.jar" $jreApp/lib/ext/ 
+                       fi
+                   fi
 	       fi
            else
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
-	       if [ -f ${PTII}/adm/gen-11.0/MacJVM.tar ]; then
-		   (cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-11.0/MacJVM.tar)
+	       if [ -f ${PTII}/adm/gen-10.0/MacJVM.tar ]; then
+		   (cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-10.0/MacJVM.tar)
 	       fi	   
 	   fi # Darwin
            fi # JAVA16
