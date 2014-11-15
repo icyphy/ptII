@@ -544,7 +544,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		echo "(4)About to remove files named core `pwd`"; \
-		find . -type f -name core-ls -exec rm {} \; ;\
+		find . -type f -name core -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
 		echo "About to remove unneeded sources from `pwd`"; \

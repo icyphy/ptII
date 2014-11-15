@@ -96,7 +96,6 @@ config/*.jar
 config.cache
 config.log
 config.status
-core.[0-9]*
 diva/build.xml
 doc/design/src
 doc/design/html
