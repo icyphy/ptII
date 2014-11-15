@@ -3923,7 +3923,7 @@ else
     AC_MSG_CHECKING([for Java 3D])
     AC_ARG_WITH(java3D, [  --with-java3D=DIR       use j3dcore.jar, j3dutils.jar,
                           and vecmath.jar from DIR.  Usually Java 3D is
-			  installed in the JDK in jre/lib/ext],
+			  installed in the JDK in jre/lib/ext or $PTII/vendors/j3d],
 	JAVA3D_DIR=$withval,
 	JAVA3D_DIR=)
 
@@ -3934,9 +3934,18 @@ else
         tmpClasspath="$CLASSPATH"
     fi
 
+    if test -z "$JAVA3D_DIR" ; then
+       directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
+       if test -d "$directory"; then
+       	  JAVA3D_DIR="$directory"
+       fi
+    fi
     if test -f "$JAVA3D_DIR/j3dcore.jar" -a -f "$JAVA3D_DIR/j3dutils.jar" -a -f "$JAVA3D_DIR/vecmath.jar"; then
         JAVA3D_JARS="$JAVA3D_DIR/j3dcore.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/j3dutils.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/vecmath.jar$CLASSPATHSEPARATOR"
 	Java3DClasspath="$JAVA3D_JARS"
+	updateClasspath "$JAVA3D_DIR/j3dcore.jar"
+	updateClasspath "$JAVA3D_DIR/j3dutils.jar"
+	updateClasspath "$JAVA3D_DIR/vecmath.jar"
     else
 	Java3DClasspath="$tmpClasspath"
     fi
@@ -3947,20 +3956,49 @@ else
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" -classpath "$Java3DClasspath" java3dTest.java ; then
-       PT_MSG_RESULT(ok)
+        PT_MSG_RESULT(ok)
+
+	if test "`uname -s`" = "Darwin"; then 
+ 	    AC_MSG_CHECKING([for Jogl])
+            AC_ARG_WITH(jogl, [  --with-jogl=DIR       use jogl-all.jar and gluegen.jar from DIR,
+			  Java3D under Mac OS with JDK 1.7 and later requires Jogl.
+			  Usually Jogl is installed in $PTII/vendors/jogl],
+	        JOGL_DIR=$withval,
+	        JOGL_DIR=)
+
+	    if test -z "$JOGL_DIR" ; then
+                directory=`ls -d $PTII/vendors/jogl/*/jar`
+                if test -d "$directory"; then
+       	            JOGL_DIR="$directory"
+                fi
+		if test -f "$JOGL_DIR/gluegen.jar" -a -f "$JOGL_DIR/jogl-all.jar"; then
+		     PT_MSG_RESULT(ok)
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_DIR/jogl-all.jar"
+		    updateClasspath "$JOGL_DIR/gluegen.jar"
+		    updateClasspath "$JOGL_DIR/jogl-all.jar"
+		else
+		    AC_MSG_WARN([Could not fine the Jogl directory.  This could be problem at runtime for Mac OS X with Java 3D.])
+		fi
+            fi
+       fi
+
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
        # PTGR_PACKAGES is used in ptII/doc/makefile
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        AC_MSG_WARN(['"$JAVAC" -classpath "$Java3DClasspath" java3dTest.java' failed.
-    Java 3D may be found at https://java3d.dev.java.net/
+    Java 3D may be found at https://java3d.java.net/
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.
+    Configure looks for jar files in $PTII/vendors/j3d/*/lib/ext/.
     If your Java 3D installation is in a non-standard place, use  --with-java3d=DIR
     where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
-    ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext])
+    ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext]
+    Under Mac OS X, Jogl must also be installed.  Configure looks for Jogl
+    in $PTII/vendors/jogl/*/jar.  Jogl may be found at http://jogamp.org/jogl/www/.)
+
     fi
     cd "$startdir"
 fi
