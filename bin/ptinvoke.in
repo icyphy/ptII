@@ -1641,6 +1641,24 @@ EOF6
 		   cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
 		   cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
 		   cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
+
+		   # Java3D
+		   JAVA3D_DIR="$PTII/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental"
+		   if [ ! -d "$JAVA3D_DIR" ]; then
+		       echo "$0: Java 3D directory \"$JAVA3D_DIR\" not found.  Java 3D probably won't work."
+                   else 
+		       cp $JAVA3D_DIR/lib/ext/*.jar $jreApp/lib/ext/ 
+		       cp $JAVA3D_DIR/*.txt $jreApp
+  		       # Jogl, needed by Java 3D
+		       JOGL_DIR=$PTII/vendors/jogl/jogamp-all-platforms/    
+		       if [ ! -d "$JOGL_DIR" ]; then
+			   echo "$0: Jogl directory \"$JOGL_DIR\" not found.  Java 3D probably won't work."
+		       else
+		           cp $JOGL_DIR/lib/macosx-universal/*.jnilib $MACAPP_APP/Contents/MacOS/
+		           cp "$JOGL_DIR/jar/jogl-all.jar" $jreApp/lib/ext/ 
+		           cp "$JOGL_DIR/jar/gluegen.jar" $jreApp/lib/ext/ 
+                       fi
+                   fi
 	       fi
            else
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
