@@ -186,14 +186,14 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap,
                 "io.netty.handler.traffic.ChannelTrafficShapingHandler",
-                "lib/netty-all-4.0.20.Final-license.htm");
+                "lib/netty-all-4.0.21.Final-license.htm");
 
         _addIfPresent(copyrightsMap,
                 "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
                 "lib/hazelcast-3.2.3-license.htm");
 
         _addIfPresent(copyrightsMap, "org.vertx.java.core.Vertx",
-                "lib/vertx-2.1.2-license.htm");
+                "lib/vertx-2.1.4-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
