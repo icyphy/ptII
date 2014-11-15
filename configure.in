@@ -3974,13 +3974,14 @@ else
 	    if test -z "$JOGL_DIR" ; then
                 directory=`ls -d $PTII/vendors/jogl/*/jar`
                 if test -d "$directory"; then
-       	            JOGL_DIR="$directory"
+       	            JOGL_JAR_DIR="$directory"
+		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
-		if test -f "$JOGL_DIR/gluegen.jar" -a -f "$JOGL_DIR/jogl-all.jar"; then
+		if test -f "$JOGL_JAR_DIR/gluegen.jar" -a -f "$JOGL_JAR_DIR/jogl-all.jar"; then
 		     PT_MSG_RESULT(ok)
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_DIR/jogl-all.jar"
-		    updateClasspath "$JOGL_DIR/gluegen.jar"
-		    updateClasspath "$JOGL_DIR/jogl-all.jar"
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/jogl-all.jar"
+		    updateClasspath "$JOGL_JAR_DIR/gluegen.jar"
+		    updateClasspath "$JOGL_JAR_DIR/jogl-all.jar"
 		else
 		    AC_MSG_WARN([Could not fine the Jogl directory.  This could be problem at runtime for Mac OS X with Java 3D.])
 		fi
@@ -6576,6 +6577,9 @@ AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX2)
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 AC_SUBST(PTJNI_LIBRARIES)
+
+# Set to $PTII/vendors/jogl/* and used in ptinvoke.in under Mac OS X.
+AC_SUBST(PTJOGL_DIR)
 
 # Set to joystick if Joystick.jar was found 
 AC_SUBST(PTJOYSTICK_DIR)

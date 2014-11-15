@@ -332,7 +332,18 @@ abstract public class GRShadedShape extends GRActor3D {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _createModel();
+        try {
+            _createModel();
+        } catch (UnsatisfiedLinkError error) {
+            throw new IllegalActionException(this, error, "Could not create the Java 3D model. "
+                    + "Under Mac OS X, perhaps the Jogl shared libraries are not in DYLD_LIBRARY_PATH.\n"
+                    + "To get Jogl, do:\n"
+                    + " cd $PTII/vendors; mkdir jogl; cd jogl\n"
+                    + " wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z\n"
+                    + " 7z x  jogamp-all-platforms.7z\n"
+                    + "If you don't have 7z, get it from http://www.7-zip.org/download.html. Then:\n"
+                    + "export DYLD_LIBRARY_PATH=${PTII}/jogl/jogamp-all-platforms/lib/macosx-universal:${DYLD_LIBRARY_PATH}");
+        }
     }
 
     /** Return false if the scene graph is already initialized.
