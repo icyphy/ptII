@@ -342,7 +342,12 @@ abstract public class GRShadedShape extends GRActor3D {
                     + " wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z\n"
                     + " 7z x  jogamp-all-platforms.7z\n"
                     + "If you don't have 7z, get it from http://www.7-zip.org/download.html. Then:\n"
-                    + "export DYLD_LIBRARY_PATH=${PTII}/jogl/jogamp-all-platforms/lib/macosx-universal:${DYLD_LIBRARY_PATH}");
+                    + "export DYLD_LIBRARY_PATH=${PTII}/jogl/jogamp-all-platforms/lib/macosx-universal:${DYLD_LIBRARY_PATH}\n"
+                    + "If the error message is "
+                    + "java.lang.UnsatisfiedLinkError: jogamp.common.jvm.JVMUtil.initialize(Ljava/nio/ByteBuffer;)Z\n\n"
+                    + "Then the problem is likely that you DYLD_LIBRARY_PATH includes Matlab and you are "
+                    + "invoking the Mac .app file.  Perhaps remove the Matlab libraries fro DYLD_LIBRARY_PATH"
+                    + "by editing ~/.MacOSX/environment.plist");
         }
     }
 
