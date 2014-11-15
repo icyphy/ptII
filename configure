@@ -688,6 +688,7 @@ PTJSON_PACKAGES
 PTJSON_DIR
 PTJOYSTICK_PACKAGES
 PTJOYSTICK_DIR
+PTJOGL_DIR
 PTJNI_LIBRARIES
 PTJNI_SHAREDLIBRARY_SUFFIX2
 PTJNI_SHAREDLIBRARY_SUFFIX
@@ -10180,15 +10181,16 @@ fi
 	    if test -z "$JOGL_DIR" ; then
                 directory=`ls -d $PTII/vendors/jogl/*/jar`
                 if test -d "$directory"; then
-       	            JOGL_DIR="$directory"
+       	            JOGL_JAR_DIR="$directory"
+		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
-		if test -f "$JOGL_DIR/gluegen.jar" -a -f "$JOGL_DIR/jogl-all.jar"; then
+		if test -f "$JOGL_JAR_DIR/gluegen.jar" -a -f "$JOGL_JAR_DIR/jogl-all.jar"; then
 		     if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; fi
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_DIR/jogl-all.jar"
-		    updateClasspath "$JOGL_DIR/gluegen.jar"
-		    updateClasspath "$JOGL_DIR/jogl-all.jar"
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/jogl-all.jar"
+		    updateClasspath "$JOGL_JAR_DIR/gluegen.jar"
+		    updateClasspath "$JOGL_JAR_DIR/jogl-all.jar"
 		else
 		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not fine the Jogl directory.  This could be problem at runtime for Mac OS X with Java 3D." >&5
 $as_echo "$as_me: WARNING: Could not fine the Jogl directory.  This could be problem at runtime for Mac OS X with Java 3D." >&2;}
@@ -13808,6 +13810,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos)
+
+
+# Set to $PTII/vendors/jogl/* and used in ptinvoke.in under Mac OS X.
 
 
 # Set to joystick if Joystick.jar was found
