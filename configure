@@ -10135,7 +10135,12 @@ fi
     fi
 
     if test -z "$JAVA3D_DIR" ; then
-       directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
+       # Special version of Java3D for Mac OS X, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D
+       if test "`uname -s`" = "Darwin"; then
+           directory=`ls -d $PTII/vendors/j3d/Darwin/*/lib/ext`
+       else
+           directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
+       fi
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
        fi
@@ -10216,7 +10221,6 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" -classpath \"$Java3DClasspath\" java3dTes
     where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
     ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext
     Under Mac OS X" >&2;}
-
     fi
     cd "$startdir"
 fi
