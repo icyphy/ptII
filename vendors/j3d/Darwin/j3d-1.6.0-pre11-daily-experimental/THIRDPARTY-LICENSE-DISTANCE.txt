@@ -1,0 +1,104 @@
+The following additional provisions apply to third party software
+included as part of this product.
+
+    com/sun/j3d/internal/
+	Distance.java
+
+Copyright (c) 2004 Magic Software, Inc.  All Rights Reserved.
+
+The Wild Magic Library (WML) source code is supplied under the terms of
+the license agreement http://www.magic-software.com/License/WildMagic.pdf
+and may not be copied or disclosed except in accordance with the terms of
+that agreement.
+
+---------- Text of WildMagic.pdf downloaded 8-Jun-2004 ----------
+
+License Agreement for the Wild Magic (Version 2) Software Library
+Revision 1: January 28, 2004
+
+THIS WILD MAGIC (VERSION 2) SOFTWARE LICENSE AGREEMENT ("Agreement")
+is made by and between Magic Software, Inc. ("We/Us/Our"), a North
+Carolina corporation, having its principal place of business at 6006
+Meadow Run Court, Chapel Hill, North Carolina 27516 and any person or
+legal entity using or accepting any software governed by this
+Agreement ("You/Your"). This Agreement shall be effective on the first
+day you use or accept software ("The Software") governed by this
+Agreement, whichever is earlier.
+
+THE PARTIES AGREE as follows:
+
+1. Grant. We grant you a nonexclusive, nontransferable, and perpetual
+   license to use The Software subject to the terms and conditions of the
+   Agreement:
+
+   (a) There is no charge to you for this license.
+
+   (b) The Software may be used, edited, modified, copied, and
+       distributed by you for noncommercial products.
+
+   (c) The Software may be used, edited, modified, copied, and
+       distributed by you for commercial products provided that such
+       products are not intended to wrap The Software solely for the
+       purposes of selling it as if it were your own product. The
+       intent of this clause is that you use The Software, in part or
+       in whole, to assist you in building your own original
+       products. An example of acceptable use is to incorporate the
+       graphics portion of The Software in a game to be sold to an end
+       user.  An example that violates this clause is to compile a
+       library from only The Software, bundle it with the headers
+       files as a Software Development Kit (SDK), then sell that SDK
+       to others. If there is any doubt about whether you can use The
+       Software for a commercial product, contact us and explain what
+       portions you intend to use. We will consider creating a
+       separate legal document that grants you permission to use those
+       portions of The Software in your commercial product.
+
+2. Limitation of Liability. We will have no liability for special,
+   incidental or consequential damages even if advised of the
+   possibility of such damages. We will not be liable for any other
+   damages or loss in any way connected with The Software.
+
+3. Warranties. We make no warranties at all. The Software is
+   transferred to you on an as-is basis. You use The Software at your
+   own peril. You assume all risk of loss for all claims or
+   controversies, now existing or hereafter, arising out of use of The
+   Software. We shall have no liability based on a claim that your use
+   or combination of The Software with products or data not supplied
+   by us infringes any patent, copyright, or proprietary right. All
+   other warranties, expressed or implied, including, without
+   limitation, any warranty of merchantability or fitness for a
+   particular purpose are hereby excluded.
+
+
+4. Taxes and Duties. You shall pay or reimburse us for federal, state,
+   provincial, local or other tariffs, duties and taxes not based on
+   our net income, including all taxes, tariffs, duties, or amounts
+   levied in lieu thereof, based on charges payable under this
+   Agreement or based on The Software, its use or any services
+   performed hereunder, whether such tariffs, duties or taxes are now
+   or hereafter imposed under the authority of any federal, state,
+   provincial, local or other jurisdiction.
+
+5. Entire Agreement, Amendments. This Agreement represents the
+   complete and exclusive statement of the Agreements between the
+   parties relating to the licensing of The Software and maintenance
+   of The Software and supersedes all prior Agreements and
+   representations between them relating to such
+   licensing. Modifications to this Agreement shall not be effective
+   unless in writing and signed by the party against whom enforcement
+   is sought. The terms of this Agreement shall not be amended or
+   changed by any purchase order or acknowledgment even if we have
+   signed such documents.
+
+6. North Carolina Law, Severability. This Agreement will be governed
+   by North Carolina law. If any provision of this Agreement shall be
+   unlawful, void, or for any reason unenforceable, it shall be deemed
+   severable from and shall in no way affect the validity or
+   enforceability of the remaining provisions of this Agreement.
+
+7. Force Majeure. It is herein agreed that neither party to this
+   Agreement shall be liable for delays for failures in performance
+   resulting from acts beyond the control of such party. Such acts
+   include, without limitation, acts of God, strikes, lockouts, riots,
+   acts of war, epidemics, governmental regulations superimposed after
+   the fact, fire, power failures, earthquakes or other disasters.

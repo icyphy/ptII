@@ -1,0 +1,23 @@
+The following additional information pertains to third party software
+included as part of this product. No additional restrictions are
+placed on this source code, except that this attribution must be
+distributed with the source code.
+
+    com/sun/j3d/utils/geometry/
+	BBox.java, Basic.java, BottleNeck.java, Bridge.java,
+	Clean.java, Degenerate.java, Desperate.java, Distance.java,
+	EarClip.java, Heap.java, HeapNode.java, Left.java,
+	ListNode.java, NoHash.java, Numerics.java, Orientation.java,
+	PntNode.java, Project.java, Simple.java, Stripifier.java,
+	StripifierStats.java, Triangle.java, Triangulator.java
+
+The reference to Fast Industrial Strength Triangulation (FIST) code
+in this release by Sun Microsystems is related to Sun's rewrite of
+an early version of FIST. FIST was originally created by Martin
+Held and Joseph Mitchell at Stony Brook University and is
+incorporated by Sun under an agreement with The Research Foundation
+of SUNY (RFSUNY). The current version of FIST is available for
+commercial use under a license agreement with RFSUNY on behalf of
+the authors and Stony Brook University.  Please contact the Office
+of Technology Licensing at Stony Brook, phone 631-632-9009, for
+licensing information.

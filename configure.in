@@ -3935,7 +3935,12 @@ else
     fi
 
     if test -z "$JAVA3D_DIR" ; then
-       directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
+       # Special version of Java3D for Mac OS X, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D
+       if test "`uname -s`" = "Darwin"; then 
+           directory=`ls -d $PTII/vendors/j3d/Darwin/*/lib/ext`
+       else
+           directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
+       fi
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
        fi
@@ -3996,9 +4001,16 @@ else
     If your Java 3D installation is in a non-standard place, use  --with-java3d=DIR
     where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
     ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext]
+    Under Mac OS X, a special version of Java 3D is present in $PTII/vendors/j3d/Darwin.
+    See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D
     Under Mac OS X, Jogl must also be installed.  Configure looks for Jogl
-    in $PTII/vendors/jogl/*/jar.  Jogl may be found at http://jogamp.org/jogl/www/.)
-
+    in $PTII/vendors/jogl/*/jar.  Jogl may be found at http://jogamp.org/jogl/www/.
+    Try:
+       cd $PTII/vendors; mkdir jogl; cd jogl
+       wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z
+       7z x  jogamp-all-platforms.7z
+    If you don't have 7z, get it from http://www.7-zip.org/download.html
+    Then rerun ./configure ])
     fi
     cd "$startdir"
 fi
