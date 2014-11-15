@@ -356,6 +356,13 @@ PTJAVA3D_DIR=@PTJAVA3D_DIR@
 JAVA3D_JARS=@JAVA3D_JARS@
 if [ "$PTJAVA3D_DIR" = "gr" ]; then 
     JAVA3D_JARS="${CLASSPATHSEPARATOR}${JAVA3D_JARS}"
+    # Mac needs Jogl with Java 3D.
+    PTJOGL_DIR=@PTJOGL_DIR@
+    if [ "$DYLD_LIBRARY_PATH" != "" ]; then
+        export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal:${DYLD_LIBRARY_PATH}"
+    else
+        export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal"
+    fi
 fi
 
 #### JavaCV GPL'd interface to Open Computer Vision
