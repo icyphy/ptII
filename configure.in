@@ -630,7 +630,7 @@ startdir="$PTII"
 cd "$srcdir/config"
 rm -f *.class
 if "$JAVAC" confTest.java ; then
-    PT_MSG_RESULT(ok)
+    PT_MSG_RESULT(confTest.java compiled)
 
     AC_MSG_CHECKING([the value of the java.version Property ])
     # Older versions of cygwin might not have env, but 1.1 does
@@ -749,7 +749,7 @@ cd "$srcdir/config"
 AC_MSG_CHECKING([for java.home property by compiling a test program ])
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if "$JAVAC" JavaHome.java ; then
-   PT_MSG_RESULT(ok)
+   PT_MSG_RESULT(JavaHome.java compiled)
    AC_MSG_CHECKING([for java.home property by running a test program ])
    if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
       # Run it again and get the results with \ converted to /
@@ -1472,7 +1472,7 @@ else
 	CHIC_DIR=$PTII/lib)
 
     if test -f "$CHIC_DIR/chic.jar"; then
-        PT_MSG_RESULT(ok)
+        PT_MSG_RESULT($CHIC_DIR)
 	# We found chic
 	PTCHIC_DIR=chic
     else  
@@ -2479,7 +2479,7 @@ else
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JAITest.java ; then
-       PT_MSG_RESULT(ok)
+       PT_MSG_RESULT(JAI found in the default classpath)
        PTJAI_DIR=jai
        # PTJAI_PACKAGES is used in ptII/doc/makefile
        PTJAI_PACKAGES=ptolemy.actor.lib.jai
@@ -2881,7 +2881,7 @@ else
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JMFTest.java ; then
-        PT_MSG_RESULT(ok)
+        PT_MSG_RESULT(JMF found in the default classpath.)
         PTJMF_DIR=jmf
 	# PTJMF_PACKAGES is used in ptII/doc/makefile
 	PTJMF_PACKAGES=ptolemy.actor.lib.jmf
@@ -3083,13 +3083,13 @@ else
 	AC_MSG_CHECKING([for how to run jacl with "$JAVA"])
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
-		PT_MSG_RESULT(ok)
+		PT_MSG_RESULT($PTJACL_JAR)
 		PTJACL_DIR=ptjacl
 	else
 		PT_MSG_RESULT([CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell failed])
 		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
 		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
-			PT_MSG_RESULT(ok)
+			PT_MSG_RESULT($PTJACL_JAR)
 		else
 			PT_MSG_RESULT(['CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell' failed,
 	use 'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell'
@@ -3475,7 +3475,7 @@ else
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" OpenCVTest.java ; then
-       PT_MSG_RESULT(ok)
+       PT_MSG_RESULT(OpenCV found in the default classpath.)
        PTOPENCV_DIR=opencv
        # PTOPENCV_PACKAGES is used in ptII/doc/makefile
        PTOPENCV_PACKAGES="ptolemy.actor.lib.opencv ptolemy.actor.lib.opencv.optimize"
@@ -3697,7 +3697,7 @@ else
 	RXTX_JAR=$PTII/vendors/misc/rxtx/RXTXcomm.jar)
 
     if test -f "$RXTX_JAR"; then
-        PT_MSG_RESULT(ok)
+        PT_MSG_RESULT($RXTX_JAR)
 	RXTX_PRESENT=yes
 	updateClasspath "$RXTX_JAR"
     else 
@@ -3961,7 +3961,7 @@ else
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" -classpath "$Java3DClasspath" java3dTest.java ; then
-        PT_MSG_RESULT(ok)
+        PT_MSG_RESULT($Java3DClasspath)
 
 	if test "`uname -s`" = "Darwin"; then 
  	    AC_MSG_CHECKING([for Jogl])
@@ -3978,7 +3978,7 @@ else
 		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
 		if test -f "$JOGL_JAR_DIR/gluegen.jar" -a -f "$JOGL_JAR_DIR/jogl-all.jar"; then
-		     PT_MSG_RESULT(ok)
+		     PT_MSG_RESULT($JOGL_JAR_DIR)
 		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/jogl-all.jar"
 		    updateClasspath "$JOGL_JAR_DIR/gluegen.jar"
 		    updateClasspath "$JOGL_JAR_DIR/jogl-all.jar"
@@ -5128,7 +5128,7 @@ else
     # Use -classpath here because that is what we use when we compile
     # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
     if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
-       PT_MSG_RESULT(ok)
+       PT_MSG_RESULT(Quicktime found in default classpath.)
        PTQUICKTIME_DIR=quicktime
     else
        if test "${MAJOR_OS_NAME:-none}" = "none"; then
@@ -5160,7 +5160,7 @@ else
 	     PT_MSG_RESULT([    ok, found '$QTJAVA_ZIP'])
 	     AC_MSG_CHECKING([again for Quicktime for Java])
 	     if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
-	         PT_MSG_RESULT(ok)
+	         PT_MSG_RESULT($QTJAVA_ZIP)
 	         PTQUICKTIME_DIR=quicktime
 		 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
 		 PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime
@@ -5279,7 +5279,7 @@ else
     startdir=$PTII
     cd "$srcdir/config"
     if "$JAVAC" SystemJar.java ; then
-	PT_MSG_RESULT(ok)
+	PT_MSG_RESULT(SystemJar.java compiled)
 	AC_MSG_CHECKING([the location or rt.jar])
 	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
@@ -5608,7 +5608,7 @@ changequote([, ])dnl
 	    AC_MSG_WARN([\$PTINYOS_MOMLROOT is not set.
     For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
         else 
-            PT_MSG_RESULT(ok)
+            PT_MSG_RESULT($PTINYOS_MOMLROOT)
             if test ! -d "$PTINYOS_MOMLROOT"; then
                 # Try to make the directory
 	        mkdir -p "$PTINYOS_MOMLROOT"
