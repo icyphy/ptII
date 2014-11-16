@@ -81,26 +81,55 @@ function readURL(url) {
 }
 
 ////////////////////
-// Require the named module.
-// If no src is given, then this function searches in the local jjs director
-// for a file named name.js and loads that file. That file is expected to define
-// a single JavaScript object whose name is the value of the name argument.
-// That object may then have fields defining the functions or variables of the module.
-function require(name, src) {
-    if (!src) {
-        // If no source is specified, then find the module locally.
-        var FileUtilities = Java.type('ptolemy.util.FileUtilities');
-        // The following may throw an IOException.
-        var file = FileUtilities.nameToFile(
-            '$CLASSPATH/ptolemy/actor/lib/jjs/' + name + ".js", null);
-        load(file.getAbsolutePath());
-        return eval(name);
-    } else {
-        throw "FIXME: src argument to require function not supported yet.";
-    }
-}        
+// A string giving the full path to the root directory for installed modules.
+var moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
+    '$CLASSPATH/ptolemy/actor/lib/jjs/', null)
+    .getAbsolutePath();
+
+////////////////////
+// Require the named module. This function imports modules formatted
+// according to the CommonJS standard.
+// 
+// If the name begins with './' or '/', then it is assumed
+// to specify a file or directory on the local disk. If it is a file, the '.js' suffix
+// may be optionally omitted. If it is a directory, then this function will look for
+// a package.json file in that directory and load the file specified by the 'main'
+// property the JSON object defined in that file. If there is no package.json file, then
+// it will load an 'index.js' file, if there is one.
+//
+// If the name does not begin with './' or '/', then it is assumed to specify
+// a module installed in this accessor host.
+//
+// In both cases, this function returns an object that includes as properties any
+// properties that have been added to the 'exports' property. For example, to export
+// a function, the module JavaScript file could define the function as follows:
+//
+//   exports.myFunction = function() {...};
+//
+// Alternatively, the module JavaScript file can explicitly define the exports object
+// as follows:
+//
+//   var myFunction = function() {...};
+//   module.exports = {
+//       myFunction : myFunction
+//   };
+//
+// This implementation uses the requires() function implemented by Walter Higgins,
+// found here: https://github.com/walterhiggins/commonjs-modules-javax-script.
+// See also: http://nodejs.org/api/modules.html#modules_the_module_object
+// See also: http://wiki.commonjs.org/wiki/Modules
+//
+var require = load(moduleRoot + '/external/require.js')(
+    // Invoke the function returned by 'load' immediately with the following arguments.
+    //    - a root directory in which to look for modules.
+    //    - an array of paths in which to look for modules.
+    //    - an optional hook object that includes two callback functions for notification.
+    moduleRoot,
+    [ moduleRoot + '/', moduleRoot + '/modules/' ]
+);
 
 ////////////////////
 // Set a timeout to call the specified function after the specified time.
 // Return a handle to use in clearTimeout().
 // The setTimeout(callback, timeout) function is already built in to the Window object.
+// FIXME: Nashorn!!!

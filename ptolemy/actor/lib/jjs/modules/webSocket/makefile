@@ -1,4 +1,4 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript actors
+# Makefile for Nashorn-based Ptolemy II JavaScript modules
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs
+ME =		ptolemy/actor/lib/jjs/modules/webSocket
 
-DIRS = 		demo doc external modules test
+DIRS = 		
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
 
@@ -48,13 +48,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JavaScript.java
+	WebSocketHelper.java
 	
 OTHER_FILES_TO_BE_JARED = \
-	basicFunctions.js \
-	JavaScriptIcon.xml \
-	js.xml \
-	localFunctions.js
+	package.json \
+	webSocket.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -67,9 +65,6 @@ MISC_FILES =	doc test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	'JavaScript$$ParameterProxy.class' \
-	'JavaScript$$PortProxy.class' \
-	'JavaScript$$PtolemyJavaScript.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)

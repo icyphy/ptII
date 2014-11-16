@@ -1,0 +1,13 @@
+{
+  "name": "webSocket",
+  "version": "0.1.0",
+  "main": "webSocket.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Hokeun Kim"
+    , "email" : "hokeunkim@eecs.berkeley.edu"},
+    {"name" : "Edward A. Lee"
+    , "email" : "eal@eecs.berkeley.edu"}
+  ],
+  "description": "A simple package for WebSocket access."
+}

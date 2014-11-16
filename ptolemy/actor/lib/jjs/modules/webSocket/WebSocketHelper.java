@@ -25,7 +25,7 @@
    COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib.jjs;
+package ptolemy.actor.lib.jjs.modules.webSocket;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
