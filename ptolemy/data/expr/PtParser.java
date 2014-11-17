@@ -496,6 +496,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             registerFunctionClass("ptolemy.math.SignalProcessing");
             registerFunctionClass("ptolemy.math.FixPoint");
             registerFunctionClass("ptolemy.data.ObjectToken");
+            registerFunctionClass("ptolemy.data.DateToken");
         }
     }
 
