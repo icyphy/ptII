@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="floor20pt"
+  guid="{f27c6078-5f9a-44ac-b93f-5d2b962e3867}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="floor20pt"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="output" 
+    valueReference="0" 
+    description="scaled output" 
+    variability="continuous" 
+    causality="output" >
+     <Real />
+  </ScalarVariable>
+</ModelVariables>
+
+</fmiModelDescription>

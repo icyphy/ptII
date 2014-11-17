@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="scale20pt"
+  guid="{8e15847a-0268-49a1-9b80-0df510534d61}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="scale20pt"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="input" valueReference="0" description="input value" variability="continuous" causality="input">
+     <Real start="42" />
+  </ScalarVariable>
+  <ScalarVariable name="output" valueReference="1" description="scaled output" variability="continuous" causality="output" >
+     <Real />
+  </ScalarVariable>
+  <ScalarVariable name="der(output)" valueReference="2" description="derivative of scaled output" >
+     <Real derivative="1" />
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="2" />
+  </Outputs>
+  <Derivatives>
+  	<Unknown index="3" />
+  </Derivatives>
+</ModelStructure>
+
+</fmiModelDescription>

@@ -2,7 +2,7 @@
 
 # @Authors: Fabian Stanke, Christopher Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70106 2014-09-22 23:18:09Z cxh $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -65,16 +65,16 @@ CPP_SRCS = \
 	parser/XmlParserCApi.cpp
 
 # Main target
-TARGET = main.c
+TARGET = main2.c
 
 # Dependencies
 DEPS = \
 	maSupport.h \
 	shared/sim_support.h \
-	includes/fmi.h \
-	includes/fmiFunctions.h \
-	includes/fmiFunctionTypes.h \
-	includes/fmiTypesPlatform.h \
+	includes/fmi2.h \
+	includes/fmi2Functions.h \
+	includes/fmi2FunctionTypes.h \
+	includes/fmi2TypesPlatform.h \
 	parser/XmlElement.h \
 	parser/XmlParser.h \
 	parser/XmlParserCApi.h \
@@ -102,20 +102,33 @@ main: $(OBJECTS)
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
 FMUS = \
-	../fmus/inc20RC1pt/inc20RC1pt.fmu \
-	../fmus/scale20RC1pt/scale20RC1pt.fmu \
-	../fmus/output20RC1pt/output20RC1pt.fmu
+	../fmus/inc20pt/inc20pt.fmu \
+	../fmus/scale20pt/scale20pt.fmu \
+	../fmus/out20pt/out20pt.fmu
+
+FMUS0 = \
+	../fmus/floor20pt/floor20pt.fmu \
+	../fmus/out20pt/out20pt.fmu
 
 # Run the master algorithm executable on two fmus.
 run: main $(FMUS)
-	./main  -t15 -h1 -llogAll $(FMUS)
+	./main -t15 -h1 -llogAll $(FMUS)
 
-../fmus/inc20RC1pt/inc20RC1pt.fmu:
-	(cd ../fmus/inc20RC1pt; $(MAKE))
-../fmus/scale20RC1pt/scale20RC1pt.fmu:
-	(cd ../fmus/scale20RC1pt; $(MAKE))
-../fmus/output20RC1pt/output20RC1pt.fmu:
-	(cd ../fmus/output20RC1pt; $(MAKE))
+../fmus/inc20RC1pt/inc20pt.fmu:
+	(cd ../fmus/inc20pt; $(MAKE))
+../fmus/scale20pt/scale20pt.fmu:
+	(cd ../fmus/scale20pt; $(MAKE))
+../fmus/out20pt/out20pt.fmu:
+	(cd ../fmus/out20pt; $(MAKE))
+
+# Run yilin
+run2: main $(FMUS0)
+	./main -t15 -h1 -llogAll $(FMUS0)
+
+../fmus/floor20pt/floor20pt.fmu:
+	(cd ../fmus/floor20pt; $(MAKE))
+../fmus/out20pt/out20pt.fmu:
+	(cd ../out20pt/out20pt; $(MAKE))
 
 clean_fmus:
 	rm -f $(FMUS)
@@ -136,7 +149,7 @@ clean: tmpclean
 
 tmpclean:
 	-rm -rf fmuTmp*
-	-rm -f result.csv
+	-rm -f *.csv
 	-rm -f shared/*.o
 
 # Sources that may or may not be present, but if they are present, we don't

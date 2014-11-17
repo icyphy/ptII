@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="inc20pt"
+  guid="{3302911a-7e34-4af8-9ad3-007c68cce9eb}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="inc20pt"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="counter" valueReference="0" description="counts the seconds" causality="output">
+     <Integer />
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" />
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
