@@ -185,7 +185,7 @@ public class TokenToJSON extends Converter {
             } else if (token instanceof StringToken) {
                 o = ((StringToken) token).stringValue();
             } else if (token instanceof DateToken) {
-                o = ((DateToken) token).toString();
+                o = ((DateToken) token).stringValue();
             } else if (token.equals(new ObjectToken(null))) {
                 o = JSONObject.NULL;
             } else {

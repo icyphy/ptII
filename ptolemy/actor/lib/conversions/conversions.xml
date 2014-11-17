@@ -32,6 +32,10 @@
   <entity name="ComplexToPolar"
           class="ptolemy.actor.lib.conversions.ComplexToPolar">
   </entity>
+  
+  <entity name="DateToString"
+          class="ptolemy.actor.lib.conversions.DateToString">
+  </entity>
 
   <entity name="DoubleToFix"
           class="ptolemy.actor.lib.conversions.DoubleToFix">

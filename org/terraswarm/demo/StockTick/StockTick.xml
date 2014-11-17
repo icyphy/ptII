@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.102552073753671">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{513.7149177888066, 219.99009754378585}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{513.7149177888065, 219.99009754378585}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Display the stock prices of the publicly&#10;held sponsors of the TerraSwarm project.&#10;updated every five seconds.">
@@ -55,7 +55,7 @@
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 400, 864, 500}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 827, 864, 500}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[864, 456]">
         </property>
@@ -140,19 +140,6 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
-    </entity>
-    <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;     &quot;">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 220.0]">
-        </property>
     </entity>
     <entity name="ConvertToEasternTime" class="ptolemy.actor.lib.DateConstructor">
         <property name="useTimeInMillis" class="ptolemy.data.expr.Parameter" value="true">
@@ -318,8 +305,6 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -344,7 +329,6 @@
     <link port="Const.output" relation="relation2"/>
     <link port="ArrayToSequence.input" relation="relation2"/>
     <link port="ArrayToSequence.output" relation="relation"/>
-    <link port="AddSubtract.plus" relation="relation8"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation9"/>
     <link port="AddSubtract.plus" relation="relation3"/>
@@ -354,7 +338,6 @@
     <link port="StockTick.symbol" relation="relation"/>
     <link port="StockTick.created" relation="relation4"/>
     <link port="StockTick.price" relation="relation3"/>
-    <link port="Const3.output" relation="relation8"/>
     <link port="ConvertToEasternTime.output" relation="relation10"/>
     <link port="ConvertToEasternTime.timeZone" relation="relation21"/>
     <link port="ConvertToEasternTime.timeInMillis" relation="relation4"/>

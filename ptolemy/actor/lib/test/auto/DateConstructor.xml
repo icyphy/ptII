@@ -4,7 +4,7 @@
 <entity name="DateConstructor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 93, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={395, 179, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -20,7 +20,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 55}">
         </property>
     </property>
-    <property name="correctValues" class="ptolemy.data.expr.StringParameter" value="&quot;Tue Feb 01 01:01:01.001000000 +0100 2000&quot;">
+    <property name="correctValues" class="ptolemy.data.expr.StringParameter" value="Tue Feb 01 01:01:01.001000000 +0100 2000">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -68,7 +68,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{correctValues}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{date(correctValues)}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -132,19 +132,19 @@
         </property>
     </entity>
     <entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 100.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{correctValues}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{date(correctValues)}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 100.0]">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{correctValues}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{date(correctValues)}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -152,11 +152,15 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{correctValues}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{date(correctValues)}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 275.0}">
+        </property>
+    </entity>
+    <entity name="DateToString" class="ptolemy.actor.lib.conversions.DateToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 100.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -191,6 +195,8 @@
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DateConstructor.output" relation="relation2"/>
@@ -220,9 +226,11 @@
     <link port="DateConstructor3.millisecond" relation="relation11"/>
     <link port="DateConstructor3.microsecond" relation="relation12"/>
     <link port="DateConstructor3.nanosecond" relation="relation13"/>
-    <link port="StringToDate.input" relation="relation2"/>
+    <link port="StringToDate.input" relation="relation16"/>
     <link port="StringToDate.output" relation="relation15"/>
     <link port="Test4.input" relation="relation15"/>
     <link port="Test3.input" relation="relation14"/>
     <link port="Test2.input" relation="relation5"/>
+    <link port="DateToString.input" relation="relation2"/>
+    <link port="DateToString.output" relation="relation16"/>
 </entity>

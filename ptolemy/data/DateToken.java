@@ -181,10 +181,6 @@ public class DateToken extends AbstractConvertibleToken implements
                 }
                 
                 String timeZoneOffset = value.substring(24, 29);
-
-                // Calculate and set time zone.
-                int offset = (calendar.get(Calendar.ZONE_OFFSET) + calendar
-                        .get(Calendar.DST_OFFSET)) / (60 * 60 * 1000);
                 _timeZone = TimeZone.getTimeZone("GMT" + timeZoneOffset);
                 calendar.setTimeZone(_timeZone);
                 _calendar = calendar;
@@ -293,6 +289,10 @@ public class DateToken extends AbstractConvertibleToken implements
             _calendar.setTimeZone(_timeZone);
         }
         return _calendar;
+    }
+    
+    public static DateToken date(String string) throws IllegalActionException {
+        return new DateToken(string);
     }
 
     /** Get the date of the month part of this date.
@@ -551,20 +551,8 @@ public class DateToken extends AbstractConvertibleToken implements
     public boolean isNil() {
         return _isNil;
     }
-
-    /**
-     * Return a String representation of the DateToken. The string is surrounded
-     * by double-quotes; without them, the Ptolemy expression parser fails to
-     * parse it.
-     *
-     * <p>Unfortunately, the Java Date class has a fatal flaw in that
-     * Date.toString() does not return the value of the number of ms., so
-     * we use a format that includes the number of ms.</p>
-     *
-     * @return A String representation of the DateToken.
-     */
-    @Override
-    public String toString() {
+    
+    public String stringValue() {
         if (isNil()) {
             return _NIL;
         }
@@ -579,8 +567,24 @@ public class DateToken extends AbstractConvertibleToken implements
 
         String remainder = timeString.substring(beforeTimeZone.length());
 
-        return "\"" + beforeTimeZone + String.format("%03d", getMicrosecond())
-                + String.format("%03d", getNanosecond()) + remainder + "\"";
+        return beforeTimeZone + String.format("%03d", getMicrosecond())
+                + String.format("%03d", getNanosecond()) + remainder;
+    }
+
+    /**
+     * Return a String representation of the DateToken. The string is surrounded
+     * by double-quotes; without them, the Ptolemy expression parser fails to
+     * parse it.
+     *
+     * <p>Unfortunately, the Java Date class has a fatal flaw in that
+     * Date.toString() does not return the value of the number of ms., so
+     * we use a format that includes the number of ms.</p>
+     *
+     * @return A String representation of the DateToken.
+     */
+    @Override
+    public String toString() {
+        return "date(\"" + stringValue() + "\")";
     }
 
     /** A token that represents a missing value.
@@ -648,24 +652,28 @@ public class DateToken extends AbstractConvertibleToken implements
         // However, double is not losslessly convertible to long?
         // Probably throw an IllegalActionException here.
         
-        // Patricia Derler - first trial of an implementation of isCloseTo below.
+        // Patricia Derler - first version of an implementation of isCloseTo below.
         // First get both tokens to the same precision. Then compare the difference. 
         // If difference is less than epsilon (casted to an int), return true.
-        if (token instanceof DateToken) {
-            DateToken dateToken = (DateToken) token;
-            long dateValue = dateToken._value;
-            if (dateToken.getPrecision() > getPrecision()) {
-                int precisionDifference = dateToken.getPrecision() - getPrecision();
-                dateValue = (long) (dateValue / Math.pow(1000, precisionDifference));
-            }
-            if (Math.abs(dateValue - _value) < epsilon) {
-                return new BooleanToken(true);
-            } else {
-                return new BooleanToken(false);
-            }
+        
+        DateToken dateToken = null;
+        if (token instanceof StringToken) {
+            dateToken = new DateToken(((StringToken)token).stringValue());
+        } else if (token instanceof DateToken) {
+            dateToken = (DateToken) token;
         } else {
             throw new IllegalActionException(null, "Cannot compute _isCloseTo for DateToken and " 
                     + token.getType());
+        }
+        long dateValue = dateToken._value;
+        if (dateToken.getPrecision() > getPrecision()) {
+            int precisionDifference = dateToken.getPrecision() - getPrecision();
+            dateValue = (long) (dateValue / (long) Math.pow(1000, precisionDifference));
+        }
+        if (Math.abs(dateValue - _value) < epsilon) {
+            return BooleanToken.TRUE;
+        } else {
+            return BooleanToken.FALSE;
         }
     }
 

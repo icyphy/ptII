@@ -28,9 +28,7 @@
  */
 package ptolemy.actor.lib;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 import ptolemy.actor.TypedAtomicActor;
