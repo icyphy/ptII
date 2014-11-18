@@ -130,7 +130,7 @@ public class ImportAccessorAction extends AbstractAction {
         final Query query = new Query();
         query.setTextWidth(60);
         query.addFileChooser("location", "location", _lastLocation, null, null,
-                true, true);
+                true, false);
         // query.addLine("location", "location", _lastLocation);
         final JComboBox box = query.addChoice("accessor", "accessor",
                 new String[] {}, _lastAccessorName);
