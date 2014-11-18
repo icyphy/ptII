@@ -135,6 +135,9 @@ WABA_CLASSES = @WABA_CLASSES@
 # Directory that contains the waba used by PalmOS
 WABA_DIR = @WABA_DIR@
 
+# Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTWEBSOCKET_DIR = @PTWEBSOCKET_DIR@
+
 # Lejos is a JDK for Lego Mindstorms, see
 # http://lejos.sourceforge.net
 LEJOS_DIR = @LEJOS_DIR@
