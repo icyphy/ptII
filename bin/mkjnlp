@@ -58,10 +58,35 @@ if [ ! -x "$SORT" ]; then
     SORT=sort
 fi
 
+# # Create a file that has the one jar file per line
+# jarsfile=/tmp/mkjnlp.jarsfile.$$
+# for file in $otherjars
+# do
+#     echo $file
+#     # Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+#     echo $file | awk '
+#         BEGIN { s[":"] = 1 ; s[";"] = 2; s["$(CLASSPATHSEPARATOR)"] = 3; s["${CLASSPATHSEPARATOR}"] = 4;}
+            
+#     { 
+#         for (separator in s) {
+#             nf = split($0, f, separator) 
+#             if (nf > 1) {
+#                 for (i=1; i<=nf; i++) {
+#                     print f[i];
+#                 } 
+#                 exit
+#             } 
+#         }
+#         print $0
+#     }' | sed "s@$PTII/@@" >> $jarsfile
+
+# done
+
+# splitotherjars=`cat $jarsfile`
+
+
 for file in $otherjars
 do
-    # Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
-    file=`echo $file | sed "s@$PTII/@@"`
     if [ ! -f $basedirectory/$file ]; then
 	echo "$0: WARNING: '$basedirectory/$file' could not be found,"
 	echo "     which means that the sizes in the .jnlp file will be wrong"
