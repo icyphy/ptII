@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FMUIncScale20RC1pt" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FMUIncScale20pt" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 389, 834, 634}, maximized=false}">
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An Inc FMU connected to a Scale FMU&#10;&#10;These are FMI2.0RC1 fmus.&#10;&#10;Note that the SDF Director as the period set to 0.1">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An Inc FMU connected to a Scale FMU&#10;&#10;These are FMI2.0pt fmus.&#10;&#10;Note that the SDF Director as the period set to 0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 110.0]">
         </property>
@@ -30,8 +30,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 75.0]">
         </property>
     </property>
-    <entity name="inc20RC1pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20RC1.fmu">
+    <entity name="inc20pt" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20pt.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -43,8 +43,8 @@
             </property>
         </port>
     </entity>
-    <entity name="scale20RC1" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/scale20RC1.fmu">
+    <entity name="scale20pt" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/scale20pt.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 310.0]">
         </property>
@@ -90,9 +90,9 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inc20RC1pt.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20RC1.input&quot;,x=205.0,y=310.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inc20pt.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20pt.input&quot;,x=205.0,y=310.0}, points={} } }">
         </property>
     </relation>
-    <link port="inc20RC1pt.counter" relation="relation"/>
-    <link port="scale20RC1.input" relation="relation"/>
+    <link port="inc20pt.counter" relation="relation"/>
+    <link port="scale20pt.input" relation="relation"/>
 </entity>
