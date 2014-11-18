@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor/lib/jjs/modules
 
-DIRS = 		webSocket
+# PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
+DIRS = 		$(PTWEBSOCKET_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
