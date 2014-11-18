@@ -75,6 +75,7 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
     <include name="ptolemy/actor/lib/joystick/joystick.jar" />
@@ -1764,6 +1765,17 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.txt"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/webSocket/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/webSocket/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/webSocket/*.json"/>
       </fileset>
     </jar>
 
