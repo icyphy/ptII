@@ -127,6 +127,8 @@ import ptolemy.util.FileUtilities;
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)
    <li> print(string): print the specified string to the console (standard out).
    <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).
+   <li> require(string): load and return a CommonJS module by name. See
+        {@link http://wiki.commonjs.org/wiki/Modules}.
    <li> send(value, port, n): send a value to an output port on channel n
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.
    </ul>
