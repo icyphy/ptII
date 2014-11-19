@@ -214,7 +214,7 @@ release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac2_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII10.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
 ####
 release_nightly:
@@ -2894,8 +2894,8 @@ full_jars:
 ptsetup_mac: $(PTSETUP_MAC).xml
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
