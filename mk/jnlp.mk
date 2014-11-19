@@ -947,7 +947,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(HYBRID_SYSTEMS_MAIN_JAR) \
-		echo `$(HYBRID_SYSTEMS_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
+		`echo $(HYBRID_SYSTEMS_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -982,7 +982,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(PTINY_MAIN_JAR) \
-		echo `$(PTINY_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
+		`echo $(PTINY_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -1240,7 +1240,7 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 	fi
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	# Replace the CLASSPATHSEPARATOR with a space.
-	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
+	@set `echo $(ALL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
 	for x do \
 		jarfile=`echo $$x | sed "s@$(PTII)/@@"`; \
 		if [ ! -f $(JAR_DIST_DIR)/$$jarfile ]; then \
@@ -1477,7 +1477,9 @@ DOC_JNLP_JARS = \
 bcvtb_l4j.xml: $(MKL4J)
 	$(MKL4J) bcvtb ptolemy.vergil.VergilApplication \
 		doc/img/ptiny.ico \
-		-bcvtb $(BCVTB_JNLP_JARS) > $@
+		-bcvtb \
+		`echo $(BCVTB_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+
 bcvtb.exe: bcvtb_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
 
@@ -1499,7 +1501,9 @@ DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 dopseating_l4j.xml:
 	$(MKL4J) dopseating ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
-		"-space $(DOPCenterModel)" $(SPACE_JNLP_JARS) > $@
+		"-space $(DOPCenterModel)" \
+		`echo $(SPACE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+
 dopseating.exe: dopseating_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) dopseating_l4j.xml`
 
@@ -1513,7 +1517,9 @@ histogram.exe: histogram_l4j.xml
 hyvisual_l4j.xml:
 	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication \
 		doc/img/hyvisual.ico \
-		-hyvisual $(HYBRID_SYSTEMS_JNLP_JARS) > $@> $@
+		-hyvisual \
+		`echo $(HYBRID_SYSTEMS_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+
 hyvisual.exe: hyvisual_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) $^`
 
@@ -1528,7 +1534,9 @@ hyvisualdoc.exe: hyvisualdoc_l4j.xml
 ptiny_l4j.xml: $(MKL4J)
 	$(MKL4J) ptiny ptolemy.vergil.VergilApplication \
 		doc/img/ptiny.ico \
-		-ptiny $(PTINY_JNLP_JARS) > $@
+		-ptiny \
+		`echo $(PTINY_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+
 ptiny.exe: ptiny_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) ptiny_l4j.xml`
 
@@ -1544,13 +1552,15 @@ vergil_l4j.xml:
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/adm/dists/ptII11.0devel/vendors/oracle/javamail/javax.mail.jar and /home/hudson/jobs/ptII/workspace/adm/dists/ptII11.0.devel/lib/jsoup-1.7.3.jar
 	$(MKL4J) vergil ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
-		"" `echo $(FULL_JNLP_JARS) | sed 's@$(PTII)/@@g'` > $@
+		"" \
+		`echo $(FULL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+
 vergil.exe: vergil_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) vergil_l4j.xml`
 
 vergil.jar:
 	mkdir $(PTJAR_TMPDIR)
-	for jar in $(FULL_JNLP_JARS) ; do \
+	for jar in `echo $(FULL_JNLP_JARS) | sed 's@$(PTII)/@@g' | sed 's/$(CLASSPATHSEPARATOR)/ /g'` do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xf ../$$jar); \
 	done
@@ -1562,7 +1572,8 @@ vergil.jar:
 viptos_l4j.xml:
 	$(MKL4J) viptos ptolemy.vergil.VergilApplication \
 		doc/img/viptos.ico \
-		-viptos $(VIPTOS_JNLP_JARS) > $@
+		-viptos \
+		`echo $(VIPTOS_JNLP_JARS) | sed 's@$(PTII)/@@g' | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
 viptos.exe: viptos_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) viptos_l4j.xml`
@@ -1570,7 +1581,8 @@ viptos.exe: viptos_l4j.xml
 visualsense_l4j.xml:
 	$(MKL4J) visualsense ptolemy.vergil.VergilApplication \
 		doc/img/visualsense.ico \
-		-visualsense $(VISUAL_SENSE_JNLP_JARS) > $@
+		-visualsense \
+		`echo $(VISUAL_SENSE_JNLP_JARS) | sed 's@$(PTII)/@@g' | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
 
 visualsense.exe: visualsense_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) visualsense_l4j.xml`
