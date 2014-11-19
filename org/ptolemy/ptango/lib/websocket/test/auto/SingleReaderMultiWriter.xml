@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SingleReaderMultiWriter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 1023, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 77, 1023, 617}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[795, 500]">
     </property>
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{387.4999999999999, 240.00000000000006}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -27,27 +27,21 @@
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/lib/websocket/test/auto">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 85.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of WebSockets hosted by the Ptolemy model.&#10;WebServer includes a websocket server.  WebSocketWriter and WebSocketReader are clients.&#10;WebSocketWriter and WebSocketWriter2 send messages over a first websocket and second websocket&#10;to the server, which forwards these messages over a third websocket to WebSocketReader.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of WebSockets hosted by the Ptolemy model.&#10;&#10;WebServer includes a websocket server.  &#10;WebSocketClientWriter and WebSocketClientWriter2 write alternately &#10;to the same websocket.&#10;WebSocketServerReader receives all messaages.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 35.0]">
         </property>
     </property>
-    <entity name="WebSocketReader" class="org.ptolemy.ptango.lib.websocket.WebSocketReader">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set DE director stop time of 30, greater than stop time of 15 of DiscreteClock, &#10;to give websocket reader time to receive messages.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 160.0]">
         </property>
-    </entity>
-    <entity name="WebSocketWriter" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 250.0]">
-        </property>
-    </entity>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15">
         </property>
@@ -56,14 +50,14 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 275.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 285.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -71,13 +65,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 250.0}">
-        </property>
-    </entity>
-    <entity name="WebSocketWriter2" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 285.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -88,7 +76,7 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 365.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -97,27 +85,47 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="100">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 375.0]">
+        </property>
+    </entity>
+    <entity name="WebSocketClientWriter" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="WebSocketClientWriter2" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 375.0]">
+        </property>
+    </entity>
+    <entity name="WebSocketServerReader" class="org.ptolemy.ptango.lib.websocket.WebSocketReader">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/test">
+        </property>
+        <property name="client" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 285.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="WebSocketReader.output" relation="relation3"/>
-    <link port="WebSocketWriter.input" relation="relation2"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation"/>
     <link port="Test.input" relation="relation3"/>
-    <link port="WebSocketWriter2.input" relation="relation5"/>
     <link port="DiscreteClock2.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation5"/>
     <link port="Ramp2.trigger" relation="relation4"/>
+    <link port="WebSocketClientWriter.input" relation="relation2"/>
+    <link port="WebSocketClientWriter2.input" relation="relation5"/>
+    <link port="WebSocketServerReader.output" relation="relation3"/>
 </entity>

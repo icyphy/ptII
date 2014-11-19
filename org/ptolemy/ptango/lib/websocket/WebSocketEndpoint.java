@@ -29,9 +29,12 @@
 
 package org.ptolemy.ptango.lib.websocket;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
+import org.ptolemy.ptango.lib.websocket.WebSocketService;
+
 
 ///////////////////////////////////////////////////////////////////
 ////WebSocketEndpoint
@@ -54,83 +57,126 @@ import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
 public class WebSocketEndpoint implements OnTextMessage {
 
     /** Create a new WebSocketEndpoint with the given parent service.
-     *
-     * @param parentService  The WebSocketService to be notified of messages.
+    * @param service  The WebSocketService to be notified of messages.
+    */
+   public WebSocketEndpoint() {
+       _connection = null;
+       _isOpen = false;
+       _subscribers = new HashSet();
+   }
+    
+    /** Create a new WebSocketEndpoint with the given parent service.
+     * @param service  The WebSocketService to be notified of messages.
      */
-    public WebSocketEndpoint(WebSocketService parentService) {
+    public WebSocketEndpoint(WebSocketService service) {
         _connection = null;
         _isOpen = false;
-        _parentServices = new HashSet();
-        _parentServices.add(parentService);
+        _subscribers = new HashSet();
+        _subscribers.add(service);
     }
 
-    /** Add a parent WebSocketService of this endpoint.
-     *
+    /** Add a subscriber to this endpoint.
      * @param service  A parent WebSocketService of this endpoint.
-     * @see #removeParentService(WebSocketService)
+     * @see #removeSubscriber(WebSocketService)
      */
-    public void addParentService(WebSocketService service) {
-        _parentServices.add(service);
+    public void addSubscriber(WebSocketService service) {
+        _subscribers.add(service);
+    }
+    
+    /** Close the connection. _connection will be assigned to null in onClose(),
+     * which is invoked automatically after a close().
+     */
+    public void close(){
+        if (_connection != null){
+            _connection.close();
+        }
     }
 
-    /** Return the Connection object for this WebSocket.  Used for sending
-     *  messages.
-     *
-     * @return  The Connection object for this WebSocket.
+    /** Return the number of subscribers this endpoint has.
+     * @return The number of subscribers this endpoint has.
      */
-    public Connection getConnection() {
-        return _connection;
+    public int getSubscriberCount() {
+        return _subscribers.size();
     }
-
+    
     /** Return true if the connection is open; false otherwise.
-     *
      * @return True if the connection is open; false otherwise.
      */
     public boolean isOpen() {
         return _isOpen;
     }
 
-    /** Upon close, set the connection to null.
-     *
+    /** Upon close, set the connection to null.  Note that the connection might 
+     *  be closed unexpectedly and close() is not necessarily called. 
+     *  Synchronized so that onOpen() and onClose() can't be interleaved.
      *  @param statusCode The status code of the closed connection.
      *  @param statusMessage The status message of the closed connection.
+     *  @see #onClose(int, String)
      */
     @Override
-    public void onClose(int statusCode, String statusMessage) {
+    public synchronized void onClose(int statusCode, String statusMessage) {
         _connection = null;
         _isOpen = false;
     }
 
-    /** Notify the parent service about a new message.
-     *
+    /** Notify subscribers about a new message.
      * @param message The message that was received.
      */
     @Override
     public void onMessage(String message) {
-        if (_parentServices != null) {
-            for (WebSocketService service : _parentServices) {
-                service.onMessage(this, message);
+        if (_subscribers != null) {
+            for (WebSocketService service : _subscribers) {
+                service.onMessage(message);
             }
         }
     }
 
-    /** Upon opening, save a reference to the connection.
-     *
+    /** Upon opening, save a reference to the connection. Synchronized so that
+     * onOpen() and onClose() can't be interleaved.
      * @param connection The connection that was opened.
+     * @see #onOpen(Connection)
      */
     @Override
-    public void onOpen(Connection connection) {
+    public synchronized void onOpen(Connection connection) {
         _connection = connection;
         _isOpen = true;
     }
 
-    /** Remove a parent WebSocketService of this endpoint.
-     *
+    /** Remove the given subscriber for this endpoint.
      * @param service  A parent WebSocketService of this endpoint.
-     * @see #addParentService(WebSocketService)
+     * @see #addSubscriber(WebSocketService)
      */
-    public void removeParentService(WebSocketService service) {
-        _parentServices.remove(service);
+    public void removeSubscriber(WebSocketService service) {
+        _subscribers.remove(service);
+    }
+    
+    /** Send the given message.  If the connection is not open, return false.
+     *  If the connection is not open, there are multiple potential options: 
+     *  the sender could block, messages could be buffered, messages could be
+     *  discarded, or some combination.  Currently, messages are discarded.
+     *  Synchronized so that only one sender can write to the websocket at a 
+     *  time.  Returns true if the message was successfully sent; false 
+     *  otherwise.
+     *  @param message The message to send.
+     *  @return True if the message was successfully sent; false otherwise.
+     */
+    // TODO:  Could enhance by trying to open connection if closed. 
+    // TODO:  Enhance this to handle waiting on connection, buffering, etc.
+    // SENT
+    // BUFFERED
+    // WAITING (on connection)
+    // FAILED
+    public synchronized boolean sendMessage(String message) {
+        if (_isOpen && _connection != null) {
+            try {
+                _connection.sendMessage(message);
+            }catch(IOException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     // TODO:  Do something onError?
@@ -140,10 +186,14 @@ public class WebSocketEndpoint implements OnTextMessage {
 
     /** The WebSocket connection */
     private Connection _connection;
+    
+    /** An exception that might be thrown when connecting.  */
+    // TODO:  Do something with this exception?  
+    Exception _connectionException;
 
     /** Flag indicating if the connection is open. */
     private boolean _isOpen;
 
     /** The parent services to be notified of incoming messages. */
-    private HashSet<WebSocketService> _parentServices;
+    private HashSet<WebSocketService> _subscribers;
 }

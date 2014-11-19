@@ -53,6 +53,7 @@ import org.eclipse.jetty.util.resource.FileResource;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.ptolemy.ptango.lib.websocket.PtolemyWebSocketServlet;
+import org.ptolemy.ptango.lib.websocket.WebSocketEndpointManager;
 
 ///////////////////////////////////////////////////////////////////
 ////WebServerUtilities
@@ -81,6 +82,8 @@ public class WebServerUtilities {
 
         _server = null;
         _selectChannelConnector = null;
+        
+        _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
     /** Construct a new instance of this class with the specified port number.
@@ -367,6 +370,11 @@ public class WebServerUtilities {
                                 + " on the server.");
             }
 
+            // Close any websockets
+            // FIXME:  Allow each application to have a separate set of 
+            // websockets.  Right now, websockets are globally managed.
+            _endpointManager.closeServlets();
+            
             // What to do about the resource handler?  This might be shared
             // by other applications.  Need to keep a list.
             // FIXME:  For now, just leave it running.
@@ -439,7 +447,9 @@ public class WebServerUtilities {
         // Need to pass the client to reader and writer??
 
         for (URI path : appInfo.getWebSocketInfo().keySet()) {
-            PtolemyWebSocketServlet servlet = new PtolemyWebSocketServlet();
+            // TODO:  Use endpoint manager here to get endpoint for new websockets
+            PtolemyWebSocketServlet servlet = 
+                    _endpointManager.getServlet(path.toString());
             servletHandler.addServlet(new ServletHolder(servlet),
                     path.toString());
         }
@@ -754,6 +764,9 @@ public class WebServerUtilities {
 
     /** A flag indicating if dynamic port selection is allowed. */
     private boolean _dynamicPortSelection;
+    
+    /** A manager responsible for generating and releasing websockets. */
+    private WebSocketEndpointManager _endpointManager;
 
     /** An exception thrown (if any) when the server is started.  The main
      * thread will check if this exception has been set by the server thread. */

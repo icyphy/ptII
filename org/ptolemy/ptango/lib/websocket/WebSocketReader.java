@@ -30,26 +30,26 @@ package org.ptolemy.ptango.lib.websocket;
 
 import java.net.URI;
 
-import org.eclipse.jetty.websocket.WebSocket.Connection;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////WebSocketReader
 
 /** An actor that reads information from a websocket.  Multiple readers of the
- * same URL path are allowed.  (Internally, this is managed using a separate
- * websocket connection for each reader).
+ * same URL path are allowed.
  *
  *  @author Elizabeth Latronico
  *  @version $Id$
@@ -69,22 +69,33 @@ public class WebSocketReader extends TypedAtomicActor implements
     public WebSocketReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        
         path = new StringParameter(this, "path");
         path.setExpression("/*");
+        
+        client = new Parameter(this, "client");
+        client.setToken("true");
+        // Separate menu items are available for clients and servlets.
+        // This parameter is set in the menu.
+        client.setVisibility(Settable.NOT_EDITABLE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
-        _connectionManager = WebSocketConnectionManager.getInstance();
-
-        // Assume false until the path is set
-        _isLocal = false;
+        _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    
+    /** A flag indicating if the reader acts as a client or as part of 
+     * the server.  True for client; false for server.
+     */
+    public Parameter client;
 
+    /** A port that outputs each message received from the websocket. */
+    public TypedIOPort output;
+    
     /** The URL affiliated with the websocket.  Can refer to a locally
      * hosted websocket or a remotely hosted websocket.  Locally hosted
      * websockets have paths of the form /* such as / or /mysocket
@@ -93,9 +104,6 @@ public class WebSocketReader extends TypedAtomicActor implements
      * Paths for remotely hosted websockets should start with ws:// or wss://
      */
     public StringParameter path;
-
-    /** A port that outputs each message received from the websocket. */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -110,40 +118,19 @@ public class WebSocketReader extends TypedAtomicActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == path) {
-            String pathValue = ((StringToken) path.getToken()).stringValue();
-            try {
-                // Paths connecting to remote websockets should start with ws://
-                // or wss:// (for secure websockets)
-                // Paths not starting with these are assumed to be local
-                // For locally hosted websockets should start with a "/"
-                // or be "*"
-                if (!pathValue.trim().equals("")) {
-                    // Check for common incorrect protocols
-                    if (pathValue.startsWith("http")
-                            || pathValue.startsWith("ftp")) {
-                        throw new IllegalActionException(this,
-                                "Remote websocket"
-                                        + " paths must start with ws://");
-                    }
-
-                    if (pathValue.startsWith("ws://")
-                            || pathValue.startsWith("wss://")) {
-                        _URIpath = URI.create(pathValue);
-                        _isLocal = false;
-                    } else if (!pathValue.trim().startsWith("/")) {
-                        _URIpath = URI.create("/" + pathValue);
-                        _isLocal = true;
-                    } else {
-                        _URIpath = URI.create(pathValue);
-                        _isLocal = true;
-                    }
-                } else {
-                    _URIpath = URI.create("/*");
-                }
-            } catch (IllegalArgumentException e2) {
-                throw new IllegalActionException(this,
-                        "Path is not a valid URI: " + pathValue);
+            // Unsubscribe from previous path (if any)
+            if (_URIpath != null && !_URIpath.toString().isEmpty()) {
+            // TODO: Shared vs. individual
+                _endpointManager.unsubscribe(this, _URIpath.toString());
             }
+            
+            // TODO:  Allow dynamic subscribing here, vs. only in initialize()
+            // If the endpoint exists, service should be added as a subscriber
+            // If the endpoint does not exists, a new one should be created
+            // and started ONLY if the model is currently executing
+            
+            String pathValue = ((StringToken) path.getToken()).stringValue();
+            _URIpath = WebSocketEndpointManager.pathToURI(pathValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -159,12 +146,9 @@ public class WebSocketReader extends TypedAtomicActor implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebSocketReader newObject = (WebSocketReader) super.clone(workspace);
 
-        newObject._connection = null;
-        newObject._connectionManager = null;
+        newObject._endpointManager = null;
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
-        newObject._isLocal = false;
-        newObject._isShared = true;
         newObject._message = null;
         newObject._URIpath = null;
         return newObject;
@@ -184,19 +168,19 @@ public class WebSocketReader extends TypedAtomicActor implements
         }
 
         _message = null;
-    }
-
-    /** Return the relative path that this WebSocketService is mapped to.
-     *  @return The relative path that this WebSocketService is mapped to.
-     *  @see #setRelativePath(URI)
+    }  
+    
+    /** Get the URI associated with this service.
+     * @return The URI associated with this service.
      */
     @Override
-    public URI getRelativePath() {
+    public URI getRelativePath(){
         return _URIpath;
     }
 
     /** Remember the time at which this actor was initialized in order to
-     *  request firings at a particular time.
+     *  request firings at a particular time. Subscribe this service to the 
+     *  appropriate endpoint.
      *  @exception IllegalActionException If the parent throws it.
      */
     @Override
@@ -211,20 +195,25 @@ public class WebSocketReader extends TypedAtomicActor implements
         // to avoid this workaround
         _initializeRealTime = System.currentTimeMillis() - 100;
 
-        // Open any websockets connecting to remote locations
-        if (!_isLocal) {
-            open(_URIpath);
+        // Subscribe to this endpoint.  Creates a new endpoint if needed.
+        // Do not subscribe local clients.  The WebServer handles these, since 
+        // it ensures that connections are only opened after it starts.
+        if (! (!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
+            _endpointManager.subscribe(this, _URIpath.toString());
         }
-
-        // The server will open websockets to local locations later once it
-        // has acquired a port.  The port number is needed for the URL.
     }
-
-    /** Returns true if connecting to a locally hosted service; false otherwise.
-     * @return True if connecting to a locally hosted service; false otherwise.
+    
+    /** Return true if this actor acts as a client; false if it acts as a 
+     * part of the server (responding to incoming messages).
      */
-    public boolean isLocal() {
-        return _isLocal;
+    @Override
+    public boolean isClient() {
+        boolean isClient = true;
+        // Assume client side if no value given
+        try {
+            isClient = ((BooleanToken) client.getToken()).booleanValue();
+        } catch(IllegalActionException e){};
+        return isClient;
     }
 
     /** Upon receipt of a message, store the message and request a firing.
@@ -232,7 +221,7 @@ public class WebSocketReader extends TypedAtomicActor implements
      * @param message The message that was received.
      */
     @Override
-    public void onMessage(WebSocketEndpoint endpoint, String message) {
+    public void onMessage(String message) {
         _message = message;
 
         // Request a firing
@@ -261,81 +250,34 @@ public class WebSocketReader extends TypedAtomicActor implements
             }
         }
     }
-
-    /** Open the WebSocket connection on the given port.
-     * @param path The URI to connect to.
-     * @exception IllegalActionException If the websocket cannot be opened.
-     */
-    public void open(URI path) throws IllegalActionException {
-        // Might be null for clones.  clone() appears to 
-        // complain about using WebSocketConnectionManager.getInstance();
-        if (_connectionManager == null) {
-            _connectionManager = WebSocketConnectionManager.getInstance();
-        }
-
-        if (_isLocal || !_isShared) {
-            _connectionManager.newConnection(path, this);
-        } else {
-            _connectionManager.requestConnection(path, this);
-        }
-
-        if (_debugging) {
-            _debug("Websocket connected for " + getName());
-        }
-    }
-
-    /** Set the connection that this WebSocketService will use.
-     * @param connection The connection that this WebSocketService will use.
+    
+    /** Do nothing here.  The reader does not send messages and therefore
+     * does not need a reference to its endpoint.
      */
     @Override
-    public void setConnection(Connection connection) {
-        _connection = connection;
+    public void setEndpoint(WebSocketEndpoint endpoint) {
     }
-
-    /** Set the relative path that this WebSocketService is mapped to.
-     *  @param path The relative path that this WebSocketService is mapped to.
-     *  @see #getRelativePath()
+    
+    /** Unsubscribe this service from the endpoint manager.  The endpoint 
+     * manager will close connections with no subscribers.
      */
-    @Override
-    public void setRelativePath(URI path) {
-        _URIpath = path;
-    }
-
-    /** Close any open WebSocket connections.
-     * @exception IllegalActionException If thrown by the parent. */
     @Override
     public void wrapup() throws IllegalActionException {
-        super.wrapup();
-
-        _connectionManager.releaseConnection(_URIpath, this);
-        _connection = null;
+        _endpointManager.unsubscribe(this, _URIpath.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The WebSocket connection. */
-    private Connection _connection;
-
-    /** A manager responsible for generating and releasing connections. */
-    private WebSocketConnectionManager _connectionManager;
+    /** A manager responsible for generating and releasing websockets. */
+    private WebSocketEndpointManager _endpointManager;
 
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
 
-    /** The real time at which this actor was last initialized, in milliseconds. */
+    /** The real time at which this actor was last initialized, in milliseconds. 
+     */
     private long _initializeRealTime;
-
-    /** True if the WebSocket is hosted locally be the Ptolemy model; false
-     *  otherwise.
-     */
-    private boolean _isLocal;
-
-    /** True if the actor wishes to share a socket connection.  Used for
-     * remote services for e.g. writing to a socket, then receiving a response.
-     * Always true for WebSocketReader.
-     */
-    private boolean _isShared = true;
 
     /** The last message received. */
     private String _message;

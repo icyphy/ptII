@@ -56,28 +56,22 @@ public interface WebSocketService {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Returns the relative path that this WebSocketService is mapped to,
-     *  which is the value set previously by a call to
-     *  {@link #setRelativePath(URI)}.
-     *  @return The relative path that this HttpService is mapped to.
-     *  @see #setRelativePath(URI)
-     */
+    /** Get the URI associated with this service.*/
     public URI getRelativePath();
-
+    
+    /** Return true if the service is acting as a client; false if the service
+     * is acting as part of the server.
+     * @return  True if the service is acting as a client; false if the service
+     * is acting as part of the server.
+     */
+    public boolean isClient();
+    
     /** Notify service of a WebSocket message event.
      * @param sender The PtolemyWebSocketEndpoint that sent the message
      * @param message The message that was received
      */
-    public void onMessage(WebSocketEndpoint sender, String message);
+    public void onMessage(String message);
 
-    /** Set the websocket connection that the service should use.
-     * @param The connection that the service should use.
-     */
-    public void setConnection(Connection connection);
-
-    /** Set the relative path that this WebSocketService is mapped to.
-     *  @param relativePath The relative path that this HttpService is mapped to.
-     *  @see #getRelativePath()
-     */
-    public void setRelativePath(URI relativePath);
+    /** Set the endpoint responsible for this service's communication. */
+    public void setEndpoint(WebSocketEndpoint endpoint);
 }

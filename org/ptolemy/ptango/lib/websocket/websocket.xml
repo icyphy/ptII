@@ -7,8 +7,14 @@
       <group>
 	<doc>WebSocket actors</doc>
 
-	<entity name="WebSocketReader" class="org.ptolemy.ptango.lib.websocket.WebSocketReader"/>
-	<entity name="WebSocketWriter" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter"/>
+	<entity name="WebSocketClientReader" class="org.ptolemy.ptango.lib.websocket.WebSocketReader"/>
+	<entity name="WebSocketClientWriter" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter"/>
+	<entity name="WebSocketServerReader" class="org.ptolemy.ptango.lib.websocket.WebSocketReader">
+		<property name="client" class="ptolemy.data.expr.Parameter" value="false"/>
+	</entity>
+	<entity name="WebSocketServerWriter" class="org.ptolemy.ptango.lib.websocket.WebSocketWriter">
+		<property name="client" class="ptolemy.data.expr.Parameter" value="false"/>
+	</entity>
 
       </group> 	
       ?>

@@ -38,9 +38,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.jetty.util.resource.Resource;
-import org.ptolemy.ptango.lib.websocket.WebSocketReader;
+import org.ptolemy.ptango.lib.websocket.WebSocketEndpointManager;
 import org.ptolemy.ptango.lib.websocket.WebSocketService;
-import org.ptolemy.ptango.lib.websocket.WebSocketWriter;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.expr.FileParameter;
@@ -163,6 +162,7 @@ public class WebServer extends AbstractInitializableAttribute {
         deployedPort.setPersistent(false);
 
         _dynamicPortSelection = false;
+        _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -367,12 +367,8 @@ public class WebServer extends AbstractInitializableAttribute {
 
         // Remember local websocket services so the websockets can be
         // opened after the web server is started and its port number determined
-        // TODO:  Refactor to use e.g. an interface instead of class names
-        // Want local clients only.  Does not apply to remote clients or
-        // local server-side socket endpoints
-        HashSet<WebSocketReader> readers = new HashSet();
-        HashSet<WebSocketWriter> writers = new HashSet();
-
+        HashSet<WebSocketService> servicesToOpen = new HashSet();
+        
         int preferredPortValue = WebServerUtilities.DEFAULT_PORT_NUMBER;
 
         if (preferredPort != null && !preferredPort.getExpression().isEmpty()) {
@@ -452,20 +448,13 @@ public class WebServer extends AbstractInitializableAttribute {
                 // Set up support for local websocket services.  Remote
                 // websocket services do not require anything from the server
                 WebSocketService service = (WebSocketService) entity;
-                boolean isLocal = true;
-
-                // TODO:  Refactor to use e.g. an interface for local clients
-                // only.  Add isLocal to interface?
-                if (service instanceof WebSocketReader) {
-                    isLocal = ((WebSocketReader) service).isLocal();
-                    if (isLocal) {
-                        readers.add((WebSocketReader) service);
-                    }
-                } else if (service instanceof WebSocketWriter) {
-                    isLocal = ((WebSocketWriter) service).isLocal();
-                    if (isLocal) {
-                        writers.add((WebSocketWriter) service);
-                    }
+                boolean isLocal = !WebSocketEndpointManager
+                        .isRemoteURI(service.getRelativePath());
+                
+                // If local and client side, remember, in order to open after
+                // the server has started
+                if (isLocal && service.isClient()){
+                    servicesToOpen.add(service);
                 }
 
                 if (_debugging) {
@@ -473,7 +462,8 @@ public class WebServer extends AbstractInitializableAttribute {
                 }
 
                 if (isLocal) {
-                    // Add this path to the list of socket paths
+                    // Add this path to the list of socket paths to check for
+                    // duplicates with HttpActor paths
                     URI path = service.getRelativePath();
 
                     try {
@@ -585,21 +575,12 @@ public class WebServer extends AbstractInitializableAttribute {
             }
 
             // Open all local web sockets
-            // Prepend ws://localhost:port to URI
-
-            for (WebSocketReader reader : readers) {
-                // TODO:  Allow secure websockets, with wss://
-                URI path = URI.create("ws://localhost:" + actualPort
-                        + reader.getRelativePath().toString());
-                reader.open(path);
-            }
-
-            for (WebSocketWriter writer : writers) {
-                // TODO:  Allow secure websockets, with wss://
-                URI path = URI.create("ws://localhost:" + actualPort
-                        + writer.getRelativePath().toString());
-                writer.open(path);
-            }
+            _endpointManager.openLocalServices(servicesToOpen, actualPort);
+            
+            // TODO:  How to handle server-side sockets?  This would work 
+            // for client sockets.  Do server-side sockets need the URI to be
+            // changed to the localhost://?
+        
 
         } catch (Exception e) {
             throw new IllegalActionException(this, e,
@@ -650,6 +631,9 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** A flag indicating if dynamic port allocation is enabled. */
     private boolean _dynamicPortSelection;
+    
+    /** A manager responsible for generating and releasing websockets. */
+    private WebSocketEndpointManager _endpointManager;
 
     /** The manager for this web application. */
     private WebServerManager _serverManager;

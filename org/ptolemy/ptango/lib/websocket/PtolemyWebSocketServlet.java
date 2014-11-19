@@ -28,14 +28,10 @@
 
 package org.ptolemy.ptango.lib.websocket;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.websocket.WebSocket;
-import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.eclipse.jetty.websocket.WebSocketServlet;
 
 ///////////////////////////////////////////////////////////////////
@@ -57,12 +53,11 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
  *  @Pt.AcceptedRating Red (ltrnc)
  */
 
-public class PtolemyWebSocketServlet extends WebSocketServlet implements
-        WebSocketService {
+public class PtolemyWebSocketServlet extends WebSocketServlet {
 
-    /** Create a new servlet. */
-    public PtolemyWebSocketServlet() {
-        _webSocketEndpoints = new HashSet<WebSocketEndpoint>();
+    /** Create a new servlet associated with the given endpoint. */
+    public PtolemyWebSocketServlet(WebSocketEndpoint endpoint) {
+        _endpoint = endpoint;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,70 +73,17 @@ public class PtolemyWebSocketServlet extends WebSocketServlet implements
     @Override
     public WebSocket doWebSocketConnect(HttpServletRequest request,
             String protocol) {
-        WebSocketEndpoint endpoint = new WebSocketEndpoint(this);
-        _webSocketEndpoints.add(endpoint);
-        return endpoint;
-    }
-
-    /** Clear the list of endpoints. Called by the WebServer in initialize(). */
-    public void clearEndpoints() {
-        _webSocketEndpoints.clear();
-    }
-
-    // TODO:  The servlet path is tracked by the WebServer; not needed here.
-    // Refactor?
-    /** Not used here.
-     *  @see #setRelativePath(URI)
-     */
-    @Override
-    public URI getRelativePath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /** Broadcast message to other recipient actors in the Ptolemy model.
-     *
-     *  @param sender  The WebSocketEndpoint that sent the message.
-     *  @param message The message that was received.
-     */
-    @Override
-    public void onMessage(WebSocketEndpoint sender, String message) {
-
-        // Broadcast message to actors associated with this servlet path
-        for (WebSocketEndpoint recipient : _webSocketEndpoints) {
-            if (recipient != sender && recipient.getConnection() != null) {
-                try {
-                    recipient.getConnection().sendMessage(message);
-                } catch (IOException e) {
-                    //TODO:  What to do here?
-                }
-            }
-        }
-    }
-
-    // TODO:  Don't need this here either.  Refactor interface.
-    // Interface for WebSocketSubscriber and WebSocketClient?
-    @Override
-    public void setConnection(Connection connection) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // TODO:  The servlet path is tracked by the WebServer; not needed here.
-    // Refactor?
-    /** Not used here.
-     * @param relativePath The URI to associate with this servlet.
-     * @see #getRelativePath()
-     */
-    @Override
-    public void setRelativePath(URI relativePath) {
-        // TODO Auto-generated method stub
-
+        return _endpoint;
+        
+        // TODO:  How to have messages go directly to the endpoint then?
+        // Open connection here?
+        // Call endpoint.onOpen()?  Or is that called somehow by the connection?
+        // Look at example on internet again...
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The set of WebSocket endpoints affiliated with this URI.  */
-    private HashSet<WebSocketEndpoint> _webSocketEndpoints;
+    
+    /** The endpoint (WebSocket implementer) associated with this servlet. */
+    private WebSocketEndpoint _endpoint;
 }
