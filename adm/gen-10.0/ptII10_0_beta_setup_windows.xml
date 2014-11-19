@@ -473,6 +473,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/optimize"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/sdf/optimize/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/optimize/demo"/>
+            <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/taskpt/taskpt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/taskpt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/demo"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/domains/taskpt/doc/doc.jar"
@@ -719,6 +721,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII10.0.beta/com" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.beta/config" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.beta/configure" targetdir="$INSTALL_PATH"/>
+	    <executable keep="true" stage="never" targetfile="$INSTALL_PATH/configure"></executable>
 	    <file src="src/ptII10.0.beta/configure.in" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.beta/contrib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII10.0.beta/copyright.htm" targetdir="$INSTALL_PATH"/>
