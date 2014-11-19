@@ -150,14 +150,15 @@
     <include name="ptolemy/domains/hdf/demo/demo.jar" />
     <include name="ptolemy/domains/hdf/doc/doc.jar" />
     <include name="ptolemy/domains/hdf/hdf.jar" />
-    <include name="ptolemy/domains/metroII/metroII.jar" />
+    <!-- <include name="ptolemy/domains/metroII/metroII.jar" /> 
     <include name="ptolemy/domains/metroII/demo/demo.jar" />
+    -->
     <include name="ptolemy/domains/modal/demo/demo.jar" />
     <include name="ptolemy/domains/modal/doc/doc.jar" />
     <include name="ptolemy/domains/modal/kernel/fmv/fmv.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
     <include name="ptolemy/domains/modal/modal/modal.jar" />
-    <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
+    <!-- <include name="ptolemy/domains/openmodelica/openmodelica.jar" /> -->
     <include name="ptolemy/domains/petrinet/petrinet.jar" />
     <include name="ptolemy/domains/petrinet/demo/demo.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
@@ -448,7 +449,7 @@
     <include name="ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.jar" />
     <include name="ptolemy/domains/modal/demo/StateTracker/StateTracker.jar" />
     <include name="ptolemy/domains/modal/demo/SystemLevelType/SystemLevelType.jar" />
-    <include name="ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" />
+    <!-- <include name="ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" /> -->
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.jar" />
     <include name="ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.jar" />
@@ -4609,29 +4610,29 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/domains/metroII/metroII.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/metroII/metroII.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="lib/protobuf-license.htm"/>
-	<include name="net/jimblackler/Utils/jimblacklerUtils-license.htm"/>
-	<include name="net/jimblackler/Utils/*.class"/>
-	<include name="ptolemy/domains/metroII/*.xml"/>
-	<include name="ptolemy/domains/metroII/gui/*.class"/>
-	<include name="ptolemy/domains/metroII/kernel/*.class"/>
-	<include name="ptolemy/domains/metroII/kernel/util/ProtoBuf/*.class"/>
-      </fileset>
-    </jar>
+<!--     <\!-- ptolemy/domains/metroII/metroII.jar -\-> -->
+<!--     <jar defaultexcludes="yes" -->
+<!-- 	 destfile="${basedir}/ptolemy/domains/metroII/metroII.jar" -->
+<!-- 	 > -->
+<!--       <fileset dir="${basedir}"> -->
+<!-- 	<include name="lib/protobuf-license.htm"/> -->
+<!-- 	<include name="net/jimblackler/Utils/jimblacklerUtils-license.htm"/> -->
+<!-- 	<include name="net/jimblackler/Utils/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/metroII/*.xml"/> -->
+<!-- 	<include name="ptolemy/domains/metroII/gui/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/metroII/kernel/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/metroII/kernel/util/ProtoBuf/*.class"/> -->
+<!--       </fileset> -->
+<!--     </jar> -->
 
-    <!-- ptolemy/domains/metroII/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/metroII/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/metroII/demo/*/*.xml"/>
-      </fileset>
-    </jar>
+<!--     <\!-- ptolemy/domains/metroII/demo/demo.jar -\-> -->
+<!--     <jar defaultexcludes="yes" -->
+<!-- 	 destfile="${basedir}/ptolemy/domains/metroII/demo/demo.jar" -->
+<!-- 	 > -->
+<!--       <fileset dir="${basedir}"> -->
+<!-- 	<include name="ptolemy/domains/metroII/demo/*/*.xml"/> -->
+<!--       </fileset> -->
+<!--     </jar> -->
 
     <!-- ptolemy/domains/modal/demo/demo.jar -->
     <jar defaultexcludes="yes"
@@ -4675,20 +4676,20 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/domains/openmodelica/openmodelica.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/openmodelica/openmodelica.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/openmodelica/kernel/*.class"/>
-	<include name="ptolemy/domains/openmodelica/lib/*.class"/>
-	<include name="ptolemy/domains/openmodelica/lib/omc/*.class"/>
-	<include name="ptolemy/domains/openmodelica/lib/omc/corba/*.class"/>
-	<include name="ptolemy/domains/openmodelica/*.xml"/>
-	<include name="ptolemy/domains/openmodelica/lib/*.xml"/>
-	<include name="ptolemy/domains/openmodelica/demo/*/*.xml"/>
-      </fileset>
-    </jar>
+<!--     <\!-- ptolemy/domains/openmodelica/openmodelica.jar -\-> -->
+<!--     <jar defaultexcludes="yes" -->
+<!-- 	 destfile="${basedir}/ptolemy/domains/openmodelica/openmodelica.jar" -->
+<!-- 	 > -->
+<!--       <fileset dir="${basedir}"> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/kernel/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/lib/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/lib/omc/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/lib/omc/corba/*.class"/> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/*.xml"/> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/lib/*.xml"/> -->
+<!-- 	<include name="ptolemy/domains/openmodelica/demo/*/*.xml"/> -->
+<!--       </fileset> -->
+<!--     </jar> -->
 
     <!-- ptolemy/domains/petrinet/petrinet.jar -->
     <jar defaultexcludes="yes"
@@ -7549,13 +7550,13 @@
        </fileset>
     </jar>
 
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/domains/openmodelica/demo/OpenModelica/*.xml"/>
-       </fileset>
-    </jar>
+<!--     <jar defaultexcludes="yes" -->
+<!--          destfile="${basedir}/ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" -->
+<!--          > -->
+<!--        <fileset dir="${basedir}"> -->
+<!--         <include name="ptolemy/domains/openmodelica/demo/OpenModelica/*.xml"/> -->
+<!--        </fileset> -->
+<!--     </jar> -->
 
     <jar defaultexcludes="yes"
          destfile="${basedir}/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar"
