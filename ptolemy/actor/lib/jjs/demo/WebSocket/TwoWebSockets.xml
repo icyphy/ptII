@@ -1,0 +1,78 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TwoWebSockets" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 237, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{167.68073219476742, 84.81646075581395}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Creates two websockets with a JavaScript module 'webSocket'.&#10;Every second, these two websockets send messages to two websocket servers&#10;running on node.js, and then receive messages from those servers.&#10;&#10;You can run the two servers with following commands within the same directory.&#10;node Server1.js&#10;node Server2.js&#10;&#10;To run these servers, you probabily need to install 'ws', a node.js websocket library&#10;with the following command.&#10;npm install ws">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-140.0, 65.0}">
+        </property>
+    </property>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var opened1 = false;&#10;var opened2 = false;&#10;var data1 = &quot;&quot;;&#10;var data2 = &quot;&quot;;&#10;&#10;function onOpen1() {&#10;  opened1 = true;&#10;}&#10;function onOpen2() {&#10;  opened2 = true;&#10;}&#10;&#10;function onMessage1(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  data1 = data;&#10;}&#10;function onMessage2(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  data2 = data;&#10;}&#10;&#10;var ws1 = null;&#10;var ws2 = null;&#10;var cnt1 = 0;&#10;var cnt2 = 0;&#10;&#10;function fire()&#10;{&#10;  if (ws1 == null) {&#10;    ws1 = new WebSocket('ws://localhost:8080');&#10;    ws1.on('open', onOpen1);&#10;    ws1.on('message', onMessage1);&#10;  }&#10;  if (ws2 == null) {&#10;    ws2 = new WebSocket('ws://localhost:1984'); &#10;    ws2.on('open', onOpen2);  &#10;    ws2.on('message', onMessage2);&#10;  }&#10;  if (opened1) {&#10;    cnt1 ++;&#10;    ws1.send('Hi, I am ws1. Count: ' + cnt1);&#10;    if (!data1.equals('')) alert('ws1 recieved: ' + data1);&#10;  }&#10;  if (opened2) {&#10;    cnt2 ++;&#10;    ws2.send('Hi, I am ws2. Count: ' + cnt2);&#10;    if (!data2.equals('')) alert('ws2 recieved: ' + data2);&#10;  }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -10.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -10.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -10.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.trigger" relation="relation"/>
+    <link port="JavaScript.output" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+</entity>

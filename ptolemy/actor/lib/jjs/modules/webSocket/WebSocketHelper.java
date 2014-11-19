@@ -31,8 +31,11 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
+import org.vertx.java.core.VoidHandler;
+import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.WebSocket;
 
@@ -42,7 +45,10 @@ import ptolemy.actor.TypedAtomicActor;
 //// WebSocketHelper
 
 /**
-   FIXME
+   A helper class for the WebSocket module in JavaScript.
+   Creates only one Vert.x object and uses it internally.
+   The Vert.x object can create an instance of Java WebSocket.
+   Each Java WebSocket belongs to one JavaScript WebSocket. 
    
    @author Hokeun Kim and Edward A. Lee
    @version $Id$
@@ -51,148 +57,199 @@ import ptolemy.actor.TypedAtomicActor;
    @Pt.AcceptedRating Red (bilung)
  */
 public class WebSocketHelper extends TypedAtomicActor {
-    /** FIXME
-     * @throws ScriptException 
-     * @throws NoSuchMethodException 
-     */
-    public WebSocketHelper(ScriptEngine engine, String url, Object callbacks) throws NoSuchMethodException, ScriptException {
-	HttpClient client = _vertx.createHttpClient();
-	if (url.length() > 0 && url.charAt(url.length() - 1) == '/') {
-	    url = url.substring(0, url.length() - 1);
-	}
-	int sep = url.lastIndexOf(':');
-	// client.setPort(Integer.parseInt(url.substring(sep + 1)));
-	
-	Object[] args = new Object[0];
-	((Invocable) engine).invokeMethod(callbacks, "onOpen", args);
-	
-	/*
-	client.connectWebsocket(url, new Handler<WebSocket>() {
-	    @Override
-	    public void handle(WebSocket websocket) {
-		_wsIsOpen = true;
-		if (_wsOnOpen != null) {
-		    
-		    // _wsOnOpen.call(_context, _scope, _global, null);
-		}
-		_webSocket = websocket;
-		_webSocket.dataHandler(new Handler<Buffer>() {
-		    @Override
-		    public void handle(Buffer buff) {
-			if (_wsOnMessage != null) {
-			    byte[] bytes = buff.getBytes();
-			    Integer[] objBytes = new Integer[bytes.length];
-			    for (int i = 0; i < bytes.length; i++) {
-				objBytes[i] = (int)bytes[i];
-			    }
-			    Object[] arg = new Object[1];
-			    arg[0] = objBytes;
-			    // _wsOnMessage.call(_context, _scope, _global, arg);
-			}
-		    }
-		});
-		_webSocket.endHandler(new VoidHandler() {
-		    @Override
-		    protected void handle() {
-			_wsIsOpen = false;
-			if (_wsOnClose != null) {
-			    // _wsOnClose.call(_context, _scope, _global, null);
-			}
-		    }
-		});
-		_webSocket.exceptionHandler(new Handler<Throwable>() {
-		    @Override
-		    public void handle(Throwable arg0) {
-			if (_wsOnError != null) {
-			    // _wsOnError.call(_context, _scope, _global, null);
-			}
-		    }
-		});
-	    }
-	});
-	*/
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-
-    public synchronized void close() {
-	if (_webSocket != null) {
-	    _webSocket.close();
-	}
+    /**
+     * Create a WebSocketHelper instance for each JavaScript instance.
+     * 
+     * @param engine The JavaScript engine of the JavaScript actor.
+     * @param constructorName The name of the JavaScript module constructor.
+     * @param address address The URL of the WebSocket host and the port number. 
+     * (e.g. 'ws://localhost:8000')
+     * @param currentObj The JavaScript instance of the WebSocket.
+     * @return
+     */
+    public static WebSocketHelper create(ScriptEngine engine,
+            String constructorName, String address, Object currentObj) {
+	return new WebSocketHelper(engine, constructorName, address, currentObj);
     }
 
-    public static WebSocketHelper open(ScriptEngine engine, String url, Object callbacks)
-	    throws NoSuchMethodException, ScriptException {
-	return new WebSocketHelper(engine, url, callbacks);
+    /**
+     * Close the internal web socket.
+     */
+    public void close() {
+        if (_webSocket != null) {
+            _webSocket.close();
+        }
     }
-	
-    public boolean wsIsOpen() {
+    
+    /**
+     * Send binary data through the internal web socket.
+     * 
+     * @param msg A binary message to be sent.
+     */
+    public void sendBinary(byte[] msg) {
+        Buffer buffer = new Buffer(msg);
+        _webSocket.writeBinaryFrame(buffer);
+    }
+    
+    /**
+     * Send text data through the internal web socket.
+     * 
+     * @param msg A text message to be sent.
+     */
+    public void sendText(String msg) {
+        _webSocket.writeTextFrame(msg);
+    }
+
+    /**
+     * Return whether the web socket is opened successfully.
+     * 
+     * @return
+     */
+    public boolean isOpen() {
 	if (_webSocket == null) {
 	    return false;
 	}
 	return _wsIsOpen;
     }
-    /* FIXME: Stuff left from Rhino implementation.
-    public void wsOnClose(Function function) {
-	_wsOnClose = function;
-    }
-    public void wsOnError(Function function) {
-	_wsOnError = function;
-    }
-    public void wsOnMessage(Function function) {
-	_wsOnMessage = function;
-    }
-    public void wsOnOpen(Function function) {
-	_wsOnOpen = function;
-    }
-    public void wsSendBytes(Object msg) {
-	NativeArray msgArray = (NativeArray)msg;
-	byte[] byteMsg = new byte[(int)msgArray.getLength()];
-	for (Object o: msgArray.getIds()) {
-	    int index = (Integer) o;
-	    Object obj = msgArray.get(index, null);
-	    if (obj.getClass() == Double.class) {
-		Double oneByte = (double)msgArray.get(index, null);
-		byteMsg[index] = (byte)oneByte.doubleValue();
-	    }
-	    else if (obj.getClass() == Integer.class) {
-		Integer oneByte = (int)msgArray.get(index, null);
-		byteMsg[index] = (byte)oneByte.doubleValue();
-	    }
-	    // byteMsg[index]
-	}
-	Buffer buffer = new Buffer(byteMsg);
-	_webSocket.writeBinaryFrame(buffer);
-	/// Following is commented out.
-            Array a;
-            byte[] bytes = new byte[oBytes.length];
-            for(int i = 0; i < oBytes.length; i++){
-                bytes[i] = oBytes[i];
-            }
-            Buffer buffer = new Buffer(bytes);
-            _webSocket.writeBinaryFrame(buffer);
-	 ///
-    }
-*/
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                        ////
+    /**
+     * Private constructor for WebSocketHelper, called by the create() method.
+     * Open an internal web socket using Vert.x.
+     * 
+     * @param engine The JavaScript engine of the JavaScript actor.
+     * @param constructorName The name of the JavaScript module constructor.
+     * @param address The URL of the WebSocket host and the port number. 
+     * (e.g. 'ws://localhost:8000')
+     * @param currentObj The JavaScript instance of the WebSocket.
+     */
+    private WebSocketHelper(ScriptEngine engine, String constructorName,
+            String address, Object currentObj) {
+        _engine = engine;
+        _constructorName = constructorName;
+        _currentObj = currentObj;
+
+        HttpClient client = _vertx.createHttpClient();
+        if (address.length() > 0 && address.charAt(address.length() - 1) == '/') {
+            address = address.substring(0, address.length() - 1);
+        }
+        int sep = address.lastIndexOf(':');
+        client.setPort(Integer.parseInt(address.substring(sep + 1))); 
+
+        client.connectWebsocket(address, new Handler<WebSocket>() {
+            @Override
+            public void handle(WebSocket websocket) {
+                _wsIsOpen = true;
+                try {
+                    Object obj = _engine.eval(_constructorName);
+                    
+                    Object[] args = new Object[2];
+                    args[0] = _currentObj;
+                    
+                    args[1] = "connect";
+                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
+                    
+                    args[1] = "open";
+                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
+                }
+                catch (NoSuchMethodException | ScriptException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                _webSocket = websocket;
+                
+                _webSocket.dataHandler(new Handler<Buffer>() {
+                    @Override
+                    public void handle(Buffer buff) {
+                        byte[] bytes = buff.getBytes();
+                        Integer[] objBytes = new Integer[bytes.length];
+                        for (int i = 0; i < bytes.length; i++) {
+                            objBytes[i] = (int)bytes[i];
+                        }
+
+                        try {
+                            Object obj = _engine.eval(_constructorName);
     
+                            Object[] args = new Object[3];
+                            args[0] = _currentObj;
+                            args[1] = "message";
+                            Object[] jsArgs = new Object[2];
+                            jsArgs[0] = objBytes;
+                            jsArgs[1] = _engine.eval("new function() { this.binary = true; }");
+                            args[2] = jsArgs;
+                            
+                            ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
+                        }
+                        catch (NoSuchMethodException | ScriptException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                
+                _webSocket.endHandler(new VoidHandler() {
+                    @Override
+                    protected void handle() {
+                        try {
+                            Object obj = _engine.eval(_constructorName);
+                            
+                            Object[] args = new Object[2];
+                            args[0] = _currentObj;
+                            args[1] = "close";
+                            
+                            ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
+                        }
+                        catch (NoSuchMethodException | ScriptException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                
+                _webSocket.exceptionHandler(new Handler<Throwable>() {
+                    @Override
+                    public void handle(Throwable arg0) {
+                        try {
+                            Object obj = _engine.eval(_constructorName);
+                            
+                            Object[] args = new Object[2];
+                            args[0] = _currentObj;
+                            args[1] = "error";
+                            
+                            ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
+                        }
+                        catch (NoSuchMethodException | ScriptException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
     /** Instance of Vertx. Apparently we need only one. */
     private static Vertx _vertx = VertxFactory.newVertx();
+      
+    /** Instance of the current JavaScript engine. */
+    private static ScriptEngine _engine;
+    
+    /** The name of the constructor of the JavaScript module. */
+    private String _constructorName;
+    
+    /** The current instance of the JavaScript module. */
+    private Object _currentObj;
 
+    /** The internal web socket created by Vert.x */
     private WebSocket _webSocket = null;
 
+    /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
-
-    /*
-    private Function _wsOnClose = null;
-
-    private Function _wsOnError = null;
-
-    private Function _wsOnMessage = null;
-
-    private Function _wsOnOpen = null;
-    */
 }
