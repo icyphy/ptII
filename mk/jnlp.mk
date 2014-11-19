@@ -871,7 +871,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(BCVTB_MAIN_JAR) \
-		$(BCVTB_JNLP_JARS)
+		`echo $(BCVTB_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -908,7 +908,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(DSP_MAIN_JAR) \
-		$(DSP_JNLP_JARS)
+		`echo $(DSP_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -947,7 +947,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(HYBRID_SYSTEMS_MAIN_JAR) \
-		$(HYBRID_SYSTEMS_JNLP_JARS)
+		echo `$(HYBRID_SYSTEMS_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -982,7 +982,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(PTINY_MAIN_JAR) \
-		$(PTINY_JNLP_JARS)
+		echo `$(PTINY_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -1017,7 +1017,7 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(PTINY_KEPLER_MAIN_JAR) \
-		$(PTINY_JNLP_JARS)
+		`echo $(PTINY_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -1053,7 +1053,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(PTINY_SANDBOX_MAIN_JAR) \
-		$(PTINY_SANDBOX_JNLP_JARS)
+		`echo $(PTINY_SANDBOX_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -1093,7 +1093,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(SPACE_MAIN_JAR) \
-		$(SPACE_JNLP_JARS)
+		`echo $(SPACE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -1131,7 +1131,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(VISUAL_SENSE_MAIN_JAR) \
-		$(VISUAL_SENSE_JNLP_JARS)
+		`echo $(VISUAL_SENSE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
@@ -1168,7 +1168,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(SIGNED_DIR) \
 		$(FULL_MAIN_JAR) \
-		$(FULL_JNLP_JARS)
+		`echo $(FULL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
 	ls -l $@
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
@@ -1188,13 +1188,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 		"$(SIGNED_DIR)/$(FULL_MAIN_JAR)" "$(KEYALIAS)"
 	ls -l $@
 
-
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
-	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	# Replace the CLASSPATHSEPARATOR with a space.
+	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
@@ -1239,7 +1239,8 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
-	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	# Replace the CLASSPATHSEPARATOR with a space.
+	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
 	for x do \
 		jarfile=`echo $$x | sed "s@$(PTII)/@@"`; \
 		if [ ! -f $(JAR_DIST_DIR)/$$jarfile ]; then \
@@ -1290,7 +1291,8 @@ $(UNJAR_DIST_DIR):
 	fi
 	mkdir -p $(UNJAR_DIST_DIR)/ptolemy/vergil
 	cp ptolemy/vergil/vergilApplet.jar $(UNJAR_DIST_DIR)/ptolemy/vergil
-	set $(UNJAR_JARS); \
+	# Replace the CLASSPATHSEPARATOR with a space.
+	@set `echo $(UNJAR_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
 	for x do \
 		echo $$x; \
 		case "$$x" in \
@@ -1325,7 +1327,8 @@ $(UNJAR_DIST_DIR):
 # getting errors about unsigned applications
  
 jnlp_verify:
-	(cd signed; set $(ALL_JNLP_JARS); \
+	(cd signed; \
+	@set `echo $(ALL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
 	for x do \
 		echo "$$x"; \
 		"$(JARSIGNER)" -verify -verbose -certs $$x; \
@@ -2036,7 +2039,7 @@ ant.java.space: ant.header ant.jars.space ant.footer
 ant.jars: ant.header ant.jars.body ant.footer
 ant.jars.body:
 	@echo "  <target name=\"jars\">"
-	@set $(ALL_JNLP_JARS); \
+	@set `echo $(ALL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
 	for x do \
 		if [ -z `echo $$x | grep '^lib/'` ]; then \
 			echo ""; \
