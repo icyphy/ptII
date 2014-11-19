@@ -6,10 +6,11 @@
     <?moml
       <group>
   <doc>Machine Learning library</doc>
-  
-  <input source="hmm/hmm.xml"/>
-  <input source="particleFilter/particleFilter.xml"/>
-  <input source="../ssm/ssm.xml"/>
+
+  <!-- Use paths from $PTII so that they work in jar files. -->
+  <input source="org/ptolemy/machineLearning/hmm/hmm.xml"/>
+  <input source="org/ptolemy/machineLearning/particleFilter/particleFilter.xml"/>
+  <input source="org/ptolemy/ssm/ssm.xml"/>
 	
       </group>
     ?>
