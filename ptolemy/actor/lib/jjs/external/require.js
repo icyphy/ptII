@@ -2,6 +2,19 @@
 // Implemented by Walter Higgins,
 // found here: https://github.com/walterhiggins/commonjs-modules-javax-script.
 // Modified by Edward A. Lee, eal@berkeley.edu.
+//
+// FIXME: This implementation will reload a module each time require() is called.
+// It should make a record of the module and its version number and/or file update
+// time and reload only if the previously loaded version doesn't match.
+//
+// When this file is evaluated with load(), load() returns the following
+// function, which takes three arguments, a root directory, the specification
+// of the module (a module name, file name, or path), and an optional hooks
+// object that provides two functions, hooks.loading(), which reports that a
+// module is loading, and hooks.loaded(), which reports that the module has been
+// loaded.  Evaluating this returned function returns a new function that
+// implements the requires(module) capability.
+//
 (function ( rootDir, modulePaths, hooks ) {
 
   var File = java.io.File,
@@ -14,7 +27,7 @@
     var pkgJsonFile = new File( dir, './package.json' );
     if ( pkgJsonFile.exists() ) {
     
-      // Modified from original by eal@berkeley.edu because scload is not defined.
+      // --- Modified from original by eal@berkeley.edu because scload is not defined.
       // var pkg = scload( pkgJsonFile );
       var json = '';
       buffered = new BufferedReader(new FileReader(pkgJsonFile));
@@ -23,7 +36,7 @@
       }
       buffered.close(); // close the stream so there's no file locks
       var pkg = JSON.parse(json);
-      // End of modified portion.
+      // --- End of modified portion.
       
       var mainFile = new File( dir, pkg.main );
       if ( mainFile.exists() ) {
