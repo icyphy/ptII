@@ -7,14 +7,25 @@
 module.exports = WebSocket;
 
 ////////////////////
+// The default name of the namespace
+module.exports.namespaceName = "WebSocket";
+
+////////////////////
 // Construct an instance of WebSocket.
-function WebSocket(url) {
+function WebSocket(url, serverWebSocket) {
     this.address = url;
     this.callbacks = {};
 
-    var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
-    this.socket = WebSocketHelper.create(actor.getEngine(), this.constructor.name,
-        this.address, this);
+    if (serverWebSocket == null) {
+        var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
+        this.socket = WebSocketHelper.createClientSocket(actor.getEngine(), module.exports.namespaceName,
+            this, this.address);
+    }
+    else {
+        var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
+        this.socket = WebSocketHelper.createServerSocket(actor.getEngine(), module.exports.namespaceName,
+            this, serverWebSocket);;
+    }
 }
 
 ////////////////////
@@ -75,5 +86,34 @@ module.exports.binToStr = function(data) {
   return result;
 }
 
+////////////////////
+// Create a server web socket with the given Java ServerWebSocket object.
+module.exports.createServerWebSocket = function(serverWebSocket) {
+    return new WebSocket("", serverWebSocket);
+}
+
+////////////////////
+// Export this web socket server module.
+module.exports.Server = Server;
+
+////////////////////
+// Construct an instance of WebSocketServer.
+function Server(opts) {
+    this.port = opts['port'];
+    this.callbacks = {};
+
+    var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
+    this.socket = WebSocketHelper.createServer(actor.getEngine(), module.exports.namespaceName,
+        this, this.port);
+}
+
+////////////////////
+// Add callbacks to handle events on the web socket server.
+// Usage: on('connection', function).
+// This method Supports the following events.
+// Event 'connection': triggered when a client web socket is connected to the listening port.
+Server.prototype.on = function(event, fn) {
+    this.callbacks[event] = fn;
+}
 
 
