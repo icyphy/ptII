@@ -3,40 +3,74 @@
   <!-- excluding should match ptII/build.default.xml -->
 	<classpathentry excluding="**/CVS/|**/adm/|**/codeDoc/|config/|diva/util/java2d/svg/|doc/coding/templates/|doc/doclets/|jni/test/jni/meaningOfLife/|jni/test/jni/testDeux/|jni/test/jni/testTrois/|pt-modules/|ptdb/|ptolemy/actor/lib/excel/|ptolemy/actor/lib/io/comm/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/jxta/|ptolemy/actor/lib/mail/|ptolemy/actor/lib/opencv/|ptolemy/actor/lib/reactable/|ptolemy/actor/lib/vertx/|ptolemy/actor/lib/x10/|ptolemy/apps/|ptolemy/backtrack/eclipse/|ptolemy/backtrack/test/|ptolemy/codegen/newInterfaces/|ptolemy/copernicus/kernel/fragment/|ptolemy/copernicus/shallow/cg/|ptolemy/distributed/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/gr/lib/quicktime/|ptolemy/domains/metroII/|ptolemy/domains/pdf/|ptolemy/domains/space/|ptolemy/homer/|ptolemy/moml/jxta/|ptolemy/moml/test/NoPackageActor.java|ptolemy/plot/servlet/|ptolemy/vergil/basic/imprt/g4ltl/|ptolemy/vergil/basic/export/itextpdf/|ptserver/|src/|target/|vendors/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
-	<classpathentry kind="lib" path="lib/ptCal.jar"/>
-	<classpathentry kind="lib" path="lib/java_cup.jar"/>
-	<classpathentry kind="lib" path="lib/saxon8.jar"/>
-	<classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
-	<classpathentry kind="lib" path="lib/chic.jar"/>
-	<classpathentry kind="lib" path="lib/javax.servlet-api-3.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-all-8.1.5-v20120716.jar"/>
-	<classpathentry kind="lib" path="lib/jna-4.0.0-variadic.jar"/>
-	<classpathentry kind="lib" path="lib/js.jar"/>
-	<classpathentry kind="lib" path="lib/jsoup-1.7.3.jar"/>
-	<classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
-	<classpathentry kind="lib" path="lib/JUnitParams-0.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/jython.jar"/>
-	<classpathentry kind="lib" path="lib/kieler.jar"/>
-	<classpathentry kind="lib" path="lib/guava.jar"/>
-	<classpathentry kind="lib" path="lib/ptcolt.jar"/>
-	<classpathentry kind="lib" path="lib/ptjacl.jar"/>
-	<classpathentry kind="lib" path="lib/mapss.jar"/>
-	<classpathentry kind="lib" path="lib/oscP5.jar"/>
-	<classpathentry kind="lib" path="lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.paho.client.mqttv3.jar"/>
-	<classpathentry kind="lib" path="lib/smack.jar"/>
-	<classpathentry kind="lib" path="lib/smackx.jar"/>
-	<classpathentry kind="lib" path="lib/socketio.jar"/>
-	<classpathentry kind="lib" path="lib/sootclasses.jar"/>
-	<classpathentry kind="lib" path="lib/jasminclasses.jar"/>
+
+<!-- To update: ls -1 lib/*.jar | sort | awk '{print "	<classpathentry kind=\"lib\" path=\"" $1 "\"/>"}' -->
+
+        <classpathentry kind="lib" path="lib/JUnitParams-0.3.0.jar"/>
+        <classpathentry kind="lib" path="lib/JUnitParams-0.4.0.jar"/>
+        <classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
+        <classpathentry kind="lib" path="lib/YieldAdapter.jar"/>
+        <classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
+        <classpathentry kind="lib" path="lib/chic.jar"/>
+        <classpathentry kind="lib" path="lib/diva.jar"/>
+        <classpathentry kind="lib" path="lib/g4ltl.jar"/>
+        <classpathentry kind="lib" path="lib/guava.jar"/>
+        <classpathentry kind="lib" path="lib/hazelcast-3.2.3.jar"/>
+        <classpathentry kind="lib" path="lib/jackson-annotations-2.2.2.jar"/>
+        <classpathentry kind="lib" path="lib/jackson-core-2.2.2.jar"/>
+        <classpathentry kind="lib" path="lib/jackson-databind-2.2.2.jar"/>
+        <classpathentry kind="lib" path="lib/jasminclasses.jar"/>
+        <classpathentry kind="lib" path="lib/java-xmlhttprequest-20140923.jar"/>
+        <classpathentry kind="lib" path="lib/java_cup.jar"/>
+        <classpathentry kind="lib" path="lib/javax.mail.jar"/>
+        <classpathentry kind="lib" path="lib/javax.servlet-api-3.0.1.jar"/>
+        <classpathentry kind="lib" path="lib/jcerti.jar"/>
+        <classpathentry kind="lib" path="lib/jetty-all-8.1.5-v20120716.jar"/>
+        <classpathentry kind="lib" path="lib/jna-4.0.0-variadic.jar"/>
+        <classpathentry kind="lib" path="lib/jna.jar"/>
+        <classpathentry kind="lib" path="lib/js.jar"/>
+        <classpathentry kind="lib" path="lib/jsoup-1.7.3.jar"/>
+        <classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
+        <classpathentry kind="lib" path="lib/jython.jar"/>
+        <classpathentry kind="lib" path="lib/kieler.jar"/>
+        <classpathentry kind="lib" path="lib/mapss.jar"/>
+        <classpathentry kind="lib" path="lib/matlab.jar"/>
+        <classpathentry kind="lib" path="lib/matlabLinux.jar"/>
+        <classpathentry kind="lib" path="lib/matlabMacOSX.jar"/>
+        <classpathentry kind="lib" path="lib/matlabSunOS.jar"/>
+        <classpathentry kind="lib" path="lib/matlabWindows.jar"/>
+        <classpathentry kind="lib" path="lib/netty-all-4.0.21.Final.jar"/>
+        <classpathentry kind="lib" path="lib/ojdcheck.jar"/>
+        <classpathentry kind="lib" path="lib/org-netbeans-api-visual.jar"/>
+        <classpathentry kind="lib" path="lib/org-openide-util-lookup.jar"/>
+        <classpathentry kind="lib" path="lib/org-openide-util.jar"/>
+        <classpathentry kind="lib" path="lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar"/>
+        <classpathentry kind="lib" path="lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"/>
+        <classpathentry kind="lib" path="lib/org.eclipse.paho.client.mqttv3.jar"/>
+        <classpathentry kind="lib" path="lib/oscP5.jar"/>
+        <classpathentry kind="lib" path="lib/polyglotclasses-1.3.2.jar"/>
+        <classpathentry kind="lib" path="lib/protobuf-java-2.4.1.jar"/>
+        <classpathentry kind="lib" path="lib/ptCal.jar"/>
+        <classpathentry kind="lib" path="lib/ptcolt.jar"/>
+        <classpathentry kind="lib" path="lib/ptjacl.jar"/>
+        <classpathentry kind="lib" path="lib/rxtxMacOSX.jar"/>
+        <classpathentry kind="lib" path="lib/rxtxWindows.jar"/>
+        <classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
+        <classpathentry kind="lib" path="lib/saxon8.jar"/>
+        <classpathentry kind="lib" path="lib/smack.jar"/>
+        <classpathentry kind="lib" path="lib/smackx.jar"/>
+        <classpathentry kind="lib" path="lib/socketio.jar"/>
+        <classpathentry kind="lib" path="lib/sootclasses.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-core-2.1.4.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-hazelcast-2.1.4.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-platform-2.1.4.jar"/>
+
+
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-ext.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/sun-util.jar"/>
 	<classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc.jar"/>
 	<classpathentry kind="lib" path="ptolemy/actor/ptalon/antlr/antlr.jar"/>
-	<classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
