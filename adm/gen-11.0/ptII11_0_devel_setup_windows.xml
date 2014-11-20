@@ -571,6 +571,9 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/lib/smackx.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/org.eclipse.paho.client.mqttv3.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/ssm/ssm.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/ssm"/>
 

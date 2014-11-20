@@ -140,6 +140,7 @@
     <pathelement location="lib/org-netbeans-api-visual.jar" />
     <pathelement location="lib/org-openide-util-lookup.jar" />
     <pathelement location="lib/org-openide-util.jar" />
+    <pathelement location="lib/org.eclipse.paho.client.mqttv3.jar" />
     <pathelement location="lib/netty-all-4.0.21.Final.jar" />
     <pathelement location="lib/vertx-core-2.1.4.jar" />
     <pathelement location="lib/vertx-hazelcast-2.1.4.jar" />
