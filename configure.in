@@ -4835,7 +4835,7 @@ else
     AC_ARG_WITH(pahoMqtt, [  --with-paho-mqtt-jar=Jar       use Paho MQTT from JAR,
                           defaults to \$PTII/lib/org.eclipse.paho.client.mqttv3.jar],
 	PTPAHO_MQTT_JAR=$withval,
-	PTPAHO_MQTT_JAR=\$PTII/lib/org.eclipse.paho.client.mqttv3.jar)
+	PTPAHO_MQTT_JAR=$PTII/lib/org.eclipse.paho.client.mqttv3.jar)
 
     if test ! -f "$PTPAHO_MQTT_JAR"; then
         AC_MSG_WARN([Failed to find the PTPAHO_MQTT Jar file.
