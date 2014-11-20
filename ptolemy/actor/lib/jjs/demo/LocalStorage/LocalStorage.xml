@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LocalStorage" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 263, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set and get example key-value pairs.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 225.0]">
+        </property>
+    </property>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var storage = require('localStorage');&#10;&#10;function currentStatus()&#10;{&#10;  var result = &quot;&quot;;&#10;  var len = storage.length();&#10;  for (var i = 0; i &lt; len; i++) {&#10;    var curKey = storage.key(i);&#10;    var curValue = storage.getItem(curKey);&#10;    result = result + '(' + curKey + ', ' + curValue + ')';&#10;    if (i &lt; (len - 1)) {&#10;      result = result + ', '&#10;    }&#10;  }&#10;  return result;&#10;}&#10;&#10;function fire()&#10;{&#10;  var inputKey = get(key);&#10;  var inputValue = get(value);&#10;&#10;  var inputIsGet = get(isGet);&#10;&#10;  if (inputIsGet) {&#10;    send('Inserting (Key,Value) = (' + inputKey + ', ' + inputValue + ')', output);&#10;    storage.setItem(inputKey, inputValue);&#10;    send('Result: ' + currentStatus(), output);&#10;  }&#10;  else {&#10;    send('Retrieving Key: ' + inputKey, output);&#10;    var foundValue = storage.getItem(inputKey);&#10;    send('Result: ' + foundValue, output);&#10;  }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="key" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+        <port name="isGet" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Input" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{ {&quot;a&quot;,&quot;apple&quot;}, {&quot;b&quot;, &quot;bed&quot;}, {&quot;c&quot;, &quot;car&quot;}, {&quot;d&quot;, &quot;dog&quot;}, {&quot;e&quot;, &quot;eagle&quot;}, {&quot;a&quot;, &quot;ace&quot;}, {&quot;c&quot;,&quot;&quot;}, {&quot;d&quot;, &quot;&quot;}, {&quot;e&quot;,&quot;&quot;}, {&quot;a&quot;,&quot;&quot;} }">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={581, 436, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="IsGet" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{ true, true, true, true, true, true, false, false, false, false}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 115.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[115.0, 115.0]">
+        </vertex>
+    </relation>
+    <link port="JavaScript.key" relation="relation3"/>
+    <link port="JavaScript.value" relation="relation4"/>
+    <link port="JavaScript.output" relation="relation2"/>
+    <link port="JavaScript.isGet" relation="relation5"/>
+    <link port="Input.enable" relation="relation7"/>
+    <link port="Input.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="ArrayToElements.input" relation="relation"/>
+    <link port="ArrayToElements.output" relation="relation3"/>
+    <link port="ArrayToElements.output" relation="relation4"/>
+    <link port="IsGet.enable" relation="relation7"/>
+    <link port="IsGet.output" relation="relation5"/>
+    <link port="DiscreteClock.output" relation="relation7"/>
+</entity>
