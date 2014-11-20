@@ -346,7 +346,10 @@ abstract public class GRShadedShape extends GRActor3D {
                     + "If the error message is "
                     + "java.lang.UnsatisfiedLinkError: jogamp.common.jvm.JVMUtil.initialize(Ljava/nio/ByteBuffer;)Z\n\n"
                     + "Then the problem is likely that you DYLD_LIBRARY_PATH includes Matlab and you are "
-                    + "invoking the Mac .app file.  Perhaps remove the Matlab libraries from DYLD_LIBRARY_PATH"
+                    + "invoking the Mac .app file.  If, under Mac OS X, Ptolemy was invoked from the shell, then try doing\n"
+                    + " unset DYLD_LIBRARY_PATH"
+                    + "If, under Mac OS X, Ptolemy was invoked by double clicking on an icon, then perhaps "
+                    + "remove the Matlab libraries from DYLD_LIBRARY_PATH"
                     + "by editing ~/.MacOSX/environment.plist");
         }
     }
