@@ -4813,6 +4813,45 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Paho "The Paho Java Client is an MQTT client library written
+#       in Java for developing applications that run on the JVM or
+#       other Java compatible platforms such as Android"
+#	See https://eclipse.org/paho/clients/java/
+#--------------------------------------------------------------------
+
+# We only enable Ptango if $PTPAHO_USER_DIR is present
+PTPAHO_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/localStorage"
+
+# PTPAHO_MQTT_DIR is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
+PTPAHO_MQTT_DIR=
+
+# The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
+PTPAHO_MQTT_JAR=
+
+if test ! -d "$PTPAHO_USER_DIR"; then
+    PT_MSG_STATUS([$PTPAHO_USER_DIR is not present])
+else
+    AC_MSG_CHECKING([for the Paho MQTT jar])
+    AC_ARG_WITH(pahoMqtt, [  --with-paho-mqtt-jar=Jar       use Paho MQTT from JAR,
+                          defaults to \$PTII/lib/org.eclipse.paho.client.mqttv3.jar],
+	PTPAHO_MQTT_JAR=$withval,
+	PTPAHO_MQTT_JAR=\$PTII/lib/org.eclipse.paho.client.mqttv3.jar)
+
+    if test ! -f "$PTPAHO_MQTT_JAR"; then
+        AC_MSG_WARN([Failed to find the PTPAHO_MQTT Jar file.
+    The default location is $PTII/lib/
+    Paho MQTT is used by $PTII/ptolemy/actor/lib/jjs/modules/localStorage])
+    fi
+fi
+
+if test -z "$PTPAHO_MQTT_JAR"; then
+   updateExcludes "ptolemy/actor/lib/jjs/modules/localStorage/"
+else 
+   updateClasspath "$PTPAHO_MQTT_JAR"
+   PTPAHO_MQTT_DIR=localStorage
+fi 
+
+#--------------------------------------------------------------------
 #       Ptango is the Ptolemy Internet of Things project
 #	See http://chess.eecs.berkeley.edu/ptango
 #--------------------------------------------------------------------
@@ -6730,6 +6769,12 @@ AC_SUBST(PTOSCP5_DIR)
 
 # Set to org.ptolemy.osc and used int $PTII/doc/makefile if oscp5 is found
 AC_SUBST(PTOSCP5_PACKAGES)
+
+# PTPAHO_MQTT_DIR is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
+AC_SUBST(PTPAHO_MQTT_DIR)
+
+# The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
+AC_SUBST(PTPAHO_MQTT_JAR)
 
 # Set to pdf and used in ptolemy/vergil/makefile if
 # PDFRenderer.jar is found.
