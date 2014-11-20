@@ -38,8 +38,6 @@ import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.internal.MqttPersistentData;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
-import ptolemy.actor.TypedAtomicActor;
-
 ///////////////////////////////////////////////////////////////////
 //// LocalStorageHelper
 
@@ -52,7 +50,7 @@ import ptolemy.actor.TypedAtomicActor;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class LocalStorageHelper extends TypedAtomicActor {
+public class LocalStorageHelper {
     
     /**
      * Construct a LocalStorageHelper using the container's name and the actors' display name

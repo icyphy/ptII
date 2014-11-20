@@ -8,6 +8,8 @@ module.exports = WebSocket;
 
 ////////////////////
 // The default name of the namespace
+// FIXME this is a hack to enable callbacks from the JavaScript actor.
+// There must be a better way to do this (e.g. EventEmitter in node.js)
 module.exports.namespaceName = "WebSocket";
 
 ////////////////////
