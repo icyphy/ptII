@@ -24,7 +24,7 @@
     <pre>
       $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
       -generatorPackagelist generic.program.procedural.fmima \
-      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
+      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml
     </pre>
 
     <h2>Overview</h2>
@@ -56,7 +56,7 @@
     <pre>
       $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
       -generatorPackagelist generic.program.procedural.fmima \
-      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
+      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml
     </pre>
 
     <dl>
@@ -75,18 +75,39 @@
     <h2>How it works</h2>
     <p>In a nut shell, the code iterates through the model, finding actors and attributes.  An adapter class is searched for that will handle each actor and attribute.  If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
 
+    <h3>What to modify</h3>
+    <dl>
+      <dt><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code></dt>
+      <dd>Copies the C files in </code>$PTII/ptolemy/actor/lib/fmi/ma/includes/</code> and <code>shared/</code></dd>
+      <dt><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c</code></dt>
+      <dd>The template file that includes the body of the Master Algorithm.</dd>
+    </dl>
+
+
     <h2>What needs to be done</h2>
-    As of late October, 2014, the file that is generated (<code>~/cg/FMUIncScale20RC1pt.c</code>) file has no contents.
+    <ol>
+      <li>Currently, the MA code that is generated works with
+      FMI-2.0RC1pt, it does not work with FMI-2.0pt.
 
-    <p>The body of the file contains comments about where the text is generated.</p>
+	<br/>Solution: Update the files listed in "What to modify" above</li>
 
-    <p>One way to find where a comment is generated is to use <code>find</code>:</p>
-    <pre>
-      cd $PTII/ptolemy/cg
-      find . -type f | xargs grep "wrapup entry code"
-    </pre>
+      <li><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in</code>
+      has the names of the actors hard wired in.
 
-    <p>Probably the best way to proceed would be to write code by hand that should be the output of the code generator for the model.  Then start modifying the code generator by determining where in the code generator the code should be emitted.</p>
+	<br/>Solution: Modify the code generator so that main() passes these arguments to the appropriate function.</li>
+
+      <li><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java</code>
+      has the class names hardwired in.
+
+	<br/>Solution: We need to determine actors are upstream and
+	downstream and update the connections array
+	accordingly.  It is probably better to do this at a higher level than FMUImport, perhaps the $PTII/ptolemy/cg/./adapter/generic/program/procedural/adapters/ptolemy/actor/sched/StaticSchedulingDirector.java.
+	<br/> One idea is to create a similar model that has a
+	Ramp->Scale-Display and invoke the C code generator on it (See
+	$PTII/ptolemy/cg/README.html) and see how that does it.
+	</li>
+
+    </ol>
     <p>
       @since Ptolemy II 10.0
   </body>
