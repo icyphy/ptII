@@ -157,6 +157,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
                 "lib/jetty-all-license.htm");
 
+        _addIfPresent(copyrightsMap, "org.eclipse.paho.client.mqttv3.MqttClient",
+                "lib/org.eclipse.paho.client.mqttv3-license.htm");
+
         _addIfPresent(copyrightsMap, "org.json.JSONObject",
                 "org/json/json-license.htm");
 
