@@ -11663,7 +11663,7 @@ $as_echo_n "checking for the Paho MQTT jar... " >&6; }
 if test "${with_pahoMqtt+set}" = set; then :
   withval=$with_pahoMqtt; PTPAHO_MQTT_JAR=$withval
 else
-  PTPAHO_MQTT_JAR=\$PTII/lib/org.eclipse.paho.client.mqttv3.jar
+  PTPAHO_MQTT_JAR=$PTII/lib/org.eclipse.paho.client.mqttv3.jar
 fi
 
 
