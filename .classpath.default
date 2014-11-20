@@ -25,7 +25,7 @@
 	<classpathentry kind="lib" path="lib/oscP5.jar"/>
 	<classpathentry kind="lib" path="lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/lib/org.eclipse.paho.client.mqttv3.jar."/>
+	<classpathentry kind="lib" path="lib/org.eclipse.paho.client.mqttv3.jar."/>
 	<classpathentry kind="lib" path="lib/smack.jar"/>
 	<classpathentry kind="lib" path="lib/smackx.jar"/>
 	<classpathentry kind="lib" path="lib/socketio.jar"/>
