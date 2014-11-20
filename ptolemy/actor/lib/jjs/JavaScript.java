@@ -31,11 +31,11 @@ import io.socket.SocketIO;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,10 +44,6 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import org.mozilla.javascript.Function;
-import org.ptolemy.ptango.lib.HttpRequest;
-import org.ptolemy.ptango.lib.HttpResponse;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -64,6 +60,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -568,6 +565,11 @@ public class JavaScript extends TypedAtomicActor {
         // Create a Nashorn script engine
         _engine = factory.getEngineByName("nashorn");
         try {
+            if (_debugging) {
+                _debug("** Instantiated engine. Loading local and basic functions.");
+                // Set a global variable for debugging.
+                _engine.eval("var _debug = true;");
+            }
             _engine.eval(FileUtilities.openForReading(
         	    "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js",
         	    null, null));
@@ -605,7 +607,6 @@ public class JavaScript extends TypedAtomicActor {
             _engine.put(port.getName(), new PortProxy(port));
         }
 
-        
         _executing = true;
 
         // _pendingTimeoutFunctions = null;
@@ -853,7 +854,50 @@ public class JavaScript extends TypedAtomicActor {
          */
         public void send(int channelIndex, Token data)
         	throws NoRoomException, IllegalActionException {
-            _port.send(channelIndex, data);
+            if (_inFire) {
+                if (_debugging) {
+                    _debug("Sending " + data + " to " + _port.getName());
+                }
+        	_port.send(channelIndex, data);
+            } else {
+                if (!_executing) {
+                    // This is probably being called in a callback, but the model
+                    // execution has ended.
+                    throw new InternalErrorException("Attempt to send "
+                            + data + " to " + _port.getName()
+                            + ", but the model is not executing.");
+                }
+
+                // Not currently firing. Queue the tokens and request a firing.
+                // This should be being called in a callback that holds a
+                // synchronization lock, so synchronizing this isn't really
+                // necessary, but just in case...
+                synchronized (this) {
+                    if (_outputTokens == null) {
+                        _outputTokens = new HashMap<IOPort, HashMap<Integer, List<Token>>>();
+                    }
+                    HashMap<Integer, List<Token>> tokens = _outputTokens
+                            .get(_port);
+                    if (tokens == null) {
+                        tokens = new HashMap<Integer, List<Token>>();
+                        _outputTokens.put(_port, tokens);
+                    }
+                    List<Token> queue = tokens.get(channelIndex);
+                    if (queue == null) {
+                        queue = new LinkedList<Token>();
+                        tokens.put(channelIndex, queue);
+                    }
+                    queue.add(data);
+                    if (_debugging) {
+                        _debug("Queueing " + data + " to be sent on "
+                                + _port.getName()
+                                + " and requesting a firing.");
+                    }
+                }
+
+                // Request a firing at the current time.
+                getDirector().fireAtCurrentTime(JavaScript.this);
+            }
         }
 
         /** Return the name of the proxied port.
@@ -876,7 +920,6 @@ public class JavaScript extends TypedAtomicActor {
 
         /** Clear the timeout with the specified handle, if it has not already executed.
          *  @param handle The timeout handle.
-         *  @see #setTimeout(Function, Integer)
          */
         public void clearTimeout(Integer handle) {
             // NOTE: The handle for this timeout remains in the
@@ -995,37 +1038,6 @@ public class JavaScript extends TypedAtomicActor {
                         "Actor is restricted. Cannot invoke localHostAddress().");
             }
             return InetAddress.getLocalHost().getHostAddress();
-        }
-
-        /** Read the specified URL and return its contents.
-         *  @param url The URL to read.
-         *  @return The content of the URL.
-         *  @exception IOException If the specified URL can't be read (that is, a response code
-         *   was received that is not in the range 100 to 399.
-         */
-        public String readURL(String url) throws IOException {
-            // FIXME: We should have a version that takes a callback function
-            // to return the reply, and a version that supports a streaming reply.
-            URL theURL = new URL(url);
-            // If the actor is restricted, support only HTTP protocols.
-            // FIXME: Should this also apply the usual browser same-source restriction?
-            // Same as what?
-            if (_restricted && !theURL.getProtocol().equalsIgnoreCase("http")) {
-                throw new SecurityException(
-                        "Actor is restricted. Only HTTP requests will be honored by readURL().");
-            }
-
-            // Create a new HttpRequest.  Default method is GET.
-            HttpRequest request = new HttpRequest();
-            request.setUrl(new URL(url));
-
-            HttpResponse response = request.execute();
-            if (!response.isSuccessful()) {
-            	throw new IOException("Failed to read URL: " + url +
-            			"\nResponse code: " + response.getResponseCode() +
-            			"\nResponse message: " + response.getResponseMessage());
-            }
-            return response.getBody();
         }
 
         /** After the specified amount of time (in milliseconds), invoke the specified function.
