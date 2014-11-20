@@ -297,8 +297,22 @@ $(PTIIDIST):
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	#
 	# Set up vendors directory for making docs and jar_dist
+	#
+	# Java3D
+	mkdir -p $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
+	-cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/
+	cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
+	#
+	# Jogl (for the Mac)
+	mkdir -p $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
+	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
+	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
+	#
+	# Serial
 	mkdir -p $(PTIIDIST)/vendors/misc/rxtx/
 	cp $(PTIIHOME)/vendors/misc/rxtx/RXTXcomm.jar $(PTIIDIST)/vendors/misc/rxtx/
+	#
+	# Joystick
 	mkdir -p $(PTIIDIST)/vendors/misc/joystick/
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
 	# Tools used to build installers.
@@ -445,6 +459,7 @@ $(PTIIDIST):
 		$(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile
 	# Remove the html generated files, the filenames are too long
 	(cd $(PTIIDIST); rm -rf `(cd $(PTIIHOME); svn status | egrep '\?' | grep /demo/ | awk '{print $$2}')` )
+	#
 	# Rebuild jar files after removing unwanted code.
 	# Rebuild jar_dist so that the Windows installer gets the new jars)
 	rm -rf $(PTIIDIST)/jar_dist
@@ -453,12 +468,13 @@ $(PTIIDIST):
 	(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) all_packages)
 
 
+
 dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
 	    (cd $(PTIIDIST); PTII=`pwd` JAVADOC=$(JAVADOC) ./configure; PTII=`pwd`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`pwd` make JAVADOC=$(JAVADOC) all_packages); \
+		(cd $(PTIIDIST)/doc; PTII=`cd ..;pwd` make JAVADOC=$(JAVADOC) all_packages install); \
 		ant jars; PTII=`pwd` $(MAKE) -k jar_dist); \
 	fi
 
@@ -2894,8 +2910,8 @@ full_jars:
 ptsetup_mac: $(PTSETUP_MAC).xml
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"> </executable>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
