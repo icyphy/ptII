@@ -4610,7 +4610,7 @@
     </jar>
 
     <!-- ptolemy/domains/metroII/metroII.jar -->
-     <jar defaultexcludes="yes" >
+     <jar defaultexcludes="yes"
  	 destfile="${basedir}/ptolemy/domains/metroII/metroII.jar"
 	 >
 	 <fileset dir="${basedir}">
