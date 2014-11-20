@@ -42,8 +42,6 @@ import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketBase;
 
-import ptolemy.actor.TypedAtomicActor;
-
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
 
@@ -59,7 +57,7 @@ import ptolemy.actor.TypedAtomicActor;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class WebSocketHelper extends TypedAtomicActor {
+public class WebSocketHelper {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
