@@ -1,5 +1,8 @@
 package org.ptolemy.ssm; 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
 
 import ptolemy.data.ArrayToken;
@@ -35,6 +38,13 @@ public class StateSpaceModel extends MirrorDecorator {
         _init();
     }
 
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        StateSpaceModel newObject = (StateSpaceModel) super
+                .clone(workspace);
+        newObject._cachedStateVariableNames = null;
+        return newObject;
+    }
     /** Construct a StateSpaceModel in the given workspace.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -54,48 +64,69 @@ public class StateSpaceModel extends MirrorDecorator {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if (attribute == stateVariableNames) {
+        if (attribute == stateVariableNames) { 
+
+            sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER, stateVariableNames);
             // create a hidden parameter that corresponds to the specified state variable, if not already present
             ArrayToken names = (ArrayToken) stateVariableNames.getToken();
             String stateName = ((StringToken) names.getElement(0))
-                    .stringValue();
-            if (stateName.length() > 0) {
-                // Set the output type according to the state variables 
-                try {
-                    for (int i = 0; i < names.length(); i++) {
-                        stateName = ((StringToken) names.getElement(i))
-                                .stringValue();
-                        Parameter y = (Parameter) this.getAttribute(stateName);
-                        if ( y == null
-                                && stateName.length() != 0) {
-                            y = new Parameter(this, stateName); 
-                            y.setExpression("0.0"); 
-                            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
-                        } 
-                        y.setVisibility(Settable.NONE); 
-                        if (this.getAttribute(stateName+"_update") == null) {
-                            Parameter yUpdate = new Parameter(this, stateName+"_update");
-                            yUpdate.setExpression(stateName); 
-                            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, yUpdate); 
-                        }
-                    } 
+                    .stringValue(); 
+            List<String> temp = new ArrayList<>();
 
-                } catch (NameDuplicationException e) {
-                    // should not happen
-                    throw new InternalErrorException("Duplicate field in " + this.getName());
-                }
-            }
+                    if (stateName.length() > 0) {
+                        // Set the output type according to the state variables 
+                        try {
+                            // create missing parameters for the newly added state variables.
+                            for (int i = 0; i < names.length(); i++) { 
+                                stateName = ((StringToken) names.getElement(i))
+                                        .stringValue();
+                                temp.add(stateName);
+                                // check if this state name already existed before
+                                if (!_cachedStateVariableNames.contains(stateName)) { 
+                                    Parameter y = (Parameter) this.getAttribute(stateName);
+                                    if ( y == null
+                                            && stateName.length() != 0) {
+                                        y = new Parameter(this, stateName); 
+                                        y.setExpression("0.0"); 
+                                        sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
+                                    } 
+                                    y.setVisibility(Settable.NONE); 
+                                    if (this.getAttribute(stateName+"_update") == null) {
+                                        Parameter yUpdate = new Parameter(this, stateName+"_update");
+                                        yUpdate.setExpression(stateName); 
+                                        sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, yUpdate); 
+                                    }
+                                    _cachedStateVariableNames.add(stateName);
+                                }
+                            }
+                            // remove parameters corresponding to obsolete state variables.
+                            for (String old : _cachedStateVariableNames) {
+                                if (! temp.contains(old)) {
+                                    Parameter yUpdate = (Parameter) this.getAttribute(old+"_update"); 
+                                    sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,yUpdate); 
+                                    if (yUpdate != null) {
+                                        yUpdate.setContainer(null);
+                                    }
+                                    Parameter y = (Parameter) this.getAttribute(old);
+                                    sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,y); 
+                                    if (y != null) {
+                                        y.setContainer(null);
+                                    } 
+                                    _cachedStateVariableNames.remove(old);
+                                }
+                            }
+                        } catch (NameDuplicationException e) {
+                            // should not happen
+                            throw new InternalErrorException("Duplicate field in " + this.getName());
+                        }
+                    }
         } else {
             // FIXME: If the attribute is changed in the SSM, this needs to be propagated to the
             // container StateSpaceActor b/c we likely would like to change the expressions accordingly
             super.attributeChanged(attribute);
         }
     } 
-    
-    /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
-     * at the moment)
-     */
-    public Parameter measurementCovariance;
+
 
     /** An expression for the prior distribution from which the samples are drawn.
      */
@@ -124,25 +155,25 @@ public class StateSpaceModel extends MirrorDecorator {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
-        StringToken[] empty = new StringToken[1];
-        stateVariableNames = new Parameter(this, "stateVariableNames");
-        empty[0] = new StringToken("x");
-        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
+    NameDuplicationException { 
+        stateVariableNames = new Parameter(this, "stateVariableNames"); 
+        stateVariableNames.setExpression("{\"x\",\"y\"}");
 
-        processNoise = new Parameter(this, "processNoise");
-        processNoise
-        .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
-
-        measurementCovariance = new Parameter(this, "measurementCovariance");
-        measurementCovariance.setExpression("[10.0,0.0;0.0,10.0]");  
 
         prior = new Parameter(this, "prior");
-        prior.setExpression("random()*200-100");
+        prior.setExpression("{random()*200-100,random()*200-100}");
+        processNoise = new Parameter(this, "processNoise");
+        processNoise
+        .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])"); 
+
 
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");    
+
+        _cachedStateVariableNames = new ArrayList<>();
     }  
+
+    private List<String> _cachedStateVariableNames;
 }

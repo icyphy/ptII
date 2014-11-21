@@ -29,7 +29,6 @@ package org.ptolemy.machineLearning.particleFilter;
  
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

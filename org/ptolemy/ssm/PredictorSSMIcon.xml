@@ -1,0 +1,675 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="PredictorSSMIcon" class="ptolemy.vergil.icon.EditorIcon">
+    <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="65.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="45.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.0,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.95,0.95,0.95,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 11.0]">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="dashArray" class="ptolemy.data.expr.Parameter" value="{3}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-25.0">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, -14.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -13.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, -10.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-21.0, -13.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -9.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, -11.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, -7.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, -8.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, -6.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-24.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-26.0, -2.0]">
+        </property>
+    </property>
+    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, -2.0]">
+        </property>
+    </property>
+    <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 1.0]">
+        </property>
+    </property>
+    <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 7.0]">
+        </property>
+    </property>
+    <property name="Annotation17" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation18" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, 6.0]">
+        </property>
+    </property>
+    <property name="Annotation19" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 4.0]">
+        </property>
+    </property>
+    <property name="Annotation20" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, 3.0]">
+        </property>
+    </property>
+    <property name="Annotation21" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, 0.0]">
+        </property>
+    </property>
+    <property name="Annotation22" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-21.0, -1.0]">
+        </property>
+    </property>
+    <property name="Annotation23" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, -2.0]">
+        </property>
+    </property>
+    <property name="Annotation24" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-22.0, -3.0}">
+        </property>
+    </property>
+    <property name="Annotation25" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, -6.0]">
+        </property>
+    </property>
+    <property name="Annotation26" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -3.0]">
+        </property>
+    </property>
+    <property name="Annotation27" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, 0.0]">
+        </property>
+    </property>
+    <property name="Annotation28" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, 0.0]">
+        </property>
+    </property>
+    <property name="Annotation29" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -6.0]">
+        </property>
+    </property>
+    <property name="Annotation30" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, -11.0]">
+        </property>
+    </property>
+    <property name="Annotation31" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -9.0]">
+        </property>
+    </property>
+    <property name="Annotation32" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -7.0]">
+        </property>
+    </property>
+    <property name="Annotation33" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-11.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation34" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-6.25, 7.25}">
+        </property>
+    </property>
+    <property name="Annotation35" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-9.0, -2.0]">
+        </property>
+    </property>
+    <property name="Annotation36" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 1.0]">
+        </property>
+    </property>
+    <property name="Annotation37" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 6.0]">
+        </property>
+    </property>
+    <property name="Annotation38" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.25, 7.0}">
+        </property>
+    </property>
+    <property name="Annotation39" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, -8.0]">
+        </property>
+    </property>
+    <property name="Annotation40" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-31.0, -3.0]">
+        </property>
+    </property>
+    <property name="Annotation41" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-9.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation42" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-9.0, 4.0]">
+        </property>
+    </property>
+    <property name="Annotation43" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation44" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation84" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1.0, -16.0]">
+        </property>
+    </property>
+    <property name="Annotation45" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, -14.0]">
+        </property>
+    </property>
+    <property name="Annotation46" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4.0, -18.0]">
+        </property>
+    </property>
+    <property name="Annotation47" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, -20.0]">
+        </property>
+    </property>
+    <property name="Annotation48" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -21.0]">
+        </property>
+    </property>
+    <property name="Annotation49" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, -22.0]">
+        </property>
+    </property>
+    <property name="Annotation50" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, -22.0]">
+        </property>
+    </property>
+    <property name="Annotation51" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -21.0]">
+        </property>
+    </property>
+    <property name="Annotation52" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, -18.0]">
+        </property>
+    </property>
+    <property name="Annotation53" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{6.5, -13.5}">
+        </property>
+    </property>
+    <property name="Annotation54" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, -17.0]">
+        </property>
+    </property>
+    <property name="Annotation55" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, -7.0]">
+        </property>
+    </property>
+    <property name="Annotation56" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, -9.0]">
+        </property>
+    </property>
+    <property name="Annotation57" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.0, -12.0]">
+        </property>
+    </property>
+    <property name="Annotation58" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -14.0]">
+        </property>
+    </property>
+    <property name="Annotation59" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -6.0]">
+        </property>
+    </property>
+    <property name="Annotation60" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation61" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, -2.0]">
+        </property>
+    </property>
+    <property name="Annotation62" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.0, -11.0]">
+        </property>
+    </property>
+    <property name="Annotation63" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -1.0]">
+        </property>
+    </property>
+    <property name="Annotation64" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, -24.0]">
+        </property>
+    </property>
+    <property name="Annotation65" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -19.0]">
+        </property>
+    </property>
+    <property name="Annotation66" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, -23.0]">
+        </property>
+    </property>
+    <property name="Annotation67" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[8.0, -22.0]">
+        </property>
+    </property>
+    <property name="Annotation68" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -22.0]">
+        </property>
+    </property>
+    <property name="Annotation69" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, -18.0]">
+        </property>
+    </property>
+    <property name="Annotation70" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{18.0, -18.0}">
+        </property>
+    </property>
+    <property name="Annotation71" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[18.0, -15.0]">
+        </property>
+    </property>
+    <property name="Annotation72" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[21.0, -12.0]">
+        </property>
+    </property>
+    <property name="Annotation73" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, -9.0]">
+        </property>
+    </property>
+    <property name="Annotation74" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.0, -7.0]">
+        </property>
+    </property>
+    <property name="Annotation75" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{17.0, -4.0}">
+        </property>
+    </property>
+    <property name="Annotation76" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, -8.0]">
+        </property>
+    </property>
+    <property name="Annotation77" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[21.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation78" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[21.0, -2.0]">
+        </property>
+    </property>
+    <property name="Annotation79" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[19.0, 1.0]">
+        </property>
+    </property>
+    <property name="Annotation80" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{23.5, 3.75}">
+        </property>
+    </property>
+    <property name="Annotation81" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[24.0, -3.0]">
+        </property>
+    </property>
+    <property name="Annotation82" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[23.0, -8.0]">
+        </property>
+    </property>
+    <property name="Annotation83" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[22.0, -15.0]">
+        </property>
+    </property>
+    <property name="Annotation85" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value=".">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[18.0, -20.0]">
+        </property>
+    </property>
+    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-9.0, 4.0}">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+        </property>
+    </property>
+    <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.0, -10.0]">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.5}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,0.5}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+    </property>
+</property>
