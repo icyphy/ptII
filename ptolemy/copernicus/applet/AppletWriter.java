@@ -273,6 +273,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
         System.out.println("AppletWriter: _model: " + _model);
 
+        if (_model == null) {
+            throw new InternalErrorException("_toplevel is null.  Perhaps KernelMain.initialize() was not called because the model's top level is something other than a CompositeActor?");
+        }
         Director director = _model.getDirector();
         System.out.println("AppletWriter: director: " + director);
 

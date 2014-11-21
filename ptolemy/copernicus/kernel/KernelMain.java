@@ -38,6 +38,7 @@ import ptolemy.actor.Manager;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -120,20 +121,26 @@ public abstract class KernelMain {
      *  invokes other methods of this class to actually perform the
      *  compilation.
      */
-    public void compile(String modelName, CompositeActor toplevel,
+    public void compile(String modelName, CompositeEntity toplevel,
             GeneratorAttribute attribute) throws Exception {
         //  try {
         long startTime = System.currentTimeMillis();
 
-        // Create instance classes for the actors.
-        try {
-            initialize(toplevel);
-        } catch (Throwable ex) {
-            System.out.println("initialize() failed: " + ex);
-            System.out
+        // ptolemy.data.ontologies.Ontology is a CompositeEntity, not a CompositeActor.
+        if (!(toplevel instanceof CompositeActor)) {
+            System.err.println("Warning: KernelMain.compile(): toplevel " + toplevel.getFullName()
+                    + " is not a CompositeActor, it is a " + toplevel.getClass());
+        } else {
+            // Create instance classes for the actors.
+            try {
+                initialize((CompositeActor)toplevel);
+            } catch (Throwable ex) {
+                System.out.println("initialize() failed: " + ex);
+                System.out
                     .println("If the model does not have a director, consider adding \n"
                             + "<property name=\"DoNothingDirector\" class=\"ptolemy.actor.DoNothingDirector\">\n"
                             + "</property>");
+            }
         }
 
         if (attribute.getParameter("outputDirectory").indexOf(" ") != -1) {
