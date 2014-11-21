@@ -4828,6 +4828,9 @@ PTPAHO_MQTT_DIR=
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
 PTPAHO_MQTT_JAR=
 
+# PTPAHO_MQTT_PACKAGES is used in doc/makefile
+PTPAHO_MQTT_PACKAGES=
+
 if test ! -d "$PTPAHO_USER_DIR"; then
     PT_MSG_STATUS([$PTPAHO_USER_DIR is not present])
 else
@@ -4849,6 +4852,7 @@ if test -z "$PTPAHO_MQTT_JAR"; then
 else 
    updateClasspath "$PTPAHO_MQTT_JAR"
    PTPAHO_MQTT_DIR=localStorage
+   PTPAHO_MQTT_PACKAGES=ptolemy.actor.lib.jjs.modules.localStorage
 fi 
 
 #--------------------------------------------------------------------
@@ -6775,6 +6779,9 @@ AC_SUBST(PTPAHO_MQTT_DIR)
 
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
 AC_SUBST(PTPAHO_MQTT_JAR)
+
+# PTPAHO_MQTT_PACKAGES is used in doc/makefile
+AC_SUBST(PTPAHO_MQTT_PACKAGES)
 
 # Set to pdf and used in ptolemy/vergil/makefile if
 # PDFRenderer.jar is found.
