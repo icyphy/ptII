@@ -2367,14 +2367,17 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             } else {
                 // fmiFreeSlaveInstance is a void function.
                 // No returned status.
-                // _fmiFreeSlaveInstanceFunction can be null if wrapup() is called.
+                // _fmiFreeSlaveInstanceFunction can be null if wrapup() is called early.
                 if (_fmiFreeSlaveInstanceFunction != null) {
                     _fmiFreeSlaveInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent });
                 }
             }
         } else {
-            _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
+            // _fmiFreeInstanceFunction can be null if wrapup() is called early.
+            if (_fmiFreeInstanceFunction != null) {
+                _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
+            }
         }
     }
 
