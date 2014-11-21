@@ -557,6 +557,8 @@
       <fileset dir="${basedir}">
 	<patternset refid="ptII.jars"/>
       </fileset>	  
+      <fileset dir="${basedir}/jar_dist"/>
+      <fileset dir="${basedir}/pt-modules/build/jars/" includes="**/*.jar"/>
       <fileset dir="${basedir}/signed"/>
     </delete>
   </target>
