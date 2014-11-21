@@ -116,7 +116,7 @@ should be included in the jar files.
 public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
-    private AppletWriter(CompositeActor model) {
+    private AppletWriter(CompositeEntity model) {
         _model = model;
     }
 
@@ -127,7 +127,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      * @param model The model that this class will operate on.
      * @return An instance of the AppletWriter transformer.
      */
-    public static AppletWriter v(CompositeActor model) {
+    public static AppletWriter v(CompositeEntity model) {
         return new AppletWriter(model);
     }
 
@@ -276,17 +276,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (_model == null) {
             throw new InternalErrorException("_toplevel is null.  Perhaps KernelMain.initialize() was not called because the model's top level is something other than a CompositeActor?");
         }
-        Director director = _model.getDirector();
-        System.out.println("AppletWriter: director: " + director);
 
-        if (director != null) {
-            String directorPackage = director.getClass().getPackage().getName();
+        Director director = null;
+        if (_model instanceof CompositeActor) {
+            director = ((CompositeActor)_model).getDirector();
+            System.out.println("AppletWriter: director: " + director);
 
-            if (!directorPackage.endsWith(".kernel")) {
-                System.out.println("Warning: the directorPackage does not end "
-                        + "with '.kernel', it is :" + directorPackage);
+            if (director != null) {
+                String directorPackage = director.getClass().getPackage().getName();
+
+                if (!directorPackage.endsWith(".kernel")) {
+                    System.out.println("Warning: the directorPackage does not end "
+                            + "with '.kernel', it is :" + directorPackage);
+                }
+                _domainJar = _getDomainJar(directorPackage);
             }
-            _domainJar = _getDomainJar(directorPackage);
         }
 
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
@@ -1422,8 +1426,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // Parse the model.
-            CompositeActor toplevel = null;
-            toplevel = (CompositeActor) parser
+            CompositeEntity toplevel = null;
+            toplevel = (CompositeEntity) parser
                     .parse(modelPathURL, modelPathURL);
             // 1) Try to find a DocAttribute
             Attribute docAttribute = toplevel.getAttribute("DocAttribute");
@@ -2479,7 +2483,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private String _domainJar;
 
     // The model we are generating code for.
-    private CompositeActor _model;
+    private CompositeEntity _model;
 
     // The jar files that are necessary to run the model if the codebase
     // is ".".

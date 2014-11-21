@@ -126,21 +126,15 @@ public abstract class KernelMain {
         //  try {
         long startTime = System.currentTimeMillis();
 
-        // ptolemy.data.ontologies.Ontology is a CompositeEntity, not a CompositeActor.
-        if (!(toplevel instanceof CompositeActor)) {
-            System.err.println("Warning: KernelMain.compile(): toplevel " + toplevel.getFullName()
-                    + " is not a CompositeActor, it is a " + toplevel.getClass());
-        } else {
-            // Create instance classes for the actors.
-            try {
-                initialize((CompositeActor)toplevel);
-            } catch (Throwable ex) {
-                System.out.println("initialize() failed: " + ex);
-                System.out
-                    .println("If the model does not have a director, consider adding \n"
-                            + "<property name=\"DoNothingDirector\" class=\"ptolemy.actor.DoNothingDirector\">\n"
-                            + "</property>");
-            }
+        // Create instance classes for the actors.
+        try {
+            initialize(toplevel);
+        } catch (Throwable ex) {
+            System.out.println("initialize() failed: " + ex);
+            System.out
+                .println("If the model does not have a director, consider adding \n"
+                        + "<property name=\"DoNothingDirector\" class=\"ptolemy.actor.DoNothingDirector\">\n"
+                        + "</property>");
         }
 
         if (attribute.getParameter("outputDirectory").indexOf(" ") != -1) {
@@ -168,7 +162,9 @@ public abstract class KernelMain {
         // Reset the state of the manager.  We haven't actually done
         // anything, but the state of the manager must be reset.
         try {
-            _toplevel.getManager().wrapup();
+            if (_toplevel instanceof CompositeActor) {
+                ((CompositeActor)_toplevel).getManager().wrapup();
+            }
         } catch (Exception exception) {
             // This could be a problem with NonStrictTest.
             throw new KernelRuntimeException(exception,
@@ -225,53 +221,59 @@ public abstract class KernelMain {
      *
      *  @param toplevel The model we are generating code for.
      */
-    public void initialize(CompositeActor toplevel)
+    public void initialize(CompositeEntity toplevel)
             throws IllegalActionException, NameDuplicationException {
         _toplevel = toplevel;
 
-        // Applet codegen works with all directors, not just SDF.
-        Director topLevelDirector = toplevel.getDirector();
+        // ptolemy.data.ontologies.Ontology is a CompositeEntity, not a CompositeActor.
+        if (!(_toplevel instanceof CompositeActor)) {
+            System.err.println("Warning: KernelMain.initialize(): toplevel " + _toplevel.getFullName()
+                    + " is not a CompositeActor, it is a " + _toplevel.getClass());
+        } else {
+            // Applet codegen works with all directors, not just SDF.
+            Director topLevelDirector = ((CompositeActor)_toplevel).getDirector();
 
-        // FIXME: nearly duplicate code in java/TestApplication.java
-        if (topLevelDirector != null && topLevelDirector instanceof SDFDirector) {
-            SDFDirector director = (SDFDirector) topLevelDirector;
-            Parameter iterations = (Parameter) director
+            // FIXME: nearly duplicate code in java/TestApplication.java
+            if (topLevelDirector != null && topLevelDirector instanceof SDFDirector) {
+                SDFDirector director = (SDFDirector) topLevelDirector;
+                Parameter iterations = (Parameter) director
                     .getAttribute("iterations");
-            Parameter copernicus_iterations = (Parameter) director
+                Parameter copernicus_iterations = (Parameter) director
                     .getAttribute("copernicus_iterations");
 
-            // Set to be a large number of iterations, unless
-            // copernicus_iterations is set.
-            if (copernicus_iterations != null) {
-                iterations.setToken(copernicus_iterations.getToken());
-            } else {
-                String copernicusIterations = StringUtilities
+                // Set to be a large number of iterations, unless
+                // copernicus_iterations is set.
+                if (copernicus_iterations != null) {
+                    iterations.setToken(copernicus_iterations.getToken());
+                } else {
+                    String copernicusIterations = StringUtilities
                         .getProperty("ptolemy.ptII.copernicusIterations");
 
-                if (copernicusIterations.length() > 0) {
-                    System.out.println("KernelMain: "
+                    if (copernicusIterations.length() > 0) {
+                        System.out.println("KernelMain: "
                             + "Setting number of iterations to "
                             + copernicusIterations);
-                    iterations.setToken(new IntToken(copernicusIterations));
+                        iterations.setToken(new IntToken(copernicusIterations));
+                    }
                 }
             }
-        }
 
-        // Initialize the model to ensure type resolution and scheduling
-        // are done.
-        try {
-            Manager manager = new Manager(_toplevel.workspace(), "manager");
-            _toplevel.setManager(manager);
-            manager.preinitializeAndResolveTypes();
-        } catch (Exception exception) {
-            throw new KernelRuntimeException(exception,
-                    "Could not initialize composite actor");
+            // Initialize the model to ensure type resolution and scheduling
+            // are done.
+            try {
+                Manager manager = new Manager(((CompositeActor)_toplevel).workspace(), "manager");
+                ((CompositeActor)_toplevel).setManager(manager);
+                manager.preinitializeAndResolveTypes();
+            } catch (Exception exception) {
+                throw new IllegalActionException(_toplevel, exception,
+                        "Could not initialize composite actor");
+            }
         }
     }
 
     /** Return the model that we are generating code for.
      */
-    public CompositeActor toplevel() {
+    public CompositeEntity toplevel() {
         return _toplevel;
     }
 
@@ -314,9 +316,9 @@ public abstract class KernelMain {
      */
     protected String _momlClassName;
 
-    /** The CompositeActor we are generating code for.
+    /** The CompositeEntity we are generating code for.
      */
-    protected CompositeActor _toplevel;
+    protected CompositeEntity _toplevel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
