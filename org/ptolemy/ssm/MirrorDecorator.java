@@ -132,19 +132,29 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     }
 
     @Override
-    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof StateSpaceActor) {
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target) {  
+        if (target instanceof GaussianMeasurementModel) {
             try {
-                MirrorDecoratorAttributes ssa = new MirrorDecoratorAttributes(target, this);
+                MeasurementModelAttributes ssa = new MeasurementModelAttributes(target, this);
                 registerListener(ssa);
                 return ssa;
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
             }
-        } else {
-            return null;
-        }
+        } else 
+            if (target instanceof StateSpaceActor) {
+                try {
+                    MirrorDecoratorAttributes ssa = new MirrorDecoratorAttributes(target, this);
+                    registerListener(ssa);
+                    return ssa;
+                } catch (KernelException ex) {
+                    // This should not occur.
+                    throw new InternalErrorException(ex);
+                }
+            } else {
+                return null;
+            }
     }
 
     @Override
@@ -155,7 +165,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         _decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList();
         CompositeEntity container = (CompositeEntity) getContainer();
-        for (Object object : container.deepEntityList()) {
+        for (Object object : container.deepEntityList()) { 
             if (object instanceof StateSpaceActor) {
                 list.add((NamedObj)object); 
             }
@@ -163,11 +173,11 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         _decoratedObjects = list;
         return list;
     }
-    
+
     public List<String> getAddedPortNames() {
         return _addedPortNames;
     }
-    
+
     public List<String> getAddedPortParameterNames() {
         return _addedPortParameterNames;
     }
@@ -198,7 +208,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             } 
         }
     } 
-    
+
     /** Notify the monitor that an event happened. 
      *  @param eventType Type of event.
      *  @param portName Name of port to be added/removed
@@ -264,7 +274,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         _addedPortNames = new ArrayList<>();
         _addedPortParameterNames = new ArrayList<>();
         _addedParameters = new ArrayList<>();
-        
+
         for (NamedObj n : decoratedObjects()) {
             MirrorDecoratorAttributes attributes = (MirrorDecoratorAttributes) n.getDecoratorAttributes(this);
             if (attributes != null) {
@@ -272,7 +282,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             }
         }
     }
- 
+
     /** Cached list of decorated objects. */
     protected List<NamedObj> _decoratedObjects;
 
@@ -283,9 +293,9 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     protected ArrayList<MirrorDecoratorListener> _listeners;
 
     protected List<String> _addedPortNames = new ArrayList<>();  
-    
+
     protected List<String> _addedPortParameterNames = new ArrayList<>();
-    
+
     protected List<Parameter> _addedParameters = new ArrayList<>(); 
 
 }

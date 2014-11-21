@@ -28,7 +28,6 @@
 package org.ptolemy.machineLearning.particleFilter;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -636,8 +635,12 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
         _parseTreeEvaluator = new ParseTreeEvaluator();
         _scope = new VariableScope();
+        
+        Director d = new DEDirector(this, "DEDirector");
+        d.setPersistent(false);
+        this.setDirector(d);
 
-        new DEDirector(this, "DEDirector").setPersistent(false);
+        
         //((Parameter)this.getAttribute("_isOpaque")).setExpression("true");
         // icon
         _attachText("_iconDescription", "<svg>\n"

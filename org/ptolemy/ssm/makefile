@@ -50,17 +50,24 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
-JSRCS = \
-	DummySSA.java \
+JSRCS = \ 
+	GaussianMeasurementModel.java \ 
+	InferenceActor.java \
+	MeasurementModelAttributes.java \
 	MirrorDecorator.java \
 	MirrorDecoratorAttributes.java \
 	MirrorDecoratorListener.java \
+	ParticleFilterSSM.java \
+	PredictorSSM.java \
 	StateSpaceActor.java \
 	StateSpaceModel.java	
 
 
 OTHER_FILES_TO_BE_JARED = \
-	ssm.xml
+	GaussianMeasurementModelIcon.xml \
+	ssm.xml \
+	PredictorSSMIcon.xml \
+	ParticleFilterSSMIcon.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

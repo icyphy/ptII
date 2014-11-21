@@ -6,9 +6,13 @@
     <?moml
       <group>
   <doc>State Space Model Actors</doc> 
+  <entity name="GaussianMeasurementModel" class="org.ptolemy.ssm.GaussianMeasurementModel">
+  </entity> 
   <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
   </entity> 
   <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+  </entity> 
+  <entity name="PredictorSSM" class="org.ptolemy.ssm.PredictorSSM">
   </entity> 
       </group>
     ?>
