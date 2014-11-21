@@ -1637,6 +1637,10 @@ EOF6
 		   rm -rf $jreApp/lib/{applet,deploy.jar,javaws.jar,libdeploy.dylib,plugin.jar}
 
 		   # Deal with extensions
+
+		   # Matlab
+		   cp $PTII/lib/libptmatlab.jnilib $MACAPP_APP/Contents/MacOS/
+
 		   # RXTX SerialComm
 		   cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
 		   cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
