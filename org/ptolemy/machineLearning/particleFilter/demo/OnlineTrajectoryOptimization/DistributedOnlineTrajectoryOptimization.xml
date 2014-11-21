@@ -4,13 +4,13 @@
 <entity name="DistributedOnlineTrajectoryOptimization" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1154, 841}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1167, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[920, 731]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1390333525081884">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-294.3808288045798, -380.080078125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{460.0, 365.5}">
     </property>
     <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="20">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-565.0, -705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 44.677696228027344]">
         </property>
     </property>
     <property name="RobotCount" class="ptolemy.data.expr.Parameter" value="4">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-440.0, -705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 44.677696228027344]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -68,7 +68,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-640.0, -705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 44.677696228027344]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,13 +76,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Shuhei Emoto, Mai Kimura, Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-775.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.5, 675.2231521606445]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The distributed version of :&#10;&#10;Each robot runs a particle filter on board with the measurement set obtained&#10;from the robot team at time t. Then, utilizing a black-box optimizer, it computes&#10;its optimal location at (t+1) that would minimize the uncertainty in the intruder&#10;estimate. The cost function that is maximized for this purpose is the approximate&#10;mutual information between the future measurement of the robot, and the future &#10;particle set that estimates the posterior intruder position density.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-780.0, -595.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 135.0]">
         </property>
     </property>
     <property name="SpeedLimit" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -101,7 +101,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-315.0, -705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 44.677696228027344]">
         </property>
     </property>
     <property name="locationScale" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -120,7 +120,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, -705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 44.677696228027344]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -128,7 +128,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Online Trajectory Optimization">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-585.0, -595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 99.67769622802734]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -153,11 +153,11 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-730.0, -685.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 64.67769622802734]">
         </property>
     </property>
     <class name="Intruder" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, -645.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 144.67769622802734]">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="50">
         </property>
@@ -313,7 +313,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, -135.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-145.0, -650.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 139.67769622802734]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1396, 878}, maximized=false}">
         </property>
@@ -2608,15 +2608,11 @@
                 </port>
                 <port name="locations" class="ptolemy.actor.lib.hoc.MirrorPort">
                     <property name="input"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 295.0}">
                     </property>
                 </port>
                 <port name="particles" class="ptolemy.actor.lib.hoc.MirrorPort">
                     <property name="input"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 220.0}">
                     </property>
                 </port>
@@ -2782,7 +2778,7 @@
         <link port="CompositeOptimizer.particles" relation="relation3"/>
     </class>
     <entity name="intruder1" class="Intruder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-770.0, -255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 565.0]">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -2838,7 +2834,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, -55.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-315.0, -245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 485.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 22, 934, 634}, maximized=false}">
         </property>
@@ -3296,21 +3292,21 @@
         <link relation1="relation10" relation2="relation12"/>
     </entity>
     <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-450.0, -320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 410.0]">
         </property>
     </entity>
     <entity name="Merge2" class="ptolemy.domains.continuous.lib.ContinuousMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-450.0, -235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 495.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-470.0, -95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 635.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="InstanceOfRobot" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-635.0, -390.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 340.0]">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -3352,178 +3348,148 @@
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="x" class="ptolemy.data.expr.Parameter" value="8.041802259676855">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="y_update" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="y" class="ptolemy.data.expr.Parameter" value="0.5627645828808259">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r1(0)-x)^2+(r1(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z1_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z2_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r2(0)-x)^2+(r2(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z2_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz2_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z2_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z3_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r3(0)-x)^2+(r3(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z3_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz3_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z3_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z4_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r4(0)-x)^2+(r4(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z4_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz4_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z4_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                 </entity>
             </entity>
@@ -3552,7 +3518,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot2" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-640.0, -320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 410.0]">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="5">
         </property>
@@ -3596,178 +3562,148 @@
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="x" class="ptolemy.data.expr.Parameter" value="9.266333000624567">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="y_update" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="y" class="ptolemy.data.expr.Parameter" value="-35.16599113545925">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r1(0)-x)^2+(r1(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z1_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z2_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r2(0)-x)^2+(r2(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z2_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz2_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z2_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z3_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r3(0)-x)^2+(r3(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z3_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz3_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z3_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z4_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r4(0)-x)^2+(r4(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z4_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz4_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z4_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                 </entity>
             </entity>
@@ -3796,7 +3732,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot3" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-640.0, -155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 575.0]">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="-10">
         </property>
@@ -3840,178 +3776,148 @@
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="x" class="ptolemy.data.expr.Parameter" value="5.70784014982678">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="y_update" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="y" class="ptolemy.data.expr.Parameter" value="-1.251811617357445">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r1(0)-x)^2+(r1(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z1_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z2_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r2(0)-x)^2+(r2(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z2_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz2_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z2_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z3_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r3(0)-x)^2+(r3(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z3_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz3_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z3_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z4_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r4(0)-x)^2+(r4(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z4_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz4_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z4_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                 </entity>
             </entity>
@@ -4040,7 +3946,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot4" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-640.0, -245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 485.0]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -4082,178 +3988,148 @@
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="x" class="ptolemy.data.expr.Parameter" value="5.389497103907653">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="y_update" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                            </property>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                         <property name="y" class="ptolemy.data.expr.Parameter" value="-11.76607842781387">
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r1(0)-x)^2+(r1(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z1_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z2_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r2(0)-x)^2+(r2(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z2_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz2_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z2_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z3_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r3(0)-x)^2+(r3(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z3_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz3_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z3_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                     <entity name="z4_m_equation" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r4(0)-x)^2+(r4(1)-y)^2)">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="z4_m_covariance" class="ptolemy.actor.lib.Expression">
                         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
                             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
                         </property>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                             </property>
-                        </port>
+                            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                            </property>
+                        </property>
                     </entity>
                     <entity name="setz4_m" class="ptolemy.actor.lib.SetVariable">
                         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z4_m">
                         </property>
                         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <port name="input" class="ptolemy.actor.TypedIOPort">
-                            <property name="input"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
-                        <port name="output" class="ptolemy.actor.TypedIOPort">
-                            <property name="output"/>
-                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                            </property>
-                        </port>
                     </entity>
                 </entity>
             </entity>
@@ -4284,59 +4160,61 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-705.0, -255.0]">
+        <vertex name="vertex1" value="[125.0, 565.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.Robot.intruderPosition&quot;,x=-400.0,y=-390.0}, tail={id=&quot;relation2.vertex1&quot;,x=-455.0,y=-165.0}, points={-455.0,-400.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot.intruderPosition&quot;,x=-610.5,y=-395.22315216064453}, tail={id=&quot;relation2.vertex1&quot;,x=-670.5,y=-170.22315216064453}, points={-670.5,-405.22315216064453} },{ head={id=&quot;InstanceOfRobot3.intruderPosition&quot;,x=-615.5,y=-160.22315216064453}, tail={id=&quot;relation2.vertex1&quot;,x=-670.5,y=-170.22315216064453}, points={} },{ head={id=&quot;Visualization.intruder&quot;,x=-290.5,y=-250.22315216064453}, tail={id=&quot;relation2.vertex1&quot;,x=-670.5,y=-170.22315216064453}, points={-335.5,-260.22315216064453,-335.5,-445.22315216064453,-670.5,-445.22315216064453} },{ head={id=&quot;InstanceOfRobot4.intruderPosition&quot;,x=-615.5,y=-250.22315216064453}, tail={id=&quot;relation2.vertex1&quot;,x=-670.5,y=-170.22315216064453}, points={-670.5,-260.22315216064453} },{ head={id=&quot;intruder1.port&quot;,x=-725.5,y=-170.22315216064453}, tail={id=&quot;relation2.vertex1&quot;,x=-670.5,y=-170.22315216064453}, points={} },{ head={id=&quot;InstanceOfRobot2.intruderPosition&quot;,x=-615.5,y=-325.22315216064453}, tail={id=&quot;relation2.vertex1&quot;,x=-670.5,y=-170.22315216064453}, points={-670.5,-335.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Visualization.PF&quot;,x=-315.0,y=-245.0}, tail={id=&quot;Merge2.output&quot;,x=-450.0,y=-235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Visualization.PF&quot;,x=-290.5,y=-250.22315216064453}, tail={id=&quot;Merge2.output&quot;,x=-425.5,y=-240.22315216064453}, points={} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-395.0, -245.0]">
+        <vertex name="vertex1" value="[460.0, 635.0]">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Visualization.robotMessages&quot;,x=-290.5,y=-250.22315216064453}, tail={id=&quot;relation12.vertex1&quot;,x=-335.5,y=-100.22315216064453}, points={-335.5,-250.22315216064453} },{ head={id=&quot;MicrostepDelay.input&quot;,x=-445.5,y=-100.22315216064453}, tail={id=&quot;relation12.vertex1&quot;,x=-335.5,y=-100.22315216064453}, points={} },{ head={id=&quot;Merge.output&quot;,x=-425.5,y=-325.22315216064453}, tail={id=&quot;relation12.vertex1&quot;,x=-335.5,y=-100.22315216064453}, points={-355.5,-325.22315216064453,-355.5,-100.22315216064453} } }">
+        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-680.0, -95.0}">
+        <vertex name="vertex1" value="[140.0, 635.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=-470.0,y=-95.0}, tail={id=&quot;relation13.vertex1&quot;,x=-680.0,y=-95.0}, points={} },{ head={id=&quot;.Robot.robotMessage&quot;,x=-400.0,y=-390.0}, tail={id=&quot;relation13.vertex1&quot;,x=-440.0,y=-95.0}, points={-440.0,-380.0} },{ head={id=&quot;relation13.vertex1&quot;,x=-680.0,y=-95.0}, tail={id=&quot;InstanceOfRobot.robotMessage&quot;,x=-635.0,y=-390.0}, points={-680.0,-380.0} },{ head={id=&quot;relation13.vertex1&quot;,x=-680.0,y=-95.0}, tail={id=&quot;InstanceOfRobot2.robotMessage&quot;,x=-640.0,y=-320.0}, points={-680.0,-310.0} },{ head={id=&quot;relation13.vertex1&quot;,x=-680.0,y=-95.0}, tail={id=&quot;InstanceOfRobot3.robotMessage&quot;,x=-640.0,y=-155.0}, points={-680.0,-145.0} },{ head={id=&quot;relation13.vertex1&quot;,x=-680.0,y=-95.0}, tail={id=&quot;InstanceOfRobot4.robotMessage&quot;,x=-640.0,y=-245.0}, points={-680.0,-235.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=-445.5,y=-100.22315216064453}, tail={id=&quot;relation13.vertex1&quot;,x=-655.5,y=-100.22315216064453}, points={} },{ head={id=&quot;InstanceOfRobot.robotMessage&quot;,x=-610.5,y=-395.22315216064453}, tail={id=&quot;relation13.vertex1&quot;,x=-655.5,y=-100.22315216064453}, points={-655.5,-385.22315216064453} },{ head={id=&quot;InstanceOfRobot2.robotMessage&quot;,x=-615.5,y=-325.22315216064453}, tail={id=&quot;relation13.vertex1&quot;,x=-655.5,y=-100.22315216064453}, points={-655.5,-315.22315216064453} },{ head={id=&quot;InstanceOfRobot3.robotMessage&quot;,x=-615.5,y=-160.22315216064453}, tail={id=&quot;relation13.vertex1&quot;,x=-655.5,y=-100.22315216064453}, points={-655.5,-150.22315216064453} },{ head={id=&quot;InstanceOfRobot4.robotMessage&quot;,x=-615.5,y=-250.22315216064453}, tail={id=&quot;relation13.vertex1&quot;,x=-655.5,y=-100.22315216064453}, points={-655.5,-240.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-450.0,y=-235.0,index=4}, tail={id=&quot;InstanceOfRobot.PFoutput&quot;,x=-635.0,y=-390.0}, points={-520.0,-250.0,-520.0,-380.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-425.5,y=-240.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot.PFoutput&quot;,x=-610.5,y=-395.22315216064453}, points={-495.5,-255.22315216064453,-495.5,-385.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-450.0,y=-320.0,index=4}, tail={id=&quot;InstanceOfRobot.robotMeasurement&quot;,x=-635.0,y=-390.0}, points={-505.0,-335.0,-505.0,-400.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-425.5,y=-325.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot.robotMeasurement&quot;,x=-610.5,y=-395.22315216064453}, points={-480.5,-340.22315216064453,-480.5,-405.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-450.0,y=-320.0,index=4}, tail={id=&quot;InstanceOfRobot2.robotMeasurement&quot;,x=-640.0,y=-320.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-425.5,y=-325.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot2.robotMeasurement&quot;,x=-615.5,y=-325.22315216064453}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-450.0,y=-235.0,index=4}, tail={id=&quot;InstanceOfRobot2.PFoutput&quot;,x=-640.0,y=-320.0}, points={-550.0,-245.0,-550.0,-310.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-425.5,y=-240.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot2.PFoutput&quot;,x=-615.5,y=-325.22315216064453}, points={-525.5,-250.22315216064453,-525.5,-315.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-450.0,y=-320.0,index=4}, tail={id=&quot;InstanceOfRobot3.robotMeasurement&quot;,x=-640.0,y=-155.0}, points={-535.0,-325.0,-535.0,-165.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-425.5,y=-325.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot3.robotMeasurement&quot;,x=-615.5,y=-160.22315216064453}, points={-510.5,-330.22315216064453,-510.5,-170.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-450.0,y=-235.0,index=4}, tail={id=&quot;InstanceOfRobot3.PFoutput&quot;,x=-640.0,y=-155.0}, points={-520.0,-240.0,-520.0,-145.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-425.5,y=-240.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot3.PFoutput&quot;,x=-615.5,y=-160.22315216064453}, points={-495.5,-245.22315216064453,-495.5,-150.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-450.0,y=-320.0,index=4}, tail={id=&quot;InstanceOfRobot4.robotMeasurement&quot;,x=-640.0,y=-245.0}, points={-505.0,-320.0,-505.0,-255.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-425.5,y=-325.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot4.robotMeasurement&quot;,x=-615.5,y=-250.22315216064453}, points={-480.5,-325.22315216064453,-480.5,-260.22315216064453} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-450.0,y=-235.0,index=4}, tail={id=&quot;InstanceOfRobot4.PFoutput&quot;,x=-640.0,y=-245.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=-425.5,y=-240.22315216064453,index=4}, tail={id=&quot;InstanceOfRobot4.PFoutput&quot;,x=-615.5,y=-250.22315216064453}, points={} } }">
         </property>
     </relation>
     <link port="intruder1.port" relation="relation2"/>

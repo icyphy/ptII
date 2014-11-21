@@ -4,13 +4,13 @@
 <entity name="OnlineTrajectoryOptimization" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 870}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1185, 803}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1167, 760]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[951, 693]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1531168350385665">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-6.316230912844389, -427.6128046512603}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{475.5, 346.5}">
     </property>
     <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="50">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.3186492919922, 40.04095458984375]">
         </property>
     </property>
     <property name="RobotCount" class="ptolemy.data.expr.Parameter" value="4">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-165.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[372.3186492919922, 40.04095458984375]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -68,7 +68,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[167.3186492919922, 40.04095458984375]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,13 +76,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Shuhei Emoto, Mai Kimura, Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-500.0, -125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 660.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that simulates an intruder-evasion scenario, where two robots &#10;estimate the location of a moving intruder object and move away from&#10;the estimated intruder. Each robot runs an internal Particle Filter that&#10;runs on the collective robot observations and estimates the posterior&#10;probability distribution of the intruder position. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-510.0, -605.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[22.318649291992188, 185.04095458984375]">
         </property>
     </property>
     <property name="SpeedLimit" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -101,7 +101,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[497.3186492919922, 40.04095458984375]">
         </property>
     </property>
     <property name="locationScale" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -120,7 +120,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[637.3186492919922, 40.04095458984375]">
         </property>
     </property>
     <property name="DistanceLimit" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -139,15 +139,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[777.3186492919922, 40.04095458984375]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-455.0, -725.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[82.31864929199219, 60.04095458984375]">
         </property>
     </property>
     <class name="Intruder" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -650.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[417.3186492919922, 135.04095458984375]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=true}">
         </property>
@@ -419,7 +419,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-525.0, -300.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, -650.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[602.3186492919922, 135.04095458984375]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=true}">
         </property>
@@ -1065,7 +1065,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, -185.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, -220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[582.3186492919922, 565.0409545898438]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=true}">
         </property>
@@ -2747,7 +2747,7 @@
         <link port="DecompositeRobotPositions.sampling" relation="relation16"/>
     </entity>
     <entity name="InstanceOfIntruder" class="Intruder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-480.0, -380.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[52.31864929199219, 410.04095458984375]">
         </property>
         <property name="initialXposition" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
@@ -2787,7 +2787,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot1" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-260.0, -370.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[272.3186492919922, 420.04095458984375]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -2842,7 +2842,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot3" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-260.0, -210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[272.3186492919922, 575.0409545898438]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -2897,7 +2897,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot2" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-260.0, -300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[272.3186492919922, 490.04095458984375]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -2952,7 +2952,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot0" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-260.0, -450.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[272.3186492919922, 335.04095458984375]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -3007,53 +3007,53 @@
         </entity>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-85.0, -150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[447.3186492919922, 640.0409545898438]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, -210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[467.3186492919922, 575.0409545898438]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-360.0, -380.0}">
+        <vertex name="vertex1" value="[172.3186492919922, 410.04095458984375]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-360.0,y=-380.0}, tail={id=&quot;Central Computation Node.intruder&quot;,x=50.0,y=-220.0}, points={-360.0,-500.0,0.0,-500.0,0.0,-230.0} },{ head={id=&quot;relation2.vertex1&quot;,x=-360.0,y=-380.0}, tail={id=&quot;InstanceOfRobot1.intruderPosition&quot;,x=-260.0,y=-370.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=-360.0,y=-380.0}, tail={id=&quot;InstanceOfRobot2.intruderPosition&quot;,x=-260.0,y=-300.0}, points={-360.0,-310.0} },{ head={id=&quot;relation2.vertex1&quot;,x=-360.0,y=-380.0}, tail={id=&quot;InstanceOfRobot0.intruderPosition&quot;,x=-260.0,y=-450.0}, points={-360.0,-460.0} },{ head={id=&quot;InstanceOfIntruder.position&quot;,x=-480.0,y=-380.0}, tail={id=&quot;relation2.vertex1&quot;,x=-360.0,y=-380.0}, points={} },{ head={id=&quot;InstanceOfRobot3.intruderPosition&quot;,x=-260.0,y=-210.0}, tail={id=&quot;relation2.vertex1&quot;,x=-360.0,y=-380.0}, points={-360.0,-220.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Central Computation Node.intruder&quot;,x=582.3186492919922,y=565.0409545898438}, tail={id=&quot;relation2.vertex1&quot;,x=172.3186492919922,y=410.04095458984375}, points={537.3186492919922,555.0409545898438,537.3186492919922,285.04095458984375,172.3186492919922,285.04095458984375} },{ head={id=&quot;InstanceOfRobot1.intruderPosition&quot;,x=272.3186492919922,y=420.04095458984375}, tail={id=&quot;relation2.vertex1&quot;,x=172.3186492919922,y=410.04095458984375}, points={} },{ head={id=&quot;InstanceOfRobot2.intruderPosition&quot;,x=272.3186492919922,y=490.04095458984375}, tail={id=&quot;relation2.vertex1&quot;,x=172.3186492919922,y=410.04095458984375}, points={172.3186492919922,480.04095458984375} },{ head={id=&quot;InstanceOfRobot0.intruderPosition&quot;,x=272.3186492919922,y=335.04095458984375}, tail={id=&quot;relation2.vertex1&quot;,x=172.3186492919922,y=410.04095458984375}, points={172.3186492919922,325.04095458984375} },{ head={id=&quot;InstanceOfIntruder.position&quot;,x=52.31864929199219,y=410.04095458984375}, tail={id=&quot;relation2.vertex1&quot;,x=172.3186492919922,y=410.04095458984375}, points={} },{ head={id=&quot;InstanceOfRobot3.intruderPosition&quot;,x=272.3186492919922,y=575.0409545898438}, tail={id=&quot;relation2.vertex1&quot;,x=172.3186492919922,y=410.04095458984375}, points={172.3186492919922,565.0409545898438} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-375.0, -290.0}">
+        <vertex name="vertex1" value="[157.3186492919922, 500.04095458984375]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=-375.0,y=-290.0}, tail={id=&quot;InstanceOfRobot1.velocityInput&quot;,x=-260.0,y=-370.0}, points={-375.0,-360.0} },{ head={id=&quot;relation8.vertex1&quot;,x=-375.0,y=-290.0}, tail={id=&quot;InstanceOfRobot3.velocityInput&quot;,x=-260.0,y=-210.0}, points={-375.0,-200.0} },{ head={id=&quot;relation8.vertex1&quot;,x=-375.0,y=-290.0}, tail={id=&quot;InstanceOfRobot2.velocityInput&quot;,x=-260.0,y=-300.0}, points={} },{ head={id=&quot;InstanceOfRobot0.velocityInput&quot;,x=-260.0,y=-450.0}, tail={id=&quot;relation8.vertex1&quot;,x=-375.0,y=-290.0}, points={-375.0,-440.0} },{ head={id=&quot;MicrostepDelay.output&quot;,x=-85.0,y=-150.0}, tail={id=&quot;relation8.vertex1&quot;,x=-375.0,y=-290.0}, points={-375.0,-150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot1.velocityInput&quot;,x=272.3186492919922,y=420.04095458984375}, tail={id=&quot;relation8.vertex1&quot;,x=157.3186492919922,y=500.04095458984375}, points={157.3186492919922,430.04095458984375} },{ head={id=&quot;InstanceOfRobot3.velocityInput&quot;,x=272.3186492919922,y=575.0409545898438}, tail={id=&quot;relation8.vertex1&quot;,x=157.3186492919922,y=500.04095458984375}, points={157.3186492919922,585.0409545898438} },{ head={id=&quot;InstanceOfRobot2.velocityInput&quot;,x=272.3186492919922,y=490.04095458984375}, tail={id=&quot;relation8.vertex1&quot;,x=157.3186492919922,y=500.04095458984375}, points={} },{ head={id=&quot;InstanceOfRobot0.velocityInput&quot;,x=272.3186492919922,y=335.04095458984375}, tail={id=&quot;relation8.vertex1&quot;,x=157.3186492919922,y=500.04095458984375}, points={157.3186492919922,345.04095458984375} },{ head={id=&quot;MicrostepDelay.output&quot;,x=447.3186492919922,y=640.0409545898438}, tail={id=&quot;relation8.vertex1&quot;,x=157.3186492919922,y=500.04095458984375}, points={157.3186492919922,640.0409545898438} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Central Computation Node.controls&quot;,x=50.0,y=-220.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=-85.0,y=-150.0}, points={185.0,-220.0,185.0,-150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Central Computation Node.controls&quot;,x=582.3186492919922,y=565.0409545898438}, tail={id=&quot;MicrostepDelay.input&quot;,x=447.3186492919922,y=640.0409545898438}, points={722.3186492919922,565.0409545898438,722.3186492919922,640.0409545898438} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Central Computation Node.robotMessages&quot;,x=50.0,y=-220.0}, tail={id=&quot;Merge.output&quot;,x=-65.0,y=-210.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Central Computation Node.robotMessages&quot;,x=582.3186492919922,y=565.0409545898438}, tail={id=&quot;Merge.output&quot;,x=467.3186492919922,y=575.0409545898438}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot0.robotMeasurement&quot;,x=-260.0,y=-450.0}, tail={id=&quot;Merge.input&quot;,x=-65.0,y=-210.0,index=4}, points={-120.0,-450.0,-120.0,-225.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot0.robotMeasurement&quot;,x=272.3186492919922,y=335.04095458984375}, tail={id=&quot;Merge.input&quot;,x=467.3186492919922,y=575.0409545898438,index=4}, points={417.3186492919922,335.04095458984375,417.3186492919922,560.0409545898438} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot1.robotMeasurement&quot;,x=-260.0,y=-370.0}, tail={id=&quot;Merge.input&quot;,x=-65.0,y=-210.0,index=4}, points={-135.0,-370.0,-135.0,-220.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot1.robotMeasurement&quot;,x=272.3186492919922,y=420.04095458984375}, tail={id=&quot;Merge.input&quot;,x=467.3186492919922,y=575.0409545898438,index=4}, points={402.3186492919922,420.04095458984375,402.3186492919922,565.0409545898438} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot2.robotMeasurement&quot;,x=-260.0,y=-300.0}, tail={id=&quot;Merge.input&quot;,x=-65.0,y=-210.0,index=4}, points={-150.0,-300.0,-150.0,-215.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot2.robotMeasurement&quot;,x=272.3186492919922,y=490.04095458984375}, tail={id=&quot;Merge.input&quot;,x=467.3186492919922,y=575.0409545898438,index=4}, points={387.3186492919922,490.04095458984375,387.3186492919922,570.0409545898438} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot3.robotMeasurement&quot;,x=-260.0,y=-210.0}, tail={id=&quot;Merge.input&quot;,x=-65.0,y=-210.0,index=4}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfRobot3.robotMeasurement&quot;,x=272.3186492919922,y=575.0409545898438}, tail={id=&quot;Merge.input&quot;,x=467.3186492919922,y=575.0409545898438,index=4}, points={} } }">
         </property>
     </relation>
     <link port="Central Computation Node.intruder" relation="relation2"/>
