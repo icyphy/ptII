@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TwoMachineInfiniteBusControl" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -153,10 +153,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Swing Equations&#10;------------------&#10;delta_i_dot = omega_i&#10;omega_i_dot = ws/(2*Hi*a)( Pmi - D*omega_i - Pei )&#10;i = 1,2&#10;Pmi = mechanical power&#10;Pei = electrical power&#10;D = damping coefficient&#10;Hi = inertia constant of the generator&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[15.0, 60.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -166,7 +162,7 @@
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkya">
         </property>

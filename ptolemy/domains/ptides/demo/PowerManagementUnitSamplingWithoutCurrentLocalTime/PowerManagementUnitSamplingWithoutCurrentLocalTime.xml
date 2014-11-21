@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PowerManagementUnitSamplingWithoutCurrentLocalTime" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1200">
@@ -11,23 +11,23 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 22, 997, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 26, 1182, 992}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[763, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[948, 882]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7065591075043">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.9406729714907, 429.6891721491222}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{474.0, 441.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The PMU component of the power grid emulation project requires sampling at a rate of 80 samples per period&#10;of the grid frequency (60Hz in the US). Furthermore these samples must be synchronous with a UTC clock such&#10;that every 60x80th sample falls on the UTC seconds transition to within +-2.5uS. &#10;&#10;This Ptolemy example explores how to generate such sampling events for designs where these events are NOT&#10;produced outside of the control of the embedded microprocessor (thought to be the common case). For simplicity&#10;this example assumes that the grid frequency is 2Hz (rather than 60) and that 5 samples per grid period &#10;(rather than 80) are required. This is done to make the plots less dense and more readable, and because the&#10;resulting sample interval is 0.1S rather than 1/(60x80) which cannot be exactly represented in binary&#10;representation with an LSB of 1ns (as in IEEE 1588). To further simplify the plots, the UTC clock actor &#10;generates a 1PPS (one pulse per second) event to model a UTC time base with an LSB of 0.01S. &#10;&#10;These frequencies and periods are parameters of the system model.&#10; &#10;The supervisor actor issues three events at times that are parameters of the system.:&#10;-'startup' indicating that the entire system is initialized,&#10;-'pause' indicating that receiving platforms reinitialize (for example due to lost synchronization),&#10;-'resume' indicating that normal operation can resume.&#10; &#10;The PMU actor has two states: 'initialization' and 'running'. Sampling events are to be generated only in &#10;the 'running' state. The 'DiscreteSamples' are produced based on a DiscreteEvent clock actor. The UTCSamples&#10;are produced based on the UTC time base.&#10;&#10;All events are plotted in the top level DE frame of reference..">
         </property>
         <property name="center" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 455.0]">
         </property>
     </property>
     <property name="startupTime" class="ptolemy.data.expr.Parameter" value="237">
@@ -46,7 +46,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 105.0]">
         </property>
     </property>
     <property name="pauseTime" class="ptolemy.data.expr.Parameter" value="525">
@@ -65,7 +65,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
         </property>
     </property>
     <property name="resumeTime" class="ptolemy.data.expr.Parameter" value="875">
@@ -84,13 +84,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 155.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ALL TIMES AND PERIODS ARE GIVEN IN MULTIPLES OF THE LSB">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
         </property>
     </property>
     <property name="LSBseconds" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -109,7 +109,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 80.0]">
         </property>
     </property>
     <property name="gridFrequency" class="ptolemy.data.expr.Parameter" value="2">
@@ -128,7 +128,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 80.0]">
         </property>
     </property>
     <property name="samplesPerGridPeriod" class="ptolemy.data.expr.Parameter" value="5">
@@ -147,7 +147,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 105.0]">
         </property>
     </property>
     <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1/(gridFrequency*samplesPerGridPeriod*LSBseconds)">
@@ -166,11 +166,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 130.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 860.0}">
         </property>
     </property>
     <entity name="Supervisor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 265.0]">
         </property>
         <property name="pause" class="ptolemy.data.expr.Parameter" value="pauseTime">
         </property>
@@ -246,7 +254,7 @@
     </entity>
     <entity name="eventMonitor" class="ptolemy.actor.TypedCompositeActor">
         <display name="Event Monitor"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 285.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 269, 815, 517}, maximized=false}">
         </property>
@@ -433,8 +441,6 @@ separate vertically on plots.</text></svg></configure>
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
@@ -664,8 +670,6 @@ separate vertically on plots.</text></svg></configure>
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
@@ -891,7 +895,7 @@ easy detection of simultaneous events.</text></svg></configure>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 390.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -905,7 +909,7 @@ easy detection of simultaneous events.</text></svg></configure>
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[368, 54]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 210.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -918,7 +922,7 @@ easy detection of simultaneous events.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 210.0]">
         </property>
     </entity>
     <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
@@ -926,7 +930,7 @@ easy detection of simultaneous events.</text></svg></configure>
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 345.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -1306,8 +1310,6 @@ easy detection of simultaneous events.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
@@ -1584,8 +1586,6 @@ leaving the running state.
                                 </property>
                             </port>
                             <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                                <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                                </property>
                                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                                     </property>
@@ -2150,19 +2150,19 @@ same time stamp as the input event.</text></svg></configure>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[120.0, 220.0]">
+        <vertex name="vertex1" value="[285.0, 255.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[100.0, 230.0]">
+        <vertex name="vertex1" value="[265.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[75.0, 240.0]">
+        <vertex name="vertex1" value="[240.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -2170,7 +2170,7 @@ same time stamp as the input event.</text></svg></configure>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[365.0, 355.0]">
+        <vertex name="vertex1" value="[530.0, 390.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

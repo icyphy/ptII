@@ -2,17 +2,17 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AdaptiveBeamForming" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="PThales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -32.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1151, 626}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1379, 807}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[917, 516]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1145, 697]">
     </property>
     <property name="nb_ant" class="ptolemy.data.expr.Parameter" value="8">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 122.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 205.0]">
         </property>
     </property>
     <property name="nb_rg" class="ptolemy.data.expr.Parameter" value="(Tpulse*1.5E8/rg_size) -rg_min">
@@ -45,7 +45,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 87.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 170.0]">
         </property>
     </property>
     <property name="nb_pls" class="ptolemy.data.expr.Parameter" value="32">
@@ -62,7 +62,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 122.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 205.0]">
         </property>
     </property>
     <property name="nb_beams" class="ptolemy.data.expr.Parameter" value="7">
@@ -79,7 +79,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 180.0]">
         </property>
     </property>
     <property name="nb_rg_cov" class="ptolemy.data.expr.Parameter" value="10">
@@ -96,7 +96,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 42.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 125.0]">
         </property>
     </property>
     <property name="org_rg_cov" class="ptolemy.data.expr.Parameter" value="3">
@@ -113,7 +113,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 62.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 145.0]">
         </property>
     </property>
     <property name="lgth_chirp" class="ptolemy.data.expr.Parameter" value="16">
@@ -130,7 +130,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 42.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
         </property>
     </property>
     <property name="K_chirp" class="ptolemy.data.expr.Parameter" value=".2">
@@ -147,7 +147,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 62.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 145.0]">
         </property>
     </property>
     <property name="rg_min" class="ptolemy.data.expr.Parameter" value="50">
@@ -164,7 +164,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 62.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 145.0]">
         </property>
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value=".03">
@@ -181,7 +181,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 47.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 130.0]">
         </property>
     </property>
     <property name="Tpulse" class="ptolemy.data.expr.Parameter" value="5E-5">
@@ -198,7 +198,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 72.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
     <property name="SubarraySpacing" class="ptolemy.data.expr.Parameter" value=".09">
@@ -215,7 +215,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 180.0]">
         </property>
     </property>
     <property name="Targ1_CIR" class="ptolemy.data.expr.Parameter" value="-6">
@@ -232,7 +232,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 42.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 125.0]">
         </property>
     </property>
     <property name="Targ1_V" class="ptolemy.data.expr.Parameter" value="-100">
@@ -249,7 +249,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 62.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 145.0]">
         </property>
     </property>
     <property name="Targ1_Dist" class="ptolemy.data.expr.Parameter" value="3000">
@@ -266,7 +266,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 87.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 170.0]">
         </property>
     </property>
     <property name="Targ1_RCS" class="ptolemy.data.expr.Parameter" value="2">
@@ -283,7 +283,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 107.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 190.0]">
         </property>
     </property>
     <property name="rg_size" class="ptolemy.data.expr.Parameter" value="30">
@@ -300,7 +300,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 42.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 125.0]">
         </property>
     </property>
     <property name="Beamwidth" class="ptolemy.data.expr.Parameter" value="15">
@@ -317,7 +317,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 180.0]">
         </property>
     </property>
     <property name="noise_power" class="ptolemy.data.expr.Parameter" value="2">
@@ -334,7 +334,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 112.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 195.0]">
         </property>
     </property>
     <property name="jam_CIR" class="ptolemy.data.expr.Parameter" value="30">
@@ -351,7 +351,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 47.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 130.0]">
         </property>
     </property>
     <property name="jam_power" class="ptolemy.data.expr.Parameter" value="2000">
@@ -368,7 +368,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 72.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 155.0]">
         </property>
     </property>
     <property name="jam_freq_MHz" class="ptolemy.data.expr.Parameter" value="1">
@@ -385,21 +385,21 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.75, 222.125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{572.5, 348.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Application parameters:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 7.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 90.0]">
         </property>
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 67.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 150.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="967.0">
         </property>
@@ -411,23 +411,23 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal generation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 347.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 430.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Adaptive beam forming">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 407.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 490.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Beam forming">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 202.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 285.0]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[678.0, 199.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[778.0, 282.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="460.0">
         </property>
@@ -437,7 +437,7 @@
         </property>
     </property>
     <property name="Rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 387.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 470.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="593.0">
         </property>
@@ -447,7 +447,7 @@
         </property>
     </property>
     <property name="Rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 282.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 365.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="400.0">
         </property>
@@ -459,13 +459,15 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An Adaptive Beam Forming radar application in Pthales. The model doesn't output anything when executed.&#10;This is normal. The original model by Thales contains sink actors that store the outputs of the model into&#10;excel files. These actors are proprietary to Thales and not distributed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -62.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 20.0]">
         </property>
     </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Remi Barrere and Eric Lenormand (Thales).">
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 495.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Remi Barrere and Eric Lenormand (Thales)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 607.5]">
         </property>
     </property>
     <entity name="ApplyAdaptiveFilter" class="ptolemy.domains.pthales.lib.PthalesGenericActor">
@@ -475,7 +477,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Apply_Filter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 297.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 380.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{32}">
         </property>
@@ -543,7 +545,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="CovAvCov">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 357.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 440.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -593,7 +595,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="CalcWeights">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 327.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 410.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{7}">
         </property>
@@ -661,7 +663,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Apply_Filter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 192.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 275.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{32}">
         </property>
@@ -729,7 +731,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Mat_Invert">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 342.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 425.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -779,7 +781,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Slid_Filter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 277.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 360.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{185}">
         </property>
@@ -847,7 +849,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Calc_SteerVect">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 247.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 330.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -879,7 +881,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="MAT_fft_CF">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 192.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 275.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -927,7 +929,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Calc_Chirp">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 282.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 365.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -959,7 +961,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Calc_Echo">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 222.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 305.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{32}">
         </property>
@@ -1009,7 +1011,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="AddNoise">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 222.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 305.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{8,200}">
         </property>
@@ -1059,7 +1061,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="AddJam">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 222.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 305.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -1109,7 +1111,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="DecimBy4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 287.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 370.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -1159,7 +1161,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="Matmat">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 452.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 535.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
@@ -1225,7 +1227,7 @@
         </property>
         <property name="function" class="ptolemy.data.expr.StringParameter" value="MAT_fft_CF">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 297.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[925.0, 380.0]">
         </property>
         <property name="internalRepetitions" class="ptolemy.data.expr.Parameter" value="{}">
         </property>

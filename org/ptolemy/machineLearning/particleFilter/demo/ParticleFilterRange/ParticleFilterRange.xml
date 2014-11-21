@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ParticleFilterRange" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -119,7 +119,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-74.5, 9.971183776855469]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 10.0]">
         </property>
     </entity>
     <entity name="ParticleFilterRange" class="org.ptolemy.machineLearning.particleFilter.ParticleFilterRange">
@@ -131,7 +131,7 @@
         </property>
         <property name="observerPosition" class="ptolemy.actor.parameters.PortParameter" value="{15.0, -3.67394039744206E-15}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.5, -180.02881622314453]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, -185.0]">
         </property>
         <property name="z_m" class="ptolemy.data.expr.Parameter" value="32.29694122439">
         </property>
@@ -393,7 +393,7 @@
         <link port="Expression.in" relation="relation"/>
     </entity>
     <entity name="Sensor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.5, -105.02881622314453]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, -105.0]">
         </property>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="2.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -537,7 +537,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-74.5, -190.02881622314453]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, -195.0]">
         </property>
         <port name="record" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -546,7 +546,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.5, -180.02881622314453]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, -125.0]">
         </property>
         <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="200">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -738,20 +738,12 @@
         </property>
         <vertex name="vertex1" value="[15.5, 9.971183776855469]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const2.output&quot;,x=-105.0,y=-20.0}, tail={id=&quot;relation9.vertex1&quot;,x=-15.0,y=-20.0}, points={} },{ head={id=&quot;Display.target&quot;,x=495.0,y=-210.0}, tail={id=&quot;relation9.vertex1&quot;,x=-15.0,y=-20.0}, points={400.0,-210.0,400.0,-20.0} },{ head={id=&quot;Sensor.target&quot;,x=85.0,y=-135.0}, tail={id=&quot;relation9.vertex1&quot;,x=-15.0,y=-20.0}, points={-15.0,-125.0} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ParticleFilterRange.z_m&quot;,x=300.0,y=-210.0}, tail={id=&quot;Sensor.distance&quot;,x=85.0,y=-135.0}, points={180.0,-200.0,180.0,-135.0} } }">
-        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ParticleFilterRange.observerPosition&quot;,x=300.0,y=-210.0}, tail={id=&quot;RecordToArray.output&quot;,x=-105.0,y=-220.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ParticleFilterRange.particleOutput&quot;,x=300.0,y=-210.0}, tail={id=&quot;Display.particles&quot;,x=495.0,y=-210.0}, points={} } }">
-        </property>
     </relation>
     <link port="Const2.output" relation="relation9"/>
     <link port="Const2.trigger" relation="relation6"/>

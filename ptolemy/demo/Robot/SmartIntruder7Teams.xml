@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmartIntruder7Teams" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -13,16 +13,16 @@
         </property>
         <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, -20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-66.53225708007812, -29.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1319, 693}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1581, 748}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1085, 583]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1347, 638]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5644236705176824">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{953.4550781249999, 461.34546874999995}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{672.375, 301.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -33,7 +33,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An intruder model that moves at constant speed and&#10;randomly changes direction at each discrete time step.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-5.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-126.53225708007812, 15.5]">
         </property>
     </property>
     <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://ptango.eecs.berkeley.edu:8077/keyvalue&quot;">
@@ -52,7 +52,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, -40.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[433.4677429199219, -49.5]">
         </property>
     </property>
     <property name="maxSpeed" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -71,7 +71,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -40.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[3.467742919921875, -49.5]">
         </property>
     </property>
     <property name="teamNames" class="ptolemy.data.expr.Parameter" value="{&quot;team0&quot;,&quot;team1&quot;,&quot;team2&quot;,&quot;team3&quot;,&quot;team4&quot;,&quot;team5&quot;,&quot;team6&quot;}">
@@ -90,13 +90,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{875.0, -40.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[833.4677429199219, -49.5]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An intruder that moves away from a team of search robots. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-205.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-205.0, 25.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Intruder">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -119,11 +119,24 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, -40.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[263.4677429199219, -49.5]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 635.0]">
+        </property>
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="4.4">
+            <display name="Object spacing"/>
         </property>
     </property>
     <class name="KVtoArray" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1400.0, -10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1338.4677429199219, -19.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 134, 736, 633}, maximized=false}">
         </property>
@@ -281,11 +294,11 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 425.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-66.53225708007812, 370.5]">
         </property>
     </entity>
     <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[273.4677429199219, 115.5]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -295,19 +308,19 @@
         </port>
     </entity>
     <entity name="ArrayToElements2" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 185.5]">
         </property>
     </entity>
     <entity name="ArrayToElements3" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 285.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 245.5]">
         </property>
     </entity>
     <entity name="ArrayToElements4" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 355.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 305.5]">
         </property>
     </entity>
     <entity name="Intruder" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{775.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[563.4677429199219, 115.5]">
         </property>
         <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{0,10}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -687,11 +700,11 @@
         <link port="AddSubtract.output" relation="relation"/>
     </entity>
     <entity name="ArrayToElements5" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 425.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 370.5]">
         </property>
     </entity>
     <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1380.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1143.4677429199219, 95.5]">
         </property>
     </entity>
     <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
@@ -725,7 +738,7 @@
         </property>
         <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[9.645842905536822E-6,65.00000000000087]&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1165.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[943.4677429199219, 95.5]">
         </property>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -762,15 +775,15 @@
         </port>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1010.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[793.4677429199219, 115.5]">
         </property>
     </entity>
     <entity name="JSONToToken5" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1265.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1038.4677429199219, 95.5]">
         </property>
     </entity>
     <entity name="InstanceOfKVtoArray" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.46774291992188, 90.5]">
         </property>
         <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
@@ -778,7 +791,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfKVtoArray2" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 285.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 245.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(2)">
         </property>
@@ -788,7 +801,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfKVtoArray3" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 355.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 305.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(3)">
         </property>
@@ -798,7 +811,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfKVtoArray4" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 425.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 370.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(0)">
         </property>
@@ -818,7 +831,7 @@
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="50">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1760.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1398.4677429199219, 125.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -834,7 +847,7 @@
         </configure>
     </entity>
     <entity name="InstanceOfKVtoArray5" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 585.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 515.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(4)">
         </property>
@@ -844,7 +857,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfKVtoArray6" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 515.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 455.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(5)">
         </property>
@@ -854,7 +867,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfKVtoArray7" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 650.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 580.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(6)">
         </property>
@@ -864,163 +877,163 @@
         </entity>
     </entity>
     <entity name="ArrayToElements6" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 515.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 455.5]">
         </property>
     </entity>
     <entity name="ArrayToElements7" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 585.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 515.5]">
         </property>
     </entity>
     <entity name="ArrayToElements8" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1375.0, 650.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 580.5]">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{135.0, 425.0}">
+        <vertex name="vertex1" value="[-1.532257080078125, 370.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=425.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray.trigger&quot;,x=210.0,y=125.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, points={135.0,125.0} },{ head={id=&quot;InstanceOfKVtoArray2.trigger&quot;,x=210.0,y=285.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, points={135.0,285.0} },{ head={id=&quot;InstanceOfKVtoArray3.trigger&quot;,x=210.0,y=355.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, points={135.0,355.0} },{ head={id=&quot;InstanceOfKVtoArray4.trigger&quot;,x=205.0,y=425.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, points={} },{ head={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, tail={id=&quot;InstanceOfKVtoArray5.trigger&quot;,x=210.0,y=585.0}, points={135.0,585.0} },{ head={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, tail={id=&quot;InstanceOfKVtoArray6.trigger&quot;,x=205.0,y=515.0}, points={135.0,515.0} },{ head={id=&quot;relation6.vertex1&quot;,x=135.0,y=425.0}, tail={id=&quot;InstanceOfKVtoArray7.trigger&quot;,x=205.0,y=650.0}, points={135.0,650.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=-66.53225708007812,y=370.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray.trigger&quot;,x=73.46774291992188,y=90.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,90.5} },{ head={id=&quot;InstanceOfKVtoArray2.trigger&quot;,x=68.46774291992188,y=245.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,245.5} },{ head={id=&quot;InstanceOfKVtoArray3.trigger&quot;,x=68.46774291992188,y=305.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,305.5} },{ head={id=&quot;InstanceOfKVtoArray4.trigger&quot;,x=68.46774291992188,y=370.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray5.trigger&quot;,x=68.46774291992188,y=515.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,515.5} },{ head={id=&quot;InstanceOfKVtoArray6.trigger&quot;,x=68.46774291992188,y=455.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,455.5} },{ head={id=&quot;InstanceOfKVtoArray7.trigger&quot;,x=68.46774291992188,y=580.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,580.5} } }">
         </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{325.0, 425.0}">
+        <vertex name="vertex1" value="[173.46774291992188, 370.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1320.0,y=125.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=440.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray4.x&quot;,x=205.0,y=425.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=425.0}, points={} },{ head={id=&quot;ArrayToElements5.input&quot;,x=1375.0,y=425.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=425.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=425.0}, points={325.0,120.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1380.0,y=130.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=425.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray4.x&quot;,x=68.46774291992188,y=370.5}, tail={id=&quot;relation14.vertex1&quot;,x=173.46774291992188,y=370.5}, points={} },{ head={id=&quot;ArrayToElements5.input&quot;,x=1138.4677429199219,y=370.5}, tail={id=&quot;relation14.vertex1&quot;,x=173.46774291992188,y=370.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation14.vertex1&quot;,x=173.46774291992188,y=370.5}, points={173.46774291992188,85.5} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{415.0, 125.0}">
+        <vertex name="vertex1" value="[213.46774291992188, 90.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.input&quot;,x=1375.0,y=220.0}, tail={id=&quot;relation10.vertex1&quot;,x=415.0,y=125.0}, points={415.0,220.0} },{ head={id=&quot;InstanceOfKVtoArray.x&quot;,x=210.0,y=125.0}, tail={id=&quot;relation10.vertex1&quot;,x=415.0,y=125.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation10.vertex1&quot;,x=415.0,y=125.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.input&quot;,x=1138.4677429199219,y=185.5}, tail={id=&quot;relation10.vertex1&quot;,x=213.46774291992188,y=90.5}, points={213.46774291992188,185.5} },{ head={id=&quot;InstanceOfKVtoArray.x&quot;,x=73.46774291992188,y=90.5}, tail={id=&quot;relation10.vertex1&quot;,x=213.46774291992188,y=90.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation10.vertex1&quot;,x=213.46774291992188,y=90.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{340.0, 285.0}">
+        <vertex name="vertex1" value="[183.46774291992188, 245.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.input&quot;,x=1375.0,y=285.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=285.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray2.x&quot;,x=210.0,y=285.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=285.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=285.0}, points={340.0,130.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.input&quot;,x=1138.4677429199219,y=245.5}, tail={id=&quot;relation19.vertex1&quot;,x=183.46774291992188,y=245.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray2.x&quot;,x=68.46774291992188,y=245.5}, tail={id=&quot;relation19.vertex1&quot;,x=183.46774291992188,y=245.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation19.vertex1&quot;,x=183.46774291992188,y=245.5}, points={183.46774291992188,95.5} } }">
         </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{355.0, 355.0}">
+        <vertex name="vertex1" value="[188.46774291992188, 305.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.input&quot;,x=1375.0,y=355.0}, tail={id=&quot;relation21.vertex1&quot;,x=355.0,y=355.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray3.x&quot;,x=210.0,y=355.0}, tail={id=&quot;relation21.vertex1&quot;,x=355.0,y=355.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation21.vertex1&quot;,x=355.0,y=355.0}, points={355.0,135.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.input&quot;,x=1138.4677429199219,y=305.5}, tail={id=&quot;relation21.vertex1&quot;,x=188.46774291992188,y=305.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray3.x&quot;,x=68.46774291992188,y=305.5}, tail={id=&quot;relation21.vertex1&quot;,x=188.46774291992188,y=305.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation21.vertex1&quot;,x=188.46774291992188,y=305.5}, points={188.46774291992188,100.5} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=1165.0,y=130.0}, tail={id=&quot;TokenToJSON.output&quot;,x=1010.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=943.4677429199219,y=95.5}, tail={id=&quot;TokenToJSON.output&quot;,x=793.4677429199219,y=115.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Intruder.robotPosition&quot;,x=775.0,y=150.0}, tail={id=&quot;TokenToJSON.input&quot;,x=1010.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Intruder.robotPosition&quot;,x=563.4677429199219,y=115.5}, tail={id=&quot;TokenToJSON.input&quot;,x=793.4677429199219,y=115.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1380.0,y=130.0}, tail={id=&quot;JSONToToken5.output&quot;,x=1265.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1143.4677429199219,y=95.5}, tail={id=&quot;JSONToToken5.output&quot;,x=1038.4677429199219,y=95.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=1165.0,y=130.0}, tail={id=&quot;JSONToToken5.input&quot;,x=1265.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=943.4677429199219,y=95.5}, tail={id=&quot;JSONToToken5.input&quot;,x=1038.4677429199219,y=95.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.output&quot;,x=480.0,y=150.0}, tail={id=&quot;Intruder.searchTeamLocations&quot;,x=775.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.output&quot;,x=273.4677429199219,y=115.5}, tail={id=&quot;Intruder.searchTeamLocations&quot;,x=563.4677429199219,y=115.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=1380.0,y=130.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, points={1475.0,130.0,1475.0,115.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=1143.4677429199219,y=95.5,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1238.4677429199219,95.5,1238.4677429199219,80.5} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.output&quot;,x=1375.0,y=220.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, points={1490.0,220.0,1490.0,120.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.output&quot;,x=1138.4677429199219,y=185.5,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1243.4677429199219,185.5,1243.4677429199219,85.5} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=1375.0,y=285.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, points={1505.0,285.0,1505.0,125.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=1138.4677429199219,y=245.5,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1248.4677429199219,245.5,1248.4677429199219,90.5} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.output&quot;,x=1375.0,y=355.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, points={1535.0,355.0,1535.0,130.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.output&quot;,x=1138.4677429199219,y=305.5,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1263.4677429199219,305.5,1263.4677429199219,95.5} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements5.output&quot;,x=1375.0,y=425.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, points={1565.0,425.0,1565.0,135.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements5.output&quot;,x=1138.4677429199219,y=370.5,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1278.4677429199219,370.5,1278.4677429199219,100.5} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=1380.0,y=130.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=1143.4677429199219,y=95.5,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, points={} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.output&quot;,x=1375.0,y=220.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, points={1520.0,225.0,1520.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.output&quot;,x=1138.4677429199219,y=185.5,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1258.4677429199219,190.5,1258.4677429199219,105.5} } }">
         </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=1375.0,y=285.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, points={1550.0,290.0,1550.0,145.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=1138.4677429199219,y=245.5,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1268.4677429199219,250.5,1268.4677429199219,110.5} } }">
         </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.output&quot;,x=1375.0,y=355.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, points={1580.0,360.0,1580.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.output&quot;,x=1138.4677429199219,y=305.5,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1283.4677429199219,310.5,1283.4677429199219,115.5} } }">
         </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements5.output&quot;,x=1375.0,y=425.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, points={1610.0,430.0,1610.0,155.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements5.output&quot;,x=1138.4677429199219,y=370.5,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, points={1298.4677429199219,375.5,1298.4677429199219,120.5} } }">
         </property>
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{385.0, 515.0}">
+        <vertex name="vertex1" value="[203.46774291992188, 455.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation24.vertex1&quot;,x=385.0,y=515.0}, tail={id=&quot;ArrayToElements6.input&quot;,x=1375.0,y=515.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray6.x&quot;,x=205.0,y=515.0}, tail={id=&quot;relation24.vertex1&quot;,x=385.0,y=515.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation24.vertex1&quot;,x=385.0,y=515.0}, points={385.0,145.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements6.input&quot;,x=1138.4677429199219,y=455.5}, tail={id=&quot;relation24.vertex1&quot;,x=203.46774291992188,y=455.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray6.x&quot;,x=68.46774291992188,y=455.5}, tail={id=&quot;relation24.vertex1&quot;,x=203.46774291992188,y=455.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation24.vertex1&quot;,x=203.46774291992188,y=455.5}, points={203.46774291992188,110.5} } }">
         </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{370.0, 585.0}">
+        <vertex name="vertex1" value="[193.46774291992188, 515.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation22.vertex1&quot;,x=370.0,y=585.0}, tail={id=&quot;ArrayToElements7.input&quot;,x=1375.0,y=585.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray5.x&quot;,x=210.0,y=585.0}, tail={id=&quot;relation22.vertex1&quot;,x=370.0,y=585.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation22.vertex1&quot;,x=370.0,y=585.0}, points={370.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements7.input&quot;,x=1138.4677429199219,y=515.5}, tail={id=&quot;relation22.vertex1&quot;,x=193.46774291992188,y=515.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray5.x&quot;,x=68.46774291992188,y=515.5}, tail={id=&quot;relation22.vertex1&quot;,x=193.46774291992188,y=515.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation22.vertex1&quot;,x=193.46774291992188,y=515.5}, points={193.46774291992188,105.5} } }">
         </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, tail={id=&quot;ArrayToElements6.output&quot;,x=1375.0,y=515.0,index=2}, points={1595.0,140.0,1595.0,515.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, tail={id=&quot;ArrayToElements6.output&quot;,x=1138.4677429199219,y=455.5,index=2}, points={1288.4677429199219,105.5,1288.4677429199219,455.5} } }">
         </property>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, tail={id=&quot;ArrayToElements6.output&quot;,x=1375.0,y=515.0,index=2}, points={1640.0,160.0,1640.0,520.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, tail={id=&quot;ArrayToElements6.output&quot;,x=1138.4677429199219,y=455.5,index=2}, points={1308.4677429199219,125.5,1308.4677429199219,460.5} } }">
         </property>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, tail={id=&quot;ArrayToElements7.output&quot;,x=1375.0,y=585.0,index=2}, points={1625.0,145.0,1625.0,585.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, tail={id=&quot;ArrayToElements7.output&quot;,x=1138.4677429199219,y=515.5,index=2}, points={1303.4677429199219,110.5,1303.4677429199219,515.5} } }">
         </property>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, tail={id=&quot;ArrayToElements7.output&quot;,x=1375.0,y=585.0,index=2}, points={1670.0,165.0,1670.0,590.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, tail={id=&quot;ArrayToElements7.output&quot;,x=1138.4677429199219,y=515.5,index=2}, points={1323.4677429199219,130.5,1323.4677429199219,520.5} } }">
         </property>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{400.0, 650.0}">
+        <vertex name="vertex1" value="[208.46774291992188, 580.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation28.vertex1&quot;,x=400.0,y=650.0}, tail={id=&quot;ArrayToElements8.input&quot;,x=1375.0,y=650.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray7.x&quot;,x=205.0,y=650.0}, tail={id=&quot;relation28.vertex1&quot;,x=400.0,y=650.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=480.0,y=150.0,index=7}, tail={id=&quot;relation28.vertex1&quot;,x=400.0,y=650.0}, points={400.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements8.input&quot;,x=1138.4677429199219,y=580.5}, tail={id=&quot;relation28.vertex1&quot;,x=208.46774291992188,y=580.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray7.x&quot;,x=68.46774291992188,y=580.5}, tail={id=&quot;relation28.vertex1&quot;,x=208.46774291992188,y=580.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation28.vertex1&quot;,x=208.46774291992188,y=580.5}, points={208.46774291992188,115.5} } }">
         </property>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=1760.0,y=160.0,index=8}, tail={id=&quot;ArrayToElements8.output&quot;,x=1375.0,y=650.0,index=2}, points={1655.0,150.0,1655.0,650.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=1398.4677429199219,y=125.5,index=8}, tail={id=&quot;ArrayToElements8.output&quot;,x=1138.4677429199219,y=580.5,index=2}, points={1318.4677429199219,115.5,1318.4677429199219,580.5} } }">
         </property>
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=1760.0,y=160.0,index=8}, tail={id=&quot;ArrayToElements8.output&quot;,x=1375.0,y=650.0,index=2}, points={1685.0,170.0,1685.0,655.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=1398.4677429199219,y=125.5,index=8}, tail={id=&quot;ArrayToElements8.output&quot;,x=1138.4677429199219,y=580.5,index=2}, points={1328.4677429199219,135.5,1328.4677429199219,585.5} } }">
         </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation6"/>
