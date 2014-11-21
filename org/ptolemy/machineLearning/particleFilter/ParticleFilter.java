@@ -26,6 +26,7 @@
 
  */
 package org.ptolemy.machineLearning.particleFilter;
+ 
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.MatrixToken;
@@ -223,10 +224,6 @@ public class ParticleFilter extends AbstractParticleFilter {
                     System.err.println("Duplicate field in " + this.getName());
                 }
             }
-        } else if (attribute == measurementCovariance) {
-            double[][] proposed = ((MatrixToken) measurementCovariance
-                    .getToken()).doubleMatrix();
-            _Sigma = proposed;
         } else {
             super.attributeChanged(attribute);
         }
@@ -275,7 +272,7 @@ public class ParticleFilter extends AbstractParticleFilter {
             }
         }
     }
-  
+
     /**
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
@@ -292,7 +289,7 @@ public class ParticleFilter extends AbstractParticleFilter {
             throw new IllegalActionException("Missing Parameter named: " + parameterName);
         } 
     } 
-    
+
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
@@ -311,5 +308,30 @@ public class ParticleFilter extends AbstractParticleFilter {
 
         measurementCovariance = new Parameter(this, "measurementCovariance");
         measurementCovariance.setExpression("[10.0,0.0;0.0,10.0]"); 
-    } 
+    }
+
+    @Override
+    protected Parameter getMeasurementParameter(String fullName)
+            throws IllegalActionException {
+        String portName = fullName.substring(0,fullName.length()-2);
+        return getUserDefinedParameter(portName);
+    }
+
+    @Override
+    protected InputType getInputType(String inputName) {
+
+        if (inputName.endsWith("_m")) {
+            return InputType.MEASUREMENT_INPUT;
+        } else {
+            return InputType.CONTROL_INPUT;
+        }
+    }
+
+    @Override
+    protected Parameter getNoiseParameter(String inputName) {
+        //just one noise parameter for this actor
+        return (Parameter)this.getAttribute("measurementCovariance");
+        
+    }
+
 }
