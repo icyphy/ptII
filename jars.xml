@@ -54,6 +54,7 @@
     <include name="ptolemy/actor/gui/jnlp/PtinyKeplerApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/SpaceApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/ViptosApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.jar" />
     <include name="ptolemy/actor/gui/ptjacl/ptjacl.jar" />
     <include name="ptolemy/actor/gui/run/run.jar" />
@@ -5763,6 +5764,16 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
 	<include name="ptolemy/actor/gui/jnlp/HyVisualApplication.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/gui/jnlp/ViptosApplication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/jnlp/ViptosApplication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+	<include name="ptolemy/actor/gui/jnlp/ViptosApplication.class"/>
       </fileset>
     </jar>
 
