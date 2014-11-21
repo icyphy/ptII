@@ -30,10 +30,10 @@ TARGET = main.c
 
 # Dependencies
 DEPS = \
-	includes/fmi.h \
-	includes/fmiFunctions.h \
-	includes/fmiFunctionTypes.h \
-	includes/fmiTypesPlatform.h \
+	includes/fmi2.h \
+	includes/fmi2Functions.h \
+	includes/fmi2FunctionTypes.h \
+	includes/fmi2TypesPlatform.h \
 	parser/XmlElement.h \
 	parser/XmlParser.h \
 	parser/XmlParserCApi.h \
@@ -101,11 +101,10 @@ PTCGCompiler=@PTCGCompiler@
 main: main.o fmi/shared/sim_support.o	
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
 
-
 FMU_DIRECTORY=$(PTII)/ptolemy/actor/lib/fmi/test/auto
 run: @modelName@
 	@echo "FIXME: Update ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in so that the names of the fmus are not hardwired in to the 'run' rule."
-	./@modelName@ $(FMU_DIRECTORY)/inc20pt.fmu $(FMU_DIRECTORY)/scale20RCpt.fmu $(FMU_DIRECTORY)/output20pt.fmu 1.0 0.1 1 
+	./@modelName@ -t15 -h1 -llogAll $(PTII)/ptolemy/actor/lib/fmi/fmus/inc20pt/inc20pt.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/out20pt/out20pt.fmu
 
 
 # Rule to compile with different optimizers
