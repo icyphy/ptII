@@ -649,6 +649,7 @@ PTSVG_DIR
 PTPSDF_DIR
 PTPDFRENDERER_JAR
 PTPDFRENDERER_DIR
+PTPAHO_MQTT_PACKAGES
 PTPAHO_MQTT_JAR
 PTPAHO_MQTT_DIR
 PTOSCP5_PACKAGES
@@ -11652,6 +11653,9 @@ PTPAHO_MQTT_DIR=
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
 PTPAHO_MQTT_JAR=
 
+# PTPAHO_MQTT_PACKAGES is used in doc/makefile
+PTPAHO_MQTT_PACKAGES=
+
 if test ! -d "$PTPAHO_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTPAHO_USER_DIR is not present" >&5
 $as_echo "$PTPAHO_USER_DIR is not present" >&6; }; fi
@@ -11682,6 +11686,7 @@ if test -z "$PTPAHO_MQTT_JAR"; then
 else
    updateClasspath "$PTPAHO_MQTT_JAR"
    PTPAHO_MQTT_DIR=localStorage
+   PTPAHO_MQTT_PACKAGES=ptolemy.actor.lib.jjs.modules.localStorage
 fi
 
 #--------------------------------------------------------------------
@@ -14023,6 +14028,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
+
+
+# PTPAHO_MQTT_PACKAGES is used in doc/makefile
 
 
 # Set to pdf and used in ptolemy/vergil/makefile if
