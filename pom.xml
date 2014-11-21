@@ -722,6 +722,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>**/diva/util/java2d/svg/**</exclude>
            <exclude>**/ptolemy/backtrack/eclipse/**</exclude>
            <exclude>**/ptolemy/backtrack/test/**</exclude>
+	   <exclude>org/ptolemy/ssm/**</exclude>
            <exclude>doc/coding/templates/**</exclude>
 	   <exclude>ptdb/**</exclude>
            <exclude>ptolemy/copernicus/kernel/fragment/**</exclude>
