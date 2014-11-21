@@ -9,8 +9,7 @@
 // to use directly, but that the accessor support functions below
 // use. These all have names beginning with underscore.
 //
-// Set debug to true to see console outputs.
-var _debug = false;
+// Set a global variable _debug to true to see console outputs.
 
 ////////////////////
 // Default fire function, which does nothing.
