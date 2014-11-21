@@ -13,7 +13,7 @@
     char csv_separator = ',';
     char **categories = NULL;
     int nCategories = 0;
-    fmiBoolean visible = fmiFalse;           // no simulator user interface
+    fmi2Boolean visible = fmi2False;           // no simulator user interface
 
     // Create and allocate arrays for FMUs and port mapping
     FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));

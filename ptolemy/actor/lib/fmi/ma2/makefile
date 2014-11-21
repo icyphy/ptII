@@ -107,7 +107,7 @@ FMUS = \
 	../fmus/out20pt/out20pt.fmu
 
 FMUS0 = \
-	../fmus/floor20pt/floor20pt.fmu \
+	../fmus/inc20pt/inc20pt.fmu \
 	../fmus/out20pt/out20pt.fmu
 
 # Run the master algorithm executable on two fmus.
@@ -125,8 +125,8 @@ run: main $(FMUS)
 run2: main $(FMUS0)
 	./main -t15 -h1 -llogAll $(FMUS0)
 
-../fmus/floor20pt/floor20pt.fmu:
-	(cd ../fmus/floor20pt; $(MAKE))
+../fmus/inc20pt/inc20pt.fmu:
+	(cd ../fmus/inc20pt; $(MAKE))
 ../fmus/out20pt/out20pt.fmu:
 	(cd ../out20pt/out20pt; $(MAKE))
 
