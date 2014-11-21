@@ -37,7 +37,7 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -89,7 +89,7 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(TYPEDCOMPOSITEACTOR_CLASS) $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(TYPEDCOMPOSITEACTOR_CLASS) $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_fmima_cg
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)
