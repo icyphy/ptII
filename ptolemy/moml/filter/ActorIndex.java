@@ -44,6 +44,7 @@ import java.util.Set;
 
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -276,6 +277,13 @@ public class ActorIndex {
      *  a file.
      */
     public static void main(String[] args) throws Exception {
-        ActorIndex.generateActorIndex(args[0], args[1], args[2]);
+	try {
+	    ActorIndex.generateActorIndex(args[0], args[1], args[2]);
+	} catch (Throwable throwable) {
+            System.err.print(KernelException.stackTraceToString(throwable));
+            StringUtilities.exit(1);
+	}
+	// Need to call exit here because Jython and Jetty cause hangs during exit.
+	StringUtilities.exit(0);
     }
 }
