@@ -903,6 +903,9 @@ PTPAHO_MQTT_DIR =		@PTPAHO_MQTT_DIR@
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
 PTPAHO_MQTT_JAR =		@PTPAHO_MQTT_JAR@
 
+# PTPAHO_MQTT_PACKAGES is used in doc/makefile
+PTPAHO_MQTT_PACKAGES =		@PTPAHO_MQTT_PACKAGES@
+
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
