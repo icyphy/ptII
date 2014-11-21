@@ -300,6 +300,8 @@ import ptolemy.util.FileUtilities;
    </ul>
    </p>
    <p>
+   FIXME: console.log(), etc., Listen to actor, stdout, util.*()
+   <p>
    In addition to the above methods, deprecated methods are included
    in this implementation to accommodate legacy scripts:
    <ul>
@@ -391,6 +393,17 @@ public class JavaScript extends TypedAtomicActor {
         newObject._pendingTimeoutIDs = null;
 
         return newObject;
+    }
+
+    /** If debugging is turned on, then send the specified message to the
+     *  _debug() method, and otherwise send it out to stderr.
+     */
+    public void error(String message) {
+	if (_debugging) {
+	    _debug(message);
+	} else {
+	    System.err.println(message);
+	}
     }
 
     /** Execute the script, handling inputs and producing outputs as described.
@@ -587,7 +600,13 @@ public class JavaScript extends TypedAtomicActor {
         if (!_restricted) {
             _engine.put("actor", this);
         }
-        
+        // Pull in the console module, which pulls in util.
+        try {
+            _engine.eval("var console = require('console');");
+        } catch (ScriptException e) {
+            throw new IllegalActionException(this, e, "Failed to load console module");
+        }
+
         // Expose the ports as JavaScript variables.
         for (TypedIOPort port : portList()) {
             // Do not convert the scriptIn port to a JavaScript variable.
@@ -665,6 +684,17 @@ public class JavaScript extends TypedAtomicActor {
      */
     public static boolean isJavaScriptKeyword(String identifier) {
         return _KEYWORDS.contains(identifier);
+    }
+    
+    /** If debugging is turned on, then send the specified message to the
+     *  _debug() method, and otherwise send it out to stdout.
+     */
+    public void log(String message) {
+	if (_debugging) {
+	    _debug(message);
+	} else {
+	    System.out.println(message);
+	}
     }
 
     /** Execute the wrapup function, if it is defined, and exit the context for this thread.

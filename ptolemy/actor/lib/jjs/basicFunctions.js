@@ -125,7 +125,7 @@ var require = load(moduleRoot + '/external/require.js')(
     //    - an array of paths in which to look for modules.
     //    - an optional hook object that includes two callback functions for notification.
     moduleRoot,
-    [ moduleRoot + '/', moduleRoot + '/modules/' ]
+    [ moduleRoot + '/', moduleRoot + '/modules/' , moduleRoot + '/node/' ]
 );
 
 ////////////////////

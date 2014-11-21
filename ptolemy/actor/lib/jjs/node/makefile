@@ -1,4 +1,4 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript actors
+# Makefile for Nashorn-based Ptolemy II JavaScript modules from Node.js
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,13 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs
+ME =		ptolemy/actor/lib/jjs/node
 
-DIRS = 		demo doc external modules node test
+# PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
+DIRS = 		$(PTWEBSOCKET_DIR)
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
 
@@ -48,29 +49,22 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JavaScript.java
+
 	
 OTHER_FILES_TO_BE_JARED = \
-	basicFunctions.js \
-	console.js \
-	JavaScriptIcon.xml \
-	js.xml \
-	localFunctions.js
+	util.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc test
+MISC_FILES =	doc test README.txt
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	'JavaScript$$ParameterProxy.class' \
-	'JavaScript$$PortProxy.class' \
-	'JavaScript$$PtolemyJavaScript.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)

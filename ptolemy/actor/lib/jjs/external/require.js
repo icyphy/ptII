@@ -68,11 +68,12 @@
   };
 
   var resolveModuleToFile = function ( moduleName, parentDir ) {
-    var file = new File(moduleName);
-
-    if ( file.exists() ) {
-      return fileExists(file);
-    }
+    // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
+    // var file = new File(moduleName);
+    // if ( file.exists() ) {
+    //   return fileExists(file);
+    // }
+    // --- End of modified section.
     if ( moduleName.match( /^[^\.\/]/ ) ) {
       // it's a module named like so ... 'events' , 'net/http'
       //
@@ -108,6 +109,13 @@
         }
       }
     }
+    // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
+    var file = new File(moduleName);
+    if ( file.exists() ) {
+      return fileExists(file);
+    }
+    // --- End of modified section.
+
     return null;
   };
 
