@@ -161,6 +161,14 @@ import ptolemy.util.StringUtilities;
 
  </dl>
 
+ <p>To run this class from the command line without any of the
+ Ptolemy-specific scripts, try:</p>
+<pre>
+java -classpath $PTII ptolemy.actor.gui.ConfigurationApplication \
+   -run20x $PTII/ptolemy/configs/full/configuration.xml \
+   $PTII/ptolemy/actor/lib/test/auto/Ramp1.xml
+</pre>
+
  @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
  @version $Id$
  @since Ptolemy II 8.0
