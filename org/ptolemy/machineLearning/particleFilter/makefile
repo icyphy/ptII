@@ -51,12 +51,15 @@ PTPACKAGE = particleFilter
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractParticleFilter.java \
+	AbstractPredictor.java \
 	ConstraintsCalculator.java \
 	MutualInformationCalculator.java \
 	Optimizer.java \
 	ParticleFilter.java \
 	ParticleFilterRange.java \
-	Particle.java  
+	Particle.java  \
+	ParticleMutualInformation.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ParticleFilterRangeIcon.xml \
