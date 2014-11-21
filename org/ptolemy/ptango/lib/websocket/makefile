@@ -50,10 +50,9 @@ PTCLASSALLJARS =
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-    PtolemyWebSocketClientFactory.java \
 	PtolemyWebSocketServlet.java \
-	WebSocketConnectionManager.java \
 	WebSocketEndpoint.java \
+	WebSocketEndpointManager.java \
 	WebSocketReader.java \
 	WebSocketService.java \
 	WebSocketWriter.java
