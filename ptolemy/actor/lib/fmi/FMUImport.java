@@ -2360,7 +2360,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         }
         if (_fmiVersion < 2.0) {
             if (_fmiModelDescription.modelExchange) {
-                if (_fmiFreeModelInstanceFunction ! = null) {
+                if (_fmiFreeModelInstanceFunction != null) {
                     _fmiFreeModelInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent });
                 }
@@ -2368,7 +2368,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 // fmiFreeSlaveInstance is a void function.
                 // No returned status.
                 // _fmiFreeSlaveInstanceFunction can be null if wrapup() is called.
-                if (_fmiFreeSlaveInstanceFunction ! = null) {
+                if (_fmiFreeSlaveInstanceFunction != null) {
                     _fmiFreeSlaveInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent });
                 }
