@@ -625,7 +625,11 @@ test_java_codegen:
 test_c_cg:
 	$(JTCLSH) $(ROOT)/util/testsuite/CCGAuto.tcl
 
-# Run C ptolemy/cg on all the xml files in the auto subdirectory.
+# Run Functional Mock-up Unit ptolemy/cg on all the xml files in the auto subdirectory.
+test_fmima_cg:
+	$(JTCLSH) $(ROOT)/util/testsuite/FMIMAAuto.tcl
+
+# Run Java ptolemy/cg on all the xml files in the auto subdirectory.
 test_java_cg:
 	$(JTCLSH) $(ROOT)/util/testsuite/JavaCGAuto.tcl
 
