@@ -53,7 +53,7 @@ test DateToken-2.1 {Create a Date for the current time} {
     #set nowms [[$now -noconvert getTimeInMilliseconds] -noconvert getTime]
     set clockSeconds [clock seconds]
     set clockDMY [clock format $clockSeconds -format "%a %b %d"]
-    regexp "^\"$clockDMY.*" [$now toString] 
+    regexp "$clockDMY.*" [$now toString] 
 } {1}
 
 ######################################################################
@@ -183,7 +183,7 @@ test DateToken-14.0 {Add two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 add $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 -0800 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 -0800 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
 
 ######################################################################
 ####
@@ -193,7 +193,7 @@ test DateToken-14.1 {Divide two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 divide $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 -0800 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 -0800 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
 
 ######################################################################
 ####
@@ -203,7 +203,7 @@ test DateToken-14.2 {Modulo two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 modulo $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 -0800 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 -0800 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
 
 ######################################################################
 ####
@@ -213,7 +213,7 @@ test DateToken-14.3 {Multiply two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 multiply $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 -0800 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 -0800 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
 
 ######################################################################
 ####
@@ -223,7 +223,7 @@ test DateToken-14.4 {Subtract two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 subtract $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 -0800 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 -0800 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.001000000 -0800 1969")' and ptolemy.data.DateToken 'date("Wed Dec 31 16:00:00.002000000 -0800 1969")'}}
 
 ######################################################################
 ####
@@ -231,9 +231,18 @@ test DateToken-14.4 {Subtract two Dates} {
 test DateToken-14.5 {compare two Dates} {
     set t1 [java::new {ptolemy.data.DateToken long} 1]
     set t2 [java::new {ptolemy.data.DateToken long} 2]
-    catch {$t1 isCloseTo $t2 2} err
-    list $err
-} {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 -0800 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 -0800 1969"'}}
+    set res [$t1 isCloseTo $t2] 
+    list [$res toString]
+} {false}
+######################################################################
+####
+# 
+test DateToken-14.6 {compare two Dates} {
+    set t1 [java::new {ptolemy.data.DateToken long} 1]
+    set t2 [java::new {ptolemy.data.DateToken long} 1]
+    set res [$t1 isCloseTo $t2] 
+    list [$res toString]
+} {true}
 
 
 ######################################################################
