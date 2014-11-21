@@ -2360,13 +2360,18 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         }
         if (_fmiVersion < 2.0) {
             if (_fmiModelDescription.modelExchange) {
-                _fmiFreeModelInstanceFunction
-                .invokeInt(new Object[] { _fmiComponent });
+                if (_fmiFreeModelInstanceFunction ! = null) {
+                    _fmiFreeModelInstanceFunction
+                        .invokeInt(new Object[] { _fmiComponent });
+                }
             } else {
                 // fmiFreeSlaveInstance is a void function.
                 // No returned status.
-                _fmiFreeSlaveInstanceFunction
-                .invokeInt(new Object[] { _fmiComponent });
+                // _fmiFreeSlaveInstanceFunction can be null if wrapup() is called.
+                if (_fmiFreeSlaveInstanceFunction ! = null) {
+                    _fmiFreeSlaveInstanceFunction
+                        .invokeInt(new Object[] { _fmiComponent });
+                }
             }
         } else {
             _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
