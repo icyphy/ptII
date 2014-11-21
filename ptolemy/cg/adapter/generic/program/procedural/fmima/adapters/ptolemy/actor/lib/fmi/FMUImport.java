@@ -27,9 +27,19 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.lib.fmi;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.List;
+import java.util.Enumeration;
+import java.util.zip.*;
+import java.io.*;
+
+import org.ptolemy.fmi.FMIScalarVariable;
+
+import com.microstar.xml.XmlParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// FMUImport
@@ -60,7 +70,7 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
     @Override
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        
         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
         code.append(getCodeGenerator()
                 .comment(
@@ -69,33 +79,31 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
                                 + "   "
                                 + actor.getName()
                                 + " is a FMUImport: "));
+        
+        
         for (TypedIOPort input : actor.inputPortList()) {
-            code.append(getCodeGenerator().comment(" input " + input.getName()));
-            if (input.getName().equals("inc20RC1pt")) {
-                code.append("connections[1].sourceFMU = &fmus[1];\n"
-                        + "connections[1].sourcePort = getValueReference(getScalarVariable(fmus[1].modelDescription, 1));\n"
-                        + "connections[1].sourceType = fmi_Real;\n"
-                        + "connections[1].sinkFMU = &fmus[2];\n"
-                        + "connections[1].sinkPort = getValueReference(getScalarVariable(fmus[2].modelDescription, 0));\n"
-                        + "connections[1].sinkType = fmi_Real;\n");
-            }
-        }
+        	
+        	List connected_ports = input.connectedPortList();
+        	
+        	String input_module_name = input.getContainer().getName();
+        	        	
+        	for (int port_idx = 0; port_idx < connected_ports.size(); port_idx++)
+        	{
+        		TypedIOPort output = (TypedIOPort)connected_ports.get(port_idx);
+        		ptolemy.actor.lib.fmi.FMUImport source_actor = (ptolemy.actor.lib.fmi.FMUImport) output.getContainer();
+        		String out_module_name = output.getContainer().getName();
+        		
+        		code.append("connections[" + out_module_name + "_" + output.getName() + "].sourceFMU = &fmus[" + out_module_name + "];\n"
+        				+ "connections[" + out_module_name + "_" + output.getName() + "].sourcePort = getValueReference(getScalarVariable(fmus["
+        					+ out_module_name + "].modelDescription, " + source_actor.getValueReference(output.getName()) + "));\n"
+                        + "connections[" + out_module_name + "_" + output.getName() + "].sourceType = " + source_actor.getTypeOfPort(output.getName()) + ";\n"
+                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkFMU = &fmus[" + input_module_name + "];\n"
+                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkPort = getValueReference(getScalarVariable(fmus["
+                        	+ input_module_name + "].modelDescription, " + actor.getValueReference(input.getName()) + "));\n"
+                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkType = " + actor.getTypeOfPort(input.getName()) + ";\n");
+        	}
 
-        for (TypedIOPort output : actor.outputPortList()) {
-            code.append(getCodeGenerator().comment(
-                    " output " + output.getName()));
-            if (output.getName().equals("inc20RC1pt")) {
-                code.append("connections[0].sourceFMU = &fmus[0];\n"
-                        + "connections[0].sourcePort = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));\n"
-                        + "connections[0].sourceType = fmi_Integer;\n"
-                        + "connections[0].sinkFMU = &fmus[1];\n"
-                        + "connections[0].sinkPort = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));\n"
-                        + "connections[0].sinkType = fmi_Real;\n");
-            }
-
-        }
-
+        }        
         return /*processCode(code.toString())*/code.toString();
     }
-
 }

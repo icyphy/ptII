@@ -45,6 +45,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -1668,7 +1669,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
-
+        
+        getAdapter(getComponent());
+        Director directorAdapter = (Director) getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        
         try {
             // Determine which variables in the model can change
             // value during execution.

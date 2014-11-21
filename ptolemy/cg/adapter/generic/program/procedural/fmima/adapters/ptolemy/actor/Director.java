@@ -77,6 +77,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
     @Override
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+                
         // Extending ProceduralCodeGenerator start.
         //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
@@ -103,7 +104,6 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
         //ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
 
-        System.out.println("!!!!!!!! Director.java!!!!!");
         codeStream.appendCodeBlock("mainStartBlock");
         code.append(processCode(codeStream.toString()));
 
@@ -140,7 +140,6 @@ public class Director extends FMIMACodeGeneratorAdapter {
         codeStream = _templateParser.getCodeStream();
         codeStream.clear();
 
-        System.out.println("!!!!!!!! Director.java!!!!!");
         codeStream.appendCodeBlock("mainEndBlock");
         code.append(processCode(codeStream.toString()));
 
@@ -151,6 +150,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
         return code.toString();
     }
+    
     /**
      * Generate the preinitialize code. We do not call the super
      * method, because we have arguments to add here

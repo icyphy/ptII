@@ -27,12 +27,15 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
-
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
@@ -132,36 +135,41 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
 
-        //ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
+        ptolemy.actor.CompositeActor topActor = (ptolemy.actor.CompositeActor) getComponent();
+        
+        List actorList = topActor.deepEntityList();
+        
+        codeStream.appendCodeBlock("variableDeclareBlock");        
+                
+        int portCount = 0;
+        int fmuCount = 0;
+        int connectionsCount = 0;
+        
+        Iterator<?> actors = actorList.iterator();
+        while (actors.hasNext()) {
+        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();
+        	
+        	codeStream.append("#define " + actor.getName() + " "+ fmuCount++ + "\n");
+        }
+        
+        actors = actorList.iterator();
+        while (actors.hasNext()) {
+        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();        	
+        	
+        	for (TypedIOPort input : actor.inputPortList()) {
+        		codeStream.append("#define " + input.getContainer().getName() + "_" + input.getName() + " " + portCount++ + "\n");
+        		connectionsCount++;
+        	}
 
-        codeStream.appendCodeBlock("variableDeclareBlock");
+        	for (TypedIOPort output : actor.outputPortList()) {
+        		codeStream.append("#define " + output.getContainer().getName() + "_" + output.getName() + " " + portCount++ + "\n");
+        	}
+        }
 
-//         // Here we declare the contained actors
-//         List actorList = TopActor.deepEntityList();
-//         Iterator<?> actors = actorList.iterator();
-//         while (actors.hasNext()) {
-//             NamedObj actor = (NamedObj) actors.next();
-//             if (actor instanceof CompositeActor || actor instanceof AtomicActor
-//                     || actor instanceof FSMActor) {
-//                 if (actor instanceof ModalController) {
-//                     continue;
-//                 }
-//                 String actorName = CodeGeneratorAdapter.generateName(actor);
-//                 codeStream.append("$include(\"" + actorName + ".h\")");
-//             }
-//         }
-
-//         // After the actors we declare the receivers of this container
-//         Director director = TopActor.getDirector();
-//         ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
-//         String directorName = CodeGeneratorAdapter
-//                 .generateName(directorAdapter);
-//         codeStream.append("$include(\"" + directorName + ".h\")");
-
-//         // Appends the enum definition for the ports
-//         if (_enumPortNumbersDefinition != null) {
-//             codeStream.append(_enumPortNumbersDefinition);
-//         }
+        codeStream.append("#define NUMBER_OF_FMUS " + actorList.size() + "\n");
+        codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
+                
+        codeStream.appendCodeBlock("staticDeclareBlock");
 
         return processCode(codeStream.toString());
     }

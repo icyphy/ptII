@@ -1913,7 +1913,33 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         // Allow the callback functions structure to be garbage collected.
         _callbacks = null;
     }
+    
+    public List<FMIScalarVariable> getScalarVariables() {
+    	return _fmiModelDescription.modelVariables;
+    }
+    
+    public long getValueReference(String variable) {
+    	for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
+    		if (_fmiModelDescription.modelVariables.get(i).name.equals(variable)) {    			
+    			return _fmiModelDescription.modelVariables.get(i).valueReference;
+    		}
+    	}    	
+    	return -1;    	
+    }
 
+    public String getTypeOfPort(String port) {
+    	for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
+    		if (_fmiModelDescription.modelVariables.get(i).name.equals(port)) { 
+    			if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIBooleanType) return "fmi2_Boolean";
+    			else if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIIntegerType) return "fmi2_Integer";
+    			else if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIRealType) return "fmi2_Real";
+    			else if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIStringType) return "fmi2_String";
+    		}
+    	}
+    	return "";
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

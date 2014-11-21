@@ -398,6 +398,10 @@ public class FMIScalarVariable {
 
         _setValue(fmiComponent, pointerByReference, FMIStringType.class);
     }
+    
+//    public String getTypeName() {
+//    	return _typeName;
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

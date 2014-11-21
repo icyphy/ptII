@@ -159,9 +159,9 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiShared);
             }
         }
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/", directoryFmiShared,
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
                 "sim_support.c");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/", directoryFmiShared,
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
                 "sim_support.h");
 
         String directoryFmiIncludes = directoryFmi + "includes/";
@@ -170,10 +170,10 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiIncludes);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-                directoryFmiIncludes, new String[] { "fmi.h",
-                        "fmiFunctionTypes.h", "fmiFunctions.h",
-                        "fmiTypesPlatform.h" });
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma2/includes/",
+                directoryFmiIncludes, new String[] { "fmi2.h",
+                        "fmi2FunctionTypes.h", "fmi2Functions.h",
+                        "fmi2TypesPlatform.h" });
 
         String directoryFmiParser = directoryFmi + "parser/";
         if (new File(directoryFmiParser).mkdirs()) {
@@ -182,7 +182,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc(
-                "ptolemy/actor/lib/fmi/ma/parser/",
+                "ptolemy/actor/lib/fmi/ma2/parser/",
                 directoryFmiParser,
                 new String[] { "XmlElement.cpp", "XmlElement.h",
                         "XmlParserCApi.cpp", "XmlParserCApi.h",
@@ -194,7 +194,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiParserLibxml);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/libxml/",
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma2/parser/libxml/",
                 directoryFmiParserLibxml, new String[] { "dict.h",
                         "encoding.h", "entities.h", "globals.h", "hash.h",
                         "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
