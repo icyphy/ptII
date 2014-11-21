@@ -43,13 +43,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jjs
+PTPACKAGE = 	webSocket
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
 	WebSocketHelper.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
 	webSocket.js
@@ -65,7 +65,12 @@ MISC_FILES =	doc test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR) 
+	$(PTCLASSJAR) \
+	'WebSocketHelper$$1.class' \
+	'WebSocketHelper$$2.class' \
+	'WebSocketHelper$$DataHandler.class' \
+	'WebSocketHelper$$EndHandler.class' \
+	'WebSocketHelper$$ExceptionHandler.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
