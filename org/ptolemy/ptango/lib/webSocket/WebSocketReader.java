@@ -81,8 +81,6 @@ public class WebSocketReader extends TypedAtomicActor implements
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-
-        _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,6 +184,10 @@ public class WebSocketReader extends TypedAtomicActor implements
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
+        if (_endpointManager == null) {
+            _endpointManager = WebSocketEndpointManager.getInstance();
+        }
 
         _initializeModelTime = getDirector().getModelTime();
         // Subtract a tenth of a second.  As this actor is initialized
