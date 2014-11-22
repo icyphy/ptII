@@ -484,7 +484,7 @@ METROII_JARS = \
 	ptolemy/domains/metroII/metroII.jar \
 	ptolemy/domains/metroII/demo/demo.jar
 
-FULL_11_0_JARS = \
+FULL_10_0_JARS = \
 	com/cureos/cureos.jar \
 	org/ptolemy/faultModels/faultModels.jar \
 	org/ptolemy/machineImprovisation/machineImprovisation.jar \
@@ -502,8 +502,11 @@ FULL_11_0_JARS = \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	$(PTG4LTL_JAR) \
 	ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar \
-	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar \
-	$(PTVERTX_JARS)
+	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
+
+FULL_11_0_JARS = \
+	$(PTVERTX_JARS) \
+	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
@@ -616,6 +619,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/vergil/scr/scr.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(FULL_8_1_JARS) \
+	$(FULL_10_0_JARS) \
 	$(FULL_11_0_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
