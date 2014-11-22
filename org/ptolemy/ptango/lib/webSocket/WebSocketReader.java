@@ -117,7 +117,8 @@ public class WebSocketReader extends TypedAtomicActor implements
             throws IllegalActionException {
         if (attribute == path) {
             // Unsubscribe from previous path (if any)
-            if (_URIpath != null && !_URIpath.toString().isEmpty()) {
+            if (_URIpath != null && !_URIpath.toString().isEmpty()
+                 && _endpointManager != null){
             // TODO: Shared vs. individual
                 _endpointManager.unsubscribe(this, _URIpath.toString());
             }
