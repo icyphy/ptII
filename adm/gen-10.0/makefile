@@ -3010,7 +3010,7 @@ PTII_MAJOR_VERSION=$(MAJOR_VERSION)
 PTII_WINDOWS_VERSION=$(WINDOWS_VERSION)
 
 # The complete version number, used to name tar files
-PTII_VERSION=$(PTII_MAJOR_VERSION).devel
+PTII_VERSION=$(PTII_MAJOR_VERSION).beta
 
 PTEXTERNAL_NIGHTLY=/home/www/cvswww/chess.eecs.berkeley.edu/ptexternal/nightly
 update_moog:
