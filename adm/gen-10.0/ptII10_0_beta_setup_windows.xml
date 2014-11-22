@@ -705,8 +705,8 @@ The Ptiny pack is required.
 
 <!--/MacOSInclude-->
         <pack name="JRE" required="no">
-            <description>Java Runtime Environment (JRE) v1.5.0_51.  This JRE includes JAI, Java 3D, Joystick,  JMF, and Rxtx.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).  Install the JRE if you want to use the included optional packages.  Alternatively, install optionall packages by hand.  If you plan on recompiling Ptolemy II, you will need a JDK, not a JRE.</description>
-            <file src="jre" targetdir="$INSTALL_PATH"/>
+            <description>Java Runtime Environment (JRE) v1.8.  This JRE includes JAI, Java 3D, JMF, and Rxtx.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).  Install the JRE if you want to use the included optional packages.  Alternatively, install optionall packages by hand.  If you plan on recompiling Ptolemy II, you will need a JDK, not a JRE.</description>
+            <file src="jre32" targetdir="$INSTALL_PATH"/>
         </pack>
 <!--MacOSInclude-->
 
