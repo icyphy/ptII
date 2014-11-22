@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+	  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="WebSocket" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+	<doc>WebSocket actors</doc>
+
+	<entity name="WebSocketClientReader" class="org.ptolemy.ptango.lib.webSocket.WebSocketReader"/>
+	<entity name="WebSocketClientWriter" class="org.ptolemy.ptango.lib.webSocket.WebSocketWriter"/>
+	<entity name="WebSocketServerReader" class="org.ptolemy.ptango.lib.webSocket.WebSocketReader">
+		<property name="client" class="ptolemy.data.expr.Parameter" value="false"/>
+	</entity>
+	<entity name="WebSocketServerWriter" class="org.ptolemy.ptango.lib.webSocket.WebSocketWriter">
+		<property name="client" class="ptolemy.data.expr.Parameter" value="false"/>
+	</entity>
+
+      </group> 	
+      ?>
+  </configure>
+</entity>
+
+
