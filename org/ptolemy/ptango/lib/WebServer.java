@@ -38,8 +38,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.eclipse.jetty.util.resource.Resource;
-import org.ptolemy.ptango.lib.websocket.WebSocketEndpointManager;
-import org.ptolemy.ptango.lib.websocket.WebSocketService;
+import org.ptolemy.ptango.lib.webSocket.WebSocketEndpointManager;
+import org.ptolemy.ptango.lib.webSocket.WebSocketService;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.data.expr.FileParameter;

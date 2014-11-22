@@ -52,8 +52,8 @@ import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.util.resource.FileResource;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
-import org.ptolemy.ptango.lib.websocket.PtolemyWebSocketServlet;
-import org.ptolemy.ptango.lib.websocket.WebSocketEndpointManager;
+import org.ptolemy.ptango.lib.webSocket.PtolemyWebSocketServlet;
+import org.ptolemy.ptango.lib.webSocket.WebSocketEndpointManager;
 
 ///////////////////////////////////////////////////////////////////
 ////WebServerUtilities
