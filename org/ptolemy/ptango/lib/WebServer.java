@@ -162,7 +162,6 @@ public class WebServer extends AbstractInitializableAttribute {
         deployedPort.setPersistent(false);
 
         _dynamicPortSelection = false;
-        _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -331,7 +330,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // _appInfo is set in initialize()
         newObject._appInfo = null;
         newObject._dynamicPortSelection = false;
-        newObject._serverManager = WebServerManager.getInstance();
+        newObject._serverManager = null;
 
         return newObject;
     }
@@ -363,6 +362,10 @@ public class WebServer extends AbstractInitializableAttribute {
 
         if (_debugging) {
             _debug("Initializing web server.");
+        }
+        
+        if (_endpointManager == null) {
+            _endpointManager = WebSocketEndpointManager.getInstance();
         }
 
         // Remember local websocket services so the websockets can be

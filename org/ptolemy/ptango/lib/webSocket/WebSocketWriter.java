@@ -81,9 +81,6 @@ public class WebSocketWriter extends TypedAtomicActor implements
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
-
-        // TODO:  Implement server side - need separate class?
-        _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,6 +157,10 @@ public class WebSocketWriter extends TypedAtomicActor implements
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
+        if (_endpointManager == null) {
+            _endpointManager = WebSocketEndpointManager.getInstance();
+        }
         
         // Subscribe to this endpoint.  Creates a new endpoint if needed.
         // Do not subscribe local clients.  The WebServer handles these, since 
