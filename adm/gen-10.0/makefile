@@ -178,14 +178,14 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
-release_newton_all:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII/adm/gen-9.1/test/ptII$(VERSION)
+release_joule_all:
+	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
 
-release_newton_setup:
+release_joul_setup:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar setup
 
-release_newton_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII10.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+release_joule_remote4_test:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=/tmp/cxh/ptII10.0.beta/adm/gen-7.0/test/ptII$(VERSION)
 
 ####
 release_sisyphus:
@@ -304,6 +304,13 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
 	#
 	# Jogl (for the Mac)
+	if [ ! -f $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar ]; then \
+		echo "Downloading Jogl for the mac because it is too damn big to check in."; \
+		mkdir $(PTIIHOME)/vendors/jogl; \
+		cd $(PTIIHOME)/vendors/jogl; \
+		wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z; \
+		7z x jogamp-all-platforms.7z; \
+	fi
 	mkdir -p $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
 	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
 	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
@@ -2647,7 +2654,14 @@ IZPACKDIR=$(PTII)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
 IZPACK_TAR=IzPack.src.3.10.2.tar.gz
 
-# Under Solaris: gmake make_izpack TAR=gtar
+
+# If you get "makefile:2660: *** target pattern contains no `%'.
+# Stop.", then the problem is that $PTII has a semicolon in it and you
+# are sadly on a Windows box.  The workaround is 
+#   bash-4.1$ echo $PTII
+#   c:/Users/cxh.EECS/ptII10.0.beta
+#   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta foo
+# :-|
 make_izpack: $(IZPACK_COMPILE)
 $(IZPACK_COMPILE): $(PTII)/vendors/izpack
 	 cd $(PTII)/vendors/izpack/src; ant dist
