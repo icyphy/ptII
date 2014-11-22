@@ -2689,7 +2689,9 @@ $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanS
 
 # Build a 64 bit installer.  See http://jira.codehaus.org/browse/IZPACK-506
 $(PTSETUP)_64.xml: $(PTSETUP).xml
-	sed 's/ShellLink.dll/ShellLink_x64.dll/' $^ > $@
+	sed -e 's/ShellLink.dll/ShellLink_x64.dll/' \
+	    -e 's@<file src="jre32" targetdir="$INSTALL_PATH"/>@<file src="jre" targetdir="$INSTALL_PATH"/>@' \
+		$^ > $@
 
 setup64_jar: $(PTSETUP)_64.jar
 $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc
