@@ -505,8 +505,10 @@ FULL_10_0_JARS = \
 	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
 
 FULL_11_0_JARS = \
-	$(PTVERTX_JARS) \
-	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar
+	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar \
+	$(PTPAHO_MQTT_JAR) \
+	$(PTVERTX_JARS)
+
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
