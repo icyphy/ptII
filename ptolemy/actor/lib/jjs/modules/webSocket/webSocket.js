@@ -113,6 +113,7 @@ function Server(opts) {
 // Add callbacks to handle events on the web socket server.
 // Usage: on('connection', function).
 // This method Supports the following events.
+// Event 'listening': triggered when the server starts listening.
 // Event 'connection': triggered when a client web socket is connected to the listening port.
 Server.prototype.on = function(event, fn) {
     this.callbacks[event] = fn;

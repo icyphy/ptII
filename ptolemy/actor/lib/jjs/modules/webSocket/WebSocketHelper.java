@@ -31,6 +31,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
@@ -213,7 +214,6 @@ public class WebSocketHelper {
         server.websocketHandler(new Handler<ServerWebSocket>() {
             @Override
             public void handle(ServerWebSocket serverWebSocket) {
-
                 try {
                     Object obj = _engine.eval(_namespaceName);
                     
@@ -237,7 +237,25 @@ public class WebSocketHelper {
             }
             
         });
-        server.listen(port, "localhost");
+        server.listen(port, "localhost", new Handler<AsyncResult<HttpServer>>() {
+            @Override
+            public void handle(AsyncResult<HttpServer> arg0) {
+                try {
+                    Object obj = _engine.eval(_namespaceName);
+    
+                    Object[] args = new Object[2];
+                    args[0] = _currentObj;
+                    
+                    args[1] = "listening";
+                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
+                }
+                catch (NoSuchMethodException | ScriptException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            
+        });
     }
     
     /**

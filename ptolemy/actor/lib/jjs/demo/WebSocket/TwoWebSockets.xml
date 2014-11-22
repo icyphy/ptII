@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={146, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -26,6 +26,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Creates two websockets with a JavaScript module 'webSocket'.&#10;Every second, these two websockets send messages to two websocket servers&#10;running on node.js, and then receive messages from those servers.&#10;&#10;You can run the two servers with following commands within the same directory.&#10;node Server1.js&#10;node Server2.js&#10;&#10;To run these servers, you probabily need to install 'ws', a node.js websocket library&#10;with the following command.&#10;npm install ws">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-140.0, 65.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 265.0]">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
