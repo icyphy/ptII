@@ -39,6 +39,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimerTask;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -65,6 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript
@@ -696,6 +698,31 @@ public class JavaScript extends TypedAtomicActor {
 	    System.out.println(message);
 	}
     }
+    
+    /** Create a new TimerTask whose run() function invokes the run()
+     *  function of the argument in a block that is synchronized on this actor.
+     *  This is a utility function for setTimeout() and clearTimeout() in basicFunctions.js.
+     *  @param func The function to invoke (Nashorn will automatically wrap a
+     *   a function argument in a Runnable).
+     *  @return A new TimerTask.
+     */
+    public TimerTask newTimerTask(Runnable func) {
+	return new TimerTask() {
+	    public void run() {
+		synchronized(JavaScript.this) {
+		    try {
+			func.run();
+		    } catch (Throwable e) {
+			String info = "";
+			MessageHandler.error("Timer task failed" + info, e);
+			// Cancel this timer task to avoid getting into
+			// repeated failures.
+			cancel();
+		    }
+		}
+	    }
+	};
+    }
 
     /** Execute the wrapup function, if it is defined, and exit the context for this thread.
      *  @exception IllegalActionException If the parent class throws it.
@@ -884,25 +911,25 @@ public class JavaScript extends TypedAtomicActor {
          */
         public void send(int channelIndex, Token data)
         	throws NoRoomException, IllegalActionException {
-            if (_inFire) {
-                if (_debugging) {
-                    _debug("Sending " + data + " to " + _port.getName());
-                }
-        	_port.send(channelIndex, data);
-            } else {
-                if (!_executing) {
-                    // This is probably being called in a callback, but the model
-                    // execution has ended.
-                    throw new InternalErrorException("Attempt to send "
-                            + data + " to " + _port.getName()
-                            + ", but the model is not executing.");
-                }
-
-                // Not currently firing. Queue the tokens and request a firing.
-                // This should be being called in a callback that holds a
-                // synchronization lock, so synchronizing this isn't really
-                // necessary, but just in case...
-                synchronized (this) {
+            if (!_executing) {
+        	// This is probably being called in a callback, but the model
+        	// execution has ended.
+        	throw new InternalErrorException("Attempt to send "
+        		+ data + " to " + _port.getName()
+        		+ ", but the model is not executing.");
+            }
+            synchronized (this) {
+        	if (_inFire) {
+        	    // Currently firing. Can go ahead and send data.
+        	    if (_debugging) {
+        		_debug("Sending " + data + " to " + _port.getName());
+        	    }
+        	    _port.send(channelIndex, data);
+        	} else {
+        	    // Not currently firing. Queue the tokens and request a firing.
+        	    // This should be being called in a callback that holds a
+        	    // synchronization lock, so synchronizing this isn't really
+        	    // necessary, but just in case...
                     if (_outputTokens == null) {
                         _outputTokens = new HashMap<IOPort, HashMap<Integer, List<Token>>>();
                     }

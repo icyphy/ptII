@@ -12,9 +12,15 @@ function alert(message) {
 }
 
 ////////////////////
-// Clear a timeout with the specified handle.
+// Clear an interval timer with the specified handle. See setInterval().
+function clearInterval(timeout) {
+    timeout.cancel();
+}
+
+////////////////////
+// Clear a timeout with the specified handle. See setTimeout().
 function clearTimeout(timeout) {
-    error("FIXME: clearTimeout is not yet implemented.");
+    timeout.cancel();
 }
 
 ////////////////////
@@ -128,8 +134,68 @@ var require = load(moduleRoot + '/external/require.js')(
     [ moduleRoot + '/', moduleRoot + '/modules/' , moduleRoot + '/node/' ]
 );
 
+// Use a single Timer object for all timeout functions
+// (since they all have to execute in the same thread anyway).
+var _timer;
+
+////////////////////
+// Set a timer to call the specified function after the specified time and repeatedly
+// after multiples of that time.
+// Return a handle to use in clearInterval(). If there are additional arguments
+// beyond the first two, then those arguments will be passed to the function
+// when it is invoked. Note that the function will continue to be invoked after the model
+// containing this JavaScript actor has stopped executing, so you will want to
+// call clearInterval() in your wrapup() function.
+function setInterval(func, milliseconds) {
+    var callback = func;
+    // If there are arguments to the callback, create a new function.
+    // Get an array of arguments excluding the first two.
+    var tail = Array.prototype.slice.call(arguments, 2);
+    if (tail.length !== 0) {
+        callback = function() {
+            func.apply(this, tail);
+        };
+    }
+    // Share a single timer object among all timeouts.
+    if (!_timer) {
+        var Timer = Java.type('java.util.Timer');
+        // It is important that the argument be true. This ensures that the
+        // timer task is a "daemon," which means that having such a task
+        // pending will not prevent the application from exiting.
+        _timer = new Timer(true);
+    }
+    var timerTask = actor.newTimerTask(callback);
+    // The third arguments makes this repeat periodically.
+    _timer.schedule(timerTask, milliseconds, milliseconds);
+    return timerTask;
+}
+
 ////////////////////
 // Set a timeout to call the specified function after the specified time.
-// Return a handle to use in clearTimeout().
-// The setTimeout(callback, timeout) function is already built in to the Window object.
-// FIXME: Nashorn!!!
+// Return a handle to use in clearTimeout(). If there are additional arguments
+// beyond the first two, then those arguments will be passed to the function
+// when it is invoked. Note that the function may be invoked after the model
+// containing this JavaScript actor has stopped executing, so you may want to
+// call clearTimeout() in your wrapup() function.
+function setTimeout(func, milliseconds) {
+    var callback = func;
+    // If there are arguments to the callback, create a new function.
+    // Get an array of arguments excluding the first two.
+    var tail = Array.prototype.slice.call(arguments, 2);
+    if (tail.length !== 0) {
+        callback = function() {
+            func.apply(this, tail);
+        };
+    }
+    // Share a single timer object among all timeouts.
+    if (!_timer) {
+        var Timer = Java.type('java.util.Timer');
+        // It is important that the argument be true. This ensures that the
+        // timer task is a "daemon," which means that having such a task
+        // pending will not prevent the application from exiting.
+        _timer = new Timer(true);
+    }
+    var timerTask = actor.newTimerTask(callback);
+    _timer.schedule(timerTask, milliseconds);
+    return timerTask;
+}
