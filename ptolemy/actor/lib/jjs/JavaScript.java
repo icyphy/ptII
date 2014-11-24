@@ -79,17 +79,16 @@ import ptolemy.util.MessageHandler;
    <p>
    To use this actor, add input and output ports and specify
    a script. The names of the ports are required to be valid
-   JavaScript identifiers and are not permitted to be JavaScript keywords.
+   JavaScript identifiers and are not permitted to be JavaScript keywords.</p>
    <p>
    The script may reference parameters in the scope of this actor
    using usual Ptolemy II $ syntax.  E.g., ${foo} in the script will be
-   replaced with the value of foo before the script is evaluated.
+   replaced with the value of foo before the script is evaluated.</p>
    <p>
-   Your script should define one or more of the following functions:
+   Your script should define one or more of the following functions:</p>
    <ul>
    <li> <b>initialize</b>. This function is invoked each time this actor
-   is initialized. This function should not read inputs or produce outputs.
-   </li>
+   is initialized. This function should not read inputs or produce outputs.</li>
    <li> <b>fire</b>. This function is invoked each time this actor fires.
    It can read inputs using get() and write outputs using send().
    This actor will consume at most one input token from each input port on
@@ -97,18 +96,16 @@ import ptolemy.util.MessageHandler;
    firing will return the same consumed value, or will return null if there
    is no available input on that firing.  If you want it to instead return
    a previously read input, then mark the port persistent by giving it a
-   <i>defaultValue</i> parameter, or use a PortParameter instead of an ordinary port.
-   </li>
+   <i>defaultValue</i> parameter, or use a PortParameter instead of an ordinary port.</li>
    <li> <b>wrapup</b>. This function is invoked at the end of execution of
    of the model. It can read parameters, but normally should not
-   read inputs nor write outputs.
-   </li>
+   read inputs nor write outputs.</li>
    </ul>
    <p>
    Usually, you will need to explicitly specify the types
    of the output ports. Alternatively, you can enable backward
    type inference on the enclosing model, and the types of output
-   ports will be inferred by how the data are used.
+   ports will be inferred by how the data are used.</p>
    <p>
    You may also need to set the type of input ports. Usually, forward
    type inference will work, and the type of the input port will be based
@@ -116,26 +113,26 @@ import ptolemy.util.MessageHandler;
    if the input comes from an output port whose output is undefined,
    such as JSONToToken, then you may want to
    enable backward type inference, and specify here the type of input
-   that your script requires.
+   that your script requires.</p>
    <p>
-   The context in which your functions run provide the following methods:
+   The context in which your functions run provide the following methods:</p>
    <ul>
-   <li> alert(string): pop up a dialog with the specified message.
-   <li> clearTimeout(int): clear a timeout with the specified handle.
-   <li> get(port, n): get an input from a port on channel n (return null if there is no input).
-   <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)
-   <li> print(string): print the specified string to the console (standard out).
-   <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).
+   <li> alert(string): pop up a dialog with the specified message.</li>
+   <li> clearTimeout(int): clear a timeout with the specified handle.</li>
+   <li> get(port, n): get an input from a port on channel n (return null if there is no input).</li>
+   <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
+   <li> print(string): print the specified string to the console (standard out).</li>
+   <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
    <li> require(string): load and return a CommonJS module by name. See
-        {@link http://wiki.commonjs.org/wiki/Modules}.
-   <li> send(value, port, n): send a value to an output port on channel n
-   <li> setTimeout(function, int): set the function to execute after specified time and return handle.
+   <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
+   <li> send(value, port, n): send a value to an output port on channel n</li>
+   <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
    The last argument of get() and send() (the channel number) is optional.
    If you leave it off, the channel number will be assumed to be zero
    (designating the first channel connected to the port).
    <p>
-   The following example script calculates the factorial of the input.
+   The following example script calculates the factorial of the input.</p>
    <pre>
    function fire() {
        var value = get(input);
@@ -153,7 +150,7 @@ import ptolemy.util.MessageHandler;
    </pre>
    <p>
    Your script may also store values from one firing to the next, or from
-   initialization to firing.  For example,
+   initialization to firing.  For example,</p>
    <pre>
    var init;
    function initialize() {
@@ -173,16 +170,16 @@ import ptolemy.util.MessageHandler;
    However, if you name a port or parameter "JSON", then any reference
    to JSON in your fire() method, for example, will refer to the port
    and not to the global object.  To explicitly refer
-   to the global object, use the syntax "this.JSON".
+   to the global object, use the syntax "this.JSON".</p>
    <p>
    In addition, the symbol "actor" is defined to be the instance of
    this actor. In JavaScript, you can invoke methods on it.
-   For example, the JavaScript
+   For example, the JavaScript</p>
    <pre>
    actor.toplevel().getName();
    </pre>
-   will return the name of the top-level composite actor containing
-   this actor.
+   <p>will return the name of the top-level composite actor containing
+   this actor.</p>
    <p>
    Not all Ptolemy II data types translate naturally to
    JavaScript types. Simple types will "just work."
@@ -198,7 +195,7 @@ import ptolemy.util.MessageHandler;
    will result in the Ptolemy II array {"1", "2", "foo"}, an array of strings.
    If you wish to send a JavaScript array (or any other JavaScript
    object) without modifying it, wrap it in an ObjectToken, as
-   in this example:
+   in this example:</p>
    <pre>
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
    function fire() {
@@ -206,9 +203,9 @@ import ptolemy.util.MessageHandler;
       send(token, output);
    }
    </pre>
-   The type of the output port will need to be set to object or general.
+   <p>The type of the output port will need to be set to object or general.
    If you send this to another JavaScript actor, that actor can
-   retrieve the original JavaScript object as follows:
+   retrieve the original JavaScript object as follows:</p>
    <pre>
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
    function fire() {
@@ -217,7 +214,7 @@ import ptolemy.util.MessageHandler;
       ... operate on array, which is the original [1, 2, 'foo'] ...
    }
    </pre>
-   </p><p>
+   <p>
    Ptolemy II records are also converted into
    JavaScript objects, and JavaScript objects with enumerable
    properties into records.
@@ -232,25 +229,25 @@ import ptolemy.util.MessageHandler;
    cannot be converted, the script will see the
    corresponding Token object.  For example, if you send
    a number of type long to an input of a JavaScript actor,
-   the script (inside a fire() function):
+   the script (inside a fire() function):</p>
    <pre>
       var value = get(input);
       print(value.getClass().toString());
    </pre>
-   will print on standard out the string
+   <p>will print on standard out the string</p>
    <pre>
       "class ptolemy.data.LongToken"
    </pre>
-   JavaScript does not have a long data type (as of this writing), so instead the
+   <p>JavaScript does not have a long data type (as of this writing), so instead the
    get() call returns a JavaScript Object wrapping the Ptolemy II
    LongToken object. You can then invoke methods on that token,
-   such as getClass(), as done above.
-   </p><p>
+   such as getClass(), as done above.</p>
+   <p>
    When sending tokens using send(), you can explicitly prevent any conversions
    from occurring by creating a Ptolemy II token explicitly and sending that.
    For example, the JavaScript nested array [[1, 2], [3, 4]] will be automatically
    converted into a Ptolemy II array of arrays {{1,2}, {3,4}}. If instead you want
-   to send a Ptolemy II integer matrix [1,2;3,4], you can do this:
+   to send a Ptolemy II integer matrix [1,2;3,4], you can do this:</p>
    <pre>
    var IntMatrixToken = Java.type('ptolemy.data.IntMatrixToken');
    function fire() {
@@ -258,7 +255,7 @@ import ptolemy.util.MessageHandler;
       send(token, output);
    }
    </pre>
-   </p><p>
+   <p>
    Scripts can instantiate Java classes and invoke methods on them.
    For example, the following script will build a simple Ptolemy II model
    and execute it each time this JavaScript actor fires.
@@ -284,8 +281,8 @@ import ptolemy.util.MessageHandler;
       manager.execute();
    }
    </pre>
-   You can even send this model out on an output port.
-   For example,
+   <p>You can even send this model out on an output port.
+   For example,</p>
    <pre>
    function fire() {
       send(toplevel, output);
@@ -294,22 +291,21 @@ import ptolemy.util.MessageHandler;
    where "output" is the name of the output port.
    <p>
    Subclasses of this actor may put it in "restricted" mode, which
-   limits the functionality as follows:
+   limits the functionality as follows:</p>
    <ul>
-   <li> The "actor" variable (referring to this instance of the actor) does not get created.
+   <li> The "actor" variable (referring to this instance of the actor) does not get created.</li>
    <li> The readURL method only supports the HTTP protocol (in particular,
-   it does not support the "file" protocol, and hence cannot access local files).
+   it does not support the "file" protocol, and hence cannot access local files).</li>
    </ul>
-   </p>
    <p>
-   FIXME: console.log(), etc., Listen to actor, stdout, util.*()
+   FIXME: console.log(), etc., Listen to actor, stdout, util.*()</p>
    <p>
    In addition to the above methods, deprecated methods are included
-   in this implementation to accommodate legacy scripts:
+   in this implementation to accommodate legacy scripts:</p>
    <ul>
-      <li> error(string): throw an IllegalActionException with the specified message. (just use throw)
+      <li> error(string): throw an IllegalActionException with the specified message. (just use throw)</li>
    </ul>
-   </p>
+
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 10.0
