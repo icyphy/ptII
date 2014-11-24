@@ -27,10 +27,20 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
+
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Node;
+
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -78,72 +88,132 @@ public class Director extends FMIMACodeGeneratorAdapter {
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
                 
-        // Extending ProceduralCodeGenerator start.
-        //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
         Iterator<?> actors = ((CompositeActor) adapter.getComponent()
                 .getContainer()).deepEntityList().iterator();
+                
         code.append(getCodeGenerator()
                 .comment(
                         "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java start"
                                 + _eol
                                 + "   "
                                 + adapter.getComponent().getName()));
-        // Extending ProceduralCodeGenerator end.
-
-        // Extending GenericCodeGenerator start.
-        // Iterator<?> actors = ((CompositeActor) getComponent().getContainer()).deepEntityList().iterator();
-        // code.append("<li>" + /*adapter.*/getComponent().getName() + "</li>" + _eol);
-        // Extending GenericCodeGenerator start.
-
 
         // Generate the start of the main() method.
         // FIXME: we should generate the start of the main() method from some other cg method.
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
 
-        //ptolemy.actor.CompositeActor TopActor = (ptolemy.actor.CompositeActor) getComponent();
-
         codeStream.appendCodeBlock("mainStartBlock");
         code.append(processCode(codeStream.toString()));
-
-                
+        
+        HashMap<TypedIOPort, Node> actorNodeMap = new HashMap<TypedIOPort, Node>();
+        HashMap<Node, TypedIOPort> actorPortMap = new HashMap<Node, TypedIOPort>();
+        HashMap<String, Node> actorNodeNamesMap = new HashMap<String, Node>();
+        DirectedGraph graph = new DirectedGraph();
+        
+        
         // Iterate through the actors and generate connection list.
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            FMIMACodeGeneratorAdapter codeGeneratorAdapter = null;
-            Object object = getCodeGenerator().getAdapter(actor);
-            try {
-                codeGeneratorAdapter = (FMIMACodeGeneratorAdapter) object;
-            } catch (ClassCastException ex) {
-                throw new IllegalActionException(
-                // Extending ProceduralCodeGenerator start.
-                        adapter.
-                        // Extending ProceduralCodeGenerator end.
+        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();
 
-                        // Extending GenericCodeGenerator start.
-                        /* adapter.*/
-                        // Extending GenericCodeGenerator end.
+        	// Add all the nodes to the graph (input nodes)
+        	for (TypedIOPort input : actor.inputPortList()) { 
+        		Node node = new Node(input);
+                actorNodeMap.put(input, node);
+                actorPortMap.put(node, input);
+                actorNodeNamesMap.put(input.getName(), node);
+                graph.addNode(node);
+        	}
+        	// Add all the nodes to the graph (output nodes)
+        	for (TypedIOPort output : actor.outputPortList()) { 
+        		Node node = new Node(output);
+                actorNodeMap.put(output, node);
+                actorPortMap.put(node, output);
+                actorNodeNamesMap.put(output.getName(), node);
+                graph.addNode(node);
+        	}
+        	
+        	// Add all the topological edges
+        	for (TypedIOPort input : actor.inputPortList()) { 
+        		Node sink = (Node) actorNodeMap.get(input);
+        		List<?> connected_ports = input.connectedPortList();
+        		for (int port_idx = 0; port_idx < connected_ports.size(); port_idx++) {
+        			TypedIOPort output = (TypedIOPort)connected_ports.get(port_idx);
+        			Node source = (Node) actorNodeMap.get(output);
+        			graph.addEdge(source, sink);
+        		}
+        	}
 
-                        getComponent(), ex, "Failed to cast " + object
-                                + " of class " + object.getClass().getName()
-                                + " to "
-                                + FMIMACodeGeneratorAdapter.class.getName()
-                                + ".");
-
-            }
-            code.append(codeGeneratorAdapter.generateFMIMA());
+        	// Add all the causality relation edges
+        	for (TypedIOPort output : actor.outputPortList()) { 
+        		Node sink = (Node) actorNodeMap.get(output);
+        		
+        		Set<String> inputPorts = actor.getInputDependencyList(output.getName());
+        		
+        		if (inputPorts != null) {
+        		
+	        		Iterator<String> inputIterator = inputPorts.iterator();
+	        		while(inputIterator.hasNext()) {
+	        			String input = (String) inputIterator.next();
+	        			Node source = (Node) actorNodeNamesMap.get(input);
+	        			graph.addEdge(source, sink);
+	        		}
+        		}
+        	}
+        	
         }
+        
+        Collection<Node> nodeCollection = graph.nodes();
+        
+        if (nodeCollection.size() == 0) {
+        	System.out.println("The GRAPH is empty");
+        	System.exit(-1);
+        }
+        
+        if (graph.isAcyclic() == false) {
+        	System.out.println("The GRAPH contains cycles. Unable to determine a port updates order.");
+        	System.exit(-1);
+        }
+                
+        graph.topologicalSort(nodeCollection);
+        Iterator<Node> nodeIterator = nodeCollection.iterator();
+        
+        int connectionIndex = 0;
+        while (nodeIterator.hasNext()) {
+        	Node portSourceNode = nodeIterator.next(); 
+        	
+        	if (nodeIterator.hasNext() == false) break;
+        	
+        	Node portSinkNode = nodeIterator.next();
+        	
+        	TypedIOPort outputPort = actorPortMap.get(portSourceNode);
+        	TypedIOPort inputPort = actorPortMap.get(portSinkNode);
+        	ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport) outputPort.getContainer();
+        	ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport) inputPort.getContainer();
+        	String fmuSourceName = sourceActor.getName();
+        	String fmuSinkName = sinkActor.getName();
+        	
+        	code.append("connections[" + connectionIndex + "].sourceFMU = &fmus[" + fmuSourceName + "];\n"
+        			+ "connections[" + connectionIndex + "].sourcePort = getValueReference(getScalarVariable(fmus["
+        				+ fmuSourceName + "].modelDescription, " + sourceActor.getValueReference(outputPort.getName()) + "));\n"
+        			+ "connections[" + connectionIndex + "].sourceType = " + sourceActor.getTypeOfPort(outputPort.getName()) + ";\n"
+        			+ "connections[" + connectionIndex + "].sinkFMU = &fmus[" + fmuSinkName + "];\n"
+                    + "connections[" + connectionIndex + "].sinkPort = getValueReference(getScalarVariable(fmus["
+                    	+ fmuSinkName + "].modelDescription, " + sinkActor.getValueReference(inputPort.getName()) + "));\n"
+                    + "connections[" + connectionIndex + "].sinkType = " + sinkActor.getTypeOfPort(inputPort.getName()) + ";\n");
+        	
+        	connectionIndex++;
+        }
+
 
         // Generate the end of the main() method.
         // FIXME: we should generate the start of the main() method from some other cg method.
         codeStream = _templateParser.getCodeStream();
         codeStream.clear();
-
+        
         codeStream.appendCodeBlock("mainEndBlock");
         code.append(processCode(codeStream.toString()));
-
-
 
         code.append(getCodeGenerator()
                 .comment(
