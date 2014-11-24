@@ -115,6 +115,9 @@ public class Director extends FMIMACodeGeneratorAdapter {
         
         // Iterate through the actors and generate connection list.
         while (actors.hasNext()) {
+
+            // FIXME: Check to see if the actor is something other than a FMUImport.
+
         	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();
 
         	// Add all the nodes to the graph (input nodes)
@@ -149,17 +152,18 @@ public class Director extends FMIMACodeGeneratorAdapter {
         	for (TypedIOPort output : actor.outputPortList()) { 
         		Node sink = (Node) actorNodeMap.get(output);
         		
-        		Set<String> inputPorts = actor.getInputDependencyList(output.getName());
+                        System.out.println("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java: Commented out code that won't compile");
+//         		Set<String> inputPorts = actor.getInputDependencyList(output.getName());
         		
-        		if (inputPorts != null) {
+//         		if (inputPorts != null) {
         		
-	        		Iterator<String> inputIterator = inputPorts.iterator();
-	        		while(inputIterator.hasNext()) {
-	        			String input = (String) inputIterator.next();
-	        			Node source = (Node) actorNodeNamesMap.get(input);
-	        			graph.addEdge(source, sink);
-	        		}
-        		}
+// 	        		Iterator<String> inputIterator = inputPorts.iterator();
+// 	        		while(inputIterator.hasNext()) {
+// 	        			String input = (String) inputIterator.next();
+// 	        			Node source = (Node) actorNodeNamesMap.get(input);
+// 	        			graph.addEdge(source, sink);
+// 	        		}
+//         		}
         	}
         	
         }
