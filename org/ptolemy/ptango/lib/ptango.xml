@@ -31,7 +31,7 @@
 	<property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
 	</property>
 
-	<input source="org/ptolemy/ptango/lib/websocket/websocket.xml"/>
+	<input source="org/ptolemy/ptango/lib/webSocket/webSocket.xml"/>
 	<input source="org/ptolemy/ptango/lib/xmpp/xmpp.xml"/>
 
       </group> 	
