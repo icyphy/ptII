@@ -66,7 +66,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl junit 
+MISC_FILES =	alljtests.tcl junit auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

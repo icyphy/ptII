@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/ptolemy/ptango/lib/websocket
+ME =		org/ptolemy/ptango/lib/webSocket
 
 DIRS =		test
 
@@ -43,10 +43,10 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Variables and rules used to create source file distributions
-PTPACKAGE = 	lib
-PTCLASSALLJAR = lib.jar
+PTPACKAGE = 	webSocket
+PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+#PTCLASSALLJARS = 
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
@@ -57,7 +57,10 @@ JSRCS = \
 	WebSocketService.java \
 	WebSocketWriter.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	WebSocketReaderIcon.xml \
+	WebSocketWriterIcon.xml \
+	webSocket.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -69,7 +72,9 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(DIRS) \
-	'WebSocketReader$$RunnableConnectionGetter.class'
+	'WebSocketReader$$RunnableConnectionGetter.class' \
+	'WebSocketEndpointManager$$1.class' \
+	'WebSocketEndpointManager$$WebSocketEndpointFactoryHolder.class'
 
 KRUFT =
 

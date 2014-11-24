@@ -32,7 +32,7 @@
 ME =		org/ptolemy/ptango/lib
 
 # PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found by configure.
-DIRS =		http img $(PTXMPP_DIR)
+DIRS =		http img $(PTXMPP_DIR) webSocket
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -49,7 +49,8 @@ PTCLASSALLJAR = lib.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	http/http.jar \
-	img/img.jar
+	img/img.jar \
+	webSocket/webSocket.jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
