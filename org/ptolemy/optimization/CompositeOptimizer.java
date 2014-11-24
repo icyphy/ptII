@@ -39,6 +39,7 @@ import ptolemy.actor.lib.hoc.MirrorPort;
 import ptolemy.actor.lib.hoc.ReflectComposite;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -137,6 +138,10 @@ public class CompositeOptimizer extends ReflectComposite {
      */
     public Parameter rhoEnd;
     /**
+     * The expert parameter that decides whether reuse previous result as the initial value.
+     */
+    public Parameter reusePreviousResult;
+    /**
      * Maximum number of function evaluations per iteration.
      */
     public Parameter maxEvaluations;
@@ -176,6 +181,8 @@ public class CompositeOptimizer extends ReflectComposite {
         } else if (attribute == rhoEnd) {
             double rho = ((DoubleToken) rhoEnd.getToken()).doubleValue();
             _rhoend = rho;
+        } else if (attribute == reusePreviousResult) {
+            _reusePreviousResult = ((BooleanToken) reusePreviousResult.getToken()).booleanValue();
         } else if (attribute == timeHorizon) {
             int th = ((IntToken) timeHorizon.getToken()).intValue();
             if (th > 0) {
@@ -286,6 +293,12 @@ public class CompositeOptimizer extends ReflectComposite {
         rhoEnd.setVisibility(Settable.EXPERT);
         _rhoend = 1E-6;
 
+        reusePreviousResult = new Parameter(this, "reusePreviousResult");
+        reusePreviousResult.setTypeEquals(BaseType.BOOLEAN);
+        reusePreviousResult.setVisibility(Settable.EXPERT);
+        reusePreviousResult.setExpression("false");
+        _firstStep = true;
+
         timeHorizon = new Parameter(this, "timeHorizon");
         timeHorizon.setExpression("1");
         //timeHorizon.setTypeEquals(BaseType.INT);
@@ -294,9 +307,13 @@ public class CompositeOptimizer extends ReflectComposite {
 
         _tokenMap = new HashMap<IOPort, Token>();
         _firstIteration = true;
-
     }
-
+    @Override
+    public void wrapup() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        super.wrapup();
+        _firstStep = true;
+    }
     ///////////////////////////////////////////////////////////////////
     //// IterateComposite
 
@@ -516,7 +533,14 @@ public class CompositeOptimizer extends ReflectComposite {
                 }
             };
 
-            _optInput = new double[_dimension];
+            if(_reusePreviousResult) {
+                if(_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
+                    _optInput = new double[_dimension];
+                    _firstStep = false; //Keeping the optimized values for next step.
+                }
+            } else {
+                _optInput = new double[_dimension];
+            }
             int nVariables = _dimension;
 
             // nConstraints is 1 because we transfer the task of computing constraints to an inside actor.
@@ -648,5 +672,6 @@ public class CompositeOptimizer extends ReflectComposite {
     private HashMap<IOPort, Token> _tokenMap;
 
     private boolean _firstIteration;
-
+    private boolean _firstStep;
+    private boolean _reusePreviousResult;
 }
