@@ -144,41 +144,44 @@ public class MultiplyDivide extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         Token numerator = null;
-
-        for (int i = 0; i < multiply.getWidth(); i++) {
-            if (multiply.hasToken(i)) {
-                if (numerator == null) {
-                    numerator = multiply.get(i);
-                } else {
-                    numerator = numerator.multiply(multiply.get(i));
+        try {
+            for (int i = 0; i < multiply.getWidth(); i++) {
+                if (multiply.hasToken(i)) {
+                    if (numerator == null) {
+                        numerator = multiply.get(i);
+                    } else {
+                        numerator = numerator.multiply(multiply.get(i));
+                    }
                 }
             }
-        }
-
-        Token denominator = null;
-
-        for (int i = 0; i < divide.getWidth(); i++) {
-            if (divide.hasToken(i)) {
+    
+            Token denominator = null;
+    
+            for (int i = 0; i < divide.getWidth(); i++) {
+                if (divide.hasToken(i)) {
+                    if (denominator == null) {
+                        denominator = divide.get(i);
+                    } else {
+                        denominator = denominator.multiply(divide.get(i));
+                    }
+                }
+            }
+    
+            if (numerator == null) {
                 if (denominator == null) {
-                    denominator = divide.get(i);
-                } else {
-                    denominator = denominator.multiply(divide.get(i));
+                    return;
                 }
+    
+                // For the benefit of copernicus, this means that
+                // numerator always has the same type.
+                numerator = multiply.getType().convert(denominator.one());
             }
-        }
-
-        if (numerator == null) {
-            if (denominator == null) {
-                return;
+    
+            if (denominator != null) {
+                numerator = numerator.divide(denominator);
             }
-
-            // For the benefit of copernicus, this means that
-            // numerator always has the same type.
-            numerator = multiply.getType().convert(denominator.one());
-        }
-
-        if (denominator != null) {
-            numerator = numerator.divide(denominator);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e.getCause(), e.getMessage());
         }
 
         output.send(0, numerator);
