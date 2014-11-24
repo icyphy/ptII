@@ -138,7 +138,7 @@ public class CompositeOptimizer extends ReflectComposite {
      */
     public Parameter rhoEnd;
     /**
-     * The expert parameter that decides whether reuse previous result as the initial value.
+     * The expert parameter that decides whether to reuse previous result as the initial value.
      */
     public Parameter reusePreviousResult;
     /**
