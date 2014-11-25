@@ -84,11 +84,9 @@ function convertFromToken(value) {
         }
         return result;
     } else if (value instanceof DateToken) {
-        alert(value.toString());
-        alert(value.getValue());
         return new Date(value.getValue());
     }
-    // FIXME: Handle DateToken and ActorToken
+    // FIXME: Handle ActorToken
     // If all else fails, just return the token object.
     return value;
 }
