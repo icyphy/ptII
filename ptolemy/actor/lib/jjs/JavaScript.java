@@ -52,10 +52,8 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
@@ -288,17 +286,19 @@ import ptolemy.util.MessageHandler;
       send(toplevel, output);
    }
    </pre>
-   where "output" is the name of the output port.
+   where "output" is the name of the output port. Note that the manager
+   does not get included with the model, so the recipient will need to
+   associate a new manager to be able to execute the model.
    <p>
    Subclasses of this actor may put it in "restricted" mode, which
    limits the functionality as follows:</p>
    <ul>
    <li> The "actor" variable (referring to this instance of the actor) does not get created.</li>
-   <li> The readURL method only supports the HTTP protocol (in particular,
-   it does not support the "file" protocol, and hence cannot access local files).</li>
+   <li> The readURL and httpRequest function only support the HTTP protocol (in particular,
+   they do not support the "file" protocol, and hence cannot access local files).</li>
    </ul>
    <p>
-   FIXME: console.log(), etc., Listen to actor, stdout, util.*()</p>
+   FIXME: document console.log(), etc., Listen to actor, stdout, util.*()</p>
    <p>
    In addition to the above methods, deprecated methods are included
    in this implementation to accommodate legacy scripts:</p>
@@ -788,7 +788,7 @@ public class JavaScript extends TypedAtomicActor {
     	= new HashMap<IOPort, HashMap<Integer, Token>>();
 
     /** List of open sockets. */
-    List<SocketIO> _openSockets;
+    private List<SocketIO> _openSockets;
 
     /** Buffer for output tokens that are produced in a call to send
      *  while the actor is not firing. This makes sure that actors can
@@ -798,33 +798,6 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
-
-    /** Proxy for a parameter. This is used to wrap parameters for security
-     *  reasons.  If we expose the port to the JavaScript environment,
-     *  then the script can access all aspects of the model containing
-     *  this actor. E.g., it can call getContainer() on the object.
-     *  This wrapper provides access to the port only via a protected
-     *  method, which JavaScript cannot access.
-     */
-    public static class ParameterProxy {
-        /** Construct a parameter proxy.
-         *  @param parameter The parameter to be proxied.
-         */
-        protected ParameterProxy(Parameter parameter) {
-            _parameter = parameter;
-        }
-
-        /** Return the name of the proxied parameter.
-         *  @return The name of the proxied parameter.
-         */
-        @Override
-        public String toString() {
-            return _parameter.getName();
-        }
-
-        /** The parameter that is proxied. */
-        protected Parameter _parameter;
-    }
 
     /** Proxy for a port. This is used to wrap ports for security
      *  reasons.  If we expose the port to the JavaScript environment,
