@@ -386,10 +386,6 @@ public class JavaScript extends TypedAtomicActor {
         JavaScript newObject = (JavaScript) super.clone(workspace);
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
         newObject._outputTokens = null;
-
-        // newObject._pendingTimeoutFunctions = null;
-        newObject._pendingTimeoutIDs = null;
-
         return newObject;
     }
 
@@ -519,26 +515,6 @@ public class JavaScript extends TypedAtomicActor {
         			"fire() function triggers an exception.");
         	    }
         	}
-        	/*
-                    // Handle timeout requests that match the current time.
-                    if (_pendingTimeoutIDs != null) {
-                        // If current time matches pending timeout requests, invoke them.
-                        Time currentTime = getDirector().getModelTime();
-                        List<Integer> ids = _pendingTimeoutIDs.get(currentTime);
-                        if (ids != null) {
-                            for (Integer id : ids) {
-                                Function function = _pendingTimeoutFunctions
-                                        .get(id);
-                                if (function != null) {
-                                    function.call(Context.getCurrentContext(),
-                                            _scope, _global, _EMPTY_ARGS);
-                                    _pendingTimeoutFunctions.remove(id);
-                                }
-                            }
-                            _pendingTimeoutIDs.remove(currentTime);
-                        }
-                    }
-        	 */
             } finally {
         	_inFire = false;
             }
@@ -626,9 +602,6 @@ public class JavaScript extends TypedAtomicActor {
 
         _executing = true;
 
-        // _pendingTimeoutFunctions = null;
-        _pendingTimeoutIDs = null;
-        
         // Evaluate the script.
         String scriptValue = script.getValueAsString();
         try {
@@ -823,15 +796,6 @@ public class JavaScript extends TypedAtomicActor {
      */
     private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
 
-    /** Map from timeout ID to pending timeout functions. */
-    // private Map<Integer, Function> _pendingTimeoutFunctions;
-
-    /** Map from timeout time to pending timeout IDs. */
-    private Map<Time, List<Integer>> _pendingTimeoutIDs;
-
-    /** Count to give a unique handle to pending timeouts. */
-    private int _timeoutCount = 0;
-
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
 
@@ -971,16 +935,6 @@ public class JavaScript extends TypedAtomicActor {
 	
 	// FIXME: These are not converted from Rhino yet.
 
-        /** Clear the timeout with the specified handle, if it has not already executed.
-         *  @param handle The timeout handle.
-         */
-        public void clearTimeout(Integer handle) {
-            // NOTE: The handle for this timeout remains in the
-            // _pendingTimeoutIDs map, but it is more efficient to remove
-            // it from that map when the firing occurs.
-            // _pendingTimeoutFunctions.remove(handle);
-        }
-
         public String getClassName() {
             return getClass().getName();
         }
@@ -1092,68 +1046,5 @@ public class JavaScript extends TypedAtomicActor {
             }
             return InetAddress.getLocalHost().getHostAddress();
         }
-
-        /** After the specified amount of time (in milliseconds), invoke the specified function.
-         *  The function is invoked during a firing of this JavaScript actor, so the function
-         *  can read inputs, produce outputs, and do anything else that might be done in the
-         *  JavaScript fire() method.  The specified function will be invoked after the fire()
-         *  JavaScript method, if one is defined in the script, and also after any input
-         *  handlers created by setInputHandler().
-         *  <p>
-         *  If the model stops executing before the timeout period elapses, then the
-         *  specified function will not be invoked.</p>
-         *  @param function The function to invoke.
-         *  @param time The time in milliseconds.
-         *  @exception IllegalActionException If the director cannot respect the time request.
-         *  @return A handle to the delayed function, to be used by clearTimeout()
-         *   to cancel the function invocation if it hasn't occurred yet.
-         */
-        /*
-        public Integer setTimeout(final Function function, final Integer time)
-                throws IllegalActionException {
-            // FIXME: setTimeout() needs an optional third argument, arguments to the function
-            // to be passed when it is invoked. Presumably those arguments should be evaluated
-            // in the context of the invocation of the function, not in the context of
-            // this setTimeout() call.
-
-            // NOTE: The API of this method is intended to match that of Node.js.
-            final Integer id = Integer.valueOf(_timeoutCount++);
-            Time currentTime = getDirector().getModelTime();
-            final Time callbackTime = currentTime.add(time * 0.001);
-
-            // FIXME: Check that synchronizeToRealTime is present and set to true
-            // in the director.
-
-            Time responseTime = getDirector().fireAt(JavaScript.this,
-                    callbackTime);
-            if (!responseTime.equals(callbackTime)) {
-                throw new IllegalActionException(
-                        JavaScript.this,
-                        "Director is unable to fire this actor at the requested time "
-                                + callbackTime
-                                + ". It replies that it will fire the actor at "
-                                + responseTime + ".");
-            }
-
-            // Record the callback function indexed by ID.
-            if (_pendingTimeoutFunctions == null) {
-                _pendingTimeoutFunctions = new HashMap<Integer, Function>();
-            }
-            _pendingTimeoutFunctions.put(id, function);
-
-            // Record the ID of the timeout indexed by time.
-            if (_pendingTimeoutIDs == null) {
-                _pendingTimeoutIDs = new HashMap<Time, List<Integer>>();
-            }
-            List<Integer> ids = _pendingTimeoutIDs.get(callbackTime);
-            if (ids == null) {
-                ids = new LinkedList<Integer>();
-                _pendingTimeoutIDs.put(callbackTime, ids);
-            }
-            ids.add(id);
-
-            return id;
-        }
-        */
     }
 }
