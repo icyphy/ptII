@@ -134,6 +134,12 @@ var require = load(moduleRoot + '/external/require.js')(
     [ moduleRoot + '/', moduleRoot + '/modules/' , moduleRoot + '/node/' ]
 );
 
+////////////////////
+// Pull in the util and console modules.
+var util = require('util');
+var console = require('console');
+
+////////////////////
 // Use a single Timer object for all timeout functions
 // (since they all have to execute in the same thread anyway).
 var _timer;

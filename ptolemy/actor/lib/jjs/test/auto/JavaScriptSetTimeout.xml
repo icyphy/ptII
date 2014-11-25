@@ -39,7 +39,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;    console.log('Sending output');&#10;}, 2000);&#10;function wrapup() {&#10;    clearTimeout(timeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;    console.log('Sending output');&#10;}, 2000);&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

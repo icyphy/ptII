@@ -85,9 +85,9 @@ import ptolemy.util.MessageHandler;
    <p>
    Your script should define one or more of the following functions:</p>
    <ul>
-   <li> <b>initialize</b>. This function is invoked each time this actor
+   <li> <b>exports.initialize</b>. This function is invoked each time this actor
    is initialized. This function should not read inputs or produce outputs.</li>
-   <li> <b>fire</b>. This function is invoked each time this actor fires.
+   <li> <b>exports.fire</b>. This function is invoked each time this actor fires.
    It can read inputs using get() and write outputs using send().
    This actor will consume at most one input token from each input port on
    each firing, if one is available. Any number of calls to get() during the
@@ -95,12 +95,21 @@ import ptolemy.util.MessageHandler;
    is no available input on that firing.  If you want it to instead return
    a previously read input, then mark the port persistent by giving it a
    <i>defaultValue</i> parameter, or use a PortParameter instead of an ordinary port.</li>
-   <li> <b>wrapup</b>. This function is invoked at the end of execution of
+   <li> <b>exports.wrapup</b>. This function is invoked at the end of execution of
    of the model. It can read parameters, but normally should not
    read inputs nor write outputs.</li>
    </ul>
+   These functions are fields of the exports object, as usual JavaScript CommonJS modules.
+   For example, to define the fire function, specify code like this:
+   <pre>
+      exports.fire = function () {... function body ...};
+   </pre>
+   Alternatively, you can do
+   <pre>
+      var fire = function() {... function body ...};
+      exports.fire = fire;
    <p>
-   Usually, you will need to explicitly specify the types
+   Usually, you will need to explicitly set the types
    of the output ports. Alternatively, you can enable backward
    type inference on the enclosing model, and the types of output
    ports will be inferred by how the data are used.</p>
@@ -113,12 +122,13 @@ import ptolemy.util.MessageHandler;
    enable backward type inference, and specify here the type of input
    that your script requires.</p>
    <p>
-   The context in which your functions run provide the following methods:</p>
+   The context in which your functions run provide the following global functions:</p>
    <ul>
    <li> alert(string): pop up a dialog with the specified message.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
    <li> get(port, n): get an input from a port on channel n (return null if there is no input).</li>
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
+   <li> localHostAddress(): If not in restricted mode, return the local host IP address as a string. </li>
    <li> print(string): print the specified string to the console (standard out).</li>
    <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
    <li> require(string): load and return a CommonJS module by name. See
@@ -132,7 +142,7 @@ import ptolemy.util.MessageHandler;
    <p>
    The following example script calculates the factorial of the input.</p>
    <pre>
-   function fire() {
+   exports.fire = function() {
        var value = get(input);
        if (value < 0) {
            throw "Input must be greater than or equal to 0.";
@@ -151,10 +161,10 @@ import ptolemy.util.MessageHandler;
    initialization to firing.  For example,</p>
    <pre>
    var init;
-   function initialize() {
+   exports.initialize() = function() {
        init = 0;
    }
-   function fire() {
+   exports.fire = function() {
        init = init + 1;
        send(init, output);
    }
@@ -196,7 +206,7 @@ import ptolemy.util.MessageHandler;
    in this example:</p>
    <pre>
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
-   function fire() {
+   exports.fire = function() {
       var token = new ObjectToken([1, 2, 'foo']);
       send(token, output);
    }
@@ -206,7 +216,7 @@ import ptolemy.util.MessageHandler;
    retrieve the original JavaScript object as follows:</p>
    <pre>
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
-   function fire() {
+   exports.fire = function() {
       var token = get(input);
       var array = token.getValue();
       ... operate on array, which is the original [1, 2, 'foo'] ...
@@ -248,7 +258,7 @@ import ptolemy.util.MessageHandler;
    to send a Ptolemy II integer matrix [1,2;3,4], you can do this:</p>
    <pre>
    var IntMatrixToken = Java.type('ptolemy.data.IntMatrixToken');
-   function fire() {
+   exports.fire = function() {
       var token = new IntMatrixToken([[1, 2], [3, 4]]);
       send(token, output);
    }
@@ -275,14 +285,14 @@ import ptolemy.util.MessageHandler;
    var manager = new Manager();
    toplevel.setManager(manager);
    
-   function fire() {
+   exports.fire = function() {
       manager.execute();
    }
    </pre>
    <p>You can even send this model out on an output port.
    For example,</p>
    <pre>
-   function fire() {
+   exports.fire = function() {
       send(toplevel, output);
    }
    </pre>
@@ -294,11 +304,12 @@ import ptolemy.util.MessageHandler;
    limits the functionality as follows:</p>
    <ul>
    <li> The "actor" variable (referring to this instance of the actor) does not get created.</li>
+   <li> The localHostAddress() function throws an error.</li>
    <li> The readURL and httpRequest function only support the HTTP protocol (in particular,
    they do not support the "file" protocol, and hence cannot access local files).</li>
    </ul>
    <p>
-   FIXME: document console.log(), etc., Listen to actor, stdout, util.*()</p>
+   FIXME: document console package, Listen to actor, util package.</p>
    <p>
    In addition to the above methods, deprecated methods are included
    in this implementation to accommodate legacy scripts:</p>
@@ -574,12 +585,6 @@ public class JavaScript extends TypedAtomicActor {
         if (!_restricted) {
             _engine.put("actor", this);
         }
-        // Pull in the console module, which pulls in util.
-        try {
-            _engine.eval("var console = require('console');");
-        } catch (ScriptException e) {
-            throw new IllegalActionException(this, e, "Failed to load console module");
-        }
 
         // Expose the ports as JavaScript variables.
         for (TypedIOPort port : portList()) {
@@ -657,6 +662,20 @@ public class JavaScript extends TypedAtomicActor {
         return _KEYWORDS.contains(identifier);
     }
     
+    /** Return the local host IP address as a string.
+     *  @return A string representation of the local host address.
+     *  @exception UnknownHostException If the local host is not known.
+     *  @exception SecurityException If this actor is in restricted mode.
+     */
+    public String localHostAddress() throws UnknownHostException,
+    SecurityException {
+        if (_restricted) {
+            throw new SecurityException(
+                    "Actor is restricted. Cannot invoke localHostAddress().");
+        }
+        return InetAddress.getLocalHost().getHostAddress();
+    }
+    
     /** If debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stdout.
      */
@@ -724,6 +743,18 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Override the base class so that the name of any port added is shown.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
+     */
+    @Override
+    protected void _addPort(TypedIOPort port) throws IllegalActionException,
+            NameDuplicationException {
+        super._addPort(port);
+        SingletonParameter showName = new SingletonParameter(port, "_showName");
+        showName.setExpression("true");
+    }
 
     /** Return null, because the default type constraints, where output
      *  types are greater than or equal to all input types, make no sense
@@ -883,10 +914,9 @@ public class JavaScript extends TypedAtomicActor {
                                 + _port.getName()
                                 + " and requesting a firing.");
                     }
+                    // Request a firing at the current time.
+                    getDirector().fireAtCurrentTime(JavaScript.this);
                 }
-
-                // Request a firing at the current time.
-                getDirector().fireAtCurrentTime(JavaScript.this);
             }
         }
 
@@ -1006,18 +1036,5 @@ public class JavaScript extends TypedAtomicActor {
         }
         */
 
-        /** Return the local host IP address as a string.
-         *  @return A string representation of the local host address.
-         *  @exception UnknownHostException If the local host is not known.
-         *  @exception SecurityException If this actor is in restricted mode.
-         */
-        public String localHostAddress() throws UnknownHostException,
-        SecurityException {
-            if (_restricted) {
-                throw new SecurityException(
-                        "Actor is restricted. Cannot invoke localHostAddress().");
-            }
-            return InetAddress.getLocalHost().getHostAddress();
-        }
     }
 }

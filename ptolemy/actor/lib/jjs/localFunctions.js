@@ -12,8 +12,19 @@
 // Set a global variable _debug to true to see console outputs.
 
 ////////////////////
-// Default fire function, which does nothing.
-function fire() {}
+// Set an exports global object with default functions.
+var exports = {
+    fire: function() {},
+    initialize: function() {},
+    wrapup: function() {}
+};
+
+////////////////////
+// Default fire function, which invokes exports.fire().
+// Note that if the script simply defines a top-level fire() function instead
+// of exports.fire(), that function will overwrite this one and will still work
+// as expected.
+function fire() {exports.fire();}
 
 ////////////////////
 // Function to get data from an input port.
@@ -25,8 +36,11 @@ function get(port, channel) {
 }
 
 ////////////////////
-// Default initialize function, which does nothing.
-function initialize() {}
+// Default initialize function, which invokes exports.initialize().
+// Note that if the script simply defines a top-level initialize() function instead
+// of exports.initialize(), that function will overwrite this one and will still work
+// as expected.
+function initialize() {exports.initialize();}
 
 ////////////////////
 // Function to send data to an output port.
@@ -38,8 +52,11 @@ function send(value, port, channel) {
 }
 
 ////////////////////
-// Default wrapup function, which does nothing.
-function wrapup() {}
+// Default wrapup function, which invokes exports.wrapup().
+// Note that if the script simply defines a top-level wrapup() function instead
+// of exports.wrapup(), that function will overwrite this one and will still work
+// as expected.
+function wrapup() {exports.wrapup();}
 
 //--------------------------- Exposed Java Types -----------------------------
 var ActorToken = Java.type('ptolemy.data.ActorToken');
@@ -165,7 +182,6 @@ function convertToToken(value) {
         // FIXME: More information?
         throw "value is undefined";
     }
-    // FIXME: Handle ActorToken
     // If all else fails, wrap the value in an ObjectToken.
     return new ObjectToken(value);
 }
