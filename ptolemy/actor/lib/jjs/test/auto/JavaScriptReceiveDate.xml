@@ -73,7 +73,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 145.0}">
         </property>
     </entity>
     <entity name="DateConstructor" class="ptolemy.actor.lib.DateConstructor">
@@ -93,33 +93,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
     </entity>
-    <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="-8">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{240.0, 190.0}">
+        </vertex>
     </relation>
     <link port="JavaScript.output" relation="relation"/>
-    <link port="JavaScript.input" relation="relation2"/>
+    <link port="JavaScript.input" relation="relation4"/>
     <link port="Test.input" relation="relation"/>
-    <link port="DateConstructor.output" relation="relation2"/>
+    <link port="DateConstructor.output" relation="relation4"/>
     <link port="DateConstructor.year" relation="relation3"/>
-    <link port="DateConstructor.timeZone" relation="relation4"/>
     <link port="Const.output" relation="relation3"/>
-    <link port="Const2.output" relation="relation4"/>
 </entity>
