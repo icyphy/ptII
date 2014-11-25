@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={876, 115, 1169, 829}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 67, 1169, 829}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 719]">
     </property>
@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;WebSocket.namespaceName = 'WebSocket';&#10;var WebSocketServer = WebSocket.Server;&#10;&#10;var receivedMessages = [];&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  receivedMessages.push(data);&#10;  send('Server received a message: ' +data, output);&#10;}&#10;&#10;function onListening() {&#10;  send('Server started listening...', output);&#10;  send(true, started);&#10;}&#10;&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', output);&#10;  ws.on('message', onMessage);&#10;}&#10;var wss = null;&#10;function initialize()&#10;{&#10;  if (wss == null) {&#10;    wss = new WebSocketServer({port:8082});&#10;    wss.on('listening', onListening);&#10;    wss.on('connection', onConnection);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;WebSocket.namespaceName = 'WebSocket';&#10;var WebSocketServer = WebSocket.Server;&#10;&#10;var receivedMessages = [];&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  receivedMessages.push(data);&#10;  send('Server received a message: ' +data, output);&#10;}&#10;&#10;function onListening() {&#10;  send('Server started listening...', output);&#10;  send(true, started);&#10;}&#10;&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', output);&#10;  ws.on('message', onMessage);&#10;}&#10;var wss = null;&#10;exports.initialize = function()&#10;{&#10;  if (wss == null) {&#10;    wss = new WebSocketServer({port:8082});&#10;    wss.on('listening', onListening);&#10;    wss.on('connection', onConnection);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -56,9 +56,9 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="started" class="ptolemy.actor.TypedIOPort">
@@ -79,7 +79,7 @@
         </property>
     </entity>
     <entity name="WSClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;WebSocket.namespaceName = 'WebSocket';&#10;&#10;var opened = false;&#10;&#10;function onOpen() {&#10;  opened = true;&#10;}&#10;&#10;var ws = null;&#10;var cnt = 0;&#10;function fire()&#10;{&#10;  if (ws == null) {&#10;    ws = new WebSocket('ws://localhost:8082');&#10;    ws.on('open', onOpen);&#10;  }&#10;  if (opened) {&#10;    cnt ++;&#10;    ws.send('Hi, I\'m a web socket client! Count: ' + cnt);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;WebSocket.namespaceName = 'WebSocket';&#10;&#10;var opened = false;&#10;&#10;function onOpen() {&#10;  opened = true;&#10;}&#10;&#10;var ws = null;&#10;var cnt = 0;&#10;exports.fire = function()&#10;{&#10;  if (ws == null) {&#10;    ws = new WebSocket('ws://localhost:8082');&#10;    ws.on('open', onOpen);&#10;  }&#10;  if (opened) {&#10;    cnt ++;&#10;    ws.send('Hi, I\'m a web socket client! Count: ' + cnt);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -98,9 +98,9 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>

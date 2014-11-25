@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={333, 426, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={333, 262, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -29,7 +29,7 @@
         </property>
     </property>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;WebSocket.namespaceName = 'WebSocket';&#10;var WebSocketServer = WebSocket.Server;&#10;&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  send('Received a message:  ' +data, output);&#10;}&#10;&#10;function onConnection(ws) {&#10;  ws.on('message', onMessage);&#10;  send('A client is connected to the listening port.', output);&#10;}&#10;var wss = null;&#10;function fire()&#10;{&#10;  if (wss == null) {&#10;    wss = new WebSocketServer({port:8081});&#10;    wss.on('connection', onConnection);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;WebSocket.namespaceName = 'WebSocket';&#10;var WebSocketServer = WebSocket.Server;&#10;&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  send('Received a message:  ' +data, output);&#10;}&#10;&#10;function onConnection(ws) {&#10;  ws.on('message', onMessage);&#10;  send('A client is connected to the listening port.', output);&#10;}&#10;var wss = null;&#10;exports.fire = function()&#10;{&#10;  if (wss == null) {&#10;    wss = new WebSocketServer({port:8081});&#10;    wss.on('connection', onConnection);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -48,9 +48,9 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
