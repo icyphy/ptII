@@ -1,8 +1,8 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript actors
+# Makefile for Ptolemy II LocalStorage demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70524 2014-11-10 23:34:39Z eal $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,56 +29,59 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs
-
-DIRS = 		demo external modules node test
+ME =		ptolemy/actor/lib/jjs/demo/LocalStorage
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jjs
+PTPACKAGE = 	LocalStorage
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	JavaScript.java
-	
-OTHER_FILES_TO_BE_JARED = \
-	basicFunctions.js \
-	console.js \
-	JavaScriptIcon.xml \
-	js.xml \
-	localFunctions.js
+JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+OTHER_FILES_TO_BE_JARED = \
+	LocalStorage.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	external modules node test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'JavaScript$$1.class' \
-	'JavaScript$$ParameterProxy.class' \
-	'JavaScript$$PortProxy.class' \
-	'JavaScript$$PtolemyJavaScript.class' \
-	$(PTCLASSJAR) 
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+
+
+#_vergil:
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" LocalStorage.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" LocalStorage.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor/lib/jjs/demo
 
-DIRS =		JavaScriptShell
+DIRS =		JavaScriptShell LocalStorage WebSocket
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
@@ -47,13 +48,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	JavaScriptShell/JavaScriptShell.jar
-
-#	Factorial/Factorial.jar
-#	GoogleOAuth/GoogleOAuth.jar
-#	ModelBuilder/ModelBuilder.jar
-#	Spontaneous/Spontaneous.jar
-#	StockPrice/StockPrice.jar
+	JavaScriptShell/JavaScriptShell.jar \
+	LocalStorage/LocalStorage.jar \
+	WebSocket/WebSocket.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

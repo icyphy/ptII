@@ -48,8 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	localStorageHelper.java
-	
+	LocalStorageHelper.java
+
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
 	localStorage.js
@@ -58,7 +58,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc test
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
