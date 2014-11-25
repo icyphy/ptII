@@ -103,9 +103,7 @@ test MultiplyDivide-3.1 {test with run-time type error} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.StringToken '"-2.0"'
-  in .top.muldiv
-Because:
-multiply operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.StringToken '"-2.0"'}}
+  in .top.muldiv}}
 
 ######################################################################
 #### Test with run-time type error
@@ -117,6 +115,4 @@ test MultiplyDivide-3.3 {test with run-time type error: double and a long } {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported between ptolemy.data.LongToken '1L' and ptolemy.data.DoubleToken '42.0' because the types are incomparable.
-  in .top.muldiv
-Because:
-multiplyReverse method not supported between ptolemy.data.LongToken '1L' and ptolemy.data.DoubleToken '42.0' because the types are incomparable.}}
+  in .top.muldiv}}
