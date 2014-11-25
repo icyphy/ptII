@@ -241,10 +241,17 @@ public class JCanvasPanner extends JPanel {
             AffineTransform inverse;
 
             try {
+                // Here's a bug:
+                // Open a new empty vergil window, and resize it to be
+                // small enough that the panner window disappears.
+                // An exception appears: "java.awt.geom.NoninvertibleTransformException: Determinant is 0"
                 forward.concatenate(current.createInverse());
                 inverse = forward.createInverse();
             } catch (NoninvertibleTransformException e) {
-                throw new RuntimeException(e.toString());
+                throw new RuntimeException("Failed to create an inverse of an AffineTransform.\n viewRect: "
+                        + viewRect
+                        + "\ncurrent: " + current
+                        + "\nforward: " + forward, e);
             }
 
             Graphics2D g2d = (Graphics2D) g;
