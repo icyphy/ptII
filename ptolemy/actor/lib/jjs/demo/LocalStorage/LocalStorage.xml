@@ -4,7 +4,7 @@
 <entity name="LocalStorage" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 485, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 262, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -33,7 +33,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var storage = require('localStorage');&#10;&#10;function currentStatus()&#10;{&#10;  var result = &quot;&quot;;&#10;  var len = storage.length();&#10;  for (var i = 0; i &lt; len; i++) {&#10;    var curKey = storage.key(i);&#10;    var curValue = storage.getItem(curKey);&#10;    result = result + '(' + curKey + ', ' + curValue + ')';&#10;    if (i &lt; (len - 1)) {&#10;      result = result + ', '&#10;    }&#10;  }&#10;  return result;&#10;}&#10;&#10;function fire()&#10;{&#10;  var inputKey = get(key);&#10;  var inputValue = get(value);&#10;&#10;  var inputIsGet = get(isGet);&#10;&#10;  if (inputIsGet) {&#10;    send('Inserting (Key,Value) = (' + inputKey + ', ' + inputValue + ')', output);&#10;    storage.setItem(inputKey, inputValue);&#10;    send('Result: ' + currentStatus(), output);&#10;  }&#10;  else {&#10;    send('Retrieving Key: ' + inputKey, output);&#10;    var foundValue = storage.getItem(inputKey);&#10;    send('Result: ' + foundValue, output);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var storage = require('localStorage');&#10;&#10;function currentStatus()&#10;{&#10;  var result = &quot;&quot;;&#10;  var len = storage.length();&#10;  for (var i = 0; i &lt; len; i++) {&#10;    var curKey = storage.key(i);&#10;    var curValue = storage.getItem(curKey);&#10;    result = result + '(' + curKey + ', ' + curValue + ')';&#10;    if (i &lt; (len - 1)) {&#10;      result = result + ', '&#10;    }&#10;  }&#10;  return result;&#10;}&#10;&#10;exports.fire = function()&#10;{&#10;  var inputKey = get(key);&#10;  var inputValue = get(value);&#10;&#10;  var inputIsGet = get(isGet);&#10;&#10;  if (inputIsGet) {&#10;    send('Inserting (Key,Value) = (' + inputKey + ', ' + inputValue + ')', output);&#10;    storage.setItem(inputKey, inputValue);&#10;    send('Result: ' + currentStatus(), output);&#10;  }&#10;  else {&#10;    send('Retrieving Key: ' + inputKey, output);&#10;    var foundValue = storage.getItem(inputKey);&#10;    send('Result: ' + foundValue, output);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

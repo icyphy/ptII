@@ -102,7 +102,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;    var result = eval.call(this, 'foo + 5');&#10;    if (result == null) {&#10;      result = &quot;null&quot;;&#10;    }&#10;    send(result, output, 0);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;    var result = eval.call(this, 'foo + 5');&#10;    if (result == null) {&#10;      result = &quot;null&quot;;&#10;    }&#10;    send(result, output, 0);&#10;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 105.0]">
         </property>
