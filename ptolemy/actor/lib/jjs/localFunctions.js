@@ -42,10 +42,12 @@ function send(value, port, channel) {
 function wrapup() {}
 
 //--------------------------- Exposed Java Types -----------------------------
+var ActorToken = Java.type('ptolemy.data.ActorToken');
 var ArrayToken = Java.type('ptolemy.data.ArrayToken');
 var BooleanToken = Java.type('ptolemy.data.BooleanToken');
 var DateToken = Java.type('ptolemy.data.DateToken');
 var DoubleToken = Java.type('ptolemy.data.DoubleToken');
+var Entity = Java.type('ptolemy.kernel.Entity');
 var IntToken = Java.type('ptolemy.data.IntToken');
 var ObjectToken = Java.type('ptolemy.data.ObjectToken');
 var RecordToken = Java.type('ptolemy.data.RecordToken');
@@ -85,8 +87,9 @@ function convertFromToken(value) {
         return result;
     } else if (value instanceof DateToken) {
         return new Date(value.getValue());
+    } else if (value instanceof ActorToken) {
+        return value.getEntity();
     }
-    // FIXME: Handle ActorToken
     // If all else fails, just return the token object.
     return value;
 }
@@ -133,7 +136,10 @@ function convertToToken(value) {
             // NOTE: DateToken constructor takes a long, which JavaScript doesn't support.
             // But the following seems to work. Consequences?
             return new DateToken(value.getTime());
+        } else if (value instanceof Entity) {
+            return new ActorToken(value);
         } else {
+            // Create a RecordToken with the fields of the object.
             // Using Nashorn-specific extension here to create Java array.
             var TokenArray = Java.type('ptolemy.data.Token[]');
             var StringArray = Java.type('java.lang.String[]');
