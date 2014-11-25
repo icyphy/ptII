@@ -9,7 +9,21 @@ var LocalStorageHelper = Java.type('ptolemy.actor.lib.jjs.modules.localStorage.L
 ////////////////////
 // Create a Java instance of LocalStorageHelper, using the specific name (container + actor)
 // for the directory name.
-var storage = new LocalStorageHelper(actor.getContainer().getName() + '-' + actor.getName());
+
+var storage;
+////////////////////
+// Set up a new persistent storage in the file system.
+// This must be called before calling any other functions in localStorage.
+module.exports.initSync = function(opts) {
+    var persistenceDir;
+    if (!opts || !opts['dir']) {
+        persistenceDir = 'persist';
+    }
+    else {
+        persistenceDir = opts['dir'];
+    }
+    storage = new LocalStorageHelper(persistenceDir, actor.getContainer().getName() + '-' + actor.getName());
+}
 
 ////////////////////
 // Wrappers of the function in the java helper.
@@ -22,7 +36,7 @@ module.exports.getItem = function(key) {
 }
 
 ////////////////////
-// Take a key-value pair and stores the pair into the local storage.
+// Take a key-value pair and store the pair into the local storage.
 module.exports.setItem = function(key, value) {
     storage.setItem(key, value);
 }
