@@ -19,8 +19,8 @@
 </LogCategories>
 
 <ModelVariables>
-  <ScalarVariable name="output" valueReference="0" description="output written to the csv file" causality="input">
-     <Integer />
+  <ScalarVariable name="input" valueReference="0" description="input value" variability="continuous" causality="input">
+     <Real />
   </ScalarVariable>
 </ModelVariables>
 

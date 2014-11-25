@@ -22,13 +22,6 @@
     printf("Parsing arguments!\n");
     parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
-    // Load and initialize FMUs
-    for (i = 0; i < NUMBER_OF_FMUS; i++) {
-        printf("Loading FMU %d\n", i+1);
-        loadFMU(&fmus[i], fmuFileNames[i]);
-        fmus[i].component = initializeFMU(&fmus[i], visible, loggingOn, nCategories, categories);
-    }
-
     // Set up port connections
     //setupConnections(fmus, connections);
 

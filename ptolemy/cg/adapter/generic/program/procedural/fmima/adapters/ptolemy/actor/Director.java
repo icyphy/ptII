@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.sched.Scheduler;
+import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 
@@ -110,9 +111,11 @@ public class Director extends FMIMACodeGeneratorAdapter {
         HashMap<TypedIOPort, Node> actorNodeMap = new HashMap<TypedIOPort, Node>();
         HashMap<Node, TypedIOPort> actorPortMap = new HashMap<Node, TypedIOPort>();
         HashMap<String, Node> actorNodeNamesMap = new HashMap<String, Node>();
+        
         DirectedGraph graph = new DirectedGraph();
         
-        
+        actors = ((CompositeActor) adapter.getComponent()
+                .getContainer()).deepEntityList().iterator();
         // Iterate through the actors and generate connection list.
         while (actors.hasNext()) {
 
@@ -125,7 +128,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
         		Node node = new Node(input);
                 actorNodeMap.put(input, node);
                 actorPortMap.put(node, input);
-                actorNodeNamesMap.put(input.getName(), node);
+                actorNodeNamesMap.put(input.getFullName(), node);
                 graph.addNode(node);
         	}
         	// Add all the nodes to the graph (output nodes)
@@ -133,83 +136,90 @@ public class Director extends FMIMACodeGeneratorAdapter {
         		Node node = new Node(output);
                 actorNodeMap.put(output, node);
                 actorPortMap.put(node, output);
-                actorNodeNamesMap.put(output.getName(), node);
+                actorNodeNamesMap.put(output.getFullName(), node);
                 graph.addNode(node);
         	}
         	
+        }
+        
+        actors = ((CompositeActor) adapter.getComponent()
+                .getContainer()).deepEntityList().iterator();
+        
+        while (actors.hasNext()) {
+        	        	
+        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();
+        	
         	// Add all the topological edges
         	for (TypedIOPort input : actor.inputPortList()) { 
-        		Node sink = (Node) actorNodeMap.get(input);
-        		List<?> connected_ports = input.connectedPortList();
+        		Node sinkNode = (Node) actorNodeMap.get(input);
+        		List<TypedIOPort> connected_ports = input.connectedPortList();
+        		
         		for (int port_idx = 0; port_idx < connected_ports.size(); port_idx++) {
-        			TypedIOPort output = (TypedIOPort)connected_ports.get(port_idx);
-        			Node source = (Node) actorNodeMap.get(output);
-        			graph.addEdge(source, sink);
+        			TypedIOPort output = (TypedIOPort) connected_ports.get(port_idx);
+        			Node sourceNode = (Node) actorNodeMap.get(output);
+        			graph.addEdge(sourceNode, sinkNode);
         		}
         	}
 
         	// Add all the causality relation edges
-        	for (TypedIOPort output : actor.outputPortList()) { 
-        		Node sink = (Node) actorNodeMap.get(output);
+        	for (TypedIOPort output : actor.outputPortList()) {         		
+        		Node sinkNode = (Node) actorNodeMap.get(output);        		
+         		Set<String> inputPorts = actor.getInputDependencyList(output.getName());
         		
-                        System.out.println("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java: Commented out code that won't compile");
-//         		Set<String> inputPorts = actor.getInputDependencyList(output.getName());
-        		
-//         		if (inputPorts != null) {
-        		
-// 	        		Iterator<String> inputIterator = inputPorts.iterator();
-// 	        		while(inputIterator.hasNext()) {
-// 	        			String input = (String) inputIterator.next();
-// 	        			Node source = (Node) actorNodeNamesMap.get(input);
-// 	        			graph.addEdge(source, sink);
-// 	        		}
-//         		}
+         		if (inputPorts != null) {
+ 	        		Iterator<String> inputIterator = inputPorts.iterator();
+ 	        		while(inputIterator.hasNext()) {
+ 	        			String input = (String) inputIterator.next(); 	        		 	        		
+ 	        			Node sourceNode = (Node) actorNodeNamesMap.get(input);
+ 	        			graph.addEdge(sourceNode, sinkNode);
+ 	        		}
+         		}
         	}
         	
+        	code.append("printf(\"Loading FMU " + actor.getName() + "...\\n\");\n");
+        	code.append("loadFMU(&fmus[" + actor.getName() + "], \"" + actor.fmuFile.asFile() + "\");\n");
+        	code.append("printf(\"Initializing FMU " + actor.getName() + "...\\n\");\n");
+        	code.append("fmus[" + actor.getName() + "].component = initializeFMU(&fmus[" + actor.getName() + "], visible, loggingOn, nCategories, categories);\n");
         }
         
         Collection<Node> nodeCollection = graph.nodes();
         
         if (nodeCollection.size() == 0) {
-        	System.out.println("The GRAPH is empty");
-        	System.exit(-1);
+        	throw new IllegalActionException("The GRAPH is empty");
         }
         
         if (graph.isAcyclic() == false) {
-        	System.out.println("The GRAPH contains cycles. Unable to determine a port updates order.");
-        	System.exit(-1);
+        	throw new IllegalActionException("The GRAPH contains cycles. Unable to determine a port updates order.");
         }
                 
-        graph.topologicalSort(nodeCollection);
-        Iterator<Node> nodeIterator = nodeCollection.iterator();
-        
+        List sortedGraph = graph.topologicalSort(nodeCollection);
+                
         int connectionIndex = 0;
-        while (nodeIterator.hasNext()) {
-        	Node portSourceNode = nodeIterator.next(); 
+        while (sortedGraph.size() > 0) {
         	
-        	if (nodeIterator.hasNext() == false) break;
+        	Node portSourceNode = (Node) sortedGraph.get(0);        	
+        	Node portSinkNode = (Node) ((List) (graph.reachableNodes(portSourceNode))).get(0);
         	
-        	Node portSinkNode = nodeIterator.next();
+        	sortedGraph.remove(portSourceNode);
+        	sortedGraph.remove(portSinkNode);
         	
         	TypedIOPort outputPort = actorPortMap.get(portSourceNode);
-        	TypedIOPort inputPort = actorPortMap.get(portSinkNode);
-        	ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport) outputPort.getContainer();
-        	ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport) inputPort.getContainer();
+        	TypedIOPort inputPort = actorPortMap.get(portSinkNode);     	
+        	
+        	ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport) actorPortMap.get(portSourceNode).getContainer();
+        	ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport) actorPortMap.get(portSinkNode).getContainer();
+        	
         	String fmuSourceName = sourceActor.getName();
-        	String fmuSinkName = sinkActor.getName();
+        	String fmuSinkName = sinkActor.getName();        	
         	
         	code.append("connections[" + connectionIndex + "].sourceFMU = &fmus[" + fmuSourceName + "];\n"
-        			+ "connections[" + connectionIndex + "].sourcePort = getValueReference(getScalarVariable(fmus["
-        				+ fmuSourceName + "].modelDescription, " + sourceActor.getValueReference(outputPort.getName()) + "));\n"
+        			+ "connections[" + connectionIndex + "].sourcePort = getValueReference(getScalarVariable(fmus[" + fmuSourceName + "].modelDescription, " + sourceActor.getValueReference(outputPort.getName()) + "));\n"
         			+ "connections[" + connectionIndex + "].sourceType = " + sourceActor.getTypeOfPort(outputPort.getName()) + ";\n"
         			+ "connections[" + connectionIndex + "].sinkFMU = &fmus[" + fmuSinkName + "];\n"
-                    + "connections[" + connectionIndex + "].sinkPort = getValueReference(getScalarVariable(fmus["
-                    	+ fmuSinkName + "].modelDescription, " + sinkActor.getValueReference(inputPort.getName()) + "));\n"
+                    + "connections[" + connectionIndex + "].sinkPort = getValueReference(getScalarVariable(fmus[" + fmuSinkName + "].modelDescription, " + sinkActor.getValueReference(inputPort.getName()) + "));\n"
                     + "connections[" + connectionIndex + "].sinkType = " + sinkActor.getTypeOfPort(inputPort.getName()) + ";\n");
-        	
         	connectionIndex++;
         }
-
 
         // Generate the end of the main() method.
         // FIXME: we should generate the start of the main() method from some other cg method.
