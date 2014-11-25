@@ -68,8 +68,8 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 
-all: jclass
-install: jclass jars
+all: suball #jclass
+install: subjars #jclass jars
 
 
 # Get the rest of the rules
