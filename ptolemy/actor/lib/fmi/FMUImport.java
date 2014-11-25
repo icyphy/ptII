@@ -1938,6 +1938,23 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
     	}
     	return "";
     }
+
+	/** Return the list of input ports on which an output has a 
+	 * direct dependence.
+	 * @param port The output port for which you ......
+	 * @return
+	 */
+	public Set<String> getInputDependencyList(String port) {
+		Set<String> inputVariables = null;
+		for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
+			if (_fmiModelDescription.modelVariables.get(i).name.equals(port)) {
+				if (_fmiModelDescription.modelVariables.get(i).name.equals(port)) {
+					inputVariables = _fmiModelDescription.modelVariables.get(i).directDependency;
+				}
+			}
+		}
+		return inputVariables;    	
+	}
     
     
     ///////////////////////////////////////////////////////////////////

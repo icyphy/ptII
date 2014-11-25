@@ -211,7 +211,8 @@ public class FMIScalarVariable {
                 //
                 String nodeName = childElement.getNodeName();
                 if (nodeName.equals("DirectDependency")) {
-                    if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
+                    if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {   
+                    	System.out.println("!!!!!#!#@#!@#%!@#^$#$$%*&^&$^#@$%#@$!@^%&*%()&(^*&*^%&$^#%@#@!#$&(*^)(*&(&*^&%^#%@#&^$*^&(*(&*^%%$^$#%$*&%(");
                         // Iterate over the children of this element to find the
                         // names of the dependents.
                         // FIXME: In FMI 2.0, DirectDependency will be replaced by
@@ -232,7 +233,30 @@ public class FMIScalarVariable {
                             }
                         }
                     }
-                } else if (nodeName.equals("isLinear")
+                } 
+                else if (nodeName.equals("InputDependency")) {
+                	if (fmiModelDescription.fmiVersion.compareTo("2.0") == 0) {
+                        // Iterate over the children of this element to find the
+                        // names of the dependents.
+                        // FIXME: In FMI 2.0, DirectDependency will be replaced by
+                        // "dependencies" in the ModelStructure element of the model description.
+                        directDependency = new HashSet<String>();
+                        NodeList names = childElement.getChildNodes();
+                        for (int j = 0; j < names.getLength(); j++) {
+                            Node name = element.getChildNodes().item(i);
+                            if (name instanceof Element) {
+                                String childType = ((Element) name)
+                                        .getNodeName();
+                                if (childType.equals("Name")) {
+                                    // FIXME: Is getNodeValue() the way to get "foo"
+                                    // from <Name>foo</Name>?
+                                    directDependency.add(((Element) child)
+                                            .getNodeValue());
+                                }
+                            }
+                        }
+                    }
+            	} else if (nodeName.equals("isLinear")
                         || nodeName.equals("VariableCategory")) {
                     if (!_errorElements.contains(_typeName)) {
                         _errorElements.add(_typeName);

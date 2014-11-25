@@ -26,10 +26,10 @@
 // - if x is a variable, then macro x_ is its variable reference
 // - the vr of a variable is its index in array  r, i, b or s
 // - if k is the vr of a real state, then k+1 is the vr of its derivative
-#define value_ 0
+#define input_ 0
 
 // define state vector as vector of value references
-#define STATES { value_ }
+#define STATES { input_ }
 
 // called by fmi2Instantiate
 // Set values for all variables that define a start value
@@ -37,7 +37,7 @@
 void setStartValues(ModelInstance *comp) {
     fprintf(stderr, "out20pt.c: setStartValues()\n");
     fflush(stderr);
-    r(value_) = 0;
+    r(input_) = 0;
 }
 
 // called by fmi2GetReal, fmi2GetInteger, fmi2GetBoolean, fmi2GetString, fmi2ExitInitialization
@@ -64,9 +64,9 @@ void eventUpdate(ModelInstance *comp, fmi2EventInfo *eventInfo, int isTimeEvent)
 fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
     switch (vr)
     {
-        case value_:
+        case input_:
             // return the input value
-            return r(value_);
+            return r(input_);
         default: return 0;
     }
 }
