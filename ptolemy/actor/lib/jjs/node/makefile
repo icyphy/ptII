@@ -44,7 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jjs
+PTPACKAGE = 	node
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
