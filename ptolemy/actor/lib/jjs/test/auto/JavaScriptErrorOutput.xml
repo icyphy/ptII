@@ -51,7 +51,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;    throw(&quot;Error Occurred&quot;);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;    throw(&quot;Error Occurred&quot;);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
