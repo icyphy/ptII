@@ -59,9 +59,9 @@ public class LocalStorageHelper {
      * @param containerActorName Container's name plus the actors' display name
      * @throws MqttPersistenceException
      */
-    public LocalStorageHelper(String containerActorName) throws MqttPersistenceException {
+    public LocalStorageHelper(String persistenceDir, String containerActorName) throws MqttPersistenceException {
         // FIXME if you can find a better directory
-        _mqttLocalStorage = new MqttDefaultFilePersistence("/tmp");
+        _mqttLocalStorage = new MqttDefaultFilePersistence(persistenceDir);
         try {
             _mqttLocalStorage.close();
         }
