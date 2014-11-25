@@ -111,9 +111,9 @@ public class DateElements extends TypedAtomicActor {
         new SingletonParameter(nanosecond, "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        timezone = new TypedIOPort(this, "timezone", false, true);
-        timezone.setTypeEquals(BaseType.STRING);
-        new SingletonParameter(timezone, "_showName")
+        timeZoneOffset = new TypedIOPort(this, "timeZoneOffset", false, true);
+        timeZoneOffset.setTypeEquals(BaseType.INT);
+        new SingletonParameter(timeZoneOffset, "_showName")
                 .setToken(BooleanToken.TRUE);
         
         timeInMillis = new TypedIOPort(this, "timeInMillis", false, true);
@@ -166,9 +166,9 @@ public class DateElements extends TypedAtomicActor {
      */
     public TypedIOPort timeInMillis;
 
-    /** Time zone of date received on input.
+    /** Time zone offset of date received on input.
      */
-    public TypedIOPort timezone;
+    public TypedIOPort timeZoneOffset;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -194,7 +194,7 @@ public class DateElements extends TypedAtomicActor {
                 nanosecond.send(0, new IntToken(dateToken.getNanosecond()));
                 SimpleDateFormat sdf = new SimpleDateFormat("ZZZZZ");
                 sdf.setTimeZone(dateToken.getTimeZone());
-                timezone.send(0, new StringToken(sdf.format(dateToken.getCalendarInstance().getTime())));
+                timeZoneOffset.send(0, new IntToken(Integer.parseInt(sdf.format(dateToken.getCalendarInstance().getTime()))));
                 timeInMillis.send(0, new LongToken(dateToken.getCalendarInstance().getTimeInMillis()));
             }
         }

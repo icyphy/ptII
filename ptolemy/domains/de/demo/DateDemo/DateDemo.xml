@@ -467,11 +467,6 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeZone" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1000000000000l">
@@ -555,11 +550,6 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeZone" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="reconstructed date" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
@@ -577,7 +567,7 @@
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;+0000&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -712,14 +702,9 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeZone" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;+1000&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -979,10 +964,6 @@
         <vertex name="vertex1" value="[280.0, 780.0]">
         </vertex>
     </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
@@ -1019,6 +1000,10 @@
         <vertex name="vertex1" value="[390.0, 645.0]">
         </vertex>
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="CurrentDate.output" relation="relation3"/>
     <link port="CurrentDate.trigger" relation="relation23"/>
     <link port="now.input" relation="relation3"/>
@@ -1032,7 +1017,7 @@
     <link port="DateElements.millisecond" relation="relation7"/>
     <link port="DateElements.microsecond" relation="relation11"/>
     <link port="DateElements.nanosecond" relation="relation9"/>
-    <link port="DateElements.timezone" relation="relation8"/>
+    <link port="DateElements.timeZoneOffset" relation="relation8"/>
     <link port="now2.input" relation="relation20"/>
     <link port="now3.input" relation="relation"/>
     <link port="now4.input" relation="relation2"/>
@@ -1066,7 +1051,7 @@
     <link port="Expression3.in2" relation="relation3"/>
     <link port="now14.input" relation="relation17"/>
     <link port="DateConstructor.output" relation="relation26"/>
-    <link port="DateConstructor.timeZone" relation="relation28"/>
+    <link port="DateConstructor.timeZoneOffset" relation="relation18"/>
     <link port="DateConstructor.timeInMillis" relation="relation27"/>
     <link port="Const2.output" relation="relation27"/>
     <link port="Const2.trigger" relation="relation23"/>
@@ -1081,9 +1066,9 @@
     <link port="DateConstructor2.millisecond" relation="relation7"/>
     <link port="DateConstructor2.microsecond" relation="relation11"/>
     <link port="DateConstructor2.nanosecond" relation="relation9"/>
-    <link port="DateConstructor2.timeZone" relation="relation8"/>
+    <link port="DateConstructor2.timeZoneOffset" relation="relation8"/>
     <link port="reconstructed date.input" relation="relation21"/>
-    <link port="Const3.output" relation="relation28"/>
+    <link port="Const3.output" relation="relation18"/>
     <link port="Const3.trigger" relation="relation23"/>
     <link port="SingleEvent.output" relation="relation23"/>
     <link port="ModifyDate3.input" relation="relation3"/>
@@ -1096,9 +1081,9 @@
     <link port="DateToEvent.output" relation="relation24"/>
     <link port="output 2 seconds later.input" relation="relation24"/>
     <link port="DateConstructor3.output" relation="relation38"/>
-    <link port="DateConstructor3.timeZone" relation="relation18"/>
+    <link port="DateConstructor3.timeZoneOffset" relation="relation10"/>
     <link port="DateConstructor3.timeInMillis" relation="relation27"/>
-    <link port="Const5.output" relation="relation18"/>
+    <link port="Const5.output" relation="relation10"/>
     <link port="Const5.trigger" relation="relation23"/>
     <link port="StringToDate.input" relation="relation29"/>
     <link port="StringToDate.output" relation="relation30"/>

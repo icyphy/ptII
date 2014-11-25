@@ -82,11 +82,6 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="timeZone" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1000000000000l">
@@ -123,7 +118,7 @@
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;+0000&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -303,7 +298,7 @@
         </port>
     </entity>
     <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;+0000&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -329,13 +324,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 640.0]">
         </property>
     </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1405929600123L}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 580.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[90.0, 215.0]">
         </vertex>
-    </relation>
-    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -363,8 +370,6 @@
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -373,13 +378,19 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DateConstructor.output" relation="relation21"/>
-    <link port="DateConstructor.timeZone" relation="relation28"/>
+    <link port="DateConstructor.timeZoneOffset" relation="relation14"/>
     <link port="DateConstructor.timeInMillis" relation="relation"/>
     <link port="Const2.output" relation="relation"/>
     <link port="Const2.trigger" relation="relation23"/>
     <link port="constructed date.input" relation="relation21"/>
-    <link port="Const3.output" relation="relation28"/>
+    <link port="Const3.output" relation="relation14"/>
     <link port="Const3.trigger" relation="relation23"/>
     <link port="SingleEvent.output" relation="relation23"/>
     <link port="StringToDate.input" relation="relation29"/>
@@ -398,7 +409,8 @@
     <link port="DateElements.millisecond" relation="relation8"/>
     <link port="DateElements.microsecond" relation="relation9"/>
     <link port="DateElements.nanosecond" relation="relation10"/>
-    <link port="DateElements.timezone" relation="relation11"/>
+    <link port="DateElements.timeZoneOffset" relation="relation11"/>
+    <link port="DateElements.timeInMillis" relation="relation13"/>
     <link port="Test3.input" relation="relation3"/>
     <link port="Test4.input" relation="relation4"/>
     <link port="Test5.input" relation="relation5"/>
@@ -409,4 +421,5 @@
     <link port="Test10.input" relation="relation10"/>
     <link port="Test11.input" relation="relation11"/>
     <link port="constructed date2.input" relation="relation12"/>
+    <link port="Test12.input" relation="relation13"/>
 </entity>

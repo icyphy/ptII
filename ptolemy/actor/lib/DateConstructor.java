@@ -111,9 +111,9 @@ public class DateConstructor extends TypedAtomicActor {
         new SingletonParameter(nanosecond.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        timeZone = new PortParameter(this, "timeZone", new StringToken("+0000"));
-        timeZone.setTypeEquals(BaseType.STRING);
-        new SingletonParameter(timeZone.getPort(), "_showName")
+        timeZoneOffset = new PortParameter(this, "timeZoneOffset");
+        timeZoneOffset.setTypeEquals(BaseType.INT);
+        new SingletonParameter(timeZoneOffset.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
         useTimeInMillis = new Parameter(this, "useTimeInMillis", new BooleanToken(false));
@@ -172,9 +172,9 @@ public class DateConstructor extends TypedAtomicActor {
      */
     public PortParameter nanosecond;
 
-    /** The time zone.
+    /** The time zone offset.
      */
-    public PortParameter timeZone;
+    public PortParameter timeZoneOffset;
 
     /** The time as a long value representing the milliseconds since
      *  January 1, 1970.
@@ -218,7 +218,14 @@ public class DateConstructor extends TypedAtomicActor {
         } else {
             datePrecision = DateToken.PRECISION_MILLISECOND;
         }
-        String timeZoneValue = _getStringValue(timeZone);
+        Integer timeZoneValue = _getIntValue(timeZoneOffset);
+        TimeZone timeZone = TimeZone.getDefault();
+        if (timeZoneValue != null) {
+            timeZone = TimeZone.getTimeZone("GMT" 
+                    + (timeZoneValue < 0 ? "-" : "+")
+                    + String.format("%04d", timeZoneValue));
+        }
+        
         long timeAsLongValue = _getLongValue(timeInMillis);
         int microsecondValue = _getIntValue(microsecond);
         int nanosecondValue = _getIntValue(nanosecond);
@@ -232,7 +239,7 @@ public class DateConstructor extends TypedAtomicActor {
             int secondValue = _getIntValue(second);
             int millisecondValue = _getIntValue(millisecond);
             
-            Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT" + timeZoneValue));
+            Calendar c = Calendar.getInstance(timeZone);
             c.set(Calendar.YEAR, yearValue);
             c.set(Calendar.MONTH, monthValue);
             c.set(Calendar.DAY_OF_MONTH, dayValue);
@@ -250,15 +257,18 @@ public class DateConstructor extends TypedAtomicActor {
             }
         }
         dateToken = new DateToken(timeAsLongValue, datePrecision,
-                TimeZone.getTimeZone("GMT" + timeZoneValue));
+                timeZone);
         dateToken.addMicroseconds(microsecondValue);
         dateToken.addNanoseconds(nanosecondValue);
 
         output.send(0, dateToken);
     }
     
-    private int _getIntValue(PortParameter portParameter) throws IllegalActionException {
-        int value = ((IntToken) portParameter.getToken()).intValue();
+    private Integer _getIntValue(PortParameter portParameter) throws IllegalActionException {
+        Integer value = null;
+        if (portParameter.getToken() != null) {
+            value = ((IntToken) portParameter.getToken()).intValue();
+        }
         if (portParameter.getPort().connectedPortList().size() > 0 &&
                 portParameter.getPort().hasToken(0)) {
             value = ((IntToken)portParameter.getPort().get(0)).intValue();
@@ -266,20 +276,14 @@ public class DateConstructor extends TypedAtomicActor {
         return value;
     }
     
-    private long _getLongValue(PortParameter portParameter) throws IllegalActionException {
-        long value = ((LongToken) portParameter.getToken()).longValue();
+    private Long _getLongValue(PortParameter portParameter) throws IllegalActionException {
+        Long value = null;
+        if (portParameter.getToken() != null) {
+            value = ((LongToken) portParameter.getToken()).longValue();
+        }
         if (portParameter.getPort().connectedPortList().size() > 0 &&
                 portParameter.getPort().hasToken(0)) {
             value = ((LongToken)portParameter.getPort().get(0)).longValue();
-        }
-        return value;
-    }
-    
-    private String _getStringValue(PortParameter portParameter) throws IllegalActionException {
-        String value = ((StringToken) portParameter.getToken()).stringValue();
-        if (portParameter.getPort().connectedPortList().size() > 0 &&
-                portParameter.getPort().hasToken(0)) {
-            value = ((StringToken)portParameter.getPort().get(0)).stringValue();
         }
         return value;
     }

@@ -60,7 +60,7 @@
         </property>
         <property name="nanosecond" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
-        <property name="timeZone" class="ptolemy.actor.parameters.PortParameter" value="&quot;+0100&quot;">
+        <property name="timeZoneOffset" class="ptolemy.actor.parameters.PortParameter" value="100">
         </property>
         <property name="precision" class="ptolemy.data.expr.StringParameter" value="millisecond">
         </property>
@@ -96,8 +96,6 @@
         </property>
         <property name="nanosecond" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
-        <property name="timeZone" class="ptolemy.actor.parameters.PortParameter" value="&quot;+0100&quot;">
-        </property>
         <property name="useTimeInMillis" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="precision" class="ptolemy.data.expr.StringParameter" value="millisecond">
@@ -121,8 +119,6 @@
         <property name="microsecond" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <property name="nanosecond" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
-        <property name="timeZone" class="ptolemy.actor.parameters.PortParameter" value="&quot;+0100&quot;">
         </property>
         <property name="useTimeInMillis" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -169,8 +165,6 @@
         <vertex name="vertex1" value="[170.0, 170.0]">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -199,6 +193,12 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[315.0, 315.0]">
+        </vertex>
+    </relation>
     <link port="DateConstructor.output" relation="relation2"/>
     <link port="Test.input" relation="relation2"/>
     <link port="DateElements.input" relation="relation2"/>
@@ -211,10 +211,10 @@
     <link port="DateElements.millisecond" relation="relation11"/>
     <link port="DateElements.microsecond" relation="relation12"/>
     <link port="DateElements.nanosecond" relation="relation13"/>
-    <link port="DateElements.timezone" relation="relation"/>
+    <link port="DateElements.timeZoneOffset" relation="relation17"/>
     <link port="DateElements.timeInMillis" relation="relation3"/>
     <link port="DateConstructor2.output" relation="relation5"/>
-    <link port="DateConstructor2.timeZone" relation="relation"/>
+    <link port="DateConstructor2.timeZoneOffset" relation="relation17"/>
     <link port="DateConstructor2.timeInMillis" relation="relation3"/>
     <link port="DateConstructor3.output" relation="relation14"/>
     <link port="DateConstructor3.year" relation="relation4"/>
@@ -226,6 +226,7 @@
     <link port="DateConstructor3.millisecond" relation="relation11"/>
     <link port="DateConstructor3.microsecond" relation="relation12"/>
     <link port="DateConstructor3.nanosecond" relation="relation13"/>
+    <link port="DateConstructor3.timeZoneOffset" relation="relation17"/>
     <link port="StringToDate.input" relation="relation16"/>
     <link port="StringToDate.output" relation="relation15"/>
     <link port="Test4.input" relation="relation15"/>
