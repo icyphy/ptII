@@ -1,0 +1,11 @@
+{
+  "name": "mqtt",
+  "version": "0.1.0",
+  "main": "mqtt.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Hokeun Kim"
+    , "email" : "hokeunkim@eecs.berkeley.edu"}
+  ],
+  "description": "A package for MQTT access."
+}
