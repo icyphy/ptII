@@ -1,13 +1,15 @@
 package org.ptolemy.ssm;
 
 
+import java.util.List;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentEntity;  
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -18,7 +20,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-public class MirrorDecoratorAttributes extends DecoratorAttributes implements MirrorDecoratorListener{
+public class MirrorDecoratorAttributes extends DecoratorAttributes 
+implements MirrorDecoratorListener{
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
@@ -38,6 +41,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
         _init();
     }
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -53,11 +57,11 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
         if (attribute == enable) {
             _enabled = ((BooleanToken) enable.getToken()).booleanValue();
             if (enabled()) {
-                _addAllPorts();
+                decorateContainer();
             } else {
-                _removeAllPorts();
+                removeDecorationsFromContainer();
             }
-        }
+        } 
         super.attributeChanged(attribute);
     }
 
@@ -65,7 +69,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
         MirrorDecoratorAttributes result = (MirrorDecoratorAttributes) super.clone(workspace); 
-        result._enabled = false;
+        result._enabled = false; 
         return result;
     }
 
@@ -114,20 +118,20 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
                 }
             } else if (eventType == DecoratorEvent.ADDED_PORT_PARAMETER) {
                 if (enabled()) {
-                    if (containerParam == null) {
+                    if (containerParam == null) { 
                         new PortParameter(this.getContainer(), p.getName());
-                    }  
-                    if (param == null) {
-                        new Parameter(this, p.getName());
-                    }
+                    }   
+                }
+                if (param == null) {
+                    new Parameter(this, p.getName());
                 }
             } else if (eventType == DecoratorEvent.REMOVED_PORT_PARAMETER) {
                 if (containerParam!=null) {
-                    containerParam.setContainer(null);
+                    containerParam.setContainer(null); 
                 }
                 if (param != null) {
                     param.setContainer(null);
-                }
+                } 
             }
 
         } catch (IllegalActionException | NameDuplicationException e) {
@@ -150,7 +154,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
             if (eventType == DecoratorEvent.ADDED_PORT) { 
                 if (enabled()) {
                     if (port == null) {
-                        port = new TypedIOPort(container, targetPortName, true, false);
+                        port = new TypedIOPort(container, targetPortName, true, false); 
                         SingletonParameter showNameParam = ((SingletonParameter)port.getAttribute("_showName"));
                         if (showNameParam == null) {
                             showNameParam = new SingletonParameter(port,"_showName");
@@ -170,10 +174,21 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
             } else if (eventType == DecoratorEvent.REMOVED_PORT) {
                 // if the container has a port of this name AND this port
                 // is known to have been added by this decorator, remove it.
-                if (port != null && 
-                        ((MirrorDecorator)this._decorator).getAddedPortNames().contains(portName)) {
-                    port.setContainer(null);
-                }
+                boolean portAddedByDecorator = ((MirrorDecorator)this._decorator)
+                        .getAddedPortNames().contains(portName);
+                boolean paramPortAddedByDecorator = ((MirrorDecorator)this._decorator)
+                        .getAddedPortParameterNames().contains(portName);
+                if (port != null ) {
+                    if (portAddedByDecorator) {
+                        port.setContainer(null); 
+                    }   
+                } else {
+                    // this could be a parameter port carrying the same name as the original port.
+                    port = (TypedIOPort) container.getPort(portName); 
+                    if (port != null && paramPortAddedByDecorator) {
+                        port.setContainer(null);
+                    }
+                } 
             } 
         } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
@@ -182,44 +197,60 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
 
 
     /**
-     * Add all decorated ports to the container
+     * Add all decorated ports and necessary parameters to the container.
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    private void _addAllPorts() {
+    public void decorateContainer() {
         if (this._decorator != null) {
-            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
-                event((MirrorDecorator)this._decorator,
-                        DecoratorEvent.ADDED_PORT, decoratorPort); 
-            }
             for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortParameterNames()) {
                 event((MirrorDecorator)this._decorator,
                         DecoratorEvent.ADDED_PORT_PARAMETER, 
                         (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort)); 
             }
+            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
+                event((MirrorDecorator)this._decorator,
+                        DecoratorEvent.ADDED_PORT, decoratorPort); 
+            } 
         }
     }
 
+
+
+
     /**
      * Remove all decorated ports from the container
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    private void _removeAllPorts() { 
+    public void removeDecorationsFromContainer() { 
         if (this._decorator != null) {
-            for (String port : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
-                event((MirrorDecorator)this._decorator,
-                        DecoratorEvent.REMOVED_PORT, port);  
+            List<String> addedPortNames =  ((MirrorDecorator)this._decorator).getAddedPortNames();
+            if (addedPortNames != null) {
+                for (String port : addedPortNames) {
+                    event((MirrorDecorator)this._decorator,
+                            DecoratorEvent.REMOVED_PORT, port);   
+                }
             }
-            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortParameterNames()) {
-                event((MirrorDecorator)this._decorator,
-                        DecoratorEvent.REMOVED_PORT_PARAMETER, 
-                        (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort)); 
+            List<String> addedPortParNames =  ((MirrorDecorator)this._decorator).getAddedPortParameterNames();
+            if (addedPortNames != null) {
+                for (String decoratorPort : addedPortParNames) { 
+                    event((MirrorDecorator)this._decorator,
+                            DecoratorEvent.REMOVED_PORT, 
+                            (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort));
+                }
             }
         } 
     }
 
     private void _addAllParameters() {
         if (this._decorator != null) {
-            for (Parameter p : ((MirrorDecorator)this._decorator).getAddedParameters()) {
-                event((MirrorDecorator)this._decorator,
-                        DecoratorEvent.ADDED_PARAMETER, p);                      
+            List<Parameter> addedParameters =  ((MirrorDecorator)this._decorator).getAddedParameters();
+            if (addedParameters != null) {
+                for (Parameter p : addedParameters) {
+                    event((MirrorDecorator)this._decorator,
+                            DecoratorEvent.ADDED_PARAMETER, p);                      
+                }
             }
         }
     }
@@ -234,16 +265,7 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
             enable.setExpression("false");
             enable.setTypeEquals(BaseType.BOOLEAN);
             enable.setPersistent(true);
-
-            if (enabled()) {
-                _addAllPorts();
-            } else {
-                _removeAllPorts();
-            } 
-
-            _addAllParameters();
-
-
+            _addAllParameters(); 
 
         } catch (KernelException ex) {
             // This should not occur.
@@ -252,6 +274,6 @@ public class MirrorDecoratorAttributes extends DecoratorAttributes implements Mi
     }
 
     /** Boolean indicating  enable status of the decorator */
-    protected boolean _enabled; 
+    protected boolean _enabled;  
 
 }

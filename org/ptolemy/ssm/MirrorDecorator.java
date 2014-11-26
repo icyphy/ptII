@@ -32,21 +32,15 @@ package org.ptolemy.ssm;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
-
-
-
-
-
 import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
 
+import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort; 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Parameter; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -60,7 +54,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 /**
 A  special decorator that mirrors its parameters and ports to the decorated actor.
-
+The ports are added to the decorated container, whereas the parameters are contained
+by the DecoratorAttributes object.
 
 @author Ilge Akkaya 
 @version $Id$
@@ -87,26 +82,13 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
         _init();
-    }
-
-    /** Construct a MirrorDecorator in the given workspace.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace. 
-     * @throws IllegalActionException 
-     */
-    public MirrorDecorator(Workspace workspace) throws IllegalActionException {
-        super(workspace);
-        _init();
-    }
+    } 
 
     public void attributeChanged(Attribute attribute) 
             throws IllegalActionException {
         if (attribute instanceof PortParameter) {
             sendParameterEvent(DecoratorEvent.CHANGED_PORT_PARAMETER, (Parameter) attribute);
-        } 
+        }
         if (attribute instanceof Parameter) {
             sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER, (Parameter) attribute);
         }
@@ -165,12 +147,14 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         _decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> list = new ArrayList();
         CompositeEntity container = (CompositeEntity) getContainer();
-        for (Object object : container.deepEntityList()) { 
-            if (object instanceof StateSpaceActor) {
-                list.add((NamedObj)object); 
+        if (container != null) {
+            for (Object object : container.deepEntityList()) { 
+                if (object instanceof StateSpaceActor) {
+                    list.add((NamedObj)object); 
+                }
             }
+            _decoratedObjects = list;
         }
-        _decoratedObjects = list;
         return list;
     }
 
@@ -186,8 +170,12 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         return _addedParameters;
     }
 
+    
+    /** Return true to indicate that this decorator should
+     *  decorate objects across opaque hierarchy boundaries.
+     */
     @Override
-    public boolean isGlobalDecorator() throws IllegalActionException { 
+    public boolean isGlobalDecorator() {
         return false;
     }
 
@@ -195,6 +183,9 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
      *  @param monitor The communication aspect monitor.
      */
     public void registerListener(MirrorDecoratorListener monitor) {
+        if (_listeners == null) {
+            _listeners = new ArrayList<MirrorDecoratorListener>();
+        }
         _listeners.add(monitor);
     }
     /** Notify the monitor that an event happened. 
@@ -221,41 +212,80 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         }
     }
 
+
+    /** Override the base class to first set the container, then establish
+     *  a connection with any decorated objects it finds in scope in the new
+     *  container.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    @Override
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException { 
+        super.setContainer(container);
+        if (container == null) {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                MirrorDecoratorAttributes decAttributes = (MirrorDecoratorAttributes) decoratedObject.getDecoratorAttributes(this);
+                decAttributes.removeDecorationsFromContainer(); 
+            }
+        } else {
+            List<NamedObj> decoratedObjects = decoratedObjects();
+            for (NamedObj decoratedObject : decoratedObjects) {
+                // The following will create the DecoratorAttributes if it does not
+                // already exist, and associate it with this decorator.
+                decoratedObject.getDecoratorAttributes(this);
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     @Override
     protected void _addPort(TypedIOPort port) throws IllegalActionException,
     NameDuplicationException { 
-        super._addPort(port);
+        super._addPort(port); 
         if (port instanceof ParameterPort) {
             _addedPortParameterNames.add(port.getName());
+            // event handled when adding a port parameter
         } else {
             _addedPortNames.add(port.getName());
-            sendPortEvent(DecoratorEvent.ADDED_PORT, port.getName());
+            sendPortEvent(DecoratorEvent.ADDED_PORT, port.getName()); 
         }
+
     }
 
     @Override
     protected void _removePort(Port port) { 
-        super._removePort(port);
+        super._removePort(port); 
+        sendPortEvent(DecoratorEvent.REMOVED_PORT, port.getName()); 
         if (port instanceof ParameterPort) {
             _addedPortParameterNames.remove(port.getName());
+        } else {
+            _addedPortNames.remove(port.getName());
         }
-        sendPortEvent(DecoratorEvent.REMOVED_PORT, port.getName()); 
-        _addedPortNames.remove(port.getName());
     }
 
     @Override
     protected void _addAttribute(Attribute attr) 
             throws NameDuplicationException, IllegalActionException { 
         super._addAttribute(attr);
-        if (attr instanceof PortParameter) {
-            sendParameterEvent(DecoratorEvent.ADDED_PORT_PARAMETER, (Parameter)attr);
-        } else if (attr instanceof Parameter) {
-            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, (Parameter)attr); 
+        if (attr instanceof ColorAttribute) {
+            // do nothing.
+        } else if (attr instanceof PortParameter) {
+            sendParameterEvent(DecoratorEvent.ADDED_PORT_PARAMETER, (Parameter)attr);   
             _addedParameters.add((Parameter) attr); 
-        }
+        } else if (attr instanceof Parameter) {
+            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, (Parameter)attr);  
+            _addedParameters.add((Parameter) attr); 
+        } 
     }
 
     @Override
@@ -265,16 +295,15 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             sendParameterEvent(DecoratorEvent.REMOVED_PORT_PARAMETER, (Parameter)attr);
         } else if (attr instanceof Parameter) {
             sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER, (Parameter)attr); 
-            _addedParameters.remove((Parameter) attr);
-        }  
+        }   
+        _addedParameters.remove((Parameter) attr);
     }
 
-    private void _init() throws IllegalActionException {
+    private void _init() throws IllegalActionException, NameDuplicationException {
         _listeners = new ArrayList<>(); 
         _addedPortNames = new ArrayList<>();
         _addedPortParameterNames = new ArrayList<>();
-        _addedParameters = new ArrayList<>();
-
+        _addedParameters = new ArrayList<>(); 
         for (NamedObj n : decoratedObjects()) {
             MirrorDecoratorAttributes attributes = (MirrorDecoratorAttributes) n.getDecoratorAttributes(this);
             if (attributes != null) {
