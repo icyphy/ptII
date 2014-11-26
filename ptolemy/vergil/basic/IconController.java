@@ -31,9 +31,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+ 
+import org.ptolemy.ssm.MirrorDecorator;
+import org.ptolemy.ssm.MirrorDecoratorAttributes;
 
-import ptolemy.actor.ExecutionAttributes;
+import ptolemy.actor.ExecutionAttributes; 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -45,6 +49,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
@@ -243,36 +248,76 @@ public class IconController extends ParameterizedNodeController {
                 for (Decorator decorator : decorators) {
                     DecoratorAttributes decoratorAttributes = object
                             .getDecoratorAttributes(decorator);
-                    if (decoratorAttributes instanceof ExecutionAttributes) {
-                        if (decoratorAttributes.getDecorator() != null
-                                && ((ExecutionAttributes) decoratorAttributes)
-                                .enabled()) {
-                            try {
-                                if (object
-                                        .getAttribute("_decoratorHighlightColor") == null) {
-                                    highlightColor = new ColorAttribute(object,
-                                            "_decoratorHighlightColor");
+                    boolean validExecutionAspectFound = 
+                            (decoratorAttributes instanceof ExecutionAttributes) &&
+                            decoratorAttributes.getDecorator() != null
+                            && ((ExecutionAttributes) decoratorAttributes)
+                            .enabled();
+                    boolean validMirrorDecoratorFound = 
+                            (decoratorAttributes instanceof MirrorDecoratorAttributes) &&
+                            decoratorAttributes.getDecorator() != null
+                            && ((MirrorDecoratorAttributes) decoratorAttributes)
+                            .enabled();
+                    boolean mirrorDecoratorDisabled = (decoratorAttributes instanceof MirrorDecoratorAttributes) &&
+                            decoratorAttributes.getDecorator() != null;
+
+                    if (validExecutionAspectFound || validMirrorDecoratorFound) { 
+                        try {
+                            // not highlighting measurement models because they
+                            // are decorators themselves.
+                            if (!(object instanceof Decorator) && object
+                                    .getAttribute("_decoratorHighlightColor") == null) {
+                                highlightColor = new ColorAttribute(object,
+                                        "_decoratorHighlightColor");
+                                Attribute attribute = ((NamedObj) decorator)
+                                        .getAttribute("decoratorHighlightColor");
+                                String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
+                                if (attribute != null) {
+                                    colorExpression = (((ColorAttribute) attribute)
+                                            .getToken()).toString();
+                                }
+                                ((ColorAttribute) highlightColor)
+                                .setExpression(colorExpression);
+                            }
+                        } catch (NameDuplicationException e) {
+                            // Not gonna happen.
+                        } 
+                        // check if the decorator itself has been highlighted
+                        // if not, highlight.
+                        if (validMirrorDecoratorFound) {
+                            if (((MirrorDecorator)decorator)
+                                    .getAttribute("_highlightColor") == null) {
+                                try {
                                     Attribute attribute = ((NamedObj) decorator)
                                             .getAttribute("decoratorHighlightColor");
+                                    highlightColor = new ColorAttribute((MirrorDecorator)decorator,
+                                            "_highlightColor"); 
+                                    ((Parameter)highlightColor).setVisibility(Settable.EXPERT);
                                     String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
                                     if (attribute != null) {
                                         colorExpression = (((ColorAttribute) attribute)
                                                 .getToken()).toString();
                                     }
                                     ((ColorAttribute) highlightColor)
-                                    .setExpression(colorExpression);
-                                }
-                            } catch (NameDuplicationException e) {
-                                // Not gonna happen.
+                                    .setExpression(colorExpression);  
+                                } catch (NameDuplicationException e) {
+                                    // Should not happen.
+                                } 
                             }
                         }
+                    } else if (mirrorDecoratorDisabled) {
+                        Attribute mda = ((MirrorDecorator)decorator)
+                                .getAttribute("_highlightColor");
+                        if (mda != null) {
+                            ((MirrorDecorator)decorator).removeAttribute(mda);
+                    } 
                     }
                 }
 
             } catch (IllegalActionException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
-            }
+            } 
 
             AttributeController.renderDecoratorHighlight(object, result);
 
