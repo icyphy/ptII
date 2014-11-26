@@ -220,7 +220,7 @@
 	<variableList>
 		<variable>
 			<name>PT_LOC</name>
-			<value>file:/C:/data/build-folders/ptolemy</value>
+			<value>file:/Users/cxh/src/workspacePtOSGi/ptII</value>
 		</variable>
 	</variableList>
 </projectDescription>
