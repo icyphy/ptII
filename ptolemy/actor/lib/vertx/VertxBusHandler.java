@@ -226,6 +226,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         // verticle is stopped.
         _vertx.cancelTimer(_periodicPing);
         _vertx.stop();
+        _websocket = null;
     }
 
     /** Initialize ports and parameters.
@@ -243,7 +244,7 @@ public class VertxBusHandler extends TypedAtomicActor {
 
     /** Open a web socket that serves as a connection to the event bus.
      */
-    private synchronized void _openWebSocket() {
+    private void _openWebSocket() {
         if (!_stopRequested) {
             _client.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
                 
@@ -264,7 +265,9 @@ public class VertxBusHandler extends TypedAtomicActor {
                                 _buffer = new ArrayList<StringToken>();
                             }
                             synchronized(_buffer) {
-                                _buffer.add(new StringToken(received.getField("body").toString()));
+                                if (received.getField("body") != null) {
+                                    _buffer.add(new StringToken(received.getField("body").toString()));
+                                }
                             }
                             try {
                                 getDirector().fireAtCurrentRealTime((Actor) subscribe.getContainer());
