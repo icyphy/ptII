@@ -596,13 +596,9 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         double[] value = new double[t.labelSet().size()-1];
         for (int i = 0; i < particles.length; i++) {
             t = (RecordToken) particleArray.getElement(i);
-            int k = 0;
-            for (String contents : t.labelSet()) {
-                if (!contents.equals("weight")) {
-                    value[k] = ((DoubleToken)t.get(contents)).doubleValue();
-                    k++;
-                }
-            }
+            for (int k = 0; k < _stateVariables.length; k++) {
+                value[k] = ((DoubleToken)t.get(_stateVariables[k])).doubleValue();
+            } 
             particles[i] = new Particle(value.length);
             particles[i].setValue(value);
             particles[i].setWeight(((DoubleToken)t.get("weight")).doubleValue());

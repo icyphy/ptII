@@ -53,6 +53,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	GaussianMeasurementModel.java \
 	InferenceActor.java \
+	Measurementmodel.java\
 	MeasurementModelAttributes.java \
 	MirrorDecorator.java \
 	MirrorDecoratorAttributes.java \
@@ -60,7 +61,8 @@ JSRCS = \
 	ParticleFilterSSM.java \
 	PredictorSSM.java \
 	StateSpaceActor.java \
-	StateSpaceModel.java	
+	StateSpaceModel.java \
+	StateSpaceSimulator.java
 
 
 OTHER_FILES_TO_BE_JARED = \
@@ -68,7 +70,8 @@ OTHER_FILES_TO_BE_JARED = \
 	ssm.xml \
 	PredictorSSMIcon.xml \
 	ParticleFilterSSMIcon.xml \
-	StateSpaceModelIcon.xml
+	StateSpaceModelIcon.xml \
+	StateSpaceSimulatorIcon.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

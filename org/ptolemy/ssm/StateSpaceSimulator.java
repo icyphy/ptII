@@ -1,4 +1,4 @@
-/* A State space particle filter implementation
+/* A State space model simulator.
  
  Copyright (c) 2009-2014 The Regents of the University of California.
  All rights reserved.
@@ -28,10 +28,11 @@
 package org.ptolemy.ssm;
 
 import java.util.HashMap; 
-import java.util.Set;
 
 import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter; 
+import org.ptolemy.machineLearning.particleFilter.AbstractStateSpaceSimulator;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -47,8 +48,8 @@ import ptolemy.kernel.util.Workspace;
 ////ParticleFilterSSM
 
 /**
-A particle filter implementation that expects a state-space model
-and several measurements to be tied with itself via decorators.  
+An actor that simulates a state space model that decorates itself.
+Defines an initial value for the state and simulates the model from there.
 
 @author Ilge Akkaya 
 @version $Id$
@@ -56,22 +57,18 @@ and several measurements to be tied with itself via decorators.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
 */
-public class ParticleFilterSSM extends AbstractParticleFilter 
-implements InferenceActor {
+public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements StateSpaceActor {
 
-    public ParticleFilterSSM(CompositeEntity container, String name)
+    public StateSpaceSimulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _decorator = null;
-        _measurementDecorators = new HashMap<>();
-        // TODO Auto-generated constructor stub
+        _decorator = null;  
     } 
 
-    public ParticleFilterSSM(Workspace workspace)
+    public StateSpaceSimulator(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace); 
-        _decorator = null;
-        _measurementDecorators = new HashMap<>();
+        _decorator = null; 
     } 
 
 
@@ -126,7 +123,6 @@ implements InferenceActor {
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
-        Set test = this.decorators();
         for (Decorator d : this.decorators()) {
             if (d instanceof StateSpaceModel) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
@@ -140,12 +136,7 @@ implements InferenceActor {
                                 + "at a time.");
                     }
                 }
-            } else if (d instanceof GaussianMeasurementModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
-                    _measurementDecorators.put(d.getName(),(GaussianMeasurementModel)d);
-                }
-            }
+            }  
         }
         return found;
     }
@@ -160,70 +151,7 @@ implements InferenceActor {
         } else {
             throw new IllegalActionException("No decorator found!");
         }
-    } 
+    }  
 
-    /**
-     * Return the first encountered value for now
-     * FIXME
-     * @param eqnName
-     * @return
-     * @throws IllegalActionException
-     */
-    @Override
-    protected Parameter getMeasurementParameter(String fullName) 
-            throws IllegalActionException {
-
-        String[] completeName = fullName.split("_");  
-        String decoratorName = completeName[0];
-        String portName = "";
-        for (int i = 1; i < completeName.length; i++) {
-            portName += completeName[i];
-        }
-        GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
-        if (m != null) {
-            String postfix = m.getMeasurementParameterPostfix();
-            Attribute attr = this.getDecoratorAttribute(m,portName+postfix); 
-
-            if ( attr != null) {
-                return ((Parameter)attr); 
-            } else {
-                throw new IllegalActionException("Specified parameter for: " +
-                        portName + " not found in referred decorator " + decoratorName);
-            }
-        } else {
-            throw new IllegalActionException("Decorator not found: " + decoratorName);
-        }
-    } 
-
-    private StateSpaceModel _decorator;
-    private HashMap<String,GaussianMeasurementModel> _measurementDecorators;
-    @Override
-    protected InputType getInputType(String inputName) {
-        String[] nameStruct = inputName.split("_");
-        if (nameStruct.length >= 2) {
-            return InputType.MEASUREMENT_INPUT;
-        } else {
-            return InputType.CONTROL_INPUT;
-        }
-    }
-
-    @Override
-    protected Parameter getNoiseParameter(String fullName) throws IllegalActionException {
-        String[] completeName = fullName.split("_");  
-        String decoratorName = completeName[0]; 
-        GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
-        if (m != null) { 
-            Attribute attr = this.getDecoratorAttribute(m,"noiseCovariance"); 
-
-            if ( attr != null) {
-                return ((Parameter)attr); 
-            } else {
-                throw new IllegalActionException("Specified parameter for noise"
-                        + " not found in referred decorator " + decoratorName);
-            }
-        } else {
-            throw new IllegalActionException("Decorator not found: " + decoratorName);
-        }
-    }
-
+    private StateSpaceModel _decorator;  
 }

@@ -701,10 +701,21 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         double[] cumulativeSums = new double[Nparticles + 1];
         Particle[] previousParticles = new Particle[Nparticles];
         cumulativeSums[0] = 0;
-        for (int i = 0; i < Nparticles; i++) {
-            double w = particles[i].getWeight();
-            cumulativeSums[i + 1] = cumulativeSums[i] + w;
+        for (int i = 0; i < Nparticles; i++) { 
+            cumulativeSums[i + 1] = cumulativeSums[i] + particles[i].getWeight();
             previousParticles[i] = particles[i];
+        }
+        
+        if (cumulativeSums[Nparticles ] < 1.0) {
+            double wt = 1.0/Nparticles;
+            for (Particle p: particles ) {
+                p.setWeight(wt);
+            }
+            cumulativeSums = new double[Nparticles + 1];
+            for (int i = 0; i < Nparticles; i++) { 
+                cumulativeSums[i + 1] = cumulativeSums[i] + particles[i].getWeight();
+                previousParticles[i] = particles[i];
+            }
         }
         // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles]
         // and choose all other particles in reference to the first sample. Yields a low-variance

@@ -53,6 +53,7 @@ PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractParticleFilter.java \
 	AbstractPredictor.java \
+	AbstractStateSpaceSimulator.java \
 	ConstraintsCalculator.java \
 	MutualInformationCalculator.java \
 	Optimizer.java \

@@ -1,4 +1,4 @@
-# Makefile Quantized State Machine (QSS) demos
+#  
 #
 # @Version: $Id$
 # @Author: Ilge Akkaya
@@ -29,38 +29,33 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = SingleRobotTargetLocalization \
-StatePrediction
+ME =		org/ptolemy/ssm/demo/StatePrediction
+
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../../../..
-
-# $(ME) is used in ptdir.mk
-ME =		org/ptolemy/ssm/demo
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Variables and rules used to create source file distributions
-PTPACKAGE = 	demo
+# Used to build jar files
+PTPACKAGE = 	StatePrediction
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-# (Copied syntax from \ptolemy\demo )
-PTAUXALLJARS = \ 
 
-PTAUXALLJAR = $(PTPACKAGE).jar
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	StatePrediction.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
-OPTIONAL_FILES = \
+OPTIONAL_FILES =
 
 # Files to remove with 'make clean'
 KRUFT = \

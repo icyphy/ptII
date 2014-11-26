@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -42,22 +44,8 @@ public class StateSpaceModel extends MirrorDecorator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StateSpaceModel newObject = (StateSpaceModel) super
                 .clone(workspace);
-        newObject._cachedStateVariableNames = null;
+        newObject._cachedStateVariableNames = new ArrayList<>();
         return newObject;
-    }
-    /** Construct a StateSpaceModel in the given workspace.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace. 
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
-     */
-    public StateSpaceModel(Workspace workspace) 
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        _init();
     } 
 
     @Override
@@ -156,21 +144,28 @@ public class StateSpaceModel extends MirrorDecorator {
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
     NameDuplicationException { 
+         
         stateVariableNames = new Parameter(this, "stateVariableNames"); 
         stateVariableNames.setExpression("{\"x\",\"y\"}");
-
+        stateVariableNames.setTypeEquals(new ArrayType(BaseType.STRING));
 
         prior = new Parameter(this, "prior");
         prior.setExpression("{random()*200-100,random()*200-100}");
+        prior.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        
         processNoise = new Parameter(this, "processNoise");
-        processNoise
-        .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])"); 
+        processNoise.setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");  
 
 
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");    
+        
+        ColorAttribute color = new ColorAttribute(this,
+                "decoratorHighlightColor");
+        color.setExpression("{1.0,0.4,0.0,1.0}");
+
 
         _cachedStateVariableNames = new ArrayList<>();
     }  
