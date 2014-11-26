@@ -97,7 +97,13 @@ public class PDFIcon extends DynamicEditorIcon {
             // and https://stackoverflow.com/questions/26535842/multithreaded-jpeg-image-processing-in-java
             Class.forName("javax.imageio.ImageIO");
             Class.forName("java.awt.color.ICC_ColorSpace");
-            Class.forName("sun.java2d.cmm.lcms.LCMS");
+
+            // This class is not present under Linux?
+            try {
+                Class.forName("sun.java2d.cmm.lcms.LCMS");
+            } catch (Throwable throwable) {
+                // Ignore.
+            }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Could not instantiate a Java2d class?");
