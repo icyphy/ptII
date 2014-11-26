@@ -1,0 +1,96 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="mqttPubSub" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={146, 244, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 265.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 415.0]">
+        </property>
+    </property>
+    <entity name="MqttSubscriber" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;mqtt.namespaceName = 'mqtt';&#10;&#10;var client;&#10;&#10;var receivedCnt = 0;&#10;function onMessage(topic, data) {&#10;  data = mqtt.binToStr(data);&#10;  send(data, output);&#10;  receivedCnt++;&#10;  if (receivedCnt &gt;= 7) {&#10;    client.unsubscribe(topic);&#10;  }&#10;}&#10;&#10;function onConnect() {&#10;  send(&quot;Publisher connected&quot;, output);&#10;  client.subscribe('ptTest');&#10;}&#10;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.on('connect', onConnect);&#10;  client.on('message', onMessage);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 120.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={581, 436, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="MqttPublisher" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;// FIXME this is a hack to enable callbacks from the JavaScript actor.&#10;// There must be a better way to do this (e.g. EventEmitter in node.js)&#10;mqtt.namespaceName = 'mqtt';&#10;&#10;var client;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'publisher'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}&#10;&#10;var cnt = 0;&#10;exports.fire = function() {&#10;  if (client.connected) {&#10;    cnt++;&#10;    client.publish('ptTest', 'Publishing count: ' + cnt, {qos:2});&#10;  }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 205.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="MqttSubscriber.output" relation="relation"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="MqttPublisher.input" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation2"/>
+</entity>
