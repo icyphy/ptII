@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy II JavaScript demos
+# Makefile for Nashorn-based Ptolemy II JavaScript modules
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70763 2014-11-25 16:53:51Z cxh $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,53 +29,50 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/demo
+ME =		ptolemy/actor/lib/jjs/modules/vertxBus
 
-DIRS =		JavaScriptShell LocalStorage VertxBus WebSocket
+DIRS = 		
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+# Root of the Java directory
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	JavaScriptShell/JavaScriptShell.jar \
-	LocalStorage/LocalStorage.jar \
-	WebSocket/WebSocket.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	vertxBus
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	VertxBusHelper.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	package.json \
+	vertxBus.js
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	demo \
+	doc \
+	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-	@echo "To run the demos, run 'make demo'"
 
+all: jclass
 install: jclass jars
 
-demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -46,6 +46,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -145,8 +146,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         // publish values
         for (int i = 0; i < publish.getWidth(); i++) {
             if (publish.hasToken(i)) {
-                StringToken token = (StringToken) publish.get(i);
-                String tokenString = token.stringValue();
+                String tokenString = publish.get(0).toString();
                 // Remove leading and trailing double quotes.
                 JsonObject msg = new JsonObject().putString("type", "publish")
                         .putString("address", _address)
@@ -237,6 +237,7 @@ public class VertxBusHandler extends TypedAtomicActor {
             NameDuplicationException {
         publish = new TypedIOPort(this, "publish", true, false);
         subscribe = new TypedIOPort(this, "subscribe", false, true);
+        subscribe.setTypeEquals(BaseType.STRING);
         address = new Parameter(this, "address");
         host = new Parameter(this, "host");
         port = new Parameter(this, "port");
