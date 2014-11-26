@@ -47,7 +47,8 @@ FMUS_2_0_CS =	bouncingBall20 bouncingBall20RC1 \
 		scale20RC1 stairsA20RC1F pumpConstantSpeed tankOpen \
 		values20 values20RC1 \
 		vanDerPol20 vanDerPol20RC1 floor20pt\
-		inc20pt out20pt scale20pt
+		inc20pt out20pt fmuA20pt scale20pt fmuB20pt fmuC20pt \
+		fmuD20pt
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 

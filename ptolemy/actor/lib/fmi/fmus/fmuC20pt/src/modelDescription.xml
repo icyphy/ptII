@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="fmuC20pt"
+  guid="{61b1b767-4015-40e1-a2de-6b7af0ad4238}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="fmuC20pt"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+
+  <ScalarVariable name="input1" valueReference="0" description="input value one" variability="continuous" causality="input">
+     <Real start="1" />
+  </ScalarVariable>
+
+  <ScalarVariable name="input2" valueReference="1" description="input value two" variability="continuous" causality="input">
+     <Real start="1" />
+  </ScalarVariable>
+
+  <ScalarVariable name="output1" valueReference="2" description="scaled output one" variability="continuous" causality="output" >
+     <Real />
+  </ScalarVariable>
+
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="2" dependencies="1"/>
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>

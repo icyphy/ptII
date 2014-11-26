@@ -165,12 +165,15 @@ public class Director extends FMIMACodeGeneratorAdapter {
         	for (TypedIOPort output : actor.outputPortList()) {         		
         		Node sinkNode = (Node) actorNodeMap.get(output);        		
          		Set<String> inputPorts = actor.getInputDependencyList(output.getName());
-        		
-         		if (inputPorts != null) {
+         		
+         		if (inputPorts != null) {         			
  	        		Iterator<String> inputIterator = inputPorts.iterator();
  	        		while(inputIterator.hasNext()) {
  	        			String input = (String) inputIterator.next(); 	        		 	        		
  	        			Node sourceNode = (Node) actorNodeNamesMap.get(input);
+ 	        			
+ 	        			System.out.println("---> Causality relation: " + input + " -> " + output.getName());
+ 	        			
  	        			graph.addEdge(sourceNode, sinkNode);
  	        		}
          		}

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
   fmiVersion="2.0"
-  modelName="out20pt"
-  guid="{aeba48d6-5f7e-46ae-b275-635d7704a125}"
+  modelName="fmuA20pt"
+  guid="{9e2d9cd2-b4b3-47e0-a827-56380d65d638}"
   numberOfEventIndicators="0">
 
 <CoSimulation
-  modelIdentifier="out20pt"
-  canGetAndSetFMUstate="true"
+  modelIdentifier="fmuA20pt"
   canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
   canGetMaxStepSize="true"/>
 
 <LogCategories>
@@ -19,9 +19,15 @@
 </LogCategories>
 
 <ModelVariables>
-  <ScalarVariable name="input" valueReference="0" description="input value" variability="continuous" causality="input">
-     <Real />
+  <ScalarVariable name="counter" valueReference="0" description="counts the seconds" causality="output">
+     <Integer />
   </ScalarVariable>
 </ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="0" />
+  </Outputs>
+</ModelStructure>
 
 </fmiModelDescription>
