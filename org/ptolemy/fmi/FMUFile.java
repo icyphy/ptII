@@ -459,37 +459,67 @@ public class FMUFile {
             fmiModelDescription.modelVariables.add(new FMIScalarVariable(
                     fmiModelDescription, element));
         }
-
+        
         /*
-              // This section might be used to retrieve the dependencies of the Derivatives element
-              // so we can build the incidence matrix for the QSS integrator.
-               // FIXME: Needs to add boolean which indicates that we are doing QSS
-               NodeList structure = document
-                       .getElementsByTagName("ModelStructure");
-               if (structure.getLength() == 1) {
-                   NodeList listOffDerivatives = document.getElementsByTagName("Derivatives");
-                   Node current = null;
-                   if (listOffDerivatives.getLength() == 1) {
-                       NodeList unknowVariables = listOffDerivatives.item(0).getChildNodes();
-                       for (int i = 0; i < unknowVariables.getLength(); i++) {
-                           current = unknowVariables.item(i);
-                         if (current.getNodeName().equalsIgnoreCase("Unknown")) {
-                           fmiModelDescription.modelDerivatives.add(new FMIModelDerivative(
-                                   fmiModelDescription, current));
-                           }
-                       }
-                   }
-                   else
-                   {
-                       System.out
-                       .println("Warning: Derivatives element is missing in ModelStructure.");
-                   }
-               }
-               else
-               {
-                   System.out
-                   .println("Warning: ModelStructure element is missing.");
-               }*/
+        for (int j = 0; j < capabilities.getLength(); j++) {
+            Element capabilitiesElement = (Element) capabilities
+                    .item(j);
+            fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
+                    capabilitiesElement);
+        }*/
+        
+        
+        // By default each output has direct dependency from all input ports
+		fmiModelDescription.addDefaultInputDependencies();
+
+		// This section might be used to retrieve the information of the
+		// directDependency between inputs and outputs
+		// NodeList is not a list, it only has getLength() and item(). #fail.
+		NodeList structure = document.getElementsByTagName("ModelStructure");
+		if (structure.getLength() == 1) {
+			NodeList listOffOutputs = document.getElementsByTagName("Outputs");
+			Node current = null;
+
+			for (int i = 0; i < listOffOutputs.getLength(); i++) {
+				NodeList unknowVariables = listOffOutputs.item(i)
+						.getChildNodes();
+				for (int j = 0; j < unknowVariables.getLength(); j++) {
+					current = unknowVariables.item(j);
+					if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+						fmiModelDescription.parseDependenciese(current);
+					}
+				}
+			}
+		}
+     		
+     		
+		/*// This section might be used to retrieve the dependencies of the
+		// Derivatives element
+		// so we can build the incidence matrix for the QSS integrator.
+		// FIXME: Needs to add boolean which indicates that we are doing QSS
+		NodeList structure = document.getElementsByTagName("ModelStructure");
+		if (structure.getLength() == 1) {
+			NodeList listOffDerivatives = document
+					.getElementsByTagName("Derivatives");
+			Node current = null;
+			if (listOffDerivatives.getLength() == 1) {
+				NodeList unknowVariables = listOffDerivatives.item(0)
+						.getChildNodes();
+				for (int i = 0; i < unknowVariables.getLength(); i++) {
+					current = unknowVariables.item(i);
+					if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+						fmiModelDescription.modelDerivatives
+								.add(new FMIModelDerivative(
+										fmiModelDescription, current));
+					}
+				}
+			} else {
+				System.out
+						.println("Warning: Derivatives element is missing in ModelStructure.");
+			}
+		} else {
+			System.out.println("Warning: ModelStructure element is missing.");
+		}*/
 
         if (fmiVersion > 1.5) {
             fmiModelDescription.createStateVector();

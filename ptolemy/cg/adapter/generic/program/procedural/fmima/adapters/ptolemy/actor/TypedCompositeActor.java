@@ -125,6 +125,8 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
      * Generate the preinitialize code. We do not call the super
      * method, because we have arguments to add here
      * This code contains the variable declarations
+     * Here the number of FMUs and the number of connections are
+     * determined and declared as #define inside the MA C code
      *
      * @return The generated preinitialize code.
      * @exception IllegalActionException If thrown while appending to the
@@ -141,7 +143,6 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         
         codeStream.appendCodeBlock("variableDeclareBlock");        
                 
-        int portCount = 0;
         int fmuCount = 0;
         int connectionsCount = 0;
         
@@ -157,12 +158,10 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();        	
         	
         	for (TypedIOPort input : actor.inputPortList()) {
-        		codeStream.append("#define " + input.getContainer().getName() + "_" + input.getName() + " " + portCount++ + "\n");
         		connectionsCount++;
         	}
 
         	for (TypedIOPort output : actor.outputPortList()) {
-        		codeStream.append("#define " + output.getContainer().getName() + "_" + output.getName() + " " + portCount++ + "\n");
         	}
         }
 

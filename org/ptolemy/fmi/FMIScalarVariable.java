@@ -187,6 +187,8 @@ public class FMIScalarVariable {
                         + "\"" + message);
             }
         }
+        
+        directDependency = new HashSet<String>();
 
         NodeList children = element.getChildNodes(); // NodeList. Worst. Ever.
         for (int i = 0; i < children.getLength(); i++) {
@@ -210,29 +212,7 @@ public class FMIScalarVariable {
                 // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
                 //
                 String nodeName = childElement.getNodeName();
-                if (nodeName.equals("DirectDependency")) {
-                    if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
-                        // Iterate over the children of this element to find the
-                        // names of the dependents.
-                        // FIXME: In FMI 2.0, DirectDependency will be replaced by
-                        // "dependencies" in the ModelStructure element of the model description.
-                        directDependency = new HashSet<String>();
-                        NodeList names = childElement.getChildNodes();
-                        for (int j = 0; j < names.getLength(); j++) {
-                            Node name = element.getChildNodes().item(i);
-                            if (name instanceof Element) {
-                                String childType = ((Element) name)
-                                        .getNodeName();
-                                if (childType.equals("Name")) {
-                                    // FIXME: Is getNodeValue() the way to get "foo"
-                                    // from <Name>foo</Name>?
-                                    directDependency.add(((Element) child)
-                                            .getNodeValue());
-                                }
-                            }
-                        }
-                    }
-                } else if (nodeName.equals("isLinear")
+                if (nodeName.equals("isLinear")
                         || nodeName.equals("VariableCategory")) {
                     if (!_errorElements.contains(_typeName)) {
                         _errorElements.add(_typeName);
