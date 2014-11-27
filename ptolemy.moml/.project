@@ -232,10 +232,4 @@
 			<locationURI>PT_LOC/com/microstar/xml/driver/SAXDriver.java</locationURI>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>PT_LOC</name>
-			<value>file:/Users/cxh/src/workspacePtOSGi/ptII</value>
-		</variable>
-	</variableList>
 </projectDescription>
