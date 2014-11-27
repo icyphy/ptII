@@ -39,8 +39,8 @@
 
 <ModelStructure>
   <Outputs>
-    <Unknown index="2" dependencies="0"/>
-    <Unknown index="3" dependencies="1"/>
+    <Unknown index="2" dependencies="1"/>
+    <Unknown index="3" dependencies="0"/>
   </Outputs>
 </ModelStructure>
 
