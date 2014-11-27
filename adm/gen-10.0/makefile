@@ -339,6 +339,10 @@ $(PTIIDIST):
 	# Copy libjvm.dll.a because it was removed by src.ex
 	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
 	#ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
+	#
+	# Copy libptmatlab.so because src.ex removes it
+	cp $(PTIIHOME)/lib/libptmatlab.so $(PTIIDIST)/lib
+	ls -l $(PTIIDIST)/lib/libptmatlab.so
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	#(cd $(PTIIHOME)/bin; make)
