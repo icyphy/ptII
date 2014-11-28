@@ -2,54 +2,79 @@
 // Authors: Hokeun Kim and Edward A. Lee
 // Copyright: http://terraswarm.org/accessors/copyright.txt
 //
-////////////////////
-// Export this web socket module.
-module.exports = WebSocket;
+// FIXME: This file defines two classes: Server and Socket. Split into two files?
+
+var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
 
 ////////////////////
-// The default name of the namespace
-// FIXME this is a hack to enable callbacks from the JavaScript actor.
-// There must be a better way to do this (e.g. EventEmitter in node.js)
-module.exports.namespaceName = "WebSocket";
+// Construct an instance of WebSocket Server.
+// After invoking this constructor (using new), the user script should set up listeners
+// and then invoke the startServer() function on this Server.
+// This will create an HTTP server on the local host.
+// A typical usage pattern looks like this:
+//     var server = new WebSocket.Server({port:8082});
+//     server.on('listening', onListening);
+//     server.on('connection', onConnection);
+//     server.startServer();
+// where onListening is a handler for an event that this Server emits
+// when it is listening for connections, and onConnection is a handler
+// for an event that this Server emits when a client requests a websocket
+// connection.
+// 
+// This subclasses EventEmitter.
+// The options argument is an object containing the following (optional)
+// fields:
+// - port: The port on which to listen for connections (default is 80, the default HTTP port).
+// - FIXME: What other options are supported? Why isn't this just a port argument?
+// - FIXME: Should provide a mechanism to validate the "Origin" header during the
+//   connection establishment process on the serverside (against the expected origins)
+//   to avoid Cross-Site WebSocket Hijacking attacks.
+exports.Server = function(options) {
+    this.port = options['port'] || 80;
+    this.helper = WebSocketHelper.createServer(actor.getEngine(), this, this.port);
+}
+var EventEmitter = require('events').EventEmitter;
+util.inherits(exports.Server, EventEmitter);
+
+// Method to start the server. 
+exports.Server.prototype.startServer = function() {
+    this.helper.startServer();
+}
+
+// Method to create a server web socket with the given Java ServerWebSocket object.
+exports.Server.prototype.createServerWebSocket = function(serverWebSocket) {
+    return new exports.Socket("", serverWebSocket);
+}
+
+// FIXME: Should create one base class, Socket, and two derived classes,
+// ClientSocket and ServerSocket. The constructor arguments are different.
 
 ////////////////////
-// Construct an instance of WebSocket.
-function WebSocket(url, serverWebSocket) {
+// Construct an instance of a socket with the specified URL.
+// If the second argument is non-null, then create a socket on the server
+// and ignore the url argument.
+// Otherwise, create a socket on the client.
+// FIXME: What is the second argument? Java expects a WebSocketBase. How to create that?
+// This subclasses EventEmitter.
+exports.Socket = function(url, serverWebSocket) {
+    if (serverWebSocket != null) {
+        this.helper = WebSocketHelper.createServerSocket(actor.getEngine(), this, serverWebSocket);;
+    } else {
+        this.helper = WebSocketHelper.createClientSocket(actor.getEngine(), this, url);
+    }
+    // Note that additional functions will be added via the prototype below.
     this.address = url;
-    this.callbacks = {};
-
-    if (serverWebSocket == null) {
-        var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
-        this.socket = WebSocketHelper.createClientSocket(actor.getEngine(), module.exports.namespaceName,
-            this, this.address);
-    }
-    else {
-        var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
-        this.socket = WebSocketHelper.createServerSocket(actor.getEngine(), module.exports.namespaceName,
-            this, serverWebSocket);;
-    }
 }
-
-////////////////////
-// Add callbacks to handle events.
-// Usage: on('open', function).
-// This method Supports the following events.
-// Event 'open': triggered when the web socket is successfully connected to the server.
-// Event 'message': triggered when a message arrives from the server.
-// Event 'close': triggered when the connection with the server ends.
-// Event 'error': trigerred when any exception related to the connection occurs.
-WebSocket.prototype.on = function(event, fn) {
-    this.callbacks[event] = fn;
-}
+util.inherits(exports.Socket, EventEmitter);
 
 ////////////////////
 // Send text or binary data to the server. 
-WebSocket.prototype.send = function(data) {
-    if (!this.socket.isOpen()) {
+exports.Socket.prototype.send = function(data) {
+    if (!this.helper.isOpen()) {
         throw new Error('not opened');
     }
     if (typeof data == 'string') {
-        this.socket.sendText(data);
+        this.helper.sendText(data);
     }
     else {
         var JavaByteArray = Java.type("byte[]");
@@ -57,66 +82,25 @@ WebSocket.prototype.send = function(data) {
         for (var i = 0; i < data.length; i++) {
             javaData[i] = data[i];
         }
-        this.socket.sendBinary(javaData);
+        this.helper.sendBinary(javaData);
     }
 }
 
 ////////////////////
 // Close the current connection with the server.
-WebSocket.prototype.close = function() {
-    if (!this.socket.isOpen()) {
+exports.Socket.prototype.close = function() {
+    if (!this.helper.isOpen()) {
         throw new Error('not opened');
     }
-    this.socket.close();
-}
-
-////////////////////
-// Invoke a callback for the web socket instance and the triggered event.
-module.exports.invokeCallback = function(obj, event, args) {
-    if (obj.callbacks[event] != null) {
-        obj.callbacks[event].apply(this, args);
-    }
+    this.helper.close();
 }
 
 ////////////////////
 // Convert data fromat from binary array to string.
-module.exports.binToStr = function(data) {
+exports.binToStr = function(data) {
    var result = "";
   for (var i = 0; i < data.length; i++) {
     result += String.fromCharCode(data[i]);
   }
   return result;
 }
-
-////////////////////
-// Create a server web socket with the given Java ServerWebSocket object.
-module.exports.createServerWebSocket = function(serverWebSocket) {
-    return new WebSocket("", serverWebSocket);
-}
-
-////////////////////
-// Export this web socket server module.
-module.exports.Server = Server;
-
-////////////////////
-// Construct an instance of WebSocketServer.
-function Server(opts) {
-    this.port = opts['port'];
-    this.callbacks = {};
-
-    var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
-    this.socket = WebSocketHelper.createServer(actor.getEngine(), module.exports.namespaceName,
-        this, this.port);
-}
-
-////////////////////
-// Add callbacks to handle events on the web socket server.
-// Usage: on('connection', function).
-// This method Supports the following events.
-// Event 'listening': triggered when the server starts listening.
-// Event 'connection': triggered when a client web socket is connected to the listening port.
-Server.prototype.on = function(event, fn) {
-    this.callbacks[event] = fn;
-}
-
-

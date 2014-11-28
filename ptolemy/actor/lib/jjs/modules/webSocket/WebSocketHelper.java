@@ -27,9 +27,10 @@
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
-import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
@@ -62,60 +63,53 @@ public class WebSocketHelper {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    /**
-     * Create a WebSocketHelper instance as a client-side web socket for
-     * each JavaScript instance.
-     * 
-     * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module namespace.
-     * @param currentObj The JavaScript instance of the WebSocket.
-     * @param address address The URL of the WebSocket host and the port number. 
-     * (e.g. 'ws://localhost:8000')
-     * @return
-     */
-    public static WebSocketHelper createClientSocket(ScriptEngine engine,
-            String namespaceName, Object currentObj, String address) {
-	return new WebSocketHelper(engine, namespaceName, currentObj, address);
-    }
     
-    /**
-     * Create a WebSocketHelper instance as a web socket server.
-     * 
-     * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module namespace.
-     * @param currentObj The JavaScript instance of the WebSocketServer.
-     * @param port The port number which the server will listen to.
-     * @return
-     */
-    public static WebSocketHelper createServer(ScriptEngine engine,
-            String namespaceName, Object currentObj, int port) {
-        return new WebSocketHelper(engine, namespaceName, currentObj, port);
-    }
-
-    /**
-     * Create a WebSocketHelper instance as a server-side web socket, with
-     * the given server-side Java socket.
-     * 
-     * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module namespace.
-     * @param currentObj The JavaScript instance of the WebSocket.
-     * @param serverWebSocket The given server-side Java socket.
-     * @return
-     */
-    public static WebSocketHelper createServerSocket(ScriptEngine engine,
-            String namespaceName, Object currentObj, WebSocketBase serverWebSocket) {
-        return new WebSocketHelper(engine, namespaceName, currentObj, serverWebSocket);
-    }
-
-    /**
-     * Close the internal web socket.
+    /** Close the web socket.
+     *  FIXME: Does this need to be invoked on the client or server side or both?
+     *  Demos don't use it. Not exposed in JavaScript.
      */
     public void close() {
         if (_webSocket != null) {
             _webSocket.close();
         }
     }
+
+    /** Create a WebSocketHelper instance for the specified JavaScript
+     *  Socket instance for the client side of the socket.
+     *  @param engine The JavaScript engine of the JavaScript actor.
+     *  @param currentObj The JavaScript instance of the Socket.
+     *  @param address address The URL of the WebSocket host and the port number. 
+     *   (e.g. 'ws://localhost:8000'). If no port number is given, then 80 is used.
+     *  @return A new WebSocketHelper instance.
+     */
+    public static WebSocketHelper createClientSocket(
+	    ScriptEngine engine, ScriptObjectMirror currentObj, String address) {
+	return new WebSocketHelper(engine, currentObj, address);
+    }
     
+    /** Create a WebSocketHelper instance to help a JavaScript Server instance.
+     *  @param engine The JavaScript engine creating this helper.
+     *  @param currentObj The JavaScript Server instance for which this is a helper.
+     *  @param port The port number that the server will use.
+     *  @return A new WebSocketHelper instance.
+     */
+    public static WebSocketHelper createServer(
+	    ScriptEngine engine, ScriptObjectMirror currentObj, int port) {
+        return new WebSocketHelper(engine, currentObj, port);
+    }
+
+    /** Create a WebSocketHelper instance for the specified JavaScript
+     *  Socket instance for the server side of the socket.
+     *  @param engine The JavaScript engine of the JavaScript actor.
+     *  @param currentObj The JavaScript instance of the Socket.
+     *  @param serverWebSocket The given server-side Java socket.
+     *  @return A new WebSocketHelper instance.
+     */
+    public static WebSocketHelper createServerSocket(
+	    ScriptEngine engine, ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
+        return new WebSocketHelper(engine, currentObj, serverWebSocket);
+    }
+
     /**
      * Send binary data through the internal web socket.
      * 
@@ -134,11 +128,42 @@ public class WebSocketHelper {
     public void sendText(String msg) {
         _webSocket.writeTextFrame(msg);
     }
+    
+    /** Create and start the server and beginning listening for
+     *  connections. If a callback function "listening" is registered,
+     *  then that callback will be called when the server begins
+     *  listening (which may be even before this returns?).
+     *  If a callback function "connection" has been registered,
+     *  then that function will be called when a connection is
+     *  requested by a remote client.
+     */
+    public void startServer() {
+        // Note that the following call apparently starts the new server
+        // in separate thread. It should not be done in the constructor
+        // because the script that starts the server needs to register
+        // callbacks before the server starts. Otherwise, there will be
+        // a race condition where the callback could be called before
+        // the server has started.
+        HttpServer server = _vertx.createHttpServer();
+        server.websocketHandler(new Handler<ServerWebSocket>() {
+            @Override
+            public void handle(ServerWebSocket serverWebSocket) {
+                // Create the socket on this server side.
+                Object jsWebSocket = _currentObj.callMember("createServerWebSocket", serverWebSocket);
+                // Emit an event indicating that the connection is created.
+                _currentObj.callMember("emit", "connection", jsWebSocket);
+            }
+        });
+        server.listen(_port, "localhost", new Handler<AsyncResult<HttpServer>>() {
+            @Override
+            public void handle(AsyncResult<HttpServer> arg0) {
+        	_currentObj.callMember("emit", "listening");
+            }
+        });
+    }
 
-    /**
-     * Return whether the web socket is opened successfully.
-     * 
-     * @return
+    /** Return whether the web socket is opened successfully.
+     *  @return True if the socket is open.
      */
     public boolean isOpen() {
 	if (_webSocket == null) {
@@ -146,52 +171,50 @@ public class WebSocketHelper {
 	}
 	return _wsIsOpen;
     }
-
+        
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                        ////
-    /**
-     * Private constructor for WebSocketHelper to open a client-side web socket.
-     * Open an internal web socket using Vert.x.
-     * 
-     * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module constructor.
-     * @param currentObj The JavaScript instance of the WebSocket.
-     * @param address The URL of the WebSocket host and the port number. 
-     * (e.g. 'ws://localhost:8000')
+    ////                     private constructors                   ////
+
+    /** Private constructor for WebSocketHelper to open a client-side web socket.
+     *  Open an internal web socket using Vert.x.
+     *  @param engine The JavaScript engine of the JavaScript actor.
+     *  @param currentObj The JavaScript instance of Socket that this helps.
+     *  @param address The URL of the WebSocket host with an optional port number
+     *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
      */
-    private WebSocketHelper(ScriptEngine engine, String namespaceName,
-            Object currentObj, String address) {
+    private WebSocketHelper(
+	    ScriptEngine engine, ScriptObjectMirror currentObj, String address) {
         _engine = engine;
-        _namespaceName = namespaceName;
         _currentObj = currentObj;
 
         HttpClient client = _vertx.createHttpClient();
+        
+        // Parse the address.
+        // FIXME: Use utilities for this. Perhaps on the JavaScript side?
+        // Strip off any trailing slash from the URI.
         if (address.length() > 0 && address.charAt(address.length() - 1) == '/') {
             address = address.substring(0, address.length() - 1);
         }
         int sep = address.lastIndexOf(':');
-        client.setPort(Integer.parseInt(address.substring(sep + 1))); 
+        if (sep > 0) {
+            try {
+        	client.setPort(Integer.parseInt(address.substring(sep + 1)));
+            } catch (NumberFormatException e) {
+        	throw new RuntimeException("Invalid port in URI: " + address);
+            }
+        } else {
+            client.setPort(80);
+        }
 
         client.connectWebsocket(address, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
                 _wsIsOpen = true;
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "connect";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                    
-                    args[1] = "open";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                // Socket.io uses the name "connect" for this event, but WS uses "open",
+                // so we just emit both events.
+                _currentObj.callMember("emit", "connect");
+                _currentObj.callMember("emit", "open");
+
                 _webSocket = websocket;
                 
                 _webSocket.dataHandler(new DataHandler());
@@ -201,71 +224,26 @@ public class WebSocketHelper {
         });
     }
 
-    /**
-     * Private constructor for WebSocketHelper to create a web socket server.
+    /** Private constructor for WebSocketHelper to create a web socket server.
+     *  @param engine The JavaScript engine creating this server.
+     *  @param currentObj The JavaScript Server instance for which this a helper.
+     *  @param port The port on which to create the server.
      */
-    private WebSocketHelper(ScriptEngine engine, String namespaceName,
-            Object currentObj, int port) {
+    private WebSocketHelper(
+	    ScriptEngine engine, ScriptObjectMirror currentObj, int port) {
         _engine = engine;
-        _namespaceName = namespaceName;
         _currentObj = currentObj;
-        
-        HttpServer server = _vertx.createHttpServer();
-        server.websocketHandler(new Handler<ServerWebSocket>() {
-            @Override
-            public void handle(ServerWebSocket serverWebSocket) {
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[1];
-                    args[0] = serverWebSocket;
-                    Object jsWebSocket = ((Invocable) _engine).invokeMethod(obj, "createServerWebSocket", args);
-
-                    args = new Object[3];
-                    args[0] = _currentObj;
-                    args[1] = "connection";
-                    
-                    Object[] jsArgs = new Object[1];
-                    jsArgs[0] = jsWebSocket;
-                    args[2] = jsArgs;
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            
-        });
-        server.listen(port, "localhost", new Handler<AsyncResult<HttpServer>>() {
-            @Override
-            public void handle(AsyncResult<HttpServer> arg0) {
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-    
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "listening";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            
-        });
+        _port = port;
     }
-    
-    /**
-     * Private constructor for WebSocketHelper with a server-side web socket.
-     * The server-side web socket is given from the web socket server.
+
+    /** Private constructor for WebSocketHelper for a server-side web socket.
+     *  @param engine The JavaScript engine creating this server.
+     *  @param currentObj The JavaScript instance of Socket that this helps.
+     *  @param serverWebSocket The server-side web socket, provided by the web socket server.
      */
-    private WebSocketHelper(ScriptEngine engine, String namespaceName,
-            Object currentObj, WebSocketBase serverWebSocket) {
+    private WebSocketHelper(
+	    ScriptEngine engine, ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
         _engine = engine;
-        _namespaceName = namespaceName;
         _currentObj = currentObj;
         _webSocket = serverWebSocket;
 
@@ -276,18 +254,18 @@ public class WebSocketHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
+        
+    /** The current instance of the JavaScript module. */
+    private ScriptObjectMirror _currentObj;
 
-    /** Instance of Vertx. Apparently we need only one. */
-    private static Vertx _vertx = VertxFactory.newVertx();
-      
     /** Instance of the current JavaScript engine. */
     private static ScriptEngine _engine;
     
-    /** The name of the constructor of the JavaScript module. */
-    private String _namespaceName;
+    /** The port on which the server listens. */
+    private int _port;
     
-    /** The current instance of the JavaScript module. */
-    private Object _currentObj;
+    /** Instance of Vertx. Apparently we need only one. */
+    private static Vertx _vertx = VertxFactory.newVertx();
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
@@ -298,8 +276,7 @@ public class WebSocketHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
 
-    /**
-     * The event handler that is triggered when a message arrives on the web socket.
+    /** The event handler that is triggered when a message arrives on the web socket.
      */
     private class DataHandler implements Handler<Buffer> {
         @Override
@@ -311,67 +288,34 @@ public class WebSocketHelper {
             }
 
             try {
-                Object obj = _engine.eval(_namespaceName);
-
-                Object[] args = new Object[3];
-                args[0] = _currentObj;
-                args[1] = "message";
-                Object[] jsArgs = new Object[2];
-                jsArgs[0] = objBytes;
-                jsArgs[1] = _engine.eval("new function() { this.binary = true; }");
-                args[2] = jsArgs;
-                
-                ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-            }
-            catch (NoSuchMethodException | ScriptException e) {
-                // TODO Auto-generated catch block
+                // Properties of the data.
+        	// FIXME: What are these properties? Pass string directly?
+                Object jsArgs = _engine.eval(" var properties = {binary: true}; properties");
+                _currentObj.callMember("emit", "message", objBytes, jsArgs);
+            } catch (ScriptException e) {
+                // FIXME Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
-    /**
-     * The event handler that is triggered when the web socket connection is closed.
+    /** The event handler that is triggered when the web socket connection is closed.
      */
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-            try {
-                Object obj = _engine.eval(_namespaceName);
-                
-                Object[] args = new Object[2];
-                args[0] = _currentObj;
-                args[1] = "close";
-                
-                ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-            }
-            catch (NoSuchMethodException | ScriptException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            _currentObj.callMember("emit", "close");
+            _wsIsOpen = false;
         }
     }
 
-    /**
-     * The event handler that is triggered when an error occurs in the web socket connection.
+    /** The event handler that is triggered when an error occurs in the web socket connection.
      */
     private class ExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-            try {
-                Object obj = _engine.eval(_namespaceName);
-                
-                Object[] args = new Object[2];
-                args[0] = _currentObj;
-                args[1] = "error";
-                
-                ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-            }
-            catch (NoSuchMethodException | ScriptException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            _currentObj.callMember("emit", "error");
+            _wsIsOpen = false;
         }
     }
-    
 }
