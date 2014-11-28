@@ -52,6 +52,7 @@ JSRCS = \
 
 	
 OTHER_FILES_TO_BE_JARED = \
+    events.js \
 	util.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
