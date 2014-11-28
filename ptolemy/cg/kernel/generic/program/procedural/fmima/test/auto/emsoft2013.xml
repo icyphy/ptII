@@ -4,7 +4,7 @@
 <entity name="emsoft2013" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1471, 84, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 87, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -13,13 +13,95 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.9999999999997, 251.99999999999983}">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 100}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To invoke the code generator:&#10;$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \&#10;      -generatorPackagelist generic.program.procedural.fmima \&#10;      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml&#10;&#10;(Some day we will have a FMIMA  Code Generator Icon)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 230.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here to see the FMIMA Code Generation Documentation at &#10;$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/package.html">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 345.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/fmima/package.html">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 465}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A prototype of the Functional Mock-up Interface (FMI) Master Algorithm&#10;that implements the algorithm in the EMSoft 2013 paper.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 0.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here to see the Technical Memorandum &#10;&quot;Determinate Composition of FMUs for Co-Simulation&quot;&#10;David Broman, Christopher Brooks, Lev Greenberg, &#10;Edward A. Lee, Michael Masin, Stavros Tripakis and Michael Wetter&#10;EECS Department, University of California, Berkeley&#10;Technical Report No. UCB/EECS-2013-153&#10;August 18, 2013">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 390.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-153.html#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 415}">
+            </property>
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Fabio Cremona</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 465.0]">
         </property>
     </property>
     <entity name="fmuA20pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabiocremona/Documents/SSSA-PhD/Libraries/workspacePt2/ptII/ptolemy/actor/lib/fmi/fmus/fmuA20pt/fmuA20pt.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuA20pt.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 125.0]">
         </property>
         <port name="counter" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -36,9 +118,9 @@
         </port>
     </entity>
     <entity name="fmuB20pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabiocremona/Documents/SSSA-PhD/Libraries/workspacePt2/ptII/ptolemy/actor/lib/fmi/fmus/fmuB20pt/fmuB20pt.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuB20pt.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 135.0]">
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -90,9 +172,9 @@
         </port>
     </entity>
     <entity name="fmuC20pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabiocremona/Documents/SSSA-PhD/Libraries/workspacePt2/ptII/ptolemy/actor/lib/fmi/fmus/fmuC20pt/fmuC20pt.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuC20pt.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 135.0]">
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -131,9 +213,9 @@
         </port>
     </entity>
     <entity name="fmuD20pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabiocremona/Documents/SSSA-PhD/Libraries/workspacePt2/ptII/ptolemy/actor/lib/fmi/fmus/fmuD20pt/fmuD20pt.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuD20pt.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[418.25, 293.75]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 210.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
