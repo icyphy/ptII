@@ -71,6 +71,5 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball #jclass
 install: subjars #jclass jars
 
-
 # Get the rest of the rules
-include $(ROOT)/mk/ptdir.mk
+include $(ROOT)/mk/ptcommon.mk
