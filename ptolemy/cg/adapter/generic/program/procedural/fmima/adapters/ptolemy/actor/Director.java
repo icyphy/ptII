@@ -261,9 +261,18 @@ public class Director extends FMIMACodeGeneratorAdapter {
 					+ "].sinkPort = getValueReference(getScalarVariable(fmus["
 					+ fmuSinkName + "].modelDescription, "
 					+ sinkActor.getValueReference(inputPort.getName())
-					+ "));\n" + "connections[" + connectionIndex
-					+ "].sinkType = "
-					+ sinkActor.getTypeOfPort(inputPort.getName()) + ";\n");
+                                + "));\n");
+                        String sinkActorPortType =  sinkActor.getTypeOfPort(inputPort.getName());
+
+                        // Only set the sink type if it is not empty.  To replicate:
+                        //$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml 
+                        if (sinkActorPortType == "") {
+                            System.err.println("fmima Director: could not get the type of the input port "
+                                    + inputPort.getName() + " of " + sinkActor.getFullName());
+                        } else {
+                            code.append("connections[" + connectionIndex
+                                    + "].sinkType = " + sinkActorPortType + ";\n");
+                        }
 			connectionIndex++;
 		}
 
