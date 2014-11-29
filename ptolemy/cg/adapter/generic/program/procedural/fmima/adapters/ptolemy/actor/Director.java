@@ -204,15 +204,18 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
 		Collection<Node> nodeCollection = graph.nodes();
 
-		// If diagram is empty, throw an exception
-		if (nodeCollection.size() == 0) {
-			throw new IllegalActionException("The GRAPH is empty");
-		}
+                
+                // It is ok to have an empty graph for testing purposes, try
+                //   cd ptolemy/cg/kernel/generic/program/procedural/fmima/test
+                //   $PTII/bin/ptjacl FMIMACodeGenerator.tcl 
+		//if (nodeCollection.size() == 0) {
+		//	throw new IllegalActionException(adapter.getComponent(), "The GRAPH is empty");
+		//}
 
 		// If diagram contains cycles, throw an exception
 		if (graph.isAcyclic() == false) {
-			throw new IllegalActionException(
-					"The GRAPH contains cycles. Unable to determine a port updates order.");
+                    throw new IllegalActionException(adapter.getComponent(),
+					"The model contains cycles. Unable to determine a port updates order.");
 		}
 
 		// Sort the graph in order to determine the correct get()/set() sequence

@@ -1,4 +1,5 @@
 /***variableDeclareBlock***/
+// Start of variableDeclareBlock in ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,10 +11,11 @@
 double tEnd = 1.0;
 double tStart = 0;
 
+// End of variableDeclareBlock ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
 /**/
 
 /***staticDeclareBlock***/
-
+// Start of staticDeclareBlock in ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
 static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible, fmi2Boolean loggingOn, int nCategories, char ** categories)
 {
 
@@ -229,11 +231,14 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
         setValue(&connections[i]);
     }
 
-    // TODO: Should be done by an FMU
-    // output solution for time t0
-    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, TRUE);  // output column names
-    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values
-
+    if (NUMBER_OF_FMUS < 2) {
+        fprintf(stderr, "Warning: The number of FMUS is %d, which is less than 2, so no t0 row is being printed.\n", NUMBER_OF_FMUS);
+    } else {
+        // TODO: Should be done by an FMU
+        // output solution for time t0
+        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, TRUE);  // output column names
+        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values
+    }
     // enter the simulation loop
 
     // TODO: Find consistent error checking!!
@@ -309,9 +314,12 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
             time += stepSize;
         }
 
-        // TODO: Should be done by FMU
-        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values for this step
-
+        if (NUMBER_OF_FMUS < 2) {
+            fprintf(stderr, "Warning: The number of FMUS is %d, which is less than 2. Not outputting row.\n", NUMBER_OF_FMUS);
+        } else {
+            // TODO: Should be done by FMU
+            outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values for this step
+        }
         nSteps++;
     }
 
@@ -341,5 +349,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
 
     return returnValue; // 1=success, 0=not success
 }
+
+// End of staticDeclareBlock in ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
 
 /**/
