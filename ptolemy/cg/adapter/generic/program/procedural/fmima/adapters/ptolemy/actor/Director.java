@@ -257,16 +257,29 @@ public class Director extends FMIMACodeGeneratorAdapter {
 					+ "].sourceType = "
 					+ sourceActor.getTypeOfPort(outputPort.getName()) + ";\n"
 					+ "connections[" + connectionIndex + "].sinkFMU = &fmus["
-					+ fmuSinkName + "];\n" + "connections[" + connectionIndex
-					+ "].sinkPort = getValueReference(getScalarVariable(fmus["
-					+ fmuSinkName + "].modelDescription, "
-					+ sinkActor.getValueReference(inputPort.getName())
-                                + "));\n");
+                                + fmuSinkName + "];\n");
+
+                        Long sinkActorInputValueReference = sinkActor.getValueReference(inputPort.getName());
+                        // Only set the value reference if it is valid.
+                        // To replicate:
+                        // $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml 
+                        if (sinkActorInputValueReference < 0) {
+                            System.err.println("fmima Director: could not get the value reference of the input port "
+                                    + inputPort.getName() + " of " + sinkActor.getFullName() 
+                                    + ", the value returned was \"" + sinkActorInputValueReference
+                                    + "\", which is less than 0.");
+                        } else {
+                            code.append("connections[" + connectionIndex
+                                    + "].sinkPort = getValueReference(getScalarVariable(fmus["
+                                    + fmuSinkName + "].modelDescription, "
+                                    + sinkActorInputValueReference
+                                    + "));\n");
+                        }
                         String sinkActorPortType =  sinkActor.getTypeOfPort(inputPort.getName());
 
                         // Only set the sink type if it is not empty.  To replicate:
                         //$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml 
-                        if (sinkActorPortType == "") {
+                        if (sinkActorPortType.equals("")) {
                             System.err.println("fmima Director: could not get the type of the input port "
                                     + inputPort.getName() + " of " + sinkActor.getFullName());
                         } else {
