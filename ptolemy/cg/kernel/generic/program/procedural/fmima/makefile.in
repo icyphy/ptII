@@ -104,7 +104,7 @@ main: main.o fmi/shared/sim_support.o
 FMU_DIRECTORY=$(PTII)/ptolemy/actor/lib/fmi/test/auto
 run: @modelName@
 	@echo "FIXME: Update ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in so that the names of the fmus are not hardwired in to the 'run' rule."
-	./@modelName@ -t15 -h1 -llogAll $(PTII)/ptolemy/actor/lib/fmi/fmus/inc20pt/inc20pt.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/fabio/fabio.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/fmuD20pt/fmuD20pt.fmu
+	./@modelName@ -t15 -h1 -l logAll $(PTII)/ptolemy/actor/lib/fmi/fmus/inc20pt/inc20pt.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/fabio/fabio.fmu $(PTII)/ptolemy/actor/lib/fmi/fmus/fmuD20pt/fmuD20pt.fmu
 
 
 # Rule to compile with different optimizers
