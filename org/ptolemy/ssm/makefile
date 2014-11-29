@@ -53,7 +53,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	GaussianMeasurementModel.java \
 	InferenceActor.java \
-	Measurementmodel.java\
+	MeasurementModel.java\
 	MeasurementModelAttributes.java \
 	MirrorDecorator.java \
 	MirrorDecoratorAttributes.java \
