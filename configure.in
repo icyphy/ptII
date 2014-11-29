@@ -4852,7 +4852,7 @@ if test -z "$PTPAHO_MQTT_JAR"; then
 else 
    updateClasspath "$PTPAHO_MQTT_JAR"
    PTPAHO_MQTT_DIR=localStorage
-   PTPAHO_MQTT_PACKAGES=ptolemy.actor.lib.jjs.modules.localStorage
+   PTPAHO_MQTT_PACKAGES="ptolemy.actor.lib.jjs.modules.localStorage ptolemy.actor.lib.jjs.modules.mqtt"
 fi 
 
 #--------------------------------------------------------------------
@@ -5829,7 +5829,7 @@ else
 
         if test ! -z "$PTVERTX_DIR"; then
 	    PT_MSG_RESULT([$PTVERTX_JARS])
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.vertxBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
