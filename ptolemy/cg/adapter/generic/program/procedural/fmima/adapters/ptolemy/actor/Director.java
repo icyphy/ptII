@@ -195,6 +195,8 @@ public class Director extends FMIMACodeGeneratorAdapter {
 					+ "...\\n\");\n");
 			code.append("loadFMU(&fmus[" + actor.getName() + "], \""
 					+ actor.fmuFile.asFile() + "\");\n");
+                        code.append("fmuFileNames[" + actor.getName() + "] = strdup(\""
+					+ actor.fmuFile.asFile() + "\");\n");
 			code.append("printf(\"Initializing FMU " + actor.getName()
 					+ "...\\n\");\n");
 			code.append("fmus[" + actor.getName()

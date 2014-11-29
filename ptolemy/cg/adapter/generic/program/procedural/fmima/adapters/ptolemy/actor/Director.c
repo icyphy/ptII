@@ -20,6 +20,10 @@
     portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
 
     printf("Parsing arguments!\n");
+    // FIXME: The generated code loads the fmu files and the arguments are ignored.
+    // However, we are using parseArguments() from ptolemy/actor/lbi/fmi/ma2/shared/sim_support.c
+    // so we don't want to change the function call.  Instead, we should actually use the 
+    // .fmu files parsed from the command line.
     parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
     // Set up port connections
