@@ -2835,7 +2835,6 @@ $(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll: $(PTIIDIST)/lib/matlabWindows.jar
 	(cd $(PTIIDIST)/ptolemy/matlab; jar -xf $(PTIIDIST)/lib/matlabWindows.jar)
 
-
 jre:
 	if [ ! -d jre ] ; then \
 		mkdir jre; \
@@ -3239,7 +3238,7 @@ $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "We build with Java 1.6 so that copernicus works"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; \
 		export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45; export PATH=/usr/lib/jvm/jdk1.6.0_45/bin:${PATH}; \
-		export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
+		export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd bin; make); (cd ptolemy/matlab; make install); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
