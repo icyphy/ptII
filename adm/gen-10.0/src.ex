@@ -286,3 +286,5 @@ socket.cfg
 devel
 htmlchek*
 fmfilesvisited
+vendors/j3d
+vendors/jogl
