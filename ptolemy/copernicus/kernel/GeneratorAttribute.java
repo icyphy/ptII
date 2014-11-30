@@ -572,6 +572,10 @@ ChangeListener {
                         + getAttribute("modelPath") + "' to a StringParameter");
             }
 
+            if (modelPath == null) {
+                throw new NullPointerException("Could not get the attribute \"modelPath\" from "
+                        + getFullName());
+            }
             modelPath.setExpression(modelPathOrURL);
 
             // Strip off the leading '.' and then sanitize.
