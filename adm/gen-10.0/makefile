@@ -46,9 +46,9 @@ WINDOWS_VERSION =	10_0_beta
 # Location of utilities
 # Don't use /usr/sww/bin/gtar sun4 binaries if you are building on a sol2
 TAR = 		/usr/local/bin/tar
-ZIP =		/usr/sww/bin/zip
-COMPRESS =	/usr/sww/bin/gzip
-GUNZIP =	/usr/sww/bin/gunzip
+ZIP =		zip
+COMPRESS =	gzip
+GUNZIP =	gunzip
 NON_GNUTAR =	/bin/tar
 SUFFIX =
 
@@ -177,6 +177,11 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 ##############################################################################
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
+
+####
+release_ampere_all:
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup
+
 
 release_joule_all:
 	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
@@ -484,9 +489,12 @@ dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
-	    (cd $(PTIIDIST); PTII=`pwd` JAVADOC=$(JAVADOC) ./configure; PTII=`pwd`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`cd ..;pwd` make JAVADOC=$(JAVADOC) all_packages install); \
-		ant jars; PTII=`pwd` $(MAKE) -k jar_dist); \
+	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
+		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) all_packages install); \
+		echo "About to run ant jars"; \
+		ant jars; \
+		echo "About to make jar_dist, PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`"; \
+		$(MAKE) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` -k jar_dist); \
 	fi
 
 
@@ -2654,9 +2662,9 @@ indent_all:
 # Download from http://www.izforge.com/izpack/downloads
 
 #IZPACKDIR=c:/Program Files/IzPack
-IZPACKDIR=$(PTII)/vendors/izpack
+IZPACKDIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
-IZPACK_TAR=IzPack.src.3.10.2.tar.gz
+IZPACK_TAR=IzPack.src.4.3.5.tar.gz
 
 
 # If you get "makefile:2660: *** target pattern contains no `%'.
@@ -2667,13 +2675,13 @@ IZPACK_TAR=IzPack.src.3.10.2.tar.gz
 #   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta foo
 # :-|
 make_izpack: $(IZPACK_COMPILE)
-$(IZPACK_COMPILE): $(PTII)/vendors/izpack
-	 cd $(PTII)/vendors/izpack/src; ant dist
+$(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
+	 cd $(PTIIHOME)/vendors/izpack/src; ant dist
 
 # Download IzPack
-$(PTII)/vendors/izpack:
-	mkdir $(PTII)/vendors/izpack
-	cd $(PTII)/vendors/izpack; \
+$(PTIIHOME)/vendors/izpack:
+	mkdir $(PTIIHOME)/vendors/izpack
+	cd $(PTIIHOME)/vendors/izpack; \
 		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
@@ -2728,7 +2736,7 @@ $(PTIIDIST)/bin/vergil:
 	@echo "#"
 	@echo "# Creating $@"
 	@echo "# `date`"
-	cp $(PTII)/bin/vergil $@
+	cp $(PTIIHOME)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
 
@@ -2757,11 +2765,11 @@ izpack:
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
 
-L4J_DIR=$(PTII)/vendors/launch4j
+L4J_DIR=$(PTIIHOME)/vendors/launch4j
 
 L4J_TAR=launch4j-3.0.0-pre2-solaris-sparc.tgz
-$(PTII)/vendors/launch4j:
-	cd $(PTII)/vendors; \
+$(PTIIHOME)/vendors/launch4j:
+	cd $(PTIIHOME)/vendors; \
 		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR)
 
@@ -2816,10 +2824,10 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 
 ptiny.exe: $(PTIIDIST)/ptiny.exe
 $(PTIIDIST)/ptiny.exe:
-	 $(MAKE) -C $(PTIIDIST) PTII=$(PTIIDIST) exes
+	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 $(PTIIDIST)/ptbook.exe:
-	 $(MAKE) -C $(PTIIDIST) PTII=$(PTIIDIST) exes
+	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 
@@ -2919,10 +2927,10 @@ updateDOPCenterImage:
 
 # Echo the jars needed for the full package in izpack
 full_jars:
-	@(cd $(PTII); make -s echo_jars JARS=HYBRID_SYSTEMS_ONLY0_JNLP_JARS)
-	@(cd $(PTII); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
-	@(cd $(PTII); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
-	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=HYBRID_SYSTEMS_ONLY0_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
 
 ########################################################################
 # Mac installer
@@ -2963,7 +2971,7 @@ setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
-	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
 setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
 $(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
@@ -2983,7 +2991,7 @@ $(JNLPDIST)/vendors/misc/rxtx/RXTXcomm.jar: $(JNLPDIST)
 	# Build joystick, rxtx
 	if [ ! -f $@ ]; then \
 		echo "Reconfiguring with all optional packages"; \
-		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTII)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
+		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTIIHOME)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
 	fi
 
 $(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/rxtx/RXTXcomm.jar
@@ -3201,7 +3209,7 @@ update_moog:
 
 # Invoke the coverity scan.
 coverity:
-	(cd $(PTII); adm/bin/coverity)
+	(cd $(PTIIHOME); adm/bin/coverity)
 
 
 # Build from the website
