@@ -12,7 +12,7 @@
 #define NUMBER_OF_INTEGERS 0
 #define NUMBER_OF_BOOLEANS 0
 #define NUMBER_OF_STRINGS 0
-#define NUMBER_OF_STATES 0
+#define NUMBER_OF_STATES 4
 #define NUMBER_OF_EVENT_INDICATORS 0
 
 // include fmu header files, typedefs and macros
