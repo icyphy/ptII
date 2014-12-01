@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RobotCollaborativeChase" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -367,7 +367,7 @@
         </property>
         <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
         </property>
-        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[24.73575846862311,-4.477740766231818]&quot;">
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[29.8618382659227,13.559141088178459]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{985.0, 40.0}">
         </property>
@@ -665,7 +665,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, -280.0}">
         </property>
         <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
-            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[51,1]&quot;">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[31.829215368057877,12.49639589858963]&quot;">
             </property>
         </entity>
     </entity>
@@ -674,18 +674,30 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team1&quot;">
         </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[17.01455472628483,26.906647788911876]&quot;">
+            </property>
+        </entity>
     </entity>
     <entity name="Team2" class="KVReadRange">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 50.0}">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team2&quot;">
         </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-32.24627972108213,-154.96039728791686]&quot;">
+            </property>
+        </entity>
     </entity>
     <entity name="Team3" class="KVReadRange">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 240.0}">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team3&quot;">
         </property>
+        <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
+            <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-1059.4853475983339,-408.48004374914757]&quot;">
+            </property>
+        </entity>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="team0,team1,team2,team3,intruder">
@@ -703,8 +715,8 @@
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-56.48882429441257" max="51.0"/>
-<yRange min="-9.389262614623686" max="38.48926478161956"/>
+<xRange min="-1059.4853475983339" max="51.0"/>
+<yRange min="-408.48004374914757" max="83.51365669770293"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -727,17 +739,13 @@
 <title>XYScope2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="8.421677313429349" max="51.0"/>
-<yRange min="-17.074415575096403" max="10.229025832897033"/>
+<xRange min="-139.8856702526767" max="51.0"/>
+<yRange min="1.0" max="122.45509952898311"/>
 <default connected="no" marks="various"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="CollaborativeRangeParticleFilter" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
-        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
-            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-            </property>
-        </property>
         <property name="bootstrap" class="ptolemy.data.expr.Parameter" value="true">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
@@ -750,21 +758,25 @@
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
+        <property name="t" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;}">
+            <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+            </property>
+        </property>
         <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[5.0,0.0;0.0,5.0])">
         </property>
         <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200-100,random()*200-100}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="12.0">
-        </property>
-        <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[10.0]">
+        <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 50.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="6.048770850691422">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-125.55253970462967">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="-9.780035010190488">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="102.52132441849139">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
@@ -796,19 +808,19 @@
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
-        <property name="range0_m" class="ptolemy.data.expr.Parameter" value="11.0295100462967">
+        <property name="range0_m" class="ptolemy.data.expr.Parameter" value="215.6157912739391">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
-        <property name="range1_m" class="ptolemy.data.expr.Parameter" value="15.2403992171648">
+        <property name="range1_m" class="ptolemy.data.expr.Parameter" value="192.7324914506784">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
-        <property name="range2_m" class="ptolemy.data.expr.Parameter" value="72.6680164453955">
+        <property name="range2_m" class="ptolemy.data.expr.Parameter" value="274.9825849645379">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
-        <property name="range3_m" class="ptolemy.data.expr.Parameter" value="23.4565750797657">
+        <property name="range3_m" class="ptolemy.data.expr.Parameter" value="1018.0755403537391">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>
@@ -870,8 +882,6 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="7.543925272219381">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -883,8 +893,22 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="-9.53704317329233">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="setlocations" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="locations">
             </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -902,8 +926,8 @@
                 </property>
             </port>
         </entity>
-        <entity name="range0_m_covariance" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+        <entity name="range0_m_noise" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
@@ -940,8 +964,8 @@
                 </property>
             </port>
         </entity>
-        <entity name="range1_m_covariance" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+        <entity name="range1_m_noise" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
@@ -978,8 +1002,8 @@
                 </property>
             </port>
         </entity>
-        <entity name="range2_m_covariance" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+        <entity name="range2_m_noise" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
@@ -1016,8 +1040,8 @@
                 </property>
             </port>
         </entity>
-        <entity name="range3_m_covariance" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[10.0]">
+        <entity name="range3_m_noise" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
