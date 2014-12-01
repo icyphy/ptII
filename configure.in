@@ -5778,6 +5778,9 @@ PTVERTX_JARS=
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR=
 
+# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTVERTXBUS_DIR=
+
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTWEBSOCKET_DIR=
 
@@ -5807,6 +5810,7 @@ else
         PTVERTX_JAR_DIR=$PTII/lib)
             if test -d "$PTVERTX_JAR_DIR"; then
     	    PTVERTX_DIR=vertx
+	    PTVERTXBUS_DIR=vertxBus
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
             jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
@@ -6933,6 +6937,9 @@ AC_SUBST(PTVERTX_JARS)
 
 # Set to vertx if the Vertx jars are found
 AC_SUBST(PTVERTX_DIR)
+
+# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+AC_SUBST(PTVERTXBUS_DIR)
 
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
 AC_SUBST(PTVERTX_PACKAGES)
