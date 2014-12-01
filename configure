@@ -606,6 +606,7 @@ PTWEBSOCKET_DIR
 WABA_DIR
 WABA_CLASSES
 PTVERTX_PACKAGES
+PTVERTXBUS_DIR
 PTVERTX_DIR
 PTVERTX_JARS
 GIOTTO_DIR
@@ -12878,6 +12879,9 @@ PTVERTX_JARS=
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR=
 
+# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTVERTXBUS_DIR=
+
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTWEBSOCKET_DIR=
 
@@ -12917,6 +12921,7 @@ fi
 
             if test -d "$PTVERTX_JAR_DIR"; then
     	    PTVERTX_DIR=vertx
+	    PTVERTXBUS_DIR=vertxBus
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
             jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
@@ -14182,6 +14187,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Set to vertx if the Vertx jars are found
+
+
+# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
