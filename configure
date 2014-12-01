@@ -12954,6 +12954,8 @@ fi
 
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/vertxBus/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
     or a version of Java before 1.8 was found
