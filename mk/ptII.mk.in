@@ -125,6 +125,9 @@ PTVERTX_JARS = 	@PTVERTX_JARS@
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR = 	@PTVERTX_DIR@
 
+# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTVERTXBUS_DIR = @PTVERTXBUS_DIR@
+
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
 PTVERTX_PACKAGES = @PTVERTX_PACKAGES@
 
