@@ -715,7 +715,6 @@ fmi2Status fmi2CancelStep(fmi2Component c) {
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance *comp = (ModelInstance *)c;
-    comp->communicationStepSize = communicationStepSize;
     double h = communicationStepSize / 10;
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
@@ -730,6 +729,8 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
 #endif
     int stateEvent = 0;
     int timeEvent = 0;
+
+    comp->communicationStepSize = communicationStepSize;
 
     if (invalidState(comp, "fmi2DoStep", MASK_fmi2DoStep))
         return fmi2Error;
