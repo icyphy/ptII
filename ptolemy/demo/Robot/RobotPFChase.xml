@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RobotPFChase" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -280,7 +280,7 @@
         </property>
         <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
         </property>
-        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[39.8682568517099,0.04745422539690214]&quot;">
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[47.252576151067004,-1.4406483907101153]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, -20.0}">
         </property>
@@ -565,17 +565,19 @@
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="500">
         </property>
+        <property name="t" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
         <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[5.0,0.0;0.0,5.0])">
         </property>
         <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200-100,random()*200-100}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="5.0">
+        <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="observerPosition" class="ptolemy.actor.parameters.PortParameter" value="{39.8682568517099, 0.0474542253969}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{735.0, -110.0}">
         </property>
-        <property name="z_m" class="ptolemy.data.expr.Parameter" value="65.7937788198798">
+        <property name="z_m" class="ptolemy.data.expr.Parameter" value="233.7366787896288">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -603,8 +605,6 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="-20.13370452361482">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -616,8 +616,22 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="31.03557937902909">
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+        </entity>
+        <entity name="setobserverPosition" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="observerPosition">
             </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -635,8 +649,8 @@
                 </property>
             </port>
         </entity>
-        <entity name="z_m_covariance" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[5.0]">
+        <entity name="z_m_noise" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2.0">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
@@ -701,8 +715,8 @@
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-56.48882429441257" max="51.0"/>
-<yRange min="-9.389262614623686" max="38.48926478161956"/>
+<xRange min="-1059.4853475983339" max="51.0"/>
+<yRange min="-408.48004374914757" max="83.51365669770293"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -754,8 +768,8 @@
 <title>Particle View</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-33.213026478062474" max="100.282765527157"/>
-<yRange min="-76.99943398191375" max="77.12122327709527"/>
+<xRange min="-108.43287763126192" max="51.0"/>
+<yRange min="-107.78567803329227" max="1.0"/>
 <default connected="no" marks="various"/>
 </plot>?>
             </configure>
@@ -812,7 +826,7 @@
         </property>
         <property name="intruderKey" class="ptolemy.actor.parameters.PortParameter" value="&quot;intruder&quot;">
         </property>
-        <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[39.8682568517099,0.04745422539690214]&quot;">
+        <property name="currentPosition" class="ptolemy.actor.parameters.PortParameter" value="&quot;[47.252576151067004,-1.4406483907101153]&quot;">
         </property>
         <property name="noiseSigma" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
