@@ -3,5 +3,5 @@ case "`uname -s`" in
     CYGWIN_NT-*)
 	cygpath -a -m $@ | sed 's/^C:/c:/';;
     *)
-	echo `pwd`/$1;;
+	echo $1;;
 esac
