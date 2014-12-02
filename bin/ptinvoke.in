@@ -1638,14 +1638,6 @@ EOF6
 
 		   # Deal with extensions
 
-		   # Matlab
-		   cp $PTII/lib/libptmatlab.jnilib $MACAPP_APP/Contents/MacOS/
-
-		   # RXTX SerialComm
-		   cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
-		   cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
-		   cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
-
 		   # Java3D
 		   JAVA3D_DIR="$PTII/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental"
 		   if [ ! -d "$JAVA3D_DIR" ]; then
@@ -1663,6 +1655,29 @@ EOF6
 		           cp "$JOGL_DIR/jar/gluegen.jar" $jreApp/lib/ext/ 
                        fi
                    fi
+
+		   # Java Media Framework (JMF)
+		   files="customizer.jar jmf.jar mediaplayer.jar multiplayer.jar"
+		   for file in $files
+		   do
+		       if [ -f /Library/Java/Extensions/$file ]; then
+			   cp /Library/Java/Extensions/$file $jreApp/lib/ext/
+                       fi
+                   done
+
+		   # Matlab
+		   cp $PTII/lib/libptmatlab.jnilib $MACAPP_APP/Contents/MacOS/
+
+		   # RXTX SerialComm
+		   if [ -f /Library/Java/Extensions/librxtxSerial.jnilib ]; then
+		       cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
+		   fi
+		   if [ -f /Library/Java/Extensions/RXTXcomm.jar ]; then
+		       cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
+		   fi
+		   cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
+
+
 	       fi
            else
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
