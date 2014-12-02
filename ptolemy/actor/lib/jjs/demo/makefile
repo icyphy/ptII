@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/demo
 
-DIRS =		JavaScriptShell LocalStorage VertxBus WebSocket
+DIRS =		JavaScriptShell VertxBus
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -49,8 +49,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	JavaScriptShell/JavaScriptShell.jar \
-	LocalStorage/LocalStorage.jar \
-	WebSocket/WebSocket.jar
+	VertxBus/VertxBus.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

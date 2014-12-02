@@ -65,7 +65,12 @@ MISC_FILES =	#test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR) 
+	$(PTCLASSJAR) \
+	'VertxBusHelper$$1.class' \
+	'VertxBusHelper$$2.class' \
+	'VertxBusHelper$$DataHandler.class' \
+	'VertxBusHelper$$EndHandler.class' \
+	'VertxBusHelper$$ExceptionHandler.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

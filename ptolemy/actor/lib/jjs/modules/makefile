@@ -34,7 +34,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
 # PTVERTXBUS_DIR is set to vertxBus if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		$(PTPAHO_MQTT_DIR) $(PTVERTXBUS_DIR) $(PTWEBSOCKET_DIR)
+DIRS = 		$(PTPAHO_MQTT_DIRS) $(PTVERTXBUS_DIR) $(PTWEBSOCKET_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -46,8 +46,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jjs
+PTPACKAGE = 	modules.jar
 PTCLASSJAR = 	$(PTPACKAGE).jar
+
+#PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS =
@@ -58,7 +63,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES =	localStorage mqtt vertxBus webSocket #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
