@@ -2,23 +2,10 @@
 // Authors: Hokeun Kim
 // Copyright: http://terraswarm.org/accessors/copyright.txt
 //
-////////////////////
-// The default name of the namespace
-// FIXME this is a hack to enable callbacks from the JavaScript actor.
-// There must be a better way to do this (e.g. EventEmitter in node.js)
-module.exports.namespaceName = "Mqtt";
 
 module.exports.createClient = function(port, host, opts)
 {
     return new Client(port, host, opts);
-}
-
-////////////////////
-// Invoke a callback for the MQTT client instance and the triggered event.
-module.exports.invokeCallback = function(obj, event, args) {
-    if (obj.callbacks[event] != null) {
-        obj.callbacks[event].apply(this, args);
-    }
 }
 
 ////////////////////
@@ -33,6 +20,7 @@ module.exports.binToStr = function(data) {
 
 ////////////////////
 // Construct an instance of an MQTT client.
+var events = require('events');
 function Client(port, host, opts) {
     if (typeof port != 'number') {
         opts = host;
@@ -51,13 +39,14 @@ function Client(port, host, opts) {
     if (!opts['clientId']) {
         opts['clientId'] = MqtttHelper.getDefaultId();
     }
-    this.callbacks = {};
 
-    this.javaClient = new MqtttHelper(actor.getEngine(), module.exports.namespaceName,
-        this, port, host, opts['clientId']);
+    this.javaClient = new MqtttHelper(actor.getEngine(), this, port, host, opts['clientId']);
 
     this.connected = undefined;
+
+    events.EventEmitter.call(this);
 }
+util.inherits(Client, events.EventEmitter);
 
 ////////////////////
 // A property for whether the client is connected to a broker server.
@@ -122,7 +111,7 @@ Client.prototype.publish = function(topic, message, opts, callback) {
 Client.prototype.end = function() {
     this.javaClient.end();
 }
-
+/*
 ////////////////////
 // Add callbacks to handle events.
 // Usage: on('connect', function).
@@ -135,3 +124,4 @@ Client.prototype.end = function() {
 Client.prototype.on = function(event, fn) {
     this.callbacks[event] = fn;
 }
+*/
