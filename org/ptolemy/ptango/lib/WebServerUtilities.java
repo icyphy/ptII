@@ -373,7 +373,9 @@ public class WebServerUtilities {
             // Close any websockets
             // FIXME:  Allow each application to have a separate set of 
             // websockets.  Right now, websockets are globally managed.
-            _endpointManager.closeServlets();
+            if (_endpointManager != null) {
+                _endpointManager.closeServlets();
+            }
             
             // What to do about the resource handler?  This might be shared
             // by other applications.  Need to keep a list.
