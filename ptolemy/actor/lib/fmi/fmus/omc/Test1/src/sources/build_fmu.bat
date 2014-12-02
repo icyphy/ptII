@@ -79,9 +79,9 @@ if exist *.dll del /Q *.dll
 
 rem /wd4090 disables warnings about different 'const' qualifiers
 
-rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
-cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
-rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
+rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.cpp /I ..\.
+cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.cpp  ..\sfmi_runtime.cpp /I ..\.
+rem cl /LD /wd4090 /nologo ..\%1.cpp sfmi_runtime.cpp /I ..\.
 dumpbin /exports %1.dll
 
 if not exist %1.dll goto compileError
@@ -101,8 +101,10 @@ move /Y %1.dll %BIN_DIR%
 if exist ..\%1\*~ del /Q ..\%1\*~
 type ..\..\modelDescription.xml > fmu\modelDescription.xml
 copy ..\..\model.png fmu
+copy ..\*.cpp %SRC_DIR%
 copy ..\*.c %SRC_DIR%
 copy ..\*.h %SRC_DIR%
+copy ..\*.mo %SRC_DIR%
 copy ..\build_fmu.bat %SRC_DIR%
 copy ..\build_fmu %SRC_DIR%
 copy ..\makefile %SRC_DIR%
