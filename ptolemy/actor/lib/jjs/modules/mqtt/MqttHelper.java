@@ -29,9 +29,10 @@ package ptolemy.actor.lib.jjs.modules.mqtt;
 
 import java.util.Random;
 
-import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -63,16 +64,14 @@ public class MqttHelper {
      * and connects the created client to the broker server.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module namespace.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port number of the broker server.
      * @param host The host name of the broker server.
      * @throws MqttException
      */
-    public MqttHelper(ScriptEngine engine, String namespaceName, Object currentObj,
+    public MqttHelper(ScriptEngine engine, ScriptObjectMirror currentObj,
             int port, String host, String clientId) throws MqttException {
         _engine = engine;
-        _namespaceName = namespaceName;
         _currentObj = currentObj;
         
         MemoryPersistence persistence = new MemoryPersistence();
@@ -86,38 +85,15 @@ public class MqttHelper {
             
             @Override
             public void onSuccess(IMqttToken arg0) {
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "connect";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                _currentObj.callMember("emit", "connect");
             }
             
             @Override
             public void onFailure(IMqttToken arg0, Throwable arg1) {
                 try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[3];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "error";
-
-                    Object[] jsArgs = new Object[1];
-                    jsArgs[0] = _engine.eval("new Error('Connection refused')");
-                    args[2] = jsArgs;
-                    
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
+                    Object jsArg = _engine.eval("new Error('Connection refused')");
+                    _currentObj.callMember("emit", "error", jsArg);
+                } catch (ScriptException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -128,59 +104,17 @@ public class MqttHelper {
             
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[3];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "message";
-
-                    Object[] jsArgs = new Object[2];
-                    jsArgs[0] = topic;
-                    jsArgs[1] = message.getPayload();
-                    args[2] = jsArgs;
-                    
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                _currentObj.callMember("emit", "message", topic, message.getPayload());
             }
             
             @Override
             public void deliveryComplete(IMqttDeliveryToken arg0) {
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "published";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                _currentObj.callMember("emit", "published");
             }
             
             @Override
             public void connectionLost(Throwable arg0) {
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    
-                    args[1] = "close";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                _currentObj.callMember("emit", "close");
             }
         });
     }
@@ -279,11 +213,8 @@ public class MqttHelper {
     /** Instance of the current JavaScript engine. */
     private static ScriptEngine _engine;
     
-    /** The name of the constructor of the JavaScript module. */
-    private String _namespaceName;
-    
     /** The current instance of the JavaScript module. */
-    private Object _currentObj;
+    private ScriptObjectMirror _currentObj;
 
     /** The internal MQTT client created in Java */
     private MqttAsyncClient _mqttClient = null;
