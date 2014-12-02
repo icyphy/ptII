@@ -95,8 +95,8 @@ if exist *.dll del /Q *.dll
 rem /wd4090 disables warnings about different 'const' qualifiers
 
 rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
-cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
-rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
+rem cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
+cl /LD /wd4090 /nologo ..\%1.c /I ..\.
 dumpbin /exports %1.dll
 
 if not exist %1.dll goto compileError
