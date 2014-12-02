@@ -563,7 +563,8 @@ $(PTII_SRC): $(PTII_FULL)
 		$(TAR) -xvf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
-		PTII=`$(GENDIR)/ptcygpwd`  ./configure; make -k clean; \
+		echo "PATH: ${PATH}"; \
+		PTII=`$(GENDIR)/ptcygpwd`  ./configure --enable-verbose; make -k clean; \
 		touch mk/ptII.mk.in; \
 		echo "(0)About to remove class files in `pwd`"; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
