@@ -85,21 +85,6 @@ public class VertxBusHelper {
     }
     
     
-    /** Publish text data onto vertx bus. 
-     * @param msg A text message to be sent.
-     */
-    public void publish(String address, String msg) {
-        JsonObject json = new JsonObject().putString("type", "publish")
-                .putString("address", address)
-                .putString("body", msg);
-        try {
-            _sendTextFrame(json);
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     /** Return whether the web socket is opened successfully. 
      * @return
      */
@@ -110,6 +95,22 @@ public class VertxBusHelper {
     	return _wsIsOpen;
     }
     
+    /** Publish text data onto vertx bus. 
+     * @param msg A text message to be sent.
+     */
+    public void publish(String address, String msg) {
+        JsonObject json = new JsonObject().putString("type", "publish")
+                .putString("address", address)
+                .putString("body", msg);
+        try {
+            System.out.println("S " + json);
+            _sendTextFrame(json);
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     /** Register subscriber handler at vertx bus.
      * @param address The address on the bus that should be suscribed to.
      */
@@ -224,6 +225,7 @@ public class VertxBusHelper {
                 args[0] = _currentObj;
                 args[1] = "received";
                 Object[] jsArgs = new Object[2];
+                System.out.println("R " + received);
                 jsArgs[0] = received.getField("body").toString();
                 jsArgs[1] = false;
                 args[2] = jsArgs;
