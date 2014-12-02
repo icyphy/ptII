@@ -142,6 +142,7 @@ $(PTLIB): ptmatlab.cc Engine.class
 	    echo "# The file command reports that $@ is: "; \
 	    file $@; \
         else \
+	    echo "# Creating $(PTLIB)"; \
 	    CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine; \
 	    "$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) \
 		"-I$(MATLAB_DIR)/extern/include" \
