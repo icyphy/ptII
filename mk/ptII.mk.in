@@ -900,8 +900,8 @@ PTPTALON_PACKAGES =  @PTPTALON_PACKAGES@
 # Directory that contains the antlr.jar file, used by ptalon
 ANTLR_DIR =	@ANTLR_DIR@
 
-# PTPAHO_MQTT_DIR is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
-PTPAHO_MQTT_DIR =		@PTPAHO_MQTT_DIR@
+# PTPAHO_MQTT_DIRS is set to localStorage and mqtt if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
+PTPAHO_MQTT_DIRS =		@PTPAHO_MQTT_DIRS@
 
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
 PTPAHO_MQTT_JAR =		@PTPAHO_MQTT_JAR@
