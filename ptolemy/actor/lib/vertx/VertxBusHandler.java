@@ -32,6 +32,7 @@ package ptolemy.actor.lib.vertx;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
@@ -45,8 +46,8 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -158,15 +159,15 @@ public class VertxBusHandler extends TypedAtomicActor {
         
         // send out tokens received as subscriber
         if (_buffer != null) {
-            List<StringToken> _bufferCopy = new ArrayList<StringToken>();
+            List<Token> bufferCopy = new ArrayList<Token>();
             synchronized(_buffer) {
                 if (_buffer.size() > 0) {
-                    _bufferCopy.addAll(_buffer);
+                    bufferCopy.addAll(_buffer);
                     _buffer.clear();
                 }
             }
-            for (int i = 0; i < _bufferCopy.size(); i++) {
-                subscribe.send(0, _bufferCopy.get(i));
+            for (int i = 0; i < bufferCopy.size(); i++) {
+                subscribe.send(0, bufferCopy.get(i));
             }
         }
     }
@@ -203,7 +204,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         _client = _vertx.createHttpClient().setHost(_host).setPort(_port);
         _openWebSocket();
         
-        _periodicPing = _vertx.setPeriodic(1000, new Handler<Long>() {
+        _periodicPing = _vertx.setPeriodic(5000, new Handler<Long>() {
             @Override
             public void handle(Long timerID) {
                 JsonObject json = new JsonObject().putString("type", "ping");
@@ -237,7 +238,7 @@ public class VertxBusHandler extends TypedAtomicActor {
             NameDuplicationException {
         publish = new TypedIOPort(this, "publish", true, false);
         subscribe = new TypedIOPort(this, "subscribe", false, true);
-        subscribe.setTypeEquals(BaseType.STRING);
+        //subscribe.setTypeEquals(BaseType.STRING);
         address = new Parameter(this, "address");
         host = new Parameter(this, "host");
         port = new Parameter(this, "port");
@@ -256,28 +257,35 @@ public class VertxBusHandler extends TypedAtomicActor {
                             "register").putString("address", _address);
                     websocket.writeTextFrame(msg.encode());
                     _websocket = websocket;
-                websocket.dataHandler(new Handler<Buffer>() {
-                        @Override
-                        public void handle(Buffer buff) {
-                            String msg = buff.toString();
-                            JsonObject received = new JsonObject(msg);
-                            
-                            if (_buffer == null) {
-                                _buffer = new ArrayList<StringToken>();
-                            }
-                            synchronized(_buffer) {
-                                if (received.getField("body") != null) {
-                                    _buffer.add(new StringToken(received.getField("body").toString()));
+                    if (subscribe.connectedPortList().size() > 0) {
+                        websocket.dataHandler(new Handler<Buffer>() {
+                            @Override
+                            public void handle(Buffer buff) {
+                                String msg = buff.toString();
+                                JsonObject received = new JsonObject(msg);
+                                
+                                if (_buffer == null) {
+                                    _buffer = new ArrayList<Token>();
+                                }
+                                synchronized(_buffer) {
+                                    if (received.getField("body") != null) {
+                                        String body = received.getField("body");
+                                        // remove leading and trailing quotes
+                                        if (body.startsWith("\"") && body.endsWith("\"")) {
+                                            body = body.substring(1, body.length() - 1);
+                                        }
+                                        body = body.replaceAll("\\\\", "");
+                                        _buffer.add(new StringToken(body));
+                                    }
+                                }
+                                try {
+                                    getDirector().fireAtCurrentRealTime((Actor) subscribe.getContainer());
+                                } catch (IllegalActionException e) {
+                                    _exception = e;
                                 }
                             }
-                            try {
-                                getDirector().fireAtCurrentRealTime((Actor) subscribe.getContainer());
-                            } catch (IllegalActionException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
             });
             
@@ -310,7 +318,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         }
     }
     
-    private List<StringToken> _buffer;
+    private List<Token> _buffer;
 
     private HttpClient _client;
     private Vertx _vertx;
