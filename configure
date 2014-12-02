@@ -652,7 +652,7 @@ PTPDFRENDERER_JAR
 PTPDFRENDERER_DIR
 PTPAHO_MQTT_PACKAGES
 PTPAHO_MQTT_JAR
-PTPAHO_MQTT_DIR
+PTPAHO_MQTT_DIRS
 PTOSCP5_PACKAGES
 PTOSCP5_DIR
 PTOSCP5_JAR
@@ -11648,8 +11648,8 @@ fi
 # We only enable Ptango if $PTPAHO_USER_DIR is present
 PTPAHO_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/localStorage"
 
-# PTPAHO_MQTT_DIR is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
-PTPAHO_MQTT_DIR=
+# PTPAHO_MQTT_DIRS is set to localStorage and mqtt if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
+PTPAHO_MQTT_DIRS=
 
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
 PTPAHO_MQTT_JAR=
@@ -11686,7 +11686,7 @@ if test -z "$PTPAHO_MQTT_JAR"; then
    updateExcludes "ptolemy/actor/lib/jjs/modules/localStorage/"
 else
    updateClasspath "$PTPAHO_MQTT_JAR"
-   PTPAHO_MQTT_DIR=localStorage
+   PTPAHO_MQTT_DIRS="localStorage mqtt"
    PTPAHO_MQTT_PACKAGES="ptolemy.actor.lib.jjs.modules.localStorage ptolemy.actor.lib.jjs.modules.mqtt"
 fi
 
@@ -14031,7 +14031,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Set to org.ptolemy.osc and used int $PTII/doc/makefile if oscp5 is found
 
 
-# PTPAHO_MQTT_DIR is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
+# PTPAHO_MQTT_DIR is set to localStorage and mqtt if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
 
 
 # The Paho MQTT Client Library, defaults to $PTII/lib/org.eclipse.paho.client.mqttv3.jar.
