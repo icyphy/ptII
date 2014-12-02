@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={611, 195, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 195, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="MqttSubscriber" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;var client;&#10;&#10;var receivedCnt = 0;&#10;function onMessage(topic, data) {&#10;  data = mqtt.binToStr(data);&#10;  send(data, output);&#10;  receivedCnt++;&#10;  if (receivedCnt &gt;= 7) {&#10;    client.unsubscribe(topic);&#10;  }&#10;}&#10;&#10;function onConnect() {&#10;  send(&quot;Subscriber connected&quot;, output);&#10;  client.subscribe('ptTest');&#10;}&#10;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.on('connect', onConnect);&#10;  client.on('message', onMessage);&#10;  send(&quot;Subscriber started&quot;, output);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;var client;&#10;&#10;var receivedCount = 0;&#10;function onMessage(topic, data) {&#10;  data = mqtt.binToStr(data);&#10;  send(data, output);&#10;  receivedCount++;&#10;  if (receivedCount &gt;= 7) {&#10;    client.unsubscribe(topic);&#10;  }&#10;}&#10;&#10;function onConnect() {&#10;  send(&quot;Subscriber connected&quot;, output);&#10;  client.subscribe('ptTest');&#10;}&#10;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.on('connect', onConnect);&#10;  client.on('message', onMessage);&#10;  send(&quot;Subscriber started&quot;, output);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -64,7 +64,7 @@
         </property>
     </entity>
     <entity name="MqttPublisher" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;&#10;var client;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'publisher'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}&#10;&#10;var cnt = 0;&#10;exports.fire = function() {&#10;  if (client.connected) {&#10;    cnt++;&#10;    client.publish('ptTest', 'Publishing count: ' + cnt, {qos:2});&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;&#10;var client;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'publisher'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}&#10;&#10;var count = 0;&#10;exports.fire = function() {&#10;  if (client.connected) {&#10;    count++;&#10;    client.publish('ptTest', 'Publishing count: ' + count, {qos:2});&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
