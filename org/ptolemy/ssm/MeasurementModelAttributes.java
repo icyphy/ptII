@@ -63,7 +63,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
     //        }
     //        super.attributeChanged(attribute);
     //    } 
-    
+
 
 
 
@@ -94,16 +94,16 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
             }
         }
     }
-    
-    
+
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
- 
+
         MeasurementModelAttributes result = (MeasurementModelAttributes) super.clone(workspace); 
         result._addedContainerParameters = null;
         return result;
     }
-    
+
     /**
      * Add all decorated ports to the container
      * @throws NameDuplicationException 
@@ -122,7 +122,8 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
      * @throws NameDuplicationException 
      * @throws IllegalActionException 
      */
-    public void removeDecorationsFromContainer() { 
+    public void removeDecorationsFromContainer() 
+            throws IllegalActionException, NameDuplicationException { 
         super.removeDecorationsFromContainer();
         removeStateSpaceVariablesFromContainer();
     }
@@ -138,7 +139,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
                         String name = ((StringToken)t).stringValue();
                         if (_addedContainerParameters.contains(name)) {
                             Parameter containerParam = (Parameter) this.getContainer().getAttribute(name); 
-    
+
                             if (containerParam != null) {
                                 this.getContainer().removeAttribute(containerParam);
                                 _addedContainerParameters.remove(name);
@@ -152,7 +153,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
         }
     }
 
-private List<String> _addedContainerParameters;
+    private List<String> _addedContainerParameters;
 
 }
 
