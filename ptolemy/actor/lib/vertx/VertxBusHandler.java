@@ -321,7 +321,7 @@ public class VertxBusHandler extends TypedAtomicActor {
     private List<Token> _buffer;
 
     private HttpClient _client;
-    private Vertx _vertx;
+    private static Vertx _vertx;
     private String _address;
     private Throwable _exception;
     private String _host;
