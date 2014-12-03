@@ -270,7 +270,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -545.0}">
             </property>
         </property>
-        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = -2.143307179916, y = 3.3773117020081}">
+        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = 0.7495252583429, y = 3.9291490029148}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -489,7 +489,7 @@
         <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="{initialPosition.x, initialPosition.y}">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="83.0">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="39.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-160.0, -100.0}">
             </property>
@@ -515,7 +515,7 @@
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
                 </property>
             </property>
-            <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{x = -2.143307179916, y = 3.3773117020081}">
+            <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{x = 0.7495252583429, y = 3.9291490029148}">
             </property>
             <property name="DecoratorAttributesFor_Search Robot Dynamics2" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Search Robot.Search Robot Dynamics">
@@ -591,7 +591,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="-27.691245358344744">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-33.35419806121552">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -604,7 +604,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="-50.63348388379311">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-27.748093689347716">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -690,7 +690,7 @@
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nout">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="83.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="39.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 395.0}">
         </property>
@@ -707,11 +707,11 @@
             </property>
             <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="14.900702564227734">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-15.41280367414101">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x + Vtarget">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="6.176092252491034">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="13.406252787795914">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
@@ -719,8 +719,6 @@
         <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="RangeSensorModel_z" class="ptolemy.data.expr.Parameter" value="15.7328732387972">
         </property>
         <property name="DecoratorAttributesFor_GaussianMeasurementModel" class="org.ptolemy.ssm.MeasurementModelAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="GaussianRangeMeasurement">
@@ -739,10 +737,6 @@
             </property>
             <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-        </property>
-        <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="6.0229305678207">
-        </property>
-        <property name="GaussianRangeMeasurement_z" class="ptolemy.data.expr.Parameter" value="71.1134723174301">
         </property>
         <property name="DecoratorAttributesFor_StateSpaceModel2" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="TargetDynamics">
@@ -766,9 +760,11 @@
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
         </property>
-        <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x = -29.8318241738551, y = -47.2809407184572}">
+        <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x = -32.6612791534877, y = -23.8041992565306}">
         </property>
-        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.4, 0.0, 1.0}">
+        <property name="GaussianRangeMeasurement_z" class="ptolemy.data.expr.Parameter" value="49.7650726653491">
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.2, 1.0, 1.0}">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -784,11 +780,11 @@
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="GaussianRangeMeasurement_z" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -797,7 +793,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="16.694006000634065">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-15.640326722759765">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -810,7 +806,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="4.923062132943035">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="13.749663097026389">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -925,11 +921,11 @@
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
         </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.2, 1.0, 1.0}">
-        </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.2, 1.0, 1.0}">
         </property>
         <port name="r1" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -955,7 +951,7 @@
     <entity name="Target" class="org.ptolemy.ssm.StateSpaceSimulator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="{-50.0,10.0}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="83.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="39.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 530.0}">
         </property>
@@ -1146,7 +1142,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="24.079588540472308">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-4.886413829670216">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1159,7 +1155,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="0.37210764943331776">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="14.957850396161266">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1249,8 +1245,6 @@
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Search Robot.measurement&quot;,x=350.0,y=415.0}, tail={id=&quot;ParticleFilterSSM.GaussianRangeMeasurement_z&quot;,x=590.0,y=395.0}, points={} } }">
-        </property>
     </relation>
     <link port="Particles.input" relation="relation2"/>
     <link port="Particles.x" relation="relation8"/>
