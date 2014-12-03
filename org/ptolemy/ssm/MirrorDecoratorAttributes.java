@@ -1,15 +1,20 @@
 package org.ptolemy.ssm;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;  
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.DecoratorAttributes;
@@ -41,7 +46,7 @@ implements MirrorDecoratorListener{
         _init();
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -59,7 +64,11 @@ implements MirrorDecoratorListener{
             if (enabled()) {
                 decorateContainer();
             } else {
-                removeDecorationsFromContainer();
+                try {
+                    removeDecorationsFromContainer();
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
             }
         } 
         super.attributeChanged(attribute);
@@ -70,6 +79,8 @@ implements MirrorDecoratorListener{
 
         MirrorDecoratorAttributes result = (MirrorDecoratorAttributes) super.clone(workspace); 
         result._enabled = false; 
+        result._cachedDecoratorPortParameters = null;
+        result._cachedDecoratorPorts = null;
         return result;
     }
 
@@ -114,20 +125,25 @@ implements MirrorDecoratorListener{
             } else if (eventType == DecoratorEvent.CHANGED_PORT_PARAMETER) { 
                 if (containerParam != null) {
                     containerParam.setExpression(p.getExpression());
-                    containerParam.setVisibility(p.getVisibility());
+                    containerParam.setVisibility(p.getVisibility()); 
                 }
             } else if (eventType == DecoratorEvent.ADDED_PORT_PARAMETER) {
                 if (enabled()) {
-                    if (containerParam == null) { 
-                        new PortParameter(this.getContainer(), p.getName());
-                    }   
-                }
+                    if (containerParam == null) {  
+                        _cachedDecoratorPortParameters.put(p.getName(),
+                                new PortParameter(this.getContainer(), p.getName()));
+                    } else {
+                        _cachedDecoratorPortParameters.put(p.getName(), containerParam);
+                    }
+                }  
                 if (param == null) {
                     new Parameter(this, p.getName());
                 }
             } else if (eventType == DecoratorEvent.REMOVED_PORT_PARAMETER) {
                 if (containerParam!=null) {
                     containerParam.setContainer(null); 
+                    _cachedDecoratorPorts.remove(p.getName());
+                    _cachedDecoratorPortParameters.remove(p.getName());
                 }
                 if (param != null) {
                     param.setContainer(null);
@@ -170,14 +186,13 @@ implements MirrorDecoratorListener{
                                             + "the same name as an existing output port.");
                         }
                     }
-                }
+                } 
+                _cachedDecoratorPorts.put(portName,port);
             } else if (eventType == DecoratorEvent.REMOVED_PORT) {
                 // if the container has a port of this name AND this port
                 // is known to have been added by this decorator, remove it.
-                boolean portAddedByDecorator = ((MirrorDecorator)this._decorator)
-                        .getAddedPortNames().contains(portName);
-                boolean paramPortAddedByDecorator = ((MirrorDecorator)this._decorator)
-                        .getAddedPortParameterNames().contains(portName);
+                boolean portAddedByDecorator = _cachedDecoratorPorts.keySet().contains(portName);
+                boolean paramPortAddedByDecorator = _cachedDecoratorPortParameters.keySet().contains(portName);
                 if (port != null ) {
                     if (portAddedByDecorator) {
                         port.setContainer(null); 
@@ -189,6 +204,7 @@ implements MirrorDecoratorListener{
                         port.setContainer(null);
                     }
                 } 
+                _cachedDecoratorPorts.remove(portName);
             } 
         } catch (IllegalActionException | NameDuplicationException e) {
             throw new InternalErrorException(e);
@@ -223,23 +239,33 @@ implements MirrorDecoratorListener{
      * @throws NameDuplicationException 
      * @throws IllegalActionException 
      */
-    public void removeDecorationsFromContainer() { 
+    public void removeDecorationsFromContainer() 
+            throws IllegalActionException, NameDuplicationException { 
         if (this._decorator != null) {
-            List<String> addedPortNames =  ((MirrorDecorator)this._decorator).getAddedPortNames();
-            if (addedPortNames != null) {
-                for (String port : addedPortNames) {
-                    event((MirrorDecorator)this._decorator,
-                            DecoratorEvent.REMOVED_PORT, port);   
-                }
+            for (Port p : _cachedDecoratorPorts.values()) {
+                p.setContainer(null);
             }
-            List<String> addedPortParNames =  ((MirrorDecorator)this._decorator).getAddedPortParameterNames();
-            if (addedPortNames != null) {
-                for (String decoratorPort : addedPortParNames) { 
-                    event((MirrorDecorator)this._decorator,
-                            DecoratorEvent.REMOVED_PORT, 
-                            (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort));
+            
+            for (Parameter p : _cachedDecoratorPortParameters.values()) {
+                ParameterPort expectedPort = (ParameterPort) ((ComponentEntity)this.
+                        getContainer()).getPort(p.getName());
+                if (expectedPort != null) {
+                    expectedPort.setContainer(null);
                 }
+                p.setContainer(null);
             }
+             
+            _cachedDecoratorPorts.clear();
+            _cachedDecoratorPortParameters.clear();
+            
+            //            List<String> addedPortParNames =  ((MirrorDecorator)this._decorator).getAddedPortParameterNames();
+            //            if (addedPortNames != null) {
+            //                for (String decoratorPort : addedPortParNames) { 
+            //                    event((MirrorDecorator)this._decorator,
+            //                            DecoratorEvent.REMOVED_PORT, 
+            //                            (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort));
+            //                }
+            //            }
         } 
     }
 
@@ -260,6 +286,11 @@ implements MirrorDecoratorListener{
      */
     private void _init() {
 
+        _cachedDecoratorPorts = new HashMap<>();
+
+        _cachedDecoratorPortParameters = new HashMap<>();
+        
+        
         try {
             enable = new Parameter(this, "enable");
             enable.setExpression("false");
@@ -275,5 +306,15 @@ implements MirrorDecoratorListener{
 
     /** Boolean indicating  enable status of the decorator */
     protected boolean _enabled;  
+
+    /** Cached list of decorator ports that are added to the container by this
+     * class
+     */
+    protected Map<String,Port> _cachedDecoratorPorts;
+
+    /** Cached list of decorator parameters that are added to the container by this
+     * class
+     */
+    protected Map<String,Parameter> _cachedDecoratorPortParameters;
 
 }
