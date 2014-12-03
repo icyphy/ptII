@@ -42,6 +42,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 ///////////////////////////////////////////////////////////////////
@@ -60,8 +61,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class MqttHelper {
     
     /**
-     * This constructor creates one Paho MQTT client inside using given parameters
-     * and connects the created client to the broker server.
+     * This constructor creates one Paho MQTT client inside using given parameters.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
@@ -78,10 +78,21 @@ public class MqttHelper {
         String hostUrl = "tcp://" + host + ":" + port;
         
         _mqttClient = new MqttAsyncClient(hostUrl, clientId, persistence);
-        MqttConnectOptions connOpts = new MqttConnectOptions();
-        connOpts.setCleanSession(true);
-        
-        _mqttClient.connect(connOpts, null, new IMqttActionListener() {
+        _connOpts = new MqttConnectOptions();
+        _connOpts.setCleanSession(true);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
+    /**
+     * Start connection between the client and the broker server.
+     * @throws MqttSecurityException
+     * @throws MqttException
+     */
+    public void start() throws MqttSecurityException, MqttException
+    {
+        _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
             
             @Override
             public void onSuccess(IMqttToken arg0) {
@@ -94,7 +105,6 @@ public class MqttHelper {
                     Object jsArg = _engine.eval("new Error('Connection refused')");
                     _currentObj.callMember("emit", "error", jsArg);
                 } catch (ScriptException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -117,10 +127,9 @@ public class MqttHelper {
                 _currentObj.callMember("emit", "close");
             }
         });
+        
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
     /** 
      * Publish an MQTT message to subscribers listening to the topic.
      * 
@@ -218,4 +227,7 @@ public class MqttHelper {
 
     /** The internal MQTT client created in Java */
     private MqttAsyncClient _mqttClient = null;
+    
+    /** Connection options for the current MQTT connection */
+    MqttConnectOptions _connOpts = null;
 }
