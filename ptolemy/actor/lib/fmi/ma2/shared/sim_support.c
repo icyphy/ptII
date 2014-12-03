@@ -222,6 +222,7 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     fmu->terminate                 = (fmi2TerminateTYPE *)             getAdr(&s, h, "fmi2Terminate");
     fmu->reset                     = (fmi2ResetTYPE *)                 getAdr(&s, h, "fmi2Reset");
     fmu->getReal                   = (fmi2GetRealTYPE *)               getAdr(&s, h, "fmi2GetReal");
+    fmu->getMaxStepSize            = (fmi2GetMaxStepSizeTYPE *)        getAdr(&s, h, "fmi2GetMaxStepSize");
     fmu->getInteger                = (fmi2GetIntegerTYPE *)            getAdr(&s, h, "fmi2GetInteger");
     fmu->getBoolean                = (fmi2GetBooleanTYPE *)            getAdr(&s, h, "fmi2GetBoolean");
     fmu->getString                 = (fmi2GetStringTYPE *)             getAdr(&s, h, "fmi2GetString");
@@ -358,14 +359,8 @@ static void doubleToCommaString(char* buffer, double r){
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
 // otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
-void outputRow(FMU *fmu, fmi2Component c, double time, FILE* file, char separator, boolean header) {
-    int k;
-    fmi2Real r;
-    fmi2Integer i;
-    fmi2Boolean b;
-    fmi2String s;
-    fmi2ValueReference vr;
-    int n = getScalarVariableSize(fmu->modelDescription);
+void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, FILE* file, char separator, boolean header) {
+
     char buffer[32];
 
     // print first column
@@ -384,62 +379,161 @@ void outputRow(FMU *fmu, fmi2Component c, double time, FILE* file, char separato
     }
 
     // print all other columns
-    for (k = 0; k < n; k++) {
-        ScalarVariable* sv = getScalarVariable(fmu->modelDescription, k);
-        if (header) {
-            // output names only
-            if (separator == ',') {
-                // treat array element, e.g. print a[1, 2] as a[1.2]
-                const char* s = getAttributeValue((Element *)sv, att_name);
-                fprintf(file, "%c", separator);
-                while (*s) {
-                    if (*s != ' ') {
-                        fprintf(file, "%c", *s == ',' ? '.' : *s);
+    for (int j = 0; j < numberOfFMUs; j++)
+    {   
+        int k;
+        fmi2Real r;
+        fmi2Integer i;
+        fmi2Boolean b;
+        fmi2String s;
+        fmi2ValueReference vr;
+
+        FMU *fmu = &fmus[j];
+        int n = getScalarVariableSize(fmu->modelDescription);
+        fmi2Component c = fmu->component;
+
+        for (k = 0; k < n; k++) {
+            ScalarVariable* sv = getScalarVariable(fmu->modelDescription, k);
+            if (header) {
+                // output names only
+                if (separator == ',') {
+                    // treat array element, e.g. print a[1, 2] as a[1.2]
+                    const char* s = getAttributeValue((Element *)sv, att_name);
+                    fprintf(file, "%c", separator);
+                    fprintf(file, "%s_", NAMES_OF_FMUS[j]);
+                    while (*s) {
+                        if (*s != ' ') {
+                            fprintf(file, "%c", *s == ',' ? '.' : *s);
+                        }
+                        s++;
                     }
-                    s++;
+                }
+                else {
+                    fprintf(file, "%c%s", separator, getAttributeValue((Element *)sv, att_name));
                 }
             }
             else {
-                fprintf(file, "%c%s", separator, getAttributeValue((Element *)sv, att_name));
+                // output values
+                vr = getValueReference(sv);
+                switch (getElementType(getTypeSpec(sv))) {
+                    case elm_Real:
+                        fmu->getReal(c, &vr, 1, &r);
+                        if (separator == ',') {
+                            fprintf(file, ",%.16g", r);
+                        }
+                        else {
+                            // separator is e.g. ';' or '\t'
+                            doubleToCommaString(buffer, r);
+                            fprintf(file, "%c%s", separator, buffer);
+                        }
+                        break;
+                    case elm_Integer:
+                    case elm_Enumeration:
+                        fmu->getInteger(c, &vr, 1, &i);
+                        fprintf(file, "%c%d", separator, i);
+                        break;
+                    case elm_Boolean:
+                        fmu->getBoolean(c, &vr, 1, &b);
+                        fprintf(file, "%c%d", separator, b);
+                        break;
+                    case elm_String:
+                        fmu->getString(c, &vr, 1, &s);
+                        fprintf(file, "%c%s", separator, s);
+                        break;
+                    default:
+                        fprintf(file, "%cNoValueForType=%d", separator, getElementType(getTypeSpec(sv)));
+                }
             }
-        }
-        else {
-            // output values
-            vr = getValueReference(sv);
-            switch (getElementType(getTypeSpec(sv))) {
-                case elm_Real:
-                    fmu->getReal(c, &vr, 1, &r);
-                    if (separator == ',') {
-                        fprintf(file, ",%.16g", r);
-                    }
-                    else {
-                        // separator is e.g. ';' or '\t'
-                        doubleToCommaString(buffer, r);
-                        fprintf(file, "%c%s", separator, buffer);
-                    }
-                    break;
-                case elm_Integer:
-                case elm_Enumeration:
-                    fmu->getInteger(c, &vr, 1, &i);
-                    fprintf(file, "%c%d", separator, i);
-                    break;
-                case elm_Boolean:
-                    fmu->getBoolean(c, &vr, 1, &b);
-                    fprintf(file, "%c%d", separator, b);
-                    break;
-                case elm_String:
-                    fmu->getString(c, &vr, 1, &s);
-                    fprintf(file, "%c%s", separator, s);
-                    break;
-                default:
-                    fprintf(file, "%cNoValueForType=%d", separator, getElementType(getTypeSpec(sv)));
-            }
-        }
-    } // for
+        } // for fmus variables
+    } // for fmus
+
+    
 
     // terminate this row
     fprintf(file, "\n");
 }
+// void outputRow(FMU *fmu, fmi2Component c, double time, FILE* file, char separator, boolean header) {
+//     int k;
+//     fmi2Real r;
+//     fmi2Integer i;
+//     fmi2Boolean b;
+//     fmi2String s;
+//     fmi2ValueReference vr;
+//     int n = getScalarVariableSize(fmu->modelDescription);
+//     char buffer[32];
+
+//     // print first column
+//     if (header) {
+//         fprintf(file, "time");
+//     }
+//     else {
+//         if (separator==',') {
+//             fprintf(file, "%.16g", time);
+//         }
+//         else {
+//             // separator is e.g. ';' or '\t'
+//             doubleToCommaString(buffer, time);
+//             fprintf(file, "%s", buffer);
+//         }
+//     }
+
+//     // print all other columns
+//     for (k = 0; k < n; k++) {
+//         ScalarVariable* sv = getScalarVariable(fmu->modelDescription, k);
+//         if (header) {
+//             // output names only
+//             if (separator == ',') {
+//                 // treat array element, e.g. print a[1, 2] as a[1.2]
+//                 const char* s = getAttributeValue((Element *)sv, att_name);
+//                 fprintf(file, "%c", separator);
+//                 while (*s) {
+//                     if (*s != ' ') {
+//                         fprintf(file, "%c", *s == ',' ? '.' : *s);
+//                     }
+//                     s++;
+//                 }
+//             }
+//             else {
+//                 fprintf(file, "%c%s", separator, getAttributeValue((Element *)sv, att_name));
+//             }
+//         }
+//         else {
+//             // output values
+//             vr = getValueReference(sv);
+//             switch (getElementType(getTypeSpec(sv))) {
+//                 case elm_Real:
+//                     fmu->getReal(c, &vr, 1, &r);
+//                     if (separator == ',') {
+//                         fprintf(file, ",%.16g", r);
+//                     }
+//                     else {
+//                         // separator is e.g. ';' or '\t'
+//                         doubleToCommaString(buffer, r);
+//                         fprintf(file, "%c%s", separator, buffer);
+//                     }
+//                     break;
+//                 case elm_Integer:
+//                 case elm_Enumeration:
+//                     fmu->getInteger(c, &vr, 1, &i);
+//                     fprintf(file, "%c%d", separator, i);
+//                     break;
+//                 case elm_Boolean:
+//                     fmu->getBoolean(c, &vr, 1, &b);
+//                     fprintf(file, "%c%d", separator, b);
+//                     break;
+//                 case elm_String:
+//                     fmu->getString(c, &vr, 1, &s);
+//                     fprintf(file, "%c%s", separator, s);
+//                     break;
+//                 default:
+//                     fprintf(file, "%cNoValueForType=%d", separator, getElementType(getTypeSpec(sv)));
+//             }
+//         }
+//     } // for
+
+//     // terminate this row
+//     fprintf(file, "\n");
+// }
 
 static const char* fmi2StatusToString(fmi2Status status) {
     switch (status) {
@@ -558,72 +652,113 @@ int error(const char* message){
 }
 
 // TODO: Implement log categories
+//void parseArguments(int argc, char *argv[], char **fmuFileNames, double *tEnd, double *h,
+//                    int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]) {
+//
+//    int option = 0;
+//    int i;
+//
+//    while ((option = getopt(argc, argv, "t:h:ls:f:")) != -1) {
+//        switch(option) {
+//            case 't' :
+//                if (sscanf(optarg,"%lf", tEnd) != 1) {
+//                    printf("error: The given stepsize (%s) is not a number\n", optarg);
+//                    exit(EXIT_FAILURE);
+//                }
+//                break;
+//            case 'h' :
+//                if (sscanf(optarg,"%lf", h) != 1) {
+//                    printf("error: The given stepsize (%s) is not a number\n", optarg);
+//                    exit(EXIT_FAILURE);
+//                }
+//                break;
+//            case 'l' : *loggingOn = 1;
+//                break;
+//            case 's' :
+//                if (strlen(optarg) != 1) {
+//                    printf("error: The given CSV separator char (%s) is not valid\n", optarg);
+//                    exit(EXIT_FAILURE);
+//                } else {
+//                    switch (*optarg) {
+//                        case 'c': *csv_separator = ','; break; // comma
+//                        case 's': *csv_separator = ';'; break; // semicolon
+//                        default:  *csv_separator = *optarg; break; // any other char
+//                }
+//                break;
+//            }
+//        }
+//    }
+//    // number of positional arguments (arguments without a dash)
+//    int posArgs = argc - optind;
+//
+//    // parse FMU files
+//    if (posArgs > 0) {
+//        for (i = 0; i < posArgs; i++) {
+//            if (strstr(argv[optind], ".fmu") || strstr(argv[optind], ".FMU")) {
+//                // save fmu file path and name to array
+//                fmuFileNames[i] = argv[optind];
+//                // set optind to next element after current fmu file
+//                optind++;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+//    } else {
+//        printf("Error: No FMU file specified.\n");
+//        printHelp(argv[0]);
+//        exit(EXIT_FAILURE);
+//    }
+//
+//    *nCategories = argc - optind;
+//    // parse log categories
+//    if (*nCategories > 0) {
+//        *logCategories = (char **)calloc(sizeof(char *), *nCategories);
+//        for (i = 0; i < *nCategories; i++) {
+//            (*logCategories)[i] = argv[optind];
+//            optind++;
+//        }
+//    }
+//}
 
-void parseArguments(int argc, char *argv[], char **fmuFileNames, double *tEnd, double *h,
-                    int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]) {
-
-    int option = 0;
-    int i;
-
-    while ((option = getopt(argc, argv, "t:h:ls:f:")) != -1) {
-        switch(option) {
-            case 't' :
-                if (sscanf(optarg,"%lf", tEnd) != 1) {
-                    printf("error: The given stepsize (%s) is not a number\n", optarg);
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            case 'h' :
-                if (sscanf(optarg,"%lf", h) != 1) {
-                    printf("error: The given stepsize (%s) is not a number\n", optarg);
-                    exit(EXIT_FAILURE);
-                }
-                break;
-            case 'l' : *loggingOn = 1;
-                break;
-            case 's' :
-                if (strlen(optarg) != 1) {
-                    printf("error: The given CSV separator char (%s) is not valid\n", optarg);
-                    exit(EXIT_FAILURE);
-                } else {
-                    switch (*optarg) {
-                        case 'c': *csv_separator = ','; break; // comma
-                        case 's': *csv_separator = ';'; break; // semicolon
-                        default:  *csv_separator = *optarg; break; // any other char
-                }
-                break;
-            }
+void parseArguments(int argc, char *argv[], double *tEnd, double *h,
+        int *loggingOn, char *csv_separator, int *nCategories, /*const*/ fmi2String *logCategories[]) {
+    // parse command line arguments
+    if (argc > 1) {
+        if (sscanf(argv[1],"%lf", tEnd) != 1) {
+            printf("error: The given end time (%s) is not a number\n", argv[1]);
+            exit(EXIT_FAILURE);
         }
     }
-    // number of positional arguments (arguments without a dash)
-    int posArgs = argc - optind;
-
-    // parse FMU files
-    if (posArgs > 0) {
-        for (i = 0; i < posArgs; i++) {
-            if (strstr(argv[optind], ".fmu") || strstr(argv[optind], ".FMU")) {
-                // save fmu file path and name to array
-                fmuFileNames[i] = argv[optind];
-                // set optind to next element after current fmu file
-                optind++;
-            }
-            else {
-                break;
-            }
+    if (argc > 2) {
+        if (sscanf(argv[2],"%lf", h) != 1) {
+            printf("error: The given stepsize (%s) is not a number\n", argv[2]);
+            exit(EXIT_FAILURE);
         }
-    } else {
-        printf("Error: No FMU file specified.\n");
-        printHelp(argv[0]);
-        exit(EXIT_FAILURE);
     }
-
-    *nCategories = argc - optind;
-    // parse log categories
-    if (*nCategories > 0) {
-        *logCategories = (char **)calloc(sizeof(char *), *nCategories);
+    if (argc > 3) {
+        if (sscanf(argv[3],"%d", loggingOn) != 1 || *loggingOn < 0 || *loggingOn > 1) {
+            printf("error: The given logging flag (%s) is not boolean\n", argv[3]);
+            exit(EXIT_FAILURE);
+        }
+    }
+    if (argc > 4) {
+        if (strlen(argv[4]) != 1) {
+            printf("error: The given CSV separator char (%s) is not valid\n", argv[4]);
+            exit(EXIT_FAILURE);
+        }
+        switch (argv[4][0]) {
+            case 'c': *csv_separator = ','; break; // comma
+            case 's': *csv_separator = ';'; break; // semicolon
+            default:  *csv_separator = argv[5][0]; break; // any other char
+        }
+    }
+    if (argc > 5) {
+        int i;
+        *nCategories = argc - 5;
+        *logCategories = (/*const*/ fmi2String *)calloc(sizeof(char *), *nCategories);
         for (i = 0; i < *nCategories; i++) {
-            (*logCategories)[i] = argv[optind];
-            optind++;
+            (*logCategories)[i] = argv[i + 5];
         }
     }
 }

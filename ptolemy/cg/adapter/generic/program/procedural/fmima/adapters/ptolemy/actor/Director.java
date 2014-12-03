@@ -159,7 +159,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 			ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
 					.next();
 
-			// Add all the topological edges
+			// Add all the edges due to topological dependencies
 			for (TypedIOPort input : actor.inputPortList()) {
 				Node sinkNode = (Node) actorNodeMap.get(input);
 				List<TypedIOPort> connected_ports = input.connectedPortList();
@@ -172,7 +172,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 				}
 			}
 
-			// Add all the causality relation edges
+			// Add all the edges due to I/O dependency
 			for (TypedIOPort output : actor.outputPortList()) {
 				Node sinkNode = (Node) actorNodeMap.get(output);
 				Set<String> inputPorts = actor.getInputDependencyList(output

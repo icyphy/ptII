@@ -62,6 +62,7 @@ typedef struct {
     fmi2SerializeFMUstateTYPE        *serializeFMUstate;
     fmi2DeSerializeFMUstateTYPE      *deSerializeFMUstate;
     fmi2GetDirectionalDerivativeTYPE *getDirectionalDerivative;
+    fmi2GetMaxStepSizeTYPE           *getMaxStepSize;
     /***************************************************
     Functions for FMI2 for Co-Simulation
     ****************************************************/

@@ -64,10 +64,11 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent) {
 }
 
 // FMI function for getting max step size as proposed in the EMSOFT Paper of 2013
-fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *maxStepSize) {
-    *maxStepSize = 1;
+fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
+    *value = 1.0;
     return fmi2OK;
 }
+
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

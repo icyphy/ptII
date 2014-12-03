@@ -173,10 +173,11 @@ Types for Common Functions
    typedef fmi2Status fmi2ResetTYPE                  (fmi2Component);
 
 /* Getting and setting variable values */
-   typedef fmi2Status fmi2GetRealTYPE   (fmi2Component, const fmi2ValueReference[], size_t, fmi2Real   []);
-   typedef fmi2Status fmi2GetIntegerTYPE(fmi2Component, const fmi2ValueReference[], size_t, fmi2Integer[]);
-   typedef fmi2Status fmi2GetBooleanTYPE(fmi2Component, const fmi2ValueReference[], size_t, fmi2Boolean[]);
-   typedef fmi2Status fmi2GetStringTYPE (fmi2Component, const fmi2ValueReference[], size_t, fmi2String []);
+   typedef fmi2Status fmi2GetRealTYPE          (fmi2Component, const fmi2ValueReference[], size_t, fmi2Real   []);
+   typedef fmi2Status fmi2GetMaxStepSizeTYPE   (fmi2Component, fmi2Real*);
+   typedef fmi2Status fmi2GetIntegerTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Integer[]);
+   typedef fmi2Status fmi2GetBooleanTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Boolean[]);
+   typedef fmi2Status fmi2GetStringTYPE        (fmi2Component, const fmi2ValueReference[], size_t, fmi2String []);
 
    typedef fmi2Status fmi2SetRealTYPE   (fmi2Component, const fmi2ValueReference[], size_t, const fmi2Real   []);
    typedef fmi2Status fmi2SetIntegerTYPE(fmi2Component, const fmi2ValueReference[], size_t, const fmi2Integer[]);

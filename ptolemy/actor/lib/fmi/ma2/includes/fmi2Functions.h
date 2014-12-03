@@ -210,6 +210,7 @@ Common Functions
 #define fmi2SerializeFMUstate        fmi2FullName(fmi2SerializeFMUstate)
 #define fmi2DeSerializeFMUstate      fmi2FullName(fmi2DeSerializeFMUstate)
 #define fmi2GetDirectionalDerivative fmi2FullName(fmi2GetDirectionalDerivative)
+#define fmi2GetMaxStepSize           fmi2FullName(fmi2GetMaxStepSize)
 
 
 /***************************************************
@@ -265,10 +266,11 @@ Common Functions
    FMI2_Export fmi2ResetTYPE                   fmi2Reset;
 
 /* Getting and setting variables values */
-   FMI2_Export fmi2GetRealTYPE    fmi2GetReal;
-   FMI2_Export fmi2GetIntegerTYPE fmi2GetInteger;
-   FMI2_Export fmi2GetBooleanTYPE fmi2GetBoolean;
-   FMI2_Export fmi2GetStringTYPE  fmi2GetString;
+   FMI2_Export fmi2GetRealTYPE        fmi2GetReal;
+   FMI2_Export fmi2GetMaxStepSizeTYPE fmi2GetMaxStepSize;
+   FMI2_Export fmi2GetIntegerTYPE     fmi2GetInteger;
+   FMI2_Export fmi2GetBooleanTYPE     fmi2GetBoolean;
+   FMI2_Export fmi2GetStringTYPE      fmi2GetString;
 
    FMI2_Export fmi2SetRealTYPE    fmi2SetReal;
    FMI2_Export fmi2SetIntegerTYPE fmi2SetInteger;
