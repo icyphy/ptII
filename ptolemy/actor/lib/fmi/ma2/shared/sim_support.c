@@ -379,7 +379,8 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
     }
 
     // print all other columns
-    for (int j = 0; j < numberOfFMUs; j++)
+    int j = 0;
+    for (j = 0; j < numberOfFMUs; j++)
     {   
         int k;
         fmi2Real r;
