@@ -167,8 +167,20 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
 
         codeStream.append("#define NUMBER_OF_FMUS " + actorList.size() + "\n");
         codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
-                
+        codeStream.append("#define MODEL_NAME \"" + topActor.getName() + "\"\n");
+        
+        actors = actorList.iterator();
+        codeStream.append("const char* NAMES_OF_FMUS[] = {");
+        while (actors.hasNext()) {
+        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();  
+        	codeStream.append("\"" + actor.getName() + "\"");
+        	if (actors.hasNext()) codeStream.append(",");
+        }
+        codeStream.append("};\n");
+        
+        
         codeStream.appendCodeBlock("staticDeclareBlock");
+
 
         return processCode(codeStream.toString());
     }

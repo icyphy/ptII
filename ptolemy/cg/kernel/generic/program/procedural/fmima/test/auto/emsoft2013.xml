@@ -4,6 +4,7 @@
 <entity name="emsoft2013" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
+
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 87, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
@@ -244,8 +245,25 @@
             </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="fmuA20pt" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabiocremona/Documents/SSSA-PhD/Libraries/workspacePt2/ptII/ptolemy/actor/lib/fmi/fmus/fmuA20pt/fmuA20pt.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 185.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -254,7 +272,8 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="fmuA20pt.counter" relation="relation"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="fmuB20pt.input1" relation="relation"/>
     <link port="fmuB20pt.input2" relation="relation5"/>
     <link port="fmuB20pt.output1" relation="relation2"/>
@@ -264,4 +283,5 @@
     <link port="fmuC20pt.output1" relation="relation4"/>
     <link port="fmuD20pt.input" relation="relation4"/>
     <link port="fmuD20pt.output" relation="relation5"/>
+    <link port="fmuA20pt.counter" relation="relation"/>
 </entity>

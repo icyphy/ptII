@@ -1,70 +1,64 @@
 /***mainStartBlock***/
 #if WINDOWS
-    const char* fmuFileNames[NUMBER_OF_FMUS];
+const char* fmuFileNames[NUMBER_OF_FMUS];
 #else
-    char* fmuFileNames[NUMBER_OF_FMUS];
+char* fmuFileNames[NUMBER_OF_FMUS];
 #endif
-    int i;
+int i;
 
-    // parse command line arguments and load the FMU
-    // default arguments value
-    double h = 0.1;
-    int loggingOn = 0;
-    char csv_separator = ',';
-    char **categories = NULL;
-    int nCategories = 0;
-    fmi2Boolean visible = fmi2False;           // no simulator user interface
+// parse command line arguments and load the FMU
+// default arguments value
+double h = 0.1;
+int loggingOn = 0;
+char csv_separator = ',';
+char **categories = NULL;
+int nCategories = 0;
+fmi2Boolean visible = fmi2False;           // no simulator user interface
 
-    // Create and allocate arrays for FMUs and port mapping
-    FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
-    portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
+// Create and allocate arrays for FMUs and port mapping
+FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
+portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
 
-    printf("Parsing arguments!\n");
-    // FIXME: The generated code loads the fmu files and the arguments are ignored.
-    // However, we are using parseArguments() from ptolemy/actor/lbi/fmi/ma2/shared/sim_support.c
-    // so we don't want to change the function call.  Instead, we should actually use the 
-    // .fmu files parsed from the command line.
-    parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
-
-    // Set up port connections
-    //setupConnections(fmus, connections);
+printf("-> Parsing arguments...\n");
+parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
 /**/
 
 /***mainEndBlock***/
-    // run the simulation
-    printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ",
-            fmuFileNames[0], tEnd, h, loggingOn, csv_separator); // TODO: Should mention all FMUs
-    printf("log categories={ ");
-    for (i = 0; i < nCategories; i++) {
-            printf("%s ", categories[i]);
-    }
-    printf("}\n");
+// run the simulation
+printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ", MODEL_NAME, tEnd, h, loggingOn, csv_separator);
+printf("log categories={ ");
 
-    simulate(fmus, connections, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
+for (i = 0; i < nCategories; i++) {
+	printf("%s ", categories[i]);
+}
 
-    printf("CSV file '%s' written\n", RESULT_FILE);
+printf("}\n");
 
-    // release FMUs
+simulate( fmus, connections, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
+
+printf("CSV file '%s' written\n", RESULT_FILE);
+
+// release FMUs
 #ifdef _MSC_VER
-    for (i = 0; i < NUMBER_OF_FMUS; i++) {
-            FreeLibrary(fmus[i]->dllHandle);
-    }
+for (i = 0; i < NUMBER_OF_FMUS; i++) {
+	FreeLibrary(fmus[i]->dllHandle);
+}
 #else
-    for (i = 0; i < NUMBER_OF_FMUS; i++) {
-        dlclose(fmus[i].dllHandle);
-    }
+for (i = 0; i < NUMBER_OF_FMUS; i++) {
+	dlclose(fmus[i].dllHandle);
+}
 #endif
 
-    for (i = 0; i < NUMBER_OF_FMUS; i++) {
-        freeModelDescription(fmus[i].modelDescription);
-    }
+for (i = 0; i < NUMBER_OF_FMUS; i++) {
+	freeModelDescription(fmus[i].modelDescription);
+}
 
-    if (categories) {
-            free(categories);
-    }
+if (categories) {
+	free(categories);
+}
 
-    free(fmus);
+free( fmus);
 
-    return EXIT_SUCCESS;
+return EXIT_SUCCESS;
 /**/

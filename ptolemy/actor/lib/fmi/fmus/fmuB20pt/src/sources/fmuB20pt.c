@@ -85,6 +85,9 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
     }
 }
 
+fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
+}
+
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
 
