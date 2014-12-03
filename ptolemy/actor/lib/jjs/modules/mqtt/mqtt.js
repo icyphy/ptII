@@ -75,6 +75,12 @@ Client.prototype.subscribe = function(topic, opts) {
 }
 
 ////////////////////
+// Start connection between the client and the broker server.
+Client.prototype.start = function() {
+    this.javaClient.start();
+}
+
+////////////////////
 // Unsubscribe a topic. Stop getting messages on the topic.
 Client.prototype.unsubscribe = function(topic) {
     this.javaClient.unsubscribe(topic);
@@ -107,21 +113,8 @@ Client.prototype.publish = function(topic, message, opts, callback) {
 }
 
 ////////////////////
-// Disconnect from the broker server and close (i.e. return all allocated resources) the client.
+// Disconnect from the broker server and close (i.e. return all allocated resources of) the client.
 Client.prototype.end = function() {
     this.javaClient.end();
 }
-/*
-////////////////////
-// Add callbacks to handle events.
-// Usage: on('connect', function).
-// This method Supports the following events.
-// Event 'connect', function(): triggered when the client is connected to the broker server.
-// Event 'message', function(topic, message): triggered when a message arrives from the publisher. 
-// Event 'close', function(): triggered when the connection with the broker server is closed.
-// Event 'error', function(err): triggered when the connection with the broker server is refused.
-// Event 'published', function (): triggered when the pubhlish complets (for QoS >= 1);
-Client.prototype.on = function(event, fn) {
-    this.callbacks[event] = fn;
-}
-*/
+
