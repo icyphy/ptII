@@ -54,7 +54,7 @@ CC_FLAGS=
 
 # If the user would like to add compile time options, run with
 # make -f @modelName@.mk USER_CC_FLAGS=xxx
-USER_CC_FLAGS = #-std=c99
+USER_CC_FLAGS = -std=c99
 
 # We use -ggdb because -g fails with very large .c files
 DEBUG = -ggdb
