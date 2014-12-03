@@ -4,7 +4,6 @@
 <entity name="emsoft2013" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 87, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
@@ -20,7 +19,11 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To invoke the code generator:&#10;$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \&#10;      -generatorPackagelist generic.program.procedural.fmima \&#10;      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml&#10;&#10;(Some day we will have a FMIMA  Code Generator Icon)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, 230.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -99,25 +102,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 465.0]">
         </property>
     </property>
-    <entity name="fmuA20pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuA20pt.fmu">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 125.0]">
-        </property>
-        <port name="counter" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-        </port>
-    </entity>
     <entity name="fmuB20pt" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuB20pt.fmu">
         </property>
@@ -245,10 +229,10 @@
             </property>
         </port>
     </entity>
-    <entity name="fmuA20pt" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabiocremona/Documents/SSSA-PhD/Libraries/workspacePt2/ptII/ptolemy/actor/lib/fmi/fmus/fmuA20pt/fmuA20pt.fmu">
+    <entity name="fmuA20pt2" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fmuA20pt.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{163.4375, 195.0}">
         </property>
         <port name="counter" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -283,5 +267,5 @@
     <link port="fmuC20pt.output1" relation="relation4"/>
     <link port="fmuD20pt.input" relation="relation4"/>
     <link port="fmuD20pt.output" relation="relation5"/>
-    <link port="fmuA20pt.counter" relation="relation"/>
+    <link port="fmuA20pt2.counter" relation="relation"/>
 </entity>
