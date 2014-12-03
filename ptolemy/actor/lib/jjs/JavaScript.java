@@ -55,12 +55,14 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
@@ -70,18 +72,22 @@ import ptolemy.util.MessageHandler;
 //// JavaScript
 
 /**
-   Execute a script in JavaScript that can read inputs,
+   Execute a script in JavaScript that can read inputs and parameters,
    perform calculations, and write outputs. The script may be provided
    as the textual value of the <i>script</i> parameter, or as an input
    on the <i>script</i> port. The script can change on each firing.
    <p>
-   To use this actor, add input and output ports and specify
-   a script. The names of the ports are required to be valid
+   To use this actor, add input and output ports, parameters (if you like),
+   and specify a script. The names of the ports and parameters are required to be valid
    JavaScript identifiers and are not permitted to be JavaScript keywords.</p>
    <p>
-   The script may reference parameters in the scope of this actor
+   The script may also reference parameters in the scope of this actor
    using usual Ptolemy II $ syntax.  E.g., ${foo} in the script will be
-   replaced with the value of foo before the script is evaluated.</p>
+   replaced with the value of foo before the script is evaluated.
+   However, this use of parameters will retrieve the value of the parameter
+   only when the script is read (during initialize()), so updates to the
+   parameter value will not be noticed.
+   </p>
    <p>
    Your script should define one or more of the following functions:</p>
    <ul>
@@ -126,7 +132,8 @@ import ptolemy.util.MessageHandler;
    <ul>
    <li> alert(string): pop up a dialog with the specified message.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
-   <li> get(port, n): get an input from a port on channel n (return null if there is no input).</li>
+   <li> get(portOrParameter, n): get an input from a port on channel n or a parameter
+        (return null if there is no such port or parameter).</li>
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
    <li> localHostAddress(): If not in restricted mode, return the local host IP address as a string. </li>
    <li> print(string): print the specified string to the console (standard out).</li>
@@ -134,6 +141,7 @@ import ptolemy.util.MessageHandler;
    <li> require(string): load and return a CommonJS module by name. See
    <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
    <li> send(value, port, n): send a value to an output port on channel n</li>
+   <li> set(value, parameter): set the value of a parameter of this JavaScript actor. </li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
    The last argument of get() and send() (the channel number) is optional.
@@ -589,7 +597,7 @@ public class JavaScript extends TypedAtomicActor {
         // Expose the ports as JavaScript variables.
         for (TypedIOPort port : portList()) {
             // Do not convert the scriptIn port to a JavaScript variable.
-            if (port == script.getPort() || port == error) {
+            if (port == script.getPort() || port == error || port instanceof ParameterPort) {
                 continue;
             }
             if (!isValidIdentifier(port.getName())) {
@@ -602,7 +610,27 @@ public class JavaScript extends TypedAtomicActor {
         		"Port name is a JavaScript keyword: "
         		+ port.getName());
             }
-            _engine.put(port.getName(), new PortProxy(port));
+            _engine.put(port.getName(), new PortOrParameterProxy(port));
+        }
+
+        // Expose the parameters as JavaScript variables.
+        List<Variable> attributes = attributeList(Variable.class);
+        for (Variable parameter : attributes) {
+            // Do not convert the script parameter to a JavaScript variable.
+            if (parameter == script) {
+                continue;
+            }
+            if (!isValidIdentifier(parameter.getName())) {
+        	throw new IllegalActionException(this,
+        		"Parameter name is not a valid JavaScript identifier: "
+        		+ parameter.getName());
+            }
+            if (isJavaScriptKeyword(parameter.getName())) {
+        	throw new IllegalActionException(this,
+        		"Parameter name is a JavaScript keyword: "
+        		+ parameter.getName());
+            }
+            _engine.put(parameter.getName(), new PortOrParameterProxy(parameter));
         }
 
         _executing = true;
@@ -830,32 +858,45 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
 
-    /** Proxy for a port. This is used to wrap ports for security
-     *  reasons.  If we expose the port to the JavaScript environment,
+    /** Proxy for a port or parameter.
+     *  This is used to wrap ports and parameters for security
+     *  reasons.  If we expose the port or paramter to the JavaScript environment,
      *  then the script can access all aspects of the model containing
      *  this actor. E.g., it can call getContainer() on the object.
-     *  This wrapper provides access to the port only via a protected
+     *  This wrapper provides access to the port or parameter only via a protected
      *  method, which JavaScript cannot access.
      */
-    public class PortProxy {
-        /** Construct a port proxy.
-         *  @param port The port to be proxied.
+    public class PortOrParameterProxy {
+        /** Construct a proxy.
+         *  @param port The object to be proxied.
+         *  @throws IllegalActionException If the argument is neither a port nor a parameter.
          */
-        protected PortProxy(TypedIOPort port) {
-            _port = port;
+        protected PortOrParameterProxy(NamedObj portOrParameter) throws IllegalActionException {
+            if (portOrParameter instanceof Variable) {
+        	_parameter = (Variable)portOrParameter;
+            } else if (portOrParameter instanceof TypedIOPort) {
+        	_port = (TypedIOPort)portOrParameter;
+            } else {
+        	throw new IllegalActionException(JavaScript.this, portOrParameter,
+        		"Cannot create a proxy for something that is neither a port nor a parameter.");
+            }
         }
         
-        /** Get the current value of the input port.
+        /** Get the current value of the input port or a parameter.
          *  If it is a ParameterPort, then retrieve the value
          *  from the corresponding parameter instead (the fire() method
          *  will have done update).
-         *  @param channelIndex The channel index.
-         *  @return The current value of the input, or null if there is none.
+         *  @param channelIndex The channel index. This is ignored for parameters.
+         *  @return The current value of the input or parameter, or null if there is none.
          *  @throws IllegalActionException If the port is not an input port
-         *   or retrieving the input fails.
+         *   or retrieving the value fails.
          */
         public Object get(int channelIndex)
         	throws IllegalActionException {
+            if (_parameter != null) {
+        	return _parameter.getToken();
+            }
+            // Probably don't need to check for ParameterPort, but let's be paranoid...
             if (_port instanceof ParameterPort) {
         	return ((ParameterPort)_port).getParameter().getToken();
             }
@@ -870,11 +911,15 @@ public class JavaScript extends TypedAtomicActor {
         /** Expose the send() method of the port.
          *  @param channelIndex The channel index.
          *  @param token The token to send.
-         *  @throws IllegalActionException If sending fails.
+         *  @throws IllegalActionException If this is a proxy for a parameter or if sending fails.
          *  @throws NoRoomException If there is no room at the destination.
          */
         public void send(int channelIndex, Token data)
         	throws NoRoomException, IllegalActionException {
+            if (_port == null) {
+        	throw new IllegalActionException(JavaScript.this,
+        		"Cannot call send on a parameter: " + _parameter.getName() + ". Use set().");
+            }
             if (!_executing) {
         	// This is probably being called in a callback, but the model
         	// execution has ended.
@@ -919,16 +964,33 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
+        
+        /** Set the current value of the parameter.
+         *  @throws IllegalActionException If the set fails or if this is a proxy for a port.
+         */
+        public void set(Token token) throws IllegalActionException {
+            if (_parameter == null) {
+        	throw new IllegalActionException(JavaScript.this,
+        		"Cannot call set on a port " + _port.getName() + ". Use send().");
+            }
+            _parameter.setToken(token);
+        }
 
-        /** Return the name of the proxied port.
-         *  @return The name of the proxied port.
+        /** Return the name of the proxied port or parameter.
+         *  @return The name of the proxied port or parameter
          */
         @Override
         public String toString() {
-            return _port.getName();
+            if (_port != null) {
+        	return _port.getName();
+            }
+            return _parameter.getName();
         }
 
-        /** The port that is proxied. */
+        /** The parameter that is proxied, or null if it's a port. */
+        protected Variable _parameter;
+
+        /** The port that is proxied, or null if it's a parameter. */
         protected TypedIOPort _port;
     }
 
