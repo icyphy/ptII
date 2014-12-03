@@ -52,6 +52,13 @@ function send(value, port, channel) {
 }
 
 ////////////////////
+// Function to set the value of a parameter.
+function set(value, parameter) {
+    var token = convertToToken(value);
+    parameter.set(token);
+}
+
+////////////////////
 // Default wrapup function, which invokes exports.wrapup().
 // Note that if the script simply defines a top-level wrapup() function instead
 // of exports.wrapup(), that function will overwrite this one and will still work

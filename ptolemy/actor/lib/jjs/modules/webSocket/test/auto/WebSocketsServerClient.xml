@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 67, 1169, 829}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1169, 774}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 719]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 664]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.1807321947674, 182.31646075581392}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.1807321947674, 154.81646075581392}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A regression test for JavaScript Web Socket server / client.&#10;The client tries to connect to the server after the server starts listening.">
@@ -106,6 +106,8 @@
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Server started listening...&quot;, &quot;A client is connected to the server.&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 1&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 2&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 3&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 4&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 5&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 6&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 7&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 8&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 9&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 10&quot;}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
