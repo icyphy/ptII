@@ -159,6 +159,9 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiShared);
             }
         }
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/", directoryFmi,
+                "fmusdk-license.htm");
+
         _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
                 "sim_support.c");
         _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,

@@ -8,6 +8,8 @@
  * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
+/* See $PTII/ptolemy/actor/lib/fmi/ma/fmusdk-license.htm for the complete FMUSDK License. */
+
 #include "XmlParserCApi.h"
 #include "XmlParser.h"
 #include "XmlElement.h"

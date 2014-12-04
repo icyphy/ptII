@@ -253,6 +253,10 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
                 "ptolemy/caltrop/saxon-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "ptolemy.ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGenerator",
+                "ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-copyright.html");
 
