@@ -4,13 +4,13 @@
 <entity name="StatePrediction" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1167, 768]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7443839167450936">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.595507133396075">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{476.48015988372106, 374.77657158430236}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{980.4542877906978, 638.8284974563952}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
@@ -270,7 +270,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -545.0}">
             </property>
         </property>
-        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = -3.2360679774998, y = 2.3511410091699}">
+        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = 2.9158745096856, y = 2.7381884237148}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -489,7 +489,7 @@
         <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="{initialPosition.x, initialPosition.y}">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="80.0">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="94.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-160.0, -100.0}">
             </property>
@@ -515,7 +515,7 @@
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
                 </property>
             </property>
-            <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{x = -3.2360679774998, y = 2.3511410091699}">
+            <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{x = 2.9158745096856, y = 2.7381884237148}">
             </property>
             <property name="DecoratorAttributesFor_Search Robot Dynamics2" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Search Robot.Search Robot Dynamics">
@@ -591,7 +591,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="-19.071217299616748">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-25.340067533927183">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -604,7 +604,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="-58.12746519895195">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-9.649123697197256">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -698,7 +698,7 @@
     <entity name="Target" class="org.ptolemy.ssm.StateSpaceSimulator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="{-50.0,10.0}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="80.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="94.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 500.0}">
         </property>
@@ -889,7 +889,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="39.46144854828331">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="44.269584960988055">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -902,7 +902,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="8.522515506957637">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="11.351226974416491">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -930,7 +930,7 @@
     <entity name="PredictorSSM" class="org.ptolemy.ssm.PredictorSSM">
         <property name="predictionStep" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="79.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="93.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{890.0, 645.0}">
         </property>
@@ -967,7 +967,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="46.6081587289669">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="47.49654825575227">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -980,7 +980,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="2.470563491276697">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.4559314220436335">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -988,12 +988,6 @@
                 </property>
             </port>
         </entity>
-    </entity>
-    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="Nout">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{760.0, 645.0}">
-        </property>
     </entity>
     <entity name="Predicted Particles" class="ptolemy.actor.lib.RecordDisassembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1075.0, 615.0}">
@@ -1078,7 +1072,7 @@
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nout">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="80.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="94.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[564.5888977050781, 488.5244598388672]">
         </property>
@@ -1113,11 +1107,11 @@
             </property>
             <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="37.97877551503552">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="41.02641560201122">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x + Vtarget">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="14.648067309897183">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="14.92809764494469">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
@@ -1126,11 +1120,11 @@
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="GaussianRangeMeasurement_z" class="ptolemy.data.expr.Parameter" value="87.7699161501703">
+        <property name="GaussianRangeMeasurement_z" class="ptolemy.data.expr.Parameter" value="71.3026150891749">
         </property>
-        <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x = -22.3674218987169, y = -55.7664814843472}">
+        <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x = -22.4358875099846, y = -6.9374046687624}">
         </property>
-        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.4, 0.0, 1.0}">
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.2, 1.0, 1.0}">
         </property>
         <port name="r1" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -1147,7 +1141,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="38.03237581469742">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="40.940066436271906">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1160,7 +1154,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="13.53350176513259">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="15.426021472433105">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1222,6 +1216,18 @@
                 </property>
             </port>
         </entity>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="Nout">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{760.0, 645.0}">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 635.0]">
+        </property>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Particles.x&quot;,x=1115.0,y=235.0}, tail={id=&quot;XYScope2.inputX&quot;,x=1360.0,y=275.0,index=5}, points={} } }">
@@ -1295,8 +1301,6 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope2.inputY&quot;,x=1360.0,y=275.0,index=5}, tail={id=&quot;Predicted Particles.y&quot;,x=1075.0,y=615.0}, points={1295.0,285.0,1295.0,645.0} } }">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -1304,6 +1308,10 @@
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Particles.input" relation="relation17"/>
     <link port="Particles.x" relation="relation8"/>
@@ -1337,12 +1345,14 @@
     <link port="Target.state" relation="relation12"/>
     <link port="PredictorSSM.particleOutput" relation="relation2"/>
     <link port="PredictorSSM.particleInput" relation="relation18"/>
-    <link port="SequenceToArray.input" relation="relation17"/>
-    <link port="SequenceToArray.output" relation="relation18"/>
-    <link port="Predicted Particles.input" relation="relation2"/>
+    <link port="Predicted Particles.input" relation="relation7"/>
     <link port="Predicted Particles.x" relation="relation19"/>
     <link port="Predicted Particles.y" relation="relation20"/>
     <link port="ParticleFilterSSM.particleOutput" relation="relation17"/>
     <link port="ParticleFilterSSM.r1" relation="relation4"/>
     <link port="ParticleFilterSSM.GaussianRangeMeasurement_z" relation="relation3"/>
+    <link port="SequenceToArray.input" relation="relation17"/>
+    <link port="SequenceToArray.output" relation="relation18"/>
+    <link port="ArrayToSequence.input" relation="relation2"/>
+    <link port="ArrayToSequence.output" relation="relation7"/>
 </entity>
