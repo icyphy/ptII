@@ -2047,10 +2047,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 	Set<String> inputVariables = null;
 	for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
 	    if (_fmiModelDescription.modelVariables.get(i).name.equals(port)) {
-		if (_fmiModelDescription.modelVariables.get(i).name
-		        .equals(port)) {
-		    inputVariables = _fmiModelDescription.modelVariables.get(i).directDependency;
-		}
+	    	if (_fmiModelDescription.modelVariables.get(i).name
+	    			.equals(port)) {
+	    		inputVariables = _fmiModelDescription.modelVariables.get(i).directDependency;
+	    	}
 	    }
 	}
 	return inputVariables;

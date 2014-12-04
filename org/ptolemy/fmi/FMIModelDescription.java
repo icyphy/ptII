@@ -458,8 +458,10 @@ public class FMIModelDescription {
 				.getNodeValue());
 
 		Node dependencyNode = attributes.getNamedItem("dependencies");
-		if (dependencyNode != null && dependencyNode.getNodeValue().trim().length() != 0) {
-		    String[] dependencies = dependencyNode.getNodeValue().trim().split(" ");
+		if (dependencyNode != null
+				&& dependencyNode.getNodeValue().trim().length() != 0) {
+			String[] dependencies = dependencyNode.getNodeValue().trim()
+					.split(" ");
 
 			for (int i = 0; i < modelVariables.size(); i++) {
 				if (modelVariables.get(i).valueReference == valueReference) {
@@ -467,21 +469,23 @@ public class FMIModelDescription {
 					for (int j = 0; j < dependencies.length; j++) {
 
 						for (int k = 0; k < modelVariables.size(); k++) {
-						    try {
-							if (modelVariables.get(k).valueReference == Long
-									.parseLong(dependencies[j])) {
-								modelVariables.get(i).directDependency
-										.add(modelVariables.get(k).name);
-								break;
+							try {
+								if (modelVariables.get(k).valueReference == Long
+										.parseLong(dependencies[j])
+										&& modelVariables.get(k).causality
+												.equals(Causality.input)) {
+									modelVariables.get(i).directDependency
+											.add(modelVariables.get(k).name);
+									break;
+								}
+							} catch (NumberFormatException ex) {
+								NumberFormatException nfx = new NumberFormatException(
+										"Failed to parse \"" + dependencies[j]
+												+ "\", which is the " + j
+												+ " (0-based) dependency.");
+								nfx.initCause(ex);
+								throw nfx;
 							}
-						    } catch (NumberFormatException ex) {
-							NumberFormatException nfx = new NumberFormatException("Failed to parse \""
-											+ dependencies[j]
-											+ "\", which is the " + j
-													      + " (0-based) dependency.");
-							nfx.initCause(ex);
-							throw nfx;
-						    }
 						}
 					}
 				}
@@ -495,7 +499,7 @@ public class FMIModelDescription {
 	 */
 	public void addDefaultInputDependencies() {
 		List<String> inputVariables = new ArrayList<String>();
-		
+
 		// Get the list of all the input variables
 		for (int i = 0; i < modelVariables.size(); i++) {
 			if (modelVariables.get(i).causality.equals(Causality.input)) {
