@@ -54,21 +54,8 @@
     <p>Below is the command to run a sample model:</p>
 
     <pre>
-      $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
-      -generatorPackagelist generic.program.procedural.fmima \
-      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml
+      $PTII/bin/ptcg -language fmima $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml
     </pre>
-
-    <dl>
-      <dt><code>$PTII/bin/ptcg</code></dt>
-      <dd>The command that invokes ptolemy.cg.kernel.generic.GenericCodeGenerator with the appropriate classpath.</dd>
-      <dt><code>-generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima</code></dt>
-      <dd>The Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c</dd>
-      <dt><code>-generatorPackagelist generic.program.procedural.fmima</code></dt>
-      <dd>Semicolon or * separated list of Java packages to be searched for adapters. The "ptolemy.cg.adapter." string is prepended </dd>
-      <dt>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml</dt>
-      <dd>The Ptolemy model to be invoked</dd>
-    </dl>
 
     <p>Run <code>$PTII/bin/ptcg -help</code> to see other command line arguments.</p> 
 
