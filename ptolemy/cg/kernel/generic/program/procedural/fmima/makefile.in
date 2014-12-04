@@ -48,13 +48,16 @@ PTCGINCLUDES = @PTCGIncludes@
 PTCG_CFILES = @modelName@.c fmi/shared/sim_support.c
 PTCG_OFILES = @PTCG_OFILES@
 
+# Flags for the C compiler, but not the C++ compiler.
+C_ONLY_FLAGS=-std=c99
+
 # Under Windows, to create a binary that does not pop up a console window,
 # compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
 CC_FLAGS=
 
 # If the user would like to add compile time options, run with
 # make -f @modelName@.mk USER_CC_FLAGS=xxx
-USER_CC_FLAGS = #-std=c99
+USER_CC_FLAGS =
 
 # We use -ggdb because -g fails with very large .c files
 DEBUG = -ggdb
@@ -62,6 +65,7 @@ DEBUG = -ggdb
 # Flags for warnings
 # Use -Wall so we have better code.
 WARNING_CC_FLAGS = -Wall
+
 
 # To compile very large C files, try:
 # make -f @modelName@.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0 --verbose -Q"
@@ -96,7 +100,7 @@ PTCGPPCompiler=@PTCGPPCompiler@
 # Build target
 PTCGCompiler=@PTCGCompiler@
 %.o: %.c
-	@PTCGCompiler@ -o $@ -c $< $(CFLAGS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG)
+	@PTCGCompiler@ -o $@ -c $< $(C_ONLY_FLAGS) $(CFLAGS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG)
 
 main: main.o fmi/shared/sim_support.o	
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
