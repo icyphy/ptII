@@ -1211,7 +1211,6 @@ public class UtilityFunctions {
 
         // Check dimensions.
         int N = mean.length(); // size of array
-        double[][] S = covariance.doubleMatrix();
         if ((covariance.getColumnCount() != N)
                 || (covariance.getRowCount() != covariance.getColumnCount())) {
             throw new IllegalActionException(
@@ -1221,10 +1220,38 @@ public class UtilityFunctions {
             throw new IllegalActionException(
                     "Mean vector must consist of scalar type elements");
         }
+        double [] meanArray = new double[N];
+        for (int i = 0 ; i < N ; i ++) {
+            meanArray[i] = ((DoubleToken)mean.getElement(i)).doubleValue();
+        }
+        
+        double[][] sigma = covariance.doubleMatrix();
+        
+        return multivariateGaussian(meanArray,sigma);
+    }
+    
+    /** Generate a sample from a multivariate Gaussian distribution.
+     *  @param mean The mean.
+     *  @param covariance The covariance.
+     *  @return a sample from a multivariate Gaussian distribution
+     */
+    public static ArrayToken multivariateGaussian(double[] mean,
+            double[][] S) throws IllegalActionException {
+
+        // Cholesky factorization
+
+        // Check dimensions.
+        int N = mean.length; // size of array 
+        if ((S.length != N)
+                || (S[0].length != N)) {
+            throw new IllegalActionException(
+                    "Covariance must be a square matrix and its dimension must "
+                            + "match the mean array length");
+        }  
         // Check if the covariance matrix is symmetric.
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < i; j++) {
-                if (S[i][j] != S[j][i]) {
+                if (Math.abs(S[i][j] - S[j][i]) > 1E-6) {
                     throw new IllegalActionException(
                             "Covariance must be a symmetric matrix.");
                 }
@@ -1249,17 +1276,14 @@ public class UtilityFunctions {
         ArrayToken uncorrelated = gaussian(0, 1, N);
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();
         Token[] correlatedTokens = new Token[N];
-        double[] correlatedSamples = new double[N];
-        Token[] meanArray = mean.arrayValue();
+        double[] correlatedSamples = new double[N]; 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 double uncorr = ((DoubleToken) uncorrelatedTokens[j])
                         .doubleValue();
                 correlatedSamples[i] += L[i][j] * uncorr;
-            }
-
-            correlatedTokens[i] = new DoubleToken(correlatedSamples[i])
-                    .add(meanArray[i]);
+            } 
+            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]+mean[i]);
         }
         return new ArrayToken(BaseType.DOUBLE, correlatedTokens);
     }
