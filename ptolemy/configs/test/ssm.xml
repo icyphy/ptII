@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+</group>
