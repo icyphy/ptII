@@ -59,6 +59,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
@@ -218,13 +219,13 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         if (particleInput.hasToken(0)) {
             double currentTime = getDirector().getModelTime().getDoubleValue();
             t.setToken(new DoubleToken(currentTime)); 
-            
+
             try {
-                
+
                 _initializeParticles();
-                
+
                 super.fire(); 
-                
+
                 for (int i = 0; i < _Nstep ; i++) {
                     _propagate();
                     _normalizeWeights(); 
@@ -237,8 +238,8 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
                 _sendStateEstimate();
                 _generateOutputParticles();
-                
-                
+
+
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this,
                         "NameDuplicationException while initializing particles");
@@ -300,8 +301,8 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
             _particleLabels[nameTokens.length] = "weight";
             _particleTypes[nameTokens.length] = BaseType.DOUBLE;
 
-            particleOutput.setTypeEquals(new RecordType(
-                    _particleLabels, _particleTypes));
+            particleOutput.setTypeEquals(new ArrayType(new RecordType(
+                    _particleLabels, _particleTypes)));
             stateEstimate.setTypeEquals(new RecordType(_stateLabels,
                     _stateTypes));
         }
@@ -337,14 +338,14 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
                     _inputRelations[inputIndex].setPersistent(false);
                     getPort(inputs[inputIndex]).link(_inputRelations[inputIndex]);
                     String inputName = inputs[inputIndex];
-    
+
                     if (getUserDefinedParameter(MEASUREMENT_NOISE) != null) {
                         _Sigma = ((DoubleMatrixToken)
                                 getUserDefinedParameter(MEASUREMENT_NOISE).getToken()).doubleMatrix();
                     }
-    
+
                     if (inputName.endsWith(MEASUREMENT_POSTFIX)) {
-                       // do nothing _setMeasurementEquations(inputName, inputIndex);
+                        // do nothing _setMeasurementEquations(inputName, inputIndex);
                     } else {
                         if (p1 instanceof ParameterPort) {
                             _parameterInputs.add(inputName);
@@ -388,7 +389,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         // Preinitialize the contained model.
         super.preinitialize();
     }
- 
+
 
     //////////////////////////////////////////////////////////////////////
     ////                         protected methods                   ////
@@ -466,41 +467,21 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
      * Generate output particles and send to the particleOutput port
      */
     private void _generateOutputParticles() throws IllegalActionException {
+        Token[] particleTokens = new Token[Nparticles];
         Token[] tokens = new Token[_stateSpaceSize + 1];
-        if (Noutput != Nparticles) {
-            int[] indices = _subsampleIndices();
-            Particle[] outputParticles = new Particle[Noutput];
-            double sum = 0;
-            for (int i = 0; i < Noutput; i++) {
-                outputParticles[i] = new Particle(particles[indices[i]]);
-                sum += outputParticles[i].getWeight();
-            }
-            for (int i = 0; i < Noutput; i++) {
-                outputParticles[i].adjustWeight(sum);
-            }
 
-            for (int i = 0; i < Noutput; i++) {
-                double[] l = outputParticles[i].getValue();
-                for (int j = 0; j < _stateSpaceSize; j++) {
-                    tokens[j] = new DoubleToken(l[j]);
-                }
-                tokens[_stateSpaceSize] = new DoubleToken(
-                        outputParticles[i].getWeight());
-                RecordToken r = new RecordToken(_particleLabels, tokens);
-                particleOutput.send(0, r);
+        for (int i = 0; i < Nparticles; i++) {
+            double[] l = particles[i].getValue();
+            for (int j = 0; j < _stateSpaceSize; j++) {
+                tokens[j] = new DoubleToken(l[j]);
             }
-        } else {
-            for (int i = 0; i < Nparticles; i++) {
-                double[] l = particles[i].getValue();
-                for (int j = 0; j < _stateSpaceSize; j++) {
-                    tokens[j] = new DoubleToken(l[j]);
-                }
-                tokens[_stateSpaceSize] = new DoubleToken(
-                        particles[i].getWeight());
-                RecordToken r = new RecordToken(_particleLabels, tokens);
-                particleOutput.send(0, r);
-            }
+            tokens[_stateSpaceSize] = new DoubleToken(
+                    particles[i].getWeight());
+            RecordToken r = new RecordToken(_particleLabels, tokens);
+            particleTokens[i] = r;
         }
+
+        particleOutput.send(0, new ArrayToken(particleTokens));
     }
 
     private double _getEffectiveSampleSize() {
@@ -530,7 +511,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         particleOutput = new TypedIOPort(this, "particleOutput", false, true);
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
         //setClassName("org.ptolemy.machineLearning.ParticleFilter");
-        particleOutput.setTypeEquals(RecordType.EMPTY_RECORD);
+        particleOutput.setTypeEquals(new ArrayType(RecordType.EMPTY_RECORD));
 
         particleInput = new TypedIOPort(this, "particleInput", true, false);
 
@@ -557,7 +538,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");
- 
+
         _createRandomGenerator();
 
         _tokenMap = new HashMap<String, Token>();
@@ -587,8 +568,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
         // get input particles and set length of array.
         ArrayToken particleArray = (ArrayToken) particleInput.get(0);
-        Nparticles = particleArray.length();
-        Noutput = Nparticles;
+        Nparticles = particleArray.length(); 
         particles = new Particle[Nparticles];
         // let prior distribution be N(0,1) for now.
         RecordToken t = (RecordToken) particleArray.getElement(0);
@@ -715,7 +695,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         stateEstimate.send(0, new RecordToken(_stateLabels, stateTokens));
 
     }
- 
+
     private void _setUpdateEquations() 
             throws NameDuplicationException, IllegalActionException {
         for (int i = 0; i < _stateSpaceSize; i++) {
@@ -748,61 +728,6 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         .generateParseTree(getUserDefinedParameterExpression(PRIOR_NAME)));
     }
 
-    /**
-     * Return a subsample of particles at the chosen indices. Used for low-variance
-     * resampling.
-     * @return an array of particles.
-     */
-    private int[] _subsampleIndices() {
-        int N = Noutput;
-        int[] outputIndices = new int[N]; 
-        double randomValue;
-        int intervalIndex;
-        double[] cumulativeSums = new double[Nparticles + 1];
-        Particle[] previousParticles = new Particle[Nparticles];
-        cumulativeSums[0] = 0;
-        for (int i = 0; i < Nparticles; i++) {
-            cumulativeSums[i + 1] = cumulativeSums[i]
-                    + particles[i].getWeight();
-            previousParticles[i] = particles[i];
-        }
-        // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles]
-        // and choose all other particles in reference to the first sample. Yields a low-variance
-        // particle set.
-        if (_lowVarianceSampler) {
-            double baseValue = _random.nextDouble() * (1.0 / Noutput);
-            for (int i = 0; i < Noutput; i++) {
-                randomValue = baseValue + i * 1.0 / Noutput;
-                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
-                        Nparticles - 1);
-                //FIXME: check intervalIndex and remove the failure condition
-                if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
-                    System.out.println("Index does not exist!");
-                } else {
-                    outputIndices[i] = intervalIndex;
-                }
-            }
-
-        } else {
-            // will resample particles according to their weights
-            // last entry of cumulative sums is the range of the random variable
-            // resampling to set equal weights
-            for (int i = 0; i < Noutput; i++) {
-                randomValue = _random.nextDouble() * cumulativeSums[Nparticles];
-                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
-                        Nparticles - 1);
-                if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
-                    System.out.println("Index does not exist!");
-                } else {
-                    outputIndices[i] = intervalIndex;
-                }
-            }
-        }
-
-        return outputIndices;
-
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     /**
@@ -817,10 +742,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     private Particle[] particles;
 
     /** Number of particles to be used by the particle filter estimators */
-    private int Nparticles;
-
-    /** Number of particles to be produced at the output port at each iteration */
-    private int Noutput;
+    private int Nparticles; 
 
     //TODO: Add seed for random number generation.
     private Random _random;
@@ -851,9 +773,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     private ParseTreeEvaluator _parseTreeEvaluator;
     private VariableScope _scope; 
     private int _Nstep;
-
-
-
+ 
 
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
     protected static final String PROCESS_NOISE = "processNoise";
@@ -898,7 +818,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         public int getSize() {
             return this._particleValue.length;
         }
- 
+
 
         public void setNextParticle() throws NameDuplicationException,
         IllegalActionException {
