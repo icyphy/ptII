@@ -1712,7 +1712,7 @@ Decorator {
 
     private static String[][] _languages = {
         { "c", "ptolemy.cg.kernel.generic.program.procedural.c" },
-        { "fmima", "ptolemy.cg.kernel.generic.program.procedural.fmima" }
+        { "fmima", "ptolemy.cg.kernel.generic.program.procedural.fmima" },
         { "html", "ptolemy.cg.kernel.generic.html" },
         { "java", "ptolemy.cg.kernel.generic.program.procedural.java" } };
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
