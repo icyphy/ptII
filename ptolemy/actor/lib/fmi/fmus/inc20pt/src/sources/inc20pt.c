@@ -69,6 +69,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *maxStepSize) {
     return fmi2OK;
 }
 
+
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
 
