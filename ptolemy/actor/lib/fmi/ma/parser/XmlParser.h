@@ -2,6 +2,8 @@
  * Copyright QTronic GmbH. All rights reserved.
  */
 
+/* See $PTII/ptolemy/actor/lib/fmi/ma/fmusdk-license.htm for the complete FMUSDK License. */
+
 /* ---------------------------------------------------------------------------*
  * XmlParser.h
  * Parser for xml model description file of a FMI 2.0 model.

@@ -2,6 +2,8 @@
  * Copyright QTronic GmbH. All rights reserved.
  */
 
+/* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
+
 /* ---------------------------------------------------------------------------*
  * XmlElement.cpp
  * Elements implementation that describe content of model description of a

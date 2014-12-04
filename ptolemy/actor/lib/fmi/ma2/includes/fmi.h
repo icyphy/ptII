@@ -4,6 +4,8 @@
  * Copyright QTronic GmbH. All rights reserved.
  * -------------------------------------------------------------------------*/
 
+/* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
+
 #ifndef FMI_H
 #define FMI_H
 
