@@ -94,8 +94,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 465.0]">
         </property>
     </property>
-    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 85}">
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 90}">
         </property>
     </property>
     <entity name="fmuB20pt" class="ptolemy.actor.lib.fmi.FMUImport">
@@ -244,13 +244,13 @@
             </property>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
