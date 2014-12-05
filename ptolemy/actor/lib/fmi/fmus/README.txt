@@ -35,6 +35,18 @@ test/auto, which the user invokes to signify that they *intend* to
 update the fmu and commit it.  This is like checking a library or jar
 file.
 
+Note that if you change the .c files associated with the FMU, then
+you should probably remove associated .fmu file in the auto directory
+so that when a model imports the .fmu on a different platform it will
+build the shared library and reflect your changes.  In other words, 
+if you change fmus/inc20pt/src/sources/inc20pt.c, do
+
+rm $PTII/ptolemy/actor/lib/fmi/test/auto/inc20pt.fmu
+cd $PTII/ptolemy/actor/lib/fmi/fmus/inc20pt
+rm *.fmu
+make update
+svn commit -m "Updating fmu after inc20pt.c was modified to xxx and yyy." $PTII/ptolemy/actor/lib/fmi/test/auto/inc20pt.fmu
+
 
 Naming conventions
 ------------------
