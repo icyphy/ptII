@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II LocalStorage demo
+# Makefile for Ptolemy II TwoWebSockets demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 70524 2014-11-10 23:34:39Z eal $
+# @Version: $Id$
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/demo/LocalStorage
+ME =		ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	LocalStorage
+PTPACKAGE = 	TwoWebSockets
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	LocalStorage.xml
+	TwoWebSockets.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -78,10 +78,10 @@ demo: demo_ptolemy demo_vergil
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" LocalStorage.xml
+	"$(PTII)/bin/ptolemy" TwoWebSockets.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" LocalStorage.xml
+	"$(PTII)/bin/vergil" TwoWebSockets.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

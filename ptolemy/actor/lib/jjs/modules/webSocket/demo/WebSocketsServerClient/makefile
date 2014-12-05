@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II WebSocket demo
+# Makefile for Ptolemy II WebSocketsServerClient demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/demo/WebSocket
+ME =		ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
@@ -41,15 +41,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	WebSocket
+PTPACKAGE = 	WebSocketsServerClient
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Server1.js \
-	Server2.js \
-	TwoWebSockets.xml \
 	WebSocketsServerClient.xml
 
 EXTRA_SRCS = \
@@ -81,10 +78,10 @@ demo: demo_ptolemy demo_vergil
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" WebSocket.xml
+	"$(PTII)/bin/ptolemy" WebSocketsServerClient.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" WebSocket.xml
+	"$(PTII)/bin/vergil" WebSocketsServerClient.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
