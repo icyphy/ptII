@@ -29,8 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# PTGDP_DIR is set by configure in $PTII/mk/ptII.mk if jna is found.
-DIRS = kernel $(PTGDP_DIR) lib demo
+DIRS = kernel lib demo
 
 # Root of Ptolemy II directory
 ROOT =		../..
