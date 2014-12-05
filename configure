@@ -5621,7 +5621,7 @@ fi
         fi
         if test -d "$ECLIPSE_DIR"; then
             # Under RHEL 6.2, eclipse is in /usr/bin/eclipse
-            if test ! -f "$ECLIPSE_DIR/plugins"; then
+            if test ! -d "$ECLIPSE_DIR/plugins"; then
 	        savedEclipseDir=$ECLIPSE_DIR
 	        ECLIPSE_DIR=no
                 eclipsedirs="/usr/local /usr/lib /usr/lib64"
