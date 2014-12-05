@@ -108,7 +108,7 @@ FMUS = \
 
 # Run the master algorithm executable on two fmus.
 run: main $(FMUS)
-	./main $(FMUS) -t15 -h1 -l logAll
+	./main  -t15 -h1 -llogAll $(FMUS)
 
 ../fmus/inc20RC1pt/inc20RC1pt.fmu:
 	(cd ../fmus/inc20RC1pt; $(MAKE))
@@ -142,7 +142,8 @@ tmpclean:
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.
-MISC_FILES = includes 
+MISC_FILES = includes \
+	fmusdk-license.htm
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

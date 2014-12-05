@@ -8,6 +8,8 @@
  * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
+/* See $PTII/ptolemy/actor/lib/fmi/ma/fmusdk-license.htm for the complete FMUSDK License. */
+
 #ifndef XML_PARSER_C_API_H
 #define XML_PARSER_C_API_H
 #ifdef __cplusplus
