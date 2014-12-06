@@ -176,12 +176,18 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 
 ##############################################################################
 # Targets
-all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
+all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 ####
 release_ampere_all:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar clean all src.jar setup
 
+
+release_ampere_foo:
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar foo
+
+release_ampere_setup:
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar setup
 
 release_joule_all:
 	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
@@ -258,6 +264,7 @@ clean:	full_clean_setup
 	rm -rf $(PTIIDIST) src installshield/*
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
+	rm -rf $(PTZIPRELEASE)
 	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
 	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
 
@@ -500,8 +507,8 @@ $(PTIIDIST)/jar_dist:
 
 clean_src:
 	rm -f $(PTII_FULL)
-src: $(PTII_FULL) #$(PTII_FULL_ZIP)
-PTII_FULL: $(PTII_FULL) #$(PTII_FULL_ZIP)
+src: $(PTII_FULL) $(PTII_FULL_ZIP)
+PTII_FULL: $(PTII_FULL) $(PTII_FULL_ZIP)
 $(PTII_FULL): $(PTIIDIST)
 	@echo "#"
 	@echo "# Now creating PTII_FULL: $@"
@@ -531,16 +538,25 @@ $(PTII_FULL): $(PTIIDIST)
 $(PTII_FULL_SPLIT):: $(PTII_FULL)
 	$(SPLITTAR) $^
 
+PTZIPRELEASE = $(GENDIR)/ptzip
+$(PTZIPRELEASE):
+	@echo "#"
+	@echo "# Creating the $(PTZIPRELEASE) directory so that we can create a zip"
+	@echo "#"
+	@echo "$@ `date`"
+	if [ ! -d $@ ]; then mkdir -p $@; fi
+	(cd $@; tar -xf ../ptII$(VERSION).src.tar);
+
 src.zip: $(PTII_FULL_ZIP)
 ptii.src.zip: $(PTII_FULL_ZIP)
-$(PTII_FULL_ZIP): $(PTIIDIST)
+$(PTII_FULL_ZIP): $(PTIIDIST) $(PTZIPRELEASE)
 	@echo "Creating $@"
-	(cd $(PTIIDIST)/..; \
-	$(ZIP) -r -q $@ \
+	(cd $(PTZIPRELEASE); \
+	$(ZIP) -r -q `$(GENDIR)/ptcygpath $(PTII_FULL_ZIP)` \
 	ptII$(VERSION) \
 	)
 	chmod g+w $@
-	chgrp ptolemy $@
+	-chgrp ptolemy $@
 	ls -l $@
 
 VERSION_FILES = \
@@ -806,7 +822,7 @@ JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	(cd src_jar/ptII$(VERSION); $(JAR) -cf ../../ptII$(VERSION).src.jar .)
+	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
@@ -830,7 +846,7 @@ HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 # The Jar file that we create.
 hyvisual.jar: $(HYVISUAL_SRC_JAR)
 $(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
-	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
+	(cd src_jar/hyvisual$(VERSION); "$(JAR)" -cf ../../hyvisual$(VERSION).src.jar .)
 
 HYVISUAL_SRC_TAR = hyvisual$(VERSION).src.tar.gz
 # The Jar file that we create.
@@ -851,7 +867,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
@@ -924,7 +940,7 @@ VIPTOS_SRC_JAR = viptos$(VIPTOS_VERSION).src.jar
 # The Jar file that we create.
 viptos.jar: $(VIPTOS_SRC_JAR)
 $(VIPTOS_SRC_JAR): src_jar/viptos$(VIPTOS_VERSION)
-	(cd src_jar/viptos$(VIPTOS_VERSION); $(JAR) -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
+	(cd src_jar/viptos$(VIPTOS_VERSION); "$(JAR)" -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
 
 VIPTOS_SRC_TAR = viptos$(VIPTOS_VERSION).src.tar.gz
 # The Jar file that we create.
@@ -947,7 +963,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/viptos$(VIPTOS_VERSION); \
 	fi
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
@@ -2702,12 +2718,15 @@ BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
 	-ls -l $(PTIIDIST)/bin/vergil
+	rm -rf jre; mkdir jre
+	(cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
 	sh "$(IZPACK_COMPILE)" $<
+	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2717,16 +2736,18 @@ $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanS
 # Build a 64 bit installer.  See http://jira.codehaus.org/browse/IZPACK-506
 $(PTSETUP)_64.xml: $(PTSETUP).xml
 	sed -e 's/ShellLink.dll/ShellLink_x64.dll/' \
-	    -e 's@<file src="jre32" targetdir="$INSTALL_PATH"/>@<file src="jre" targetdir="$INSTALL_PATH"/>@' \
 		$^ > $@
 
 setup64_jar: $(PTSETUP)_64.jar
-$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc
+$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64
 	@echo "#"
 	@echo "# Building $(PTSETUP)_64.jar"
 	@echo "# `date`"
 	ls -l $(PTIIDIST)/bin/vergil
+	rm -rf jre; mkdir jre
+	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
 	sh "$(IZPACK_COMPILE)" $<
+	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2788,7 +2809,6 @@ PTSETUP_DEPENDENCIES = \
 
 # Launch4J
 $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
-			jre \
 			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_l4j.xml \
 			$(PTSETUP).jar #ExtractJarFile.class
@@ -2797,6 +2817,8 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 	@echo "# Building $(PTSETUP).exe"
 	@echo "# `date`"
 	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
+	sleep 5
+	ls -l $@;
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2808,7 +2830,6 @@ $(PTSETUP)_64_l4j.xml: $(PTSETUP)_l4j.xml
 
 setup_64: $(PTSETUP)_64.exe
 $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
-			jre \
 			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_64_l4j.xml \
 			$(PTSETUP)_64.jar #ExtractJarFile.class
@@ -2817,6 +2838,8 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 	@echo "# Building $(PTSETUP).exe"
 	@echo "# `date`"
 	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_64_l4j.xml`
+	sleep 5
+	ls -l $@
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2842,12 +2865,25 @@ $(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 	fi
 
 $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll: $(PTIIDIST)/lib/matlabWindows.jar
-	(cd $(PTIIDIST)/ptolemy/matlab; jar -xf $(PTIIDIST)/lib/matlabWindows.jar)
+	# Use a relative path and avoid problems with /cygdrive/c under Windows.
+	(cd $(PTIIDIST)/ptolemy/matlab; jar -xf ../../lib/matlabWindows.jar)
 
 jre:
 	if [ ! -d jre ] ; then \
 		mkdir jre; \
 		echo "JRE Directory" > jre/README.txt; \
+	fi
+
+jre32:
+	if [ ! -d jre32 ] ; then \
+		mkdir jre32; \
+		echo "32-bit JRE Directory" > jre32/README.txt; \
+	fi
+
+jre64:
+	if [ ! -d jre64 ] ; then \
+		mkdir jre64; \
+		echo "64-bit JRE Directory" > jre64/README.txt; \
 	fi
 
 setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).app.tar.gz
