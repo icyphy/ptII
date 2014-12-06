@@ -980,7 +980,9 @@ WebExporter {
                         "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
 
                 // The URL of the current release.
-                String ptURL = (usePtWebsite ? "http://ptolemy.org" : "")
+                // Use http://ptolemy.eecs.berkeley.edu here so that the generated
+                // pages have the same domain name and can be searched with wget.
+                String ptURL = (usePtWebsite ? "http://ptolemy.eecs.berkeley.edu" : "")
                         + "/ptolemyII/ptII"
                         + VersionAttribute.majorCurrentVersion() + "/ptII"
                         + VersionAttribute.CURRENT_VERSION.getExpression()
