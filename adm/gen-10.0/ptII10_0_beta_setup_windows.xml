@@ -381,6 +381,8 @@ The Ptiny pack is required.
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/lib/js/js.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/js"/>
 
+            <file src="../dists/ptII10.0.beta/jar_dist/lib/javax.mail.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/lib/mail/mail.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../dists/ptII10.0.beta/jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
