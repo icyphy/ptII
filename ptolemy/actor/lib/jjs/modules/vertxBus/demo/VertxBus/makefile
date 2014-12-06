@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/jjs/modules/vertxBus/demo/VertxBus
 
 # Root of the Java directory
-ROOT =		../../../../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
