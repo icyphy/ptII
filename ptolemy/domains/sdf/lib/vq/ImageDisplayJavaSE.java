@@ -134,7 +134,7 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
         int xSize = ((IntMatrixToken) in).getColumnCount();
         int ySize = ((IntMatrixToken) in).getRowCount();
 
-        if (_frame != null) {
+        if (_imageWindowFrame != null) {
             // We have a frame already, so just create an AWTImageToken
             // and tell the effigy about it.
             MemoryImageSource imageSource = new MemoryImageSource(xSize, ySize,
@@ -147,7 +147,7 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
             // of graphical context here.  This is a huge shortcoming of
             // awt.  Just because I'm operating on images, I should not
             // need a frame.
-            Image image = _frame.getContentPane().createImage(imageSource);
+            Image image = _imageWindowFrame.getContentPane().createImage(imageSource);
 
             AWTImageToken token = new AWTImageToken(image);
             List tokens = new LinkedList();
@@ -191,7 +191,7 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
                     }
                 }
             } else {
-                // The _frame is null, the size has not changed, set the image.
+                // The _imageWindowFrame is null, the size has not changed, set the image.
                 _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
                 _picture.displayImage();
                 _picture.repaint();
