@@ -1415,7 +1415,7 @@ fi
 # We only need to look for CHECKSTYLE if this directory is present
 CHECKSTYLE_USER_DIR="$PTII/ptolemy/actor/test/junit"
 
-CHECKSTYLE_VERSION=-5.7
+CHECKSTYLE_VERSION=-6.1.1
 CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION.jar"
 
 if test ! -d "$CHECKSTYLE_USER_DIR"; then
