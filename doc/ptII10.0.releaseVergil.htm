@@ -4,454 +4,415 @@
      to update the derived files and check them in to cvs. -->
 <!-- $Id$ -->
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 11.0.devel Release Notes</title>
-<link href="default.css" rel="stylesheet" type="text/css">
-</head>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Ptolemy II 10.0.beta Release Notes</title>
+    <link href="default.css" rel="stylesheet" type="text/css">
+  </head>
 <body>
-<!--vergilDocs-->
-<h2><a name="limitations">Limitations</a>
-</h2>
-<ul>
-<li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 11.0.devel Limitations Page</a> - Limitations found after release.
-<li><a
-href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html">Ptolemy II Bugzilla</a>
-</ul>
-Version 11.0.devel has the following limitations:
-
-<h3>Release Limitations</h3>
-<ul>
-
-<li> The gzipped tar file of Ptolemy II  source files with Unix line endings
-(<code>ptII11.0.devel.src.tar.gz</code>)
- <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
-untar this file with a checksum error because the pathnames are longer
-than 100 characters.
- <p>Note further that some of the .class names are longer than
-31 characters, which may cause problems when downloading zip files
-on the Macintosh and using Stuffit.
-
-<li> The documentation for custom actors used in demonstrations is not
-included in the release.  The source code for the custom actors can be found
-in the source download.
-
-<li> If a URL ends with <CODE>#in_browser</CODE>, then
-Ptolemy II will invoke the User's web browser.  Unfortunately, this
-does not always work, especially under Windows if Netscape is already
-running.  The workaround is to exit Netscape and let Ptolemy II
-start up Netscape for you.
+    <!--vergilDocs-->
+    <h2><a name="limitations">Limitations</a></h2>
+    <ul>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 10.0.beta Limitations Page</a> - Limitations found after release.</li>
+      <li><a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html">Ptolemy II Bugzilla</a></li>
+    </ul>
 
 
-<li> Web Start does not work very well if the pathname to the 
-<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
-to place your Ptolemy II tree in a directory that does not have spaces
-in the path name if you plan on using Web Start.
+    <p>Version 10.0.beta has the following limitations:</p>
 
-<li> If your user library contains actors that are not present in
-vergil, then you may see a dialog or dialogs asking if you want
-to skip these elements.  This could happen if you had developed custom
-actors and put them into your user library and these custom actors
-are not present in the release.  The work around is to click 'Skip Element'
-and continue with the start up.
+    <h3>Release Limitations</h3>
+    <ul>
+      <li> The gzipped tar file of Ptolemy II  source files with Unix line endings
+	(<code>ptII10.0.beta.src.tar.gz</code>)
+	<B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
+	untar this file with a checksum error because the pathnames are longer
+	than 100 characters.
+	<p>Note further that some of the .class names are longer than
+	  31 characters, which may cause problems when downloading zip files
+	  on the Macintosh and using Stuffit.</li>
+
+      <li> The documentation for custom actors used in demonstrations is not
+	included in the release.  The source code for the custom actors can be found
+	in the source download.</li>
+
+      <li> If a URL ends with <CODE>#in_browser</CODE>, then
+	Ptolemy II will invoke the User's web browser.  Unfortunately, this
+	does not always work, especially under Windows.
+	The workaround is to exit Netscape and let Ptolemy II
+	start up your browser for you.</li>
+
+      <li> Web Start does not work very well if the pathname to the 
+	<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
+	to place your Ptolemy II tree in a directory that does not have spaces
+	in the path name if you plan on using Web Start.</li>
+
+      <li> If your user library contains actors that are not present in
+	vergil, then you may see a dialog or dialogs asking if you want
+	to skip these elements.  This could happen if you had developed custom
+	actors and put them into your user library and these custom actors
+	are not present in the release.  The work around is to click 'Skip Element'
+	and continue with the start up.</li>
+
+      <li> Web Start issues:
+	<ul>
+	  <li> The Matlab Wireless demo fails under Web Start.
+	    The problem is that the Matlab .m file cannot be found.
+
+          <li> The JAI Adaptive Median model does not work under
+	    Web Start - the repaired image might be corrupt.
+	    The reason is that it uses the JAI acceleration libraries,
+	    which Web Start does not load.  
+
+	  <li> Viewing a pdf file may bring up a blank window along with
+	    the pdf file.  Running the code generator may bring up
+	    a blank window while the java or javac processes are running.
+
+	  <li> Some of the links on the GR domain instructions page
+	    might not work under Web Start because the files they refer
+	    to are not present. </li>
+	  
+	  <li>Under WebStart, in the HOC
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution/">ParallelExecution</a>
+	    and
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources/">SpontanousSources</a>
+	    models, it is  not possible to look inside the ThreadedComposites.</li>
+
+	  <li>In the ExportToWeb version of the HOC
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/Case/Case/">Case</a>,
+	    the Documentation icon is not active.</li>
+
+	  <li>The ReadStdIn demo fails under Webstart.  (This model now has an annotation about this).  The error is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: The file 'System.in' does not have any data.
+	      in .ReadStdIn.LineReader
+	      at ptolemy.actor.lib.io.LineReader._openAndReadFirstTwoLines(LineReader.java:344)
+	      at ptolemy.actor.lib.io.LineReader.fire(LineReader.java:225)
+	    </pre>
+	  <li>Running <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">Ptango SmartRoom under WebStart</a> brings up a partial page?
+	    <ol>
+	      <li>Go to <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/</a></li>
+	      <li>Click on "Launch" to download the Web Start files.</li>
+	      <li>Run the model</li>
+	      <li>Click on the annotation to open <a href="http://localhost:8078/room">http://localhost:8078/room</a></li>
+	      <li>Note that the page is only partially rendered.  The problem is that the style sheets common.css and berkeley.css are not present.</li>
+	    </ol>
+	    Generating WebStart on a laptop works.  Probably the issue is with the css files.
+	</ul>
+      </li>
+
+      <li> Limitations in demonstrations
+	<ul>
+          <li> <!-- sdf/demo/HTVQ/HTVQ.xml -->
+	    The SDF Image Compression HTVQ demo does not display any images. 
+	  </li>
+	  <li>The Pthales FFT demo fails to generate an image.</li>
+	  <li>The Ptango Exception demo does not restart if there is a JavaScript error.
+	    <ol>
+	      <li><code>$PTII/bin/vergil org/ptolemy/ptango/demo/Exception/Exception.xml</code></li>
+	      <li>Hit run</li>
+	      <li>Type in nonsense text, hit return</li>
+	      <li>The model finishes.  It should restart.</li>
+	    </ol>
+	  </li>	  
+	</ul>
+      </li>
+      <li> Limitations in demonstrations that are documented using annotations in the model.
+	<ul>
+	  <li> Continuous CarTracking should be run using View-&gt;Run
+	    so that the user can change the fault parameter.</li>
+
+	  <li> <!-- actor/parameters/demo/Bouncer/Bouncer.xml -->
+	    The DE Bouncer demo: If the user drags the bouncing icon, it no
+	    longer bounces.
+	  </li>
+
+	  <li> Some of the Ptango demos such as EPlus70 and TemperatureSensor require
+	    EnergyPlus and are not likely to run under WebStart bcause the
+	    BCVTB_HOME environment variable need to be set.
+	  </li>
+
+	  <li>The Ptango OccupancyAlert and SensorAndrew demos requires a password, but even with the password it fails to run, the message is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: Unable to login to XMPP server.
+              in .OccupancyAlert.XMPPGateway
+	      Because:
+	      SASL authentication DIGEST-MD5 failed: not-authorized
+	    </pre>
+	    with the server up, the message is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: Error evaluating expression: "http://localhost:" + port + "/simulator#in_browser"
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: WebServer.getAttribute("deployedPort").getToken().intValue()
+	      in .OccupancyAlert.port
+	      Because:
+	      The object on which method "getToken" is invoked on is null, but the method is not found or is not static.
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: "http://localhost:" + port + "/simulator#in_browser"
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: WebServer.getAttribute("deployedPort").getToken().intValue()
+	      in .OccupancyAlert.port
+	      Because:
+	      The object on which method "getToken" is invoked on is null, but the method is not found or is not static.
+	      at ptolemy.data.expr.Variable.validate(Variable.java:1532)
+	    </pre>
+	  </li>
+
+	  <li> The Ptango UCBPower and UCBPowerAnalyzerServer demos does
+	    not work under WebStart because the Ptolemy configuration used
+	    to display models under WebStart does not support exporting to
+	    the Web.
+	  </li>
+	</ul>
+      </li>
+    </ul>
+    <h3>Limitations in the Class Mechanism</h3>
+    <p>There are several known problems:</p>
+
+    <ul>
+
+      <li> Several higher-order-components will not work inside class definitions.
+	(ModalModel, several Continuous actors, etc.).</li>
 
 
-<li> Applet issues:
+      <li> Name collisions can occur when adding objects to base classes
+	whose names collide with objects in derived classes.
+	Auto naming should look through the derivedList for name conflicts.</li>
+
+
+      <li> Propagation of changes to a base class is very slow in Vergil.
+	If there are more than just a very few instances or derived
+	classes, interactive editing is not practical.  As a workaround,
+	put the class definitions in a separate file and edit them
+	without opening the model that creates instances. The probable
+	reason is that MoMLParser handles propagation by issuing large
+	numbers of change requests.</li>
+
+
+      <li> Certain actors, such as MathFunction, change the number of ports
+	when parameters change.  This violates the derivation invariance
+	for classes.  To demonstrate the bug, put a MathFunction actor
+	in a base class that has a subclass.  Change the function parameter
+	in the subclass to anything but "modulo".  Then change the function
+	in the base class to "modulo" (which adds a port).  Now attempt
+	to insert a parameter into the port.  You will get an
+	InternalErrorException when it tries to propagate the change.</li>
+    </ul>
+
+    <h3>Limitations in the Actor Libraries</h3>
+    <ul>
+      <li>The actor library is far from complete.
+
+      <li>The Expression actor does not properly propagate type constraints in
+	an expression-dependent fashion. It works correctly for double-valued
+	expressions of double-valued inputs.</li>
+
+      <li> The Ptolemy parameter parser uses comma "," to separate elements
+	in an array.  This causes problems when Ptolemy is run on
+	European machines that use a comma "1,0" instead of a period "1.1"
+	in floating point numbers.</li>
+
+      <li> The Display actor uses the Swing JTextArea component which is 
+	known to have memory leaks.</li>
+
+      <li> The readFile() parameter function does not work with applets.
+	Instead, use readResource().</li>
+
+      <li> IterateOverArray has the following problems
 	<ul>
 
-	<li> We've experienced problems with the browser freezing
-	when between applets.  What happens is that the previous
-	applet gets a InterruptedException and pops up a modal dialog
-	box, which freezed the browser.  We are working on a solution.
-
-	<li> Applets do not correctly display the TextAttribute,
-	DocumentationAttribute or the TM "Show schedule" icon.
-
-	<li>Applets seem to run out of memory after about 82Mb.
-
-	<li>There are no Jython or Cal applets 
-
-	<li> Running the Networked demo via an applet on the local
-	file system results in an AccessControlException.
-<pre>
-com.microstar.htm.htmException: XML element "entity" triggers exception:
-  java.lang.Exception: Attempted to lookup 'Waveform', but got: 
-  java.lang.ClassNotFoundException: Waveform
-Attempted to find as a moml class, but got: 
-             java.security.AccessControlException: access denied
-             (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve)
-	     in file:/C:/Program Files/Ptolemy/Ptolemy II 3.0 beta2/
-                   ptolemy/moml/demo/Networked/ at line 62 and column 118
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
-	at com.microstar.htm.htmParser.parseElement(XmlParser.java:944)
-	at com.microstar.htm.htmParser.parseContent(XmlParser.java:1117)
-	at com.microstar.htm.htmParser.parseElement(XmlParser.java:946)
-	at com.microstar.htm.htmParser.parseDocument(XmlParser.java:495)
-	at com.microstar.htm.htmParser.doParse(XmlParser.java:175)
-	at com.microstar.htm.htmParser.parse(XmlParser.java:145)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:492)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:471)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:456)
-	at ptolemy.actor.gui.MoMLApplet._createModel(MoMLApplet.java:188)
-</pre>
-
-	The Network demo does not work as a local applet because the xml file
-	includes a reference to http://ptolemy.eecs.berkeley.edu, which is
-	not on the local file system, so we get a SecurityException.
-	 <br>The workaround is to run the applet by downloading it
-	from the Ptolemy Website:
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/moml/demo/Networked/Networked#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/moml/demo/Networked/Networked</CODE></a>
+	  <li> IterateOverArray: When you drop in an actor, and then
+	    another actor, and then select "undo," the second actor is
+	    deleted without the first one being re-created. Thus, undo is
+            only a partial undo. The fix to this is extremely
+            complicated. Probably the only viable
+            mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
+            stack and then to manipulate the contents of that stack directly.</li>
+	  
+	  <li> IterateOverArray: There should be an option to reset
+	    between firings of the inside actor.</li>
 
 
-	<li> If an icon file is not present, then a Vergil applet might
-	try to download the icon file multiple times.  Ptolemy II
-	uses XML files to store icons.  For example
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/BooleanSwitchIcon.xml#in_browser" target="_top"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
-	is an icon for
-<a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
-	 <br>The problem is that if an actor does not have an icon file,
-	then the applet may go back to the server multiple times looking
-	for the icon. 
- <!-- Steve writes:
-      I think the MoMLParser should load Java-defined classes the same way
-      it does xml-defined classes.  It should reflect a prototype and then
-      keep the prototype around and clone it...  This would mean that it
-      only has to grab the icon once...
- -->
+	  <li> IterateOverArray: If you drop a new actor onto an IterateOverArray
+            in a subclass, it will simply acquire the new contents, but not
+            actually do anything with them. It should somehow refuse to accept
+            the new object in the subclass, since to do so, it would have to
+            delete the original object defined in the base class, and this would
+            violate the derived invariant.</li>
+
+	  
+	  <li> IterateOverArray: If an instance of IterateOverArray in a derived
+            class has overridden values of parameters, those are lost if
+            contained entity of the instance in the base class is replaced and
+            then an undo is requested.</li>
+
+	  
+	  <li> IterateOverArray: When an actor with a display icon like
+            Const, Expression, or MathFunction is put into
+            IterateOverArray, the CopyCatIcon doesn't reflect the text display.</li>
 
 	</ul>
-
-<li> Windows Installer Issues:
- 	<ul>
-
-	<li> Sometimes running a model that uses the Matlab interface
-	will cause Ptolemy II to exit.  Usually this occurs if Vergil
-	has been running for a while and then the Matlab interface is loaded.
-	<br><b>Workaround #1</b>: Run a model that uses the Matlab interface
-	as the first model by doing Quick Tour -&gt; Matlab CT.
-
-	<li> The Windows installer works best if you are in the 
-	Administrators Windows group.   Otherwise, the Windows installer
-	tends to dump lots of icons on your desktop
-	</ul>
-
-<li> Web Start issues:
-	<ul>
-
-	<li> The Matlab Wireless demo fails under Web Start.
-	The problem is that the Matlab .m file cannot be found.
-
-	<li> The Python Ptolemizer demo does not work under Web Start,
-	probably because Jython cannot handle loading classes
-	from the Ptolemy II classes. 
-
-
-        <li> The JAI Adaptive Median model does not work under
-	Web Start - the repaired image might be corrupt.
-	The reason is that it uses the JAI acceleration libraries,
-	which Web Start does not load.  
-
-	<li> Viewing a pdf file may bring up a blank window along with
-	the pdf file.  Running the code generator may bring up
-	a blank window while the java or javac processes are running.
-
-	<li> Some of the links on the GR domain instructions page
-	might not work under Web Start because the files they refer
-	to are not present. 
-        </ul>
-
-<li> Limitations in demonstrations
-        <ul>
-
-	<li> CT CarTracking should be run using View-&gt;Run
-	so that the user can change the fault parameter.
-
-        <li> HTVQ demo: The displays do not go away when
-	the demo is exited.
-
-	<li> GR demos: Under Java 3D 1.3.1-beta, the ViewScreen
-	actor may display a black image when a second GR demo is run.
-	 <br>The workaround is to install Java 3D 1.2.1_04.
-
-        <li> Bouncer demo: If the user drags the bouncing icon, it no
-	longer bounces
-        </ul>
-</ul>
-<h3>Limitations in the Class Mechanism</h3>
-The class mechanism is highly preliminary and is likely to change
-in future releases.  There are several known problems:
-
-<ul>
-
-
-<li> Several higher-order-components will not work inside class definitions.
-    (ModalModel, several CT actors, etc.).
-
-
-<li> Name collisions can occur when adding objects to base classes
-    whose names collide with objects in derived classes.
-    Auto naming should look through the derivedList for name conflicts.
-
-
-<li> Propagation of changes to a base class is very slow in Vergil.
-    If there are more than just a very few instances or derived
-    classes, interactive editing is not practical.  As a workaround,
-    put the class definitions in a separate file and edit them
-    without opening the model that creates instances. The probable
-    reason is that MoMLParser handles propagation by issuing large
-    numbers of change requests.
-
-
-<li> Certain actors, such as MathFunction, change the number of ports
-    when parameters change.  This violates the derivation invariance
-    for classes.  To demonstrate the bug, put a MathFunction actor
-    in a base class that has a subclass.  Change the function parameter
-    in the subclass to anything but "modulo".  Then change the function
-    in the base class to "modulo" (which adds a port).  Now attempt
-    to insert a parameter into the port.  You will get an
-    InternalErrorException when it tries to propagate the change.
-</ul>
-
-
-<h3>Limitations in the Actor Libraries</h3>
-<ul>
-<li>The actor library is far from complete.
-
-<li>The Expression actor does not properly propagate type constraints in
-an expression-dependent fashion. It works correctly for double-valued
-expressions of double-valued inputs.
-
-<li> The Ptolemy parameter parser uses comma "," to separate elements
-in an array.  This causes problems when Ptolemy is run on
-European machines that use a comma "1,0" instead of a period "1.1"
-in floating point numbers.
-
-<li> The Display actor uses the Swing JTextArea component which is 
-known to have memory leaks.
-
-<li> The readFile() parameter function does not work with applets.
-Instead, use readResource().
-<!-- If you change the next paragraph update install.htm -->
-
-<li>The Matlab interface works only under Windows and it requires that
-Matlab be installed on the local machine. 
-The Matlab interface should work with version of Matlab from
-R11 (5.3) and up to and including R13 (6.5)
-<p>Didier Mauuary reports that under Windows 98, configure failed
-to set up the <code>MATLAB_DIR</code>, <code>PTCC</code>
-and <code>PTDLLTOOL</code> makefile variables, but after
-he set them by hand:
-<pre>
- MATLAB_DIR = /cygdrive/c/MATLABR11
- PTCC = gcc
- PTDLLTOOL = dlltool
-</pre>
-he was able to get farther with the recompilation of the Matlab interface.
-
-<li>Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
-<br>Under Windows, we recommend using gcc-3.2, or Microsoft Visual C.
-
-<li>Under Windows, Matlab models sometimes cause Ptolemy to exit the
-second time the model is run!
-<br>The problem seems to be a segfault within a Windows library.
-The problem only affects systems where Matlab is compiled with 
-Microsoft Visual C.
-
-
-<li> IterateOverArray has the following problems
-     <menu>
-
-	<li> IterateOverArray: When you drop in an actor, and then
-	another actor, and then select "undo," the second actor is
-	deleted without the first one being re-created. Thus, undo is
-        only a partial undo. The fix to this is extremely
-        complicated. Probably the only viable
-        mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
-        stack and then to manipulate the contents of that stack directly.
-	
-	<li> IterateOverArray: There should be an option to reset
-	between firings of the inside actor.
-
-
-	<li> IterateOverArray: If you drop a new actor onto an IterateOverArray
-        in a subclass, it will simply acquire the new contents, but not
-        actually do anything with them. It should somehow refuse to accept
-        the new object in the subclass, since to do so, it would have to
-        delete the original object defined in the base class, and this would
-        violate the derived invariant.
-
-        
-	<li> IterateOverArray: If an instance of IterateOverArray in a derived
-        class has overridden values of parameters, those are lost if
-        contained entity of the instance in the base class is replaced and
-        then an undo is requested.
-
-       
-        <li> IterateOverArray: When an actor with a display icon like
-        Const, Expression, or MathFunction is put into
-        IterateOverArray, the CopyCatIcon doesn't reflect the text display.
-
-     </menu>
-
-</ul>
-
-<h3>Limitations in the PN Domain</h3>
-The PN domain documents that it locally handles mutations.  However, this
-is currently not true in the implementation.  For the basic PN model, this
-doesn't really matter, since mutations happen pretty much the same as they
-would otherwise.  (i.e. they are non-deterministic in when they execute) 
-However, for timed PN models, there is actually some expressiveness
-lost, since timed PN models can locally execute mutations deterministically.
-
- <p>Embedding a PN typed composite actor inside a non-process top level
-such as DE does not work.  In fact embedding a process domain inside
-a non-process domain is likely to have problems.  Profess Lee wrote:
-<BLOCKQUOTE>
-    Yes, it looks as if the code is designed so that process domains
-    (PN, CSP) can only be used within process domains.  I'm not sure
-    to what extent this is a limitation of the process domains vs. a
-    semantic problem.  What would PN mean within DE?  Since PN has
-    no well-defined notion of a "firing", how would you assign time
-    stamps to the outputs of a PN actor?  By default in DE, the time
-    stamps of the outputs of an actor match those of the inputs that
-    triggered the firing. There is no such notion in PN.
-</BLOCKQUOTE>
-
-<h3>Limitations in the User Interface</h3>
-
-Below are some of the limitations of Vergil, the Ptolemy II Graphical
-User Interface.
-
-<ul>
-
-<li> The labeling of ports gets messed up if you change cardinality.
-
-
-<li> Cancelling a style change doesn't restore original
-state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.
-
-<li> If there are multiple windows open for a model, say, the top
-level vergil window and the tree view, or the top level window
-and the inside look of a composite component, when the top
-level window is closed, all other windows are closed, but the
-user is not prompted to save any change to the model.
-
-<li> When setting the type of a port, we should provide a combo
-box that lists the common ports
-
-<li> When creating a Modal Model, use Control-Right-Button to
-drawn arcs between nodes.  One potential workaround would
-be to have an information message in the status bar about this.
-
-<li> You should not change the names of built in ports - The port
-mechanism should disallow port name changes on ports that are
-named in Java.  The UI could recognize this.  The UI should
-not allow the user to remove built in Java defined ports.
-
-<li> Manually setting of the types of actors like ArrayToSequence that
-have constraints on their element types can cause problems.
-<li> HTVQ demo is badly laid out when run under vergil.
-<li>Weak support for multiports in the graph editor.
-<li>It is difficult to control wire routing.
-<li>Cannot have more than one vertex in a connection.
-<li>No mechanism to set the width of a relation.
-<li>The integrated web browser is not a full-featured browser.
-<li>Debugger not yet integrated.
-<li>It is difficult to add actors to the libraries.
-<li>No dynamic class reloading.
-
-
-<li> Plot windows don't resize when control panel is resized
- <br>If a model with plotters
-is executed using the run button on the toolbar, and
-then re-executed using the run control panel accessed through
-the View menu, then resizing the run control panel does not
-cause the plots to resize to fit.
-<br>Workaround:
-Close the model and re-open it, and then run first using the
-run control panel.
-
-<li>There is no mechanism in the UI to save a model as a class,
-nor to save a submodel as a class.
-
-<li>There is no mechanism in the UI to create a custom icon for
-a library element and store it in the right place.
-
-<li>If an actor uses a slider, then the actor tree navigator pane
-incorrectly shows the slider as a subitem of the actor.
-
-<li> It seems that if you close a model that has been modified,
-  get prompted to save it, and select save, then the model
-  is saved but not closed.  It should be closed too...
-
-<li> When I select a large number of items from one model, and
-  copy and paste them into a new one, they sometimes all get
-  placed at the origin.  Strangely, if I then auto-place,
-  and then undo, they get their original (correct) placement!
-
-
-<li> Printing a model that contains transparent objects can result
-in problems when printing to Encapsulated Postscript (EPS).
-
- <br>If a model has transparent objects, then when it is printed to
-EPS, the resulting file is a bitmap instead of a Postscript
-description of the graphics.  You can tell by the file size (several
-Meg vs. several K) and by opening it in Illustrator, where in theory
-you should be able to ungroup and select and edit individual
-components.
-
- <br>The way Java prints EPS is that there is an implementation of
-Graphics2D that literally translates each graphics2D call into a
-Postscript snippet.  If Java detects any transparent colors or images,
-then the literal translation of each element independently doesn't
-work, so the printing code reverts to writing everything to an image
-and then sending the image, encapsulated in Postscript to the printer.
-
- <br>Solution1: Use one of these pdf writing programs to generate
-pdf-1.4 compliant pdf files, which have extensions to support
-transparency that Postscript lacks, and then print them to eps, which
-would use the distill implementation of the above algorithm.
-Or alternatively, we could switch to using pdftex instead of 
-latex-&gt;dvips-&gt;distill which should
-embed pdf for figures directly at the expense of less robust latex support.
-<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
-
- <br>Solution 2: Use the undocumented flag
--Dsun.java2d.print.pipeline=pdl on the command line to force the
-printing to use the postscript path, ignoring transparency.
-Under Cygwin:
-<pre>
-export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
-vergil
-</pre>
-Then edit the file by hand in Illustrator to add the transparency back in.
-
-</ul>
-
-<h3>Limitations in JNI</h3>
-<menu>
-<li> The Interface to C actors using the Java Native Interface
+      </li>
+
+    </ul>
+
+    <h3>Limitations in the PN Domain</h3>
+    <p>The PN domain documents that it locally handles mutations.  However, this
+      is currently not true in the implementation.  For the basic PN model, this
+      doesn't really matter, since mutations happen pretty much the same as they
+      would otherwise.  (i.e. they are non-deterministic in when they execute) 
+      However, for timed PN models, there is actually some expressiveness
+      lost, since timed PN models can locally execute mutations deterministically.</p>
+
+    <p>Embedding a PN typed composite actor inside a non-process top level
+      such as DE does not work.  In fact embedding a process domain inside
+      a non-process domain is likely to have problems.  Profess Lee wrote:</p>
+    <blockquote>
+      Yes, it looks as if the code is designed so that process domains
+      (PN, CSP) can only be used within process domains.  I'm not sure
+      to what extent this is a limitation of the process domains vs. a
+      semantic problem.  What would PN mean within DE?  Since PN has
+      no well-defined notion of a "firing", how would you assign time
+      stamps to the outputs of a PN actor?  By default in DE, the time
+      stamps of the outputs of an actor match those of the inputs that
+      triggered the firing. There is no such notion in PN.
+    </blockquote>
+
+    <h3>Limitations in the User Interface</h3>
+
+    <p>Below are some of the limitations of Vergil, the Ptolemy II Graphical
+      User Interface.</p>
+    <ul>
+
+      <li> The labeling of ports gets messed up if you change cardinality.</li>
+
+      <li> Cancelling a style change doesn't restore original
+	state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.</li>
+
+      <li> If there are multiple windows open for a model, say, the top
+	level vergil window and the tree view, or the top level window
+	and the inside look of a composite component, when the top
+	level window is closed, all other windows are closed, but the
+	user is not prompted to save any change to the model.</li>
+
+      <li> When setting the type of a port, we should provide a combo
+	box that lists the common ports</li>
+
+      <li> When creating a Modal Model, use Control-Right-Button to
+	drawn arcs between nodes.  One potential workaround would
+	be to have an information message in the status bar about this.</li>
+
+      <li> You should not change the names of built in ports - The port
+	mechanism should disallow port name changes on ports that are
+	named in Java.  The UI could recognize this.  The UI should
+	not allow the user to remove built in Java defined ports.</li>
+
+      <li> Manually setting of the types of actors like ArrayToSequence that
+	have constraints on their element types can cause problems.</li>
+      <li> HTVQ demo is badly laid out when run under vergil.</li>
+      <li>Weak support for multiports in the graph editor.</li>
+      <li>It is difficult to control wire routing.</li>
+      <li>Cannot have more than one vertex in a connection.</li>
+      <li>No mechanism to set the width of a relation.</li>
+      <li>The integrated web browser is not a full-featured browser.</li>
+      <li>Debugger not yet integrated.</li>
+      <li>It is difficult to add actors to the libraries.</li>
+      <li>No dynamic class reloading.</li>
+
+
+      <li> Plot windows don't resize when control panel is resized
+	<br>If a model with plotters
+	is executed using the run button on the toolbar, and
+	then re-executed using the run control panel accessed through
+	the View menu, then resizing the run control panel does not
+	cause the plots to resize to fit.
+	<br>Workaround:
+	Close the model and re-open it, and then run first using the
+	run control panel.
+      </li>
+
+      <li>There is no mechanism in the UI to save a model as a class,
+	nor to save a submodel as a class.</li>
+
+      <li>There is no mechanism in the UI to create a custom icon for
+	a library element and store it in the right place.</li>
+
+      <li>If an actor uses a slider, then the actor tree navigator pane
+	incorrectly shows the slider as a subitem of the actor.</li>
+
+      <li> It seems that if you close a model that has been modified,
+	get prompted to save it, and select save, then the model
+	is saved but not closed.  It should be closed too...</li>
+
+      <li> When I select a large number of items from one model, and
+	copy and paste them into a new one, they sometimes all get
+	placed at the origin.  Strangely, if I then auto-place,
+	and then undo, they get their original (correct) placement!</li>
+
+
+      <li> Printing a model that contains transparent objects can result
+	in problems when printing to Encapsulated Postscript (EPS).
+
+	<br>If a model has transparent objects, then when it is printed to
+	EPS, the resulting file is a bitmap instead of a Postscript
+	description of the graphics.  You can tell by the file size (several
+	Meg vs. several K) and by opening it in Illustrator, where in theory
+	you should be able to ungroup and select and edit individual
+	components.
+
+	<br>The way Java prints EPS is that there is an implementation of
+	Graphics2D that literally translates each graphics2D call into a
+	Postscript snippet.  If Java detects any transparent colors or images,
+	then the literal translation of each element independently doesn't
+	work, so the printing code reverts to writing everything to an image
+	and then sending the image, encapsulated in Postscript to the printer.
+
+	<br>Solution1: Use one of these pdf writing programs to generate
+	pdf-1.4 compliant pdf files, which have extensions to support
+	transparency that Postscript lacks, and then print them to eps, which
+	would use the distill implementation of the above algorithm.
+	Or alternatively, we could switch to using pdftex instead of 
+	latex-&gt;dvips-&gt;distill which should
+	embed pdf for figures directly at the expense of less robust latex support.
+	<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
+
+	<br>Solution 2: Use the undocumented flag
+	-Dsun.java2d.print.pipeline=pdl on the command line to force the
+	printing to use the postscript path, ignoring transparency.
+	Under Cygwin:
+	<pre>
+	  export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
+	  vergil
+	</pre>
+	Then edit the file by hand in Illustrator to add the transparency back in.
+      </li>
+    </ul>
+
+
+    <h3>Limitations in JNI</h3>
+    <ul>
+      <li> The Interface to C actors using the Java Native Interface
 	is not available via the Windows Installer (or Web Start).
 	To use the JNI/Ptolemy II interface, you must download 
-	Ptolemy II as source files and compile.
+	Ptolemy II as source files and compile.</li>
 
+      <li> The JNI user interface was removed between Ptolemy II 4.0
+	and Ptolemy II 7.0 because the UI stopped working.</li>
 
-<li> The JNI user interface was removed between Ptolemy II 4.0
-and Ptolemy II 7.0 because the UI stopped working.
+    </ul>
 
-</menu>
+    <h3>Code Generation Limitations</h3>
+    Code Generation limitations are covered on the
+    <a href="../ptolemy/cg/README.html">Code Generation</a> page. 
 
-
-<h3>Code Generation Limitations</h3>
-Code Generation limitations are covered on the
-<a href="../ptolemy/cg/README.html">Code Generation</a> page. 
-
-<h3>Missing Domains</h3>
-<ul>
-<li>Boolean and integer dataflow.
-</ul>
- <p>For limitations discovered after the release, see the
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 11.0.devel website</a>
+    <h3>Missing Domains</h3>
+    <ul>
+      <li>Boolean and integer dataflow.</li>
+    </ul>
+    <p>For limitations discovered after the release, see the
+      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 10.0.beta website</a>
 
 </body>
 </html>
