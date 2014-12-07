@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RobotOnCircleKV" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -161,7 +161,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 200.0]">
         </property>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
@@ -354,8 +354,6 @@
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.key&quot;,x=357.5,y=433.471923828125}, tail={id=&quot;Const.output&quot;,x=212.5,y=378.471923828125}, points={272.5,423.471923828125,272.5,378.471923828125} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=357.5,y=433.471923828125}, tail={id=&quot;TokenToJSON.output&quot;,x=182.5,y=453.471923828125}, points={} } }">

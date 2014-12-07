@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CompiledCompositeActor" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -11,7 +11,7 @@
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.4, 0.4, 1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -66,13 +66,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 130, 834, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9876162185101">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.7617187500003, 234.6328125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.7617187500004, 297.4102343749993}">
     </property>
     <entity name="CompiledCompositeActor" class="ptolemy.cg.lib.CompiledCompositeActor">
         <property name="executeEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
@@ -126,8 +126,6 @@
             </property>
             <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_codeGeneratorGUIFactory" class="ptolemy.cg.gui.CodeGeneratorGUIFactory">
-            </property>
             <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
@@ -138,9 +136,9 @@
             </property>
             <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
             <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -151,21 +149,21 @@
             </property>
         </port>
         <entity name="slow" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{73.0, 123.0}">
             </property>
         </entity>
         <entity name="fast" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 233.5}">
             </property>

@@ -30,7 +30,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameterk&quot;,&quot;ptolemy/data/ontologies/ontologies.jar&quot;},{&quot;ptolemy.kernel.attributes.VersionAttribute&quot;,&quot;ptolemy/domains/de/de.jar&quot;},{&quot;ptolemy.kernel.util.StringAttribute&quot;,&quot;ptolemy/actor/lib/aspect/aspect.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/actor/lib/fmi/fmi.jar&quot;},{&quot;ptolemy.kernel.util.ColorAttribute&quot;,&quot;ptolemy/domains/ptides/ptides.jar&quot;}}">
     </property>

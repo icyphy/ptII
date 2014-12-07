@@ -2,23 +2,31 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModularCG" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.5, 52.5]">
+        </property>
+        <property name="DecoratorAttributesFor_ModularCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
         </property>
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 40, 863, 657}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 40, 1027, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[636, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[793, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.972503617945">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.4910714285715, 271.5327380952382}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{438.2105654761912, 271.5327380952382}">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -43,13 +51,13 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 210.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates Modular Code Generation (MCG)&#10;where separate code is generated for each composite.&#10;&#10;The first time this model is run, many Java files are&#10;generated and compiled.  Subsequent runs reuse&#10;those files.&#10;&#10;To see these files, see standard out or look in the&#10;$HOME/cg directory.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.5, 17.5]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -57,9 +65,9 @@
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.5, 122.5]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -74,6 +82,10 @@
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="DecoratorAttributesFor_ModularCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
+            </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -325,7 +337,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 120.0]">
+        </property>
+        <property name="DecoratorAttributesFor_ModularCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -333,15 +349,19 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.5, 117.5]">
+        </property>
+        <property name="DecoratorAttributesFor_ModularCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.5, 177.5]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -356,6 +376,10 @@
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+        </property>
+        <property name="DecoratorAttributesFor_ModularCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
+            </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -623,13 +647,17 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.5, 172.5]">
+        </property>
+        <property name="DecoratorAttributesFor_ModularCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="ModularCodeGenerator">
+            </property>
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[80.0, 115.0]">
+        <vertex name="vertex1" value="[150.5, 117.5]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
