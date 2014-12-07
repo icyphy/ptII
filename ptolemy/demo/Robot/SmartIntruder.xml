@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmartIntruder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -33,7 +33,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An intruder model that moves at constant speed and&#10;randomly changes direction at each discrete time step.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-5.0, 40.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 40.0]">
         </property>
     </property>
     <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:8077/keyvalue&quot;">
@@ -120,6 +120,14 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, -35.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 500.0]">
         </property>
     </property>
     <class name="KVtoArray" extends="ptolemy.actor.TypedCompositeActor">

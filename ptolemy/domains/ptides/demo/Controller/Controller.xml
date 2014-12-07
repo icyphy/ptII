@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[844, 557]">
     </property>
@@ -20,20 +20,20 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.5, 240.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{422.0, 278.5}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="500.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.0, 18.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[114.0, 53.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows two (independent) control loops whose controllers share the same CPU. &#10;The control loops are chosen such that it is unstable if the control signals are constantly &#10;delayed. By choosing different priority assignments and scheduling policies, different stability&#10;of the two loops may appear. For example, a nonpreemptive scheduling can stabilize both &#10;control loops, but none of the preemptive ones can. &#10;&#10;The same demo exists in the TM domain with TM scheduling policies.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 285.0]">
         </property>
     </property>
     <property name="factor" class="ptolemy.data.expr.Parameter" value="10">
@@ -44,12 +44,20 @@
     </property>
     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="executionTime1">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Patricia Derler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 435.0]">
+        </property>
+    </property>
     <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 220.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -587,7 +595,7 @@
         </entity>
     </entity>
     <entity name="Plant" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 125.0]">
         </property>
         <property name="Continuous" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1142,7 +1150,7 @@
         <link port="Plant.output" relation="relation"/>
     </entity>
     <entity name="Plant2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 125.0]">
         </property>
         <property name="Continuous" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1667,7 +1675,7 @@
         <link port="ContinuousTransferFunction2.output" relation="Copy1:relation4"/>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 215.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 75}">
@@ -1731,7 +1739,7 @@
         <link port="Scale2.output" relation="relation4"/>
     </entity>
     <entity name="Plant3" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
         </property>
         <property name="Continuous" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -2246,7 +2254,7 @@
         <link port="ContinuousTransferFunction2.output" relation="Copy1:relation4"/>
     </entity>
     <entity name="CompositeActor3" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 210.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
@@ -2426,13 +2434,13 @@
         <link port="Scale2.output" relation="relation4"/>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[10.0, 80.0]">
+        <vertex name="vertex1" value="[45.0, 115.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[150.0, 195.0]">
+        <vertex name="vertex1" value="[185.0, 230.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
@@ -2444,11 +2452,11 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[210.0, 80.0]">
+        <vertex name="vertex1" value="[245.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[357.0, 190.0]">
+        <vertex name="vertex1" value="[392.0, 225.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -2456,11 +2464,11 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[410.0, 80.0]">
+        <vertex name="vertex1" value="[445.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[560.0, 185.0]">
+        <vertex name="vertex1" value="[595.0, 220.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">

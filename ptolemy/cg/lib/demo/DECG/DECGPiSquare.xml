@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DECGPiSquare" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/DECGPiSquare">
@@ -34,7 +34,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={533, 254, 1229, 697}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={431, 254, 1249, 716}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1015, 606]">
     </property>
@@ -68,14 +68,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 35.0]">
         </property>
     </property>
-    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes pi&lt;sup&gt;2&lt;/sup&gt;.&#10;We use the Euler formula for the Riemman zeta function : zeta(2) = Sum(1, 1/2&lt;sup&gt;2&lt;/sup&gt;, ..., 1/n&lt;sup&gt;2&lt;/sup&gt;) = pi&lt;sup&gt;2&lt;/sup&gt;/6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 285.0]">
+        </property>
+    </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.4, 0.4, 1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -91,13 +97,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{18.0, 357.0}">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model computes pi&lt;sup&gt;2&lt;/sup&gt;.&#10;We use the Euler formula for the Riemman zeta function : zeta(2) = Sum(1, 1/2&lt;sup&gt;2&lt;/sup&gt;, ..., 1/n&lt;sup&gt;2&lt;/sup&gt;) = pi&lt;sup&gt;2&lt;/sup&gt;/6">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{89.0, 370.0}">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -106,6 +106,10 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 182]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -121,6 +125,10 @@
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 195.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">

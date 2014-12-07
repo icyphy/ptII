@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ChannelFaultModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -296,7 +296,7 @@
         </configure>
     </entity>
     <entity name="Receiver2" class="Receiver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[552.5, 318.86927795410156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 315.0]">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -325,7 +325,7 @@
         </port>
     </entity>
     <entity name="Receiver3" class="Receiver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[547.5, 383.86927795410156]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 385.0]">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -893,7 +893,7 @@ drops a each with 20% chance.</text></svg></configure>
         <link port="i2.output" relation="relation5"/>
     </entity>
     <entity name="Receiver1" class="Receiver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[512.5, 568.8692779541016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 570.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -909,18 +909,12 @@ drops a each with 20% chance.</text></svg></configure>
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=770.0,y=425.0,index=4}, tail={id=&quot;Receiver2.port2&quot;,x=515.0,y=285.0}, points={715.0,410.0,715.0,285.0} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=770.0,y=425.0,index=4}, tail={id=&quot;Receiver3.port2&quot;,x=510.0,y=350.0}, points={700.0,415.0,700.0,350.0} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=770.0,y=425.0,index=4}, tail={id=&quot;Receiver1.port2&quot;,x=475.0,y=535.0}, points={700.0,425.0,700.0,535.0} } }">
-        </property>
     </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation"/>

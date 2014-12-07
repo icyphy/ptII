@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Friction" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 968, 778}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 974, 825}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[734, 668]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[740, 715]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1291406775770156">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5977848365215, 303.26655117048466}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.2546725561612, 324.0788383076622}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="impulsive&#10;force">
@@ -273,9 +273,17 @@
         </property>
     </property>
     <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="Click on the TimedPlotter to see a plot of the velocities as a function of time.&#10;With these parameter values:&#10;&lt;ul&gt;&#10;&lt;li&gt; Near time 0.2, mass 2 breaks away and begins sliding.&#10;&lt;li&gt; Near time 0.7, the velocities match, but the input force is too high for capture.&#10;&lt;li&gt; Near time 0.8, mass 1 reverses direction, starting to move right instead of left.&#10;At that time, the velocity of mass 2 stops decreasing and starts increasing.&#10;&lt;li&gt; Near time 1.0, mass 1 is jolted left with an impulsive force, reversing direction,&#10;causing the velocity of mass 2 to stop increasing and start decreasing.&#10;Although the velocity of mass 1 crosses that of mass 2, no capture occurs.&#10;&lt;li&gt; Near time 1.8, the volocities match and the input force is small enough&#10;so that mass 2 is captured.&#10;&lt;li&gt; At time 2.0, an impulsive force on mass 1 causes mass 2 to start sliding.&#10;&lt;li&gt; Etc.&#10;&lt;/ul&gt;">
-	<property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
+        <property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 650.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 610.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">

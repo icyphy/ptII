@@ -2,26 +2,26 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Exception" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 255, 1073, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5019949431949877">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{268.96630859375, 155.5393628901538}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.5, 262.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[103.48408508300781, 54.49542999267578]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.&#10;This model restarts on each exception.&#10;It does not, however, inform the user of the exception, which is not very useful.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[43.48408508300781, 89.49542999267578]">
         </property>
     </property>
     <property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
@@ -35,14 +35,22 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[278.4840850830078, 49.49542999267578]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{48.0, 437.0}">
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 263, 646, 420}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[113.48408508300781, 269.4954299926758]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -56,7 +64,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[403.4840850830078, 319.4954299926758]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -83,7 +91,7 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[423.4840850830078, 259.4954299926758]">
         </property>
     </entity>
     <entity name="EscapeQuotes" class="ptolemy.actor.lib.string.StringReplace">
@@ -96,7 +104,7 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[273.4840850830078, 259.4954299926758]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
@@ -108,7 +116,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[503.4840850830078, 189.49542999267578]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

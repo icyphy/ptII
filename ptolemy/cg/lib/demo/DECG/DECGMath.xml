@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DECGMath" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/DECGMath">
@@ -40,39 +40,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 340.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={428, 235, 1327, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={333, 235, 1347, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1113, 516]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1113, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{546.5, 248.0}">
-    </property>
-    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
-        </property>
-        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: William Lucas">
-            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 410.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{546.5, 252.0}">
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -100,12 +74,42 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 40.0]">
         </property>
     </property>
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.4, 0.4, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: William Lucas">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 410.0]">
+        </property>
+    </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={649, 472, 522, 205}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 182]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 245.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -121,9 +125,17 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 255.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 245.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -161,9 +173,17 @@
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 185.0]">
         </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 270.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

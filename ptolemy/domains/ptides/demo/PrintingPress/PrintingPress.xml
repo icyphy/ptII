@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PrintingPress" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="750.0">
@@ -16,13 +16,13 @@
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 74, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 74, 1279, 799}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 631]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1045, 689]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7718340015074883">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{213.12876471920288, 649.47021484375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{212.4809570312499, 687.0430607450181}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This design demonstrates  DC motors driving a feed roller and a drive roller. The PID-based motor controllers minimize&#10;the error between the paper velocity produced by the roller and the target profile&#10;velocity produced by the Target Profile actor. The tracking error input allows one such roller to&#10;track the other to remove small differences in paper velocity.&#10;&#10;The target profile is either a profile from 0 to maxPaperVelocity starting at time 0 and &#10;reaching the maximum value at time Interval seconds. The profile and its derivative are continuous. ">
@@ -161,6 +161,14 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: John Eidson and Patricia Derler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-341.39461616847836, 1077.671096580616}">
         </property>
     </property>
     <entity name="feedRoller" class="ptolemy.actor.TypedCompositeActor">

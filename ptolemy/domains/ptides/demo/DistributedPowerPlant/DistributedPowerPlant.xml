@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedPowerPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="41">
@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 129, 940, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 129, 935, 758}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 648]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.0, 260.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 324.0}">
     </property>
     <property name="clockPeriod" class="ptolemy.data.expr.Parameter" value="1.5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -42,13 +42,13 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Top-level view of a power plant. The Supervisory Control block provides the&#10;signal to start the power plant and sets the target output levels. The Local&#10;Control block implements a simple control law to achieve the target output&#10;levels. It also detects failures to receive sensor data from the network.&#10;Upon the first such failure, it notifies the Supervisory Control block with a&#10;warning. Upon the second such failure, it locally changes the target output&#10;level to shut down the power plant, and also notifies the Supervisory Control&#10;block.&#10;&#10;This model is based on the PowerPlant demo. The only difference&#10;is that the supervisory control is now expressed as a Ptides platform, and&#10;the supervisory control and local control have clocks that drift away from each&#10;other.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 335.0]">
         </property>
     </property>
     <property name="startupTime" class="ptolemy.data.expr.Parameter" value="1">
@@ -94,7 +94,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: John Eidson, Edward A. Lee and Jia Zou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 570.0]">
         </property>
     </property>
     <entity name="GeneratorTurbine" class="ptolemy.actor.TypedCompositeActor">
@@ -803,8 +803,6 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -988,8 +986,6 @@
                         </property>
                     </port>
                     <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                        <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                        </property>
                         <property name="_library" class="ptolemy.moml.LibraryAttribute">
                             <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
@@ -1255,8 +1251,6 @@
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="errorCause" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
@@ -1883,7 +1877,7 @@ The controller runs at least every tick of the local clock.</text></svg></config
             <entity name="Plotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="state, sensor, clock, emergency, warning">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 27, 643, 292}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={622, 614, 643, 292}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[643, 248]">
                 </property>

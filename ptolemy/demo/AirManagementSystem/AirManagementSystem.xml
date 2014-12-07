@@ -2,24 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AirManagementSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Air Management System">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1216, 919}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1158, 745}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[982, 809]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[924, 635]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4174261757200146">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.875, 308.7434252829219}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{462.0, 317.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click on this comment to see the document on which this model is based.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 80.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="NEWamsStateSpaceModel.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -44,7 +44,7 @@
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 55}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 55.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -52,7 +52,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: 100 kPa is one atmosphere">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 125.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -60,7 +60,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: 293.15 K is 20 degress celsius">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 250.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -68,13 +68,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: What do these numbers mean?&#10;According to Yilin, they should be between 0 and 0.3.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 475.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mass flow rate should vary from about 0.7 to perhaps 10.0.&#10;Below that range results in an invalid model.&#10;Above that range doesn't achieve enough temperature change.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 520.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -88,7 +88,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 175.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -102,7 +102,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 225.0]">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
@@ -116,7 +116,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 305.0]">
         </property>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
@@ -130,7 +130,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 360.0]">
         </property>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
@@ -144,7 +144,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 415.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 415.0]">
         </property>
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
@@ -158,7 +158,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[306.5876922607422, 455.57814025878906]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[401.5876922607422, 455.57814025878906]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -166,7 +166,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 150.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -181,7 +181,7 @@
         </configure>
     </entity>
     <entity name="PhysicalPlant" class="ptolemy.demo.AirManagementSystem.PhysicalPlant">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 265.0]">
         </property>
         <entity name="Fork" class="ptolemy.actor.TypedCompositeActor">
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
@@ -210,7 +210,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 220.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -231,7 +231,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 275.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -256,7 +256,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[94.71484375, 452.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.71484375, 452.5]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

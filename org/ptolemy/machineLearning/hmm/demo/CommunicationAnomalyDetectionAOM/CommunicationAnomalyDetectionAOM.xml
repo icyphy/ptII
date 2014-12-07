@@ -11,16 +11,16 @@
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 1389, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 843, 662}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1155, 764]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 552]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5189202056189126">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.91249209942805, 211.95068359374997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{304.5, 276.0}">
     </property>
     <property name="N" class="ptolemy.data.expr.Parameter" value="200">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,7 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 75.0]">
         </property>
     </property>
     <property name="sampleSize" class="ptolemy.data.expr.Parameter" value="40*N ">
@@ -57,23 +57,31 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 50.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Top level model of a data transmitter and a receiver component, which&#10;communicate via a dedicated communication channel assigned by a &#10;service provider. The transmitter and receiver are agnostic to the means&#10;of communication being used to transmit packets.&#10;&#10;The service channel is modeled as a hidden markov model with 3 states&#10;that correspond to three means of communication with different latency&#10;characteristics.&#10;&#10;The objective of the anomaly detector on the receiver side is to track the&#10;communication latency in the received packages ( clocks are assumed to&#10;be perfectly synchronized for this demo, so that the latency is known exactly)&#10;to determine if the underlying communication channel is a high latency&#10;channel. This classification problem may be used to raise flags if the &#10;anomaly detector &quot;claims&quot; that the channel is not a standard-latency one&#10;and may request reassignment from the service provider.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 220.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="observation batch size per iteration">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 505.0]">
         </property>
     </property>
     <entity name="Sensor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 180.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 133, 934, 634}, maximized=false}">
         </property>
@@ -284,7 +292,7 @@
         <link port="Const.trigger" relation="relation3"/>
     </entity>
     <entity name="Receiver" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 180.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1638,7 +1646,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 125.0]">
         </property>
         <property name="delayStatePriors" class="ptolemy.data.expr.Parameter" value="{0.8,0.2,0.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
