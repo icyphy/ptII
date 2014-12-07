@@ -880,6 +880,7 @@ CC
 PTCC
 PTECLIPSE
 JAVADOC
+GAWK
 MVN
 ANT
 KEYTOOL
@@ -889,7 +890,6 @@ JAR
 JAVA32
 JAVA
 JAVAC
-GAWK
 FIND
 CMD_PATH
 target_alias
@@ -935,9 +935,9 @@ ac_user_opts='
 enable_option_checking
 enable_verbose
 with_find
-with_gawk
 with_java
 with_java32
+with_gawk
 with_boost
 with_cmkit
 with_cal
@@ -1631,14 +1631,14 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-find=PATH         use the find command from PATH,
                            PTJAVA_DIR environment variable
-  --with-gawk=PATH         use the gawk command from PATH with maven,
-                           /usr/bin/gawk
   --with-java=DIR         use Java binaries from DIR,
                            defaults to the value of the
                            PTJAVA_DIR environment variable
   --with-java32=DIR         use 32-bit Java binaries from DIR,
                            defaults to the value of the
                            PTJAVA32_DIR environment variable
+  --with-gawk=PATH         use the gawk command from PATH with maven,
+	                   /usr/bin/gawk
   --with-boost-include=DIR      use boost includes from DIR DIR/boost/numeric/odeint.hpp should exist,
                           defaults to /usr/local/include
   --with-cmkit=DIR       use CaffeineMark from DIR,
@@ -2993,105 +2993,6 @@ if test ! -f "$FIND"; then
 $as_echo "$as_me: WARNING: Could not find the "find" command, looked in \"$FIND\"" >&2;}
 fi
 
-#--------------------------------------------------------------------
-#       Look for the "gawk" command, used by maven
-#--------------------------------------------------------------------
-
-# Check whether --with-gawk was given.
-if test "${with_gawk+set}" = set; then :
-  withval=$with_gawk; GAWK=$withval
-else
-  GAWK=gawk
-fi
-
-# Extract the first word of "gawk", so it can be a program name with args.
-set dummy gawk; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_GAWK+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GAWK in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GAWK="$GAWK" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GAWK="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-GAWK=$ac_cv_path_GAWK
-if test -n "$GAWK"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GAWK" >&5
-$as_echo "$GAWK" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test ! -x "$GAWK"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven." >&5
-$as_echo "$as_me: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven." >&2;}
-    # Extract the first word of "awk", so it can be a program name with args.
-set dummy awk; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_GAWK+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GAWK in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GAWK="$GAWK" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GAWK="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-GAWK=$ac_cv_path_GAWK
-if test -n "$GAWK"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GAWK" >&5
-$as_echo "$GAWK" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-    if test ! -x "$GAWK"; then
-        GAWK=awk
-    fi
-fi
-
 # Substitute %20 for any spaces.
 PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #--------------------------------------------------------------------
@@ -3316,7 +3217,12 @@ PTJAVA_DIR_NO_CYGDRIVE="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'
 
 
 
-
+if test ! -d "ptolemy/actor/lib/fmi/"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ptolemy/actor/lib/ is not present,
+    so we need not find a 32-bit JVM for testing." >&5
+$as_echo "ptolemy/actor/lib/ is not present,
+    so we need not find a 32-bit JVM for testing." >&6; }; fi
+else
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where the 32-bit Java is;  if
 #	not, check to see if the PTJAVA32_DIR environment variable is set;
@@ -3480,6 +3386,7 @@ fi
 # Use changequote here to preserve square brackets
 PTJAVA32_DIR_NO_CYGDRIVE="`echo "$PTJAVA32_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 
+fi # Test for ptolemy/actor/lib/fmi
 
 
 #
@@ -4126,27 +4033,33 @@ fi
 #
 # The javaws command is used to test Webstart JNLP files.
 #
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for the javaws command" >&5
+if test ! -f "mk/jnlp.mk"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: mk/jnlp.mk is not present,
+    so we need not find javaws, the Java Web Start binary." >&5
+$as_echo "mk/jnlp.mk is not present,
+    so we need not find javaws, the Java Web Start binary." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the javaws command" >&5
 $as_echo_n "checking for the javaws command... " >&6; }
-if test -f "$PTJAVA_DIR/bin/javaws"; then
-    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+    if test -f "$PTJAVA_DIR/bin/javaws"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVA_DIR/bin/javaws" >&5
 $as_echo "$PTJAVA_DIR/bin/javaws" >&6; }; fi
-    JAVAWS="$PTJAVA_DIR/bin/javaws"
-else
-   if test -f "$PTJAVA_DIR/Commands/java"; then
-       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        JAVAWS="$PTJAVA_DIR/bin/javaws"
+    else
+        if test -f "$PTJAVA_DIR/Commands/java"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVA_DIR/Commands/java" >&5
 $as_echo "$PTJAVA_DIR/Commands/java" >&6; }; fi
-       JAVAWS="$PTJAVA_DIR/Commands/javaws"
-   else
-       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find '$PTJAVA_DIR/bin/javaws'.
-       or '$PTJAVA/Commands/javaws', looking in the path.
-       This is only a problem when testing the Java Webstart (JNLP) files." >&5
+            JAVAWS="$PTJAVA_DIR/Commands/javaws"
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find '$PTJAVA_DIR/bin/javaws'.
+    or '$PTJAVA/Commands/javaws', looking in the path.
+    This is only a problem when testing the Java Webstart (JNLP) files." >&5
 $as_echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/javaws'.
-       or '$PTJAVA/Commands/javaws', looking in the path.
-       This is only a problem when testing the Java Webstart (JNLP) files." >&2;}
-       # Extract the first word of "javaws", so it can be a program name with args.
+    or '$PTJAVA/Commands/javaws', looking in the path.
+    This is only a problem when testing the Java Webstart (JNLP) files." >&2;}
+            # Extract the first word of "javaws", so it can be a program name with args.
 set dummy javaws; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -4186,40 +4099,46 @@ $as_echo "no" >&6; }
 fi
 
 
-   fi
-fi
-
-if test ! -x "$JAVAWS"; then
-     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The javaws command \"$JAVAWS\" is not executable or not found.
+        fi
+    fi
+    if test ! -x "$JAVAWS"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The javaws command \"$JAVAWS\" is not executable or not found.
     This is only a problem when testing the Java Webstart (JNLP) files." >&5
 $as_echo "$as_me: WARNING: The javaws command \"$JAVAWS\" is not executable or not found.
     This is only a problem when testing the Java Webstart (JNLP) files." >&2;}
+    fi
 fi
 
 #
 # keytool command used to generate a certificate for testing actor.lib.security actors
 #
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for the keytool command" >&5
+if test ! -d "ptolemy/actor/lib/security/"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ptolemy/actor/lib/security/ is not present,
+    so we need not find keytool, the certifate command." >&5
+$as_echo "ptolemy/actor/lib/security/ is not present,
+    so we need not find keytool, the certifate command." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the keytool command" >&5
 $as_echo_n "checking for the keytool command... " >&6; }
-if test -f "$PTJAVA_DIR/bin/keytool"; then
-    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+    if test -f "$PTJAVA_DIR/bin/keytool"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVA_DIR/bin/keytool" >&5
 $as_echo "$PTJAVA_DIR/bin/keytool" >&6; }; fi
-    KEYTOOL="$PTJAVA_DIR/bin/keytool"
-else
-   if test -f "$PTJAVA_DIR/Commands/java"; then
-       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        KEYTOOL="$PTJAVA_DIR/bin/keytool"
+    else
+        if test -f "$PTJAVA_DIR/Commands/java"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVA_DIR/Commands/java" >&5
 $as_echo "$PTJAVA_DIR/Commands/java" >&6; }; fi
-       KEYTOOL="$PTJAVA_DIR/Commands/keytool"
-   else
-       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find '$PTJAVA_DIR/bin/keytool'.
-       or '$PTJAVA/Commands/keytool', looking in the path.
-       This is only a problem when testing the security actors." >&5
+            KEYTOOL="$PTJAVA_DIR/Commands/keytool"
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cannot find '$PTJAVA_DIR/bin/keytool'.
+    or '$PTJAVA/Commands/keytool', looking in the path.
+    This is only a problem when testing the security actors." >&5
 $as_echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/keytool'.
-       or '$PTJAVA/Commands/keytool', looking in the path.
-       This is only a problem when testing the security actors." >&2;}
-       # Extract the first word of "keytool", so it can be a program name with args.
+    or '$PTJAVA/Commands/keytool', looking in the path.
+    This is only a problem when testing the security actors." >&2;}
+            # Extract the first word of "keytool", so it can be a program name with args.
 set dummy keytool; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -4259,14 +4178,15 @@ $as_echo "no" >&6; }
 fi
 
 
-   fi
-fi
+        fi
+    fi
 
-if test ! -x "$KEYTOOL"; then
-     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The keytool command \"$KEYTOOL\" is not executable or not found.
-       This is only a problem when testing the security actors." >&5
+    if test ! -x "$KEYTOOL"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The keytool command \"$KEYTOOL\" is not executable or not found.
+    This is only a problem when testing the security actors." >&5
 $as_echo "$as_me: WARNING: The keytool command \"$KEYTOOL\" is not executable or not found.
-       This is only a problem when testing the security actors." >&2;}
+    This is only a problem when testing the security actors." >&2;}
+    fi
 fi
 
 
@@ -4444,14 +4364,16 @@ updateExcludeTests () {
 }
 ########################################################################
 
-case "`uname -s`" in
-     Darwin)
-         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Under Eclipse on Mac OS X, there are various
+if test ! -d "ptolemy/backtrack/eclipse"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ptolemy/backtrack/eclipse/ is not present,
+    no need to print message about Darwin." >&5
+$as_echo "ptolemy/backtrack/eclipse/ is not present,
+    no need to print message about Darwin." >&6; }; fi
+else
+    case "`uname -s`" in
+        Darwin)
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Under Eclipse on Mac OS X, there are various
     problems with Eclipse.
-    - To run Eclipse-3.4.0 on the Mac, you must use Java 1.5.  However,
-      You can still run Eclipse with 1.5 and have Eclipse invoke your
-      application with Java 1.6.  The problem is that Eclipse itself
-      must be run with Java 1.5.  This may change with Eclipse Galileo.
     - Eclipse-3.4.0 has problems with Eclipse plugins on the Mac.
       Note that the backtracking and other Eclipse code will
       _not_ work on the Mac from within Eclipse. Backtracking will work
@@ -4461,10 +4383,6 @@ case "`uname -s`" in
     'Problems with Eclipse and Ptolemy on the Mac' link." >&5
 $as_echo "$as_me: WARNING: Under Eclipse on Mac OS X, there are various
     problems with Eclipse.
-    - To run Eclipse-3.4.0 on the Mac, you must use Java 1.5.  However,
-      You can still run Eclipse with 1.5 and have Eclipse invoke your
-      application with Java 1.6.  The problem is that Eclipse itself
-      must be run with Java 1.5.  This may change with Eclipse Galileo.
     - Eclipse-3.4.0 has problems with Eclipse plugins on the Mac.
       Note that the backtracking and other Eclipse code will
       _not_ work on the Mac from within Eclipse. Backtracking will work
@@ -4472,18 +4390,18 @@ $as_echo "$as_me: WARNING: Under Eclipse on Mac OS X, there are various
     For details, see
     http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac2008 and follow the
     'Problems with Eclipse and Ptolemy on the Mac' link." >&2;}
-        if test -d ptolemy/apps/eclipse/awt/; then
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
+            if test -d ptolemy/apps/eclipse/awt/; then
+	        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported." >&5
 $as_echo "$as_me: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported." >&2;}
-	    updateExcludes "ptolemy/apps/eclipse/awt/"
-        fi
-     	;;
-     *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
-	;;
-esac
-
+	        updateExcludes "ptolemy/apps/eclipse/awt/"
+            fi
+     	    ;;
+         *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+	    ;;
+    esac
+fi
 
 PRE_JDK18=no
 case "$JVERSION" in
@@ -4587,7 +4505,14 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "mvn", so it can be a program name with args.
+
+if test ! -f pom.xml; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: pom.xml is not present
+    so we need not find Maven." >&5
+$as_echo "pom.xml is not present
+    so we need not find Maven." >&6; }; fi
+else
+    # Extract the first word of "mvn", so it can be a program name with args.
 set dummy mvn; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -4627,9 +4552,8 @@ $as_echo "no" >&6; }
 fi
 
 
-if test -x "$ANT" -a -x "$MVN"; then
-
-   cat > maven-ant-tasks-test.xml << EoF
+    if test -x "$ANT" -a -x "$MVN"; then
+        cat > maven-ant-tasks-test.xml << EoF
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="build" name="ptII"
  xmlns:artifact="antlib:org.apache.maven.artifact.ant">
@@ -4641,32 +4565,131 @@ if test -x "$ANT" -a -x "$MVN"; then
 </project>
 EoF
 
-   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for maven ant task.  This could take a minute the first time configure is run." >&5
+       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for maven ant task.  This could take a minute the first time configure is run." >&5
 $as_echo_n "checking for maven ant task.  This could take a minute the first time configure is run.... " >&6; }
-   if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
-      if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+       if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
+          if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; fi
-      ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
-      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for websensor in \$PTII/ptolemy/apps/websensor" >&5
+          ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for websensor in \$PTII/ptolemy/apps/websensor" >&5
 $as_echo_n "checking for websensor in \$PTII/ptolemy/apps/websensor... " >&6; }
-      if test -d "$PTII/ptolemy/apps/websensor" ; then
-         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+          if test -d "$PTII/ptolemy/apps/websensor" ; then
+              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; fi
-	 ANT_MAVEN_BUILD_WEBSENSOR="
+	      ANT_MAVEN_BUILD_WEBSENSOR="
   <target name=\"build-websensor\">
     <artifact:mvn pom=\"ptolemy/apps/websensor/pom.xml\">
       <arg value=\"compile\"/>
     </artifact:mvn>
   </target>"
-	 ANT_MAVEN_SUBPROJECTS=',build-websensor'
-      	 ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
-	 ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
-	 ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
-      fi
-   else
-       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: ant did not find the maven-ant-tasks*.jar file,
+	      ANT_MAVEN_SUBPROJECTS=',build-websensor'
+      	      ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
+	      ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
+	      ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
+
+	      #--------------------------------------------------------------------
+	      #       Look for the "gawk" command, used by maven
+	      #--------------------------------------------------------------------
+
+# Check whether --with-gawk was given.
+if test "${with_gawk+set}" = set; then :
+  withval=$with_gawk; GAWK=$withval
+else
+  GAWK=gawk
+fi
+
+	      # Extract the first word of "gawk", so it can be a program name with args.
+set dummy gawk; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_GAWK+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GAWK in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GAWK="$GAWK" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GAWK="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+GAWK=$ac_cv_path_GAWK
+if test -n "$GAWK"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GAWK" >&5
+$as_echo "$GAWK" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+              if test ! -x "$GAWK"; then
+                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven." >&5
+$as_echo "$as_me: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven." >&2;}
+                  # Extract the first word of "awk", so it can be a program name with args.
+set dummy awk; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_GAWK+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GAWK in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GAWK="$GAWK" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GAWK="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+GAWK=$ac_cv_path_GAWK
+if test -n "$GAWK"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GAWK" >&5
+$as_echo "$GAWK" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+                  if test ! -x "$GAWK"; then
+                      GAWK=awk
+                  fi
+              fi
+          fi
+      else
+          { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: ant did not find the maven-ant-tasks*.jar file,
     so we will not build in $PTII/ptolemy/apps/websensor.
     maven-ant-tasks-*.jar is available from
     https://maven.apache.org/ant-tasks/download.html" >&5
@@ -4674,15 +4697,15 @@ $as_echo "$as_me: WARNING: ant did not find the maven-ant-tasks*.jar file,
     so we will not build in $PTII/ptolemy/apps/websensor.
     maven-ant-tasks-*.jar is available from
     https://maven.apache.org/ant-tasks/download.html" >&2;}
-   fi
-   rm -f maven-ant-tasks-test.xml
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The ant and/or mvn binaries could not be found,
+      fi
+      rm -f maven-ant-tasks-test.xml
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The ant and/or mvn binaries could not be found,
     so we will not build in $PTII/ptolemy/apps/websensor." >&5
 $as_echo "$as_me: WARNING: The ant and/or mvn binaries could not be found,
     so we will not build in $PTII/ptolemy/apps/websensor." >&2;}
+    fi
 fi
-
 
 #--------------------------------------------------------------------
 #       Boost was used by Mescal and is now used by FMI++
@@ -5630,7 +5653,7 @@ fi
         fi
         if test -d "$ECLIPSE_DIR"; then
             # Under RHEL 6.2, eclipse is in /usr/bin/eclipse
-            if test ! -f "$ECLIPSE_DIR/plugins"; then
+            if test ! -d "$ECLIPSE_DIR/plugins"; then
 	        savedEclipseDir=$ECLIPSE_DIR
 	        ECLIPSE_DIR=no
                 eclipsedirs="/usr/local /usr/lib /usr/lib64"
@@ -10360,11 +10383,10 @@ fi
 #--------------------------------------------------------------------
 PTJNI_DIR=
 
-if test ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
-    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
+if test ! -d "$PTII/ptolemy/matlab/" -a ! -d "$PTII/lbnl/lib/matlab/" ; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/ptolemy/matlab and $PTII/lbnl/lib/matlab are not present,
     so we need not find gcc or cc." >&5
-$as_echo "$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
+$as_echo "$PTII/ptolemy/matlab and $PTII/lbnl/lib/matlab are not present,
     so we need not find gcc or cc." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the proper JNI architecture" >&5
@@ -10993,8 +11015,10 @@ Darwin)
 	if test -f "$PTJNI_INCLUDE/jni.h"; then
 	    PTMATLAB_SUPPORTED=yes
         else
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $APPLE_JNI_PROBLEM" >&5
+	    if test  -d "$PTII/ptolemy/matlab/" -o -d "$PTII/lbnl/lib/matlab/" ; then
+	        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $APPLE_JNI_PROBLEM" >&5
 $as_echo "$as_me: WARNING: $APPLE_JNI_PROBLEM" >&2;}
+            fi
         fi
 	;;
 Linux)
@@ -11010,8 +11034,15 @@ esac
 
 
 if test "$PTMATLAB_SUPPORTED" = "no"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The Matlab interface is not supported on this platform (you are running \`uname -s\`)." >&5
+    if test ! -d "$PTII/ptolemy/matlab/" -a ! -d "$PTII/lbnl/lib/matlab/" ; then
+        if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/ptolemy/matlab and $PTII/lbnl/lib/matlab are not present,
+    so we need not find matlab." >&5
+$as_echo "$PTII/ptolemy/matlab and $PTII/lbnl/lib/matlab are not present,
+    so we need not find matlab." >&6; }; fi
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The Matlab interface is not supported on this platform (you are running \`uname -s\`)." >&5
 $as_echo "$as_me: WARNING: The Matlab interface is not supported on this platform (you are running \`uname -s\`)." >&2;}
+    fi
 else
     # We only need to look for matlab if $PTII/ptolemy/matlab exists
     if test ! -d "$PTII/ptolemy/matlab"; then
@@ -12100,8 +12131,8 @@ $as_echo_n "checking for Quicktime for Java... " >&6; }
     # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
     if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Quicktime found in default classpath." >&5
-$as_echo "Quicktime found in default classpath." >&6; }; fi
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Quicktime found in the default classpath." >&5
+$as_echo "Quicktime found in the default classpath." >&6; }; fi
        PTQUICKTIME_DIR=quicktime
     else
        if test "${MAJOR_OS_NAME:-none}" = "none"; then
