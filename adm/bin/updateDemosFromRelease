@@ -1,0 +1,30 @@
+#!/bin/sh
+# $Id$
+# Update the demos that were modified after the tree was split
+#
+
+# We take the contents of models.txt and then for each model that is
+#  newer in the release branch we potentially copy it
+
+rm /tmp/updateModels
+trunk=/home/cxh/src/ptII
+release=/home/cxh/src/ptII10.0.beta
+
+models=`cat $release/ptolemy/configs/doc/models.txt | sed 's@\$CLASSPATH/@@'`
+
+for model in $models
+do
+    if [ $release/$model -nt $trunk/$model ]; then
+	diff -q $release/$model $trunk/$model
+	status=$?
+	if [ $status != 0 ]; then
+	    echo "----------------"
+	    echo $model
+	    ls -l $release/$model
+	    ls -l $trunk/$model
+	    diff $release/$model $trunk/$model
+	    echo "cp $release/$model $trunk/$model" >> /tmp/updateModels
+	fi
+    fi
+done
+echo "See /tmp/updateModels"
