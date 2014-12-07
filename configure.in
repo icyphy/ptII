@@ -288,22 +288,6 @@ if test ! -f "$FIND"; then
     AC_MSG_WARN([Could not find the "find" command, looked in \"$FIND\"])
 fi    
 
-#--------------------------------------------------------------------
-#       Look for the "gawk" command, used by maven
-#--------------------------------------------------------------------
-AC_ARG_WITH(gawk, [  --with-gawk=PATH         use the gawk command from PATH with maven,
-                           /usr/bin/gawk],
-    GAWK=$withval,
-    GAWK=gawk)
-AC_PATH_PROG(GAWK, gawk)
-if test ! -x "$GAWK"; then
-    AC_MSG_WARN([Couldn't find gawk, looking for awk. gawk or awk is used by maven.])
-    AC_PATH_PROG(GAWK, awk)
-    if test ! -x "$GAWK"; then
-        GAWK=awk
-    fi	
-fi
-
 # Substitute %20 for any spaces.
 PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #--------------------------------------------------------------------
@@ -430,7 +414,10 @@ changequote([, ])dnl
 
 
 
-
+if test ! -d "ptolemy/actor/lib/fmi/"; then
+    PT_MSG_STATUS([ptolemy/actor/lib/ is not present,
+    so we need not find a 32-bit JVM for testing.])
+else
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where the 32-bit Java is;  if
 #	not, check to see if the PTJAVA32_DIR environment variable is set;
@@ -530,6 +517,7 @@ changequote(<<, >>)dnl
 PTJAVA32_DIR_NO_CYGDRIVE="`echo "$PTJAVA32_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 changequote([, ])dnl
 
+fi # Test for ptolemy/actor/lib/fmi
 
 
 #
@@ -842,49 +830,58 @@ fi
 #
 # The javaws command is used to test Webstart JNLP files.
 #
-AC_MSG_CHECKING([for the javaws command])
-if test -f "$PTJAVA_DIR/bin/javaws"; then
-    PT_MSG_RESULT($PTJAVA_DIR/bin/javaws)
-    JAVAWS="$PTJAVA_DIR/bin/javaws"
+if test ! -f "mk/jnlp.mk"; then
+    PT_MSG_STATUS([mk/jnlp.mk is not present,
+    so we need not find javaws, the Java Web Start binary.])
 else
-   if test -f "$PTJAVA_DIR/Commands/java"; then
-       PT_MSG_RESULT($PTJAVA_DIR/Commands/java)
-       JAVAWS="$PTJAVA_DIR/Commands/javaws"
-   else
-       AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/javaws'.
-       or '$PTJAVA/Commands/javaws', looking in the path.
-       This is only a problem when testing the Java Webstart (JNLP) files.])
-       AC_PATH_PROG(JAVAWS, javaws)
-   fi
-fi
-
-if test ! -x "$JAVAWS"; then
-     AC_MSG_WARN([The javaws command "$JAVAWS" is not executable or not found.
+    AC_MSG_CHECKING([for the javaws command])
+    if test -f "$PTJAVA_DIR/bin/javaws"; then
+        PT_MSG_RESULT($PTJAVA_DIR/bin/javaws)
+        JAVAWS="$PTJAVA_DIR/bin/javaws"
+    else
+        if test -f "$PTJAVA_DIR/Commands/java"; then
+            PT_MSG_RESULT($PTJAVA_DIR/Commands/java)
+            JAVAWS="$PTJAVA_DIR/Commands/javaws"
+        else
+            AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/javaws'.
+    or '$PTJAVA/Commands/javaws', looking in the path.
     This is only a problem when testing the Java Webstart (JNLP) files.])
+            AC_PATH_PROG(JAVAWS, javaws)
+        fi
+    fi
+    if test ! -x "$JAVAWS"; then
+        AC_MSG_WARN([The javaws command "$JAVAWS" is not executable or not found.
+    This is only a problem when testing the Java Webstart (JNLP) files.])
+    fi
 fi
 
 #
 # keytool command used to generate a certificate for testing actor.lib.security actors
 #
-AC_MSG_CHECKING([for the keytool command])
-if test -f "$PTJAVA_DIR/bin/keytool"; then
-    PT_MSG_RESULT($PTJAVA_DIR/bin/keytool)
-    KEYTOOL="$PTJAVA_DIR/bin/keytool"
+if test ! -d "ptolemy/actor/lib/security/"; then
+    PT_MSG_STATUS([ptolemy/actor/lib/security/ is not present,
+    so we need not find keytool, the certifate command.])
 else
-   if test -f "$PTJAVA_DIR/Commands/java"; then
-       PT_MSG_RESULT($PTJAVA_DIR/Commands/java)
-       KEYTOOL="$PTJAVA_DIR/Commands/keytool"
-   else
-       AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/keytool'.
-       or '$PTJAVA/Commands/keytool', looking in the path.
-       This is only a problem when testing the security actors.])
-       AC_PATH_PROG(KEYTOOL, keytool)
-   fi
-fi
+    AC_MSG_CHECKING([for the keytool command])
+    if test -f "$PTJAVA_DIR/bin/keytool"; then
+        PT_MSG_RESULT($PTJAVA_DIR/bin/keytool)
+        KEYTOOL="$PTJAVA_DIR/bin/keytool"
+    else
+        if test -f "$PTJAVA_DIR/Commands/java"; then
+            PT_MSG_RESULT($PTJAVA_DIR/Commands/java)
+            KEYTOOL="$PTJAVA_DIR/Commands/keytool"
+        else
+            AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/keytool'.
+    or '$PTJAVA/Commands/keytool', looking in the path.
+    This is only a problem when testing the security actors.])
+            AC_PATH_PROG(KEYTOOL, keytool)
+        fi
+    fi
 
-if test ! -x "$KEYTOOL"; then
-     AC_MSG_WARN([The keytool command "$KEYTOOL" is not executable or not found.
-       This is only a problem when testing the security actors.])
+    if test ! -x "$KEYTOOL"; then
+        AC_MSG_WARN([The keytool command "$KEYTOOL" is not executable or not found.
+    This is only a problem when testing the security actors.])
+    fi
 fi
 
 
@@ -1059,14 +1056,14 @@ updateExcludeTests () {
 }
 ########################################################################
 
-case "`uname -s`" in
-     Darwin) 
-         AC_MSG_WARN([Under Eclipse on Mac OS X, there are various
+if test ! -d "ptolemy/backtrack/eclipse"; then
+    PT_MSG_STATUS([ptolemy/backtrack/eclipse/ is not present,
+    no need to print message about Darwin.])
+else
+    case "`uname -s`" in
+        Darwin) 
+            AC_MSG_WARN([Under Eclipse on Mac OS X, there are various
     problems with Eclipse.	 
-    - To run Eclipse-3.4.0 on the Mac, you must use Java 1.5.  However,
-      You can still run Eclipse with 1.5 and have Eclipse invoke your
-      application with Java 1.6.  The problem is that Eclipse itself
-      must be run with Java 1.5.  This may change with Eclipse Galileo.
     - Eclipse-3.4.0 has problems with Eclipse plugins on the Mac.
       Note that the backtracking and other Eclipse code will
       _not_ work on the Mac from within Eclipse. Backtracking will work 
@@ -1074,16 +1071,16 @@ case "`uname -s`" in
     For details, see
     http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac2008 and follow the
     'Problems with Eclipse and Ptolemy on the Mac' link.])
-        if test -d ptolemy/apps/eclipse/awt/; then
-	    AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
+            if test -d ptolemy/apps/eclipse/awt/; then
+	        AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported.])
-	    updateExcludes "ptolemy/apps/eclipse/awt/"
-        fi	    
-     	;;
-     *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
-	;;
-esac
-
+	        updateExcludes "ptolemy/apps/eclipse/awt/"
+            fi	    
+     	    ;;
+         *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+	    ;;
+    esac
+fi
 
 PRE_JDK18=no
 case "$JVERSION" in
@@ -1145,10 +1142,14 @@ ANT_WEBSENSOR_SOURCEPATH=''
 ANT_WEBSENSOR_SRC=''
 
 AC_PATH_PROG(ANT, ant)
-AC_PATH_PROG(MVN, mvn)
-if test -x "$ANT" -a -x "$MVN"; then
 
-   cat > maven-ant-tasks-test.xml << EoF
+if test ! -f pom.xml; then
+    PT_MSG_STATUS([pom.xml is not present
+    so we need not find Maven.])
+else
+    AC_PATH_PROG(MVN, mvn)
+    if test -x "$ANT" -a -x "$MVN"; then
+        cat > maven-ant-tasks-test.xml << EoF
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="build" name="ptII"
  xmlns:artifact="antlib:org.apache.maven.artifact.ant">
@@ -1160,36 +1161,52 @@ if test -x "$ANT" -a -x "$MVN"; then
 </project>
 EoF
 
-   AC_MSG_CHECKING([for maven ant task.  This could take a minute the first time configure is run.])
-   if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
-      PT_MSG_RESULT([ok])
-      ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
-      AC_MSG_CHECKING([for websensor in \$PTII/ptolemy/apps/websensor])
-      if test -d "$PTII/ptolemy/apps/websensor" ; then
-         PT_MSG_RESULT([ok])
-	 ANT_MAVEN_BUILD_WEBSENSOR="
+       AC_MSG_CHECKING([for maven ant task.  This could take a minute the first time configure is run.])
+       if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
+          PT_MSG_RESULT([ok])
+          ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
+          AC_MSG_CHECKING([for websensor in \$PTII/ptolemy/apps/websensor])
+          if test -d "$PTII/ptolemy/apps/websensor" ; then
+              PT_MSG_RESULT([ok])
+	      ANT_MAVEN_BUILD_WEBSENSOR="
   <target name=\"build-websensor\">
     <artifact:mvn pom=\"ptolemy/apps/websensor/pom.xml\">
       <arg value=\"compile\"/>
     </artifact:mvn>
   </target>"
-	 ANT_MAVEN_SUBPROJECTS=',build-websensor'
-      	 ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
-	 ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
-	 ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
-      fi
-   else
-       AC_MSG_WARN([ant did not find the maven-ant-tasks*.jar file,
+	      ANT_MAVEN_SUBPROJECTS=',build-websensor'
+      	      ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
+	      ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
+	      ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
+
+	      #--------------------------------------------------------------------
+	      #       Look for the "gawk" command, used by maven
+	      #--------------------------------------------------------------------
+	      AC_ARG_WITH(gawk, [  --with-gawk=PATH         use the gawk command from PATH with maven,
+	                   /usr/bin/gawk],
+			   GAWK=$withval,
+			   GAWK=gawk)
+	      AC_PATH_PROG(GAWK, gawk)
+              if test ! -x "$GAWK"; then
+                  AC_MSG_WARN([Couldn't find gawk, looking for awk. gawk or awk is used by maven.])
+                  AC_PATH_PROG(GAWK, awk)
+                  if test ! -x "$GAWK"; then
+                      GAWK=awk
+                  fi	
+              fi
+          fi
+      else
+          AC_MSG_WARN([ant did not find the maven-ant-tasks*.jar file,
     so we will not build in $PTII/ptolemy/apps/websensor.
     maven-ant-tasks-*.jar is available from
     https://maven.apache.org/ant-tasks/download.html])
-   fi
-   rm -f maven-ant-tasks-test.xml
-else
-    AC_MSG_WARN([The ant and/or mvn binaries could not be found,
+      fi
+      rm -f maven-ant-tasks-test.xml
+    else
+        AC_MSG_WARN([The ant and/or mvn binaries could not be found,
     so we will not build in $PTII/ptolemy/apps/websensor.])
+    fi
 fi
-
 
 #--------------------------------------------------------------------
 #       Boost was used by Mescal and is now used by FMI++
@@ -1865,7 +1882,7 @@ changequote([, ])dnl
         fi 
         if test -d "$ECLIPSE_DIR"; then
             # Under RHEL 6.2, eclipse is in /usr/bin/eclipse
-            if test ! -f "$ECLIPSE_DIR/plugins"; then
+            if test ! -d "$ECLIPSE_DIR/plugins"; then
 	        savedEclipseDir=$ECLIPSE_DIR
 	        ECLIPSE_DIR=no
                 eclipsedirs="/usr/local /usr/lib /usr/lib64"
@@ -4116,8 +4133,8 @@ fi
 #--------------------------------------------------------------------
 PTJNI_DIR=
 
-if test ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
-    PT_MSG_RESULT([$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
+if test ! -d "$PTII/ptolemy/matlab/" -a ! -d "$PTII/lbnl/lib/matlab/" ; then
+    PT_MSG_STATUS([$PTII/ptolemy/matlab and $PTII/lbnl/lib/matlab are not present,
     so we need not find gcc or cc.])
 else
     AC_MSG_CHECKING([for the proper JNI architecture])
@@ -4511,7 +4528,9 @@ Darwin)
 	if test -f "$PTJNI_INCLUDE/jni.h"; then
 	    PTMATLAB_SUPPORTED=yes
         else 
-	    AC_MSG_WARN([$APPLE_JNI_PROBLEM])
+	    if test  -d "$PTII/ptolemy/matlab/" -o -d "$PTII/lbnl/lib/matlab/" ; then
+	        AC_MSG_WARN([$APPLE_JNI_PROBLEM])
+            fi
         fi	    
 	;;
 Linux)
@@ -4527,7 +4546,12 @@ esac
 
 
 if test "$PTMATLAB_SUPPORTED" = "no"; then
-    AC_MSG_WARN([The Matlab interface is not supported on this platform (you are running `uname -s`).])
+    if test ! -d "$PTII/ptolemy/matlab/" -a ! -d "$PTII/lbnl/lib/matlab/" ; then
+        PT_MSG_STATUS([$PTII/ptolemy/matlab and $PTII/lbnl/lib/matlab are not present,
+    so we need not find matlab.])
+    else 
+        AC_MSG_WARN([The Matlab interface is not supported on this platform (you are running `uname -s`).])
+    fi
 else
     # We only need to look for matlab if $PTII/ptolemy/matlab exists
     if test ! -d "$PTII/ptolemy/matlab"; then
@@ -5181,7 +5205,7 @@ else
     # Use -classpath here because that is what we use when we compile
     # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
     if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
-       PT_MSG_RESULT(Quicktime found in default classpath.)
+       PT_MSG_RESULT(Quicktime found in the default classpath.)
        PTQUICKTIME_DIR=quicktime
     else
        if test "${MAJOR_OS_NAME:-none}" = "none"; then
