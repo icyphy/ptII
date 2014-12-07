@@ -1200,7 +1200,7 @@ jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	# Replace the CLASSPATHSEPARATOR with a space.
-	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
+	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g"`; \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
@@ -1246,7 +1246,7 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 	fi
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	# Replace the CLASSPATHSEPARATOR with a space.
-	@set `echo $(ALL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`; \
+	@set `echo $(ALL_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g"`; \
 	for x do \
 		jarfile=`echo $$x | sed "s@$(PTII)/@@"`; \
 		if [ ! -f $(JAR_DIST_DIR)/$$jarfile ]; then \
@@ -1559,7 +1559,7 @@ vergil_l4j.xml:
 	$(MKL4J) vergil ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
 		"" \
-		`echo $(FULL_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+		`echo $(FULL_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g" ` > $@
 
 vergil.exe: vergil_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) vergil_l4j.xml`

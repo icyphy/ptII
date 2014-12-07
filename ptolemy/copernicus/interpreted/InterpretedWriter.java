@@ -35,6 +35,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 import soot.HasPhaseOptions;
@@ -62,7 +63,7 @@ public class InterpretedWriter extends SceneTransformer implements
 HasPhaseOptions {
     /** Construct a new transformer
      */
-    private InterpretedWriter(CompositeActor model) {
+    private InterpretedWriter(CompositeEntity model) {
         _model = model;
     }
 
@@ -73,7 +74,7 @@ HasPhaseOptions {
      * @param model The model that this class will operate on.
      * @return An instance of the AppletWriter transformer.
      */
-    public static InterpretedWriter v(CompositeActor model) {
+    public static InterpretedWriter v(CompositeEntity model) {
         return new InterpretedWriter(model);
     }
 
@@ -169,7 +170,7 @@ HasPhaseOptions {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The model we are generating code for.
-    private CompositeActor _model;
+    private CompositeEntity _model;
 
     // The full path to the directory where we are creating the model
     private String _outputDirectory;

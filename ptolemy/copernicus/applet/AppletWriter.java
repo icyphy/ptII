@@ -116,7 +116,7 @@ should be included in the jar files.
 public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
-    private AppletWriter(CompositeActor model) {
+    private AppletWriter(CompositeEntity model) {
         _model = model;
     }
 
@@ -127,7 +127,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      * @param model The model that this class will operate on.
      * @return An instance of the AppletWriter transformer.
      */
-    public static AppletWriter v(CompositeActor model) {
+    public static AppletWriter v(CompositeEntity model) {
         return new AppletWriter(model);
     }
 
@@ -273,17 +273,24 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
         System.out.println("AppletWriter: _model: " + _model);
 
-        Director director = _model.getDirector();
-        System.out.println("AppletWriter: director: " + director);
+        if (_model == null) {
+            throw new InternalErrorException("_toplevel is null.  Perhaps KernelMain.initialize() was not called because the model's top level is something other than a CompositeActor?");
+        }
 
-        if (director != null) {
-            String directorPackage = director.getClass().getPackage().getName();
+        Director director = null;
+        if (_model instanceof CompositeActor) {
+            director = ((CompositeActor)_model).getDirector();
+            System.out.println("AppletWriter: director: " + director);
 
-            if (!directorPackage.endsWith(".kernel")) {
-                System.out.println("Warning: the directorPackage does not end "
-                        + "with '.kernel', it is :" + directorPackage);
+            if (director != null) {
+                String directorPackage = director.getClass().getPackage().getName();
+
+                if (!directorPackage.endsWith(".kernel")) {
+                    System.out.println("Warning: the directorPackage does not end "
+                            + "with '.kernel', it is :" + directorPackage);
+                }
+                _domainJar = _getDomainJar(directorPackage);
             }
-            _domainJar = _getDomainJar(directorPackage);
         }
 
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
@@ -733,7 +740,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             Map<String, String> attributeMap = new HashMap<String, String>();
-            attributeMap.put("ptolemy.cg", "ptolemy/cg/cg.jar");
             attributeMap.put("ptolemy.codegen", "ptolemy/codegen/codegen.jar");
             attributeMap.put("ptolemy.data.ontologies",
                     "ptolemy/data/ontologies/ontologies.jar");
@@ -887,8 +893,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             Map<String, String> atomicMap = new HashMap<String, String>();
             atomicMap.put("lbnl", "lbnl/lbnl.jar");
-            atomicMap.put("org.ptolemy.machineLearning.particleFilter", 
-                    "org/ptolemy/machineLearning/particleFilter/particleFilter.jar");
             atomicMap.put("ptolemy.backtrack",
                     "ptolemy/backtrack/backtrack.jar");
             atomicMap.put("ptolemy.actor.lib.aspect",
@@ -1422,8 +1426,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
             // Parse the model.
-            CompositeActor toplevel = null;
-            toplevel = (CompositeActor) parser
+            CompositeEntity toplevel = null;
+            toplevel = (CompositeEntity) parser
                     .parse(modelPathURL, modelPathURL);
             // 1) Try to find a DocAttribute
             Attribute docAttribute = toplevel.getAttribute("DocAttribute");
@@ -1543,8 +1547,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.fmi.FMUImport", fmiJar);
 
         String gtJar = "ptolemy/actor/gt/gt.jar";
+        auxiliaryJarMap.put("ptolemy.actor.gt.DefaultModelAttribute", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.GTIngredientsAttribute", gtJar);
+        auxiliaryJarMap.put("ptolemy.vergil.gt.GTIngredientsEditor$Factory", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelGenerator", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.PatternObjectAttribute", gtJar);
+        auxiliaryJarMap.put("ptolemy.actor.gt.ContainerIgnoringAttribute", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationMode", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule", gtJar);
         auxiliaryJarMap.put(
@@ -1729,8 +1738,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/domains/sdf/sdf.jar");
             auxiliaryClassMap.put("distributed sdf.jar needs client.jar",
                     "ptolemy/distributed/client/client.jar");
-            auxiliaryClassMap.put("distributed sdf.jar needs distributed.jar",
-                    "ptolemy/distributed/distributed.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(fmiJar)) {
@@ -1738,13 +1745,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "org/ptolemy/fmi/fmi.jar");
             auxiliaryClassMap.put("fmi needs lib/jna-4.0.0-variadic.jar",
                     "lib/jna-4.0.0-variadic.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/modal/kernel/fmv/fmv.jar")) {
-            auxiliaryClassMap.put("fmv needs the rest of modal",
-                    "ptolemy/domains/modal/modal.jar");
-            auxiliaryClassMap.put("fmv needs vergil/modal/fmv",
-                    "ptolemy/vergil/modal/fmv/fmv.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
@@ -1991,6 +1991,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Given a domain package, return the corresponding jar file
     private static String _getDomainJar(String domainPackage) {
+        if (domainPackage.equals("ptolemy.actor.gt")) {
+            return "ptolemy/actor/gt/gt.jar";
+        }
         if (domainPackage.equals("ptolemy.domains.sdf.lib.vq")) {
             return "ptolemy/domains/sdf/lib/vq/vq.jar";
         }
@@ -2480,7 +2483,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private String _domainJar;
 
     // The model we are generating code for.
-    private CompositeActor _model;
+    private CompositeEntity _model;
 
     // The jar files that are necessary to run the model if the codebase
     // is ".".

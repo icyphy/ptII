@@ -100,7 +100,7 @@ HasPhaseOptions {
     /** Construct a new shallow model transformer.
      * @param model The model that this class will operate on.
      */
-    private ShallowModelTransformer(CompositeActor model) {
+    private ShallowModelTransformer(CompositeEntity model) {
         _model = model;
     }
 
@@ -112,7 +112,7 @@ HasPhaseOptions {
      * @return An instance of ShallowModelTransformer that operates
      * on the model.
      */
-    public static ShallowModelTransformer v(CompositeActor model) {
+    public static ShallowModelTransformer v(CompositeEntity model) {
         return new ShallowModelTransformer(model);
     }
 
@@ -995,7 +995,7 @@ HasPhaseOptions {
     private Map _relationLocalMap;
 
     // The model we are generating code for.
-    private CompositeActor _model;
+    private CompositeEntity _model;
 
     private static Object[] _reflectionArguments = new Object[1];
 

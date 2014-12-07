@@ -98,7 +98,7 @@ remoteApplet: $(PTII_USER_DIRECTORY)
 		-targetPath DOPCenter DOPCenter.xml
 
 
-SIGNED_DIRECTORY=$(PTII)/signed
+SIGNED_DIRECTORY=$(PTIII_USER_DIRECTORY)/signed
 $(SIGNED_DIRECTORY):
 	if [ ! -d "$(SIGNED_DIRECTORY)" ]; then \
 		echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
@@ -106,35 +106,35 @@ $(SIGNED_DIRECTORY):
 	fi
 
 
-$(PTII)/signed/ptolemy/vergil/vergilApplet.jar: $(SIGNED_DIRECTORY) $(PTII)/ptolemy/vergil/vergilApplet.jar
+$(PTII_USER_DIRECTORY)/signed/ptolemy/vergil/vergilApplet.jar: $(SIGNED_DIRECTORY) $(PTII_USER_DIRECTORY)/ptolemy/vergil/vergilApplet.jar
 	mkdir -p "$(PTII)/signed/ptolemy/actor/lib/database"
 	cp "$(PTII)/ptolemy/vergil/vergilApplet.jar" \
 		"$(PTII)/signed/ptolemy/vergil/vergilApplet.jar"
 	(cd "$(PTII)"; $(MAKE) sign_jar JARFILE=signed/ptolemy/vergil/vergilApplet.jar)
 
-$(PTII)/signed/ptolemy/actor/lib/database/ojdbc6.jar: $(SIGNED_DIRECTORY) $(PTII)/ptolemy/actor/lib/database/ojdbc6.jar
+$(PTII_USER_DIRECTORY)/signed/ptolemy/actor/lib/database/ojdbc6.jar: $(SIGNED_DIRECTORY) $(PTII_USER_DIRECTORY)/ptolemy/actor/lib/database/ojdbc6.jar
 	mkdir -p "$(PTII)/signed/ptolemy/actor/lib/database"
 	cp "$(PTII)/ptolemy/actor/lib/database/ojdbc6.jar" \
 		"$(PTII)/signed/ptolemy/actor/lib/database/ojdbc6.jar"
 	(cd "$(PTII)"; $(MAKE) sign_jar JARFILE=signed/ptolemy/actor/lib/database/ojdbc6.jar)
 
-$(PTII)/signed/ptolemy/actor/lib/database/database.jar: $(SIGNED_DIRECTORY) $(PTII)/ptolemy/actor/lib/database/database.jar"
+$(PTII_USER_DIRECTORY)/signed/ptolemy/actor/lib/database/database.jar: $(SIGNED_DIRECTORY) $(PTII_USER_DIRECTORY)/ptolemy/actor/lib/database/database.jar"
 	mkdir -p "$(PTII)/signed/ptolemy/actor/lib/database"
 	cp "$(PTII)/ptolemy/actor/lib/database/database.jar" \
 		"$(PTII)/signed/ptolemy/actor/lib/database/database.jar"
 	(cd "$(PTII)"; $(MAKE) sign_jar JARFILE=signed/ptolemy/actor/lib/database/database.jar)
 
-$(PTII)/signed/ptolemy/domains/space/space.jar: $(SIGNED_DIRECTORY) $(PTII)/ptolemy/domains/space/space.jar 
+$(PTII_USER_DIRECTORY)/signed/ptolemy/domains/space/space.jar: $(SIGNED_DIRECTORY) $(PTII_USER_DIRECTORY)/ptolemy/domains/space/space.jar 
 	mkdir -p "$(PTII)/signed/ptolemy/actor/lib/database"
 	cp "$(PTII)/ptolemy/domains/space/space.jar" \
 		"$(PTII)/signed/ptolemy/domains/space/space.jar"
 	(cd "$(PTII)"; $(MAKE) sign_jar JARFILE=signed/ptolemy/domains/space/space.jar)
 
 OTHER_SIGNED_JARS = \
-	$(PTII)/signed/ptolemy/vergil/vergilApplet.jar \
-	$(PTII)/ptolemy/actor/lib/database/ojdbc6.jar \
-	$(PTII)/ptolemy/actor/lib/database/database.jar \
-	$(PTII)/ptolemy/domains/space/space.jar
+	$(PTII_USER_DIRECTORY)/signed/ptolemy/vergil/vergilApplet.jar \
+	$(PTII_USER_DIRECTORY)/ptolemy/actor/lib/database/ojdbc6.jar \
+	$(PTII_USER_DIRECTORY)/ptolemy/actor/lib/database/database.jar \
+	$(PTII_USER_DIRECTORY)/ptolemy/domains/space/space.jar
 
 remoteSignedApplet: $(PTII_USER_DIRECTORY) $(OTHER_SIGNED_JARS) 
 	cp DOPCenter.gif  "$(PTII_USER_DIRECTORY)/DOPCenter"

@@ -50,6 +50,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -148,7 +149,7 @@ public class Copernicus {
         }
 
         // Parse the model.
-        CompositeActor toplevel = readInModel(_modelPath);
+        CompositeEntity toplevel = readInModel(_modelPath);
 
         _generatorAttribute = (GeneratorAttribute) toplevel
                 .getAttribute(GENERATOR_NAME);
@@ -226,7 +227,7 @@ public class Copernicus {
      *  the parameters that determine the commands to create and run
      *  the generated code.
      */
-    public static void compileAndRun(CompositeActor model,
+    public static void compileAndRun(CompositeEntity model,
             GeneratorAttribute generatorAttribute) throws Exception {
         // Save the _generatorAttribute in a temporary file and then
         // add an attribute to _generatorAttribute that lists the
@@ -493,7 +494,7 @@ public class Copernicus {
      *  </ol>
      *  @exception IllegalActionException If the model cannot be parsed.
      */
-    public CompositeActor readInModel(String modelPathOrURL)
+    public CompositeEntity readInModel(String modelPathOrURL)
             throws IllegalActionException, NameDuplicationException {
         URL modelURL = null;
 
@@ -571,10 +572,12 @@ public class Copernicus {
         //                 directorClassChanges);
         //         _parser.addMoMLFilter(propertyClassChanges);
         // Parse the model.
-        CompositeActor toplevel = null;
+
+        // ptolemy.data.ontologies.Ontology is a CompositeEntity, not a CompositeActor.
+        CompositeEntity toplevel = null;
 
         try {
-            toplevel = (CompositeActor) _parser.parse(modelURL, modelURL);
+            toplevel = (CompositeEntity) _parser.parse(modelURL, modelURL);
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex, "Failed to parse '"
                     + modelPathOrURL + "' as a top level model in \n"

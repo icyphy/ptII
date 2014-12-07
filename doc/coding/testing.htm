@@ -569,7 +569,7 @@ rm -rf ptolemy.eecs.berkeley.edu
 
     Look for "<code>Not Found</code>"
     <pre>
-egrep 'http:|Not Found' wget.out
+awk '{ if ($0 ~ /Not Found/) { print lineTwo} else {lineTwo = lineOne; lineOne=$0}}' wget.out | uniq | awk '{print $NF}'| grep -v '%5C' | sort  
     </pre>
 
 

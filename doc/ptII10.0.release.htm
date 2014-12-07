@@ -1,155 +1,155 @@
 <!-- $Id$ -->
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 11.0.devel Release Notes</title>
-<link href="default.css" rel="stylesheet" type="text/css">
-</head>
-<body bgcolor="#faf0e6">
-<h1>Ptolemy II 11.0.devel Release Notes</h1>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Ptolemy II 10.0.beta Release Notes</title>
+    <link href="default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body bgcolor="#faf0e6">
+    <h1>Ptolemy II 10.0.beta Release Notes</h1>
 
-Ptolemy II is a set of Java packages supporting heterogeneous,
-concurrent modeling and design.  Its <code>kernel</code> package
-supports clustered hierarchical graphs, which are collections of
-<I>entities</I> and <I>relations</I> between those entities.  Its
-<code>actor</code> package extends the kernel so that entities have
-functionality and can communicate via the relations.  Its
-<I>domains</I> extend the actor package by imposing <I>models of
-computation</I> on the interaction between entities.  Examples of
-models of computation include discrete-event systems, dataflow,
-process networks, synchronous/reactive systems, and communicating
-sequential processes.
+    Ptolemy II is a set of Java packages supporting heterogeneous,
+    concurrent modeling and design.  Its <code>kernel</code> package
+    supports clustered hierarchical graphs, which are collections of
+    <I>entities</I> and <I>relations</I> between those entities.  Its
+    <code>actor</code> package extends the kernel so that entities have
+    functionality and can communicate via the relations.  Its
+    <I>domains</I> extend the actor package by imposing <I>models of computation</I>
+    on the interaction between entities.  Examples of
+    models of computation include discrete-event systems, dataflow,
+    process networks, synchronous/reactive systems, and communicating
+    sequential processes.
 
- <p>Ptolemy II includes a number of support packages, such as 
+    <p>Ptolemy II includes a number of support packages, such as 
 
- <br><code>data</code>, providing a type system, data encapsulation and an
- expression parser,
+      <br><code>data</code>, providing a type system, data encapsulation and an
+      expression parser,
 
- <br><code>plot</code>, providing visual display of data,
+      <br><code>plot</code>, providing visual display of data,
 
- <br><code>math</code>, providing matrix and vector math and signal
-processing functions, and
+      <br><code>math</code>, providing matrix and vector math and signal
+      processing functions, and
 
- <br><code>graph</code>, providing graph-theoretic manipulations.
+      <br><code>graph</code>, providing graph-theoretic manipulations.
 
- <p>The Ptolemy Book describes the Ptolemy II design and
-the implementation of the Java classes.</p>
-<ul>
-	    <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
-	    <li> Ptolemy Book: Claudius Ptolemaeus, Editor, System Design, Modeling, and Simulation Using Ptolemy II, Ptolemy.org, 2014. (<a href="http://ptolemy.org/systems#in_browser" target="_top">Website</a>, 
-	    <!--/ptinyKeplerDocs-->
-	      <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top">PDF</a><i>(available via the installer, not via svn)</i>)
-</ul>
-
-
-<p><a href="design/usingVergil/BuildingGraphicalModels.pdf" target="_top">Building Graphical Models</a> describes how to use Vergil.</p>
+    <p>The Ptolemy Book describes the Ptolemy II design and
+      the implementation of the Java classes.</p>
+    <ul>
+      <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
+      <li> Ptolemy Book: Claudius Ptolemaeus, Editor, System Design, Modeling, and Simulation Using Ptolemy II, Ptolemy.org, 2014. (<a href="http://ptolemy.org/systems#in_browser" target="_top">Website</a>, 
+	<!--/ptinyKeplerDocs-->
+	<a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top">PDF</a><i>(available via the installer, not via svn)</i>)
+    </ul>
 
 
+    <p><a href="design/usingVergil/BuildingGraphicalModels.pdf" target="_top">Building Graphical Models</a> describes how to use Vergil.</p>
 
-<h2>Complete List of Domains in Ptolemy II</h2>
- <!-- We include this list here since we will be posting the release notes
-to the newsgroups etc.  See also main.htm
- -->
-<p>Ptolemy II includes a growing suite of <i>domains</i>, each of which
-realizes a model of computation.  It also includes a component library,
-in which most components are <i>domain polymorphic</i>, in that they
-can operate in several of the domains.  Most are also <i>data polymorphic</i>,
-in that they operate on several data types.
-The domains that have been implemented are listed below.</p>
 
-<p>Domains that are reasonably mature:</p>
-<ul>
-<li> <a href="../ptolemy/domains/continuous/doc/index.htm" target="_top">Continuous</a>:
+
+    <h2>Complete List of Domains in Ptolemy II</h2>
+    <!-- We include this list here since we will be posting the release notes
+	 to the newsgroups etc.  See also main.htm
+      -->
+    <p>Ptolemy II includes a growing suite of <i>domains</i>, each of which
+      realizes a model of computation.  It also includes a component library,
+      in which most components are <i>domain polymorphic</i>, in that they
+      can operate in several of the domains.  Most are also <i>data polymorphic</i>,
+      in that they operate on several data types.
+      The domains that have been implemented are listed below.</p>
+
+    <p>Domains that are reasonably mature:</p>
+    <ul>
+      <li> <a href="../ptolemy/domains/continuous/doc/index.htm" target="_top">Continuous</a>:
 	continuous-time modeling (redesign of the CT domain)
-<li> <a href="../ptolemy/domains/ddf/doc/index.htm" target="_top">DDF</a>:
+      <li> <a href="../ptolemy/domains/ddf/doc/index.htm" target="_top">DDF</a>:
 	dynamic dataflow
-<li> <a href="../ptolemy/domains/de/doc/index.htm" target="_top">DE</a>:
+      <li> <a href="../ptolemy/domains/de/doc/index.htm" target="_top">DE</a>:
 	discrete-event modeling
-<li> <a href="../ptolemy/domains/modal/doc/index.htm" target="_top">Modal</a>:
-	 finite state machines and modal model (redesign of the FSM domain)
-<li> <a href="../ptolemy/domains/pn/doc/index.htm" target="_top">PN</a>:
+      <li> <a href="../ptolemy/domains/modal/doc/index.htm" target="_top">Modal</a>:
+	finite state machines and modal model (redesign of the FSM domain)
+      <li> <a href="../ptolemy/domains/pn/doc/index.htm" target="_top">PN</a>:
 	process networks with asynchronous message passing
-<li> <a href="../ptolemy/domains/rendezvous/doc/index.htm" target="_top">Rendezvous</a>:
+      <li> <a href="../ptolemy/domains/rendezvous/doc/index.htm" target="_top">Rendezvous</a>:
 	process networks with synchronous message passing
-<li> <a href="../ptolemy/domains/sdf/doc/index.htm" target="_top">SDF</a>:
+      <li> <a href="../ptolemy/domains/sdf/doc/index.htm" target="_top">SDF</a>:
 	synchronous dataflow
-<li> <a href="../ptolemy/domains/sr/doc/index.htm" target="_top">SR</a>:
+      <li> <a href="../ptolemy/domains/sr/doc/index.htm" target="_top">SR</a>:
 	synchronous reactive
-<li> <a href="../ptolemy/domains/wireless/doc/index.htm" target="_top">Wireless</a>:
-    wireless
-</ul>
+      <li> <a href="../ptolemy/domains/wireless/doc/index.htm" target="_top">Wireless</a>:
+	wireless
+    </ul>
 
-Domains that are still experimental:
-<ul>
-<!--/vergilDocs-->
-<li> <a href="../ptolemy/domains/algebraic/doc/index.htm" target="_top">Algebraic</a>:
+    Domains that are still experimental:
+    <ul>
+      <!--/vergilDocs-->
+      <li> <a href="../ptolemy/domains/algebraic/doc/index.htm" target="_top">Algebraic</a>:
         algebraic loops (New in 10.0)
-<li> <a href="../ptolemy/domains/ca/doc/index.htm" target="_top">CA</a>:
+      <li> <a href="../ptolemy/domains/ca/doc/index.htm" target="_top">CA</a>:
         cellular automata (New in 10.0)
-<li> <a href="../ptolemy/domains/ci/doc/index.htm" target="_top">CI</a>:
+      <li> <a href="../ptolemy/domains/ci/doc/index.htm" target="_top">CI</a>:
 	component interaction (push/pull)
-<li> <a href="../ptolemy/domains/csp/doc/index.htm" target="_top">CSP</a>:
-	 communicating sequential processes
-<li> <a href="../ptolemy/domains/dde/doc/index.htm" target="_top">DDE</a>:
+      <li> <a href="../ptolemy/domains/csp/doc/index.htm" target="_top">CSP</a>:
+	communicating sequential processes
+      <li> <a href="../ptolemy/domains/dde/doc/index.htm" target="_top">DDE</a>:
 	distributed discrete events
-<li> <a href="../ptolemy/domains/dt/doc/index.htm" target="_top">DT</a>:
+      <li> <a href="../ptolemy/domains/dt/doc/index.htm" target="_top">DT</a>:
 	discrete time
-<li> <a href="../ptolemy/domains/giotto/doc/index.htm" target="_top">Giotto</a>:
+      <li> <a href="../ptolemy/domains/giotto/doc/index.htm" target="_top">Giotto</a>:
 	periodic time-driven
-<li> <a href="../ptolemy/domains/gr/doc/index.htm" target="_top">GR</a>:
+      <li> <a href="../ptolemy/domains/gr/doc/index.htm" target="_top">GR</a>:
 	3-D graphics
-<li> <a href="../ptolemy/domains/hdf/doc/index.htm" target="_top">HDF</a>:
+      <li> <a href="../ptolemy/domains/hdf/doc/index.htm" target="_top">HDF</a>:
 	heterochronous dataflow
-<li> <a href="../ptolemy/domains/petrinet/doc/index.htm" target="_top">Petri Net</a>:
+      <li> <a href="../ptolemy/domains/petrinet/doc/index.htm" target="_top">Petri Net</a>:
         concurrent processes (New in 10.0)
-<li> <a href="../ptolemy/domains/psdf/doc/index.htm" target="_top">PSDF</a>:
+      <li> <a href="../ptolemy/domains/psdf/doc/index.htm" target="_top">PSDF</a>:
 	parameterized synchronous dataflow
-<li> <a href="../ptolemy/domains/ptera/doc/index.htm" target="_top">Ptera</a>:
+      <li> <a href="../ptolemy/domains/ptera/doc/index.htm" target="_top">Ptera</a>:
         ptolemy event relation actor (New in 10.0)
-<li> <a href="../ptolemy/domains/pthales/doc/index.htm" target="_top">Pthales</a>:
+      <li> <a href="../ptolemy/domains/pthales/doc/index.htm" target="_top">Pthales</a>:
         multidimensional dataflow (New in 10.0)
-<li> <a href="../ptolemy/domains/ptides/doc/index.htm" target="_top">Ptides</a>:
+      <li> <a href="../ptolemy/domains/ptides/doc/index.htm" target="_top">Ptides</a>:
         programming temporally integrated distributed embedded systems (New in 10.0)
-<li> <a href="../ptolemy/domains/ptinyos/doc/index.htm" target="_top">Ptinyos</a>:
+      <li> <a href="../ptolemy/domains/ptinyos/doc/index.htm" target="_top">Ptinyos</a>:
         interface to TinyOS
-<!-- Not shippingi SCR Right now -->
-<li> <a href="../ptolemy/domains/tm/doc/index.htm" target="_top">TM</a>:
+	<!-- Not shippingi SCR Right now -->
+      <li> <a href="../ptolemy/domains/tm/doc/index.htm" target="_top">TM</a>:
 	timed multitasking
-</ul>
+    </ul>
 
-<h2>Platforms</h2>
+    <h2>Platforms</h2>
 
-<p>The core of Ptolemy II 11.0.devel is 100% Java, so it should work on any
-platform that has JDK 1.6 or later.</p>
+    <p>The core of Ptolemy II 10.0.beta is 100% Java, so it should work on any
+      platform that has JDK 1.6 or later.</p>
 
- <p>We developed Ptolemy II 11.0.devel under Mac OS X, Windows and Linux with JDK1.7.0_25 and JDK1.8.0_11
-Under MacOS 10.7.5, we were also able to use Java 1.6.0_26.</p>
+    <p>We developed Ptolemy II 10.0.beta under Mac OS X, Windows and Linux with JDK1.7.0_25 and JDK1.8.0_11
+      Under MacOS 10.7.5, we were also able to use Java 1.6.0_26.</p>
 
-<p>Ptolemy II 10.0 will not compile under Java 1.3 because we use the
-java.lang.URI class, which is present only in Java 1.4 and later.
-JDK 1.5 or later is required so that these packages can use generics:
-backtrack, ptalon and others.  JDK 1.6 is required because
-ptdb uses javax.swing.GroupLayout and because of other changes.</p>
+    <p>Ptolemy II 10.0 will not compile under Java 1.3 because we use the
+      java.lang.URI class, which is present only in Java 1.4 and later.
+      JDK 1.5 or later is required so that these packages can use generics:
+      backtrack, ptalon and others.  JDK 1.6 is required because
+      ptdb uses javax.swing.GroupLayout and because of other changes.</p>
 
-<p>In the past, Ptolemy II has been compiled and run
-under IBM JDK 1.6.0.  However, the IBM JDK has not be tried recently. There are the following limitations
-under IBM JDK 1.6.0
-<menu>
-<li> The Copernicus code generator does not work.
-<li> Caltrop does not work.
-<li> The IBM JDK seems to return directory contents in a different
-order than the Sun JDK.  Thus actor.lib.io.DirectoryListing
-might return elements in a different order.
-</menu>
+    <p>In the past, Ptolemy II has been compiled and run
+      under IBM JDK 1.6.0.  However, the IBM JDK has not be tried recently. There are the following limitations
+      under IBM JDK 1.6.0
+      <ul>
+	<li> The Copernicus code generator does not work.
+	<li> Caltrop does not work.
+	<li> The IBM JDK seems to return directory contents in a different
+	  order than the Sun JDK.  Thus actor.lib.io.DirectoryListing
+	  might return elements in a different order.
+      </ul>
 
-<!-- 
-     sed 's@ptdoc:@codeDoc/@' ptII10.0.release.htm  > /tmp/a
-     awk '{ if ($0 ~ /href="codeDoc/) {gsub(.html"\\.", "/", $0); print $0} else {print $0} }' /tmp/a > /tmp/b
-     awk '{ if ($0 ~ /.xml"/) {sub("href=\"../..", "href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy", $0); print $0} else {print $0} }' ptII10.0.release.htm > /tmp/b
- -->
+      <!-- 
+	   sed 's@ptdoc:@codeDoc/@' ptII10.0.release.htm  > /tmp/a
+	   awk '{ if ($0 ~ /href="codeDoc/) {gsub(.html"\\.", "/", $0); print $0} else {print $0} }' /tmp/a > /tmp/b
+	   awk '{ if ($0 ~ /.xml"/) {sub("href=\"../..", "href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy", $0); print $0} else {print $0} }' ptII10.0.release.htm > /tmp/b
+	-->
 
-<!--whatsnew-->
-<h2><a name="highlights">Ptolemy II 11.0.devel Highlights</a></h2>
+      <!--whatsnew-->
+      <h2><a name="highlights">Ptolemy II 10.0.beta Highlights</a></h2>
 
     <p>Contents:</p>
     <ul>
@@ -171,8 +171,8 @@ might return elements in a different order.
 	  <li><a href="#probabilistic">Probabilistic Models</a></li>
 	  <li><a href="#ptango">Ptango (Internet of Things)</a></li>
 	  <!--
-	  <li><a href="#robot">Robot (Simulated robot intruder detection)</a></li>
-	  -->
+	      <li><a href="#robot">Robot (Simulated robot intruder detection)</a></li>
+	      -->
 	</ul>
       </li>
       <li><a href="#other">Other Key New Capabilities</a></li>
@@ -193,18 +193,18 @@ might return elements in a different order.
     <h4>References</h4>
     <ul>
       <li>Patricia Derler, Elizabeth A. Latronico, Edward A. Lee, Man-Kit Leung, Ben Lickly, Charles Shelton, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Ontologies.pdf#in_browser" target="_top">Ontologies</a>," a chapter from<br>
-      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
     </ul>
 
 
     <h4><a name="OntologiesDemonstrations">Ontologies Demonstrations</a></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/data/ontologies/demo/CarTracking/CarTracking/#in_browser" target="_top">CarTracking</a> (Dimensional analysis)</li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation/#in_browser" target="_top">Abstract Interpretation Analysis</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/data/ontologies/demo/ConstNonconst/ConstNonconst/#in_browser" target="_top">Simple Constant/Nonconstant Analysis</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/data/ontologies/demo/ConstNonconst/Const/#in_browser" target="_top">Simple Constant Analysis</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis/#in_browser" target="_top">Expression Monotonicity Analysis</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystemOntology/#in_browser" target="_top">2 Tank Model with Ontological Information</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/data/ontologies/demo/CarTracking/CarTracking/#in_browser" target="_top">CarTracking</a> (Dimensional analysis)</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/data/ontologies/demo/ConstAbstractInterpretation/ConstAbstractInterpretation/#in_browser" target="_top">Abstract Interpretation Analysis</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/data/ontologies/demo/ConstNonconst/ConstNonconst/#in_browser" target="_top">Simple Constant/Nonconstant Analysis</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/data/ontologies/demo/ConstNonconst/Const/#in_browser" target="_top">Simple Constant Analysis</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis/#in_browser" target="_top">Expression Monotonicity Analysis</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystemOntology/#in_browser" target="_top">2 Tank Model with Ontological Information</a></li>
     </ul>
 
     <h3><a name="ExportToWeb" id="ExportToWeb">Export to Web</a></h3>
@@ -212,7 +212,7 @@ might return elements in a different order.
     <h4>References</h4>
     <ul>
       <li>Christopher Brooks, Edward A. Lee, Elizabeth A. Latronico, Baobing Wang, and Roxana Gheorghui, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/WebInterfaces.pdf#in_browser" target="_top">Web Interfaces</a>," a chapter from<br>
-      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
     </ul>
 
 
@@ -228,19 +228,19 @@ might return elements in a different order.
 
     <h4><a name="cgDemonstrations">Code Generation (CG) Demonstrations</a><!-- cg--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor/#in_browser" target="_top">CompiledCompositeActor</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGClockRamp/#in_browser" target="_top">Clock and Ramp</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGDelay/#in_browser" target="_top">Time Delay</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGHelloWorld/#in_browser" target="_top">Hello World!</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGMath/#in_browser" target="_top">Maths</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGPiSquare/#in_browser" target="_top">Pi Square Calculus</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGPi/#in_browser" target="_top">Pi Calculus</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECGPoisson/#in_browser" target="_top">Poisson Clock</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/DECG/DECG/#in_browser" target="_top">Discrete Event Code Generation</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/ModularCG/ModularCG/#in_browser" target="_top">ModularCG</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub/#in_browser" target="_top">ModularCGPubSub</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/Scale/ScaleC/#in_browser" target="_top">Scale C</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/cg/lib/demo/Scale/ScaleJava/#in_browser" target="_top">Scale Java</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor/#in_browser" target="_top">CompiledCompositeActor</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGClockRamp/#in_browser" target="_top">Clock and Ramp</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGDelay/#in_browser" target="_top">Time Delay</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGHelloWorld/#in_browser" target="_top">Hello World!</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGMath/#in_browser" target="_top">Maths</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGPiSquare/#in_browser" target="_top">Pi Square Calculus</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGPi/#in_browser" target="_top">Pi Calculus</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECGPoisson/#in_browser" target="_top">Poisson Clock</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/DECG/DECG/#in_browser" target="_top">Discrete Event Code Generation</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/ModularCG/ModularCG/#in_browser" target="_top">ModularCG</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub/#in_browser" target="_top">ModularCGPubSub</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/Scale/ScaleC/#in_browser" target="_top">Scale C</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/cg/lib/demo/Scale/ScaleJava/#in_browser" target="_top">Scale Java</a></li>
     </ul>
 
     <h3><a name="ModalModelUpdates" id="ModalModelUpdates">FSM/Modal Model updates</a></h3>
@@ -248,10 +248,10 @@ might return elements in a different order.
     <h4>References</h4>
     <ul>
       <li>
-      Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Christian Motika, Reinhard von Hanxleden, and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/FiniteStateMachines.pdf#in_browser" target="_top">Finite State Machines</a>," and<br>
-      Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Stavros Tripakis, Haiyang Zheng, and Ye Zhou, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ModalModels.pdf#in_browser" target="_top">Modal Models</a>,"<br>
-      chapters from<br>
-      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+	Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Christian Motika, Reinhard von Hanxleden, and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/FiniteStateMachines.pdf#in_browser" target="_top">Finite State Machines</a>," and<br>
+	Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Stavros Tripakis, Haiyang Zheng, and Ye Zhou, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ModalModels.pdf#in_browser" target="_top">Modal Models</a>,"<br>
+	chapters from<br>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
     </ul>
 
     <h4><a name="ModalDemonstrations">ModalDemonstrations</a></h4>
@@ -260,7 +260,7 @@ might return elements in a different order.
     </ul>
 
     <h2><a name="demos" id="demos">New demonstrations</a></h2>
-    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
+    <!-- grep "Only in" /tmp/pt78.diff | grep 10.0.beta | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII10.0.beta/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
 
          OR
          $PTII/adm/bin/updateNewDemos
@@ -269,85 +269,85 @@ might return elements in a different order.
 
     <h4><a name="ams">Air Management Systems</a></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/AirManagementSystem/AMS_AMSSim/#in_browser" target="_top">AMS Modelica</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/AirManagementSystem/AirManagementSystem/#in_browser" target="_top">Air Management System</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/AirManagementSystem/AirManagementSystemCausalityLoop/#in_browser" target="_top">AMS Causality Loop</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/AirManagementSystem/HeatExchangerTester/#in_browser" target="_top">Heat Exchanger Tester</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/AirManagementSystem/PhysicalPlantCausalityLoop/#in_browser" target="_top">Physical Plant Causality Loop</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/AirManagementSystem/AMS_AMSSim/#in_browser" target="_top">AMS Modelica</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/AirManagementSystem/AirManagementSystem/#in_browser" target="_top">Air Management System</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/AirManagementSystem/AirManagementSystemCausalityLoop/#in_browser" target="_top">AMS Causality Loop</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/AirManagementSystem/HeatExchangerTester/#in_browser" target="_top">Heat Exchanger Tester</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/AirManagementSystem/PhysicalPlantCausalityLoop/#in_browser" target="_top">Physical Plant Causality Loop</a></li>
     </ul>
 
     <h4><a name="bcvtb">Building Controls Virtual Test Bed (BCVTB)</a><!-- lbl--></h4>
     <p>The  <a href="https://gaia.lbl.gov/bcvtb#in_browser" target="_top">Building Controls Virtual Test Bed (BCVTB)</a>
       website states:</p>
     <blockquote>
-    "The Building Controls Virtual Test Bed (BCVTB) is a software environment that allows expert users to couple different simulation programs for co-simulation, and to couple simulation programs with actual hardware. For example, the BCVTB allows to simulate a building in EnergyPlus and the HVAC and control system in Modelica, while exchanging data between the software as they simulate. The BCVTB is based on the Ptolemy II software environment. The BCVTB allows expert users of simulation to expand the capabilities of individual programs by linking them to other programs. Due to the different programs that may be involved in distributed simulation, familiarity with configuring programs is essential."
+      "The Building Controls Virtual Test Bed (BCVTB) is a software environment that allows expert users to couple different simulation programs for co-simulation, and to couple simulation programs with actual hardware. For example, the BCVTB allows to simulate a building in EnergyPlus and the HVAC and control system in Modelica, while exchanging data between the software as they simulate. The BCVTB is based on the Ptolemy II software environment. The BCVTB allows expert users of simulation to expand the capabilities of individual programs by linking them to other programs. Due to the different programs that may be involved in distributed simulation, familiarity with configuring programs is essential."
     </blockquote>
 
-   <p>The BCVTB demos use external tools, so they are not likely to run, though the models are browsable.</p>
+    <p>The BCVTB demos use external tools, so they are not likely to run, though the models are browsable.</p>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/../lbnl/demo/CRoom/CRoom/#in_browser" target="_top">C Room</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/../lbnl/demo/MatlabRoom/MatlabRoom/#in_browser" target="_top">Matlab Room</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/../lbnl/demo/SystemCommand/SystemCommand/#in_browser" target="_top">System Command</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/../lbnl/demo/CRoom/CRoom/#in_browser" target="_top">C Room</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/../lbnl/demo/MatlabRoom/MatlabRoom/#in_browser" target="_top">Matlab Room</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/../lbnl/demo/SystemCommand/SystemCommand/#in_browser" target="_top">System Command</a></li>
     </ul>
 
     <h4><a name="EPS">Electric Power System (EPS)</a><!-- eps--></h4>
     <ul><!-- These are in the order they should be viewed -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/Overview/#in_browser" target="_top">Overview</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem/#in_browser" target="_top">ElectricPowerSystem</a> - links to the models below:
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/Overview/#in_browser" target="_top">Overview</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem/#in_browser" target="_top">ElectricPowerSystem</a> - links to the models below:
 	<ul>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorTester/#in_browser" target="_top">GeneratorTester</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/ContactorTester/#in_browser" target="_top">ContactorTester</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator/#in_browser" target="_top">GeneratorRegulator</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector/#in_browser" target="_top">GeneratorRegulatorProtector</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector/#in_browser" target="_top">GeneratorRegulatorFMUProtector</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorSimXRhapsodyFMU/#in_browser" target="_top">GeneratorRegulatorProtectorSimXRhapsodyFMU</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus/#in_browser" target="_top">GeneratorRegulatorProtectorWithBus</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBusNotAsAspect/#in_browser" target="_top">GeneratorRegulatorProtectorWithBusNotAsAspect</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorTuLiP/#in_browser" target="_top">GeneratorRegulatorProtectorTuLiP</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect/#in_browser" target="_top">GeneratorRegulatorProtectorWithSpecificationAsAspect</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithDecorator/#in_browser" target="_top">GeneratorRegulatorProtectorWithDecorator</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus/#in_browser" target="_top">GeneratorRegulatorProtectorWithBus</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor/#in_browser" target="_top">GeneratorRegulatorProtectorWithProcessor</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorPtides/#in_browser" target="_top">GeneratorRegulatorProtectorPtides</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorTester/#in_browser" target="_top">GeneratorTester</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/ContactorTester/#in_browser" target="_top">ContactorTester</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator/#in_browser" target="_top">GeneratorRegulator</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector/#in_browser" target="_top">GeneratorRegulatorProtector</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector/#in_browser" target="_top">GeneratorRegulatorFMUProtector</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorSimXRhapsodyFMU/#in_browser" target="_top">GeneratorRegulatorProtectorSimXRhapsodyFMU</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus/#in_browser" target="_top">GeneratorRegulatorProtectorWithBus</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBusNotAsAspect/#in_browser" target="_top">GeneratorRegulatorProtectorWithBusNotAsAspect</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorTuLiP/#in_browser" target="_top">GeneratorRegulatorProtectorTuLiP</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect/#in_browser" target="_top">GeneratorRegulatorProtectorWithSpecificationAsAspect</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithDecorator/#in_browser" target="_top">GeneratorRegulatorProtectorWithDecorator</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBus/#in_browser" target="_top">GeneratorRegulatorProtectorWithBus</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor/#in_browser" target="_top">GeneratorRegulatorProtectorWithProcessor</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorPtides/#in_browser" target="_top">GeneratorRegulatorProtectorPtides</a></li>
 	</ul>
       </li>
 
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithConstraintMonitor/#in_browser" target="_top">GeneratorRegulatorProtectorWithConstraintMonitor</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithConstraintMonitor/#in_browser" target="_top">GeneratorRegulatorProtectorWithConstraintMonitor</a></li>
 
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecification/#in_browser" target="_top">GeneratorRegulatorProtectorWithSpecification</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecification/#in_browser" target="_top">GeneratorRegulatorProtectorWithSpecification</a></li>
 
     </ul>
 
     <h4>Execute Demos<!-- exec--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ExecDemos/ExecDemos/#in_browser" target="_top">ExecDemos</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ExecDemos/RunDemos/#in_browser" target="_top">RunDemos</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ExecDemos/ExecDemos/#in_browser" target="_top">ExecDemos</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ExecDemos/RunDemos/#in_browser" target="_top">RunDemos</a></li>
     </ul>
 
     <h4><a name="fuel">Fuel System</a><!-- fuel--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystem2Tanks/#in_browser" target="_top">2 Tank Model</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystemErrorHandling/#in_browser" target="_top">Tank Model with Error Handling</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystemOntology/#in_browser" target="_top">2 Tank Model with Ontological Information</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystemQuantityManager/#in_browser" target="_top">2 Tank Model with Bus communication</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved/#in_browser" target="_top">Improved Tank Model</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/FuelSystem/FuelSystem/#in_browser" target="_top">Simple Tank Model</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystem2Tanks/#in_browser" target="_top">2 Tank Model</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystemErrorHandling/#in_browser" target="_top">Tank Model with Error Handling</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystemOntology/#in_browser" target="_top">2 Tank Model with Ontological Information</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystemQuantityManager/#in_browser" target="_top">2 Tank Model with Bus communication</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved/#in_browser" target="_top">Improved Tank Model</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/FuelSystem/FuelSystem/#in_browser" target="_top">Simple Tank Model</a></li>
     </ul>
 
     <h4><a name="officeSpace">Office Space</a><!-- space--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/space/demo/DOPCenter/DOPCenter/#in_browser" target="_top">UC Berkeley DOP Center Office Database</a><em>Requires password to run</em></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/space/demo/DOPCenter/Placard/#in_browser" target="_top">UC Berkeley DOP Center Office Database Door Placards</a><em>Requires password to run</em></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/space/demo/DOPCenter/DOPCenter/#in_browser" target="_top">UC Berkeley DOP Center Office Database</a><em>Requires password to run</em></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/space/demo/DOPCenter/Placard/#in_browser" target="_top">UC Berkeley DOP Center Office Database Door Placards</a><em>Requires password to run</em></li>
     </ul>
 
     <h4><a name="probabilistic">Probabilistic Models</a><!-- probabilisticModels--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/ChannelFaultModel/#in_browser" target="_top">Channel Fault Model</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel/#in_browser" target="_top">Gaussian Mixture Model</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis/#in_browser" target="_top">Gaussian Mixture Model Parameter Estimation</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis/#in_browser" target="_top">Hidden Markov Model Analysis</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel/#in_browser" target="_top">Hidden Markov Model</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain/#in_browser" target="_top">Discrete-Time Markov Chain</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/ChannelFaultModel/#in_browser" target="_top">Channel Fault Model</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel/#in_browser" target="_top">Gaussian Mixture Model</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis/#in_browser" target="_top">Gaussian Mixture Model Parameter Estimation</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis/#in_browser" target="_top">Hidden Markov Model Analysis</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel/#in_browser" target="_top">Hidden Markov Model</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain/#in_browser" target="_top">Discrete-Time Markov Chain</a></li>
     </ul>
 
     <h3><a name="ptango">Ptango (Internet of Things)</a><!-- ptango--></h3>
@@ -388,162 +388,162 @@ might return elements in a different order.
       Things. </p>
 
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight/#in_browser" target="_top">BlinkyLight</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Chat/ChatServer/#in_browser" target="_top">Chat Server</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Chat/ChatClient/#in_browser" target="_top">Chat Client</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Chat/ChatClient2/#in_browser" target="_top">Chat Client2</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Cookies/Cookies/#in_browser" target="_top">Cookies</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/DOPpresence/DOPpresence/#in_browser" target="_top">DOPpresence</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator/#in_browser" target="_top">Eplus70Actuator</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler/#in_browser" target="_top">ErrorHandler</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Exception/Exception/#in_browser" target="_top">Exception</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Guidance/Guidance/#in_browser" target="_top">Guidance</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName/#in_browser" target="_top">GuidanceSingleUserWithName</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert/#in_browser" target="_top">OccupancyAlert</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor/#in_browser" target="_top"> OptimizationAdvisor</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew/#in_browser" target="_top">SensorAndrew</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/#in_browser" target="_top">SmartRoom</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation/#in_browser" target="_top">TemperatureSimulation</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/UCBPower/UCBPower/#in_browser" target="_top">UCBPower</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer/#in_browser" target="_top">UCBPowerAnalyzerServer</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera/#in_browser" target="_top">UCBPowerPtera</a> </li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/WebServerDE/WebServerDE/#in_browser" target="_top">WebServerDE</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight/#in_browser" target="_top">BlinkyLight</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Chat/ChatServer/#in_browser" target="_top">Chat Server</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Chat/ChatClient/#in_browser" target="_top">Chat Client</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Chat/ChatClient2/#in_browser" target="_top">Chat Client2</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Cookies/Cookies/#in_browser" target="_top">Cookies</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/DOPpresence/DOPpresence/#in_browser" target="_top">DOPpresence</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator/#in_browser" target="_top">Eplus70Actuator</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler/#in_browser" target="_top">ErrorHandler</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Exception/Exception/#in_browser" target="_top">Exception</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Guidance/Guidance/#in_browser" target="_top">Guidance</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName/#in_browser" target="_top">GuidanceSingleUserWithName</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert/#in_browser" target="_top">OccupancyAlert</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor/#in_browser" target="_top"> OptimizationAdvisor</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew/#in_browser" target="_top">SensorAndrew</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/#in_browser" target="_top">SmartRoom</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation/#in_browser" target="_top">TemperatureSimulation</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/UCBPower/UCBPower/#in_browser" target="_top">UCBPower</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer/#in_browser" target="_top">UCBPowerAnalyzerServer</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera/#in_browser" target="_top">UCBPowerPtera</a> </li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/WebServerDE/WebServerDE/#in_browser" target="_top">WebServerDE</a> </li>
     </ul>
 
     <!-- 
-    <h4><a name="robot">Robot (Simulated robot intruder detection)</a></h4>
-    <ul>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/KeyValueStoreServer/KeyValueStoreServer/#in_browser" target="_top">Key Value Store Server</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RandomWalkIntruder/RandomWalkIntruder/#in_browser" target="_top">Random Walk Intruder</a></li>
+	 <h4><a name="robot">Robot (Simulated robot intruder detection)</a></h4>
+	 <ul>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/KeyValueStoreServer/KeyValueStoreServer/#in_browser" target="_top">Key Value Store Server</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RandomWalkIntruder/RandomWalkIntruder/#in_browser" target="_top">Random Walk Intruder</a></li>
 
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotChase/RobotChase/#in_browser" target="_top">Robot Chase</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotCollaborativeChase/RobotCollaborativeChase/#in_browser" target="_top">Robot Collaborative Chase</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotInLine/RobotInLine/#in_browser" target="_top">Robot In Line</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotMonitor/RobotMonitor/#in_browser" target="_top">Robot Monitor</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotOnCircle/RobotOnCircle/#in_browser" target="_top">Robot On Circle</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotOnCircleKV/RobotOnCircleKV/#in_browser" target="_top">Robot On Circle Key Value</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/RobotPFChase/RobotPFChase/#in_browser" target="_top">Robot Particle Filter Chase</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/SmartChase/SmartChase/#in_browser" target="_top">Smart Chase</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/SmartChaseWithSmartIntruder/SmartChaseWithSmartIntruder/#in_browser" target="_top">Smart Chase With Smart Intruder</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/SmartIntruder/SmartIntruder/#in_browser" target="_top">Smart Intruder</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/SmartIntruder7Teams/SmartIntruder7Teams/#in_browser" target="_top">Smart Intruder 7 Teams</a></li>
-    </ul>
-    -->
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotChase/RobotChase/#in_browser" target="_top">Robot Chase</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotCollaborativeChase/RobotCollaborativeChase/#in_browser" target="_top">Robot Collaborative Chase</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotInLine/RobotInLine/#in_browser" target="_top">Robot In Line</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotMonitor/RobotMonitor/#in_browser" target="_top">Robot Monitor</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotOnCircle/RobotOnCircle/#in_browser" target="_top">Robot On Circle</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotOnCircleKV/RobotOnCircleKV/#in_browser" target="_top">Robot On Circle Key Value</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/RobotPFChase/RobotPFChase/#in_browser" target="_top">Robot Particle Filter Chase</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/SmartChase/SmartChase/#in_browser" target="_top">Smart Chase</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/SmartChaseWithSmartIntruder/SmartChaseWithSmartIntruder/#in_browser" target="_top">Smart Chase With Smart Intruder</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/SmartIntruder/SmartIntruder/#in_browser" target="_top">Smart Intruder</a></li>
+	   <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/SmartIntruder7Teams/SmartIntruder7Teams/#in_browser" target="_top">Smart Intruder 7 Teams</a></li>
+	 </ul>
+	 -->
 
     <h3>Models of Computation</h3>
 
     <h3>Cellular Automata (CA)<!-- ca--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ca/demo/Conway/Conway/#in_browser" target="_top">Conway's Game of Life</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom/#in_browser" target="_top">Conway's Game of Life Random</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ca/demo/Conway/Conway/#in_browser" target="_top">Conway's Game of Life</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom/#in_browser" target="_top">Conway's Game of Life Random</a></li>
     </ul>
 
     <h3>Component Interaction (CI)<!-- ci--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ci/demo/Router/Router/#in_browser" target="_top">Router</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ci/demo/Router/Router/#in_browser" target="_top">Router</a></li>
     </ul>
 
     <h3>Continuous<!-- continuous--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/continuous/demo/DCMotor/DCMotor/#in_browser" target="_top">DC Motor</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/continuous/demo/Derivative/Derivative/#in_browser" target="_top">Derivative</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/continuous/demo/Friction/Friction/#in_browser" target="_top">Friction</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/continuous/demo/Poisson/IncreasingRatePoisson/#in_browser" target="_top">IncreasingRatePoisson</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl/#in_browser" target="_top">Distributed Generation Hybrid Control</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/continuous/demo/DCMotor/DCMotor/#in_browser" target="_top">DC Motor</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/continuous/demo/Derivative/Derivative/#in_browser" target="_top">Derivative</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/continuous/demo/Friction/Friction/#in_browser" target="_top">Friction</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/continuous/demo/Poisson/IncreasingRatePoisson/#in_browser" target="_top">IncreasingRatePoisson</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl/#in_browser" target="_top">Distributed Generation Hybrid Control</a></li>
     </ul>
 
 
     <h3>Discrete Event (DE)<!-- de--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/de/demo/ClockDrift/ClockDrift/#in_browser" target="_top">Clock Drift</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork/#in_browser" target="_top">Open Queueing Network</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/de/demo/Trilateration/Trilateration/#in_browser" target="_top">Trilateration</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/de/demo/ClockDrift/ClockDrift/#in_browser" target="_top">Clock Drift</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork/#in_browser" target="_top">Open Queueing Network</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/de/demo/Trilateration/Trilateration/#in_browser" target="_top">Trilateration</a></li>
     </ul>
 
     <h3>Petrinet<!-- petrinet--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers/#in_browser" target="_top">Petri Net Dining Philosophers</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple/#in_browser" target="_top">Petri Net Dining Philosophers</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers/#in_browser" target="_top">Petri Net Dining Philosophers</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple/#in_browser" target="_top">Petri Net Dining Philosophers</a></li>
     </ul>
 
     <h3>Kahn Process Networks (PN)<!-- pn--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pn/demo/CounterMachine/CounterMachinePrelim/#in_browser" target="_top">Counter Machine Prelim</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pn/demo/CounterMachine/CounterMachineWithException/#in_browser" target="_top">Counter Machine With Exception</a> -</li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pn/demo/CounterMachine/CounterMachine/#in_browser" target="_top">Counter Machine</a> -</li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge/#in_browser" target="_top">Nondeterministic Merge</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge/#in_browser" target="_top">Ordered Merge</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pn/demo/CounterMachine/CounterMachinePrelim/#in_browser" target="_top">Counter Machine Prelim</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pn/demo/CounterMachine/CounterMachineWithException/#in_browser" target="_top">Counter Machine With Exception</a> -</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pn/demo/CounterMachine/CounterMachine/#in_browser" target="_top">Counter Machine</a> -</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge/#in_browser" target="_top">Nondeterministic Merge</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge/#in_browser" target="_top">Ordered Merge</a></li>
     </ul>
 
     <h3>Ptera<!-- ptera--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptera/demo/TrafficLight/TrafficLight/#in_browser" target="_top">TrafficLight</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptera/demo/TrafficLight/TrafficLight/#in_browser" target="_top">TrafficLight</a></li>
     </ul>
 
     <h3>Pthales<!-- pthales--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming/#in_browser" target="_top">Adaptive Beam Forming</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pthales/demo/FFT/FFT/#in_browser" target="_top">FFT</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld/#in_browser" target="_top">HelloWorld</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/pthales/demo/Illustrative/Illustrative/#in_browser" target="_top">Illustrative</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming/#in_browser" target="_top">Adaptive Beam Forming</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pthales/demo/FFT/FFT/#in_browser" target="_top">FFT</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld/#in_browser" target="_top">HelloWorld</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/pthales/demo/Illustrative/Illustrative/#in_browser" target="_top">Illustrative</a></li>
     </ul>
 
     <h3>Ptides<!-- ptides--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/ActuatorPattern/ActuatorPattern/#in_browser" target="_top">Actuator triggering in Ptides</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/Controller/Controller/#in_browser" target="_top">Two Controllers</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/CoSimulation/CoSimulation/#in_browser" target="_top">CoSimulation of Application and Architecture models</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant/#in_browser" target="_top">Distributed Power Plant</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator/#in_browser" target="_top">Mixed Simulator</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA/#in_browser" target="_top">Multiple Platforms TDMA</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/MultipleCores/MultipleCores/#in_browser" target="_top">Scheduling actors on multiple cores</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime/#in_browser" target="_top">Power Management Unit Sampling without current local time</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant/#in_browser" target="_top">Power Plant</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress/#in_browser" target="_top">Printing Press</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor/#in_browser" target="_top">Synchrophasor</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/ActuatorPattern/ActuatorPattern/#in_browser" target="_top">Actuator triggering in Ptides</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/Controller/Controller/#in_browser" target="_top">Two Controllers</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/CoSimulation/CoSimulation/#in_browser" target="_top">CoSimulation of Application and Architecture models</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant/#in_browser" target="_top">Distributed Power Plant</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/MixedSimulator/MixedSimulator/#in_browser" target="_top">Mixed Simulator</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA/#in_browser" target="_top">Multiple Platforms TDMA</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/MultipleCores/MultipleCores/#in_browser" target="_top">Scheduling actors on multiple cores</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime/#in_browser" target="_top">Power Management Unit Sampling without current local time</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant/#in_browser" target="_top">Power Plant</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress/#in_browser" target="_top">Printing Press</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor/#in_browser" target="_top">Synchrophasor</a></li>
     </ul>
 
     <h3>Synchronous Dataflow<!-- sdf--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/sdf/optimize/demo/SDFOptimize/SDFOptimize/#in_browser" target="_top">SDF Optimize</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/sdf/optimize/demo/SDFOptimize/SDFOptimize/#in_browser" target="_top">SDF Optimize</a></li>
     </ul>
 
     <h3>Task<!-- taskpt--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory/#in_browser" target="_top">SharedMemory</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/domains/taskpt/demo/Task/Task/#in_browser" target="_top">Task</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory/#in_browser" target="_top">SharedMemory</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/domains/taskpt/demo/Task/Task/#in_browser" target="_top">Task</a></li>
     </ul>
 
     <h2>Actor Demonstrations</h2>
 
     <h4>Graph Transformation (GT)<!-- gt--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/gt/demo/SinewaveOptimization/Sinewave/#in_browser" target="_top">Sinewave</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/gt/demo/SinewaveOptimization/Sinewave/#in_browser" target="_top">Sinewave</a></li>
     </ul>
 
     <h4>Input Output Actors<!-- io--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile/#in_browser" target="_top">Append To File</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/io/demo/CopyFile/CopyFile/#in_browser" target="_top">Copy File</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter/#in_browser" target="_top">File Port Parameter</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsCommandLine/#in_browser" target="_top">Read Expressions Command Line</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn/#in_browser" target="_top">Read Std In</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile/#in_browser" target="_top">Append To File</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/io/demo/CopyFile/CopyFile/#in_browser" target="_top">Copy File</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter/#in_browser" target="_top">File Port Parameter</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsCommandLine/#in_browser" target="_top">Read Expressions Command Line</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn/#in_browser" target="_top">Read Std In</a></li>
     </ul>
 
     <h4><a name="JavaScriptDemos">JavaScript</a><!-- javascript--></h4>
     <p>The JavaScript actor executes a script that can read inputs and parameters, perform calculations, and write outputs.</p>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/js/demo/Factorial/Factorial/#in_browser" target="_top">Factorial</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth/#in_browser" target="_top">GoogleOAuth</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell/#in_browser" target="_top">JavaScript Shell</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder/#in_browser" target="_top">Model Builder</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous/#in_browser" target="_top">Spontaneous</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/js/demo/StockPrice/StockPrice/#in_browser" target="_top">Stock Price</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/js/demo/Factorial/Factorial/#in_browser" target="_top">Factorial</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth/#in_browser" target="_top">GoogleOAuth</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell/#in_browser" target="_top">JavaScript Shell</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder/#in_browser" target="_top">Model Builder</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous/#in_browser" target="_top">Spontaneous</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/js/demo/StockPrice/StockPrice/#in_browser" target="_top">Stock Price</a></li>
     </ul>
 
     <h4>Python<!-- python--></h4>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/python/demo/PythonScale/PythonScale/#in_browser" target="_top">Python Record Manipulation</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/python/demo/PythonScale/PythonScale/#in_browser" target="_top">Python Record Manipulation</a></li>
     </ul>
 
     <h4>New Demonstrations for other facilities</h4>
@@ -556,13 +556,13 @@ might return elements in a different order.
 
     <h3>Type System<!-- type--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/data/type/demo/Router/Router/#in_browser" target="_top">Router</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/data/type/demo/Router/Router/#in_browser" target="_top">Router</a></li>
     </ul>
 
     <h3>Verification<!-- verification--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/#in_browser" target="_top">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../../verification/README.html#in_browser">Verification documentation)</a></li>
-      <li>Linear Temporal Logic: <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor/#in_browser" target="_top">Arbitor</a>, <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/" target="_top">Numerical</a>, <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/" target="_top">Priority Arbitor</a></li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight/#in_browser" target="_top">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../ptolemy/verification/README.html#in_browser">Verification documentation)</a></li>
+      <li>Linear Temporal Logic: <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor/#in_browser" target="_top">Arbitor</a>, <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical/" target="_top">Numerical</a>, <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor/" target="_top">Priority Arbitor</a></li>
     </ul>
 
     <h2><a name="other" id="other">Other Key New Capabilities</a></h2>
@@ -570,7 +570,7 @@ might return elements in a different order.
       <li class="c1">
 	<h3>Features</h3>
 	<!--
-            grep "Only in .*ptII11.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+            grep "Only in .*ptII10.0.beta" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
           -->
 	<ul>
 	  <li>Models for books located in $PTII/doc/books.  We link to the book itself so that the models correspond with the book
@@ -599,23 +599,44 @@ might return elements in a different order.
 
     <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
     <!--
-        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel" |  sort | sed 's@Only in .*ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
+        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII10.0.beta" |  sort | sed 's@Only in .*ptII10.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
       -->
     <ul>
       <li><em>New Domain Polymorphic actors</em>:
 	<ul>
-	  <li><a href="codeDoc/ptolemy/actor/lib/ArrayUpdate.html">ArrayUpdate</a></li>
+	  <li><a href="codeDoc/ptolemy/actor/lib/ArrayUpdate.html">ArrayUpdate</a>
 	    <blockquote>
-	      <p>Patricia Derler, Chris Shaver, and Edward Lee have developed a starting point for a much smarter way of handling arrays in dataflow models...</p>
-	      <p>In particular, there is now in the Array library an ArrayUpdate actor, whose output is the same array as its input except that one element is replaced with a new value. Please try it out for the radar model.</p>
-	      <p>The key here is that this is done efficiently for large arrays. The input array does not get copied. Instead, the output array references the input array and encodes the diff. The input array is unchanged, and hence may be used safely by other actors to which it is destined without introducing nondeterminacy.</p>
-	      <p>This is only a starting point because there are many other array operations that should be similarly encoded as diffs. There is a bit of work to be done here, and we need to make sure to be measuring performance effects.</p>
-	      <p>The current implementation has the interesting property that makes copying arrays unnecessary most of the time. However, it has the unfortunate side effect of making copying arrays more expensive (we can no longer use the low-level System.arraycopy() mechanism in Java). It would be interesting to do a systematic performance evaluation of this. I believe that if we combine this method with a PN director and a manycore machine, that we might get good utilization of parallelism on the machine.</p>
+	      <p>Patricia Derler, Chris Shaver, and Edward Lee have developed a starting point for a much smarter way of handling arrays in dataflow models.</p>
+	      <p>In particular, there is now in the Array library an
+		ArrayUpdate actor, whose output is the same array as its
+		input except that one element is replaced with a new
+		value. Please try it out for the radar model.</p>
+	      <p>The key here is that this is done efficiently for large
+		arrays. The input array does not get copied. Instead, the
+		output array references the input array and encodes the
+		diff. The input array is unchanged, and hence may be used
+		safely by other actors to which it is destined without
+		introducing nondeterminacy.</p>
+	      <p>This is only a starting point because there are many
+		other array operations that should be similarly encoded as
+		diffs. There is a bit of work to be done here, and we need
+		to make sure to be measuring performance effects.</p>
+	      <p>The current implementation has the interesting property
+		that makes copying arrays unnecessary most of the
+		time. However, it has the unfortunate side effect of
+		making copying arrays more expensive (we can no longer use
+		the low-level System.arraycopy() mechanism in Java). It
+		would be interesting to do a systematic performance
+		evaluation of this. I believe that if we combine this
+		method with a PN director and a manycore machine, that we
+		might get good utilization of parallelism on the
+		machine.</p>
 	    </blockquote>
 	  </li>
 	  <li> <a href="codeDoc/ptolemy/actor/lib/conversions/StringToBoolean.html">StringToBoolean</a>,
 	    <a href="codeDoc/ptolemy/actor/lib/conversions/StringToDouble.html">StringToDouble</a>,
-	    <a href="codeDoc/ptolemy/actor/lib/conversions/StringToInt.html">StringToInt</a> (Long Le)</li>
+	    <a href="codeDoc/ptolemy/actor/lib/conversions/StringToInt.html">StringToInt</a> (Long Le)
+	  </li>
 	</ul>
       </li>
       <li><em>New Continuous actors</em>:
@@ -632,23 +653,21 @@ might return elements in a different order.
 	  <li><a href="codeDoc/ptolemy/domains/de/lib/MostRecent.html">MostRecent</a></li>
 	</ul>
       </li>
-    </ul>
-    <ul>
-      <li><em>New Syncronous Dataflow (SDF) actors</em>:</li>
-    </ul>
-    <ul>
-      <li><a href="codeDoc/ptolemy/domains/sdf/lib/BootstrapSampleDelay.html">BootstrapSampleDelay</a></li>
-    </ul>
-    <ul>
-      <li><em>New Synchronous (SR) actors</em>:</li>
-    </ul>
-    <ul>
-      <li><a href="codeDoc/ptolemy/domains/sr/lib/BinaryNonStrictLogicGate.html">BinaryNonStrictLogicGate</a></li>
-      <li><a href="codeDoc/ptolemy/domains/sr/lib/Combine.html">Combine</a></li>
-      <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictAndGate.html">NonStrictAndGate</a></li>
-      <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictLogicGate.html">NonStrictLogicGate</a></li>
-      <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictOrGate.html">NonStrictOrGate</a></li>
-      <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictXorGate.html">NonStrictXorGate</a></li>
+      <li><em>New Syncronous Dataflow (SDF) actors</em>:
+	<ul>
+	  <li><a href="codeDoc/ptolemy/domains/sdf/lib/BootstrapSampleDelay.html">BootstrapSampleDelay</a></li>
+	</ul>
+      </li>
+      <li><em>New Synchronous (SR) actors</em>:
+	<ul>
+	  <li><a href="codeDoc/ptolemy/domains/sr/lib/BinaryNonStrictLogicGate.html">BinaryNonStrictLogicGate</a></li>
+	  <li><a href="codeDoc/ptolemy/domains/sr/lib/Combine.html">Combine</a></li>
+	  <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictAndGate.html">NonStrictAndGate</a></li>
+	  <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictLogicGate.html">NonStrictLogicGate</a></li>
+	  <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictOrGate.html">NonStrictOrGate</a></li>
+	  <li><a href="codeDoc/ptolemy/domains/sr/lib/NonStrictXorGate.html">NonStrictXorGate</a></li>
+	</ul>
+      </li>
     </ul>
 
     <h2><a name="features" id="features">Additional Features</a></h2>
@@ -890,26 +909,25 @@ might return elements in a different order.
 	  <li><a href="codeDoc/ptolemy/actor/lib/ExceptionManager.html">ExceptionManager</a></li>
 	  <li><a href="codeDoc/ptolemy/actor/lib/ExceptionManagerModel.html">ExceptionManagerModel</a></li>
 	  <li><a href="codeDoc/ptolemy/actor/lib/ExceptionSubscriber.html">ExceptionSubscriber</a></li>
-        </ul>
+	</ul>
       </li>
       <li>A prototype that import Functional Mockup Interface Functional Mockup Unit (FMU) files is
 	present.  FMI-1.0 cosimulation and model exchange are partially supported.  FMI-2.0 is cosimulation
 	is partially supported.  To import a FMU, use File -&gt; Import -&gt Import FMU as a Ptolemy Actor.  See
 	<a href="codeDoc/ptolemy/actor/lib/fmi/FMUImport.html">FMUImport</a>
 	<ul><!-- Please keep the demos alphabetical -->
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall/#in_browser" target="_top">Functional Mock-up Unit (FMU) Bouncing Ball</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/fmi/demo/FMULevelStairs/FMULevelStairs/#in_browser" target="_top">Functional Mock-up Unit (FMU) Level Stairs</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX/#in_browser" target="_top">Functional Mock-up Unit (FMU) SimulationX</a> (Requires SimulationX)</li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationXPIController/#in_browser" target="_top">Functional Mock-up Unit (FMU) SimulationX PI Controller</a> (Requires SimulationX)</li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs/#in_browser" target="_top">Functional Mock-up Unit (FMU) Stairs</a></li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision/#in_browser" target="_top">Functional Mock-up Unit (FMU) Two Ball Collision</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall/#in_browser" target="_top">Functional Mock-up Unit (FMU) Bouncing Ball</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/fmi/demo/FMULevelStairs/FMULevelStairs/#in_browser" target="_top">Functional Mock-up Unit (FMU) Level Stairs</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX/#in_browser" target="_top">Functional Mock-up Unit (FMU) SimulationX</a> (Requires SimulationX)</li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/fmi/demo/FMUSimulationX/FMUSimulationXPIController/#in_browser" target="_top">Functional Mock-up Unit (FMU) SimulationX PI Controller</a> (Requires SimulationX)</li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/fmi/demo/FMUStairs/FMUStairs/#in_browser" target="_top">Functional Mock-up Unit (FMU) Stairs</a></li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision/#in_browser" target="_top">Functional Mock-up Unit (FMU) Two Ball Collision</a></li>
 	</ul>
       </li>
 
       <li>The FMI++ library is a C++ utility package that offers high-level access and simulation functionalities on top of the FMI for Model Exchange specification. This includes for example automated numerical integration, advanced event handling or simulation rollbacks. 
 	<br/>FMI++ is present in the release as a prototype of what could be done. FMI++ was created by Austrian Institute of Technology GmbH.
 	<br/>See <a href="codeDoc/ptolemy/actor/lib/fmi/fmipp/FMUModelExchange.html">FMUModelExchange/</a></li>
-
       <!-- Use in_browser because vergil has problems with the html generated by javadoc -->
       <li><a href="codeDoc/ptolemy/domains/scr/package-summary.html#in_browser" target="_top"><code>$PTII/ptolemy/domains/scr</code></a> - The Software Cost Reduction model of computation: Patricia Derler</li>
       <li>Machine Learning: Ilge Akkaya
@@ -920,37 +938,38 @@ might return elements in a different order.
 	  <li><a href="codeDoc/org/ptolemy/machineLearning/particleFilter/package-summary.html#in_browser" target="_top"><code>$PTII/org/ptolemy/machineLearning/particleFilter</code></a> - Particle Filtering</li>
 	  <li><a href="codeDoc/org/ptolemy/machineImprovisation/package-summary.html#in_browser" target="_top"><code>$PTII/org/ptolemy/machineImprovisation</code></a> - Machine Improvisation</li>
 	</ul>
-        <br/>Models
+	<br/>Models
 	<h4><a name="optimization">Optimization</a></h4>
 	<ul>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/optimization/demo/LinearRegression/LinearRegression/#in_browser" target="_top">Constrained Simple Linear Regression</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization/#in_browser" target="_top">Simple Function Minimization</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/optimization/demo/LinearRegression/LinearRegression/#in_browser" target="_top">Constrained Simple Linear Regression</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization/#in_browser" target="_top">Simple Function Minimization</a> </li>
 	</ul>
 	<h4><a name="particleFilter">Particle Filter</a></h4>
 	<ul>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking/#in_browser" target="_top">Multi Robot Intruder Tracking</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization/#in_browser" target="_top">Online Robot Trajectory Optimization</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization/#in_browser" target="_top">Online Robot Trajectory Optimization - Distributed Computation</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization/#in_browser" target="_top">Open-Loop Target Localization - Single Robot</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization/#in_browser" target="_top">Open-Loop Target Localization - Two Robots</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter/#in_browser" target="_top">Multi-Observer Particle Filtering</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange/#in_browser" target="_top">Particle Filter Range</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking/#in_browser" target="_top">Multi Robot Intruder Tracking</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization/#in_browser" target="_top">Online Robot Trajectory Optimization</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization/#in_browser" target="_top">Online Robot Trajectory Optimization - Distributed Computation</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization/#in_browser" target="_top">Open-Loop Target Localization - Single Robot</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization/#in_browser" target="_top">Open-Loop Target Localization - Two Robots</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter/#in_browser" target="_top">Multi-Observer Particle Filtering</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange/#in_browser" target="_top">Particle Filter Range</a> </li>
 	</ul>
 	<h4><a name="probabilistic">Probabilistic Models</a></h4>
 	<ul>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/ChannelFaultModel/#in_browser" target="_top"> Channel Fault Model</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetection/#in_browser" target="_top">Communication Anomaly Detection Using HMM Estimation</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel/#in_browser" target="_top">Gaussian Mixture Model</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis/#in_browser" target="_top">Gaussian Mixture Model Parameter Estimation</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel/#in_browser" target="_top">Hidden Markov Model</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis/#in_browser" target="_top">Hidden Markov Model Analysis</a> </li>
-	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain/#in_browser" target="_top">Discrete-Time Markov Chain</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/ChannelFaultModel/#in_browser" target="_top"> Channel Fault Model</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM/#in_browser" target="_top">Communication Anomaly Detection Using HMM Estimation</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel/#in_browser" target="_top">Gaussian Mixture Model</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis/#in_browser" target="_top">Gaussian Mixture Model Parameter Estimation</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel/#in_browser" target="_top">Hidden Markov Model</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis/#in_browser" target="_top">Hidden Markov Model Analysis</a> </li>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain/#in_browser" target="_top">Discrete-Time Markov Chain</a> </li>
 	</ul>
 	<!--
-	<h4><a href="#robot">Robot (Simulated robot intruder detection)</a></h4>
-	-->
+	    <h4><a href="#robot">Robot (Simulated robot intruder detection)</a></h4>
+	    -->
       </li>
     </ul>
+
 
     <h2><a name="bugs" id="bugs">Bug fixes</a></h2>
     <p>For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser" target="_top">Ptolemy II Bugs</a><br>
@@ -961,479 +980,440 @@ might return elements in a different order.
       <dd>Use <code>$PTII/ptolemy/cg</code> instead.</dd>
     </dl>
 
-<h2>Backward Compatibility</h2>
+    <h2>Backward Compatibility</h2>
 
 
-Most models developed under Ptolemy II 1.0.1,
-2.0.1, 3.0.2, 4.0.1, 5.0.2  or HyVisual 2.2-beta, 3.0, 4.0.1, 5.0.1,
-6.0.2, 7.0.1 and 8.0.1
-should run under Ptolemy II 11.0.devel
+    <p>Most models developed under Ptolemy II 1.0.1,
+      2.0.1, 3.0.2, 4.0.1, 5.0.2  or HyVisual 2.2-beta, 3.0, 4.0.1, 5.0.1,
+      6.0.2, 7.0.1 and 8.0.1
+      should run under Ptolemy II 10.0.beta</p>
 
-<p>The MoMLParser includes a list of backward
-compatibility filters that make certain changes on models
-when read, handling such issues as actors being moved or renamed
-and parameter names being changed.
-The filters themselves are defined in
-<a href="codeDoc/ptolemy/moml/filter/package-summary.html">
-ptolemy.moml.filter</a>.
-If you have developed your own actors under earlier versions of Ptolemy II by
-writing your own Java files, you should recompile all your java code with
-the new release.  In theory, copying the .class files should work, but
-recompiling is safer.
+    <p>The MoMLParser includes a list of backward
+      compatibility filters that make certain changes on models
+      when read, handling such issues as actors being moved or renamed
+      and parameter names being changed.
+      The filters themselves are defined in
+      <a href="codeDoc/ptolemy/moml/filter/package-summary.html">ptolemy.moml.filter</a>.
+      If you have developed your own actors under earlier versions of Ptolemy II by
+      writing your own Java files, you should recompile all your java code with
+      the new release.  In theory, copying the .class files should work, but
+      recompiling is safer.
+    </p>
 
-<!--/whatsnew-->
+    <!--/whatsnew-->
 
-<h2>Features that were new in previous Ptolemy II releases </h2>
+    <h2>Features that were new in previous Ptolemy II releases </h2>
 
-<a href="oldFeatures.htm">Features that were new in previous Ptolemy II releases </a>
-
-
-<!--vergilDocs-->
-<h2><a name="limitations">Limitations</a>
-</h2>
-<ul>
-<li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 11.0.devel Limitations Page</a> - Limitations found after release.
-<li><a
-href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html">Ptolemy II Bugzilla</a>
-</ul>
-Version 11.0.devel has the following limitations:
-
-<h3>Release Limitations</h3>
-<ul>
-
-<li> The gzipped tar file of Ptolemy II  source files with Unix line endings
-(<code>ptII11.0.devel.src.tar.gz</code>)
- <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
-untar this file with a checksum error because the pathnames are longer
-than 100 characters.
- <p>Note further that some of the .class names are longer than
-31 characters, which may cause problems when downloading zip files
-on the Macintosh and using Stuffit.
-
-<li> The documentation for custom actors used in demonstrations is not
-included in the release.  The source code for the custom actors can be found
-in the source download.
-
-<li> If a URL ends with <CODE>#in_browser</CODE>, then
-Ptolemy II will invoke the User's web browser.  Unfortunately, this
-does not always work, especially under Windows if Netscape is already
-running.  The workaround is to exit Netscape and let Ptolemy II
-start up Netscape for you.
+    <p><a href="oldFeatures.htm">Features that were new in previous Ptolemy II releases</a></p>
 
 
-<li> Web Start does not work very well if the pathname to the 
-<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
-to place your Ptolemy II tree in a directory that does not have spaces
-in the path name if you plan on using Web Start.
-
-<li> If your user library contains actors that are not present in
-vergil, then you may see a dialog or dialogs asking if you want
-to skip these elements.  This could happen if you had developed custom
-actors and put them into your user library and these custom actors
-are not present in the release.  The work around is to click 'Skip Element'
-and continue with the start up.
+    <!--vergilDocs-->
+    <h2><a name="limitations">Limitations</a></h2>
+    <ul>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 10.0.beta Limitations Page</a> - Limitations found after release.</li>
+      <li><a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html">Ptolemy II Bugzilla</a></li>
+    </ul>
 
 
-<li> Applet issues:
+    <p>Version 10.0.beta has the following limitations:</p>
+
+    <h3>Release Limitations</h3>
+    <ul>
+      <li> The gzipped tar file of Ptolemy II  source files with Unix line endings
+	(<code>ptII10.0.beta.src.tar.gz</code>)
+	<B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
+	untar this file with a checksum error because the pathnames are longer
+	than 100 characters.
+	<p>Note further that some of the .class names are longer than
+	  31 characters, which may cause problems when downloading zip files
+	  on the Macintosh and using Stuffit.</li>
+
+      <li> The documentation for custom actors used in demonstrations is not
+	included in the release.  The source code for the custom actors can be found
+	in the source download.</li>
+
+      <li> If a URL ends with <CODE>#in_browser</CODE>, then
+	Ptolemy II will invoke the User's web browser.  Unfortunately, this
+	does not always work, especially under Windows.
+	The workaround is to exit Netscape and let Ptolemy II
+	start up your browser for you.</li>
+
+      <li> Web Start does not work very well if the pathname to the 
+	<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
+	to place your Ptolemy II tree in a directory that does not have spaces
+	in the path name if you plan on using Web Start.</li>
+
+      <li> If your user library contains actors that are not present in
+	vergil, then you may see a dialog or dialogs asking if you want
+	to skip these elements.  This could happen if you had developed custom
+	actors and put them into your user library and these custom actors
+	are not present in the release.  The work around is to click 'Skip Element'
+	and continue with the start up.</li>
+
+      <li> Web Start issues:
+	<ul>
+	  <li> The Matlab Wireless demo fails under Web Start.
+	    The problem is that the Matlab .m file cannot be found.
+
+          <li> The JAI Adaptive Median model does not work under
+	    Web Start - the repaired image might be corrupt.
+	    The reason is that it uses the JAI acceleration libraries,
+	    which Web Start does not load.  
+
+	  <li> Viewing a pdf file may bring up a blank window along with
+	    the pdf file.  Running the code generator may bring up
+	    a blank window while the java or javac processes are running.
+
+	  <li> Some of the links on the GR domain instructions page
+	    might not work under Web Start because the files they refer
+	    to are not present. </li>
+	  
+	  <li>Under WebStart, in the HOC
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution/">ParallelExecution</a>
+	    and
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources/">SpontanousSources</a>
+	    models, it is  not possible to look inside the ThreadedComposites.</li>
+
+	  <li>In the ExportToWeb version of the HOC
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/Case/Case/">Case</a>,
+	    the Documentation icon is not active.</li>
+
+	  <li>The ReadStdIn demo fails under Webstart.  (This model now has an annotation about this).  The error is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: The file 'System.in' does not have any data.
+	      in .ReadStdIn.LineReader
+	      at ptolemy.actor.lib.io.LineReader._openAndReadFirstTwoLines(LineReader.java:344)
+	      at ptolemy.actor.lib.io.LineReader.fire(LineReader.java:225)
+	    </pre>
+	  <li>Running <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">Ptango SmartRoom under WebStart</a> brings up a partial page?
+	    <ol>
+	      <li>Go to <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/</a></li>
+	      <li>Click on "Launch" to download the Web Start files.</li>
+	      <li>Run the model</li>
+	      <li>Click on the annotation to open <a href="http://localhost:8078/room">http://localhost:8078/room</a></li>
+	      <li>Note that the page is only partially rendered.  The problem is that the style sheets common.css and berkeley.css are not present.</li>
+	    </ol>
+	    Generating WebStart on a laptop works.  Probably the issue is with the css files.
+	</ul>
+      </li>
+
+      <li> Limitations in demonstrations
+	<ul>
+          <li> <!-- sdf/demo/HTVQ/HTVQ.xml -->
+	    The SDF Image Compression HTVQ demo does not display any images. 
+	  </li>
+	  <li>The Pthales FFT demo fails to generate an image.</li>
+	  <li>The Ptango Exception demo does not restart if there is a JavaScript error.
+	    <ol>
+	      <li><code>$PTII/bin/vergil org/ptolemy/ptango/demo/Exception/Exception.xml</code></li>
+	      <li>Hit run</li>
+	      <li>Type in nonsense text, hit return</li>
+	      <li>The model finishes.  It should restart.</li>
+	    </ol>
+	  </li>	  
+	</ul>
+      </li>
+      <li> Limitations in demonstrations that are documented using annotations in the model.
+	<ul>
+	  <li> Continuous CarTracking should be run using View-&gt;Run
+	    so that the user can change the fault parameter.</li>
+
+	  <li> <!-- actor/parameters/demo/Bouncer/Bouncer.xml -->
+	    The DE Bouncer demo: If the user drags the bouncing icon, it no
+	    longer bounces.
+	  </li>
+
+	  <li> Some of the Ptango demos such as EPlus70 and TemperatureSensor require
+	    EnergyPlus and are not likely to run under WebStart bcause the
+	    BCVTB_HOME environment variable need to be set.
+	  </li>
+
+	  <li>The Ptango OccupancyAlert and SensorAndrew demos requires a password, but even with the password it fails to run, the message is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: Unable to login to XMPP server.
+              in .OccupancyAlert.XMPPGateway
+	      Because:
+	      SASL authentication DIGEST-MD5 failed: not-authorized
+	    </pre>
+	    with the server up, the message is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: Error evaluating expression: "http://localhost:" + port + "/simulator#in_browser"
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: WebServer.getAttribute("deployedPort").getToken().intValue()
+	      in .OccupancyAlert.port
+	      Because:
+	      The object on which method "getToken" is invoked on is null, but the method is not found or is not static.
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: "http://localhost:" + port + "/simulator#in_browser"
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: WebServer.getAttribute("deployedPort").getToken().intValue()
+	      in .OccupancyAlert.port
+	      Because:
+	      The object on which method "getToken" is invoked on is null, but the method is not found or is not static.
+	      at ptolemy.data.expr.Variable.validate(Variable.java:1532)
+	    </pre>
+	  </li>
+
+	  <li> The Ptango UCBPower and UCBPowerAnalyzerServer demos does
+	    not work under WebStart because the Ptolemy configuration used
+	    to display models under WebStart does not support exporting to
+	    the Web.
+	  </li>
+	</ul>
+      </li>
+    </ul>
+    <h3>Limitations in the Class Mechanism</h3>
+    <p>There are several known problems:</p>
+
+    <ul>
+
+      <li> Several higher-order-components will not work inside class definitions.
+	(ModalModel, several Continuous actors, etc.).</li>
+
+
+      <li> Name collisions can occur when adding objects to base classes
+	whose names collide with objects in derived classes.
+	Auto naming should look through the derivedList for name conflicts.</li>
+
+
+      <li> Propagation of changes to a base class is very slow in Vergil.
+	If there are more than just a very few instances or derived
+	classes, interactive editing is not practical.  As a workaround,
+	put the class definitions in a separate file and edit them
+	without opening the model that creates instances. The probable
+	reason is that MoMLParser handles propagation by issuing large
+	numbers of change requests.</li>
+
+
+      <li> Certain actors, such as MathFunction, change the number of ports
+	when parameters change.  This violates the derivation invariance
+	for classes.  To demonstrate the bug, put a MathFunction actor
+	in a base class that has a subclass.  Change the function parameter
+	in the subclass to anything but "modulo".  Then change the function
+	in the base class to "modulo" (which adds a port).  Now attempt
+	to insert a parameter into the port.  You will get an
+	InternalErrorException when it tries to propagate the change.</li>
+    </ul>
+
+    <h3>Limitations in the Actor Libraries</h3>
+    <ul>
+      <li>The actor library is far from complete.
+
+      <li>The Expression actor does not properly propagate type constraints in
+	an expression-dependent fashion. It works correctly for double-valued
+	expressions of double-valued inputs.</li>
+
+      <li> The Ptolemy parameter parser uses comma "," to separate elements
+	in an array.  This causes problems when Ptolemy is run on
+	European machines that use a comma "1,0" instead of a period "1.1"
+	in floating point numbers.</li>
+
+      <li> The Display actor uses the Swing JTextArea component which is 
+	known to have memory leaks.</li>
+
+      <li> The readFile() parameter function does not work with applets.
+	Instead, use readResource().</li>
+
+      <li> IterateOverArray has the following problems
 	<ul>
 
-	<li> We've experienced problems with the browser freezing
-	when between applets.  What happens is that the previous
-	applet gets a InterruptedException and pops up a modal dialog
-	box, which freezed the browser.  We are working on a solution.
-
-	<li> Applets do not correctly display the TextAttribute,
-	DocumentationAttribute or the TM "Show schedule" icon.
-
-	<li>Applets seem to run out of memory after about 82Mb.
-
-	<li>There are no Jython or Cal applets 
-
-	<li> Running the Networked demo via an applet on the local
-	file system results in an AccessControlException.
-<pre>
-com.microstar.htm.htmException: XML element "entity" triggers exception:
-  java.lang.Exception: Attempted to lookup 'Waveform', but got: 
-  java.lang.ClassNotFoundException: Waveform
-Attempted to find as a moml class, but got: 
-             java.security.AccessControlException: access denied
-             (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve)
-	     in file:/C:/Program Files/Ptolemy/Ptolemy II 3.0 beta2/
-                   ptolemy/moml/demo/Networked/ at line 62 and column 118
-	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
-	at com.microstar.htm.htmParser.parseElement(XmlParser.java:944)
-	at com.microstar.htm.htmParser.parseContent(XmlParser.java:1117)
-	at com.microstar.htm.htmParser.parseElement(XmlParser.java:946)
-	at com.microstar.htm.htmParser.parseDocument(XmlParser.java:495)
-	at com.microstar.htm.htmParser.doParse(XmlParser.java:175)
-	at com.microstar.htm.htmParser.parse(XmlParser.java:145)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:492)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:471)
-	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:456)
-	at ptolemy.actor.gui.MoMLApplet._createModel(MoMLApplet.java:188)
-</pre>
-
-	The Network demo does not work as a local applet because the xml file
-	includes a reference to http://ptolemy.eecs.berkeley.edu, which is
-	not on the local file system, so we get a SecurityException.
-	 <br>The workaround is to run the applet by downloading it
-	from the Ptolemy Website:
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/moml/demo/Networked/Networked#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/moml/demo/Networked/Networked</CODE></a>
+	  <li> IterateOverArray: When you drop in an actor, and then
+	    another actor, and then select "undo," the second actor is
+	    deleted without the first one being re-created. Thus, undo is
+            only a partial undo. The fix to this is extremely
+            complicated. Probably the only viable
+            mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
+            stack and then to manipulate the contents of that stack directly.</li>
+	  
+	  <li> IterateOverArray: There should be an option to reset
+	    between firings of the inside actor.</li>
 
 
-	<li> If an icon file is not present, then a Vergil applet might
-	try to download the icon file multiple times.  Ptolemy II
-	uses XML files to store icons.  For example
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/BooleanSwitchIcon.xml#in_browser" target="_top"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitchIcon.xml</CODE></a>
-	is an icon for
-<a href="../ptolemy/actor/lib/BooleanSwitch.java"><CODE>$PTII/ptolemy/actor/lib/BooleanSwitch.java</CODE></a>
-	 <br>The problem is that if an actor does not have an icon file,
-	then the applet may go back to the server multiple times looking
-	for the icon. 
- <!-- Steve writes:
-      I think the MoMLParser should load Java-defined classes the same way
-      it does xml-defined classes.  It should reflect a prototype and then
-      keep the prototype around and clone it...  This would mean that it
-      only has to grab the icon once...
- -->
+	  <li> IterateOverArray: If you drop a new actor onto an IterateOverArray
+            in a subclass, it will simply acquire the new contents, but not
+            actually do anything with them. It should somehow refuse to accept
+            the new object in the subclass, since to do so, it would have to
+            delete the original object defined in the base class, and this would
+            violate the derived invariant.</li>
+
+	  
+	  <li> IterateOverArray: If an instance of IterateOverArray in a derived
+            class has overridden values of parameters, those are lost if
+            contained entity of the instance in the base class is replaced and
+            then an undo is requested.</li>
+
+	  
+	  <li> IterateOverArray: When an actor with a display icon like
+            Const, Expression, or MathFunction is put into
+            IterateOverArray, the CopyCatIcon doesn't reflect the text display.</li>
 
 	</ul>
-
-<li> Windows Installer Issues:
- 	<ul>
-
-	<li> Sometimes running a model that uses the Matlab interface
-	will cause Ptolemy II to exit.  Usually this occurs if Vergil
-	has been running for a while and then the Matlab interface is loaded.
-	<br><b>Workaround #1</b>: Run a model that uses the Matlab interface
-	as the first model by doing Quick Tour -&gt; Matlab CT.
-
-	<li> The Windows installer works best if you are in the 
-	Administrators Windows group.   Otherwise, the Windows installer
-	tends to dump lots of icons on your desktop
-	</ul>
-
-<li> Web Start issues:
-	<ul>
-
-	<li> The Matlab Wireless demo fails under Web Start.
-	The problem is that the Matlab .m file cannot be found.
-
-	<li> The Python Ptolemizer demo does not work under Web Start,
-	probably because Jython cannot handle loading classes
-	from the Ptolemy II classes. 
-
-
-        <li> The JAI Adaptive Median model does not work under
-	Web Start - the repaired image might be corrupt.
-	The reason is that it uses the JAI acceleration libraries,
-	which Web Start does not load.  
-
-	<li> Viewing a pdf file may bring up a blank window along with
-	the pdf file.  Running the code generator may bring up
-	a blank window while the java or javac processes are running.
-
-	<li> Some of the links on the GR domain instructions page
-	might not work under Web Start because the files they refer
-	to are not present. 
-        </ul>
-
-<li> Limitations in demonstrations
-        <ul>
-
-	<li> CT CarTracking should be run using View-&gt;Run
-	so that the user can change the fault parameter.
-
-        <li> HTVQ demo: The displays do not go away when
-	the demo is exited.
-
-	<li> GR demos: Under Java 3D 1.3.1-beta, the ViewScreen
-	actor may display a black image when a second GR demo is run.
-	 <br>The workaround is to install Java 3D 1.2.1_04.
-
-        <li> Bouncer demo: If the user drags the bouncing icon, it no
-	longer bounces
-        </ul>
-</ul>
-<h3>Limitations in the Class Mechanism</h3>
-The class mechanism is highly preliminary and is likely to change
-in future releases.  There are several known problems:
-
-<ul>
-
-
-<li> Several higher-order-components will not work inside class definitions.
-    (ModalModel, several CT actors, etc.).
-
-
-<li> Name collisions can occur when adding objects to base classes
-    whose names collide with objects in derived classes.
-    Auto naming should look through the derivedList for name conflicts.
-
-
-<li> Propagation of changes to a base class is very slow in Vergil.
-    If there are more than just a very few instances or derived
-    classes, interactive editing is not practical.  As a workaround,
-    put the class definitions in a separate file and edit them
-    without opening the model that creates instances. The probable
-    reason is that MoMLParser handles propagation by issuing large
-    numbers of change requests.
-
-
-<li> Certain actors, such as MathFunction, change the number of ports
-    when parameters change.  This violates the derivation invariance
-    for classes.  To demonstrate the bug, put a MathFunction actor
-    in a base class that has a subclass.  Change the function parameter
-    in the subclass to anything but "modulo".  Then change the function
-    in the base class to "modulo" (which adds a port).  Now attempt
-    to insert a parameter into the port.  You will get an
-    InternalErrorException when it tries to propagate the change.
-</ul>
-
-
-<h3>Limitations in the Actor Libraries</h3>
-<ul>
-<li>The actor library is far from complete.
-
-<li>The Expression actor does not properly propagate type constraints in
-an expression-dependent fashion. It works correctly for double-valued
-expressions of double-valued inputs.
-
-<li> The Ptolemy parameter parser uses comma "," to separate elements
-in an array.  This causes problems when Ptolemy is run on
-European machines that use a comma "1,0" instead of a period "1.1"
-in floating point numbers.
-
-<li> The Display actor uses the Swing JTextArea component which is 
-known to have memory leaks.
-
-<li> The readFile() parameter function does not work with applets.
-Instead, use readResource().
-<!-- If you change the next paragraph update install.htm -->
-
-<li>The Matlab interface works only under Windows and it requires that
-Matlab be installed on the local machine. 
-The Matlab interface should work with version of Matlab from
-R11 (5.3) and up to and including R13 (6.5)
-<p>Didier Mauuary reports that under Windows 98, configure failed
-to set up the <code>MATLAB_DIR</code>, <code>PTCC</code>
-and <code>PTDLLTOOL</code> makefile variables, but after
-he set them by hand:
-<pre>
- MATLAB_DIR = /cygdrive/c/MATLABR11
- PTCC = gcc
- PTDLLTOOL = dlltool
-</pre>
-he was able to get farther with the recompilation of the Matlab interface.
-
-<li>Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
-<br>Under Windows, we recommend using gcc-3.2, or Microsoft Visual C.
-
-<li>Under Windows, Matlab models sometimes cause Ptolemy to exit the
-second time the model is run!
-<br>The problem seems to be a segfault within a Windows library.
-The problem only affects systems where Matlab is compiled with 
-Microsoft Visual C.
-
-
-<li> IterateOverArray has the following problems
-     <menu>
-
-	<li> IterateOverArray: When you drop in an actor, and then
-	another actor, and then select "undo," the second actor is
-	deleted without the first one being re-created. Thus, undo is
-        only a partial undo. The fix to this is extremely
-        complicated. Probably the only viable
-        mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
-        stack and then to manipulate the contents of that stack directly.
-	
-	<li> IterateOverArray: There should be an option to reset
-	between firings of the inside actor.
-
-
-	<li> IterateOverArray: If you drop a new actor onto an IterateOverArray
-        in a subclass, it will simply acquire the new contents, but not
-        actually do anything with them. It should somehow refuse to accept
-        the new object in the subclass, since to do so, it would have to
-        delete the original object defined in the base class, and this would
-        violate the derived invariant.
-
-        
-	<li> IterateOverArray: If an instance of IterateOverArray in a derived
-        class has overridden values of parameters, those are lost if
-        contained entity of the instance in the base class is replaced and
-        then an undo is requested.
-
-       
-        <li> IterateOverArray: When an actor with a display icon like
-        Const, Expression, or MathFunction is put into
-        IterateOverArray, the CopyCatIcon doesn't reflect the text display.
-
-     </menu>
-
-</ul>
-
-<h3>Limitations in the PN Domain</h3>
-The PN domain documents that it locally handles mutations.  However, this
-is currently not true in the implementation.  For the basic PN model, this
-doesn't really matter, since mutations happen pretty much the same as they
-would otherwise.  (i.e. they are non-deterministic in when they execute) 
-However, for timed PN models, there is actually some expressiveness
-lost, since timed PN models can locally execute mutations deterministically.
-
- <p>Embedding a PN typed composite actor inside a non-process top level
-such as DE does not work.  In fact embedding a process domain inside
-a non-process domain is likely to have problems.  Profess Lee wrote:
-<BLOCKQUOTE>
-    Yes, it looks as if the code is designed so that process domains
-    (PN, CSP) can only be used within process domains.  I'm not sure
-    to what extent this is a limitation of the process domains vs. a
-    semantic problem.  What would PN mean within DE?  Since PN has
-    no well-defined notion of a "firing", how would you assign time
-    stamps to the outputs of a PN actor?  By default in DE, the time
-    stamps of the outputs of an actor match those of the inputs that
-    triggered the firing. There is no such notion in PN.
-</BLOCKQUOTE>
-
-<h3>Limitations in the User Interface</h3>
-
-Below are some of the limitations of Vergil, the Ptolemy II Graphical
-User Interface.
-
-<ul>
-
-<li> The labeling of ports gets messed up if you change cardinality.
-
-
-<li> Cancelling a style change doesn't restore original
-state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.
-
-<li> If there are multiple windows open for a model, say, the top
-level vergil window and the tree view, or the top level window
-and the inside look of a composite component, when the top
-level window is closed, all other windows are closed, but the
-user is not prompted to save any change to the model.
-
-<li> When setting the type of a port, we should provide a combo
-box that lists the common ports
-
-<li> When creating a Modal Model, use Control-Right-Button to
-drawn arcs between nodes.  One potential workaround would
-be to have an information message in the status bar about this.
-
-<li> You should not change the names of built in ports - The port
-mechanism should disallow port name changes on ports that are
-named in Java.  The UI could recognize this.  The UI should
-not allow the user to remove built in Java defined ports.
-
-<li> Manually setting of the types of actors like ArrayToSequence that
-have constraints on their element types can cause problems.
-<li> HTVQ demo is badly laid out when run under vergil.
-<li>Weak support for multiports in the graph editor.
-<li>It is difficult to control wire routing.
-<li>Cannot have more than one vertex in a connection.
-<li>No mechanism to set the width of a relation.
-<li>The integrated web browser is not a full-featured browser.
-<li>Debugger not yet integrated.
-<li>It is difficult to add actors to the libraries.
-<li>No dynamic class reloading.
-
-
-<li> Plot windows don't resize when control panel is resized
- <br>If a model with plotters
-is executed using the run button on the toolbar, and
-then re-executed using the run control panel accessed through
-the View menu, then resizing the run control panel does not
-cause the plots to resize to fit.
-<br>Workaround:
-Close the model and re-open it, and then run first using the
-run control panel.
-
-<li>There is no mechanism in the UI to save a model as a class,
-nor to save a submodel as a class.
-
-<li>There is no mechanism in the UI to create a custom icon for
-a library element and store it in the right place.
-
-<li>If an actor uses a slider, then the actor tree navigator pane
-incorrectly shows the slider as a subitem of the actor.
-
-<li> It seems that if you close a model that has been modified,
-  get prompted to save it, and select save, then the model
-  is saved but not closed.  It should be closed too...
-
-<li> When I select a large number of items from one model, and
-  copy and paste them into a new one, they sometimes all get
-  placed at the origin.  Strangely, if I then auto-place,
-  and then undo, they get their original (correct) placement!
-
-
-<li> Printing a model that contains transparent objects can result
-in problems when printing to Encapsulated Postscript (EPS).
-
- <br>If a model has transparent objects, then when it is printed to
-EPS, the resulting file is a bitmap instead of a Postscript
-description of the graphics.  You can tell by the file size (several
-Meg vs. several K) and by opening it in Illustrator, where in theory
-you should be able to ungroup and select and edit individual
-components.
-
- <br>The way Java prints EPS is that there is an implementation of
-Graphics2D that literally translates each graphics2D call into a
-Postscript snippet.  If Java detects any transparent colors or images,
-then the literal translation of each element independently doesn't
-work, so the printing code reverts to writing everything to an image
-and then sending the image, encapsulated in Postscript to the printer.
-
- <br>Solution1: Use one of these pdf writing programs to generate
-pdf-1.4 compliant pdf files, which have extensions to support
-transparency that Postscript lacks, and then print them to eps, which
-would use the distill implementation of the above algorithm.
-Or alternatively, we could switch to using pdftex instead of 
-latex-&gt;dvips-&gt;distill which should
-embed pdf for figures directly at the expense of less robust latex support.
-<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
-
- <br>Solution 2: Use the undocumented flag
--Dsun.java2d.print.pipeline=pdl on the command line to force the
-printing to use the postscript path, ignoring transparency.
-Under Cygwin:
-<pre>
-export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
-vergil
-</pre>
-Then edit the file by hand in Illustrator to add the transparency back in.
-
-</ul>
-
-<h3>Limitations in JNI</h3>
-<menu>
-<li> The Interface to C actors using the Java Native Interface
+      </li>
+
+    </ul>
+
+    <h3>Limitations in the PN Domain</h3>
+    <p>The PN domain documents that it locally handles mutations.  However, this
+      is currently not true in the implementation.  For the basic PN model, this
+      doesn't really matter, since mutations happen pretty much the same as they
+      would otherwise.  (i.e. they are non-deterministic in when they execute) 
+      However, for timed PN models, there is actually some expressiveness
+      lost, since timed PN models can locally execute mutations deterministically.</p>
+
+    <p>Embedding a PN typed composite actor inside a non-process top level
+      such as DE does not work.  In fact embedding a process domain inside
+      a non-process domain is likely to have problems.  Profess Lee wrote:</p>
+    <blockquote>
+      Yes, it looks as if the code is designed so that process domains
+      (PN, CSP) can only be used within process domains.  I'm not sure
+      to what extent this is a limitation of the process domains vs. a
+      semantic problem.  What would PN mean within DE?  Since PN has
+      no well-defined notion of a "firing", how would you assign time
+      stamps to the outputs of a PN actor?  By default in DE, the time
+      stamps of the outputs of an actor match those of the inputs that
+      triggered the firing. There is no such notion in PN.
+    </blockquote>
+
+    <h3>Limitations in the User Interface</h3>
+
+    <p>Below are some of the limitations of Vergil, the Ptolemy II Graphical
+      User Interface.</p>
+    <ul>
+
+      <li> The labeling of ports gets messed up if you change cardinality.</li>
+
+      <li> Cancelling a style change doesn't restore original
+	state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.</li>
+
+      <li> If there are multiple windows open for a model, say, the top
+	level vergil window and the tree view, or the top level window
+	and the inside look of a composite component, when the top
+	level window is closed, all other windows are closed, but the
+	user is not prompted to save any change to the model.</li>
+
+      <li> When setting the type of a port, we should provide a combo
+	box that lists the common ports</li>
+
+      <li> When creating a Modal Model, use Control-Right-Button to
+	drawn arcs between nodes.  One potential workaround would
+	be to have an information message in the status bar about this.</li>
+
+      <li> You should not change the names of built in ports - The port
+	mechanism should disallow port name changes on ports that are
+	named in Java.  The UI could recognize this.  The UI should
+	not allow the user to remove built in Java defined ports.</li>
+
+      <li> Manually setting of the types of actors like ArrayToSequence that
+	have constraints on their element types can cause problems.</li>
+      <li> HTVQ demo is badly laid out when run under vergil.</li>
+      <li>Weak support for multiports in the graph editor.</li>
+      <li>It is difficult to control wire routing.</li>
+      <li>Cannot have more than one vertex in a connection.</li>
+      <li>No mechanism to set the width of a relation.</li>
+      <li>The integrated web browser is not a full-featured browser.</li>
+      <li>Debugger not yet integrated.</li>
+      <li>It is difficult to add actors to the libraries.</li>
+      <li>No dynamic class reloading.</li>
+
+
+      <li> Plot windows don't resize when control panel is resized
+	<br>If a model with plotters
+	is executed using the run button on the toolbar, and
+	then re-executed using the run control panel accessed through
+	the View menu, then resizing the run control panel does not
+	cause the plots to resize to fit.
+	<br>Workaround:
+	Close the model and re-open it, and then run first using the
+	run control panel.
+      </li>
+
+      <li>There is no mechanism in the UI to save a model as a class,
+	nor to save a submodel as a class.</li>
+
+      <li>There is no mechanism in the UI to create a custom icon for
+	a library element and store it in the right place.</li>
+
+      <li>If an actor uses a slider, then the actor tree navigator pane
+	incorrectly shows the slider as a subitem of the actor.</li>
+
+      <li> It seems that if you close a model that has been modified,
+	get prompted to save it, and select save, then the model
+	is saved but not closed.  It should be closed too...</li>
+
+      <li> When I select a large number of items from one model, and
+	copy and paste them into a new one, they sometimes all get
+	placed at the origin.  Strangely, if I then auto-place,
+	and then undo, they get their original (correct) placement!</li>
+
+
+      <li> Printing a model that contains transparent objects can result
+	in problems when printing to Encapsulated Postscript (EPS).
+
+	<br>If a model has transparent objects, then when it is printed to
+	EPS, the resulting file is a bitmap instead of a Postscript
+	description of the graphics.  You can tell by the file size (several
+	Meg vs. several K) and by opening it in Illustrator, where in theory
+	you should be able to ungroup and select and edit individual
+	components.
+
+	<br>The way Java prints EPS is that there is an implementation of
+	Graphics2D that literally translates each graphics2D call into a
+	Postscript snippet.  If Java detects any transparent colors or images,
+	then the literal translation of each element independently doesn't
+	work, so the printing code reverts to writing everything to an image
+	and then sending the image, encapsulated in Postscript to the printer.
+
+	<br>Solution1: Use one of these pdf writing programs to generate
+	pdf-1.4 compliant pdf files, which have extensions to support
+	transparency that Postscript lacks, and then print them to eps, which
+	would use the distill implementation of the above algorithm.
+	Or alternatively, we could switch to using pdftex instead of 
+	latex-&gt;dvips-&gt;distill which should
+	embed pdf for figures directly at the expense of less robust latex support.
+	<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
+
+	<br>Solution 2: Use the undocumented flag
+	-Dsun.java2d.print.pipeline=pdl on the command line to force the
+	printing to use the postscript path, ignoring transparency.
+	Under Cygwin:
+	<pre>
+	  export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
+	  vergil
+	</pre>
+	Then edit the file by hand in Illustrator to add the transparency back in.
+      </li>
+    </ul>
+
+
+    <h3>Limitations in JNI</h3>
+    <ul>
+      <li> The Interface to C actors using the Java Native Interface
 	is not available via the Windows Installer (or Web Start).
 	To use the JNI/Ptolemy II interface, you must download 
-	Ptolemy II as source files and compile.
+	Ptolemy II as source files and compile.</li>
 
+      <li> The JNI user interface was removed between Ptolemy II 4.0
+	and Ptolemy II 7.0 because the UI stopped working.</li>
 
-<li> The JNI user interface was removed between Ptolemy II 4.0
-and Ptolemy II 7.0 because the UI stopped working.
+    </ul>
 
-</menu>
+    <h3>Code Generation Limitations</h3>
+    Code Generation limitations are covered on the
+    <a href="../ptolemy/cg/README.html">Code Generation</a> page. 
 
+    <h3>Missing Domains</h3>
+    <ul>
+      <li>Boolean and integer dataflow.</li>
+    </ul>
+    <p>For limitations discovered after the release, see the
+      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 10.0.beta website</a>
 
-<h3>Code Generation Limitations</h3>
-Code Generation limitations are covered on the
-<a href="../ptolemy/cg/README.html">Code Generation</a> page. 
-
-<h3>Missing Domains</h3>
-<ul>
-<li>Boolean and integer dataflow.
-</ul>
- <p>For limitations discovered after the release, see the
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 11.0.devel website</a>
-
-<!--/vergilDocs-->
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
- <!-- Leave a trailing p here so that there is a little space at the bottom -->
- <p>
-</body>
+      <!--/vergilDocs-->
+    <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+      <!-- Leave a trailing p here so that there is a little space at the bottom -->
+    <p>
+  </body>
 </html>
