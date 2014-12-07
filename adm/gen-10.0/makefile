@@ -1089,6 +1089,7 @@ untar:
 	ssh moog "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 	ssh moog "cd $(PTII_FTP)/ptII$(VERSION); ln -s ../jnlp-$(VERSION)/signed ."
+	ssh moog gzip -9 $(PTII_FTP)/ptII$(VERSION).tar
 
 update_ftp_book: PtolemyII_DigitalV1_02.pdf
 	scp PtolemyII_DigitalV1_02.pdf moog:$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/

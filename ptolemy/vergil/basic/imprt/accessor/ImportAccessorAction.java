@@ -134,12 +134,12 @@ public class ImportAccessorAction extends AbstractAction {
         // query.addLine("location", "location", _lastLocation);
         final JComboBox box = query.addChoice("accessor", "accessor",
                 new String[] {}, _lastAccessorName);
-        updateComboBox(box, query);
+        _updateComboBox(box, query);
         query.addQueryListener(new QueryListener() {
             @Override
             public void changed(String name) {
                 if (name.equals("location")) {
-                    updateComboBox(box, query);
+                    _updateComboBox(box, query);
                 }
             }
         });
@@ -254,7 +254,7 @@ public class ImportAccessorAction extends AbstractAction {
         }
     }
 
-    private void updateComboBox(JComboBox box, Query query) {
+    private void _updateComboBox(JComboBox box, Query query) {
         box.removeAllItems();
         URL url;
         BufferedReader in;

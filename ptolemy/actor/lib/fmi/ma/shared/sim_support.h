@@ -4,6 +4,8 @@
  * Copyright QTronic GmbH. All rights reserved.
  * -------------------------------------------------------------------------*/
 
+/* See $PTII/ptolemy/actor/lib/fmi/ma/fmusdk-license.htm for the complete FMUSDK License. */
+
 // Used 7z options, version 4.57:
 // -x   Extracts files from an archive with their full paths in the current dir, or in an output dir if specified
 // -aoa Overwrite All existing files without prompt
