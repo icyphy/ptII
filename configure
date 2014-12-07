@@ -2710,6 +2710,21 @@ else
     PTII to use forward slashes." "$LINENO" 5
 fi
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking if \$PTII ('$PTII') and the current directory are the same\"" >&5
+$as_echo_n "checking if \$PTII ('$PTII') and the current directory are the same\"... " >&6; }
+canonicalPTII=`cd "$PTII"; pwd`
+if test "$canonicalPTII" != "`pwd`" ; then
+    currentDirectory="`pwd`"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Perhaps $PTII is set to a directory other
+    than the current directory?
+    'cd \"$PTII\"; pwd' yields \"$canonicalPTII\", which is not the
+    same as 'pwd', which is \"$currentDirectory\"." >&5
+$as_echo "$as_me: WARNING: Perhaps $PTII is set to a directory other
+    than the current directory?
+    'cd \"$PTII\"; pwd' yields \"$canonicalPTII\", which is not the
+    same as 'pwd', which is \"$currentDirectory\"." >&2;}
+fi
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking if \$PTII ('$PTII') contains \"cygdrive\"" >&5
 $as_echo_n "checking if \$PTII ('$PTII') contains \"cygdrive\"... " >&6; }
 echo "$PTII" | egrep 'cygdrive|cygwin' > /dev/null
