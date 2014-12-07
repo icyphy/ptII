@@ -606,9 +606,6 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  specified records, or null if there is no such occupant.
      */
     private String _occupants(ArrayToken records) {
-	if (records == null) {
-	    return null;
-	}
         String result = null;
         if (records.length() > 0) {
             RecordToken occupant = (RecordToken) records.getElement(0);

@@ -36,6 +36,7 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
@@ -59,7 +60,7 @@ import soot.SceneTransformer;
 public class MakefileWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
-    private MakefileWriter(CompositeActor model) {
+    private MakefileWriter(CompositeEntity model) {
         _model = model;
     }
 
@@ -68,7 +69,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      * properly initialized so that resolved types and other static
      * properties of the model can be inspected.
      */
-    public static MakefileWriter v(CompositeActor model) {
+    public static MakefileWriter v(CompositeEntity model) {
         return new MakefileWriter(model);
     }
 
@@ -413,7 +414,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     private String _generatorAttributeFileName;
 
     // The model we are generating code for.
-    private CompositeActor _model;
+    private CompositeEntity _model;
 
     // The full path to the directory where we are creating the model
     private String _outputDirectory;

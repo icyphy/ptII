@@ -47,6 +47,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -571,6 +572,10 @@ ChangeListener {
                         + getAttribute("modelPath") + "' to a StringParameter");
             }
 
+            if (modelPath == null) {
+                throw new NullPointerException("Could not get the attribute \"modelPath\" from "
+                        + getFullName());
+            }
             modelPath.setExpression(modelPathOrURL);
 
             // Strip off the leading '.' and then sanitize.
@@ -581,33 +586,36 @@ ChangeListener {
             modelName.setExpression(modelNameValue);
 
             // Set the iterations parameter.
-            CompositeActor compositeActor;
+            // ptolemy.data.ontologies.Ontology is a CompositeEntity, not a CompositeActor.
+            CompositeEntity compositeEntity;
 
             try {
-                compositeActor = (CompositeActor) toplevel;
+                compositeEntity = (CompositeEntity) toplevel;
             } catch (ClassCastException ex) {
                 throw new InternalErrorException(this, ex,
                         "Failed to cast toplevel '" + toplevel
                         + "' to a CompositeActor");
             }
 
-            Director director = compositeActor.getDirector();
+            if (compositeEntity instanceof CompositeActor) {
+                Director director = ((CompositeActor)compositeEntity).getDirector();
 
-            // If we save a blank model, then there might not be a director.
-            Parameter iterations = (StringParameter) getAttribute("iterations");
-
-            if (director == null) {
-                iterations.setExpression("1000");
-            } else {
-                Attribute directorIterations = director
+                // If we save a blank model, then there might not be a director.
+                Parameter iterations = (StringParameter) getAttribute("iterations");
+            
+                if (director == null) {
+                    iterations.setExpression("1000");
+                } else {
+                    Attribute directorIterations = director
                         .getAttribute("iterations");
 
-                if (directorIterations != null) {
-                    Token iterationsToken = ((Parameter) directorIterations)
+                    if (directorIterations != null) {
+                        Token iterationsToken = ((Parameter) directorIterations)
                             .getToken();
-                    iterations.setExpression(iterationsToken.toString());
-                } else {
-                    iterations.setExpression("1000");
+                        iterations.setExpression(iterationsToken.toString());
+                    } else {
+                        iterations.setExpression("1000");
+                    }
                 }
             }
         } catch (Exception ex) {
