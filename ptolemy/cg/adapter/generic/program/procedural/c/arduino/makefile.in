@@ -54,8 +54,6 @@ ARDUINO_INCLUDES=@ARDUINO_INCLUDES@ -I/Applications/Arduino.app/Contents/Resourc
 # a local makefile.in in the directory where the model is located.
 # See
 # ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
-ARDUINO_DEFINES=-D__AVR__ -D__AVR_ATmega32U4__ -DPT_DOES_NOT_HAVE_MEMORY_H -DPT_DOES_NOT_HAVE_TIME_H
-
 AVR_BASE=/Applications/Arduino.app/Contents/Resources/Java/hardware
 AVR_CORES=$(AVR_BASE)/arduino/avr/cores/arduino
 AVR_VARIANT=yun
@@ -70,13 +68,14 @@ AVR_SIZE=$(AVR_BIN)/avr-size
 
 ARDUINO_INCLUDES=-I$(AVR_CORES) -I$(AVR_BASE)/arduino/avr/variants/$(AVR_VARIANT)
 
-ARDUINO_DEFINES=-D__AVR__ -D__AVR_ATmega32U4__ -DPT_DOES_NOT_HAVE_MEMORY_H -DPT_DOES_NOT_HAVE_TIME_H -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_YUN -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8041 -DUSB_MANUFACTURER= -DUSB_PRODUCT="\"Arduino Yun\""
+ARDUINO_DEFINES=-D__AVR__ -D__AVR_ATmega32U4__ -DPT_DOES_NOT_HAVE_MALLOC_H -DPT_DOES_NOT_HAVE_MEMORY_H -DPT_DOES_NOT_HAVE_TIME_H -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_YUN -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8041 -DUSB_MANUFACTURER= -DUSB_PRODUCT="\"Arduino Yun\""
+
+#	$(AVR_CORES)/avr-libc/malloc.c
+#	$(AVR_CORES)/avr-libc/realloc.c
 
 AVR_CORES_C_FILES= \
 	$(AVR_CORES)/WInterrupts.c \
 	$(AVR_CORES)/hooks.c \
-	$(AVR_CORES)/avr-libc/malloc.c \
-	$(AVR_CORES)/avr-libc/realloc.c \
 	$(AVR_CORES)/wiring.c \
 	$(AVR_CORES)/wiring_analog.c \
 	$(AVR_CORES)/wiring_digital.c \
@@ -116,11 +115,11 @@ foo.cpp: _Ultrasonic/_EmbeddedCodeActor/Ultrasonic_EmbeddedCodeActor_EmbeddedAct
 	echo "The file that has the Arduino code needs to be compiled as a .cpp file"
 	mv _Ultrasonic/_EmbeddedCodeActor/Ultrasonic_EmbeddedCodeActor_EmbeddedActor.c foo.cpp
 
-core.a: $(AVR_CORES_C_FILES) $(AVR_CORES_CPP_FILES) $(MODELNAME).o foo.cpp
+core.a: $(AVR_CORES_C_FILES) $(AVR_CORES_CPP_FILES) $(MODELNAME).o #foo.cpp
 	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(AVR_CORES_CPP_FILES)
 	$(AVR_GCC) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(AVR_CORES_C_FILES)
 	$(AVR_GCC) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(PTCG_CFILES)
-	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) foo.cpp
+	#	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) foo.cpp
 	$(AVR_AR) rcs core.a *.o
 
 # We need -D__int64="long long" when invoking jni interface under cygwin
@@ -132,6 +131,16 @@ $(MODELNAME).cpp: $(MODELNAME)_Main.c
 	cp $(MODELNAME)_Main.c $@
 
 # Other Targets
+
+run:
+	# There is no run command, we would typically use avrdude.
+	# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun
+	#
+	# stty -f /dev/tty.usbmodem1421
+	# sleep 1
+	# Then run the avrdude command
+	# avrdude...
+
 clean:
 	rm -rf $(PTCG_OFILES) @modelName@
 	-@echo ' '

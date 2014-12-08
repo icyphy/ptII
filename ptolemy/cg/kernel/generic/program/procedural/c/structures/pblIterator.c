@@ -48,10 +48,15 @@ char* pblIterator_c_id = "$Id$";
 char * PblIteratorMagic = "PblIteratorMagic";
 
 #include <stdio.h>
+#ifndef PT_DOES_NOT_HAVE_MEMORY_H
 #include <memory.h>
+#endif
+
 
 #ifndef __APPLE__
+#ifndef PT_DOES_NOT_HAVE_MALLOC_H
 #include <malloc.h>
+#endif
 #endif
 
 #include <stdlib.h>
