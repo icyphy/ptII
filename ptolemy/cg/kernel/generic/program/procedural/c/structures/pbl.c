@@ -56,7 +56,9 @@ char* pbl_c_id = "$Id$";
 #endif
 
 #ifndef __APPLE__
+#ifndef PT_DOES_NOT_HAVE_MALLOC_H
 #include <malloc.h>
+#endif
 #endif
 
 #ifndef PT_DOES_NOT_HAVE_TIME_H
