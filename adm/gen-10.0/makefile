@@ -2783,8 +2783,7 @@ PTCYGPATH=./ptcygpath
 izpack:	
 	cd ~/src/izpack/trunk/src/; ant build.standalone-compiler; cp C:/cxh/src/izpack/trunk/lib/standalone-compiler.jar c:/cxh/src/izpack/izpack3.9.0/lib/standalone-compiler.jar 
 	c:/cxh/src/izpack/izpack3.9.0/bin/compile test.xml
-	"$(L4JC)" `$(PTCYGPATH) test_l4j.xml`
-
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/test_l4j.xml"
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
 
@@ -2817,7 +2816,7 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 	@echo "#"
 	@echo "# Building $(PTSETUP).exe"
 	@echo "# `date`"
-	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_l4j.xml"
 	sleep 5
 	ls -l $@;
 	if [ ! -f $@ ];  then \
@@ -2838,7 +2837,7 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 	@echo "#"
 	@echo "# Building $(PTSETUP).exe"
 	@echo "# `date`"
-	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_64_l4j.xml`
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_64_l4j.xml"
 	sleep 5
 	ls -l $@
 	if [ ! -f $@ ];  then \
