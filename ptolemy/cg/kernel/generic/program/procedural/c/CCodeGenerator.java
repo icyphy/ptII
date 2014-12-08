@@ -533,15 +533,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer codeC = new StringBuffer();
         codeC.append("#include \"_ptTypes.h\"");
 
-        codeH.append(_eol + "#include <stdio.h>");
-        codeH.append(_eol + "#include <stdlib.h>");
-        codeH.append(_eol + "#include <string.h>");
-        codeH.append(_eol + "#include <math.h>");
-        codeH.append(_eol + "#include <errno.h>");
-        codeH.append(_eol + "#include <float.h>");
-        codeH.append(_eol + "#include <limits.h>");
-        codeH.append(_eol + "#include <stdarg.h>");
-        codeH.append(_eol + "#include \"pbl.h\"");
+        codeH.append(_eol + "#include <stdio.h>" + _eol
+                + "#include <stdlib.h>" + _eol
+                + "/* Define _BSD_SOURCE so that string.h includes a declaration for strdup under RHEL. */" + _eol
+                + "#define _BSD_SOURCE" + _eol
+                + "#include <string.h>" + _eol
+                + "#include <math.h>" + _eol
+                + "#include <errno.h>" + _eol
+                + "#include <float.h>" + _eol
+                + "#include <limits.h>" + _eol
+                + "#include <stdarg.h>" + _eol
+                + "#include \"pbl.h\"" + _eol);
 
         // Add the extra-define
         for (String extraDefine : _definesToAdd) {
