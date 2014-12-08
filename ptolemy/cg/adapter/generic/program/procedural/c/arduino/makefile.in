@@ -54,7 +54,8 @@ ARDUINO_INCLUDES=@ARDUINO_INCLUDES@ -I/Applications/Arduino.app/Contents/Resourc
 # a local makefile.in in the directory where the model is located.
 # See
 # ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
-AVR_BASE=/Applications/Arduino.app/Contents/Resources/Java/hardware
+# AVR_BASE is set in ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+AVR_BASE=@AVR_BASE@
 AVR_CORES=$(AVR_BASE)/arduino/avr/cores/arduino
 AVR_VARIANT=yun
 

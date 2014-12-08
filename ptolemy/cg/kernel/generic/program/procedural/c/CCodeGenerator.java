@@ -2977,6 +2977,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // directive for the Arduino, see
             // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
             _substituteMap.put("@ARDUINO_INCLUDES@", _arduinoIncludes());
+            _substituteMap.put("@AVR_BASE@", _avrBase());
         }
 
         // Adds the .c and .o needed files
@@ -3038,7 +3039,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String[] includeSearchPath = new String[] {
                 arduinoIncludeDirectoryEnvironmentVariable,
                 "/usr/local/arduino/hardware/arduino/sam/cores/arduino",
-                "/usr/local/arduino-1.5.6-r2/hardware/arduino/sam/cores/arduino",
+                "/usr/local/arduino-1.5.8/hardware/arduino/sam/cores/arduino",
                 "/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/avr/cores/arduino" };
         // If the env is not set, then we don't want to print a null.
         StringBuffer directories = new StringBuffer();
@@ -3060,6 +3061,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + ". Try setting the " + environmentVariableName
                 + " environment variable and re-running Ptolemy.");
         return "-I/SetThe" + environmentVariableName + "EnvironmentVariable";
+    }
+
+    private String _avrBase() {
+        String osName = StringUtilities.getProperty("os.name");
+        if (osName.startsWith("Mac OS X")) {
+            return "/Applications/Arduino.app/Contents/Resources/Java/hardware";
+        }
+        return "/usr/local/arduino/hardware";
     }
 
     /** Get the header files needed to compile with the jvm library.
