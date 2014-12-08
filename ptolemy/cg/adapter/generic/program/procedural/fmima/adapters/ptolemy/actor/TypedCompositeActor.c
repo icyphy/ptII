@@ -209,15 +209,15 @@ void terminateSimulation(FMU *fmus, int returnValue, FILE* file, double h,
 	return;
 }
 
-static fmi2Status rollbackFMUs(FMU *fmus, int *fmusToRollback, int numberOfFmusToRollback) {
-	for (int i = 0; i < numberOfFmusToRollback; i++) {
-		int idx = fmusToRollback[i];
-		fmi2Status localStatus = fmus[idx].setFMUstate(fmus[idx].component, fmus[idx].lastFMUstate);
-		if (localStatus > fmi2Warning) {
-			printf("Rolling back FMU %s failed!\n", NAMES_OF_FMUS[idx]);
-			return localStatus;
+static fmi2Status rollbackFMUs(FMU *fmus) {
+	for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+		if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
+			fmi2Status localStatus = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+			if (localStatus > fmi2Warning) {
+				printf("Rolling back FMU %s failed!\n", NAMES_OF_FMUS[i]);
+				return localStatus;
+			}
 		}
-
 	}
 	return fmi2OK;
 }
@@ -254,9 +254,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 	// Simulation loop
 	while (time < tEnd) {
 
-		int *fmusToRollback = NULL;
-		int numberOfFmusToRollback = 0;
-
 		int *fmusToStep = NULL;
 		int numberOfFmusToStep = 0;
 
@@ -274,7 +271,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 				if (currentStatus > fmi2Warning) {
 					printf("Could get the MaxStepSize: getMaxStepSize returned fmuStatus > Discard for FMU, %s\n",
 							NAMES_OF_FMUS[i]);
-					free(fmusToRollback);
 					free (fmusToStep);
 					terminateSimulation(fmus, 0, file, h, nSteps);
 					return 0;
@@ -287,7 +283,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 					fmusToStep[numberOfFmusToStep-1] = i;
 				} else {
 					printf("Error while storing index of an FMU to Step");
-					free(fmusToRollback);
 					free (fmusToStep);
 					terminateSimulation(fmus, 0, file, h, nSteps);
 					return 0;
@@ -306,7 +301,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 						fmus[i].component, &fmus[i].lastFMUstate);
 				if (currentStatus > fmi2Warning) {
 					printf("Saving state of FMU (%s) failed. Terminating simulation.", NAMES_OF_FMUS[i]);
-					free(fmusToRollback);
 					free (fmusToStep);
 					terminateSimulation(fmus, 0, file, h, nSteps);
 					return 0;
@@ -315,7 +309,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 						stepSize, fmi2False);
 				if (currentStatus > fmi2Discard) {
 					printf("Could not complete simulation of the model. doStep returned fmuStatus > Discard!\n");
-					free(fmusToRollback);
 					free (fmusToStep);
 					terminateSimulation(fmus, 0, file, h, nSteps);
 					return 0;
@@ -324,20 +317,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 				fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
 				maxStepSize = lastSuccessfulTime - time;
 				if (maxStepSize < stepSize) {
-					numberOfFmusToRollback++;
-					int* tmpFmusToRollback = NULL;
-					tmpFmusToRollback = (int*) realloc(fmusToRollback, numberOfFmusToRollback * sizeof(int));
-					if (tmpFmusToRollback != NULL) {
-						fmusToRollback = tmpFmusToRollback;
-						fmusToRollback[numberOfFmusToRollback-1] = i;
-					} else {
-						printf("Error while storing index of a Rollback FMU");
-						free (fmusToRollback);
-						free (fmusToStep);
-						terminateSimulation(fmus, 0, file, h, nSteps);
-						return 0;
-					}
-				} else {
 					numberOfFmusToStep++;
 					int* tmpFmusToStep = NULL;
 					tmpFmusToStep = (int*) realloc(fmusToStep, numberOfFmusToStep * sizeof(int));
@@ -346,7 +325,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 						fmusToStep[numberOfFmusToStep-1] = i;
 					} else {
 						printf("Error while storing index of an FMU to Step");
-						free(fmusToRollback);
 						free (fmusToStep);
 						terminateSimulation(fmus, 0, file, h, nSteps);
 						return 0;
@@ -365,7 +343,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 					stepSize, fmi2False);
 			if (currentStatus > fmi2Discard) {
 				printf("Could not complete simulation of the model. doStep returned fmuStatus > Discard!\n");
-				free(fmusToRollback);
 				free (fmusToStep);
 				terminateSimulation(fmus, 0, file, h, nSteps);
 				return 0;
@@ -374,7 +351,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 			currentStatus = fmus[legacyFmuIndex].getRealStatus(fmus[legacyFmuIndex].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
 			if (currentStatus > fmi2Discard) {
 				printf("Could not complete simulation of the model. doStep returned fmuStatus > Discard!\n");
-				free(fmusToRollback);
 				free (fmusToStep);
 				terminateSimulation(fmus, 0, file, h, nSteps);
 				return 0;
@@ -383,33 +359,30 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 			stepSize = min(stepSize, maxStepSize);
 		}
 
-		// Rolling back FMUs of type (II) (only those rejected the step size)
+		// Rolling back FMUs of type (II)
 		{
-			fmi2Status currentStatus = rollbackFMUs(fmus, fmusToRollback, numberOfFmusToRollback);
+			fmi2Status currentStatus = rollbackFMUs(fmus);
 			if (currentStatus > fmi2Discard) {
 				printf("Rolling back of FMUs failed. Terminating simulation.");
-				free(fmusToRollback);
 				free (fmusToStep);
 				terminateSimulation(fmus, 0, file, h, nSteps);
 				return 0;
 			}
 		}
 
-		// Perform doStep() for all FMUs with the discovered stepSize (only those to step)
+		// Perform doStep() for all FMUs with the discovered stepSize
 		for (int i = 0; i < numberOfFmusToStep; i++) {
 			int idx = fmusToStep[i];
 			fmi2Status currentStatus = fmus[idx].doStep(fmus[idx].component, time,
 					stepSize, fmi2False);
 			if (currentStatus > fmi2Discard) {
 				printf("Could not complete simulation of the model. doStep returned fmuStatus > Discard!\n");
-				free(fmusToRollback);
 				free (fmusToStep);
 				terminateSimulation(fmus, 0, file, h, nSteps);
 				return 0;
 			}
 		}
 
-		free (fmusToRollback);
 		free (fmusToStep);
 		time += stepSize;
 		outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator,FALSE);
