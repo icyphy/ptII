@@ -52,10 +52,14 @@ char * PblArrayListMagic = "PblArrayListMagic";
 char * PblLinkedListMagic = "PblLinkedListMagic";
 
 #include <stdio.h>
+#ifndef PT_DOES_NOT_HAVE_MEMORY_H
 #include <memory.h>
+#endif
 
 #ifndef __APPLE__
+#ifndef PT_DOES_NOT_HAVE_MALLOC_H
 #include <malloc.h>
+#endif
 #endif
 
 #include <stdlib.h>
