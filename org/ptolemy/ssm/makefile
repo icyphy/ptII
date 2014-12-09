@@ -62,7 +62,9 @@ JSRCS = \
 	PredictorSSM.java \
 	StateSpaceActor.java \
 	StateSpaceModel.java \
-	StateSpaceSimulator.java
+	StateSpaceSimulator.java \
+	StatePredictorWithAccControl.java \
+	StatePredictorWithControl.java
 
 
 OTHER_FILES_TO_BE_JARED = \
