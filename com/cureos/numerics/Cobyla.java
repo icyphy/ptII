@@ -910,6 +910,22 @@ public class Cobyla {
                                     temp = Math.sqrt(sp * sp + tot * tot);
                                     double alpha = sp / temp;
                                     double beta = tot / temp;
+                                    ////////////////////////////////////////////
+                                    //When temp is quite small, alpha and beta must be set to approximated value.
+                                    if(temp<1.0E-200) { 
+                                        temp = sp+tot;
+                                        alpha = sp/temp;
+                                        beta = tot/temp;
+                                        double prop = Math.sqrt(alpha*alpha+beta*beta);
+                                        if(prop<1.0E-200) {
+                                            alpha = 1; beta = 0;
+                                        } else {
+                                            temp /= prop;
+                                            alpha /= prop;
+                                            beta /= prop;
+                                        }
+                                    }
+                                    ///////////////////////////////////////////////
                                     tot = temp;
                                     for (int i = 1; i <= n; ++i) {
                                         temp = alpha * z[i][k] + beta
