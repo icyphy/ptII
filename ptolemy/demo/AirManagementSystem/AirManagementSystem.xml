@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AirManagementSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="Title" class="ptolemy.vergil.basic.export.web.Title" value="Air Management System">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 45.0]">
@@ -66,9 +66,9 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: What do these numbers mean?&#10;According to Yilin, they should be between 0 and 0.3.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: What do these numbers mean?&#10;According to Yilin, they should be between 0 and 0.3.&#10;&#10;This demo intentionally throws an exception indicating that&#10;valve pressure has dropped below cabin pressure.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 470.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
