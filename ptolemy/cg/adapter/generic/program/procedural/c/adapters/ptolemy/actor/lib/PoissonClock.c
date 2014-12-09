@@ -8,7 +8,10 @@ Time $actorSymbol(nextFiringTime);
 boolean $actorSymbol(needNew);
 double $actorSymbol(randomNumber);
 boolean $actorSymbol(outputProduced);
-// this is the next function of java random
+// This is the next function of java random.
+// gcc give a warning here because the order of operations is not deterministic.
+// The compiler is free to execute either side of the + opertion in nextDouble(), which
+// will end up with different values. 
 #define nextRandom(i) ((int) ((unsigned int) (($actorSymbol(seed) = (($actorSymbol(seed) * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1))) >> (48 - (i)))))
 #define nextDouble() ((((long) nextRandom(26) << 27) + nextRandom(27)) / (double) (1L << 53))
 $include(<time.h>)
