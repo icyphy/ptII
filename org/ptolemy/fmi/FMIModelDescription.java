@@ -38,6 +38,7 @@ import java.util.Map;
 import org.ptolemy.fmi.type.FMIRealType;
 
 import com.sun.jna.Function;
+import com.sun.jna.Library;
 import com.sun.jna.NativeLibrary;
 
 ///////////////////////////////////////////////////////////////////
@@ -375,7 +376,14 @@ public class FMIModelDescription {
         }
         String sharedLibrary = getNativeLibraryPath();
         try {
-            _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+            // Call dlopen() with RTLD_LAZY and not with RTLD_GLOBAL, which is the
+            // default. 
+            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#LinuxSymbolProblems
+            // See https://github.com/twall/jna/issues/44
+            Map options = new HashMap();
+            options.put(Library.OPTION_OPEN_FLAGS, new Integer(1));
+
+            _nativeLibrary = NativeLibrary.getInstance(sharedLibrary, options);
         } catch (Throwable throwable3) {
             // Java 1.5 does not support
             // IOException(String, Throwable).  We
