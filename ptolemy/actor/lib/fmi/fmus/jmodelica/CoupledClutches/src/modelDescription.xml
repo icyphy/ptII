@@ -1,200 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fmiModelDescription fmiVersion="2.0" modelName="CoupledClutches" guid="ea7aec0861f0b63ed1a2bab0365537ae" generationTool="JModelica.org" generationDateAndTime="2014-02-03T11:56:56" variableNamingConvention="structured" numberOfEventIndicators="37">
-	<ModelExchange modelIdentifier="CoupledClutches" needsExecutionTool="false" completedIntegratorStepNotNeeded="true" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canGetAndSetFMUstate="false" canSerializeFMUstate="false" providesDirectionalDerivative="true" />
-	<CoSimulation modelIdentifier="CoupledClutches" needsExecutionTool="false" canHandleVariableCommunicationStepSize="true" canInterpolateInputs="true" maxOutputDerivativeOrder="0" canRunAsynchronuously="false" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canSerializeFMUstate="false" providesDirectionalDerivative="true" />
+<fmiModelDescription fmiVersion="2.0" modelName="CoupledClutches" guid="5e97f2c5cfc629d038344521604b7172" generationTool="JModelica.org" generationDateAndTime="2014-12-10T10:23:55" variableNamingConvention="structured" numberOfEventIndicators="27">
+	<ModelExchange modelIdentifier="CoupledClutches" needsExecutionTool="false" completedIntegratorStepNotNeeded="true" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canGetAndSetFMUstate="false" canSerializeFMUstate="false" providesDirectionalDerivative="false" />
+	<CoSimulation modelIdentifier="CoupledClutches" needsExecutionTool="false" canHandleVariableCommunicationStepSize="true" canInterpolateInputs="true" maxOutputDerivativeOrder="0" canRunAsynchronuously="false" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canSerializeFMUstate="false" providesDirectionalDerivative="false" />
 	<UnitDefinitions>
+		<Unit name="W">
+		</Unit>
+		<Unit name="1">
+		</Unit>
+		<Unit name="Hz">
+		</Unit>
+		<Unit name="rad/s">
+		</Unit>
+		<Unit name="s">
+		</Unit>
+		<Unit name="N.m">
+		</Unit>
+		<Unit name="kg.m2">
+		</Unit>
+		<Unit name="N">
+		</Unit>
+		<Unit name="rad/s2">
+		</Unit>
 		<Unit name="rad">
-			<DisplayUnit name="deg" factor="1" offset="0" />
-			<DisplayUnit name="rad" factor="1" offset="0" />
+			<DisplayUnit name="deg" />
+			<DisplayUnit name="rad" />
 		</Unit>
 	</UnitDefinitions>
 	<TypeDefinitions>
 		<SimpleType name="StateSelect">
 			<Enumeration>
-				<Item name="never" value="0" description="Do not use as state at all." />
-				<Item name="avoid" value="1" description="Use as state, if it cannot be avoided (but only if variable appears differentiated and no other potential state with attribute default, prefer, or always can be selected)." />
-				<Item name="default" value="2" description="Use as state if appropriate, but only if variable appears differentiated." />
-				<Item name="prefer" value="3" description="Prefer it as state over those having the default value (also variables can be selected, which do not appear differentiated). " />
-				<Item name="always" value="4" description="Do use it as a state." />
+				<Item name="never" value="1" description="Do not use as state at all." />
+				<Item name="avoid" value="2" description="Use as state, if it cannot be avoided (but only if variable appears differentiated and no other potential state with attribute default, prefer, or always can be selected)." />
+				<Item name="default" value="3" description="Use as state if appropriate, but only if variable appears differentiated." />
+				<Item name="prefer" value="4" description="Prefer it as state over those having the default value (also variables can be selected, which do not appear differentiated). " />
+				<Item name="always" value="5" description="Do use it as a state." />
 			</Enumeration>
 		</SimpleType>
 	</TypeDefinitions>
-	<DefaultExperiment stopTime="1.5" />
+	<LogCategories>
+		<Category name="logLevel1" description="logLevel1 - fatal errors" />
+		<Category name="logLevel2" description="logLevel2 - errors" />
+		<Category name="logLevel3" description="logLevel3 - warnings" />
+		<Category name="logLevel4" description="logLevel4 - info" />
+		<Category name="logLevel5" description="logLevel5 - verobse" />
+		<Category name="logLevel6" description="logLevel6 - debug" />
+	</LogCategories>
 	<VendorAnnotations>
-		<Tool name="JModelica">
+		<Tool name="JModelica.org">
 		</Tool>
 	</VendorAnnotations>
 	<ModelVariables>
 		<ScalarVariable name="J1.J" valueReference="12" description="Moment of inertia" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="MomentOfInertia" unit="kg.m2" relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.a" valueReference="127" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J1.a" valueReference="130" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.flange_a.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J1.flange_a.phi" valueReference="128" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.flange_a.tau" valueReference="128" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J1.flange_a.tau" valueReference="131" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.flange_b.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J1.flange_b.phi" valueReference="128" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.flange_b.tau" valueReference="132" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J1.flange_b.tau" valueReference="135" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.phi" valueReference="126" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
-			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J1.phi" valueReference="128" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
+			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.der(phi)" valueReference="161" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J1.phi)" valueReference="163" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.der(phi,2)" valueReference="167" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J1.phi,2)" valueReference="169" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.stateSelect" valueReference="268435547" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="J1.stateSelect" valueReference="268435549" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.w" valueReference="118" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="exact">
-			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="10" />
+		<ScalarVariable name="J1.w" valueReference="129" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="exact">
+			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="10.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J1.der(w)" valueReference="110" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" derivative="11" />
+		<ScalarVariable name="der(J1.w)" valueReference="164" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="J2.J" valueReference="27" description="Moment of inertia" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="MomentOfInertia" unit="kg.m2" relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.a" valueReference="138" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J2.a" valueReference="142" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.flange_a.phi" valueReference="121" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J2.flange_a.phi" valueReference="140" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.flange_a.tau" valueReference="134217860" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J2.flange_a.tau" valueReference="134217863" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.flange_b.phi" valueReference="121" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J2.flange_b.phi" valueReference="140" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.flange_b.tau" valueReference="142" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J2.flange_b.tau" valueReference="146" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.phi" valueReference="121" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
-			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J2.phi" valueReference="140" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
+			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.der(phi,2)" valueReference="169" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J2.phi)" valueReference="165" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.der(phi)" valueReference="113" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" derivative="19" />
+		<ScalarVariable name="der(J2.phi,2)" valueReference="171" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.stateSelect" valueReference="268435549" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="J2.stateSelect" valueReference="268435551" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.w" valueReference="137" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="exact">
-			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J2.w" valueReference="141" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="calculated">
+			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J2.der(w)" valueReference="162" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J2.w)" valueReference="166" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="J3.J" valueReference="35" description="Moment of inertia" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="MomentOfInertia" unit="kg.m2" relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.a" valueReference="149" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J3.a" valueReference="153" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.flange_a.phi" valueReference="147" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J3.flange_a.phi" valueReference="151" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.flange_a.tau" valueReference="134217870" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J3.flange_a.tau" valueReference="134217874" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.flange_b.phi" valueReference="147" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J3.flange_b.phi" valueReference="151" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.flange_b.tau" valueReference="153" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J3.flange_b.tau" valueReference="157" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.phi" valueReference="147" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
-			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J3.phi" valueReference="151" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
+			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.der(phi)" valueReference="163" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J3.phi)" valueReference="167" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.der(phi,2)" valueReference="171" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J3.phi,2)" valueReference="173" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.stateSelect" valueReference="268435551" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="J3.stateSelect" valueReference="268435553" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.w" valueReference="148" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="exact">
-			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J3.w" valueReference="152" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="calculated">
+			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J3.der(w)" valueReference="164" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J3.w)" valueReference="168" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="J4.J" valueReference="43" description="Moment of inertia" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="MomentOfInertia" unit="kg.m2" relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.a" valueReference="160" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J4.a" valueReference="162" description="Absolute angular acceleration of component (= der(w))" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.flange_a.phi" valueReference="158" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J4.flange_a.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.flange_a.tau" valueReference="134217881" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J4.flange_a.tau" valueReference="134217885" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.flange_b.phi" valueReference="158" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="J4.flange_b.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="J4.flange_b.tau" valueReference="7" description="Cut torque in the flange" causality="local" variability="constant" initial="exact">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.phi" valueReference="158" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
-			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J4.phi" valueReference="126" description="Absolute rotation angle of component" causality="local" variability="continuous" initial="exact">
+			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.der(phi)" valueReference="165" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(J4.phi,2)" valueReference="175" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.der(phi,2)" valueReference="173" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" />
+		<ScalarVariable name="der(J4.phi)" valueReference="118" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" derivative="43" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.stateSelect" valueReference="268435553" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="J4.stateSelect" valueReference="268435555" description="Priority to use phi and w as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.w" valueReference="159" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="exact">
-			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="0" />
+		<ScalarVariable name="J4.w" valueReference="127" description="Absolute angular velocity of component (= der(phi))" causality="local" variability="continuous" initial="calculated">
+			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="J4.der(w)" valueReference="166" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" />
+		<ScalarVariable name="der(J4.w)" valueReference="119" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" derivative="47" />
 		</ScalarVariable>
-		<ScalarVariable name="T2" valueReference="10" description="Time when clutch2 is invoked" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="T2" valueReference="10" description="time when clutch2 is invoked" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Time" unit="s" relativeQuantity="false" start="0.4" />
 		</ScalarVariable>
-		<ScalarVariable name="T3" valueReference="11" description="Time when clutch3 is invoked" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="T3" valueReference="11" description="time when clutch3 is invoked" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Time" unit="s" relativeQuantity="false" start="0.9" />
 		</ScalarVariable>
-		<ScalarVariable name="_block_jacobian_check" valueReference="536871014" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_block_jacobian_check" valueReference="536871012" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
 		<ScalarVariable name="_block_jacobian_check_tol" valueReference="51" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-6" />
 		</ScalarVariable>
-		<ScalarVariable name="_block_solver_experimental_mode" valueReference="268435541" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_block_solver_experimental_mode" valueReference="268435543" causality="parameter" variability="fixed" initial="exact">
 			<Integer start="0" />
 		</ScalarVariable>
 		<ScalarVariable name="_cs_rel_tol" valueReference="52" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-6" />
 		</ScalarVariable>
-		<ScalarVariable name="_cs_solver" valueReference="268435542" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_cs_solver" valueReference="268435544" causality="parameter" variability="fixed" initial="exact">
 			<Integer start="0" />
 		</ScalarVariable>
 		<ScalarVariable name="_cs_step_size" valueReference="53" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="0.0010" />
 		</ScalarVariable>
-		<ScalarVariable name="_enforce_bounds" valueReference="536871015" causality="parameter" variability="fixed" initial="exact">
-			<Boolean start="false" />
+		<ScalarVariable name="_enforce_bounds" valueReference="536871013" causality="parameter" variability="fixed" initial="exact">
+			<Boolean start="true" />
 		</ScalarVariable>
 		<ScalarVariable name="_events_default_tol" valueReference="54" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-10" />
@@ -202,109 +227,115 @@
 		<ScalarVariable name="_events_tol_factor" valueReference="55" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-4" />
 		</ScalarVariable>
-		<ScalarVariable name="_iteration_variable_scaling" valueReference="268435543" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_iteration_variable_scaling" valueReference="268435545" causality="parameter" variability="fixed" initial="exact">
 			<Integer start="1" />
 		</ScalarVariable>
-		<ScalarVariable name="_log_level" valueReference="268435544" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_log_level" valueReference="268435546" causality="parameter" variability="fixed" initial="exact">
 			<Integer start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="_nle_solver_check_jac_cond" valueReference="536871016" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_nle_solver_check_jac_cond" valueReference="536871014" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
 		<ScalarVariable name="_nle_solver_default_tol" valueReference="56" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-10" />
 		</ScalarVariable>
-		<ScalarVariable name="_nle_solver_max_iter" valueReference="268435545" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_nle_solver_max_iter" valueReference="268435547" causality="parameter" variability="fixed" initial="exact">
 			<Integer start="100" />
 		</ScalarVariable>
-		<ScalarVariable name="_nle_solver_min_tol" valueReference="57" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_nle_solver_max_residual_scaling_factor" valueReference="57" causality="parameter" variability="fixed" initial="exact">
+			<Real relativeQuantity="false" start="1.0E10" />
+		</ScalarVariable>
+		<ScalarVariable name="_nle_solver_min_residual_scaling_factor" valueReference="58" causality="parameter" variability="fixed" initial="exact">
+			<Real relativeQuantity="false" start="1.0E-10" />
+		</ScalarVariable>
+		<ScalarVariable name="_nle_solver_min_tol" valueReference="59" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-12" />
 		</ScalarVariable>
-		<ScalarVariable name="_nle_solver_regularization_tolerance" valueReference="58" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_nle_solver_regularization_tolerance" valueReference="60" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="-1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="_nle_solver_step_limit_factor" valueReference="59" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_nle_solver_step_limit_factor" valueReference="61" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="10.0" />
 		</ScalarVariable>
-		<ScalarVariable name="_nle_solver_tol_factor" valueReference="60" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_nle_solver_tol_factor" valueReference="62" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0E-4" />
 		</ScalarVariable>
-		<ScalarVariable name="_rescale_after_singular_jac" valueReference="536871017" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_rescale_after_singular_jac" valueReference="536871015" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="true" />
 		</ScalarVariable>
-		<ScalarVariable name="_rescale_each_step" valueReference="536871018" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_rescale_each_step" valueReference="536871016" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="_residual_equation_scaling" valueReference="268435546" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_residual_equation_scaling" valueReference="268435548" causality="parameter" variability="fixed" initial="exact">
 			<Integer start="1" />
 		</ScalarVariable>
-		<ScalarVariable name="_runtime_log_to_file" valueReference="536871019" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_runtime_log_to_file" valueReference="536871017" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="_use_Brent_in_1d" valueReference="536871020" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="_use_Brent_in_1d" valueReference="536871018" causality="parameter" variability="fixed" initial="exact">
+			<Boolean start="true" />
+		</ScalarVariable>
+		<ScalarVariable name="_use_jacobian_equilibration" valueReference="536871019" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="_use_jacobian_equilibration" valueReference="536871021" causality="parameter" variability="fixed" initial="exact">
-			<Boolean start="false" />
-		</ScalarVariable>
-		<ScalarVariable name="clutch1.Backward" valueReference="268435530" description="w_rel &lt; 0 (backward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch1.Backward" valueReference="268435532" description="w_rel &lt; 0 (backward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="-1" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.Forward" valueReference="268435528" description="w_rel &gt; 0 (forward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch1.Forward" valueReference="268435530" description="w_rel &gt; 0 (forward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="1" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.Free" valueReference="268435527" description="Element is not active" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch1.Free" valueReference="268435529" description="Element is not active" causality="local" variability="constant" initial="exact">
 			<Integer start="2" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.Stuck" valueReference="268435529" description="w_rel = 0 (forward sliding, locked or backward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch1.Stuck" valueReference="268435531" description="w_rel = 0 (forward sliding, locked or backward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.Unknown" valueReference="268435526" description="Value of mode is not known" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch1.Unknown" valueReference="268435528" description="Value of mode is not known" causality="local" variability="constant" initial="exact">
 			<Integer start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.a_rel" valueReference="131" description="Relative angular acceleration (= der(w_rel))" causality="local" variability="continuous" initial="approx">
+		<ScalarVariable name="clutch1.a_rel" valueReference="134" description="Relative angular acceleration (= der(w_rel))" causality="local" variability="continuous" initial="approx">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.a_relfric" valueReference="131" description="Relative angular acceleration between frictional surfaces" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.a_relfric" valueReference="134" description="Relative angular acceleration between frictional surfaces" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch1.cgeo" valueReference="16" description="Geometry constant containing friction distribution assumption" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.f_normalized" valueReference="130" description="Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if &gt; 0)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.f_normalized" valueReference="133" description="Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if &gt; 0)" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.flange_a.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.flange_a.phi" valueReference="128" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.flange_a.tau" valueReference="134217860" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.flange_a.tau" valueReference="134217863" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.flange_b.phi" valueReference="121" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.flange_b.phi" valueReference="140" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.flange_b.tau" valueReference="132" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.flange_b.tau" valueReference="135" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.fn" valueReference="129" description="Normal force (fn=fn_max*f_normalized)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.fn" valueReference="132" description="Normal force (fn=fn_max*f_normalized)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Force" unit="N" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch1.fn_max" valueReference="17" description="Maximum normal force" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Force" unit="N" relativeQuantity="false" min="0.0" start="20.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.free" valueReference="536871090" description="true, if frictional element is not active" causality="local" variability="discrete" initial="calculated">
+		<ScalarVariable name="clutch1.free" valueReference="536871092" description="true, if frictional element is not active" causality="local" variability="discrete" initial="calculated">
 			<Boolean />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.locked" valueReference="536871093" description="true, if w_rel=0 and not sliding" causality="local" variability="discrete" initial="approx">
+		<ScalarVariable name="clutch1.locked" valueReference="536871095" description="true, if w_rel=0 and not sliding" causality="local" variability="discrete" initial="approx">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.lossPower" valueReference="136" description="Loss power leaving component via heatPort (&gt; 0, if heat is flowing out of component)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.lossPower" valueReference="139" description="Loss power leaving component via heatPort (&gt; 0, if heat is flowing out of component)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Power" unit="W" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.mode" valueReference="268435631" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch1.mode" valueReference="268435633" causality="local" variability="discrete" initial="exact">
 			<Integer min="-1" max="3" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.mue0" valueReference="64" description="Friction coefficient for w=0 and forward sliding" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="clutch1.mue0" valueReference="66" description="Friction coefficient for w=0 and forward sliding" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch1.mue_pos[1,1]" valueReference="13" description="[w,mue] positive sliding friction coefficient (w_rel&gt;=0)" causality="parameter" variability="fixed" initial="exact">
@@ -319,34 +350,34 @@
 		<ScalarVariable name="clutch1.phi_nominal" valueReference="18" description="Nominal value of phi_rel (used for scaling)" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Angle" unit="rad" displayUnit="rad" relativeQuantity="false" min="0.0" start="1.0E-4" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.phi_rel" valueReference="119" description="Relative rotation angle (= flange_b.phi - flange_a.phi)" causality="local" variability="continuous" initial="approx">
+		<ScalarVariable name="clutch1.phi_rel" valueReference="120" description="Relative rotation angle (= flange_b.phi - flange_a.phi)" causality="local" variability="continuous" initial="approx">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" nominal="1.0E-4" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.der(phi_rel,2)" valueReference="168" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(clutch1.phi_rel,2)" valueReference="170" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.der(phi_rel)" valueReference="111" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" nominal="1.0E-4" derivative="99" />
+		<ScalarVariable name="der(clutch1.phi_rel)" valueReference="112" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" nominal="1.0E-4" derivative="101" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.sa" valueReference="135" description="Path parameter of friction characteristic tau = f(a_relfric)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.sa" valueReference="138" description="Path parameter of friction characteristic tau = f(a_relfric)" causality="local" variability="continuous" initial="calculated">
 			<Real unit="1" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.startBackward" valueReference="536871092" description="true, if w_rel=0 and start of backward sliding" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch1.startBackward" valueReference="536871094" description="true, if w_rel=0 and start of backward sliding" causality="local" variability="discrete" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.startForward" valueReference="536871091" description="true, if w_rel=0 and start of forward sliding" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch1.startForward" valueReference="536871093" description="true, if w_rel=0 and start of forward sliding" causality="local" variability="discrete" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.stateSelect" valueReference="268435548" description="Priority to use phi_rel and w_rel as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="clutch1.stateSelect" valueReference="268435550" description="Priority to use phi_rel and w_rel as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="4" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.tau" valueReference="132" description="Torque between flanges (= flange_b.tau)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.tau" valueReference="135" description="Torque between flanges (= flange_b.tau)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.tau0" valueReference="133" description="Friction torque for w=0 and forward sliding" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.tau0" valueReference="136" description="Friction torque for w=0 and forward sliding" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.tau0_max" valueReference="134" description="Maximum friction torque for w=0 and locked" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.tau0_max" valueReference="137" description="Maximum friction torque for w=0 and locked" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch1.unitAngularAcceleration" valueReference="0" causality="local" variability="constant" initial="exact">
@@ -355,79 +386,79 @@
 		<ScalarVariable name="clutch1.unitTorque" valueReference="1" causality="local" variability="constant" initial="exact">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.useHeatPort" valueReference="536871011" description="=true, if heatPort is enabled" causality="parameter" variability="fixed" initial="exact">
-			<Boolean start="false" />
+		<ScalarVariable name="clutch1.useHeatPort" valueReference="536871021" description="=true, if heatPort is enabled" causality="calculatedParameter" variability="fixed" initial="calculated">
+			<Boolean />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.w_rel" valueReference="120" description="Relative angular velocity (= der(phi_rel))" causality="local" variability="continuous" initial="approx">
+		<ScalarVariable name="clutch1.w_rel" valueReference="121" description="Relative angular velocity (= der(phi_rel))" causality="local" variability="continuous" initial="approx">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.der(w_rel)" valueReference="112" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" derivative="112" />
+		<ScalarVariable name="der(clutch1.w_rel)" valueReference="113" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" derivative="114" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch1.w_relfric" valueReference="120" description="Relative angular velocity between frictional surfaces" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch1.w_relfric" valueReference="121" description="Relative angular velocity between frictional surfaces" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch1.w_small" valueReference="19" description="Relative angular velocity near to zero if jumps due to a reinit(..) of the velocity can occur (set to low value only if such impulses can occur)" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="1.0E10" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.Backward" valueReference="268435535" description="w_rel &lt; 0 (backward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch2.Backward" valueReference="268435537" description="w_rel &lt; 0 (backward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="-1" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.Forward" valueReference="268435533" description="w_rel &gt; 0 (forward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch2.Forward" valueReference="268435535" description="w_rel &gt; 0 (forward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="1" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.Free" valueReference="268435532" description="Element is not active" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch2.Free" valueReference="268435534" description="Element is not active" causality="local" variability="constant" initial="exact">
 			<Integer start="2" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.Stuck" valueReference="268435534" description="w_rel = 0 (forward sliding, locked or backward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch2.Stuck" valueReference="268435536" description="w_rel = 0 (forward sliding, locked or backward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.Unknown" valueReference="268435531" description="Value of mode is not known" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch2.Unknown" valueReference="268435533" description="Value of mode is not known" causality="local" variability="constant" initial="exact">
 			<Integer start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.a_rel" valueReference="141" description="Relative angular acceleration (= der(w_rel))" causality="local" variability="continuous" initial="approx">
+		<ScalarVariable name="clutch2.a_rel" valueReference="145" description="Relative angular acceleration (= der(w_rel))" causality="local" variability="continuous" initial="approx">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.a_relfric" valueReference="141" description="Relative angular acceleration between frictional surfaces" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.a_relfric" valueReference="145" description="Relative angular acceleration between frictional surfaces" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch2.cgeo" valueReference="31" description="Geometry constant containing friction distribution assumption" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.f_normalized" valueReference="140" description="Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if &gt; 0)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.f_normalized" valueReference="144" description="Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if &gt; 0)" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.flange_a.phi" valueReference="121" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.flange_a.phi" valueReference="140" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.flange_a.tau" valueReference="134217870" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.flange_a.tau" valueReference="134217874" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.flange_b.phi" valueReference="147" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.flange_b.phi" valueReference="151" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.flange_b.tau" valueReference="142" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.flange_b.tau" valueReference="146" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.fn" valueReference="139" description="Normal force (fn=fn_max*f_normalized)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.fn" valueReference="143" description="Normal force (fn=fn_max*f_normalized)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Force" unit="N" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch2.fn_max" valueReference="32" description="Maximum normal force" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Force" unit="N" relativeQuantity="false" min="0.0" start="20.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.free" valueReference="536871094" description="true, if frictional element is not active" causality="local" variability="discrete" initial="calculated">
+		<ScalarVariable name="clutch2.free" valueReference="536871096" description="true, if frictional element is not active" causality="local" variability="discrete" initial="calculated">
 			<Boolean />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.locked" valueReference="536871097" description="true, if w_rel=0 and not sliding" causality="local" variability="discrete" initial="approx">
+		<ScalarVariable name="clutch2.locked" valueReference="536871099" description="true, if w_rel=0 and not sliding" causality="local" variability="discrete" initial="approx">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.lossPower" valueReference="146" description="Loss power leaving component via heatPort (&gt; 0, if heat is flowing out of component)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.lossPower" valueReference="150" description="Loss power leaving component via heatPort (&gt; 0, if heat is flowing out of component)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Power" unit="W" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.mode" valueReference="268435632" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch2.mode" valueReference="268435634" causality="local" variability="discrete" initial="exact">
 			<Integer min="-1" max="3" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.mue0" valueReference="65" description="Friction coefficient for w=0 and forward sliding" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="clutch2.mue0" valueReference="67" description="Friction coefficient for w=0 and forward sliding" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch2.mue_pos[1,1]" valueReference="28" description="[w,mue] positive sliding friction coefficient (w_rel&gt;=0)" causality="parameter" variability="fixed" initial="exact">
@@ -445,31 +476,31 @@
 		<ScalarVariable name="clutch2.phi_rel" valueReference="122" description="Relative rotation angle (= flange_b.phi - flange_a.phi)" causality="local" variability="continuous" initial="approx">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" nominal="1.0E-4" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.der(phi_rel,2)" valueReference="170" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(clutch2.phi_rel,2)" valueReference="172" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.der(phi_rel)" valueReference="114" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" nominal="1.0E-4" derivative="140" />
+		<ScalarVariable name="der(clutch2.phi_rel)" valueReference="114" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" nominal="1.0E-4" derivative="142" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.sa" valueReference="145" description="Path parameter of friction characteristic tau = f(a_relfric)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.sa" valueReference="149" description="Path parameter of friction characteristic tau = f(a_relfric)" causality="local" variability="continuous" initial="calculated">
 			<Real unit="1" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.startBackward" valueReference="536871096" description="true, if w_rel=0 and start of backward sliding" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch2.startBackward" valueReference="536871098" description="true, if w_rel=0 and start of backward sliding" causality="local" variability="discrete" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.startForward" valueReference="536871095" description="true, if w_rel=0 and start of forward sliding" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch2.startForward" valueReference="536871097" description="true, if w_rel=0 and start of forward sliding" causality="local" variability="discrete" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.stateSelect" valueReference="268435550" description="Priority to use phi_rel and w_rel as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="clutch2.stateSelect" valueReference="268435552" description="Priority to use phi_rel and w_rel as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="4" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.tau" valueReference="142" description="Torque between flanges (= flange_b.tau)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.tau" valueReference="146" description="Torque between flanges (= flange_b.tau)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.tau0" valueReference="143" description="Friction torque for w=0 and forward sliding" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.tau0" valueReference="147" description="Friction torque for w=0 and forward sliding" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.tau0_max" valueReference="144" description="Maximum friction torque for w=0 and locked" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch2.tau0_max" valueReference="148" description="Maximum friction torque for w=0 and locked" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch2.unitAngularAcceleration" valueReference="3" causality="local" variability="constant" initial="exact">
@@ -478,14 +509,14 @@
 		<ScalarVariable name="clutch2.unitTorque" valueReference="4" causality="local" variability="constant" initial="exact">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.useHeatPort" valueReference="536871012" description="=true, if heatPort is enabled" causality="parameter" variability="fixed" initial="exact">
-			<Boolean start="false" />
+		<ScalarVariable name="clutch2.useHeatPort" valueReference="536871022" description="=true, if heatPort is enabled" causality="calculatedParameter" variability="fixed" initial="calculated">
+			<Boolean />
 		</ScalarVariable>
 		<ScalarVariable name="clutch2.w_rel" valueReference="123" description="Relative angular velocity (= der(phi_rel))" causality="local" variability="continuous" initial="approx">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch2.der(w_rel)" valueReference="115" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" derivative="153" />
+		<ScalarVariable name="der(clutch2.w_rel)" valueReference="115" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" derivative="155" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch2.w_relfric" valueReference="123" description="Relative angular velocity between frictional surfaces" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" />
@@ -493,64 +524,64 @@
 		<ScalarVariable name="clutch2.w_small" valueReference="34" description="Relative angular velocity near to zero if jumps due to a reinit(..) of the velocity can occur (set to low value only if such impulses can occur)" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="1.0E10" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.Backward" valueReference="268435540" description="w_rel &lt; 0 (backward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch3.Backward" valueReference="268435542" description="w_rel &lt; 0 (backward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="-1" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.Forward" valueReference="268435538" description="w_rel &gt; 0 (forward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch3.Forward" valueReference="268435540" description="w_rel &gt; 0 (forward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="1" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.Free" valueReference="268435537" description="Element is not active" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch3.Free" valueReference="268435539" description="Element is not active" causality="local" variability="constant" initial="exact">
 			<Integer start="2" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.Stuck" valueReference="268435539" description="w_rel = 0 (forward sliding, locked or backward sliding)" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch3.Stuck" valueReference="268435541" description="w_rel = 0 (forward sliding, locked or backward sliding)" causality="local" variability="constant" initial="exact">
 			<Integer start="0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.Unknown" valueReference="268435536" description="Value of mode is not known" causality="local" variability="constant" initial="exact">
+		<ScalarVariable name="clutch3.Unknown" valueReference="268435538" description="Value of mode is not known" causality="local" variability="constant" initial="exact">
 			<Integer start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.a_rel" valueReference="152" description="Relative angular acceleration (= der(w_rel))" causality="local" variability="continuous" initial="approx">
+		<ScalarVariable name="clutch3.a_rel" valueReference="156" description="Relative angular acceleration (= der(w_rel))" causality="local" variability="continuous" initial="approx">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.a_relfric" valueReference="152" description="Relative angular acceleration between frictional surfaces" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.a_relfric" valueReference="156" description="Relative angular acceleration between frictional surfaces" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularAcceleration" unit="rad/s2" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch3.cgeo" valueReference="39" description="Geometry constant containing friction distribution assumption" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" min="0.0" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.f_normalized" valueReference="151" description="Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if &gt; 0)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.f_normalized" valueReference="155" description="Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if &gt; 0)" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.flange_a.phi" valueReference="147" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.flange_a.phi" valueReference="151" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.flange_a.tau" valueReference="134217881" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.flange_a.tau" valueReference="134217885" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.flange_b.phi" valueReference="158" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.flange_b.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.flange_b.tau" valueReference="153" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.flange_b.tau" valueReference="157" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.fn" valueReference="150" description="Normal force (fn=fn_max*f_normalized)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.fn" valueReference="154" description="Normal force (fn=fn_max*f_normalized)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Force" unit="N" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch3.fn_max" valueReference="40" description="Maximum normal force" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Force" unit="N" relativeQuantity="false" min="0.0" start="20.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.free" valueReference="536871098" description="true, if frictional element is not active" causality="local" variability="discrete" initial="calculated">
+		<ScalarVariable name="clutch3.free" valueReference="536871100" description="true, if frictional element is not active" causality="local" variability="discrete" initial="calculated">
 			<Boolean />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.locked" valueReference="536871101" description="true, if w_rel=0 and not sliding" causality="local" variability="discrete" initial="approx">
+		<ScalarVariable name="clutch3.locked" valueReference="536871103" description="true, if w_rel=0 and not sliding" causality="local" variability="discrete" initial="approx">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.lossPower" valueReference="157" description="Loss power leaving component via heatPort (&gt; 0, if heat is flowing out of component)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.lossPower" valueReference="161" description="Loss power leaving component via heatPort (&gt; 0, if heat is flowing out of component)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Power" unit="W" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.mode" valueReference="268435633" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch3.mode" valueReference="268435635" causality="local" variability="discrete" initial="exact">
 			<Integer min="-1" max="3" start="3" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.mue0" valueReference="66" description="Friction coefficient for w=0 and forward sliding" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="clutch3.mue0" valueReference="68" description="Friction coefficient for w=0 and forward sliding" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch3.mue_pos[1,1]" valueReference="36" description="[w,mue] positive sliding friction coefficient (w_rel&gt;=0)" causality="parameter" variability="fixed" initial="exact">
@@ -568,31 +599,31 @@
 		<ScalarVariable name="clutch3.phi_rel" valueReference="124" description="Relative rotation angle (= flange_b.phi - flange_a.phi)" causality="local" variability="continuous" initial="approx">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" nominal="1.0E-4" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.der(phi_rel,2)" valueReference="172" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="der(clutch3.phi_rel,2)" valueReference="174" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.der(phi_rel)" valueReference="116" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" nominal="1.0E-4" derivative="181" />
+		<ScalarVariable name="der(clutch3.phi_rel)" valueReference="116" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" nominal="1.0E-4" derivative="183" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.sa" valueReference="156" description="Path parameter of friction characteristic tau = f(a_relfric)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.sa" valueReference="160" description="Path parameter of friction characteristic tau = f(a_relfric)" causality="local" variability="continuous" initial="calculated">
 			<Real unit="1" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.startBackward" valueReference="536871100" description="true, if w_rel=0 and start of backward sliding" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch3.startBackward" valueReference="536871102" description="true, if w_rel=0 and start of backward sliding" causality="local" variability="discrete" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.startForward" valueReference="536871099" description="true, if w_rel=0 and start of forward sliding" causality="local" variability="discrete" initial="exact">
+		<ScalarVariable name="clutch3.startForward" valueReference="536871101" description="true, if w_rel=0 and start of forward sliding" causality="local" variability="discrete" initial="exact">
 			<Boolean start="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.stateSelect" valueReference="268435552" description="Priority to use phi_rel and w_rel as states" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="clutch3.stateSelect" valueReference="268435554" description="Priority to use phi_rel and w_rel as states" causality="parameter" variability="fixed" initial="exact">
 			<Enumeration declaredType="StateSelect" start="4" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.tau" valueReference="153" description="Torque between flanges (= flange_b.tau)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.tau" valueReference="157" description="Torque between flanges (= flange_b.tau)" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.tau0" valueReference="154" description="Friction torque for w=0 and forward sliding" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.tau0" valueReference="158" description="Friction torque for w=0 and forward sliding" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.tau0_max" valueReference="155" description="Maximum friction torque for w=0 and locked" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="clutch3.tau0_max" valueReference="159" description="Maximum friction torque for w=0 and locked" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch3.unitAngularAcceleration" valueReference="5" causality="local" variability="constant" initial="exact">
@@ -601,14 +632,14 @@
 		<ScalarVariable name="clutch3.unitTorque" valueReference="6" causality="local" variability="constant" initial="exact">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.useHeatPort" valueReference="536871013" description="=true, if heatPort is enabled" causality="parameter" variability="fixed" initial="exact">
-			<Boolean start="false" />
+		<ScalarVariable name="clutch3.useHeatPort" valueReference="536871023" description="=true, if heatPort is enabled" causality="calculatedParameter" variability="fixed" initial="calculated">
+			<Boolean />
 		</ScalarVariable>
 		<ScalarVariable name="clutch3.w_rel" valueReference="125" description="Relative angular velocity (= der(phi_rel))" causality="local" variability="continuous" initial="approx">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="clutch3.der(w_rel)" valueReference="117" causality="local" variability="continuous" initial="calculated">
-			<Real relativeQuantity="false" derivative="194" />
+		<ScalarVariable name="der(clutch3.w_rel)" valueReference="117" causality="local" variability="continuous" initial="calculated">
+			<Real relativeQuantity="false" derivative="196" />
 		</ScalarVariable>
 		<ScalarVariable name="clutch3.w_relfric" valueReference="125" description="Relative angular velocity between frictional surfaces" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" />
@@ -616,16 +647,16 @@
 		<ScalarVariable name="clutch3.w_small" valueReference="42" description="Relative angular velocity near to zero if jumps due to a reinit(..) of the velocity can occur (set to low value only if such impulses can occur)" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="AngularVelocity" unit="rad/s" relativeQuantity="false" start="1.0E10" />
 		</ScalarVariable>
-		<ScalarVariable name="fixed.flange.phi" valueReference="68" description="Absolute rotation angle of flange" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="fixed.flange.phi" valueReference="70" description="Absolute rotation angle of flange" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="fixed.flange.tau" valueReference="134217856" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="fixed.flange.tau" valueReference="134217859" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="fixed.phi0" valueReference="50" description="Fixed offset angle of housing" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="freqHz" valueReference="9" description="Frequency of sine function to invoke clutch1" causality="parameter" variability="fixed" initial="exact">
+		<ScalarVariable name="freqHz" valueReference="9" description="frequency of sine function to invoke clutch1" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Frequency" unit="Hz" relativeQuantity="false" start="0.2" />
 		</ScalarVariable>
 		<ScalarVariable name="sin1.amplitude" valueReference="20" description="Amplitude of sine wave" causality="parameter" variability="fixed" initial="exact">
@@ -646,13 +677,13 @@
 		<ScalarVariable name="sin1.startTime" valueReference="24" description="Output = offset for time &lt; startTime" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Time" unit="s" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="sin1.y" valueReference="128" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="sin1.y" valueReference="131" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="sin2.amplitude" valueReference="44" description="Amplitude of sine wave" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="1.0" />
 		</ScalarVariable>
-		<ScalarVariable name="sin2.freqHz" valueReference="62" description="Frequency of sine wave" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="sin2.freqHz" valueReference="64" description="Frequency of sine wave" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real quantity="Frequency" unit="Hz" relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="sin2.offset" valueReference="46" description="Offset of output signal" causality="parameter" variability="fixed" initial="exact">
@@ -667,7 +698,7 @@
 		<ScalarVariable name="sin2.startTime" valueReference="47" description="Output = offset for time &lt; startTime" causality="parameter" variability="fixed" initial="exact">
 			<Real quantity="Time" unit="s" relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="sin2.y" valueReference="130" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="sin2.y" valueReference="133" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="step1.height" valueReference="25" description="Height of step" causality="parameter" variability="fixed" initial="exact">
@@ -676,10 +707,10 @@
 		<ScalarVariable name="step1.offset" valueReference="26" description="Offset of output signal y" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="step1.startTime" valueReference="61" description="Output y = offset for time &lt; startTime" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="step1.startTime" valueReference="63" description="Output y = offset for time &lt; startTime" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real quantity="Time" unit="s" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="step1.y" valueReference="140" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="step1.y" valueReference="144" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
 		<ScalarVariable name="step2.height" valueReference="48" description="Height of step" causality="parameter" variability="fixed" initial="exact">
@@ -688,146 +719,74 @@
 		<ScalarVariable name="step2.offset" valueReference="49" description="Offset of output signal y" causality="parameter" variability="fixed" initial="exact">
 			<Real relativeQuantity="false" start="0.0" />
 		</ScalarVariable>
-		<ScalarVariable name="step2.startTime" valueReference="63" description="Output y = offset for time &lt; startTime" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="step2.startTime" valueReference="65" description="Output y = offset for time &lt; startTime" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real quantity="Time" unit="s" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="step2.y" valueReference="151" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="step2.y" valueReference="155" description="Connector of Real output signal" causality="local" variability="continuous" initial="calculated">
 			<Real relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.flange.phi" valueReference="126" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="torque.flange.phi" valueReference="128" description="Absolute rotation angle of flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.flange.tau" valueReference="134217856" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="torque.flange.tau" valueReference="134217859" description="Cut torque in the flange" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.phi_support" valueReference="67" description="Absolute angle of support flange" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="torque.phi_support" valueReference="69" description="Absolute angle of support flange" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.support.phi" valueReference="69" description="Absolute rotation angle of the support/housing" causality="calculatedParameter" variability="fixed" initial="calculated">
+		<ScalarVariable name="torque.support.phi" valueReference="71" description="Absolute rotation angle of the support/housing" causality="calculatedParameter" variability="fixed" initial="calculated">
 			<Real quantity="Angle" unit="rad" displayUnit="deg" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.support.tau" valueReference="128" description="Reaction torque in the support/housing" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="torque.support.tau" valueReference="131" description="Reaction torque in the support/housing" causality="local" variability="continuous" initial="calculated">
 			<Real quantity="Torque" unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.tau" valueReference="128" description="Accelerating torque acting at flange (= -flange.tau)" causality="local" variability="continuous" initial="calculated">
+		<ScalarVariable name="torque.tau" valueReference="131" description="Accelerating torque acting at flange (= -flange.tau)" causality="local" variability="continuous" initial="calculated">
 			<Real unit="N.m" relativeQuantity="false" />
 		</ScalarVariable>
-		<ScalarVariable name="torque.useSupport" valueReference="536871010" description="= true, if support flange enabled, otherwise implicitly grounded" causality="parameter" variability="fixed" initial="exact">
-			<Boolean start="true" />
+		<ScalarVariable name="torque.useSupport" valueReference="536871020" description="= true, if support flange enabled, otherwise implicitly grounded" causality="calculatedParameter" variability="fixed" initial="calculated">
+			<Boolean />
 		</ScalarVariable>
 	</ModelVariables>
 	<ModelStructure>
 		<Derivatives>
-			<Unknown index="12" dependencies="112 153 194" />
-			<Unknown index="101" dependencies="112" />
-			<Unknown index="113" dependencies="112 153 194" />
-			<Unknown index="21" dependencies="11 112" />
-			<Unknown index="142" dependencies="153" />
-			<Unknown index="154" dependencies="112 153 194" />
-			<Unknown index="183" dependencies="194" />
-			<Unknown index="195" dependencies="112 153 194" />
+			<Unknown index="103" dependencies="114" />
+			<Unknown index="115" dependencies="114 155 196" />
+			<Unknown index="144" dependencies="155" />
+			<Unknown index="156" dependencies="114 155 196" />
+			<Unknown index="185" dependencies="196" />
+			<Unknown index="197" dependencies="114 155 196" />
+			<Unknown index="45" dependencies="47" />
+			<Unknown index="48" dependencies="114 155 196" />
 		</Derivatives>
 		<InitialUnknowns>
-			<Unknown index="2" dependencies="112 153 194" />
-			<Unknown index="3" dependencies="" />
-			<Unknown index="4" dependencies="" />
-			<Unknown index="5" dependencies="" />
-			<Unknown index="6" dependencies="" />
-			<Unknown index="8" dependencies="11" />
-			<Unknown index="9" dependencies="112 153 194" />
-			<Unknown index="12" dependencies="112 153 194" />
-			<Unknown index="14" dependencies="112 153 194" />
-			<Unknown index="15" dependencies="" />
-			<Unknown index="16" dependencies="" />
-			<Unknown index="17" dependencies="" />
-			<Unknown index="18" dependencies="" />
-			<Unknown index="20" dependencies="112 153 194" />
-			<Unknown index="21" dependencies="11 112" />
-			<Unknown index="24" dependencies="112 153 194" />
-			<Unknown index="26" dependencies="112 153 194" />
-			<Unknown index="27" dependencies="" />
-			<Unknown index="28" dependencies="" />
-			<Unknown index="29" dependencies="" />
-			<Unknown index="30" dependencies="" />
-			<Unknown index="32" dependencies="11 112 153" />
-			<Unknown index="33" dependencies="112 153 194" />
-			<Unknown index="36" dependencies="112 153 194" />
-			<Unknown index="38" dependencies="112 153 194" />
-			<Unknown index="39" dependencies="" />
-			<Unknown index="40" dependencies="" />
-			<Unknown index="41" dependencies="" />
-			<Unknown index="44" dependencies="11 112 153 194" />
-			<Unknown index="45" dependencies="112 153 194" />
-			<Unknown index="48" dependencies="112 153 194" />
-			<Unknown index="81" dependencies="" />
-			<Unknown index="83" dependencies="" />
-			<Unknown index="84" dependencies="" />
-			<Unknown index="85" dependencies="" />
-			<Unknown index="86" dependencies="" />
-			<Unknown index="87" dependencies="" />
-			<Unknown index="88" dependencies="" />
-			<Unknown index="90" dependencies="" />
-			<Unknown index="92" dependencies="112 153 194" />
-			<Unknown index="94" dependencies="" />
-			<Unknown index="100" dependencies="112 153 194" />
-			<Unknown index="101" dependencies="112" />
-			<Unknown index="102" dependencies="112 153 194" />
-			<Unknown index="106" dependencies="112 153 194" />
-			<Unknown index="107" dependencies="" />
-			<Unknown index="108" dependencies="" />
-			<Unknown index="113" dependencies="112 153 194" />
+			<Unknown index="45" dependencies="" />
+			<Unknown index="47" dependencies="" />
+			<Unknown index="48" dependencies="1 13 25 37 49 50 84 91 97 98 99 117 125 132 138 139 140 158 166 173 179 180 181 199 203 204 205 206 207 209 211 213 214 216 218 219 222 223" />
+			<Unknown index="96" dependencies="97 98" />
+			<Unknown index="101" dependencies="" />
+			<Unknown index="103" dependencies="" />
+			<Unknown index="113" dependencies="" />
 			<Unknown index="114" dependencies="" />
-			<Unknown index="122" dependencies="" />
-			<Unknown index="124" dependencies="" />
-			<Unknown index="125" dependencies="" />
-			<Unknown index="126" dependencies="" />
-			<Unknown index="127" dependencies="" />
-			<Unknown index="128" dependencies="" />
-			<Unknown index="129" dependencies="" />
-			<Unknown index="131" dependencies="" />
-			<Unknown index="133" dependencies="112 153 194" />
-			<Unknown index="135" dependencies="" />
-			<Unknown index="141" dependencies="112 153 194" />
-			<Unknown index="142" dependencies="153" />
-			<Unknown index="143" dependencies="112 153 194" />
-			<Unknown index="147" dependencies="112 153 194" />
-			<Unknown index="148" dependencies="" />
-			<Unknown index="149" dependencies="" />
-			<Unknown index="154" dependencies="112 153 194" />
+			<Unknown index="115" dependencies="1 13 25 37 49 50 84 91 97 98 99 117 125 132 138 139 140 158 166 173 179 180 181 199 203 204 205 206 207 209 211 213 214 216 218 219 222 223" />
+			<Unknown index="137" dependencies="138 139" />
+			<Unknown index="142" dependencies="" />
+			<Unknown index="144" dependencies="" />
+			<Unknown index="154" dependencies="" />
 			<Unknown index="155" dependencies="" />
-			<Unknown index="163" dependencies="" />
-			<Unknown index="165" dependencies="" />
-			<Unknown index="166" dependencies="" />
-			<Unknown index="167" dependencies="" />
-			<Unknown index="168" dependencies="" />
-			<Unknown index="169" dependencies="" />
-			<Unknown index="170" dependencies="" />
-			<Unknown index="172" dependencies="" />
-			<Unknown index="174" dependencies="112 153 194" />
-			<Unknown index="176" dependencies="" />
-			<Unknown index="182" dependencies="112 153 194" />
-			<Unknown index="183" dependencies="194" />
-			<Unknown index="184" dependencies="112 153 194" />
-			<Unknown index="188" dependencies="112 153 194" />
-			<Unknown index="189" dependencies="" />
-			<Unknown index="190" dependencies="" />
-			<Unknown index="195" dependencies="112 153 194" />
+			<Unknown index="156" dependencies="1 13 25 37 49 50 84 91 97 98 99 117 125 132 138 139 140 158 166 173 179 180 181 199 203 204 205 206 207 209 211 213 214 216 218 219 222 223" />
+			<Unknown index="178" dependencies="179 180" />
+			<Unknown index="183" dependencies="43" />
+			<Unknown index="185" dependencies="" />
+			<Unknown index="195" dependencies="" />
 			<Unknown index="196" dependencies="" />
-			<Unknown index="198" dependencies="" />
-			<Unknown index="199" dependencies="" />
-			<Unknown index="208" dependencies="" />
-			<Unknown index="210" dependencies="" />
-			<Unknown index="215" dependencies="" />
-			<Unknown index="218" dependencies="" />
-			<Unknown index="219" dependencies="" />
-			<Unknown index="222" dependencies="" />
-			<Unknown index="223" dependencies="" />
-			<Unknown index="224" dependencies="" />
-			<Unknown index="225" dependencies="" />
-			<Unknown index="226" dependencies="" />
-			<Unknown index="227" dependencies="" />
-			<Unknown index="228" dependencies="" />
-			<Unknown index="229" dependencies="" />
+			<Unknown index="197" dependencies="1 13 25 37 49 50 84 91 97 98 99 117 125 132 138 139 140 158 166 173 179 180 181 199 203 204 205 206 207 209 211 213 214 216 218 219 222 223" />
+			<Unknown index="200" dependencies="202" />
+			<Unknown index="212" dependencies="203" />
+			<Unknown index="220" dependencies="49" />
+			<Unknown index="224" dependencies="50" />
+			<Unknown index="228" dependencies="202" />
+			<Unknown index="229" dependencies="202" />
+			<Unknown index="232" dependencies="" />
 		</InitialUnknowns>
 	</ModelStructure>
 </fmiModelDescription>
