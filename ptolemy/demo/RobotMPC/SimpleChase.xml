@@ -80,7 +80,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that simulates an intruder-evasion scenario, where one robot &#10;estimate the location of a moving intruder object and move to &#10;the estimated intruder. the robot runs an internal Particle Filter that&#10;runs on the collective robot observations and estimates the posterior&#10;probability distribution of the intruder position. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that simulates a simple chase scenario, where one robot &#10;estimates the location of a moving intruder and moves to &#10;the estimated location. &#10;The robot optimizes its future path as long as &quot;predict_Timehorizon&quot;. &#10;As the time horizon become longer, the robot tends to go to the future &#10;location of the intruder and its trajectory becomes shorter.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-510.0, -595.0]">
         </property>
@@ -110,6 +110,31 @@
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-455.0, -725.0}">
+        </property>
+    </property>
+    <property name="predict_TimeHorizon" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -715.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Time horizon - 1:Simple optimal control, 2 (or more):MPC">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -725.0]">
         </property>
     </property>
     <class name="Intruder" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -1231,26 +1256,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, -205.0]">
             </property>
         </property>
-        <property name="predict_TimeHorizon" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, -185.0]">
-            </property>
-        </property>
-        <property name="r1" class="ptolemy.data.expr.Parameter" value="{0.1950978219419, 50.4415141985852}">
+        <property name="r1" class="ptolemy.data.expr.Parameter" value="{4.7615344576045, 49.2949923314598}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2074,8 +2080,8 @@
 <title>Distance to the Target</title>
 <xLabel>time</xLabel>
 <yLabel>Distance [m]</yLabel>
-<xRange min="0.0" max="12.700000000000001"/>
-<yRange min="-60.29119907974088" max="100.0"/>
+<xRange min="0.0" max="18.4"/>
+<yRange min="-40.495898757627124" max="100.0"/>
 </plot>?>
                 </configure>
             </entity>
@@ -2165,8 +2171,8 @@
 <title>Estimated Velocity of the Target</title>
 <xLabel>time</xLabel>
 <yLabel>velocity [m/step]</yLabel>
-<xRange min="0.05" max="12.75"/>
-<yRange min="-5.129302011892097" max="5.3626627192199425"/>
+<xRange min="0.05" max="19.150000000000002"/>
+<yRange min="-4.545992320583736" max="1.6033196196035877"/>
 </plot>?>
                 </configure>
             </entity>
@@ -2615,19 +2621,19 @@
                 </property>
                 <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="1.8133286986599215">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="1.9593113793698969">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="x+vx">
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="50.01242619008969">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="49.93596268328785">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="y+vy">
                 </property>
-                <property name="vx" class="ptolemy.data.expr.Parameter" value="-1.2848395818579639">
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="-1.303676532722851">
                 </property>
                 <property name="vx_update" class="ptolemy.data.expr.Parameter" value="vx">
                 </property>
-                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.0941769000943023">
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="0.8657543785406951">
                 </property>
                 <property name="vy_update" class="ptolemy.data.expr.Parameter" value="vy">
                 </property>
@@ -2640,9 +2646,9 @@
             </property>
             <property name="vy" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="[-2.3840522875037; -0.8910311506803]">
+            <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="[-5.1751432235894; 1.0785962835096]">
             </property>
-            <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.2, 1.0, 1.0}">
+            <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.4, 0.0, 1.0}">
             </property>
             <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2664,78 +2670,82 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
+                </port>
             </entity>
             <entity name="y_update" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y+vy">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
+                </port>
             </entity>
             <entity name="vx_update" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vx">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
+                </port>
             </entity>
             <entity name="vy_update" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
+                </port>
             </entity>
             <entity name="GaussianMeasurementModel_z_equation" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[x-r1(0); y-r1(1)]">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
+                </port>
             </entity>
             <entity name="GaussianMeasurementModel_z_noise" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[1.0,0.0;0.0,1.0]">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                     </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
+                </port>
             </entity>
             <entity name="setGaussianMeasurementModel_z" class="ptolemy.actor.lib.SetVariable">
                 <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="GaussianMeasurementModel_z">
                 </property>
                 <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
+                </port>
             </entity>
         </entity>
         <entity name="PredictForTarget" class="StatePredictForTarget">
