@@ -1,4 +1,4 @@
-#!/bin/sh
+C#!/bin/sh
 # $Id$
 # Export the AMS.mo model as a fmu using jmodelica
 

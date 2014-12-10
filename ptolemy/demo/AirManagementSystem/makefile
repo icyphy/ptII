@@ -100,5 +100,8 @@ jnlps:
 		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
 	done
 
+update_AMS.fmu:
+	./AMSToFMU
+
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
