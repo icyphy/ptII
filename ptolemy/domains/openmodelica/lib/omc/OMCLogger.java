@@ -121,8 +121,18 @@ public class OMCLogger {
             System.err
                     .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
+            username = "nobody";
+        }
+
+        String osName = System.getProperty("os.name");
+        if (osName.contains("Linux")) {
+            logPath = logPath + "/" + username + "/OpenModelica/";
+        } else if (osName.contains("Windows")) {
+            logPath = logPath + username + "/OpenModelica/";
+        } else if (osName.contains("Mac")) {
+            logPath = logPath + username + "/OpenModelica/";
         } else {
-            logPath = temp + "/" + username + "/OpenModelica/";
+            logPath = logPath + "/" + username + "/OpenModelica/";
         }
 
         File logPathFile = new File(logPath);
