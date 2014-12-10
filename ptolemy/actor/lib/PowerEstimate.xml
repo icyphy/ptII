@@ -89,7 +89,7 @@ how quickly the output responds to changes in the input power.</text></svg></con
         </port>
     </entity>
     <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="square">
+        <property name="function" class="ptolemy.data.expr.StringParameter" value="square">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
                 </property>
