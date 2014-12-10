@@ -468,7 +468,7 @@ public class FMUFile {
 	            capabilitiesElement);
 	}*/
 
-	if (fmiModelDescription.fmiVersion.equals("2.0")) {
+	if (fmiVersion >= 2.0) {
 	    // By default each output has direct dependency from all input ports
 	    fmiModelDescription.addDefaultInputDependencies();
 
