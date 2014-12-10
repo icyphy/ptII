@@ -6,7 +6,7 @@
     <?moml
       <group>
   <doc>Image processing actors</doc>
-<entity name="LEDMatrix" class="ptolemy.actor.lib.gui.LEDMatrix"/>
+<entity name="LEDMatrix" class="ptolemy.vergil.actor.lib.LEDMatrix"/>
 <entity name="MonitorImage" class="ptolemy.vergil.actor.lib.MonitorImage">
 </entity>
       </group>
