@@ -112,11 +112,11 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         if (particles.hasToken(0)) {
             ArrayToken incoming = (ArrayToken) particles.get(0);
             N = incoming.length();
-            _weights = new double[N];
-            if (_px.length == 0) {
+            if (_firstStep) {
                 _px = new double[N];
                 _py = new double[N];
                 _weights = new double[N];
+                _firstStep = false;
             }
 
             for (int i = 0; i < N; i++) {
@@ -158,7 +158,13 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         output.send(0, new DoubleToken(Hz(_xValue)));
 
     }
-
+    @Override
+    public void wrapup() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        super.wrapup();
+        _firstStep = true;
+    }
+    
     /**
      * The computed mutual information between particle sets.
      */
@@ -261,6 +267,8 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
+        _firstStep = true;
+        
         _covariance = 2.0; //This parameter should be defined by StateSpaceModel.
     }
 
@@ -292,7 +300,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
     private double[] _py;
     private List<RecordToken> _robotLocations;
     private double _covariance;
-//    private int _optIndex;
+    private boolean _firstStep;
     private int _nRobots;
     private double[] _xValue;
     private String[] _labels;
