@@ -27,13 +27,14 @@
  */
 package org.ptolemy.fmi;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.DoubleByReference;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A Java Native Access (JNA) interface to the Functional Mock-up Interface 2.0 ModelInstance struct.
@@ -48,7 +49,7 @@ public class FMI20ModelInstance extends Structure {
      * structure that contains information about events.
      */
     public FMI20ModelInstance() {
-        super();
+	super();
     }
 
     /** Instantiate a Java structure that that represents the C
@@ -56,19 +57,19 @@ public class FMI20ModelInstance extends Structure {
      * @param peer The peer
      */
     public FMI20ModelInstance(Pointer peer) {
-        super(peer);
+	super(peer);
     }
 
     /** Access the structure by reference.
      */
     public static class ByReference extends FMI20ModelInstance implements
-            Structure.ByReference {
+	    Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
     public static class ByValue extends FMI20ModelInstance implements
-            Structure.ByValue {
+	    Structure.ByValue {
     };
 
     ///////////////////////////////////////////////////////////////////
@@ -134,9 +135,9 @@ public class FMI20ModelInstance extends Structure {
     ////                         protected methods                 ////
 
     protected List<?> getFieldOrder() {
-        return Arrays.asList("r", "i", "b", "s", "isPositive", "time",
-                "instanceName", "type", "GUID", "functions", "loggingOn",
-                "logCategories", "componentEnvironment", "state", "eventInfo",
-                "isDirtyValues");
+	return Arrays.asList("r", "i", "b", "s", "isPositive", "time",
+	        "instanceName", "type", "GUID", "functions", "loggingOn",
+	        "logCategories", "componentEnvironment", "state", "eventInfo",
+	        "isDirtyValues");
     }
 }
