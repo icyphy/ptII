@@ -71,33 +71,33 @@ public class FMICapabilities {
      *  @param element The XML Element that contains attributes.
      */
     public FMICapabilities(Element element) {
-        // We use reflection here so that if Capabilities attributes change,
-        // and new fields are added, we don't have to update this method.
-        Field fields[] = getClass().getFields();
-        for (Field field : fields) {
+	// We use reflection here so that if Capabilities attributes change,
+	// and new fields are added, we don't have to update this method.
+	Field fields[] = getClass().getFields();
+	for (Field field : fields) {
 
-            // Get the public fields that are attributes with the same name.
-            if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC
-                    && element.hasAttribute(field.getName())) {
-                try {
+	    // Get the public fields that are attributes with the same name.
+	    if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC
+		    && element.hasAttribute(field.getName())) {
+		try {
 
-                    // The field is a primitive boolean, not a Boolean.
-                    if (field.getType().equals(Boolean.TYPE)) {
-                        boolean value = Boolean.valueOf(element
-                                .getAttribute(field.getName()));
-                        field.setBoolean(this, value);
-                    } else if (field.getType().equals(Integer.TYPE)) {
-                        int value = Integer.parseInt(element.getAttribute(field
-                                .getName()));
-                        field.setInt(this, value);
-                    }
-                } catch (IllegalAccessException ex) {
-                    throw new RuntimeException("Failed to set the "
-                            + field.getName() + " field to "
-                            + element.getAttribute(field.getName()) + ".", ex);
-                }
-            }
-        }
+		    // The field is a primitive boolean, not a Boolean.
+		    if (field.getType().equals(Boolean.TYPE)) {
+			boolean value = Boolean.valueOf(element
+			        .getAttribute(field.getName()));
+			field.setBoolean(this, value);
+		    } else if (field.getType().equals(Integer.TYPE)) {
+			int value = Integer.parseInt(element.getAttribute(field
+			        .getName()));
+			field.setInt(this, value);
+		    }
+		} catch (IllegalAccessException ex) {
+		    throw new RuntimeException("Failed to set the "
+			    + field.getName() + " field to "
+			    + element.getAttribute(field.getName()) + ".", ex);
+		}
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,13 +110,13 @@ public class FMICapabilities {
      *  or it is not a boolean.
      */
     public boolean getBoolean(String fieldName) throws IllegalArgumentException {
-        try {
-            Field field = getClass().getField(fieldName);
-            return field.getBoolean(this);
-        } catch (Throwable throwable) {
-            throw new IllegalArgumentException("Could not find field \""
-                    + fieldName + "\" in " + this + ".", throwable);
-        }
+	try {
+	    Field field = getClass().getField(fieldName);
+	    return field.getBoolean(this);
+	} catch (Throwable throwable) {
+	    throw new IllegalArgumentException("Could not find field \""
+		    + fieldName + "\" in " + this + ".", throwable);
+	}
     }
 
     /** Return a description of the fields that are true or
@@ -125,42 +125,42 @@ public class FMICapabilities {
      */
     @Override
     public String toString() {
-        // We use reflection here so that if Capabilities attributes change,
-        // and new fields are added, we don't have to update this method.
-        StringBuffer results = new StringBuffer();
-        Field fields[] = getClass().getFields();
-        for (Field field : fields) {
+	// We use reflection here so that if Capabilities attributes change,
+	// and new fields are added, we don't have to update this method.
+	StringBuffer results = new StringBuffer();
+	Field fields[] = getClass().getFields();
+	for (Field field : fields) {
 
-            // Get the public fields.
-            if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
-                String valueString = "";
-                try {
-                    // The field is a primitive boolean, not a Boolean
-                    if (field.getType().equals(Boolean.TYPE)) {
-                        if (field.getBoolean(this)) {
-                            valueString = "true";
-                        }
-                    } else if (field.getType().equals(Integer.TYPE)) {
-                        int value = field.getInt(this);
-                        if (value != 0) {
-                            valueString = Integer.toString(value);
-                        }
-                    }
-                } catch (IllegalAccessException ex) {
-                    throw new RuntimeException("Failed to get the " + field
-                            + " field", ex);
-                }
+	    // Get the public fields.
+	    if ((field.getModifiers() & Modifier.PUBLIC) == Modifier.PUBLIC) {
+		String valueString = "";
+		try {
+		    // The field is a primitive boolean, not a Boolean
+		    if (field.getType().equals(Boolean.TYPE)) {
+			if (field.getBoolean(this)) {
+			    valueString = "true";
+			}
+		    } else if (field.getType().equals(Integer.TYPE)) {
+			int value = field.getInt(this);
+			if (value != 0) {
+			    valueString = Integer.toString(value);
+			}
+		    }
+		} catch (IllegalAccessException ex) {
+		    throw new RuntimeException("Failed to get the " + field
+			    + " field", ex);
+		}
 
-                // Optionally append a comma.
-                if (valueString.length() > 0) {
-                    if (results.length() > 0) {
-                        results.append(", ");
-                    }
-                    results.append(field.getName() + " = " + valueString);
-                }
-            }
-        }
-        // We attempt to return a record in the Ptolemy format.
-        return "{" + results.toString() + "}";
+		// Optionally append a comma.
+		if (valueString.length() > 0) {
+		    if (results.length() > 0) {
+			results.append(", ");
+		    }
+		    results.append(field.getName() + " = " + valueString);
+		}
+	    }
+	}
+	// We attempt to return a record in the Ptolemy format.
+	return "{" + results.toString() + "}";
     }
 }

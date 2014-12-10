@@ -53,7 +53,7 @@ public class FMUBuilder {
      *  on stderr and stdout.
      */
     public FMUBuilder() {
-        buffer = new StringBuffer();
+	buffer = new StringBuffer();
     }
 
     /** Create a FMUBuilder and optionally append to stderr
@@ -62,8 +62,8 @@ public class FMUBuilder {
      *  are executed, the output is append to stderr and stdout.
      */
     public FMUBuilder(boolean appendToStderrAndStdout) {
-        _appendToStderrAndStdout = appendToStderrAndStdout;
-        buffer = new StringBuffer();
+	_appendToStderrAndStdout = appendToStderrAndStdout;
+	buffer = new StringBuffer();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,89 +95,89 @@ public class FMUBuilder {
      *  there was a problem building the shared library.
      */
     public boolean build(File sharedLibraryFile) throws IOException {
-        stdout(_eol + "Attempting to build " + sharedLibraryFile + _eol);
-        // The architecture, typically one of darwin64, linux32, linux64, win32, win64
-        String architecture = sharedLibraryFile.getParentFile().getName();
+	stdout(_eol + "Attempting to build " + sharedLibraryFile + _eol);
+	// The architecture, typically one of darwin64, linux32, linux64, win32, win64
+	String architecture = sharedLibraryFile.getParentFile().getName();
 
-        File sourcesDirectory = new File(sharedLibraryFile.getParentFile()
-                .getParentFile().getParentFile(), "sources");
+	File sourcesDirectory = new File(sharedLibraryFile.getParentFile()
+	        .getParentFile().getParentFile(), "sources");
 
-        if (!sourcesDirectory.exists()) {
-            stderr("The source directory \"" + sourcesDirectory
-                    + "\" does not exist." + _eol);
-            return false;
-        }
+	if (!sourcesDirectory.exists()) {
+	    stderr("The source directory \"" + sourcesDirectory
+		    + "\" does not exist." + _eol);
+	    return false;
+	}
 
-        boolean isWindows = architecture.startsWith("win");
+	boolean isWindows = architecture.startsWith("win");
 
-        // FIXME: eventually, we should not use make.
-        File makefile = new File(sourcesDirectory, "makefile");
+	// FIXME: eventually, we should not use make.
+	File makefile = new File(sourcesDirectory, "makefile");
 
-        if (!isWindows && !makefile.exists()) {
-            stderr("The makefile \"" + makefile + "\" does not exist." + _eol);
-            return false;
-        }
+	if (!isWindows && !makefile.exists()) {
+	    stderr("The makefile \"" + makefile + "\" does not exist." + _eol);
+	    return false;
+	}
 
-        String command = "make";
-        String target = architecture;
-        if (isWindows) {
-            File batchCommand = new File(sourcesDirectory, "build_fmu.bat");
-            if (!batchCommand.exists()) {
-                stderr("The DOS batch file \"" + batchCommand
-                        + "\" does not exist." + _eol);
-                return false;
-            }
-            command = batchCommand.getCanonicalPath();
+	String command = "make";
+	String target = architecture;
+	if (isWindows) {
+	    File batchCommand = new File(sourcesDirectory, "build_fmu.bat");
+	    if (!batchCommand.exists()) {
+		stderr("The DOS batch file \"" + batchCommand
+		        + "\" does not exist." + _eol);
+		return false;
+	    }
+	    command = batchCommand.getCanonicalPath();
 
-            String sharedLibraryFileName = sharedLibraryFile.getName();
-            target = sharedLibraryFileName.substring(0,
-                    sharedLibraryFileName.length() - 4);
-        }
+	    String sharedLibraryFileName = sharedLibraryFile.getName();
+	    target = sharedLibraryFileName.substring(0,
+		    sharedLibraryFileName.length() - 4);
+	}
 
-        ProcessBuilder builder = new ProcessBuilder(command, target);
+	ProcessBuilder builder = new ProcessBuilder(command, target);
 
-        stdout("architecture: " + architecture + " isWindows: " + isWindows
-                + "  command: " + command + " target: " + target);
+	stdout("architecture: " + architecture + " isWindows: " + isWindows
+	        + "  command: " + command + " target: " + target);
 
-        builder.directory(sourcesDirectory);
+	builder.directory(sourcesDirectory);
 
-        // Eventually, redirect to the buffer and return the results.
-        Process process = builder.start();
+	// Eventually, redirect to the buffer and return the results.
+	Process process = builder.start();
 
-        // Set up a Thread to read in any error messages
-        _StreamReaderThread errorGobbler = new _StreamReaderThread(
-                process.getErrorStream(), this);
+	// Set up a Thread to read in any error messages
+	_StreamReaderThread errorGobbler = new _StreamReaderThread(
+	        process.getErrorStream(), this);
 
-        // Set up a Thread to read in any output messages
-        _StreamReaderThread outputGobbler = new _StreamReaderThread(
-                process.getInputStream(), this);
+	// Set up a Thread to read in any output messages
+	_StreamReaderThread outputGobbler = new _StreamReaderThread(
+	        process.getInputStream(), this);
 
-        // Start up the Threads
-        errorGobbler.start();
-        outputGobbler.start();
+	// Start up the Threads
+	errorGobbler.start();
+	outputGobbler.start();
 
-        try {
-            process.waitFor();
-        } catch (InterruptedException ex) {
-            process.destroy();
-            // Java 1.5 does not support IOException(String, Throwable).
-            // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("The process building "
-                    + sharedLibraryFile + " was interrupted.");
-            exception.initCause(ex);
-            throw exception;
-        }
+	try {
+	    process.waitFor();
+	} catch (InterruptedException ex) {
+	    process.destroy();
+	    // Java 1.5 does not support IOException(String, Throwable).
+	    // We sometimes compile this with gcj, which is Java 1.5
+	    IOException exception = new IOException("The process building "
+		    + sharedLibraryFile + " was interrupted.");
+	    exception.initCause(ex);
+	    throw exception;
+	}
 
-        int exitValue = process.exitValue();
-        if (exitValue != 0) {
-            stderr("The exit value of the process building "
-                    + sharedLibraryFile + " was non-zero: " + exitValue);
-        }
-        if (!sharedLibraryFile.exists()) {
-            stderr("Failed to created " + sharedLibraryFile + "?");
-            return false;
-        }
-        return true;
+	int exitValue = process.exitValue();
+	if (exitValue != 0) {
+	    stderr("The exit value of the process building "
+		    + sharedLibraryFile + " was non-zero: " + exitValue);
+	}
+	if (!sharedLibraryFile.exists()) {
+	    stderr("Failed to created " + sharedLibraryFile + "?");
+	    return false;
+	}
+	return true;
     }
 
     /** Append the text message to the StringBuffer.  The output
@@ -187,11 +187,11 @@ public class FMUBuilder {
      *  @param text The text to append.
      */
     public void stderr(final String text) {
-        if (_appendToStderrAndStdout) {
-            System.err.println(text);
-            System.err.flush();
-        }
-        _appendToBuffer(text);
+	if (_appendToStderrAndStdout) {
+	    System.err.println(text);
+	    System.err.flush();
+	}
+	_appendToBuffer(text);
     }
 
     /** Append the text message to the StringBuffer.  The output
@@ -200,11 +200,11 @@ public class FMUBuilder {
      *  @param text The text to append.
      */
     public void stdout(final String text) {
-        if (_appendToStderrAndStdout) {
-            System.out.println(text);
-            System.out.flush();
-        }
-        _appendToBuffer(text);
+	if (_appendToStderrAndStdout) {
+	    System.out.println(text);
+	    System.out.flush();
+	}
+	_appendToBuffer(text);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -214,42 +214,42 @@ public class FMUBuilder {
      */
     private static class _StreamReaderThread extends Thread {
 
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
+	// FindBugs suggests making this class static so as to decrease
+	// the size of instances and avoid dangling references.
 
-        /** Construct a StreamReaderThread.
-         *  @param inputStream the stream from which to read.
-         *  @param fmuBuilder The FMUBuilder to be written.
-         */
-        _StreamReaderThread(InputStream inputStream, FMUBuilder fmuBuilder) {
-            _inputStream = inputStream;
-            _fmuBuilder = fmuBuilder;
-        }
+	/** Construct a StreamReaderThread.
+	 *  @param inputStream the stream from which to read.
+	 *  @param fmuBuilder The FMUBuilder to be written.
+	 */
+	_StreamReaderThread(InputStream inputStream, FMUBuilder fmuBuilder) {
+	    _inputStream = inputStream;
+	    _fmuBuilder = fmuBuilder;
+	}
 
-        /** Read lines from the _inputStream and output them. */
-        @Override
-        public void run() {
-            try {
-                InputStreamReader inputStreamReader = new InputStreamReader(
-                        _inputStream);
-                BufferedReader bufferedReader = new BufferedReader(
-                        inputStreamReader);
-                String line = null;
+	/** Read lines from the _inputStream and output them. */
+	@Override
+	public void run() {
+	    try {
+		InputStreamReader inputStreamReader = new InputStreamReader(
+		        _inputStream);
+		BufferedReader bufferedReader = new BufferedReader(
+		        inputStreamReader);
+		String line = null;
 
-                while ((line = bufferedReader.readLine()) != null) {
-                    _fmuBuilder.stdout( /*_streamType + ">" +*/
-                            line);
-                }
-            } catch (IOException ioe) {
-                _fmuBuilder.stderr("IOException: " + ioe);
-            }
-        }
+		while ((line = bufferedReader.readLine()) != null) {
+		    _fmuBuilder.stdout( /*_streamType + ">" +*/
+		    line);
+		}
+	    } catch (IOException ioe) {
+		_fmuBuilder.stderr("IOException: " + ioe);
+	    }
+	}
 
-        /** Stream from which to read. */
-        private InputStream _inputStream;
+	/** Stream from which to read. */
+	private InputStream _inputStream;
 
-        /** FMUBuilder which is written. */
-        private FMUBuilder _fmuBuilder;
+	/** FMUBuilder which is written. */
+	private FMUBuilder _fmuBuilder;
 
     }
 
@@ -261,10 +261,10 @@ public class FMUBuilder {
      *  end with an end of line character(s), then _eol is appended.
      */
     private void _appendToBuffer(final String text) {
-        buffer.append(text);
-        if (!text.endsWith(_eol)) {
-            buffer.append(_eol);
-        }
+	buffer.append(text);
+	if (!text.endsWith(_eol)) {
+	    buffer.append(_eol);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -280,6 +280,6 @@ public class FMUBuilder {
      */
     private static final String _eol;
     static {
-        _eol = System.getProperty("line.separator");
+	_eol = System.getProperty("line.separator");
     }
 }

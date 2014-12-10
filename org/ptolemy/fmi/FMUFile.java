@@ -82,71 +82,71 @@ public class FMUFile {
      *  @exception IOException If thrown while determining the canonical path of the library.
      */
     public static String fmuSharedLibrary(
-            FMIModelDescription fmiModelDescription) throws IOException {
+	    FMIModelDescription fmiModelDescription) throws IOException {
 
-        // Find the modelDescription.xml file.
-        File modelDescriptionFile = null;
-        for (File file : fmiModelDescription.files) {
-            if (file.getName().endsWith("modelDescription.xml")) {
-                modelDescriptionFile = file;
-                break;
-            }
-        }
+	// Find the modelDescription.xml file.
+	File modelDescriptionFile = null;
+	for (File file : fmiModelDescription.files) {
+	    if (file.getName().endsWith("modelDescription.xml")) {
+		modelDescriptionFile = file;
+		break;
+	    }
+	}
 
-        if (modelDescriptionFile == null) {
-            throw new IOException(
-                    "The .fmu file does not contain a modelDescription.xml file.");
-        }
+	if (modelDescriptionFile == null) {
+	    throw new IOException(
+		    "The .fmu file does not contain a modelDescription.xml file.");
+	}
 
-        // Determine the path to the shared object.
-        String topDirectory = modelDescriptionFile.getParent();
-        String osName = System.getProperty("os.name").toLowerCase(
-                Locale.getDefault());
-        String extension = ".so";
-        if (osName.startsWith("mac")) {
-            // JModelica seems to use darwin as the binary name
-            osName = "darwin";
-            extension = ".dylib";
-        } else if (osName.startsWith("windows")) {
-            osName = "win";
-            extension = ".dll";
-        }
-        String bitWidth = "64";
-        if (FMUFile._is32Bit()) {
-            bitWidth = "32";
-        }
-        String library = topDirectory + File.separator + "binaries"
-                + File.separator + osName + bitWidth + File.separator
-                + fmiModelDescription.modelIdentifier + extension;
-        File canonicalFile = new File(library).getCanonicalFile();
-        if (!canonicalFile.exists()) {
-            if (osName.startsWith("mac") || osName.startsWith("darwin")) {
-                // OpenModelica 1.8.1 uses darwin-x86_64
-                osName = "darwin-x86_";
-                extension = ".so";
-                library = topDirectory + File.separator + "binaries"
-                        + File.separator + osName + bitWidth + File.separator
-                        + fmiModelDescription.modelIdentifier + extension;
-                File canonicalFile2 = new File(library).getCanonicalFile();
-                if (canonicalFile2.exists()) {
-                    System.out
-                    .println("Could not find "
-                            + canonicalFile
-                            + " but "
-                            + canonicalFile2
-                            + "exists.  "
-                            + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
-                    canonicalFile = canonicalFile2;
-                } else {
-                    System.out.println(canonicalFile + " does not exist"
-                            + " also tried " + canonicalFile2
-                            + " for OpenModelica 1.8.1");
-                }
-            }
-        }
-        String canonicalPath = canonicalFile.getCanonicalPath();
+	// Determine the path to the shared object.
+	String topDirectory = modelDescriptionFile.getParent();
+	String osName = System.getProperty("os.name").toLowerCase(
+	        Locale.getDefault());
+	String extension = ".so";
+	if (osName.startsWith("mac")) {
+	    // JModelica seems to use darwin as the binary name
+	    osName = "darwin";
+	    extension = ".dylib";
+	} else if (osName.startsWith("windows")) {
+	    osName = "win";
+	    extension = ".dll";
+	}
+	String bitWidth = "64";
+	if (FMUFile._is32Bit()) {
+	    bitWidth = "32";
+	}
+	String library = topDirectory + File.separator + "binaries"
+	        + File.separator + osName + bitWidth + File.separator
+	        + fmiModelDescription.modelIdentifier + extension;
+	File canonicalFile = new File(library).getCanonicalFile();
+	if (!canonicalFile.exists()) {
+	    if (osName.startsWith("mac") || osName.startsWith("darwin")) {
+		// OpenModelica 1.8.1 uses darwin-x86_64
+		osName = "darwin-x86_";
+		extension = ".so";
+		library = topDirectory + File.separator + "binaries"
+		        + File.separator + osName + bitWidth + File.separator
+		        + fmiModelDescription.modelIdentifier + extension;
+		File canonicalFile2 = new File(library).getCanonicalFile();
+		if (canonicalFile2.exists()) {
+		    System.out
+			    .println("Could not find "
+			            + canonicalFile
+			            + " but "
+			            + canonicalFile2
+			            + "exists.  "
+			            + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
+		    canonicalFile = canonicalFile2;
+		} else {
+		    System.out.println(canonicalFile + " does not exist"
+			    + " also tried " + canonicalFile2
+			    + " for OpenModelica 1.8.1");
+		}
+	    }
+	}
+	String canonicalPath = canonicalFile.getCanonicalPath();
 
-        return canonicalPath;
+	return canonicalPath;
     }
 
     /** Read in a .fmu file and parse the modelDescription.xml file.
@@ -165,369 +165,369 @@ public class FMUFile {
      *  file cannot be parsed.
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName)
-            throws IOException {
+	    throws IOException {
 
-        FMIModelDescription result = _modelDescriptions.get(fmuFileName);
-        if (result != null) {
-            return result;
-        }
+	FMIModelDescription result = _modelDescriptions.get(fmuFileName);
+	if (result != null) {
+	    return result;
+	}
 
-        // Unzip the file.
-        List<File> files = null;
-        try {
-            files = unzip(fmuFileName);
-        } catch (IOException ex) {
-            // Java 1.5 does not support IOException(String, Throwable).
-            // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("Failed to unzip \""
-                    + fmuFileName + "\".");
-            exception.initCause(ex);
-            throw exception;
-        }
+	// Unzip the file.
+	List<File> files = null;
+	try {
+	    files = unzip(fmuFileName);
+	} catch (IOException ex) {
+	    // Java 1.5 does not support IOException(String, Throwable).
+	    // We sometimes compile this with gcj, which is Java 1.5
+	    IOException exception = new IOException("Failed to unzip \""
+		    + fmuFileName + "\".");
+	    exception.initCause(ex);
+	    throw exception;
+	}
 
-        // Find the modelDescription.xml file.
-        File modelDescriptionFile = null;
-        String fmuResourceLocation = null;
-        for (File file : files) {
-            String fileName = file.getName();
-            if (fileName.endsWith("modelDescription.xml")) {
-                modelDescriptionFile = file;
-                if (fmuResourceLocation != null) {
-                    break;
-                }
-            }
-            if (fileName.endsWith("resources")
-                    || fileName.endsWith("resources/")) {
-                fmuResourceLocation = file.toURI().toURL().toString();
-                if (modelDescriptionFile != null) {
-                    break;
-                }
-            }
-        }
-        if (modelDescriptionFile == null) {
-            throw new IOException("File \"modelDescription.xml\" is missing "
-                    + "from the fmu archive \"" + fmuFileName + "\"");
-        }
-        if (fmuResourceLocation == null) {
-            File fmuResourceFile = new File(modelDescriptionFile.getParent(),
-                    "resources");
-            fmuResourceLocation = fmuResourceFile.toURI().toURL().toString();
-            if (!fmuResourceFile.isDirectory()) {
-                if (fmuResourceFile.exists()) {
-                    if (fmuResourceFile.delete()) {
-                        throw new IOException(
-                                "Could not delete file \""
-                                        + fmuResourceFile
-                                        + "\" before creating a directory with the same name.");
-                    }
-                }
-                if (!fmuResourceFile.mkdirs()) {
-                    throw new IOException("Could not create directory \""
-                            + fmuResourceFile + "\"");
-                }
-            }
-        }
+	// Find the modelDescription.xml file.
+	File modelDescriptionFile = null;
+	String fmuResourceLocation = null;
+	for (File file : files) {
+	    String fileName = file.getName();
+	    if (fileName.endsWith("modelDescription.xml")) {
+		modelDescriptionFile = file;
+		if (fmuResourceLocation != null) {
+		    break;
+		}
+	    }
+	    if (fileName.endsWith("resources")
+		    || fileName.endsWith("resources/")) {
+		fmuResourceLocation = file.toURI().toURL().toString();
+		if (modelDescriptionFile != null) {
+		    break;
+		}
+	    }
+	}
+	if (modelDescriptionFile == null) {
+	    throw new IOException("File \"modelDescription.xml\" is missing "
+		    + "from the fmu archive \"" + fmuFileName + "\"");
+	}
+	if (fmuResourceLocation == null) {
+	    File fmuResourceFile = new File(modelDescriptionFile.getParent(),
+		    "resources");
+	    fmuResourceLocation = fmuResourceFile.toURI().toURL().toString();
+	    if (!fmuResourceFile.isDirectory()) {
+		if (fmuResourceFile.exists()) {
+		    if (fmuResourceFile.delete()) {
+			throw new IOException(
+			        "Could not delete file \""
+			                + fmuResourceFile
+			                + "\" before creating a directory with the same name.");
+		    }
+		}
+		if (!fmuResourceFile.mkdirs()) {
+		    throw new IOException("Could not create directory \""
+			    + fmuResourceFile + "\"");
+		}
+	    }
+	}
 
-        // Remove any trailing slash.
-        if (fmuResourceLocation.endsWith("/")) {
-            fmuResourceLocation = fmuResourceLocation.substring(0,
-                    fmuResourceLocation.length() - 1);
-        }
+	// Remove any trailing slash.
+	if (fmuResourceLocation.endsWith("/")) {
+	    fmuResourceLocation = fmuResourceLocation.substring(0,
+		    fmuResourceLocation.length() - 1);
+	}
 
-        if (fmuResourceLocation.indexOf("%20") != -1) {
-            System.out
-            .println("FMUFile: The fmuResourceLocation \""
-                    + fmuResourceLocation
-                    + "\" contains one or more \"%20\"."
-                    + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
-            fmuResourceLocation = fmuResourceLocation.replace("%20", " ");
-        }
+	if (fmuResourceLocation.indexOf("%20") != -1) {
+	    System.out
+		    .println("FMUFile: The fmuResourceLocation \""
+		            + fmuResourceLocation
+		            + "\" contains one or more \"%20\"."
+		            + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
+	    fmuResourceLocation = fmuResourceLocation.replace("%20", " ");
+	}
 
-        // Read the modelDescription.xml file.
-        Document document = null;
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	// Read the modelDescription.xml file.
+	Document document = null;
+	try {
+	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-            // Using factory get an instance of document builder.
-            DocumentBuilder db = dbf.newDocumentBuilder();
+	    // Using factory get an instance of document builder.
+	    DocumentBuilder db = dbf.newDocumentBuilder();
 
-            // Parse using builder to get DOM representation of the XML file.
-            document = db.parse(modelDescriptionFile.getCanonicalPath());
-        } catch (Throwable throwable) {
-            // Java 1.5 does not support IOException(String, Throwable).
-            // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("Failed to parse \""
-                    + modelDescriptionFile + "\".");
-            exception.initCause(throwable);
-            throw exception;
-        }
+	    // Parse using builder to get DOM representation of the XML file.
+	    document = db.parse(modelDescriptionFile.getCanonicalPath());
+	} catch (Throwable throwable) {
+	    // Java 1.5 does not support IOException(String, Throwable).
+	    // We sometimes compile this with gcj, which is Java 1.5
+	    IOException exception = new IOException("Failed to parse \""
+		    + modelDescriptionFile + "\".");
+	    exception.initCause(throwable);
+	    throw exception;
+	}
 
-        Element root = document.getDocumentElement();
+	Element root = document.getDocumentElement();
 
-        // Create an object that represents the modelDescription.xml file
-        FMIModelDescription fmiModelDescription = new FMIModelDescription();
+	// Create an object that represents the modelDescription.xml file
+	FMIModelDescription fmiModelDescription = new FMIModelDescription();
 
-        // Record this model description in case there is another instance of this FMU.
-        _modelDescriptions.put(fmuFileName, fmiModelDescription);
+	// Record this model description in case there is another instance of this FMU.
+	_modelDescriptions.put(fmuFileName, fmiModelDescription);
 
-        // Save the list of files that were extracted for later use.
-        fmiModelDescription.files = files;
+	// Save the list of files that were extracted for later use.
+	fmiModelDescription.files = files;
 
-        // Location of the resources/ directory in the zip file;
-        fmiModelDescription.fmuResourceLocation = fmuResourceLocation;
+	// Location of the resources/ directory in the zip file;
+	fmiModelDescription.fmuResourceLocation = fmuResourceLocation;
 
-        double fmiVersion = 0.0;
-        // Handle the root attributes
-        if (root.hasAttribute("fmiVersion")) {
-            fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
-            try {
-                fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
-            } catch (NumberFormatException ex) {
-                IOException exception = new IOException("Invalid fmiVersion \""
-                        + fmiModelDescription.fmiVersion
-                        + "\". Required to be of the form n.m, "
-                        + "where n and m are natural numbers.");
-                exception.initCause(ex);
-                throw exception;
-            }
+	double fmiVersion = 0.0;
+	// Handle the root attributes
+	if (root.hasAttribute("fmiVersion")) {
+	    fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
+	    try {
+		fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
+	    } catch (NumberFormatException ex) {
+		IOException exception = new IOException("Invalid fmiVersion \""
+		        + fmiModelDescription.fmiVersion
+		        + "\". Required to be of the form n.m, "
+		        + "where n and m are natural numbers.");
+		exception.initCause(ex);
+		throw exception;
+	    }
 
-            // Under FMI 1.0, the fmuLocation parameter refers to the location
-            // of the fmu.
+	    // Under FMI 1.0, the fmuLocation parameter refers to the location
+	    // of the fmu.
 
-            // fmiVersion 1.5 is not a legitimate version of the FMI standard, it
-            // was used by the Ptolemy project for experimenting with FMI 2.0beta.
-            if (fmiVersion < 1.5
-                    && fmiModelDescription.fmuResourceLocation
-                    .endsWith("resources")) {
-                fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation
-                        .substring(
-                                0,
-                                fmiModelDescription.fmuResourceLocation
-                                .length() - "resources".length() - 1); // +1 is to get rid of the /
-            }
-        }
-        if (root.hasAttribute("modelIdentifier")) {
-            fmiModelDescription.modelIdentifier = root
-                    .getAttribute("modelIdentifier");
-        }
-        if (root.hasAttribute("modelName")) {
-            fmiModelDescription.modelName = root.getAttribute("modelName");
-        }
-        if (root.hasAttribute("guid")) {
-            fmiModelDescription.guid = root.getAttribute("guid");
-        }
-        if (root.hasAttribute("numberOfContinuousStates")) {
-            fmiModelDescription.numberOfContinuousStates = Integer
-                    .parseInt(root.getAttribute("numberOfContinuousStates"));
-        }
-        if (root.hasAttribute("numberOfEventIndicators")) {
-            fmiModelDescription.numberOfEventIndicators = Integer.parseInt(root
-                    .getAttribute("numberOfEventIndicators"));
-        }
+	    // fmiVersion 1.5 is not a legitimate version of the FMI standard, it
+	    // was used by the Ptolemy project for experimenting with FMI 2.0beta.
+	    if (fmiVersion < 1.5
+		    && fmiModelDescription.fmuResourceLocation
+		            .endsWith("resources")) {
+		fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation
+		        .substring(
+		                0,
+		                fmiModelDescription.fmuResourceLocation
+		                        .length() - "resources".length() - 1); // +1 is to get rid of the /
+	    }
+	}
+	if (root.hasAttribute("modelIdentifier")) {
+	    fmiModelDescription.modelIdentifier = root
+		    .getAttribute("modelIdentifier");
+	}
+	if (root.hasAttribute("modelName")) {
+	    fmiModelDescription.modelName = root.getAttribute("modelName");
+	}
+	if (root.hasAttribute("guid")) {
+	    fmiModelDescription.guid = root.getAttribute("guid");
+	}
+	if (root.hasAttribute("numberOfContinuousStates")) {
+	    fmiModelDescription.numberOfContinuousStates = Integer
+		    .parseInt(root.getAttribute("numberOfContinuousStates"));
+	}
+	if (root.hasAttribute("numberOfEventIndicators")) {
+	    fmiModelDescription.numberOfEventIndicators = Integer.parseInt(root
+		    .getAttribute("numberOfEventIndicators"));
+	}
 
-        // TypeDefinitions
-        // NodeList is not a list, it only has getLength() and item(). #fail.
-        NodeList types = document.getElementsByTagName("Type");
-        int length = types.getLength();
-        for (int i = 0; i < length; i++) {
-            Element element = (Element) types.item(i);
-            String elementTypeName = element.getAttribute("name");
-            NodeList children = element.getChildNodes(); // NodeList. Worst.
-            // Ever.
-            for (int j = 0; j < children.getLength(); j++) {
-                Node child = element.getChildNodes().item(j);
-                if (child instanceof Element) {
-                    Element childElement = (Element) child;
-                    String childTypeName = childElement.getNodeName();
-                    fmiModelDescription.typeDefinitions.put(elementTypeName,
-                            childTypeName);
-                }
-            }
-        }
+	// TypeDefinitions
+	// NodeList is not a list, it only has getLength() and item(). #fail.
+	NodeList types = document.getElementsByTagName("Type");
+	int length = types.getLength();
+	for (int i = 0; i < length; i++) {
+	    Element element = (Element) types.item(i);
+	    String elementTypeName = element.getAttribute("name");
+	    NodeList children = element.getChildNodes(); // NodeList. Worst.
+	    // Ever.
+	    for (int j = 0; j < children.getLength(); j++) {
+		Node child = element.getChildNodes().item(j);
+		if (child instanceof Element) {
+		    Element childElement = (Element) child;
+		    String childTypeName = childElement.getNodeName();
+		    fmiModelDescription.typeDefinitions.put(elementTypeName,
+			    childTypeName);
+		}
+	    }
+	}
 
-        // FIXME: handle DefaultExperiment
+	// FIXME: handle DefaultExperiment
 
-        // FIXME: handle Vendor annotations
+	// FIXME: handle Vendor annotations
 
-        if (fmiVersion < 1.5) {
-            // Implementation description in FMI 1.0
-            // NodeList is not a list, it only has getLength() and item(). #fail.
-            NodeList implementation = document
-                    .getElementsByTagName("CoSimulation_StandAlone");
-            if (implementation.getLength() > 1) {
-                System.out.println("Warning: FMU has more than one element "
-                        + "CoSimulation_StandAlone");
-            }
-            for (int i = 0; i < implementation.getLength(); i++) {
-                Element element = (Element) implementation.item(i);
-                NodeList capabilities = element
-                        .getElementsByTagName("Capabilities");
-                for (int j = 0; j < capabilities.getLength(); j++) {
-                    Element capabilitiesElement = (Element) capabilities
-                            .item(j);
-                    fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
-                            capabilitiesElement);
-                }
-            }
-            // FIXME: handle CoSimulation_Tool
-        } else {
-            // Implementation description in FMI 2.0.
+	if (fmiVersion < 1.5) {
+	    // Implementation description in FMI 1.0
+	    // NodeList is not a list, it only has getLength() and item(). #fail.
+	    NodeList implementation = document
+		    .getElementsByTagName("CoSimulation_StandAlone");
+	    if (implementation.getLength() > 1) {
+		System.out.println("Warning: FMU has more than one element "
+		        + "CoSimulation_StandAlone");
+	    }
+	    for (int i = 0; i < implementation.getLength(); i++) {
+		Element element = (Element) implementation.item(i);
+		NodeList capabilities = element
+		        .getElementsByTagName("Capabilities");
+		for (int j = 0; j < capabilities.getLength(); j++) {
+		    Element capabilitiesElement = (Element) capabilities
+			    .item(j);
+		    fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
+			    capabilitiesElement);
+		}
+	    }
+	    // FIXME: handle CoSimulation_Tool
+	} else {
+	    // Implementation description in FMI 2.0.
 
-            // JModelica FMUs can have both CoSimulation and
-            // ModelExchange NodeLists, see CoupledClutches.xml
+	    // JModelica FMUs can have both CoSimulation and
+	    // ModelExchange NodeLists, see CoupledClutches.xml
 
-            // Handle CoSimulation.
-            NodeList implementation = document
-                    .getElementsByTagName("CoSimulation");
-            if (implementation.getLength() > 1) {
-                System.out
-                .println("Warning: FMU modelDescription provides more than one CoSimulation element");
-            }
-            if (implementation.getLength() == 1) {
-                Element cosimulation = (Element) implementation.item(0);
-                fmiModelDescription.cosimulationCapabilities = new FMI20CoSimulationCapabilities(
-                        cosimulation);
+	    // Handle CoSimulation.
+	    NodeList implementation = document
+		    .getElementsByTagName("CoSimulation");
+	    if (implementation.getLength() > 1) {
+		System.out
+		        .println("Warning: FMU modelDescription provides more than one CoSimulation element");
+	    }
+	    if (implementation.getLength() == 1) {
+		Element cosimulation = (Element) implementation.item(0);
+		fmiModelDescription.cosimulationCapabilities = new FMI20CoSimulationCapabilities(
+		        cosimulation);
 
-                // In FMI 2.0, the modelIdentifier is given in the
-                // ModelExchange or Cosimulation element, not in the
-                // root element (presumably so that CoSimulation and
-                // ModelExchange can use non-conflicting names and
-                // hence divergent C implementations.
-                if (cosimulation.hasAttribute("modelIdentifier")) {
-                    fmiModelDescription.modelIdentifier = cosimulation
-                            .getAttribute("modelIdentifier");
-                } else {
-                    System.out
-                    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
-                }
+		// In FMI 2.0, the modelIdentifier is given in the
+		// ModelExchange or Cosimulation element, not in the
+		// root element (presumably so that CoSimulation and
+		// ModelExchange can use non-conflicting names and
+		// hence divergent C implementations.
+		if (cosimulation.hasAttribute("modelIdentifier")) {
+		    fmiModelDescription.modelIdentifier = cosimulation
+			    .getAttribute("modelIdentifier");
+		} else {
+		    System.out
+			    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+		}
 
-                // FIXME: We should use the
-                // FMICoSimulationCapabilities class and preserve the
-                // Object Oriented nature of the modelDescription.xml
-                // file.  Adding toplevel fields fmiModelDescription
-                // means that we have fields that are present, but not
-                // useful.
+		// FIXME: We should use the
+		// FMICoSimulationCapabilities class and preserve the
+		// Object Oriented nature of the modelDescription.xml
+		// file.  Adding toplevel fields fmiModelDescription
+		// means that we have fields that are present, but not
+		// useful.
 
-                if (cosimulation.hasAttribute("canGetAndSetFMUstate")) {
-                    fmiModelDescription.canGetAndSetFMUstate = Boolean
-                            .parseBoolean(cosimulation
-                                    .getAttribute("canGetAndSetFMUstate"));
-                }
+		if (cosimulation.hasAttribute("canGetAndSetFMUstate")) {
+		    fmiModelDescription.canGetAndSetFMUstate = Boolean
+			    .parseBoolean(cosimulation
+			            .getAttribute("canGetAndSetFMUstate"));
+		}
 
-                // canProvideMaxStepSize and fmiGetMaxStepSize() are IBM/UCB extensions to FMI 2.0.
-                if (cosimulation.hasAttribute("canProvideMaxStepSize")) {
-                    fmiModelDescription.canProvideMaxStepSize = Boolean
-                            .parseBoolean(cosimulation
-                                    .getAttribute("canProvideMaxStepSize"));
-                }
-            }
+		// canProvideMaxStepSize and fmiGetMaxStepSize() are IBM/UCB extensions to FMI 2.0.
+		if (cosimulation.hasAttribute("canProvideMaxStepSize")) {
+		    fmiModelDescription.canProvideMaxStepSize = Boolean
+			    .parseBoolean(cosimulation
+			            .getAttribute("canProvideMaxStepSize"));
+		}
+	    }
 
-            // Handle ModelExchange.
-            implementation = document.getElementsByTagName("ModelExchange");
-            if (implementation.getLength() > 1) {
-                System.out
-                .println("Warning: FMU modelDescription provides more than one ModelExchange element");
-            }
-            if (implementation.getLength() == 1) {
-                Element modelExchange = (Element) implementation.item(0);
-                fmiModelDescription.modelExchangeCapabilities = new FMI20ModelExchangeCapabilities(
-                        modelExchange);
+	    // Handle ModelExchange.
+	    implementation = document.getElementsByTagName("ModelExchange");
+	    if (implementation.getLength() > 1) {
+		System.out
+		        .println("Warning: FMU modelDescription provides more than one ModelExchange element");
+	    }
+	    if (implementation.getLength() == 1) {
+		Element modelExchange = (Element) implementation.item(0);
+		fmiModelDescription.modelExchangeCapabilities = new FMI20ModelExchangeCapabilities(
+		        modelExchange);
 
-                // In FMI 2.0, the modelIdentifier is given in the
-                // ModelExchange or Cosimulation element, not in the
-                // root element (presumably so that CoSimulation and
-                // ModelExchange can use non-conflicting names and
-                // hence divergent C implementations.
-                if (modelExchange.hasAttribute("modelIdentifier")) {
-                    fmiModelDescription.modelIdentifier = modelExchange
-                            .getAttribute("modelIdentifier");
-                } else {
-                    System.out
-                    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
-                }
-            }
-        }
+		// In FMI 2.0, the modelIdentifier is given in the
+		// ModelExchange or Cosimulation element, not in the
+		// root element (presumably so that CoSimulation and
+		// ModelExchange can use non-conflicting names and
+		// hence divergent C implementations.
+		if (modelExchange.hasAttribute("modelIdentifier")) {
+		    fmiModelDescription.modelIdentifier = modelExchange
+			    .getAttribute("modelIdentifier");
+		} else {
+		    System.out
+			    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+		}
+	    }
+	}
 
-        // This has to be done after the native libraries have been loaded.
-        // FIXME: The above comment contradicts the method comment that this does not load libraries.
-        // NodeList is not a list, it only has getLength() and item(). #fail.
-        NodeList scalarVariables = document
-                .getElementsByTagName("ScalarVariable");
+	// This has to be done after the native libraries have been loaded.
+	// FIXME: The above comment contradicts the method comment that this does not load libraries.
+	// NodeList is not a list, it only has getLength() and item(). #fail.
+	NodeList scalarVariables = document
+	        .getElementsByTagName("ScalarVariable");
 
-        for (int i = 0; i < scalarVariables.getLength(); i++) {
-            Element element = (Element) scalarVariables.item(i);
-            fmiModelDescription.modelVariables.add(new FMIScalarVariable(
-                    fmiModelDescription, element));
-        }
-        
-        /*
-        for (int j = 0; j < capabilities.getLength(); j++) {
-            Element capabilitiesElement = (Element) capabilities
-                    .item(j);
-            fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
-                    capabilitiesElement);
-        }*/
-        
-        
-        if (fmiModelDescription.fmiVersion.equals("2.0"))
-        {
-	        // By default each output has direct dependency from all input ports
-			fmiModelDescription.addDefaultInputDependencies();
-	
-			// This section might be used to retrieve the information of the
-			// directDependency between inputs and outputs
-			// NodeList is not a list, it only has getLength() and item(). #fail.
-			NodeList structure = document.getElementsByTagName("ModelStructure");
-			if (structure.getLength() == 1) {
-				NodeList listOffOutputs = document.getElementsByTagName("Outputs");
-				Node current = null;
-	
-				for (int i = 0; i < listOffOutputs.getLength(); i++) {
-					NodeList unknowVariables = listOffOutputs.item(i)
-							.getChildNodes();
-					for (int j = 0; j < unknowVariables.getLength(); j++) {
-						current = unknowVariables.item(j);
-						if (current.getNodeName().equalsIgnoreCase("Unknown")) {
-							fmiModelDescription.parseDependenciese(current);
-						}
-					}
-				}
+	for (int i = 0; i < scalarVariables.getLength(); i++) {
+	    Element element = (Element) scalarVariables.item(i);
+	    fmiModelDescription.modelVariables.add(new FMIScalarVariable(
+		    fmiModelDescription, element));
+	}
+
+	/*
+	for (int j = 0; j < capabilities.getLength(); j++) {
+	    Element capabilitiesElement = (Element) capabilities
+	            .item(j);
+	    fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
+	            capabilitiesElement);
+	}*/
+
+	if (fmiModelDescription.fmiVersion.equals("2.0")) {
+	    // By default each output has direct dependency from all input ports
+	    fmiModelDescription.addDefaultInputDependencies();
+
+	    // This section might be used to retrieve the information of the
+	    // directDependency between inputs and outputs
+	    // NodeList is not a list, it only has getLength() and item(). #fail.
+	    NodeList structure = document
+		    .getElementsByTagName("ModelStructure");
+	    if (structure.getLength() == 1) {
+		NodeList listOffOutputs = document
+		        .getElementsByTagName("Outputs");
+		Node current = null;
+
+		for (int i = 0; i < listOffOutputs.getLength(); i++) {
+		    NodeList unknowVariables = listOffOutputs.item(i)
+			    .getChildNodes();
+		    for (int j = 0; j < unknowVariables.getLength(); j++) {
+			current = unknowVariables.item(j);
+			if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+			    fmiModelDescription.parseDependenciese(current);
 			}
-        }
-     		
-		/*// This section might be used to retrieve the dependencies of the
-		// Derivatives element
-		// so we can build the incidence matrix for the QSS integrator.
-		// FIXME: Needs to add boolean which indicates that we are doing QSS
-		NodeList structure = document.getElementsByTagName("ModelStructure");
-		if (structure.getLength() == 1) {
-			NodeList listOffDerivatives = document
-					.getElementsByTagName("Derivatives");
-			Node current = null;
-			if (listOffDerivatives.getLength() == 1) {
-				NodeList unknowVariables = listOffDerivatives.item(0)
-						.getChildNodes();
-				for (int i = 0; i < unknowVariables.getLength(); i++) {
-					current = unknowVariables.item(i);
-					if (current.getNodeName().equalsIgnoreCase("Unknown")) {
-						fmiModelDescription.modelDerivatives
-								.add(new FMIModelDerivative(
-										fmiModelDescription, current));
-					}
+		    }
+		}
+	    }
+	}
+
+	/*// This section might be used to retrieve the dependencies of the
+	// Derivatives element
+	// so we can build the incidence matrix for the QSS integrator.
+	// FIXME: Needs to add boolean which indicates that we are doing QSS
+	NodeList structure = document.getElementsByTagName("ModelStructure");
+	if (structure.getLength() == 1) {
+		NodeList listOffDerivatives = document
+				.getElementsByTagName("Derivatives");
+		Node current = null;
+		if (listOffDerivatives.getLength() == 1) {
+			NodeList unknowVariables = listOffDerivatives.item(0)
+					.getChildNodes();
+			for (int i = 0; i < unknowVariables.getLength(); i++) {
+				current = unknowVariables.item(i);
+				if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+					fmiModelDescription.modelDerivatives
+							.add(new FMIModelDerivative(
+									fmiModelDescription, current));
 				}
-			} else {
-				System.out
-						.println("Warning: Derivatives element is missing in ModelStructure.");
 			}
 		} else {
-			System.out.println("Warning: ModelStructure element is missing.");
-		}*/
+			System.out
+					.println("Warning: Derivatives element is missing in ModelStructure.");
+		}
+	} else {
+		System.out.println("Warning: ModelStructure element is missing.");
+	}*/
 
-        if (fmiVersion > 1.5) {
-            fmiModelDescription.createStateVector();
-        }
+	if (fmiVersion > 1.5) {
+	    fmiModelDescription.createStateVector();
+	}
 
-        return fmiModelDescription;
+	return fmiModelDescription;
     }
 
     /** Unzip a file into a temporary directory.
@@ -538,99 +538,99 @@ public class FMUFile {
      *  the zip file or if there are problems creating the files or directories.
      */
     public static List<File> unzip(String zipFileName) throws IOException {
-        // FIXME: Use URLs, not files so that we can work from JarZip files.
-        BufferedOutputStream destination = null;
-        final int BUFFER = 2048;
-        byte data[] = new byte[BUFFER];
+	// FIXME: Use URLs, not files so that we can work from JarZip files.
+	BufferedOutputStream destination = null;
+	final int BUFFER = 2048;
+	byte data[] = new byte[BUFFER];
 
-        // Unzip in a temporary directory.
-        File topDirectoryFile = File.createTempFile("FMUFile", ".tmp");
-        if (!topDirectoryFile.delete()) {
-            throw new IOException("Could not delete temporary file "
-                    + topDirectoryFile);
-        }
-        if (!topDirectoryFile.mkdir()) {
-            throw new IOException("Could not create directory "
-                    + topDirectoryFile);
-        }
-        topDirectoryFile.deleteOnExit();
-        String topDirectory = topDirectoryFile.getCanonicalPath();
-        System.out.println("FMUFile: Extracting to " + topDirectory);
-        List<File> files = new LinkedList<File>();
-        FileInputStream fileInputStream = null;
-        ZipInputStream zipInputStream = null;
-        File destinationFile = null;
-        try {
-            fileInputStream = new FileInputStream(zipFileName);
-            zipInputStream = new ZipInputStream(new BufferedInputStream(
-                    fileInputStream));
-            ZipEntry entry;
-            while ((entry = zipInputStream.getNextEntry()) != null) {
-                // System.out.println("Extracting: " + entry);
-                String entryName = entry.getName();
-                destinationFile = new File(topDirectory, entryName);
-                File destinationParent = destinationFile.getParentFile();
-                // If the directory does not exist, create it.
-                if (!destinationParent.isDirectory()
-                        && !destinationParent.mkdirs()) {
-                    throw new IOException("Failed to create \""
-                            + destinationParent + "\".");
-                }
-                // If the entry is not a directory, then write the file.
-                if (!entry.isDirectory()) {
-                    // Write the files to the disk.
-                    try {
-                        FileOutputStream fos = new FileOutputStream(
-                                destinationFile);
-                        destination = new BufferedOutputStream(fos, BUFFER);
-                        int count;
-                        while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
-                            destination.write(data, 0, count);
-                        }
-                        files.add(destinationFile);
-                    } finally {
-                        if (destination != null) {
-                            // Is the flush() really necessary?
-                            destination.flush();
-                            destination.close();
-                            destination = null;
-                        }
-                    }
-                }
-            }
-        } finally {
-            if (destination != null) {
-                try {
-                    destination.close();
-                } catch (IOException ex) {
-                    System.out.println("FMUFile.unzip(): Failed to close \""
-                            + destinationFile + "\"");
-                }
-            }
-            if (zipInputStream != null) {
-                zipInputStream.close();
-            }
-        }
-        return files;
+	// Unzip in a temporary directory.
+	File topDirectoryFile = File.createTempFile("FMUFile", ".tmp");
+	if (!topDirectoryFile.delete()) {
+	    throw new IOException("Could not delete temporary file "
+		    + topDirectoryFile);
+	}
+	if (!topDirectoryFile.mkdir()) {
+	    throw new IOException("Could not create directory "
+		    + topDirectoryFile);
+	}
+	topDirectoryFile.deleteOnExit();
+	String topDirectory = topDirectoryFile.getCanonicalPath();
+	System.out.println("FMUFile: Extracting to " + topDirectory);
+	List<File> files = new LinkedList<File>();
+	FileInputStream fileInputStream = null;
+	ZipInputStream zipInputStream = null;
+	File destinationFile = null;
+	try {
+	    fileInputStream = new FileInputStream(zipFileName);
+	    zipInputStream = new ZipInputStream(new BufferedInputStream(
+		    fileInputStream));
+	    ZipEntry entry;
+	    while ((entry = zipInputStream.getNextEntry()) != null) {
+		// System.out.println("Extracting: " + entry);
+		String entryName = entry.getName();
+		destinationFile = new File(topDirectory, entryName);
+		File destinationParent = destinationFile.getParentFile();
+		// If the directory does not exist, create it.
+		if (!destinationParent.isDirectory()
+		        && !destinationParent.mkdirs()) {
+		    throw new IOException("Failed to create \""
+			    + destinationParent + "\".");
+		}
+		// If the entry is not a directory, then write the file.
+		if (!entry.isDirectory()) {
+		    // Write the files to the disk.
+		    try {
+			FileOutputStream fos = new FileOutputStream(
+			        destinationFile);
+			destination = new BufferedOutputStream(fos, BUFFER);
+			int count;
+			while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
+			    destination.write(data, 0, count);
+			}
+			files.add(destinationFile);
+		    } finally {
+			if (destination != null) {
+			    // Is the flush() really necessary?
+			    destination.flush();
+			    destination.close();
+			    destination = null;
+			}
+		    }
+		}
+	    }
+	} finally {
+	    if (destination != null) {
+		try {
+		    destination.close();
+		} catch (IOException ex) {
+		    System.out.println("FMUFile.unzip(): Failed to close \""
+			    + destinationFile + "\"");
+		}
+	    }
+	    if (zipInputStream != null) {
+		zipInputStream.close();
+	    }
+	}
+	return files;
     }
 
     /** Return true if this is a 32bit JVM.
      *  @return true if this is a 32bit JVM.
      */
     private static boolean _is32Bit() {
-        String dataModelProperty = System.getProperty("sun.arch.data.model");
-        // FIXME: it is difficult to detect if we are under a
-        // 64bit JVM. See
-        // http://forums.sun.com/thread.jspa?threadID=5306174
-        if (dataModelProperty == null || dataModelProperty.indexOf("64") != -1) {
-            return false;
-        } else {
-            String javaVmNameProperty = System.getProperty("java.vm.name");
-            if (javaVmNameProperty.indexOf("64") != -1) {
-                return false;
-            }
-        }
-        return true;
+	String dataModelProperty = System.getProperty("sun.arch.data.model");
+	// FIXME: it is difficult to detect if we are under a
+	// 64bit JVM. See
+	// http://forums.sun.com/thread.jspa?threadID=5306174
+	if (dataModelProperty == null || dataModelProperty.indexOf("64") != -1) {
+	    return false;
+	} else {
+	    String javaVmNameProperty = System.getProperty("java.vm.name");
+	    if (javaVmNameProperty.indexOf("64") != -1) {
+		return false;
+	    }
+	}
+	return true;
     }
 
     ///////////////////////////////////////////////////////////////////
