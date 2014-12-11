@@ -181,6 +181,8 @@ public class FMUModelExchange extends FMUDriver {
 
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
 
+        loggingOn = (byte)0;
+
         _fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
 
         Pointer fmiComponent = null;

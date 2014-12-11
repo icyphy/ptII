@@ -179,11 +179,16 @@ public class FMUCoSimulation extends FMUDriver {
         // Timeout in ms., 0 means wait forever.
         double timeout = 1000;
         // There is no simulator UI.
+	// FMI-2.0, so we have two variables.
         byte visible = 0;
+	int toBeVisibleFMI2 = 0;
+
         // Run the simulator without user interaction.
         byte interactive = 0;
 
+        // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
+ 	int loggingOnFMI2 = _enableLogging ? 1 : 0;
 
         _fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
 
@@ -228,7 +233,7 @@ public class FMUCoSimulation extends FMUDriver {
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
                             fmiModelDescription.guid,
                             fmiModelDescription.fmuResourceLocation, callbacks,
-                            toBeVisible, loggingOn });
+                            toBeVisibleFMI2, loggingOnFMI2 });
         }
 
         if (fmiComponent.equals(Pointer.NULL)) {
