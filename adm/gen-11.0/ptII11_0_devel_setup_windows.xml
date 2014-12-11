@@ -131,6 +131,14 @@ The Ptiny pack is required.
 	    <!-- The next line gets substituted for the mac by the makefile. -->
 	    <!-- Ptiny.app -->
 
+	    <!-- The classpath for vergil is more than 8192 chars, so
+		 creating vergil.exe fails with this message:
+		 launch4j: Classpath exceeds the maximum length of 8192 characters.
+		 The workaround is to create a jar file that has a Class-Path:
+		 manifest.  See $PTII/bin/mkl4j
+	      -->
+            <file src="../dists/ptII11.0.devel/jar_dist/vergil_l4j.jar"
+                  targetdir="$INSTALL_PATH"/>
 
 	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS)
 		 and then copy the section below and use diff:

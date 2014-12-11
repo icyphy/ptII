@@ -749,8 +749,17 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(APPLET_DOMAIN_JARS) \
 	ptolemy/plot/plotapplication.jar
 
+# The classpath for vergil is more than 8192 chars, so
+# creating vergil.exe fails with this message:
+# launch4j: Classpath exceeds the maximum length of 8192 characters.
+# The workaround is to create a jar file that has a Class-Path:
+#  manifest.  See $PTII/bin/mkl4j
+ALL_L4J_JARS = \
+	vergil_l4j.jar
+
 # All the jar files, include the application jars
 ALL_JNLP_JARS = \
+	$(ALL_L4J_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
 	$(DSP_MAIN_JAR) \
 	$(BCVTB_MAIN_JAR) \
