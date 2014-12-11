@@ -15,12 +15,17 @@ PTVERSION=9.0-devel
 # However, there is a bug:
 # http://bugs.sun.com/view_bug.do?bug_id=4787931
 
-classPath="<cp>%HOMEPATH%/.ptolemyII</cp>
+classPathPreamble="<cp>%HOMEPATH%/.ptolemyII</cp>
     <cp>%HOMEPATH%/.ptolemyII/*</cp>
     <cp>%HOME%/.ptolemyII</cp>
     <cp>%HOME%/.ptolemyII/*</cp>
     <cp>contrib/contrib.jar</cp>
     <cp>$ROOT</cp>"
+
+classPath=""
+
+# echo -n is not reliable, so we use awk to print a line without a newline.
+echo foo | awk '{printf("Class-Path: ")}' > ${base}_l4j.mf
 
 if [ $# -gt 0 ]; then
    base=$1
@@ -55,12 +60,46 @@ if [ ! $# -eq 0 ]; then
        # and
        # /home/hudson/jobs/ptII/workspace/adm/dists/ptII10.0.devel/lib/jsoup-1.7.3.jar
        realPTII=`cd $PTII; pwd` 
-       jarfile=`echo $1 | sed "s@$PTII/@@"`; \
+       jarfile=`echo $1 | sed "s@$PTII/@@"`
+
+       # Windows cmd.exe has a limit of 8192 characters
+       # Another reason why Windows is a toy.
+
+       # The solution is to create a jar file that has a Class-Path:
+       # manifest if the classpath is more than 8192 character.
+       
+       # We will classPath if it is less than 8192 characters
        classPath="$classPath
-    <cp>$jarfile</cp>"
+       <cp>$jarfile</cp>"
+
+       # We will create a jar file if it is more than 8192 characters.
+       echo " $jarfile " >> ${base}_l4j.mf
        shift
+
    done
 fi
+
+classPathLength=`echo "$classPathPreamble $classPath" | awk '{cp=cp $0} END {print length(cp)}'`
+if [ "$classPathLength" -gt 8000 ]; then
+
+    # Will it never end?  Lines can't be more than 72 characters in the manifest.
+    # http://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html
+
+    # We could split the lines, but let's wait for this to fail first.
+    errorMessage=`awk 'length($0) > 72 { print "Jar manifests cannot be more than 72 characters. " $0 " is " length($0) " characters"}' ${base}_l4j.mf`
+    if [ -n "$errorMessage" ]; then
+	echo "$0: $errorMessage"
+	exit 3
+    fi
+
+    jar cfm ${base}_l4j.jar ${base}_l4j.mf
+
+    # Remove it so that it does not pollute directory
+    rm ${base}_l4j.mf
+
+    classPath="<cp>${base}_l4j.jar</cp>"
+fi
+
 cat <<EOF
 <launch4jConfig>
   <headerType>gui</headerType>
@@ -80,6 +119,7 @@ cat <<EOF
   </jre>
   <classPath>
     <mainClass>${mainClass}</mainClass>
+    $classPathPreamble
     $classPath
   </classPath>
   <versionInfo>
