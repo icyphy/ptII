@@ -1354,11 +1354,11 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	    }
 	}
 
-	// If importing for model exchange, we also provide input ports
-	// for the continuous states and output ports for their derivatives.
-	// The width of these ports is determined by the
-	// numberOfContinuousStates
-	// attribute in the model description.
+	// In FMI-1.0, the number of these ports is determined by the
+	// numberOfContinuousStates element in modelDescription.xml
+        // Note that numberOfContinuousStates has been removed between FMI-1.0 and 2.0.
+        // because the information can be deduced from the xml file in FMI 2.0
+        // by looking at the Derivatives element.
 	if (modelExchange) {
 	    fmiModelDescription.modelExchange = true;
 
@@ -1749,16 +1749,22 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	String mimeType = "application/x-fmu-sharedlibrary";
 	// Timeout in ms., 0 means wait forever.
 	double timeout = 1000;
-	// There is no simulator UI.
+	// There is no simulator UI. A byte in FMI1.0, an int in
+	// FMI-2.0, so we have two variables.
 	byte toBeVisible = 0;
+        // FMI-2.0
+	int toBeVisibleFMI2 = 0;
 	if (((BooleanToken) visible.getToken()).booleanValue()) {
 	    toBeVisible = 1;
+	    toBeVisibleFMI2 = 1;
 	}
 	// Run the simulator without user interaction.
 	byte interactive = 0;
 
 	// FIXME: We should send logging messages to the debug listener.
+        // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
 	byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
+ 	int loggingOnFMI2 = _debugging ? (byte) 1 : (byte) 0;
 
 	if (_fmiVersion < 1.5) {
 	    _callbacks = new FMICallbackFunctions.ByValue(
@@ -1856,7 +1862,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 			Pointer.class, new Object[] { getFullName(), fmiType,
 			    _fmiModelDescription.guid,
 			    _fmiModelDescription.fmuResourceLocation,
-			    _callbacks, toBeVisible, loggingOn });
+			    _callbacks, toBeVisibleFMI2, loggingOnFMI2 });
 	    }
 	}
 
