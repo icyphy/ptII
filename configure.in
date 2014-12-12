@@ -2988,6 +2988,10 @@ PTGDP_PACKAGES=
 # The location of the jna.jar file, typically $PTII/lib/jna.jar
 JNA_JAR=
 
+# The jar file to default to.  FIXME: the ./configure --help message may be wrong.
+JNA_DEFAULT_JAR=jna-4.1.0.jar
+#JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar 
+
 # We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
 JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
 if test ! -d "$JNA_USER_DIR"; then
@@ -2998,7 +3002,7 @@ else
     AC_ARG_WITH(jna-jar, [  --with-jna-jar=JARFILE       use JNA from JARFILE,
                           defaults to \$PTII/jna-4.0.0-variadic.jar],
 	JNA_JAR=$withval,
-	JNA_JAR=$PTII/lib/jna-4.0.0-variadic.jar)
+	JNA_JAR=$PTII/lib/$JNA_DEFAULT_JAR)
     if test -f "$JNA_JAR"; then
         PT_MSG_RESULT($JNA_JAR)
 	PTFMI_DIR=fmi
