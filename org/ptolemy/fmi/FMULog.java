@@ -118,7 +118,6 @@ public class FMULog {
                 boolean foundEscape = false;
                 boolean foundHash = false;
                 for (int i = 0; i < msg.length; i++) {
-                    System.out.print(msg[i]);
                     // Skipping all fmi-specific formatting options.
                     // In a fmt message, you can say "#r1365#" to mean print the
                     // name of the fmiReal variable with the fmiValueReference =
