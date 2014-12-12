@@ -2989,8 +2989,9 @@ PTGDP_PACKAGES=
 JNA_JAR=
 
 # The jar file to default to.  FIXME: the ./configure --help message may be wrong.
+#JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar 
 #JNA_DEFAULT_JAR=jna-4.1.0.jar
-JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar 
+JNA_DEFAULT_JAR=jna-4.1.0-variadic.jar 
 
 # We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
 JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
@@ -3000,7 +3001,7 @@ if test ! -d "$JNA_USER_DIR"; then
 else
     AC_MSG_CHECKING([for Java Native Access (JNA) jar])
     AC_ARG_WITH(jna-jar, [  --with-jna-jar=JARFILE       use JNA from JARFILE,
-                          defaults to \$PTII/jna-4.0.0-variadic.jar],
+                          defaults to \$PTII/jna-4.1.0-variadic.jar],
 	JNA_JAR=$withval,
 	JNA_JAR=$PTII/lib/$JNA_DEFAULT_JAR)
     if test -f "$JNA_JAR"; then
@@ -3016,7 +3017,7 @@ else
         fi
         updateClasspath "$JNA_JAR"
     else
-        AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
+        AC_MSG_WARN([Failed to find $PTII/lib/jna-4.1.0-variadic.jar,
     JNA is the Java Native Access interfaced, used by the 
     Functional Mock-up Inteface actors in
     ptolemy/actor/lib/fmi
