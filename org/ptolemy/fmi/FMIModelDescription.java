@@ -422,6 +422,11 @@ public class FMIModelDescription {
 	    // default. 
 	    // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#LinuxSymbolProblems
 	    // See https://github.com/twall/jna/issues/44
+            // One symptom of this failing is that if we run different values fmus,
+            // then "fmiSetString: Illegal call sequence." may appear.
+            // What's happening is that the values.c file has multiple definitions
+            // of setString() and if we load with RTLD_GLOBAL, then we might
+            // get the setString() from another FMU.
 	    Map options = new HashMap();
 	    options.put(Library.OPTION_OPEN_FLAGS, new Integer(1));
 

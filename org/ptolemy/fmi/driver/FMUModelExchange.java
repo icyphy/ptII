@@ -163,12 +163,7 @@ public class FMUModelExchange extends FMUDriver {
                 .parseFMUFile(fmuFileName);
 
         // Load the shared library.
-        String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
-        if (enableLogging) {
-            System.out.println("FMUModelExchange: about to load "
-                    + sharedLibrary);
-        }
-        _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+        _nativeLibrary = fmiModelDescription.getNativeLibrary();
 
         // The modelName may have spaces in it.
         _modelIdentifier = fmiModelDescription.modelIdentifier;
@@ -179,9 +174,13 @@ public class FMUModelExchange extends FMUDriver {
         int numberOfSteps = 0;
         int numberOfTimeEvents = 0;
 
+        // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
+ 	int loggingOnFMI2 = _enableLogging ? 1 : 0;
 
+        System.out.println("FMUModelExchange: Disabling Logging");
         loggingOn = (byte)0;
+        loggingOnFMI2 = 0;
 
         _fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
 
@@ -222,8 +221,12 @@ public class FMUModelExchange extends FMUDriver {
                     new FMULibrary.FMUStepFinished());
             Function fmiInstantiateFunction = fmiModelDescription
                     .getFmiFunction("fmiInstantiate");
+
             // There is no simulator UI.
+            // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
             byte toBeVisible = 0;
+            int toBeVisibleFMI2 = 0;
+
             // FIXME: Not sure about the fmiType enumeration, see
             // ptolemy/actor/lib/fmi/fmus/jmodelica/CoupledClutches/src/sources/fmiFunctionTypes.h,
             // which was copied from
@@ -238,7 +241,7 @@ public class FMUModelExchange extends FMUDriver {
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
                             fmiModelDescription.guid,
                             fmiModelDescription.fmuResourceLocation, callbacks,
-                            toBeVisible, loggingOn });
+                            toBeVisibleFMI2, loggingOnFMI2 });
 
         }
 
