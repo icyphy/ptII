@@ -69,8 +69,18 @@ public class FMULog {
      */
     public static void log(FMIModelDescription modelDescription,
 	    Pointer fmiComponent, String instanceName, int status,
-	    String category, String message,
-            Pointer /*...*/ parameters) {
+	    String category, String message
+            /*, Pointer*/ /*...*/ /*parameters*/ ) {
+
+
+        // // FIXME: Use the old logger now.
+        // FMULog._logOld(modelDescription,
+        //         fmiComponent, instanceName, status,
+        //         category, message);
+        // // Fake out the compiler so we don't have to uncomment the rest.
+        // if (1==1) {
+        //     return;
+        // }
 
         // First time through, try to find the JNA variadic extensions
         // methods. See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNAVarargs
@@ -87,7 +97,7 @@ public class FMULog {
             // We don't have the variadic extensions, so we fall back.
             FMULog._nonVariadicLog(modelDescription,
                     fmiComponent, instanceName, status,
-                    category, message, parameters);
+                    category, message, null /*parameters*/);
             return;
         }
 
@@ -279,7 +289,7 @@ public class FMULog {
         } catch (Throwable throwable) {
             FMULog._nonVariadicLog(modelDescription,
                     fmiComponent, instanceName, status,
-                    category, message, parameters);
+                    category, message, null /*parameters*/);
         }
     }
 
@@ -578,4 +588,4 @@ public class FMULog {
 
     /** True if we should use the variadic extensions. */
     private static boolean _useVariadicExtensions = true;
-}    
+}

@@ -89,11 +89,11 @@ public interface FMULibrary extends FMILibrary {
 	 */
 	@Override
 	public void apply(Pointer fmiComponent, String instanceName,
-	        int status, String category, String message,
-                Pointer /*...*/ parameters) {
+	        int status, String category, String message
+                /*, Pointer*/ /*...*/ /*parameters*/) {
 	    // We place this method in separate file for testing purposes.
 	    FMULog.log(_modelDescription, fmiComponent, instanceName, status,
-		    category, message, parameters);
+		    category, message/*, parameters*/);
 	}
 
 	/** The model description that contains the names of the

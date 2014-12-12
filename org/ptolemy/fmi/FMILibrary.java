@@ -129,8 +129,8 @@ public interface FMILibrary extends Library {
          *  @param parameters The printf style parameters.
 	 */
 	void apply(Pointer fmiComponent, String instanceName, int status,
-	        String category, String message,
-                Pointer /*...*/ parameters);
+	        String category, String message
+                /*, Pointer*/ /*...*/ /*parameters*/);
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.
