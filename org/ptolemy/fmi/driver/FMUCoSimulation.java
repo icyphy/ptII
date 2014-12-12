@@ -160,14 +160,8 @@ public class FMUCoSimulation extends FMUDriver {
         FMIModelDescription fmiModelDescription = FMUFile
                 .parseFMUFile(fmuFileName);
 
-        // Load the shared library.
-        String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
-
-        if (enableLogging) {
-            System.out.println("FMUCoSimulation: about to load "
-                    + sharedLibrary);
-        }
-        _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+        // Load the shared library.  
+        _nativeLibrary = fmiModelDescription.getNativeLibrary();
 
         // The modelName may have spaces in it.
         _modelIdentifier = fmiModelDescription.modelIdentifier;
@@ -189,6 +183,10 @@ public class FMUCoSimulation extends FMUDriver {
         // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
  	int loggingOnFMI2 = _enableLogging ? 1 : 0;
+
+        System.out.println("FMUCoSimulation: Disabling Logging");
+        loggingOn = (byte)0;
+        loggingOnFMI2 = 0;
 
         _fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
 
