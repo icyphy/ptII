@@ -184,10 +184,6 @@ public class FMUCoSimulation extends FMUDriver {
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
  	int loggingOnFMI2 = _enableLogging ? 1 : 0;
 
-        System.out.println("FMUCoSimulation: Disabling Logging");
-        loggingOn = (byte)0;
-        loggingOnFMI2 = 0;
-
         _fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
 
         Pointer fmiComponent = null;
