@@ -89,21 +89,17 @@ public class FMULog {
             try {
                 _initialize();
             } catch (Throwable throwable) {
-                System.out.println("FMULog: " + throwable);
                 _useVariadicExtensions = false;
             }
         }
 
 	if (! _useVariadicExtensions) {
             // We don't have the variadic extensions, so we fall back.
-            System.out.println("FMULog.log: falling back: " + message);
             FMULog._nonVariadicLog(modelDescription,
                     fmiComponent, instanceName, status,
                     category, message, null /*parameters*/);
             return;
         }
-
-        System.out.println("FMULog.log: about to get ffi_cif");
 
         try {
             // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
@@ -115,9 +111,19 @@ public class FMULog {
             // #<Type><valueReference#, where <Type> is one of
             // r, i, b or s. To print a #, use ##.
 
-            System.out.println("FMULog.log: ffi_cif: " + ffi_cif );
-
-            if (ffi_cif != 0) {
+            if (ffi_cif == 0) {
+                if (!_printedMessage) {
+                    _printedMessage = true;
+                    System.err.println("org/ptolemy/fmi/FMULog.java called Pointer.nativeCif(fmiCoomponent), "
+                            + "but received a value of 0?  This can happen if the the jna jar file has the "
+                            + "Java side of the variadic extensions, but the C side of the variadic extensions "
+                            + "have not been compiled for your platform.  To compile them, see "
+                            + "http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
+                    FMULog._nonVariadicLog(modelDescription,
+                            fmiComponent, instanceName, status,
+                            category, message, null /*parameters*/);
+                }
+            } else {
                 final char[] msg = message.toCharArray();
 
                 StringBuffer out = new StringBuffer();
@@ -302,6 +308,40 @@ public class FMULog {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static void _debugMessage(String message) {
+        if (_debug) {
+            System.out.println(message);
+        }
+    }
+
+    private static void _dump(Pointer pointer, int size, int offset) {
+        if (!_debug) {
+            return;
+        }
+        System.out.print("dump: " + pointer + "<" + size + "," + offset + "," + Pointer.nativeValue(pointer) + ">");
+        System.out.printf("<%x>", Pointer.nativeValue(pointer));
+        byte bytes[] = pointer.getByteArray(offset, size);
+        for (int i = 0; i < size; ++i) {
+            System.out.printf("%02x(%c)", bytes[i], bytes[i]);
+            if ((i % 16) == 15) {
+                // Use %n instead of \n and avoid FB.VA_FORMAT_STRING_USES_NEWLINE.  %n will produced
+                // the plaform dependent end of line character.
+                System.out.printf("%n");
+            } else {
+                System.out.printf(" ");
+            }
+        }
+        System.out.println();
+    }
+
+    /** Find the variadic extension methods in the JNA Native and
+     *  pointer classes.
+     *  We use reflect so that there is not a compile-time dependency
+     *  on the variadic extensions.
+     */
     private static void _initialize() throws ReflectiveOperationException {
         // Use reflection so that we can compile without
         // the JNA Varargs extensions and check for them at run time.
@@ -340,35 +380,6 @@ public class FMULog {
         // Pointer method.
         _nativeCif = _pointerClass.getMethod("nativeCif",
                 new Class[] { Pointer.class });
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private static void _debugMessage(String message) {
-        if (_debug) {
-            System.out.println(message);
-        }
-    }
-
-    private static void _dump(Pointer pointer, int size, int offset) {
-        if (!_debug) {
-            return;
-        }
-        System.out.print("dump: " + pointer + "<" + size + "," + offset + "," + Pointer.nativeValue(pointer) + ">");
-        System.out.printf("<%x>", Pointer.nativeValue(pointer));
-        byte bytes[] = pointer.getByteArray(offset, size);
-        for (int i = 0; i < size; ++i) {
-            System.out.printf("%02x(%c)", bytes[i], bytes[i]);
-            if ((i % 16) == 15) {
-                // Use %n instead of \n and avoid FB.VA_FORMAT_STRING_USES_NEWLINE.  %n will produced
-                // the plaform dependent end of line character.
-                System.out.printf("%n");
-            } else {
-                System.out.printf(" ");
-            }
-        }
-        System.out.println();
     }
 
     /** Log a message without using the JNA variadic extensions.
