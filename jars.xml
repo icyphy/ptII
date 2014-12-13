@@ -346,7 +346,6 @@
     <include name="ptolemy/data/type/demo/Router/Router.jar" />
     <include name="ptolemy/data/unit/demo/StaticUnits/StaticUnits.jar" />
     <include name="ptolemy/data/unit/demo/Units/Units.jar" />
-    <include name="ptolemy/demo/AirManagementSystem/AirManagementSystem.jar" />
     <include name="ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.jar" />
     <include name="ptolemy/demo/ExecDemos/ExecDemos.jar" />
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
@@ -6724,15 +6723,6 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/data/unit/demo/Units/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/demo/AirManagementSystem/AirManagementSystem.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/demo/AirManagementSystem/*.pdf"/>
-        <include name="ptolemy/demo/AirManagementSystem/*.xml"/>
        </fileset>
     </jar>
 
