@@ -47,10 +47,12 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	SSMTest.java
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS =
+JSIMPLE_TESTS = \
+	SSMTest.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
