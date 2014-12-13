@@ -72,6 +72,7 @@ public class FMULog {
 	    String category, String message
             /*, Pointer*/ /*...*/ /*parameters*/ ) {
 
+        System.out.println("FMULog.log: " + message);
 
         // // FIXME: Use the old logger now.
         // FMULog._logOld(modelDescription,
@@ -95,11 +96,14 @@ public class FMULog {
 
 	if (! _useVariadicExtensions) {
             // We don't have the variadic extensions, so we fall back.
+            System.out.println("FMULog.log: falling back: " + message);
             FMULog._nonVariadicLog(modelDescription,
                     fmiComponent, instanceName, status,
                     category, message, null /*parameters*/);
             return;
         }
+
+        System.out.println("FMULog.log: about to get ffi_cif");
 
         try {
             // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
@@ -111,12 +115,15 @@ public class FMULog {
             // #<Type><valueReference#, where <Type> is one of
             // r, i, b or s. To print a #, use ##.
 
+            System.out.println("FMULog.log: ffi_cif: " + ffi_cif );
+
             if (ffi_cif != 0) {
                 final char[] msg = message.toCharArray();
 
                 StringBuffer out = new StringBuffer();
                 boolean foundEscape = false;
                 boolean foundHash = false;
+
                 for (int i = 0; i < msg.length; i++) {
                     // Skipping all fmi-specific formatting options.
                     // In a fmt message, you can say "#r1365#" to mean print the
@@ -194,7 +201,10 @@ public class FMULog {
                             // Assuming 1 byte char
                             out.append(String.format("%" + flags.toString()
                                             + msg[i],
-                                            (char) _ffi_closure_va_uint8.invoke(null, new Object[] {ffi_cif})));
+                                            // Don't cast to (char)
+                                            // here, thus avoiding
+                                            // FB.BX_UNBOXING_IMMEDIATELY_REBOXED
+                                            _ffi_closure_va_uint8.invoke(null, new Object[] {ffi_cif})));
                             break;
 
                         case 's': // String
@@ -351,7 +361,9 @@ public class FMULog {
         for (int i = 0; i < size; ++i) {
             System.out.printf("%02x(%c)", bytes[i], bytes[i]);
             if ((i % 16) == 15) {
-                System.out.printf("\n");
+                // Use %n instead of \n and avoid FB.VA_FORMAT_STRING_USES_NEWLINE.  %n will produced
+                // the plaform dependent end of line character.
+                System.out.printf("%n");
             } else {
                 System.out.printf(" ");
             }
