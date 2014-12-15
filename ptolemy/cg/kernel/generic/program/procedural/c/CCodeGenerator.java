@@ -2977,6 +2977,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // directive for the Arduino, see
             // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
             _substituteMap.put("@ARDUINO_INCLUDES@", _arduinoIncludes());
+            _substituteMap.put("@AVR_BASE@", _avrBase());
         }
 
         // Adds the .c and .o needed files
@@ -3060,6 +3061,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + ". Try setting the " + environmentVariableName
                 + " environment variable and re-running Ptolemy.");
         return "-I/SetThe" + environmentVariableName + "EnvironmentVariable";
+    }
+
+    /** Return the directory that contains the AVR tools.
+     *  See $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
+     *  @return the directory that contains the AVR tools.
+     */
+    private String _avrBase() {
+        String osName = StringUtilities.getProperty("os.name");
+        if (osName.startsWith("Mac OS")) {
+            return "/Applications/Arduino.app/Contents/Resources/Java/hardware";
+        }
+        return "/usr/local/arduino";
     }
 
     /** Get the header files needed to compile with the jvm library.
