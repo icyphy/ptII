@@ -85,21 +85,28 @@ if [ "$classPathLength" -gt 8000 ]; then
     # Will it never end?  Lines can't be more than 72 characters in the manifest.
     # http://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html
 
-    # We could split the lines, but let's wait for this to fail first.
-    errorMessage=`awk 'length($0) > 72 { print "Jar manifests cannot be more than 72 characters. " $0 " is " length($0) " characters"}' ${base}_l4j.mf`
-    if [ -n "$errorMessage" ]; then
-	echo "$0: $errorMessage"
-	exit 3
-    fi
+    cat ${base}_l4j.mf | awk '{
+              lineLength=70
+              if (length($0) < lineLength) {
+                  print $0
+              } else {
+                  print substr($0, 1, lineLength)
+                  start = lineLength + 1
+                  while (start <= length($0)) {
+                     print " " substr($0, start, lineLength)
+                     start += lineLength
+                  }
+              }
+          }' > ${base}_tmp_l4j.mf
+
+    mv ${base}_tmp_l4j.mf ${base}_l4j.mf
 
     jar cfm ${base}_l4j.jar ${base}_l4j.mf
-
-    # Remove it so that it does not pollute directory
-    rm ${base}_l4j.mf
 
     classPath="<cp>${base}_l4j.jar</cp>"
 fi
 
+# Remove it so that it does not pollute directory.
 rm -f ${base}_l4j.mf
 
 cat <<EOF
