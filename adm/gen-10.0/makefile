@@ -1082,7 +1082,7 @@ update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		$(PTSETUP_MAC).jar $(PTSETUP_MAC).app.tar.gz \
+		$(PTSETUP_MAC).dmg \
 		moog:$(PTII_FTP)
 untar:
 	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
@@ -1103,10 +1103,6 @@ update_ftp_index:
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip moog:$(PTII_FTP)
-
-PTSETUP_MAC=ptII$(VERSION).setup.mac
-update_mac: $(PTSETUP_MAC).dmg
-	scp -p $(PTSETUP_MAC).dmg moog:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -2886,7 +2882,7 @@ jre64:
 		echo "64-bit JRE Directory" > jre64/README.txt; \
 	fi
 
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).app.tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg #$(PTSETUP_MAC).app.tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -2972,10 +2968,11 @@ full_jars:
 ########################################################################
 # Mac installer
 ptsetup_mac: $(PTSETUP_MAC).xml
+# jspawnhelper needs to be executable or else cg will fail to run make.  http://mail.openjdk.java.net/pipermail/macosx-port-dev/2014-July/006662.html
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"> </executable>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/PlugIns/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jspawnhelper"></executable>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"> </executable>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/PlugIns/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jspawnhelper"></executable>@' \@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3010,6 +3007,39 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	find $@ -type f -exec touch {} \; 
 	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
+PTSETUP_MAC=ptII$(VERSION).setup.mac
+
+# https://stackoverflow.com/questions/286419/how-to-build-a-dmg-mac-os-x-file-on-a-non-mac-platform 
+#"mkdir -p dmgdir/progname.app/Contents/{MacOS,Resources}"
+#...copy your PkgInfo, Info.plist to Contents...
+#...copy your .icns to Resources...
+#...copy your other things to where you expect them to go...
+# genisoimage -V progname -D -R -apple -no-pad -o progname.dmg dmgdir 
+
+# "If you want to be really fancy, you can steal the .DS_Store file
+# from a DMG made on a Mac with a volume name progna me and app bundle
+# called progname.app (i.e., matching what you want to create off the
+# Mac) where you've put a backgro und in .background/background.png and
+# a symbolic link to /Applications in the root dir, and put that in
+# dmgdir along with your own a symbolic link to /Applications."
+
+dmg:$(PTSETUP_MAC).dmg
+$(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
+	if [ -d dmg ]; then \
+	    echo "$0: dmg/ exists?  Error!"; \
+	    error; \
+	fi
+	mkdir dmg
+	mv $(PTSETUP_MAC).app dmg
+	genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg
+	mv dmg/$(PTSETUP_MAC).app .
+
+
+update_mac: $(PTSETUP_MAC).dmg
+	scp -p $(PTSETUP_MAC).dmg moog:$(PTII_FTP)
+
+
+# Use dmg above instead. 
 setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
 $(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
 	tar -zcf $@ $<
