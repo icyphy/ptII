@@ -798,7 +798,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         Expression measurementNoise = new Expression(this,
                 inputName + "_noise");
         measurementNoise.expression
-        .setExpression(getNoiseParameter(inputName).getExpression());
+        .setExpression(getNoiseParameter(inputName).getExpression()); 
         _noiseEquations.put(inputName, measurementNoise);
         _measurementTypes.put(inputName, measurementEquation.output.getType()); 
     } 
@@ -1056,13 +1056,14 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                             MatrixToken X = (DoubleMatrixToken) zt
                                     .subtract(e);
                             MatrixToken covariance = (DoubleMatrixToken) n;
+                            MatrixToken invCov = new DoubleMatrixToken(DoubleMatrixMath.inverse(covariance.doubleMatrix()));
                             MatrixToken Xt = new DoubleMatrixToken(
                                     DoubleMatrixMath.transpose(X.doubleMatrix()));
                             double multiplier = Math.pow(2 * Math.PI, -0.5 * k)
                                     * Math.pow(DoubleMatrixMath
                                             .determinant(covariance
                                                     .doubleMatrix()), -0.5);
-                            Token exponent = Xt.multiply(covariance);
+                            Token exponent = Xt.multiply(invCov);
                             exponent = exponent.multiply(X);
                             double value = ((DoubleMatrixToken) exponent)
                                     .getElementAt(0, 0);
