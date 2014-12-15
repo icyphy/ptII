@@ -100,6 +100,8 @@ if [ "$classPathLength" -gt 8000 ]; then
     classPath="<cp>${base}_l4j.jar</cp>"
 fi
 
+rm -f ${base}_l4j.mf
+
 cat <<EOF
 <launch4jConfig>
   <headerType>gui</headerType>
