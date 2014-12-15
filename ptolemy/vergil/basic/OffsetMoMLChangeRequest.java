@@ -225,7 +225,9 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
                     AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controllerFinal
                             .getGraphModel();
 
-                    if (graphModel != null) {
+                    // If we copy text from annotation and then paste
+                    // it in to the background we get a NPE here.
+                    if (graphModel != null && containerFinal != null) {
                         Iterator nodes = graphModel.nodes(containerFinal);
                         while (nodes.hasNext()) {
                             Locatable node = (Locatable) nodes.next();
