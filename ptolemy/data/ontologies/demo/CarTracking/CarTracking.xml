@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
@@ -144,6 +144,36 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates an ontology&#10;that distinguishes dimensions.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[12.5, 437.5]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To clear the concepts,&#10;right click on the blue&#10;solver and select&#10;Clear Concepts.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that if you apply &#10;the ontology and then &#10;close the model, you&#10;may be prompted to&#10;save the model.&#10;This is because the&#10;concept port annotations&#10;are stored in the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 410.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the ontology definition and the&#10;default actor contraints: right click on&#10;the blue solver and select Open Model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 385.0]">
         </property>
     </property>
     <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
@@ -361,7 +391,7 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 465.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -388,7 +418,7 @@
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 317.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 310.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -1953,7 +1983,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[302.5, 232.5]">
+        <vertex name="vertex1" value="[360.0, 255.0]">
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
