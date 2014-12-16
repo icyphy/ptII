@@ -33,11 +33,11 @@
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	10.0
-MINOR_VERSION =		beta
+MINOR_VERSION =		1
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	10_0_beta
+WINDOWS_VERSION =	10_0_1
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -75,13 +75,13 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.1 COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.1 PTIIADM=/tmp/cxh/ptII10.0.1/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -180,52 +180,52 @@ all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 ####
 release_ampere_all:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar clean all src.jar setup
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.1/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.1 COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar clean all src.jar setup
 
 
 release_ampere_foo:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar foo
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.1/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.1 COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar foo
 
 release_ampere_setup:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.beta/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.beta COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar setup
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII10.0.1/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII10.0.1 COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar setup
 
 release_joule_all:
-	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
+	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.1/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII10.0.1 COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
 
 release_joul_setup:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar setup
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.1 COMPRESS=gzip TAR=tar setup
 
 release_joule_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=/tmp/cxh/ptII10.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII10.0.1 COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=/tmp/cxh/ptII10.0.1/adm/gen-7.0/test/ptII$(VERSION)
 
 ####
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.1 PTIIADM=/home/cxh/src/ptII10.0.1/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc clean all src.jar setup
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.1 PTIIADM=/home/cxh/src/ptII10.0.1/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.1 PTIIADM=/home/cxh/src/ptII10.0.1/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc remote4_Test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.1 PTIIADM=/home/cxh/src/ptII10.0.1/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc update_ftp
 
 ####
 release_windows:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.1 COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
 ####
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII10.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII10.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac2_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII10.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII10.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
 ####
 release_nightly:
@@ -267,6 +267,7 @@ clean:	full_clean_setup
 	rm -rf $(PTZIPRELEASE)
 	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
 	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
+
 
 FINDCLEAN = $(GENDIR)/findclean
 
@@ -1077,6 +1078,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 
 ##########
 
+PTSETUP_MAC = ptII$(VERSION).setup.mac
 
 update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
@@ -2685,8 +2687,8 @@ IZPACK_TAR=IzPack.src.4.3.5.tar.gz
 # Stop.", then the problem is that $PTII has a semicolon in it and you
 # are sadly on a Windows box.  The workaround is 
 #   bash-4.1$ echo $PTII
-#   c:/Users/cxh.EECS/ptII10.0.beta
-#   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.beta foo
+#   c:/Users/cxh.EECS/ptII10.0.1
+#   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.1 foo
 # :-|
 make_izpack: $(IZPACK_COMPILE)
 $(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
@@ -2971,8 +2973,8 @@ ptsetup_mac: $(PTSETUP_MAC).xml
 # jspawnhelper needs to be executable or else cg will fail to run make.  http://mail.openjdk.java.net/pipermail/macosx-port-dev/2014-July/006662.html
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/PlugIns/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jspawnhelper"></executable>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"> </executable>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/PlugIns/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jspawnhelper"></executable>@' \@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.1/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaAppLauncher"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/PlugIns/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jspawnhelper"></executable>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.1/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"> </executable>	    <executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaAppLauncher"></executable><executable keep="true" stage="never" targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/PlugIns/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jspawnhelper"></executable>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3007,7 +3009,6 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	find $@ -type f -exec touch {} \; 
 	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
-PTSETUP_MAC=ptII$(VERSION).setup.mac
 
 # https://stackoverflow.com/questions/286419/how-to-build-a-dmg-mac-os-x-file-on-a-non-mac-platform 
 #"mkdir -p dmgdir/progname.app/Contents/{MacOS,Resources}"
@@ -3023,7 +3024,7 @@ PTSETUP_MAC=ptII$(VERSION).setup.mac
 # a symbolic link to /Applications in the root dir, and put that in
 # dmgdir along with your own a symbolic link to /Applications."
 
-dmg:$(PTSETUP_MAC).dmg
+dmg: $(PTSETUP_MAC).dmg
 $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	if [ -d dmg ]; then \
 	    echo "$0: dmg/ exists?  Error!"; \
@@ -3033,6 +3034,7 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	mv $(PTSETUP_MAC).app dmg
 	genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg
 	mv dmg/$(PTSETUP_MAC).app .
+	rm -rf dmg
 
 
 update_mac: $(PTSETUP_MAC).dmg
@@ -3102,7 +3104,7 @@ PTII_MAJOR_VERSION=$(MAJOR_VERSION)
 PTII_WINDOWS_VERSION=$(WINDOWS_VERSION)
 
 # The complete version number, used to name tar files
-PTII_VERSION=$(PTII_MAJOR_VERSION).beta
+PTII_VERSION=$(PTII_MAJOR_VERSION).1
 
 PTEXTERNAL_NIGHTLY=/home/www/cvswww/chess.eecs.berkeley.edu/ptexternal/nightly
 update_moog:

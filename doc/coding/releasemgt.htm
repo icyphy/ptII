@@ -336,10 +336,10 @@
 	Then check for files that don't have this year's copyright
 	<pre>
 	  cd $PTII/adm/dists
-	  diff -r ptII8.0.1 ptII10.0.devel > /tmp/pt.diffs
+	  diff -r ptII8.0.1 ptII10.0.1 > /tmp/pt.diffs
 	  cd $PTII
-	  grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
-	  grep .java | sed 's@ptII10.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
+	  grep Copyright `egrep "^Only in ptII10.0.1" /tmp/pt.diffs | \
+	  grep .java | sed 's@ptII10.0.1/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
 	</pre>
 	Look over the output for files that should have their copyright updated
 
@@ -465,13 +465,13 @@
 
 <li> Tag the tree as the release tree and create a branch
 
-  <p>To make a branch for 10.0.beta, use the following command:
+  <p>To make a branch for 10.0.1, use the following command:
     <pre>
-      svn copy https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta -m "Creating Ptolemy II 10.0.beta branch."
+      svn copy https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10.0.1 -m "Creating Ptolemy II 10.0.1 branch."
     </pre>
     Then check out the release branch  with
     <pre>
-      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta ptII10.0.beta
+      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10.0.1 ptII10.0.1
     </pre>
     <i>Note that you should avoid dots in the tag name</i>
     <li> Update the version numbers, see
@@ -479,7 +479,7 @@
 
     <li> Remove files that are not to be shipped from the release:
       <pre>
-	cd ptII10.0.beta
+	cd ptII10.0.1
 	export PTII `pwd`
 	./configure
 	make svn_delete_clean_shipping
@@ -492,8 +492,8 @@
     <li> We build a separate src.tar.gz file under Unix so that the line
       endings are correct. 
       <pre>
-        svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta ptII10.0.beta
-	cd ptII10.0.beta
+        svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10.0.1 ptII10.0.1
+	cd ptII10.0.1
 	export PTII=`pwd`
 	export JAVA_HOME=/usr/lib/jvm/java-1.6.0
 	export PATH=${JAVA_HOME}/bin:${PATH}
@@ -514,7 +514,7 @@
       <ol>
 	<li> On moog, fix the links to ptplot downloads:
 	  <pre>
-	    cd /home/www/ptweb/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/plot
+	    cd /home/www/ptweb/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/plot
 	    ln -s ../../../../../java/ptplot5.10/ptolemy/plot/ptplot5.7* .
 	    cd doc
 	    rm -rf download
@@ -529,9 +529,9 @@
 
     <li> We build the webstart jar files under Windows
       <pre>
-      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10-0-beta ptII10.0.beta
-	cd ptII10.0.beta
-	export PTII=c:/tmp/cxh/ptII10.0.beta
+      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/branches/rel-10.0.1 ptII10.0.1
+	cd ptII10.0.1
+	export PTII=c:/tmp/cxh/ptII10.0.1
       </pre>
 	<i>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</i>
 	<i>Use an older javac so that the .class files are compatible.  For example,  use java 1.6.x so that java 1.7.x and 1.8.x can use the .class files.</i> 
@@ -591,7 +591,7 @@
 	      <pre>
 		export JAVAFLAGS="-Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true"
 		(cd ptolemy/domains/continuous/demo/Lorenz; $PTII/bin/ptweb -run -openComposites -whiteBackground -force Lorenz.xml)
-		(cd ptolemy/domains/continuous/demo/Lorenz; tar -cf - *.jar *.jnlp *JNLP.htm Lorenz) | ssh moog "cd ~www/ptweb/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/Lorenz; tar -xpf -"
+		(cd ptolemy/domains/continuous/demo/Lorenz; tar -cf - *.jar *.jnlp *JNLP.htm Lorenz) | ssh moog "cd ~www/ptweb/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/domains/continuous/demo/Lorenz; tar -xpf -"
 
 	      </pre>
 	    <li> Export all the models listed in $PTII/ptolemy/configs/doc/models.txt:
@@ -681,7 +681,7 @@ $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -open
 	    </li>
 
 	    <li>Try the Web Start application and export:
-	      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code></a>
+	      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code></a>
 	    </li>
 
 	    <li>After the first Web Start application runs, generate jnlp files for all
@@ -721,11 +721,11 @@ $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -open
 	<li> Create the src.jar file: 
 	  <pre>
 	    cd $PTII/adm/gen-10.0
-	    make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+	    make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.1 COMPRESS=gzip TAR=tar clean all src.jar 
 	  </pre>
 	  Below is the command to compare the old tree and the new tree:
 	  <pre>
-	    diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ~/ptII ~/src/ptII10.0.beta >& /tmp/pt.diffs
+	    diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ~/ptII ~/src/ptII10.0.1 >& /tmp/pt.diffs
 	  </pre>
 	</li>
 

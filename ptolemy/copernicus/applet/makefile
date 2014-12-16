@@ -194,9 +194,10 @@ jnlpUpdateDemo:
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-run 		 "false" \
 		-targetPath	 "$(TARGETPATH)" \
-		-ptIILocalURL	 "file:///Users/cxh/ptII/" \
+		-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/" \
 		$(MODELPATH)
-	#-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/" \
+	#-ptIILocalURL	 "file:///Users/cxh/ptII/" \
+	#-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.beta/" \
 	#javaws -wait $(PTII)/$(TARGETPATH)/$(MODEL).jnlp
 	#$(ROOT)/bin/vergil $(PTII)/$(TARGETPATH)/$(MODEL).htm#in_browser
 

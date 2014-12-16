@@ -221,3 +221,4 @@ test release-4.1 {Check for makefiles in directories that have a test/ directory
 test release-5.1 {Check for models that have $PTII in them.  They should use $CLASSPATH so that they work with jar files.} {
     exec make --no-print-directory --silent dollarPTII
 } {}
+

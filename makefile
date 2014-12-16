@@ -61,7 +61,7 @@ PTPACKAGE = 	ptII
 #  cd $PTII/adm
 #  svn cp gen-N.M gen-N.O
 # and update the versions in gen-N.O/makefile and the .xml files
-PTVERSION =	10.0.devel
+PTVERSION =	10.0.1
 PTCLASSJAR =
 
 
