@@ -558,6 +558,32 @@
       <li><a href="#JavaScriptDemos">JavaScript demos</a></li>
     </ul>
 
+    <h3>JSON conversion and Backward Type Inference</h3>
+
+    <p>Wikipedia defines JSON as "JSON ... or JavaScript Object
+    Notation, is an open standard format that uses human-readable text
+    to transmit data objects consisting of attribute–value pairs. It
+    is used primarily to transmit data between a server and web
+    application, as an alternative to XML".</p>
+    
+    <p>The JSON conversion actors convert between JSON and Ptolemy
+      Tokens.  As the type of the JSON input is not always known in
+      advance, the notion of backward type conversion has been added
+      to Ptolemy II by Marten Lohstroh.</p>
+
+    <p>To enable backward type conversion in Vergil, right click on
+    the canvas, select Customize, then Configure, then check the
+    enableBackwardTypeInference box.</p>
+
+    <ul>
+      <li><a href="codeDoc/ptolemy/actor/lib/conversions/json/JSONToToken">JSONToToken</a></li>
+      <li><a href="codeDoc/ptolemy/actor/lib/conversions/json/TokenToJSON">TokenJSON</a></li>
+      <li>Marten Lohstroh, Edward A. Lee. "<a href="http://chess.eecs.berkeley.edu/pubs/1035.html#in_browser" target="_top">Backward Type Inference</a>".
+	Poster presented at the 10th Biennial Ptolemy Miniconference, November 7, 2013.</li>
+      <li>Edward A. Lee, Marten Lohstroh, and Yuhong Xiong, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/TheTypeSystem.pdf#in_browser" target="_top">The Type System</a>," a chapter from<br>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+    </ul>
+
     <h3>PDFAttribute</h3>
     <p>PDFAttribute to the Utilities-&gt;Decorative library in Vergil that allows you to include PDF in a Vergil diagram.</p>
     <p>PDFAttribute can be used to include Latex-formatted equations in Vergil diagrams, and get full print resolution when printing to PDF for use in papers, books, etc.</p>
