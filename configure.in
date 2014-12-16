@@ -1902,10 +1902,20 @@ changequote([, ])dnl
         if test -d "$ECLIPSE_DIR"; then
 	    PT_MSG_RESULT([$ECLIPSE_DIR])
 	    AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
+
+	    case "`uname -s`" in
+	    Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
+		;;
+	    Linux) ECLIPSE_SWT_JAR=eclipse.swt.gtk.linux
+		;;
+	    *) ECLIPSE_SWT_JAR=eclipse.swt.win32.win32.x86_
+		;; 
+	    esac
+
 	    # jars="jdt.core osgi resources runtime" 
 	    # jdt.core core.runtime_ are needed to build backtrack
 	    # osgi_ and resources_ are needed to run the tests in backtrack
-	    jars="eclipse.jdt.core_ eclipse.core.runtime_ eclipse.osgi_ eclipse.core.resources_ eclipse.equinox.common_ eclipse.core.jobs_ eclipse.core.contenttype_ eclipse.equinox.preferences_ eclipse.text_ eclipse.ui.workbench_ eclipse.jface_ eclipse.swt. eclipse.jdt.ui_ eclipse.jface.text_ eclipse.ui.workbench.texteditor_ eclipse.ui.editors_ eclipse.core.commands_ org.eclipse.equinox.registry_ eclipse.ui.console_ eclipse.ui.forms_ eclipse.ui.ide_"
+	    jars="eclipse.jdt.core_ eclipse.core.runtime_ eclipse.osgi_ eclipse.core.resources_ eclipse.equinox.common_ eclipse.core.jobs_ eclipse.core.contenttype_ eclipse.equinox.preferences_ eclipse.text_ eclipse.ui.workbench_ eclipse.jface_ $ECLIPSE_SWT_JAR eclipse.jdt.ui_ eclipse.jface.text_ eclipse.ui.workbench.texteditor_ eclipse.ui.editors_ eclipse.core.commands_ org.eclipse.equinox.registry_ eclipse.ui.console_ eclipse.ui.forms_ eclipse.ui.ide_"
 	    ANT_ECLIPSE_CLASSPATH=
 	    eclipsejarpath=
 	    for jar in $jars
