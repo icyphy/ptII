@@ -1905,7 +1905,7 @@ changequote([, ])dnl
 	    # jars="jdt.core osgi resources runtime" 
 	    # jdt.core core.runtime_ are needed to build backtrack
 	    # osgi_ and resources_ are needed to run the tests in backtrack
-	    jars="eclipse.jdt.core_ eclipse.core.runtime_ eclipse.osgi_ eclipse.core.resources_ eclipse.equinox.common eclipse.equinox.preferences eclipse.core.jobs eclipse.core.contenttype eclipse.equinox.common_ eclipse.core.jobs_ eclipse.core.contenttype_ eclipse.equinox.preferences_"
+	    jars="eclipse.jdt.core_ eclipse.core.runtime_ eclipse.osgi_ eclipse.core.resources_ eclipse.equinox.common_ eclipse.core.jobs_ eclipse.core.contenttype_ eclipse.equinox.preferences_ eclipse.text_ eclipse.ui.workbench_ eclipse.jface_ eclipse.swt. eclipse.jdt.ui_ eclipse.jface.text_ eclipse.ui.workbench.texteditor_ eclipse.ui.editors_ eclipse.core.commands_ org.eclipse.equinox.registry_ eclipse.ui.console_ eclipse.ui.forms_ eclipse.ui.ide_"
 	    ANT_ECLIPSE_CLASSPATH=
 	    eclipsejarpath=
 	    for jar in $jars
@@ -1916,7 +1916,7 @@ changequote([, ])dnl
                     $PT_ECHO $ECHO_N "$jar "
                 fi
 		# In more recent versions of eclipse, the jdt jars are in dropins/, the other jars are in plugins/
-	        jarpath=`$FIND "$ECLIPSE_DIR" -name "*${jar}*.jar" | head -1`
+	        jarpath=`$FIND "$ECLIPSE_DIR" -name "*${jar}*.jar" | grep -v source_ | head -1`
    	        if test -f "$jarpath"; then
                     # Keep track of the jars so we can use them while building
 		    # with make.
@@ -1926,7 +1926,7 @@ changequote([, ])dnl
 		    # NOTE: Eclipse 3.0 has problems if we include these
 		    # jars in the .classpath, instead, .classpath.in includes:
 		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-                    #updateClasspath "$jarpath"
+                    updateClasspath "$jarpath"
  	        else   
 		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
 	            eclipsejarpath=
