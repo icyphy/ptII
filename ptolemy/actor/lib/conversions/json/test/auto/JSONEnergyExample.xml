@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 30.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -82,7 +82,7 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test case illustrates how to set the type of the output of a JSON to token actor.&#10;&#10;The JSON data is a sample Berkeley sMAP energy data.&#10;It is a record containing the id of the energy feed, called &quot;uuid&quot;, &#10;and an array of [timestamp, reading] pairs called &quot;Readings&quot;.&#10;There are three [timestamp, reading] pairs.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test case illustrates how to set the type of the output of a JSON to token actor.&#10;&#10;The JSON data is a Berkeley sMAP energy feed sample.&#10;It is a record containing the id of the energy feed, called &quot;uuid&quot;, &#10;and an array of [timestamp, reading] pairs called &quot;Readings&quot;.&#10;There are three [timestamp, reading] pairs. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 60.0]">
         </property>
