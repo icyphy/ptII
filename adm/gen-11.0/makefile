@@ -459,7 +459,7 @@ $(PTIIDIST)/jar_dist:
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
 	    (cd $(PTIIDIST); PTII=`pwd` JAVADOC=$(JAVADOC) ./configure; PTII=`pwd`; ant; \
 		(cd $(PTIIDIST)/doc; PTII=`pwd` make JAVADOC=$(JAVADOC) all_packages); \
-		ant jars; PTII=`pwd` $(MAKE) -k jar_dist); \
+		ant jars; PTII=`pwd` $(MAKE) -k exes jar_dist); \
 	fi
 
 
