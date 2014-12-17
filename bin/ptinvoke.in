@@ -1623,7 +1623,7 @@ EOF6
 	   *) Darwin=no;    
            esac
 	   if [ "${Darwin}" = "yes" ]; then
-	       if [ -z "${JAVA_HOME}" -o ! -d ${JAVA_HOME} ]; then
+	       if [ -z "${JAVA_HOME}" -o ! -d "${JAVA_HOME}" ]; then
 		   echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
 		   echo "   not setting up the JVM for the app."
                else
