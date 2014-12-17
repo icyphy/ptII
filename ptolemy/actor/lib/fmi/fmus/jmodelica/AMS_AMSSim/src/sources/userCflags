@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "-I/usr/local/jmodelica/include/RuntimeLibrary -I/usr/local/jmodelica/include"
+echo "-I/usr/local/jmodelica/include/RuntimeLibrary -I/usr/local/jmodelica/include -DFMUME20"

@@ -1,0 +1,13 @@
+#!/bin/sh
+# $Id: AMSToFMU 69601 2014-07-30 13:51:01Z cxh $
+# Export the AMS.mo model as a fmu using jmodelica
+
+/usr/local/jmodelica/bin/jm_python.sh <<EoF
+from pymodelica import compile_fmu
+
+#className = 'Modelica.Mechanics.Rotational.Examples.CoupledClutches'
+#my_fmu = compile_fmu(className, target='me')
+
+# Add compiler_log_level='i' to the compile_fmu line to get the link command.
+my_fmu = compile_fmu('AMS.AMSSim', 'AMS_AMSSim.mo', target='me+cs', version='2.0')
+EoF
