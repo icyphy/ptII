@@ -3032,6 +3032,7 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	fi
 	mkdir dmg
 	mv $(PTSETUP_MAC).app dmg
+	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg
 	mv dmg/$(PTSETUP_MAC).app .
 	rm -rf dmg
