@@ -72,8 +72,6 @@ public class FMULog {
 	    String category, String message
             /*, Pointer*/ /*...*/ /*parameters*/ ) {
 
-        System.out.println("FMULog.log: " + message);
-
         // // FIXME: Use the old logger now.
         // FMULog._logOld(modelDescription,
         //         fmiComponent, instanceName, status,

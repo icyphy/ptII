@@ -2,14 +2,24 @@
 # $Id$
 # Update fmu files from fmusdk
 
-fmus=`find $PTII/org/ptolemy/fmi/fmu -name "*.fmu"`
-
+arch=win32
 arch=win64
+
+fmuSdkDirectory=$PTII/vendors/fmusdk
+
+# Should not need to edit below here.
+case $arch in
+    darwin*) extension=dylib;;
+    linux*) extension=so;;
+    win*) extension=dll;;
+esac    
+
 x64=
 if [ $arch = "win64" ]; then
     x64=/x64
 fi
-fmuSdkDirectory=$PTII/vendors/fmusdk/fmu
+
+fmus=`find $PTII/org/ptolemy/fmi/fmu -name "*.fmu"`
 
 for fmu in $fmus
 do
@@ -19,8 +29,12 @@ do
     csOrMe=`basename $directory`
 
     case $fmu in
-	*20.fmu) fmi10or20=20;;
-	*) fmi10or20=10;;
+	*20.fmu) fmi10or20=20
+		 sdkBase=`basename $fmu 20.fmu`
+		 ;;
+	*) fmi10or20=10
+	   sdkBase=$base
+	   ;;
     esac
     
     fmuDirectory=$directory/$base
@@ -28,14 +42,23 @@ do
     mkdir $fmuDirectory
 
     # The fmu file in the fmusdk.
-    fmuSdk=$fmuSdkDirectory/fmu${fmi10or20}/$csOrMe${x64}/$base.fmu
+    fmuSdk=$fmuSdkDirectory/fmu${fmi10or20}/fmu/$csOrMe${x64}/$sdkBase.fmu
 
-    echo "updating $fmu with $fmuSdk"
+    if [ ! -f $fmuSdk ]; then
+	echo "$0: $fmuSdk does not exist."
+    else
+	echo "updating $fmu with $fmuSdk"
     
-    (cd $fmuDirectory; unzip $fmuSdk)
+	(cd $fmuDirectory; unzip $fmuSdk)
     
-    # Update the architecture
-    (cd $fmuDirectory; zip $fmu binaries/$arch/*)
+	
+	if [ $fmi10or20 = "20" -a ! -f $fmuDirectory/binaries/$arch/$sdkBase20.$extension ]; then
+	    (cd $fmuDirectory; mv binaries/$arch/${sdkBase}.$extension binaries/$arch/${sdkBase}20.$extension)
+        fi	     
+
+	# Update the architecture
+	(cd $fmuDirectory; zip $fmu binaries/$arch/*)
+    fi
 
     rm -rf $fmuDirectory
 done
