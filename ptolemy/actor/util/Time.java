@@ -29,6 +29,8 @@ package ptolemy.actor.util;
 
 import java.math.BigInteger;
 
+import ptolemy.util.DoubleUtils;
+
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -419,7 +421,8 @@ public class Time implements Comparable {
             // NOTE: Using doubleValue() here hugely increases the
             // execution time... Could instead use longValue(), but the
             // result would not necessarily be accurate.
-            return _timeValue.doubleValue() * _timeResolution();
+            //return _timeValue.doubleValue() * _timeResolution();
+            return DoubleUtils.bigToDouble(_timeValue) * _timeResolution();
         }
     }
 
