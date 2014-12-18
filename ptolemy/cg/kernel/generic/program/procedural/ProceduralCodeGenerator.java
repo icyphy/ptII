@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
@@ -208,7 +209,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  Set is separated by a space.
      *  @param collection The Collection of Strings.
      *  @return A String that contains each element of the Set separated by
-     *  a space.
+     *  a space.  Backslashes are replaced with slashes.
      */
     protected String _concatenateElements(Collection<String> collection) {
         StringBuffer buffer = new StringBuffer();
@@ -217,7 +218,10 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
             if (buffer.length() > 0) {
                 buffer.append(" ");
             }
-            buffer.append(iterator.next());
+            // Replace backslashes with forward slashes
+            // so that under Windows, the -I directives are parseable
+            // in Cygwin.
+            buffer.append(iterator.next().replace("\\", "/"));
         }
         return buffer.toString();
     }
