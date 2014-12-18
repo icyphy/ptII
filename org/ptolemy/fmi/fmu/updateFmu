@@ -4,7 +4,11 @@
 
 fmus=`find $PTII/org/ptolemy/fmi/fmu -name "*.fmu"`
 
-arch=linux64
+arch=win64
+x64=
+if [ $arch = "win64" ]; then
+    x64=/x64
+fi
 fmuSdkDirectory=$PTII/vendors/fmusdk/fmu
 
 for fmu in $fmus
@@ -14,14 +18,24 @@ do
     directory=`dirname $fmu`
     csOrMe=`basename $directory`
 
+    case $fmu in
+	*20.fmu) fmi10or20=20;;
+	*) fmi10or20=10;;
+    esac
+    
     fmuDirectory=$directory/$base
     rm -rf $fmuDirectory
     mkdir $fmuDirectory
 
-    # The fmu file in fmusdk
-    fmuSdk=$fmuSdkDirectory/$csOrMe/$base.fmu
+    # The fmu file in the fmusdk.
+    fmuSdk=$fmuSdkDirectory/fmu${fmi10or20}/$csOrMe${x64}/$base.fmu
+
+    echo "updating $fmu with $fmuSdk"
+    
     (cd $fmuDirectory; unzip $fmuSdk)
     
     # Update the architecture
     (cd $fmuDirectory; zip $fmu binaries/$arch/*)
+
+    rm -rf $fmuDirectory
 done
