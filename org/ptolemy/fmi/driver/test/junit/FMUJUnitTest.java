@@ -70,11 +70,13 @@ public class FMUJUnitTest {
             String knownGoodFileName) throws Exception {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
                 .getCanonicalPath();
-        System.out.println("To update " + knownGoodFileName + ", run:\n"
-                + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
+        String updateString = "To update " + knownGoodFileName + ", run:\n"
+                + "java -classpath \"" + topDirectory + "/lib/jna.jar"
+	        + System.getProperty("path.separator")
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
                 + fmuFileName + " " + endTime + " " + stepSize + " false c "
-                + knownGoodFileName);
+  	        + knownGoodFileName;
+        System.out.println(updateString.replace("\\", "/"));
         new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
                 true /*logging*/, ',', resultsFileName);
 
@@ -129,6 +131,15 @@ public class FMUJUnitTest {
         cosimulate("dq", 1, 0.1);
     }
 
+    /** Run the dq co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateDq20() throws Exception {
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("dq20", 1, 0.1);
+    }
+
     /** Run the inc co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
@@ -160,6 +171,15 @@ public class FMUJUnitTest {
         cosimulate("values", 12, 0.3);
     }
 
+    /** Run the values co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateValues20() throws Exception {
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("values20", 12, 0.3);
+    }
+
     /** Run the vanDerPol co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
@@ -167,6 +187,15 @@ public class FMUJUnitTest {
     public void cosimulateVanDerPol() throws Exception {
         // The end time and step size come from run_all.bat in FMUSDK2.0.1.
         cosimulate("vanDerPol", 5, 0.1);
+    }
+
+    /** Run the vanDerPol co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateVanDerPol20() throws Exception {
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("vanDerPol20", 5, 0.1);
     }
 
     /** Parse a Functional Mock-up Unit .fmu file, run it using model exchange
@@ -184,10 +213,12 @@ public class FMUJUnitTest {
             throws Exception {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
                 .getCanonicalPath();
-        System.out.println("To update " + knownGoodFileName + ", run:\n"
-                + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
+        String updateString = "To update " + knownGoodFileName + ", run:\n"
+                + "java -classpath \"" + topDirectory + "/lib/jna.jar"
+	        + System.getProperty("path.separator")
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
-                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName);
+                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName;
+        System.out.println(updateString.replace("\\", "/"));
         new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1,
                 true /*logging*/, ',', resultsFileName);
 
@@ -222,6 +253,14 @@ public class FMUJUnitTest {
         modelExchange("bouncingBall");
     }
 
+    /** Run the bouncing ball model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void modelExchangeBouncingBall20() throws Exception {
+        modelExchange("bouncingBall20");
+    }
+
     /** Run the dq model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
@@ -230,12 +269,28 @@ public class FMUJUnitTest {
         modelExchange("dq");
     }
 
+        /** Run the dq model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void modelExchangeDq20() throws Exception {
+        modelExchange("dq20");
+    }
+
     /** Run the inc model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
     @org.junit.Test
     public void modelExchangeInc() throws Exception {
         modelExchange("inc");
+    }
+    
+    /** Run the inc model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void modelExchangeInc20() throws Exception {
+        modelExchange("inc20");
     }
 
     /** Run the values model exchange functional mock-up unit test.
@@ -246,12 +301,28 @@ public class FMUJUnitTest {
         modelExchange("values");
     }
 
+    /** Run the values model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void modelExchangeValues20() throws Exception {
+        modelExchange("values20");
+    }
+
     /** Run the vanDerPol model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
     @org.junit.Test
     public void modelExchangeVanDerPol() throws Exception {
         modelExchange("vanDerPol");
+    }
+
+    /** Run the vanDerPol model exchange functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void modelExchangeVanDerPol20() throws Exception {
+        modelExchange("vanDerPol20");
     }
 
     /** Run FMI model exchange tests.
