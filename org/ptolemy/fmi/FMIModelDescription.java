@@ -376,14 +376,32 @@ public class FMIModelDescription {
         }
         String sharedLibrary = getNativeLibraryPath();
         try {
-            // Call dlopen() with RTLD_LAZY and not with RTLD_GLOBAL, which is the
-            // default. 
-            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#LinuxSymbolProblems
-            // See https://github.com/twall/jna/issues/44
-            Map options = new HashMap();
-            options.put(Library.OPTION_OPEN_FLAGS, new Integer(1));
+            String osName = System.getProperty("os.name").toLowerCase(
+                    Locale.getDefault());
+            if (osName.startsWith("linux")) {
+                // Call dlopen() with RTLD_LAZY and not with RTLD_GLOBAL, which is the
+                // default. 
+                // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#LinuxSymbolProblems
+                // See https://github.com/twall/jna/issues/44
+                // One symptom of this failing is that if we run different values fmus,
+                // then "fmiSetString: Illegal call sequence." may appear.
+                // What's happening is that the values.c file has multiple definitions
+                // of setString() and if we load with RTLD_GLOBAL, then we might
+                // get the setString() from another FMU.
+                Map options = new HashMap();
 
-            _nativeLibrary = NativeLibrary.getInstance(sharedLibrary, options);
+                // We load with RTLD_LAZY here. RTLD_LOCAL is define
+                // in /usr/local/bits/dlfcn.h as 0 and gets or'd.
+                Integer RTLD_LAZY = new Integer(1);
+                options.put(Library.OPTION_OPEN_FLAGS, RTLD_LAZY);
+
+                _nativeLibrary = NativeLibrary.getInstance(sharedLibrary, options);
+            } else {
+                // Under other platforms, such as Windows,
+                // use the defaults.  The Dymola fmus require
+                // this or we get Invalid Memory Access.
+                _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
+            }
         } catch (Throwable throwable3) {
             // Java 1.5 does not support
             // IOException(String, Throwable).  We
