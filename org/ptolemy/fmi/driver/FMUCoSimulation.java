@@ -30,6 +30,7 @@ package org.ptolemy.fmi.driver;
 import java.io.File;
 import java.io.PrintStream;
 
+import org.ptolemy.fmi.FMI20CallbackFunctions;
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
@@ -196,23 +197,29 @@ public class FMUCoSimulation extends FMUDriver {
                     new FMULibrary.FMUStepFinished());
             Function instantiateSlave = fmiModelDescription
                     .getFmiFunction("fmiInstantiateSlave");
-            System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
             fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                     new Object[] { _modelIdentifier, fmiModelDescription.guid,
                             fmuLocation, mimeType, timeout, visible,
                             interactive, callbacks, loggingOn });
 
         } else {
-            // FMI 1.5 and greater
-            FMICallbackFunctions callbacks = new FMICallbackFunctions(
+            // FMI 1.5 and greater.
+	    // In FMI-1.5 and FMI-2.0, this is a pointer to the structure, which
+	    // is by
+	    // default how a subclass of Structure is handled, so there is no
+	    // need for the inner class ByValue, as above.
+            FMI20CallbackFunctions callbacks20 = new FMI20CallbackFunctions(
                     new FMULibrary.FMULogger(fmiModelDescription),
-                    new FMULibrary.FMUAllocateMemory(),
+                    fmiModelDescription.getFMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
-                    new FMULibrary.FMUStepFinished());
+                    new FMULibrary.FMUStepFinished(),
+		    // FIXME: It is not clear if we should pass
+		    // fmiComponent here.  Instead, we should
+		    // pass an environment?  See the spec
+		    fmiComponent  );
             Function fmiInstantiateFunction = fmiModelDescription
                     .getFmiFunction("fmiInstantiate");
-            // There is no simulator UI.
-            byte toBeVisible = 0;
+
             // FIXME: Not sure about the fmiType enumeration, see
             // ptolemy/actor/lib/fmi/fmus/jmodelica/CoupledClutches/src/sources/fmiFunctionTypes.h,
             // which was copied from
@@ -226,7 +233,7 @@ public class FMUCoSimulation extends FMUDriver {
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
                             fmiModelDescription.guid,
-                            fmiModelDescription.fmuResourceLocation, callbacks,
+                            fmiModelDescription.fmuResourceLocation, callbacks20,
                             toBeVisibleFMI2, loggingOnFMI2 });
         }
 

@@ -30,6 +30,7 @@ package org.ptolemy.fmi.driver;
 import java.io.File;
 import java.io.PrintStream;
 
+import org.ptolemy.fmi.FMI20CallbackFunctions;
 import org.ptolemy.fmi.FMI20EventInfo;
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
@@ -210,17 +211,21 @@ public class FMUModelExchange extends FMUDriver {
                             fmiModelDescription.guid, callbacks, loggingOn });
         } else {
             // FMI 1.5 and greater
-            FMICallbackFunctions callbacks = new FMICallbackFunctions(
+            FMI20CallbackFunctions callbacks20 = new FMI20CallbackFunctions(
                     new FMULibrary.FMULogger(fmiModelDescription),
-                    new FMULibrary.FMUAllocateMemory(),
+                    fmiModelDescription.getFMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
-                    new FMULibrary.FMUStepFinished());
+                    new FMULibrary.FMUStepFinished(),
+		    // FIXME: It is not clear if we should pass
+		    // fmiComponent here.  Instead, we should
+		    // pass an environment?  See the spec
+		    fmiComponent  );
+
             Function fmiInstantiateFunction = fmiModelDescription
                     .getFmiFunction("fmiInstantiate");
 
             // There is no simulator UI.
-            // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
-            byte toBeVisible = 0;
+            // An int in FMI-2.0
             int toBeVisibleFMI2 = 0;
 
             // FIXME: Not sure about the fmiType enumeration, see
@@ -236,9 +241,9 @@ public class FMUModelExchange extends FMUDriver {
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
                             fmiModelDescription.guid,
-                            fmiModelDescription.fmuResourceLocation, callbacks,
+                            fmiModelDescription.fmuResourceLocation,
+                            callbacks20,
                             toBeVisibleFMI2, loggingOnFMI2 });
-
         }
 
         if (fmiComponent.equals(Pointer.NULL)) {

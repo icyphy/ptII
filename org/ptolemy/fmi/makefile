@@ -59,6 +59,7 @@ PTCLASSALLJAR = 	fmi.jar
 JSRCS = \
 	FMI20ModelExchangeCapabilities.java \
 	FMI20ModelInstance.java \
+	FMI20CallbackFunctions.java \
 	FMI20CoSimulationCapabilities.java \
 	FMICallbackFunctions.java \
 	FMICapabilities.java \
