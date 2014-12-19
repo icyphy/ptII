@@ -66,7 +66,7 @@ import com.sun.jna.NativeLibrary;
  * http://www.modelisar.com/fmi.html</a>.
  * </p>
  *
- * @author Christopher Brooks
+ * @author Christopher Brooks, Thierry S. Nouidui
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
@@ -90,6 +90,13 @@ public class FMIModelDescription {
      * procedure fmiGetMaxStepSize().
      */
     public boolean canProvideMaxStepSize = false;
+
+    /**
+     * For FMI 2.0 and greater, the XML file may specify that the FMU supports
+     * providing directional derivatives state. This defaults to false if not
+     * present in the XML file.
+     */
+    public boolean providesDirectionalDerivative = false;
 
     /** The list of files that were extracted from the .fmu file. */
     public List<File> files;
@@ -145,12 +152,11 @@ public class FMIModelDescription {
     /** The list of continuous states. */
     public List<String> continuousStates = new LinkedList<String>();
 
-    /*
-     *//** The list of Derivatives elements. */
-    /*
-     * public List<FMIModelDerivative> modelDerivatives = new
-     * LinkedList<FMIModelDerivative>();
-     */
+    /** The list of state derivatives. */
+    public List<FMI20ContinuousStateDerivative> continousStateDerivatives = new LinkedList<FMI20ContinuousStateDerivative>();
+
+    /** The list of output variables. */
+    public List<FMI20Output> outputs = new LinkedList<FMI20Output>();
 
     /** Number of continuous states. */
     public int numberOfContinuousStates;
