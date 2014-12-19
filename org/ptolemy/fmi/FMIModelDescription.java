@@ -42,6 +42,9 @@ import org.ptolemy.fmi.type.FMIRealType;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.kernel.util.IllegalActionException;
+
 import com.sun.jna.Function;
 import com.sun.jna.Library;
 import com.sun.jna.NativeLibrary;
@@ -190,6 +193,8 @@ public class FMIModelDescription {
     /**
      * Create the state vector. This should only be called on fmis with a
      * fmiVersion greater than 1.5.
+     * 
+     * @throws IOException 
      */
     public void createStateVector() throws IOException {
         // Create the state vector.
@@ -609,9 +614,6 @@ public class FMIModelDescription {
     // /////////////////////////////////////////////////////////////////
     // // private fields ////
 
-    /** Record of continuous state variables. */
-    private HashMap<Integer, String> _continuousStates = new HashMap<Integer, String>();
-
     /**
      * A class that allocates memory, but retains a reference so that the memory
      * does not get gc'd.
@@ -623,4 +625,9 @@ public class FMIModelDescription {
      * in the .fmu file.
      */
     private NativeLibrary _nativeLibrary;
+
+
+    /** Record of continuous state variables. */
+    private static HashMap<Integer, ContinuousState> _continuousStates;
+
 }
