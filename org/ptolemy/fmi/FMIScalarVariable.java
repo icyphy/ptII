@@ -506,6 +506,9 @@ public class FMIScalarVariable {
 
     /** The value of the type xml attribute. */
     public FMIType type;
+    
+    /** The boolean attribute for state variable. */
+    public boolean isState = false;
 
     /** The value of the valueReference xml attribute.
      *  In FMI 1.0, a valueReference is typically 32-bits
