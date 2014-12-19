@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +64,7 @@ import org.w3c.dom.NodeList;
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
  * </p>
  *
- * @author Christopher Brooks
+ * @author Christopher Brooks, Thierry S. Nouidui
 @version $Id$
 @since Ptolemy II 10.0
  * @version $Id$
@@ -445,6 +446,23 @@ public class FMUFile {
 		    System.out
 			    .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
 		}
+        // Get the providesDirectionalDerivative attribute if present.
+        // FIXME: Dymola has a typo and is using providesDirectionalDerivatives
+        // rather than providesDirectionalDerivative.
+        if (modelExchange.hasAttribute("providesDirectionalDerivatives")) {
+            fmiModelDescription.providesDirectionalDerivative = Boolean
+                    .parseBoolean(modelExchange
+                            .getAttribute("providesDirectionalDerivatives"));
+        }
+        // FIXME: This should be removed once fix in tools like Dymola 2015.
+        // providesDirectionalDerivative is the name specified in the standard.
+        // Some tools such as Dymola 2015 have typos which is the reason why we search 
+        // for both providesDirectionalDerivatives and providesDirectionalDerivatives.
+        if (modelExchange.hasAttribute("providesDirectionalDerivative")) {
+            fmiModelDescription.providesDirectionalDerivative = Boolean
+                    .parseBoolean(modelExchange
+                            .getAttribute("providesDirectionalDerivative"));
+        }
 	    }
 	}
 
@@ -495,35 +513,48 @@ public class FMUFile {
 	    }
 	}
 
-	/*// This section might be used to retrieve the dependencies of the
-	// Derivatives element
-	// so we can build the incidence matrix for the QSS integrator.
-	// FIXME: Needs to add boolean which indicates that we are doing QSS
-	NodeList structure = document.getElementsByTagName("ModelStructure");
-	if (structure.getLength() == 1) {
-		NodeList listOffDerivatives = document
-				.getElementsByTagName("Derivatives");
-		Node current = null;
-		if (listOffDerivatives.getLength() == 1) {
-			NodeList unknowVariables = listOffDerivatives.item(0)
-					.getChildNodes();
-			for (int i = 0; i < unknowVariables.getLength(); i++) {
-				current = unknowVariables.item(i);
-				if (current.getNodeName().equalsIgnoreCase("Unknown")) {
-					fmiModelDescription.modelDerivatives
-							.add(new FMIModelDerivative(
-									fmiModelDescription, current));
-				}
-			}
-		} else {
-			System.out
-					.println("Warning: Derivatives element is missing in ModelStructure.");
-		}
-	} else {
-		System.out.println("Warning: ModelStructure element is missing.");
-	}*/
-
 	if (fmiVersion > 1.5) {
+        NodeList structure = document
+                    .getElementsByTagName("ModelStructure");
+            if (structure.getLength() == 1) {
+                // Build a list of output variables
+                NodeList listOffOutputs = document
+                        .getElementsByTagName("Outputs");
+                Node current = null;
+                if (listOffOutputs.getLength() == 1) {
+                    NodeList unknowVariables = listOffOutputs.item(0)
+                            .getChildNodes();
+                    for (int i = 0; i < unknowVariables.getLength(); i++) {
+                        current = unknowVariables.item(i);
+                        if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+                            fmiModelDescription.outputs
+                                    .add(new FMI20Output(
+                                            fmiModelDescription, current));
+                        }
+                    }
+                }                                   
+                // Build  a list of state derivatives
+                NodeList listOffDerivatives = document
+                        .getElementsByTagName("Derivatives");
+                current = null;
+                if (listOffDerivatives.getLength() == 1) {
+                    NodeList unknowVariables = listOffDerivatives.item(0)
+                            .getChildNodes();
+                    for (int i = 0; i < unknowVariables.getLength(); i++) {
+                        current = unknowVariables.item(i);
+                        if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+                            fmiModelDescription.continousStateDerivatives
+                                    .add(new FMI20ContinuousStateDerivative(
+                                            fmiModelDescription, current));
+                        }
+                    }
+                }
+                
+            } else {
+                new Exception("Warning: ModelStructure element is missing.")
+                        .printStackTrace();
+            }
+ 
 	    fmiModelDescription.createStateVector();
 	}
 
@@ -614,6 +645,13 @@ public class FMUFile {
 	return files;
     }
 
+    /** Return true if this is a 32bit JVM.
+     *  @return true if this is a 32bit JVM.
+     */
+    public static boolean getIs32Bit(){
+    	return _is32Bit();
+    }
+    
     /** Return true if this is a 32bit JVM.
      *  @return true if this is a 32bit JVM.
      */
