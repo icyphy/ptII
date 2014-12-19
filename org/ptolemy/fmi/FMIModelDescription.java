@@ -191,24 +191,50 @@ public class FMIModelDescription {
      * Create the state vector. This should only be called on fmis with a
      * fmiVersion greater than 1.5.
      */
-    public void createStateVector() {
-	// Create the state vector.
-	int count = 0;
-	for (int i = 0; i < modelVariables.size(); i++) {
-	    FMIScalarVariable scalar = modelVariables.get(i);
-	    if (scalar.type instanceof FMIRealType
-		    && ((FMIRealType) scalar.type).indexState > 0) {
-		_continuousStates.put(count, modelVariables
-		        .get(((FMIRealType) scalar.type).indexState - 1).name);
-		count++;
-	    }
-	}
-	// Store the state vector in a list.
-	Iterator valueIterator = _continuousStates.values().iterator();
-	while (valueIterator.hasNext()) {
-	    continuousStates.add((String) valueIterator.next());
-	}
-	numberOfContinuousStates = continuousStates.size();
+    public void createStateVector() throws IOException {
+        // Create the state vector.
+        int count = 0;
+        _continuousStates = new HashMap<Integer, ContinuousState>();
+
+        for (int i = 0; i < continousStateDerivatives.size(); i++) {
+            ContinuousState state = new ContinuousState();
+            int index = continousStateDerivatives.get(i).index;
+            // Substract the index by 1 since the numbering of scalar variables
+            // starts with 1 in the FMU model description file whereas the get()
+            // starts by 0.
+            FMIScalarVariable scalar = modelVariables.get(index - 1);
+
+            if (scalar.type instanceof FMIRealType
+                    && ((FMIRealType) scalar.type).indexState > 0) {
+                // Mark this variable as a state.
+                modelVariables.get(((FMIRealType) scalar.type).indexState - 1).isState = true;
+                state.name = modelVariables
+                        .get(((FMIRealType) scalar.type).indexState - 1).name;
+                state.start = ((FMIRealType) modelVariables
+                        .get(((FMIRealType) scalar.type).indexState - 1).type).start;
+                state.nominal = ((FMIRealType) modelVariables
+                        .get(((FMIRealType) scalar.type).indexState - 1).type).nominal;
+                state.dependentScalarVariables = continousStateDerivatives
+                        .get(i).dependentScalarVariables;
+                state.scalarVariable = modelVariables
+                        .get(((FMIRealType) scalar.type).indexState - 1);
+                _continuousStates.put(i, state);
+                count++;
+            }
+        }
+        if (continousStateDerivatives.size() != count) {
+            throw new IOException("Number of state derivatives "
+                    + continousStateDerivatives.size()
+                    + " does not match the number of continuous states "
+                    + count);
+        }
+        // Store the state vector in a list.
+        Iterator<ContinuousState> valueIterator = _continuousStates.values()
+                .iterator();
+        while (valueIterator.hasNext()) {
+            continuousStates.add((ContinuousState) valueIterator.next());
+        }
+        numberOfContinuousStates = continuousStates.size();
     }
 
     /**
