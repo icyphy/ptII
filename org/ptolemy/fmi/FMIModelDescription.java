@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.type.FMIRealType;
