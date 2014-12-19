@@ -1287,8 +1287,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 		    // The default is to hide local scalars
 		    hideLocal = true;
 		    if (fmiModelDescription.modelExchange) {
-			if (fmiModelDescription.continuousStates
-				.contains(scalar.name)) {
+			if (scalar.isState) {
 			    System.out.println("FMUImport: scalar.causality: "
 				    + scalar.causality + " contains "
 				    + scalar.name);
@@ -3171,12 +3170,188 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      *                If there is a problem getting the currentStepSize.
      */
     protected boolean _skipIfKnown() throws IllegalActionException {
-	Director director = getDirector();
-	if (director instanceof FixedPointDirector) {
-	    return true;
-	} else {
-	    return false;
-	}
+    Director director = getDirector();
+    if (director instanceof FixedPointDirector) {
+        return true;
+    } else {
+        return false;
+    }
+    }
+
+    /**
+     * Update the parameters listed in the modelDescription.xml file contained
+     * in the zipped file named by the <i>fmuFile</i> parameter
+     *
+     * @exception IllegalActionException
+     *                If the file named by the <i>fmuFile<i> parameter cannot be
+     *                unzipped or if there is a problem deleting any
+     *                pre=existing parameters or creating new parameters.
+     * @exception NameDuplicationException
+     *                If a parameter to be created has the same name as a
+     *                pre-existing parameter.
+     */
+    protected void _updateParameters() throws IllegalActionException,
+    NameDuplicationException {
+
+    if (_debugging) {
+        _debugToStdOut("FMUImport.updateParameters() START");
+    }
+    // Unzip the fmuFile. We probably need to do this
+    // because we will need to load the shared library later.
+    String fmuFileName = null;
+    try {
+        // FIXME: Use URLs, not files so that we can work from JarZip files.
+
+        // Only read the file if the name has changed from the last time we
+        // read the file or if the modification time has changed.
+        fmuFileName = fmuFile.asFile().getCanonicalPath();
+        if (fmuFileName.equals(_fmuFileName)) {
+        return;
+        }
+        _fmuFileName = fmuFileName;
+        long modificationTime = new File(fmuFileName).lastModified();
+        if (_fmuFileModificationTime == modificationTime) {
+        return;
+        }
+        _fmuFileModificationTime = modificationTime;
+
+        // Calling parseFMUFile does not load the shared library.
+        // Those are loaded upon the first attempt to use them.
+        // This is important because we want to be able to view
+        // a model that references an FMU even if the FMU does not
+        // support the current platform.
+        try {
+        _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+        } catch (IOException ex) {
+        File fmu = fmuFile.asFile();
+
+        if (fmu.getPath().contains("jar!/")) {
+            URL fmuURL = ClassUtilities.jarURLEntryResource(fmu
+                .getPath());
+            fmu = File.createTempFile("FMUImportTemp", ".fmu");
+            // fmuFile.deleteOnExit();
+            FileUtilities.binaryCopyURLToFile(fmuURL, fmu);
+        }
+
+        fmuFileName = fmu.getCanonicalPath();
+        _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+        }
+
+        // Specify whether the FMU is for model exchange or co-simulation.
+        // This gets determined when the FMU is initially imported.
+        _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
+            .getToken()).booleanValue();
+
+        if (_fmiModelDescription.fmiVersion != null) {
+        fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
+        // Mysteriously, nondeterministically, the above doesn't always
+        // result in attributeChanged() being called after this
+        // setExprssion
+        // occurs. Sometimes it gets called before, weirdly. Why?
+        // Anyway, force it here, because if we have the wrong version,
+        // we will get seg faults.
+        attributeChanged(fmiVersion);
+        }
+    } catch (IOException ex) {
+        throw new IllegalActionException(this, ex,
+            "Failed to unzip, read in or process \"" + fmuFileName
+            + "\".");
+    }
+    if (_debugging) {
+        _debugToStdOut("FMUImport.updateParameters() END");
+    }
+    }
+
+    /**
+     * Return true if the modelExchangeCapabilities has a
+     * completedIntegratorStepNotNeeded flag that is set to true.
+     *
+     * @return The value of the completedIntegratorStepNotNeeded field. If the
+     *         modelDescription.xml file does not contain a ModelExchange
+     *         attribute, then false is returned.
+     * @exception IllegalActionException
+     *                If the modelExchangeCapabilities does not have a
+     *                completedIntegratorStepNotNeeded field.
+     */
+    protected boolean _completedIntegratorStepNotNeeded()
+        throws IllegalActionException {
+    if (_fmiModelDescription.modelExchangeCapabilities == null) {
+        return false;
+    }
+    return _fmiModelDescription.modelExchangeCapabilities
+        .getBoolean("completedIntegratorStepNotNeeded");
+    }
+
+    /**
+     * If _fmiModelDescription is null or does not have a non-null
+     * modelIdentifier, then thrown an exception with an informative message.
+     *
+     * @exception IllegalActionException
+     *                If critical information is missing.
+     */
+    protected void _checkFmiCommon() throws IllegalActionException {
+    if (_fmiModelDescription == null) {
+        throw new IllegalActionException(this,
+            "Could not get the FMU model description? " + "Perhaps \""
+                + fmuFile.asFile()
+                + "\" does not exist or is not readable?");
+    }
+    if (_fmiModelDescription.modelIdentifier == null) {
+        throw new IllegalActionException(this,
+            "Could not get the modelIdentifier, perhaps the .fmu file \""
+                + fmuFile.asFile()
+                + "\" did not contain a modelDescription.xml file?");
+    }
+    }
+
+    /**
+     * Get the port by display name or, if the display name is not set, then by
+     * name. This is used to handle variable names that have periods (".") in
+     * them.
+     *
+     * @param portName
+     *            The name of the port to find. The name might have a period in
+     *            it, for example "foo.bar".
+     * @return The port or null;
+     */
+    protected Port _getPortByNameOrDisplayName(String portName) {
+    // RecordAssembler and RecordDisassembler use a similar design.
+    Port returnValue = null;
+    Iterator ports = portList().iterator();
+    while (ports.hasNext()) {
+        Port port = (Port) ports.next();
+        if (port.getDisplayName().equals(portName)
+            || port.getName().equals(portName)) {
+        return port;
+        }
+    }
+    return returnValue;
+    }
+    
+    /**
+     * Given a FMIType object, return a string suitable for setting the
+     * TypeAttribute.
+     *
+     * @param type
+     *            The FMIType object.
+     * @return a string suitable for ptolemy.actor.TypeAttribute.
+     * @exception IllegalActionException
+     *                If the type is not supported.
+     */
+    protected static String _fmiType2PtolemyType(FMIType type)
+        throws IllegalActionException {
+    if (type instanceof FMIBooleanType) {
+        return "boolean";
+    } else if (type instanceof FMIIntegerType) {
+        // FIXME: handle Enumerations?
+        return "int";
+    } else if (type instanceof FMIRealType) {
+        return "double";
+    } else if (type instanceof FMIStringType) {
+        return "string";
+    } else {
+        throw new IllegalActionException("Type " + type + " not supported.");
+    }
     }
 
     // /////////////////////////////////////////////////////////////////
@@ -3203,31 +3378,41 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
     /** For model exchange, the FMU state variables. */
     protected DoubleBuffer _states;
 
+    /** The _fmi2NewDiscreteStates function, present only in FMI-2.0 */
+    protected Function _fmiNewDiscreteStatesFunction;
+
+    /** The fmiEnterContinousTimeMode Function, present only in FMI-2.0. */
+    protected Function _fmiEnterContinuousTimeModeFunction;
+
+    /** The fmiCompletedIntegratorStep() function. */
+    protected Function _fmiCompletedIntegratorStepFunction;
+
+    /** Function to set the time of the FMU for model exchange. */
+    protected Function _fmiSetTimeFunction;
+
+    /** Function to get the derivatives of a model-exchange FMU. */
+    protected Function _fmiGetDerivativesFunction;
+
+    /** Function to get the continuous states of the FMU for model exchange. */
+    protected Function _fmiGetContinuousStatesFunction;
+
+    /** Function to get the directional derivatives of a model-exchange FMU. */
+    protected Function _fmiGetDirectionalDerivativeFunction;
+    
+    /**
+     * Callback functions provided to the C code as a struct. This reference is
+     * non-null between creation of the struct in preinitialize() and invocation
+     * of wrapup() so that the callback structure does not get garbage
+     * collected. JNA documentation is silent about whether there is any
+     * assurance a C pointer to this struct is valid until garbage collection,
+     * but we assume it is.
+     */
+    protected FMICallbackFunctions _callbacks;
+
+
     // /////////////////////////////////////////////////////////////////
     // // private methods ////
-
-    /**
-     * If _fmiModelDescription is null or does not have a non-null
-     * modelIdentifier, then thrown an exception with an informative message.
-     *
-     * @exception IllegalActionException
-     *                If critical information is missing.
-     */
-    private void _checkFmiCommon() throws IllegalActionException {
-	if (_fmiModelDescription == null) {
-	    throw new IllegalActionException(this,
-		    "Could not get the FMU model description? " + "Perhaps \""
-			    + fmuFile.asFile()
-			    + "\" does not exist or is not readable?");
-	}
-	if (_fmiModelDescription.modelIdentifier == null) {
-	    throw new IllegalActionException(this,
-		    "Could not get the modelIdentifier, perhaps the .fmu file \""
-			    + fmuFile.asFile()
-			    + "\" did not contain a modelDescription.xml file?");
-	}
-    }
-
+    
     /**
      * If functions needed for co-simulation are absent, then thrown an
      * exception with an informative message. The .fmu file may not have a
@@ -3424,52 +3609,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 			    + sharedLibrary
 			    + "  The .fmu file contained the following files with 'binaries'"
 			    + " in the path:\n" + binariesFiles);
-	}
-    }
-
-    /**
-     * Return true if the modelExchangeCapabilities has a
-     * completedIntegratorStepNotNeeded flag that is set to true.
-     *
-     * @return The value of the completedIntegratorStepNotNeeded field. If the
-     *         modelDescription.xml file does not contain a ModelExchange
-     *         attribute, then false is returned.
-     * @exception IllegalActionException
-     *                If the modelExchangeCapabilities does not have a
-     *                completedIntegratorStepNotNeeded field.
-     */
-    private boolean _completedIntegratorStepNotNeeded()
-	    throws IllegalActionException {
-	if (_fmiModelDescription.modelExchangeCapabilities == null) {
-	    return false;
-	}
-	return _fmiModelDescription.modelExchangeCapabilities
-		.getBoolean("completedIntegratorStepNotNeeded");
-    }
-
-    /**
-     * Given a FMIType object, return a string suitable for setting the
-     * TypeAttribute.
-     *
-     * @param type
-     *            The FMIType object.
-     * @return a string suitable for ptolemy.actor.TypeAttribute.
-     * @exception IllegalActionException
-     *                If the type is not supported.
-     */
-    private static String _fmiType2PtolemyType(FMIType type)
-	    throws IllegalActionException {
-	if (type instanceof FMIBooleanType) {
-	    return "boolean";
-	} else if (type instanceof FMIIntegerType) {
-	    // FIXME: handle Enumerations?
-	    return "int";
-	} else if (type instanceof FMIRealType) {
-	    return "double";
-	} else if (type instanceof FMIStringType) {
-	    return "string";
-	} else {
-	    throw new IllegalActionException("Type " + type + " not supported.");
 	}
     }
 
@@ -3698,130 +3837,11 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	return _outputs;
     }
 
-    /**
-     * Get the port by display name or, if the display name is not set, then by
-     * name. This is used to handle variable names that have periods (".") in
-     * them.
-     *
-     * @param portName
-     *            The name of the port to find. The name might have a period in
-     *            it, for example "foo.bar".
-     * @return The port or null;
-     */
-    private Port _getPortByNameOrDisplayName(String portName) {
-	// RecordAssembler and RecordDisassembler use a similar design.
-	Port returnValue = null;
-	Iterator ports = portList().iterator();
-	while (ports.hasNext()) {
-	    Port port = (Port) ports.next();
-	    if (port.getDisplayName().equals(portName)
-		    || port.getName().equals(portName)) {
-		return port;
-	    }
-	}
-	return returnValue;
-    }
-
-    /**
-     * Update the parameters listed in the modelDescription.xml file contained
-     * in the zipped file named by the <i>fmuFile</i> parameter
-     *
-     * @exception IllegalActionException
-     *                If the file named by the <i>fmuFile<i> parameter cannot be
-     *                unzipped or if there is a problem deleting any
-     *                pre=existing parameters or creating new parameters.
-     * @exception NameDuplicationException
-     *                If a parameter to be created has the same name as a
-     *                pre-existing parameter.
-     */
-    private void _updateParameters() throws IllegalActionException,
-    NameDuplicationException {
-
-	if (_debugging) {
-	    _debugToStdOut("FMUImport.updateParameters() START");
-	}
-	// Unzip the fmuFile. We probably need to do this
-	// because we will need to load the shared library later.
-	String fmuFileName = null;
-	try {
-	    // FIXME: Use URLs, not files so that we can work from JarZip files.
-
-	    // Only read the file if the name has changed from the last time we
-	    // read the file or if the modification time has changed.
-	    fmuFileName = fmuFile.asFile().getCanonicalPath();
-	    if (fmuFileName.equals(_fmuFileName)) {
-		return;
-	    }
-	    _fmuFileName = fmuFileName;
-	    long modificationTime = new File(fmuFileName).lastModified();
-	    if (_fmuFileModificationTime == modificationTime) {
-		return;
-	    }
-	    _fmuFileModificationTime = modificationTime;
-
-	    // Calling parseFMUFile does not load the shared library.
-	    // Those are loaded upon the first attempt to use them.
-	    // This is important because we want to be able to view
-	    // a model that references an FMU even if the FMU does not
-	    // support the current platform.
-	    try {
-		_fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
-	    } catch (IOException ex) {
-		File fmu = fmuFile.asFile();
-
-		if (fmu.getPath().contains("jar!/")) {
-		    URL fmuURL = ClassUtilities.jarURLEntryResource(fmu
-			    .getPath());
-		    fmu = File.createTempFile("FMUImportTemp", ".fmu");
-		    // fmuFile.deleteOnExit();
-		    FileUtilities.binaryCopyURLToFile(fmuURL, fmu);
-		}
-
-		fmuFileName = fmu.getCanonicalPath();
-		_fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
-	    }
-
-	    // Specify whether the FMU is for model exchange or co-simulation.
-	    // This gets determined when the FMU is initially imported.
-	    _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
-		    .getToken()).booleanValue();
-
-	    if (_fmiModelDescription.fmiVersion != null) {
-		fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
-		// Mysteriously, nondeterministically, the above doesn't always
-		// result in attributeChanged() being called after this
-		// setExprssion
-		// occurs. Sometimes it gets called before, weirdly. Why?
-		// Anyway, force it here, because if we have the wrong version,
-		// we will get seg faults.
-		attributeChanged(fmiVersion);
-	    }
-	} catch (IOException ex) {
-	    throw new IllegalActionException(this, ex,
-		    "Failed to unzip, read in or process \"" + fmuFileName
-		    + "\".");
-	}
-	if (_debugging) {
-	    _debugToStdOut("FMUImport.updateParameters() END");
-	}
-    }
-
     // /////////////////////////////////////////////////////////////////
     // // private fields ////
 
-    /**
-     * Callback functions provided to the C code as a struct. This reference is
-     * non-null between creation of the struct in preinitialize() and invocation
-     * of wrapup() so that the callback structure does not get garbage
-     * collected. JNA documentation is silent about whether there is any
-     * assurance a C pointer to this struct is valid until garbage collection,
-     * but we assume it is.
-     */
-    private FMICallbackFunctions _callbacks;
-
     /** Buffer for the derivatives returned by the FMU. */
     private double[] _derivatives;
-
     /** Buffer for event indicators. */
     private double[] _eventIndicators;
 
@@ -3839,14 +3859,8 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      */
     private boolean _firstFireInIteration;
 
-    /** The fmiCompletedIntegratorStep() function. */
-    private Function _fmiCompletedIntegratorStepFunction;
-
     /** The fmiDoStep() function. */
     private Function _fmiDoStepFunction;
-
-    /** The fmiEnterContinousTimeMode Function, present only in FMI-2.0. */
-    private Function _fmiEnterContinuousTimeModeFunction;
 
     /** The fmiEnterEventModeFunction, present only in FMI-2.0. */
     private Function _fmiEnterEventModeFunction;
@@ -3856,9 +3870,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** The fmiExitInitializationModeFunction, present only in FMI-2.0. */
     private Function _fmiExitInitializationModeFunction;
-
-    /** The _fmi2NewDiscreteStates function, present only in FMI-2.0 */
-    private Function _fmiNewDiscreteStatesFunction;
 
     /** The _fmiFreeInstance function, present only in FMI-2.0 */
     private Function _fmiFreeInstanceFunction;
@@ -3871,12 +3882,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** Function to free memory allocated to store the state of the FMU. */
     private Function _fmiFreeFMUstateFunction;
-
-    /** Function to get the continuous states of the FMU for model exchange. */
-    private Function _fmiGetContinuousStatesFunction;
-
-    /** Function to get the derivatives of a model-exchange FMU. */
-    private Function _fmiGetDerivativesFunction;
 
     /** Function to get the event indicators of the FMU for model exchange. */
     private Function _fmiGetEventIndicatorsFunction;
@@ -3913,9 +3918,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      * retrieved version.
      */
     private Function _fmiSetFMUstate;
-
-    /** Function to set the time of the FMU for model exchange. */
-    private Function _fmiSetTimeFunction;
 
     /** The _fmiTerminateFunction function. */
     private Function _fmiTerminateFunction;
