@@ -328,6 +328,69 @@ public class Time implements Comparable {
         return new Time(_director, _timeValue.add(time._timeValue));
     }
 
+    /** Add the specified double to this time without checking whether the
+     *  specified double is too large to ensure the time resolution of the
+     *  director.
+     *  <p>
+     *  That is, two calls to this method could yield the same result even if
+     *  the two arguments differ by more than the time resolution.
+     *  The {@link #add(double)} method, in contrast, will throw an exception
+     *  if two such calls could yield the same result.
+     *  <p>
+     *  This method should only be used if the time resolution is not
+     *  really needed for this addition.
+     *  For example, when finding the stop time of long simulation, where
+     *  `timeValue` is a large number, it would be reasonable to use this
+     *  method if the stop time does not need to be so precise.
+     *
+     *  @param timeValue The value to add.
+     *  @return The sum of this Time object and the value to add.
+     */
+    public Time addUnchecked(final double timeValue) {
+
+        // NOTE: a double time value can be either positive infinite,
+        // negative infinite, or a NaN.
+        if (Double.isNaN(timeValue)) {
+            throw new ArithmeticException("Time: Time value can not be NaN.");
+        }
+
+        if (Double.isInfinite(timeValue)) {
+            if (timeValue < 0) {
+                // time value is a negative infinity
+                if (_isPositiveInfinite) {
+                    throw new ArithmeticException(
+                            "Time: Adding a positive infinity to a negative "
+                                    + "infinity results in an invalid time.");
+                } else {
+                    return NEGATIVE_INFINITY;
+                }
+            } else {
+                // time value is a positive infinity
+                if (_isNegativeInfinite) {
+                    throw new ArithmeticException(
+                            "Time: Adding a negative infinity to a positive "
+                                    + "infinity results in an invalid time.");
+                } else {
+                    return POSITIVE_INFINITY;
+                }
+            }
+        }
+
+        if (isInfinite()) {
+            return this;
+        }
+
+        // Note the code above should substantively match that in
+        // method #add(double).
+        // The code below should substatively match that in #_doubleToMultiple(),
+        // except that it does not throw an exception based on the
+        // `_timeResolution()`.
+
+        final double precision = _timeResolution();
+        final long multiple = Math.round(timeValue / precision);
+        final BigInteger quantizedValue = BigInteger.valueOf(multiple);
+        return new Time(_director, _timeValue.add(quantizedValue));
+    }
     /** Return -1, 0, or 1 if this time object is less than, equal to, or
      *  greater than the given argument. Note that a ClassCastException
      *  will be thrown if the argument is not an instance of Time.
@@ -592,6 +655,55 @@ public class Time implements Comparable {
         }
     }
 
+    /** Subtract the specified time from this time and return the result as
+     *  a double.
+     *  <p>
+     *  This is equivalent to calling {@link #subtract(Time)} and then invoking
+     *  getDoubleValue(), but it is more efficient, in that it avoids
+     *  unnecessary construction of Time objects.
+     *  @param time The time to subtract.
+     *  @return This Time minus the specified time, as a double.
+     */
+    public double subtractToDouble(final Time time) {
+
+        // Note: a time value of a Time object can be either positive infinite
+        // or negative infinite.
+        if( time._isNegativeInfinite ) {
+            if( _isNegativeInfinite ) {
+                throw new ArithmeticException(
+                    "Subtracting negative infinity from negative infinity yields an invalid time.");
+            }
+            return( Double.POSITIVE_INFINITY );
+        }
+
+        if( time._isPositiveInfinite ) {
+            if( _isPositiveInfinite ) {
+                throw new ArithmeticException(
+                    "Subtracting positive infinity from positive infinity yields an invalid time.");
+            }
+            return( Double.NEGATIVE_INFINITY );
+        }
+
+        if( _isPositiveInfinite ) {
+            return( Double.POSITIVE_INFINITY );
+        }
+
+        if( _isNegativeInfinite ) {
+            return( Double.NEGATIVE_INFINITY );
+        }
+
+        // Handle case of different resolutions.
+        final double resolution = _timeResolution();
+        if( resolution != time._timeResolution() ) {
+            final double thisValue = getDoubleValue();
+            final double thatValue = time.getDoubleValue();
+            return( thisValue - thatValue );
+        }
+
+        final BigInteger difference = _timeValue.subtract(time._timeValue);
+         return( DoubleUtils.bigToDouble(difference) * resolution );
+    }
+    
     /** Return the string representation of this time object.
      *  This is actually an approximation generated by first converting to a double.
      *  Note that the string representation of infinities can not be
