@@ -1327,11 +1327,14 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 						.get(j).name;
 				TypedIOPort inputPort = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
 				if (inputPort == null) {
+				    continue;
+				    /*
 					throw new IllegalActionException(this,
 							"FMU declares that output port " + port.getName()
 									+ " depends directly on input port "
 									+ inputName
 									+ ", but there is no such input port.");
+					*/
 				}
 				if (dependencies == null) {
 					dependencies = new HashSet<TypedIOPort>();
