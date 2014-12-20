@@ -35,6 +35,7 @@ import org.ptolemy.machineLearning.hmm.ParameterEstimator;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
@@ -97,9 +98,8 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         maxStateDuration.setExpression("100");
         _maxDuration = 100;
 
-        priorDurationDistribution = new Parameter(this,
-                "priorDurationDistribution");
-        priorDurationDistribution.setExpression("");
+        priorDurationDistribution = new Parameter(this,"priorDurationDistribution");
+        priorDurationDistribution.setExpression("repeat(maxDuration, 1.0/maxDuration)");
         priorDurationDistribution.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         durationProbabilities = new Parameter(this, "durationProbabilities");
@@ -115,7 +115,15 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
         modelLikelihood = new TypedIOPort(this, "modelLikelihood", false, true);
         modelLikelihood.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
+
+        observationDimension = new Parameter(this,"observationDimension");
+        observationDimension.setExpression("2");
+        observationDimension.setTypeEquals(BaseType.INT);
+        _obsDimension = 2;
+
         _initializeArrays();
+
 
     }
 
@@ -124,18 +132,31 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             throws IllegalActionException {
         if (attribute == maxStateDuration) {
             _maxDuration = ((IntToken) maxStateDuration.getToken()).intValue();
-        } else if (attribute == durationProbabilities) {
-            int nDurations = ((MatrixToken) durationProbabilities.getToken())
-                    .getColumnCount();
-            _nStates = ((IntToken) nStates.getToken()).intValue();
-            _D0 = new double[_nStates][nDurations];
-            for (int i = 0; i < _nStates; i++) {
-                for (int j = 0; j < nDurations; j++) {
-                    _D0[i][j] = ((DoubleToken) ((MatrixToken) durationProbabilities
-                            .getToken()).getElementAsToken(i, j)).doubleValue();
+            DoubleMatrixToken m =((DoubleMatrixToken) durationProbabilities
+                    .getToken());
+            if (m==null) {
+                _D0 = new double[_nStates][_maxDuration];
+                for ( int i = 0 ; i < _maxDuration; i++) {
+                    for (int  j=0; j < _nStates; j++) {
+                        _D0[j][i] = 1.0/_maxDuration;
+                    }
                 }
+            }  
+        } else if (attribute == durationProbabilities) {
+            DoubleMatrixToken m =((DoubleMatrixToken) durationProbabilities
+                    .getToken());
+            if (m==null) {
+                _D0 = new double[_nStates][_maxDuration];
+                for ( int i = 0 ; i < _maxDuration; i++) {
+                    for (int  j=0; j < _nStates; j++) {
+                        _D0[j][i] = 1.0/_maxDuration;
+                    }
+                }
+            } else {
+                _D0 = m.doubleMatrix();
             }
-        } else if (attribute == priorDurationDistribution) {
+
+        }  else if (attribute == priorDurationDistribution) {
             int nDurations = ((ArrayToken) priorDurationDistribution.getToken())
                     .length();
             _durationPriors = new double[nDurations];
@@ -165,6 +186,10 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /* Duration Prior estimates
      */
     public TypedIOPort durationPriorEstimates;
+
+
+    public Parameter observationDimension;
+
     /* Hidden-State Assignments */
     public TypedIOPort clusterAssignments;
 
@@ -194,13 +219,22 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             ArrayToken dT = (ArrayToken) priorDurationDistribution.getToken();
             _durationPriors[i] = ((DoubleToken) (dT).getElement(i))
                     .doubleValue();
+        } 
+        DoubleMatrixToken m =((DoubleMatrixToken) durationProbabilities
+                .getToken());
+        if (m==null) {
+            _D0 = new double[_nStates][_maxDuration];
+            for ( int i = 0 ; i < _maxDuration; i++) {
+                for (int  j=0; j < _nStates; j++) {
+                    _D0[j][i] = 1.0/_maxDuration;
+                }
+            }
         }
-
-        _D0 = new double[_nStates][_maxDuration];
     }
 
     @Override
     public void fire() throws IllegalActionException {
+
 
         super.fire();
         _durationPriors = new double[_maxDuration];
@@ -209,14 +243,6 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                     .getToken()).getElement(i)).doubleValue();
         }
 
-        _D0 = new double[_nStates][_maxDuration];
-
-        for (int i = 0; i < _nStates; i++) {
-            for (int j = 0; j < _maxDuration; j++) {
-                _D0[i][j] = ((DoubleToken) ((MatrixToken) durationProbabilities
-                        .getToken()).getElementAsToken(i, j)).doubleValue();
-            }
-        }
     }
 
     @Override
@@ -258,7 +284,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected abstract double emissionProbability(double y, int hiddenState);
+    protected abstract double emissionProbability(double[] y, int hiddenState);
 
     protected abstract double durationProbability(int y, int hiddenState);
 
@@ -291,11 +317,12 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
      * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
      * continuous distribution types */
-    protected HashMap HSMMAlphaBetaRecursion(double[] y, double[][] A,
+    protected HashMap HSMMAlphaBetaRecursion(double[][] y, double[][] A,
             double[] prior, int nCategories) {
 
         int nStates = _nStates;
-        int nObservations = y.length;
+        int nObservations = y.length; 
+        int obsDimension = _obsDimension;
 
         double[][][] alphas = new double[nObservations][nStates][_maxDuration];
         double[][][] betas = new double[nObservations][nStates][_maxDuration];
@@ -303,8 +330,8 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         double[][][] smoothedAlpha = new double[nObservations][nStates][_maxDuration];
 
         double[][] A_hat = new double[nStates][nStates];
-        double[] mu_hat = new double[nStates];
-        double[] s_hat = new double[nStates];
+        double[][] mu_hat = new double[nStates][obsDimension];
+        double[][][] s_hat = new double[nStates][obsDimension][obsDimension];
         double[] pi_hat = new double[nStates];
 
         double[][] bStar = new double[nObservations][nStates];
@@ -524,22 +551,32 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         }
 
         for (int j = 0; j < nStates; j++) {
-            gammasum[j] = 0.0;
-            for (int t = 0; t < y.length; t++) {
-                mu_hat[j] += smoothedGamma[t][j] * y[t];
-                gammasum[j] += smoothedGamma[t][j];
+            for (int a = 0 ; a < obsDimension; a++) {
+                gammasum[j] = 0.0;
+                for (int t = 0; t < y.length; t++) {
+                    mu_hat[j][a] += smoothedGamma[t][j] * y[t][a];
+                    gammasum[j] += smoothedGamma[t][j];
+                }
+            }
+            for (int a = 0 ; a < obsDimension; a++) {
+                mu_hat[j][a] = mu_hat[j][a] / gammasum[j];
             }
 
-            mu_hat[j] = mu_hat[j] / gammasum[j];
-
             for (int t = 0; t < y.length; t++) {
-                s_hat[j] += (smoothedGamma[t][j] * Math.pow((y[t] - mu_hat[j]),
-                        2));
+                for (int a = 0 ; a < obsDimension; a++) {
+                    for (int b = 0 ; b < obsDimension; b++) { 
+                        s_hat[j][a][b] += (smoothedGamma[t][j] * (y[t][a] - mu_hat[j][a])*(y[t][b] - mu_hat[j][b]));
+                    }
+                }
             }
-            if (gammasum[j] != 0.0) {
-                s_hat[j] = Math.sqrt(s_hat[j] / gammasum[j]);
-            } else {
-                s_hat[j] = Math.sqrt(s_hat[j]);
+            for (int a = 0 ; a < obsDimension; a++) {
+                for (int b = 0 ; b < obsDimension; b++) { 
+                    if (gammasum[j] != 0.0) {  
+                        s_hat[j][a][b] = (s_hat[j][a][b] / gammasum[j]);
+                    } else {
+                        s_hat[j][a][b] = s_hat[j][a][b];
+                    }
+                }
             }
         }
         // labels for the multinomial setting
@@ -596,6 +633,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     protected double[] _dPriors0 = null;
     /* maximum duration ( in time steps)c  */
     protected int _maxDuration;
+
+
+    protected int _obsDimension;
 
     protected List<Double> _likelihoodHistory;
 }

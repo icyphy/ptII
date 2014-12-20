@@ -162,9 +162,15 @@ public class HMMExponentialEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected double emissionProbability(double y, int hiddenState) {
-        double m = _lambda[hiddenState];
-        return m * Math.exp(-m * y);
+    protected double emissionProbability(double[] y, int hiddenState) 
+            throws IllegalActionException {
+        if (y.length == 1) {
+            double m = _lambda[hiddenState];
+            return m * Math.exp(-m * y[0]);
+        } else {
+            throw new IllegalActionException( this.getClassName() 
+                    + " supports single dimensional distributions only.");
+        }
     }
 
     @Override
@@ -186,14 +192,14 @@ public class HMMExponentialEstimator extends ParameterEstimator {
                 return false;
             } else if (_randomize) {
                 // randomize means
-                double minO = _observations[0];
-                double maxO = _observations[0];
+                double minO = _observations[0][0];
+                double maxO = _observations[0][0];
                 for (int t = 0; t < _observations.length; t++) {
-                    if (_observations[t] < minO) {
-                        minO = _observations[t];
+                    if (_observations[t][0] < minO) {
+                        minO = _observations[t][0];
                     }
-                    if (_observations[t] > maxO) {
-                        maxO = _observations[t];
+                    if (_observations[t][0] > maxO) {
+                        maxO = _observations[t][0];
                     }
                 }
                 double L = maxO - minO;
@@ -227,7 +233,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected void _iterateEM() {
+    protected void _iterateEM() throws IllegalActionException {
         newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
                 _priorIn, 0);
         m_new = (double[]) newEstimates.get("mu_hat");

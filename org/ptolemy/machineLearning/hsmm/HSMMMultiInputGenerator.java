@@ -44,6 +44,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.SignalProcessing;
@@ -68,12 +69,12 @@ the Hidden Semi-Markov Model family.
 
 
  @author Ilge Akkaya
- @version $Id$
+ @version $Id: HSMMGenerator.java 69607 2014-07-30 17:07:26Z cxh $
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */
-public class HSMMGenerator extends TypedAtomicActor {
+public class HSMMMultiInputGenerator extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -82,7 +83,7 @@ public class HSMMGenerator extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HSMMGenerator(CompositeEntity container, String name)
+    public HSMMMultiInputGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -114,14 +115,14 @@ public class HSMMGenerator extends TypedAtomicActor {
         cardinality.setExpression("SOUTH");
 
         mean = new PortParameter(this, "mean");
-        mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        mean.setExpression("{0.0,100.0}");
+        mean.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
+        mean.setExpression("{{0.0,100.0},{100.0,100.0}}");
         cardinality = new StringAttribute(mean.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
 
         sigma = new PortParameter(this, "sigma");
-        sigma.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        sigma.setExpression("{10.0,10.0}");
+        sigma.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+        sigma.setExpression("{[10,0;0,10.0],[10,0;0,10.0]}");
         cardinality = new StringAttribute(sigma.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
 
@@ -129,7 +130,7 @@ public class HSMMGenerator extends TypedAtomicActor {
         trigger.setMultiport(true);
 
         observation = new TypedIOPort(this, "observation", false, true);
-        observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        observation.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
 
         hiddenState = new TypedIOPort(this, "hiddenState", false, true);
         hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
@@ -241,23 +242,27 @@ public class HSMMGenerator extends TypedAtomicActor {
             }
         } else if (attribute == mean) {
             ArrayToken meanToken = ((ArrayToken) mean.getToken());
-            int nStates = meanToken.length();
-            _mean = new double[nStates];
-
+            int nStates = meanToken.length(); 
+             _obsDimension = ((ArrayToken)meanToken.getElement(0)).length();
+            _mean = new double[nStates][_obsDimension];
             for (int i = 0; i < nStates; i++) {
-                _mean[i] = ((DoubleToken) meanToken.getElement(i))
-                        .doubleValue();
-            }
+                ArrayToken arr1 = ((ArrayToken) ((ArrayToken) mean
+                        .getToken()).getElement(i));
+                for (int j =0; j < _obsDimension; j++ ) {
+                    _mean[i][j] = ((DoubleToken)arr1.getElement(j)).doubleValue();
+                }
+            } 
         } else if (attribute == windowSize) {
             IntToken wx = ((IntToken) windowSize.getToken()); 
             _windowSize = wx.intValue(); 
         } else if (attribute == sigma) {
             ArrayToken sigmaToken = ((ArrayToken) sigma.getToken());
             int nStates = sigmaToken.length();
-            _sigma = new double[nStates];
+            int _obsDimension = ((DoubleMatrixToken)sigmaToken.getElement(0)).getRowCount();
+            _sigma = new double[nStates][_obsDimension][_obsDimension];
             for (int i = 0; i < nStates; i++) {
-                _sigma[i] = ((DoubleToken) sigmaToken.getElement(i))
-                        .doubleValue();
+                _sigma[i] = ((DoubleMatrixToken) sigmaToken.getElement(i))
+                        .doubleMatrix();
             }
         } else if (attribute == statePriors) {
             ArrayToken statePriorsToken = ((ArrayToken) statePriors.getToken());
@@ -284,6 +289,7 @@ public class HSMMGenerator extends TypedAtomicActor {
         sigma.update();
         statePriors.update();
         powerLimit.update();
+        Token[] outputObservations = new ArrayToken[_windowSize];
         
         if (trigger.hasToken(0)) {
             trigger.get(0);
@@ -317,7 +323,7 @@ public class HSMMGenerator extends TypedAtomicActor {
             // start generating values 
             boolean validSequenceFound = false;
             int trials = 0;
-            double [] ys = new double[_windowSize];
+            double[][] ys = new double[_windowSize][_obsDimension];
             int [] xs = new int [_windowSize];
             while (!validSequenceFound && trials < MAX_TRIALS) {
                 double cumulativePower = 0.0;
@@ -337,24 +343,28 @@ public class HSMMGenerator extends TypedAtomicActor {
                         // _xt doesn't change, decrement _dt.
                         _dt--;
                     }
-                    double yt = _sampleObservation();
-                    cumulativePower += yt;
+                    Token[] yt = _sampleObservation();
+                    outputObservations[i] = new ArrayToken(yt);
+                    double[] yArray = new double[yt.length];
+                    for (int x= 0; x < yArray.length; x++) {
+                        yArray[x] = ((DoubleToken)yt[x]).doubleValue();
+                    }
+                        
+                    //cumulativePower += yt;
                     xs[i] = _xt;
-                    ys[i] = yt;
+                    ys[i] = yArray;
                 }
-                if (cumulativePower <= ((DoubleToken)powerLimit.getToken()).doubleValue()) {
+                //if (cumulativePower <= ((DoubleToken)powerLimit.getToken()).doubleValue()) {
                     validSequenceFound = true;
                     break;
-                } else {
-                    trials++;
-                }
+                //} else {
+                //    trials++;
+                //}
             }
-            System.out.println(trials + " sequences rejected until sequence found");
-            if (validSequenceFound) {
-                Token[] outputObservations = new DoubleToken[_windowSize];
+            //System.out.println(trials + " sequences rejected until sequence found");
+            if (validSequenceFound) { 
                 Token[] states = new IntToken[_windowSize];
-                for (int i = 0; i < _windowSize; i ++) {
-                    outputObservations[i] = new DoubleToken(ys[i]);
+                for (int i = 0; i < _windowSize; i ++) { 
                     states[i] = new IntToken(xs[i]);
                 }
                 observation.send(0, new ArrayToken(outputObservations));
@@ -363,13 +373,18 @@ public class HSMMGenerator extends TypedAtomicActor {
         }
     }
 
-    private double _sampleObservation() {
+    private Token[] _sampleObservation() {
         // generate y_t ~ p(y_t | x_t). In this class, y_t is Gaussian, whose mean and variance is a function of _xt.
-        double mu = _mean[_xt];
-        double s = _sigma[_xt];
+        double[] mu = _mean[_xt];
+        double[][] s = _sigma[_xt];
 
-        DoubleToken yt = UtilityFunctions.gaussian(mu, s);
-        return yt.doubleValue();
+        ArrayToken yt;
+        try {
+            yt = UtilityFunctions.multivariateGaussian(mu, s);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        return yt.arrayValue();
 
     }
 
@@ -445,14 +460,15 @@ public class HSMMGenerator extends TypedAtomicActor {
     protected double[][] _D = null;
     /* maximum duration ( in time steps)c  */
     private double[] _x0;
-    private double[] _mean;
-    private double[] _sigma;
+    private double[][] _mean;
+    private double[][][] _sigma;
     private double[][] _A;
     private boolean _firstIteration = true;
     private int _nStates;
     private int _maxDuration;
     // Remaining time at the state
     private int _dt;
+    private int _obsDimension;
     // Current state variable
     private int _xt;
     private int _windowSize;

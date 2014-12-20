@@ -215,7 +215,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected void _iterateEM() {
+    protected void _iterateEM() throws IllegalActionException {
         newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
                 _priorIn, _nCategories);
         B_new = (double[][]) newEstimates.get("eta_hat");
@@ -232,8 +232,13 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected double emissionProbability(double y, int hiddenState) {
-        return _B[hiddenState][(int) y];
+    protected double emissionProbability(double[] y, int hiddenState) 
+            throws IllegalActionException {
+        if (y.length == 1) { 
+            return _B[hiddenState][(int) y[0]];
+        } else {
+            throw new IllegalActionException(this.getClassName() + " is only compatible with single dimensional distributions");
+        }
     }
 
     /**
