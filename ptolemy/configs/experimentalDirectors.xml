@@ -33,6 +33,7 @@
       <!--property name="FairDF Director" class="ptolemy.domains.fairdf.kernel.FairDFDirector"/-->
       <!--property name="Distributed SDF Director" class="ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector"/-->
       <property name="Pthales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector"/>
+      <property name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector"/>
       </group>
     ?>
   </configure>
