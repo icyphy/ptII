@@ -1173,6 +1173,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	FMIModelDescription fmiModelDescription = FMUFile
 		.parseFMUFile(fmuFileName);
 
+	// Assign the model exchange flag for correct import.
+	
+    fmiModelDescription.modelExchange = true;
 	// FIXME: Use URLs, not files so that we can work from JarZip files.
 
 	// If a location is given as a URL, construct MoML to
@@ -1359,7 +1362,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         // because the information can be deduced from the xml file in FMI 2.0
         // by looking at the Derivatives element.
 	if (modelExchange) {
-	    fmiModelDescription.modelExchange = true;
 
 	    // Provide a parameter that indicates that this is a model exchange
 	    // FMU.
