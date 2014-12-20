@@ -267,11 +267,13 @@ public class FMUModelExchange extends FMUDriver {
             preEventIndicators = new double[numberOfEventIndicators];
         }
 
-        // Set the start time.
+        // FMI 1.0: Set the start time.
         double startTime = 0.0;
         Function setTime = fmiModelDescription.getFmiFunction("fmiSetTime");
-        invoke(setTime, new Object[] { fmiComponent, startTime },
-                "Could not set time to start time: " + startTime + ": ");
+        if (_fmiVersion < 2.0) {
+	    invoke(setTime, new Object[] { fmiComponent, startTime },
+		   "Could not set time to start time: " + startTime + ": ");
+	}
 
         // Initialize the model.
         byte toleranceControlled = 0;
@@ -299,8 +301,8 @@ public class FMUModelExchange extends FMUDriver {
                     startTime, (byte) 1, endTime },
                     "Failed to setup the experiment of the FMU: ");
 
-            invoke(setTime, new Object[] { fmiComponent, startTime },
-                    "Could not set time to start time: " + startTime + ": ");
+            //invoke(setTime, new Object[] { fmiComponent, startTime },
+            //        "Could not set time to start time: " + startTime + ": ");
 
             invoke(fmiModelDescription, "fmiEnterInitializationMode",
                     new Object[] { fmiComponent },
@@ -319,9 +321,6 @@ public class FMUModelExchange extends FMUDriver {
                 // update discrete states
                 eventInfo20Reference = new FMI20EventInfo.ByReference(
                         eventInfo20);
-                System.out.println("FMUModelExchange: "
-                        + eventInfo20Reference.toString());
-
                 invoke(fmiModelDescription, "fmiNewDiscreteStates",
                         new Object[] { fmiComponent, eventInfo20Reference },
                         "could not set a new discrete state");
