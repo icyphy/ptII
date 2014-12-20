@@ -74,7 +74,6 @@ import ptolemy.math.FixPoint;
  is fairly well encapsulated in this class.  The mapping is summarized
  in the following table:
 
- <p>
  <pre>
  Token type               Java type
  ---------------------------------------------------
@@ -495,9 +494,10 @@ public class ConversionUtilities {
      * that, generally speaking the reverse is not true, since ptolemy
      * types represent more information about data types than do java
      * types.
-     *  @param type the given type.
-     *  @exception IllegalActionException If the token class is not
+     * @param type the given type.
+     * @exception IllegalActionException If the token class is not
      *  recognized, or creating the type fails.
+     * @return The class associated with the type.
      */
     public static Class convertTokenTypeToJavaType(Type type)
             throws ptolemy.kernel.util.IllegalActionException {

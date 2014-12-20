@@ -48,7 +48,7 @@ import ptolemy.math.Quantizer;
  </pre>
  creates a fixed point number with a total of 10 bits, 4 of which are
  integer bits, representing the number 5.34.
- <p>
+</li>
  <li> Create a FixPointMatrix with entries that consist of instances of
  FixPoint. Each entry in the fixed point matrix has
  the same precision. For example,
@@ -58,7 +58,7 @@ import ptolemy.math.Quantizer;
  </pre>
  creates a matrix where each entry has 10 bits, two of which are
  integer bits.
- <p>
+</li>
  <li> Create a DoubleToken whose value is the quantized version of the
  given double value. The value is quantized by converting it into a
  fixed point value with a particular precision and then back again to
@@ -69,6 +69,7 @@ import ptolemy.math.Quantizer;
  </pre>
  quantizes the number 5.34 to 10 bits of precision, 4 of which
  are integer bits.
+ </li>
  <li>
  Create a matrix whose entries are the quantized version of the
  values of the given matrix. The values are quantized by converting
@@ -82,6 +83,7 @@ import ptolemy.math.Quantizer;
  </pre>
  creates a new instance of DoubleMatrixToken containing the specified
  values with 10 bits of precision, two of which are integer bits.
+ </li>
  </ul>
  In all cases, rounding is used when quantization errors occur,
  and saturation is used when overflow occurs.

@@ -108,6 +108,8 @@ public class ASTPtRootNode implements Node, Cloneable {
 
     /** Override this method if you want to customize how the node dumps
      *  out its children.
+     *  @param prefix The prefix, which is processed by
+     *  {@link #toString(String)}.
      */
     public void displayParseTree(String prefix) {
         if (_ptToken != null) {
@@ -145,6 +147,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     /** Return the evaluated token value of this node.  This value may be
      *  set during parsing, if this represents a constant value, or may be
      *  set during parse tree evaluation.
+     *  @return The evaluated token.
      */
     public ptolemy.data.Token getToken() {
         return _ptToken;
@@ -166,6 +169,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  @param renaming A map from String to String that gives a
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
+     *  @return True if the node is congruent.
      */
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         // Check to see that they are the same kind of node.
@@ -207,12 +211,15 @@ public class ASTPtRootNode implements Node, Cloneable {
     /** Return true if this node represents a constant value.  This will
      *  be set to true if the node is a constant leaf node (either it is a
      *  constant leaf node, or a pure function with constant children.)
+     *  @return True if the node represents a constant value.
      */
     public boolean isConstant() {
         return _isConstant;
     }
 
     /** Return true if this node has had its token value set to something
+     *  other than null.
+     *  @return True if this node has had its token value set to something
      *  other than null.
      */
     public boolean isEvaluated() {
@@ -285,6 +292,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  useful to transform a parse tree, which can make parts of the
      *  parse tree constant which were not before.  This method is
      *  provided for those transformations.
+     *  @param flag If true, then this node is a constant.
      */
     public void setConstant(boolean flag) {
         _isConstant = flag;
@@ -293,24 +301,28 @@ public class ASTPtRootNode implements Node, Cloneable {
     /** Set the value of this node.  This may be set during parsing,
      *  if the node is a constant node, or during evaluation of the
      *  expression.
+     *  @param token The value of this node.
      */
     public void setToken(ptolemy.data.Token token) {
         _ptToken = token;
     }
 
-    /** Set the value of this node.  This may be set during parsing,
+    /** Set the type of this node.  This may be set during parsing,
      *  if the node is a constant node, or during evaluation of the
      *  expression.
+     *  @param type The type of this node.
      */
     public void setType(ptolemy.data.type.Type type) {
         _ptType = type;
     }
 
-    /** You can override these two methods in subclasses of RootNode
+    /** Return the string value of this node. 
+     * You can override these two methods in subclasses of RootNode
      * to customize the way the node appears when the tree is dumped.
      * If your output uses more than one line you should override
      * toString(String), otherwise overriding toString() is probably
      * all you need to do.
+     * @return The string value of this node.
      */
     @Override
     public String toString() {
@@ -318,13 +330,19 @@ public class ASTPtRootNode implements Node, Cloneable {
                 + _ptType + ":" + _ptToken;
     }
 
+    /** Return the prefix, followed by the string value of this node.
+     *  @param prefix The prefix
+     */
     public String toString(String prefix) {
         return prefix + toString();
     }
 
     /** Traverse this node with the given visitor.
-     *  subclasses should override this method to invoke the appropriate
+     *  Subclasses should override this method to invoke the appropriate
      *  method in the visitor.
+     *  @param vistor The visitor.
+     *  @exception IllegalActionException Always thrown in this base
+     *  class the visit() method is not implemented here.
      */
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         throw new IllegalActionException("The visit() method is not "
@@ -334,10 +352,14 @@ public class ASTPtRootNode implements Node, Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The parent node. */
     protected Node _parent;
 
+    /** The children. */
     protected ArrayList _children;
 
+    /** The id. */
     protected int _id;
 
     /** Each node stores its type and state information in this variable.

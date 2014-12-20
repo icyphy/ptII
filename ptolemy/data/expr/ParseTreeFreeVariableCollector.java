@@ -52,7 +52,10 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
 
     /** Return the set of names of free variables in the given parse
      *  tree.
+     *  @param node the node.
      *  @return A set of strings.
+     *  @exception IllegalActionException If thrown while collecting
+     *  the variables
      */
     public Set collectFreeVariables(ASTPtRootNode node)
             throws IllegalActionException {
@@ -172,7 +175,11 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Test if the given identifier is valid.
+    /** Return true if the given identifier is valid.
+     *  @param name The identifier
+     *  @return True if the given identifier is valid.
+     *  @exception IllegalActionException If thrown while getting
+     *  the type for the name from the scope.
      */
     protected boolean _isValidName(String name) throws IllegalActionException {
         if (_scope != null) {
