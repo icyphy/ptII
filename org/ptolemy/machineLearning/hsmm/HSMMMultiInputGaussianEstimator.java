@@ -29,20 +29,26 @@ package org.ptolemy.machineLearning.hsmm;
 
 import java.util.Arrays;
 
+import org.ptolemy.machineLearning.Algorithms;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.DoubleMatrixMath;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -76,12 +82,12 @@ sequence given the parameter estimates converges to a value within <i>likelihood
 the parameter estimation stops iterating and delivers the parameter estimates.
 
  @author Ilge Akkaya
- @version $Id$
+ @version $Id: HSMMGaussianEstimator.java 70402 2014-10-23 00:52:20Z cxh $
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */
-public class HSMMGaussianEstimator extends HSMMParameterEstimator {
+public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -90,43 +96,55 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HSMMGaussianEstimator(CompositeEntity container, String name)
+    public HSMMMultiInputGaussianEstimator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        mean = new TypedIOPort(this, "mean", false, true);
-        mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         standardDeviation = new TypedIOPort(this, "standardDeviation", false,
-                true);
-        standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+                true); 
+        
+        mean = new TypedIOPort(this, "mean", false, true);
 
         meanVectorGuess = new Parameter(this, "meanVectorGuess");
-        meanVectorGuess.setExpression("{0.0, 4.0}");
-        meanVectorGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        meanVectorGuess.setExpression("{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}"); 
 
         standardDeviationGuess = new Parameter(this, "standardDeviationGuess");
-        standardDeviationGuess.setExpression("{1.0, 1.0}");
-        standardDeviationGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        standardDeviationGuess.setExpression("{[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0]}");
+        standardDeviationGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+
+        _mu0 = new double[4][2];
+
+
 
     }
 
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == meanVectorGuess) {
+        if (attribute == observationDimension) {
+            _obsDimension = ((IntToken)observationDimension.getToken()).intValue();
+        } else  if (attribute == meanVectorGuess) {
             int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
-            _mu0 = new double[nS];
+            _mu0 = new double[nS][_obsDimension];
             for (int i = 0; i < nS; i++) {
-                _mu0[i] = ((DoubleToken) ((ArrayToken) meanVectorGuess
-                        .getToken()).getElement(i)).doubleValue();
+                ArrayToken arr1 = ((ArrayToken) ((ArrayToken) meanVectorGuess
+                        .getToken()).getElement(i));
+                for (int j =0; j < _obsDimension; j++ ) {
+                    _mu0[i][j] = ((DoubleToken)arr1.getElement(j)).doubleValue();
+                }
             }
         } else if (attribute == standardDeviationGuess) {
             int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
-            _sigma0 = new double[nS];
+            _sigma0 = new double[nS][_obsDimension][_obsDimension];
             for (int i = 0; i < nS; i++) {
-                _sigma0[i] = ((DoubleToken) ((ArrayToken) standardDeviationGuess
-                        .getToken()).getElement(i)).doubleValue();
+                double[][] dm = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
+                        .getToken()).getElement(i)).doubleMatrix();
+                for (int j =0; j < _obsDimension; j++ ) {
+                    for (int k =0; k < _obsDimension; k++ ) {
+                        _sigma0[i][j][k] = dm[j][k];
+                    }
+                } 
             }
         } else {
             super.attributeChanged(attribute);
@@ -144,31 +162,31 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
 
     public Parameter standardDeviationGuess;
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMGaussianEstimator newObject = (HSMMGaussianEstimator) super
+        HSMMMultiInputGaussianEstimator newObject = (HSMMMultiInputGaussianEstimator) super
                 .clone(workspace);
-        newObject._sigma0 = new double[_nStates];
-        newObject._mu0 = new double[_nStates];
+        newObject._sigma0 = new double[_nStates][_obsDimension][_obsDimension];
+        newObject._mu0 = new double[_nStates][_obsDimension];
         return newObject;
     }
 
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-         
+        //
+        //        if ((_nStates != _sigma0.length)
+        //                || (_nStates != _transitionMatrix.length)
+        //                || (_nStates != _priors.length) || (_nStates != _mu0.length)) {
+        //            throw new IllegalActionException(this,
+        //                    "Parameter guess vectors must have equal lengths.");
+        //        }
 
-        if ((_nStates != _sigma0.length)
-                || (_nStates != _transitionMatrix.length)
-                || (_nStates != _priors.length) || (_nStates != _mu0.length)) {
-            throw new IllegalActionException(this,
-                    "Parameter guess vectors must have equal lengths.");
-        }
-
-        _EMParameterEstimation();
+        _EMParameterEstimation(); 
         //System.out.println("Final Likelihood: " +likelihood);
         int _nObservations = _observations.length;
         Token[] mTokens = new Token[_nStates];
@@ -179,8 +197,12 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         Token[] lTokens = new Token[_likelihoodHistory.size()];
 
         for (int i = 0; i < _nStates; i++) {
-            mTokens[i] = new DoubleToken(m_new[i]);
-            sTokens[i] = new DoubleToken(s_new[i]);
+            Token[] stateitokens = new Token[_obsDimension];
+            for (int j = 0; j < _obsDimension; j++) {
+                stateitokens[j] = new DoubleToken(_mu[i][j]);
+            }
+            mTokens[i] = new ArrayToken(stateitokens);
+            sTokens[i] = new DoubleMatrixToken(s_new[i]);
             pTokens[i] = new DoubleToken(prior_new[i]);
         }
         for (int i = 0; i < _maxDuration; i++) {
@@ -207,14 +229,13 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         // broadcast best-effort parameter estimates
 
     }
- 
-    protected double emissionProbability(double y, int hiddenState) {
 
-        double s = _sigma[hiddenState];
-        double m = _mu[hiddenState];
+    protected double emissionProbability(double[] y, int hiddenState) {
 
-        return 1.0 / (Math.sqrt(2 * Math.PI) * s)
-                * Math.exp(-0.5 * Math.pow((y - m) / s, 2));
+        double[][] s = _sigma[hiddenState];
+        double[] m = _mu[hiddenState]; 
+
+        return Algorithms.mvnpdf(y, m, s);
     }
 
     @Override
@@ -230,6 +251,11 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             }
         }
         if (nanDetected) {
+
+            if (D_new[0] != D_new[0]) {
+                D_new = _D0;
+            }
+
             // if no convergence in 10 iterations, issue warning message.
             if ((iterations >= _nIterations - 1)) {
                 // return the guess parameters
@@ -243,35 +269,36 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
-                // randomize means
-                double minO = _observations[0][0];
-                double maxO = _observations[0][0];
-                for (int t = 0; t < _observations.length; t++) {
-                    if (_observations[t][0] < minO) {
-                        minO = _observations[t][0];
-                    }
-                    if (_observations[t][0] > maxO) {
-                        maxO = _observations[t][0];
-                    }
-                }
-                double L = maxO - minO;
-                // make new random guess
-                for (int i = 0; i < _nStates; i++) {
-                    m_new[i] = L / _nStates * Math.random() + L * i / _nStates
-                            + minO;
-                    s_new[i] = Math.abs((maxO - minO) * Math.random())
-                            / _nStates;
-                    for (int j = 0; j < _nStates; j++) {
-                        //A_new[i][j] = 1.0/nStates;
-                    }
-                }
-                A_new = _A0;
-                // sort arrays
-                Arrays.sort(m_new);
-                prior_new = _priors;
-            } else {
-                System.out.println("At least one parameter value is unstable!");
-                return false;
+                //                // randomize means
+                //                double minO = _observations[0];
+                //                double maxO = _observations[0];
+                //                for (int t = 0; t < _observations.length; t++) {
+                //                    if (_observations[t] < minO) {
+                //                        minO = _observations[t];
+                //                    }
+                //                    if (_observations[t] > maxO) {
+                //                        maxO = _observations[t];
+                //                    }
+                //                }
+                //                double L = maxO - minO;
+                //                // make new random guess
+                ////                for (int i = 0; i < _nStates; i++) {
+                ////                    m_new[i] = L / _nStates * Math.random() + L * i / _nStates
+                ////                            + minO;
+                ////                    s_new[i] = Math.abs((maxO - minO) * Math.random())
+                ////                            / _nStates;
+                ////                    for (int j = 0; j < _nStates; j++) {
+                ////                        //A_new[i][j] = 1.0/nStates;
+                ////                    }
+                ////                }
+                //                A_new = _A0;
+                //                // sort arrays
+                //                Arrays.sort(m_new);
+                //                prior_new = _priors;
+                //            } else {
+                //                System.out.println("At least one parameter value is unstable!");
+                //                return false;
+                //            }
             }
         }
         return true;
@@ -286,8 +313,8 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         _transitionMatrix = _A0;
         _priorIn = _priors;
         A_new = new double[_nStates][_nStates];
-        m_new = new double[_nStates];
-        s_new = new double[_nStates];
+        m_new = new double[_nStates][_obsDimension];
+        s_new = new double[_nStates][_obsDimension][_obsDimension];
         prior_new = new double[_nStates];
         D_new = new double[_nStates][_maxDuration];
         _D = _D0;
@@ -297,40 +324,72 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     protected void _iterateEM() {
 
         newEstimates = HSMMAlphaBetaRecursion(_observations, _transitionMatrix,
-                _priorIn, 0);
-        m_new = (double[]) newEstimates.get("mu_hat");
-        s_new = (double[]) newEstimates.get("s_hat");
+                _priorIn, 0); 
+        m_new = (double[][]) newEstimates.get("mu_hat");
+        s_new = (double[][][]) newEstimates.get("s_hat");
         A_new = (double[][]) newEstimates.get("A_hat");
         prior_new = (double[]) newEstimates.get("pi_hat");
         dPrior_new = (double[]) newEstimates.get("pi_d_hat");
         likelihood = (Double) (newEstimates.get("likelihood"));
         D_new = (double[][]) newEstimates.get("D_hat");
         clusters = (int[]) newEstimates.get("clusterAssignments");
-        //System.out.println("Likelihood= " + likelihood);
+        System.out.println("Likelihood= " + likelihood);
     }
 
     @Override
     protected void _updateEstimates() {
         _transitionMatrix = A_new;
-        _sigma = s_new;
-        _mu = m_new;
+        _sigma = _sigma0;
+        //_sigma = s_new; 
+        _mu = (m_new);
         _priorIn = prior_new; // set to the original priors
         _D = D_new;
         _durationPriors = dPrior_new;
+        for (int i = 0; i < _mu.length; i++) {
+            for (int j = 0; j < _mu[0].length; j++) {
+                System.out.print(_mu[i][j] + ",");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
-    private double[] _mu = null;
-    private double[] _mu0 = null;
-    private double[] _sigma = null;
-    private double[] _sigma0 = null;
+    private double[][] _sortMeans(double[][] A) {
+        // sort the means lexicographically. 
+        double[] sortArray= new double[A.length]; 
+        double[] orig= new double[A.length]; 
+        for (int i = 0; i < A.length; i++) {
+            for(int  j=0; j <A[0].length; j++) {
+                sortArray[i] += A[i][j];
+                orig[i] = sortArray[i];
+            }
+        }
+        Arrays.sort(sortArray);
+        double[][] newArray = new double[A.length][A[0].length];
+        for (int i = 0; i < sortArray.length; i++) { 
+            double s = sortArray[i];
+            for (int j= 0; j < sortArray.length; j++) { 
+                if (Math.abs(s-orig[j]) < 1E-6) {
+                    newArray[i] = A[j];
+                    continue;
+                }
+            }
+        }
+        return newArray;
+    }
+
+    private double[][] _mu;
+    private double[][] _mu0;
+    private double[][][] _sigma;
+    private double[][][] _sigma0;
 
     // EM Specific Parameters
-    private double[][] A_new = null;
-    private double[] m_new = null;
-    private double[] dPrior_new = null;
-    private double[] s_new = null;
-    private double[] prior_new = null;
-    private int[] clusters = null;
+    private double[][] A_new;
+    private double[][] m_new;
+    private double[] dPrior_new;
+    private double[][][] s_new;
+    private double[] prior_new;
+    private int[] clusters;
 
     @Override
     protected double durationProbability(int y, int hiddenState) {
@@ -342,10 +401,5 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         }
     }
 
-    @Override
-    protected double emissionProbability(double[] y, int hiddenState)  {
-        // TODO Auto-generated method stub
-        return 0;
-    } 
 
 }

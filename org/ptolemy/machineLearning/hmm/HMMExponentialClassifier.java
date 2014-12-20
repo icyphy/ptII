@@ -152,9 +152,14 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     }
 
     @Override
-    protected double emissionProbability(double y, int hiddenState) {
-        double m = _lambda[hiddenState];
-        return m * Math.exp(-m * y);
+    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException {
+        if (y.length == 1) {
+            double m = _lambda[hiddenState];
+            return m * Math.exp(-m * y[0]);
+        } else {
+            throw new IllegalActionException( this.getClassName() 
+                    + " supports single dimensional distributions only.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

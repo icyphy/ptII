@@ -29,16 +29,18 @@ package org.ptolemy.machineLearning.hmm;
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
-import ptolemy.data.type.ArrayType;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.DoubleMatrixMath;
 
 /**
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
@@ -78,22 +80,18 @@ public class HMMGaussianClassifier extends ObservationClassifier {
 
         mean = new PortParameter(this, "mean");
         mean.setExpression("{0.0,3.0}");
-        mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         StringAttribute cardinality = new StringAttribute(mean.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
         standardDeviation = new PortParameter(this, "standardDeviation");
-        standardDeviation.setExpression("{10E-3,50E-3}");
-        standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        standardDeviation.setExpression("{10E-3,50E-3}"); 
         cardinality = new StringAttribute(standardDeviation.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
         //_nStates = ((ArrayToken) meanToken).length();
-        _nStates = ((ArrayToken) mean.getToken()).length();
-        _mu = new double[_nStates];
-        _sigma = new double[_nStates];
+        _nStates = ((ArrayToken) mean.getToken()).length(); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,8 +113,8 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HMMGaussianClassifier newObject = (HMMGaussianClassifier) super
                 .clone(workspace);
-        newObject._mu = new double[_nStates];
-        newObject._sigma = new double[_nStates];
+        newObject._mu = null;
+        newObject._sigma = null;
         return newObject;
     }
 
@@ -133,23 +131,41 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         prior.update();
 
         // update array values and lengths
+
         _nStates = ((ArrayToken) mean.getToken()).length();
-        _mu = new double[_nStates];
-        _sigma = new double[_nStates];
         _priors = new double[_nStates];
         _transitionMatrixEstimate = new double[_nStates][_nStates];
-
-        for (int i = 0; i < _nStates; i++) {
-            _sigma[i] = ((DoubleToken) ((ArrayToken) standardDeviation
-                    .getToken()).getElement(i)).doubleValue();
+        for (int i = 0; i < _nStates; i++) { 
             _priors[i] = ((DoubleToken) ((ArrayToken) prior.getToken())
-                    .getElement(i)).doubleValue();
-            _mu[i] = ((DoubleToken) ((ArrayToken) mean.getToken())
                     .getElement(i)).doubleValue();
             for (int j = 0; j < _nStates; j++) {
                 _transitionMatrixEstimate[i][j] = ((DoubleToken) ((MatrixToken) transitionMatrix
                         .getToken()).getElementAsToken(i, j)).doubleValue();
             }
+        }
+
+        int obsDim = 1;
+        if (((ArrayToken) mean.getToken()).getElementType().isCompatible(BaseType.DOUBLE)) {
+            _mu = new double[_nStates][obsDim];
+            _sigma = new double[_nStates][obsDim][obsDim];
+            for (int i = 0; i < _nStates; i++) {
+                _sigma[i][0][0] = ((DoubleToken) ((ArrayToken) standardDeviation
+                        .getToken()).getElement(i)).doubleValue(); 
+                _mu[i][0] = ((DoubleToken) ((ArrayToken) mean.getToken())
+                        .getElement(i)).doubleValue();
+            }
+        } else {
+            obsDim = ((ArrayToken)((ArrayToken) mean.getToken()).getElement(0)).length();
+            _mu = new double[_nStates][obsDim];
+            _sigma = new double[_nStates][obsDim][obsDim];
+            for (int i = 0; i < _nStates; i++) {
+                _sigma[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviation
+                        .getToken()).getElement(i)).doubleMatrix();  
+                for (int j = 0; j < obsDim; j++) { 
+                    _mu[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) mean.getToken())
+                            .getElement(i)).getElement(j)).doubleValue();
+                }
+            } 
         }
         if ((_nStates != _sigma.length)
                 || (_nStates != _transitionMatrixEstimate.length)) {
@@ -169,23 +185,47 @@ public class HMMGaussianClassifier extends ObservationClassifier {
 
             output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
             likelihood.send(0, new DoubleToken(_likelihood));
-        }
+        } 
     }
 
     @Override
-    protected double emissionProbability(double y, int hiddenState) {
-        double s = _sigma[hiddenState];
-        double m = _mu[hiddenState];
-        return 1.0 / (Math.sqrt(2 * Math.PI) * s)
-                * Math.exp(-0.5 * Math.pow((y - m) / s, 2));
+    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException 
+    {
+
+        double[][] s = _sigma[hiddenState];
+        double[] m = _mu[hiddenState];
+
+        double[] xt = new double[y.length];
+        Token[] xmat = new Token[y.length]; 
+        for (int i = 0; i < y.length; i ++) {
+            xt[i] = y[i] - m[i];
+            xmat[i] = new DoubleToken(xt[i]); 
+        }
+        MatrixToken X = MatrixToken.arrayToMatrix(xmat, y.length, 1);
+        DoubleMatrixToken Covariance;
+        try {
+            Covariance = new DoubleMatrixToken( DoubleMatrixMath.inverse(s));
+        } catch (IllegalArgumentException e) {
+            return 0.0;
+        }
+        MatrixToken Xtranspose = MatrixToken.arrayToMatrix(xmat, 1, y.length); 
+        Token exponent = Xtranspose.multiply(Covariance);
+        exponent = exponent.multiply(X); 
+
+        double value = ((DoubleMatrixToken) exponent)
+                .getElementAt(0, 0);
+        double result = ( 1.0 / (Math.sqrt(2 * Math.PI) * DoubleMatrixMath.determinant(s))
+                * Math.exp(-0.5 * value)); 
+
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The mean array. */
-    private double[] _mu;
+    private double[][] _mu;
 
     /** Standard deviations array. */
-    private double[] _sigma;
+    private double[][][] _sigma;
 }

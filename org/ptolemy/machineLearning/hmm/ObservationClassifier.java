@@ -109,8 +109,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        input = new TypedIOPort(this, "input", true, false); 
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
@@ -177,14 +176,27 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
             Token observationArray = input.get(0);
             _classificationLength = ((ArrayToken) observationArray).length();
-            _observations = new double[_classificationLength];
+            if (((ArrayToken)observationArray).getElementType().isCompatible(BaseType.DOUBLE)) {
+                _observations = new double[_classificationLength][1];
+                for (int i = 0; i < _classificationLength; i++) {
+                    _observations[i][0] = ((DoubleToken) ((ArrayToken) observationArray)
+                            .getElement(i)).doubleValue();
+                }
+            } else {
+                int obsDim = ((ArrayToken) ((ArrayToken) observationArray).getElement(0)).length();
+                _observations = new double[_classificationLength][obsDim];
+                for (int i = 0; i < _classificationLength; i++) {
+                    for (int j = 0; j < obsDim; j++) {
+                    _observations[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) observationArray)
+                            .getElement(i)).getElement(j)).doubleValue();
+                    }
+                }
+            }
+           
 
             // Get Observation Values as doubles
             //FIXME: should the observations  allowed to be vectors of doubles, too?
-            for (int i = 0; i < _classificationLength; i++) {
-                _observations[i] = ((DoubleToken) ((ArrayToken) observationArray)
-                        .getElement(i)).doubleValue();
-            }
+            
         } else {
             _observations = null;
         }
@@ -197,10 +209,13 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @param prior prior guess vectors
      * @param A transition probability matrix
      * @return An array of assigned labels to observations
+     * @throws IllegalActionException 
      */
 
-    protected final int[] classifyHMM(double[] y, double[] prior, double[][] A) {
-        int nStates = prior.length;
+    protected final int[] classifyHMM(double[][] y, double[] prior, double[][] A) throws IllegalActionException { 
+         
+        int nStates = _nStates;  
+        
         double[][] alphas = new double[y.length][nStates];
         double[][] gamma = new double[y.length][nStates];
         // do this with org.apache.commons.math3.distribution
@@ -317,8 +332,10 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     /**
      * Abstract class defining the emission probability computation of the
      * latent variable.
+     * @throws IllegalActionException 
      */
-    protected abstract double emissionProbability(double y, int hiddenState);
+    protected abstract double emissionProbability(double[] y, int hiddenState) 
+            throws IllegalActionException;
 
     /** length of the observation array to be classified. */
     protected int _classificationLength;
@@ -327,7 +344,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     protected double _likelihood;
 
     /** observation array. */
-    protected double[] _observations;
+    protected double[][] _observations;
 
     /** number of hidden states. */
     protected int _nStates;

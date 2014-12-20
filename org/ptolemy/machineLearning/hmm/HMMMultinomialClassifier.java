@@ -159,8 +159,13 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
     }
 
     @Override
-    protected double emissionProbability(double y, int hiddenState) {
-        return _B[hiddenState][(int) y];
+    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException {
+        if (y.length == 1) {
+            return _B[hiddenState][(int) y[0]];
+        } else {
+            throw new IllegalActionException(this, this.getClassName() + 
+                    " supports single dimensional distributions.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
