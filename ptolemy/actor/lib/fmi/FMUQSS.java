@@ -1102,13 +1102,16 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 						.get(i).dependentScalarVariables.get(j).name;
 				final TypedIOPort inputPort = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
 				if (inputPort == null) {
-					throw new IllegalActionException(this,
+				    continue;
+				/*    
+				throw new IllegalActionException(this,
 							"FMU declares that port "
 									+ _fmiModelDescription.continuousStates
 											.get(i).port.getName()
 									+ " depends directly on input port "
 									+ inputName
 									+ ", but there is no such input port.");
+				*/
 				}
 				if (dependencies == null) {
 					dependencies = new HashSet<TypedIOPort>();
