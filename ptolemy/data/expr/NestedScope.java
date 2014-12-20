@@ -52,6 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class NestedScope implements ParserScope {
     /** Construct a new scope that consists of the given list of scopes.
+     *  @param scopeList The list of scopes.
      */
     public NestedScope(List scopeList) {
         _scopeList = scopeList;

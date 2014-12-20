@@ -1319,6 +1319,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  visiting each one of them; this will cause their token
      *  value to be determined.
      *  @param node The node whose children are evaluated.
+     *  @return The values of the children.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token[] _evaluateAllChildren(ASTPtRootNode node)
@@ -1368,6 +1369,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Evaluate the child with the given index of the given node.
      *  This is usually called while visiting the given node.
+     *  @param node The node
+     *  @param i The index of the node
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
@@ -1426,6 +1429,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param functionName The function name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
+     *  @return The value of returned by the specified method.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _functionCall(String functionName,
@@ -1452,6 +1456,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param methodName The method name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
+     *  @return The value of returned by the specified method.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _methodCall(String methodName,
@@ -1548,6 +1553,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
+     *  @param string The string
      */
     protected void _trace(String string) {
         if (_trace != null) {
@@ -1563,6 +1569,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Add a record to the current trace corresponding to the start
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
+     *  @param node The node.
      */
     protected void _traceEnter(ASTPtRootNode node) {
         if (_trace != null) {
@@ -1578,6 +1585,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Add a record to the current trace corresponding to the completion
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
+     *  @param node The node.
      */
     protected void _traceLeave(ASTPtRootNode node) {
         if (_trace != null) {

@@ -1272,6 +1272,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  visiting each one of them, which will cause their token
      *  value to be determined.
      *  @param node The node.
+     *  @exception IllegalActionException If thrown while
+     *  generating a child.
      */
     protected void _generateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {

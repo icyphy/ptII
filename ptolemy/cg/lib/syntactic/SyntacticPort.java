@@ -89,9 +89,12 @@ public class SyntacticPort extends ComponentPort {
      *  @param port Port referred to by this SyntacticPort.
      *  @param direction True if input, false if output.
      *  @param name Name of this port.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
-     * */
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a port already in the container.
+     *
+     */
     public SyntacticPort(SyntacticNode container, Port port, boolean direction,
             String name) throws IllegalActionException,
             NameDuplicationException {
@@ -254,7 +257,8 @@ public class SyntacticPort extends ComponentPort {
      *
      *  @param port Port to find the width of.
      *  @return the width of the port or null if not a port.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  width.
      */
     static public Integer portWidth(Port port) throws IllegalActionException {
         if (!(port instanceof IOPort)) {

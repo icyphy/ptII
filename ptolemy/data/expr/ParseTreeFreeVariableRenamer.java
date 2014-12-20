@@ -57,6 +57,8 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
      *  @param dependentVariable The dependent variable.
      *  @param variableToRename The variable to rename.
      *  @param name The new name.
+     *  @exception IllegalActionException If thrown while visiting the
+     *  node.
      */
     public void renameVariables(ASTPtRootNode node, Variable dependentVariable,
             Variable variableToRename, String name)
@@ -192,6 +194,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
     /** Return the intersection of two collections.
      *  @param collection1 The first collection.
      *  @param collection2 The second collection.
+     *  @return The intersection of two collections.
      */
     protected Collection _intersection(Collection collection1,
             Collection collection2) {

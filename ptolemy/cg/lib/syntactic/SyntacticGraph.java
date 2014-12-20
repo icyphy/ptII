@@ -544,8 +544,10 @@ public class SyntacticGraph extends CompositeEntity {
      *  might still work with more constraints given a multiply connected
      *  graph.
      *
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while creating
+     *  a new node or setting the feedback.
+     *  @exception NameDuplicationException If thrown while creating
+     *  a new node or setting the feedback.
      */
     public void removeFeedback() throws IllegalActionException,
     NameDuplicationException {
@@ -650,8 +652,10 @@ public class SyntacticGraph extends CompositeEntity {
     /** Structure the graph into columns.
      *  This transformation imposes a partial order on the acyclic graph.
      *
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while setting the
+     *  identity or removing or making the connection.
+     *  @exception NameDuplicationException If thrown while setting the
+     *  identity or removing or making the connection.
      */
     public void structure() throws IllegalActionException,
     NameDuplicationException {
@@ -802,8 +806,11 @@ public class SyntacticGraph extends CompositeEntity {
 
     /** Insert permutation objects between columns.
      *
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while creating
+     *  a node, setting the permutation, or removing or making
+     *  connections.
+     *  @exception NameDuplicationException If thrown while creating
+     *  a node.
      */
     public void insertPermutations() throws IllegalActionException,
     NameDuplicationException {
@@ -884,11 +891,13 @@ public class SyntacticGraph extends CompositeEntity {
 
     /** Layout graph for display in columns.
      *
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  setting the location.
+     *  @exception NameDuplicationException If thrown while
+     *  setting the location.
      */
     public void layoutGraph() throws IllegalActionException,
-    NameDuplicationException {
+	     NameDuplicationException {
         double colpos = 10.0, coldepth = 10.0;
         for (SyntacticTerm termIt : _series) {
             coldepth = 10.0;
@@ -1139,7 +1148,7 @@ public class SyntacticGraph extends CompositeEntity {
      *
      * @param out The output port to connect.
      * @param in The input port to connect.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while connecting.
      */
     protected void _makeConnection(SyntacticPort out, SyntacticPort in)
             throws IllegalActionException {
@@ -1152,7 +1161,7 @@ public class SyntacticGraph extends CompositeEntity {
     /** Remove connection from SyntacticPorts in Syntactic Nodes.
      *
      *  @param port The port to disconnect.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while unlinking.
      */
     protected void _removeConnection(SyntacticPort port)
             throws IllegalActionException {
@@ -1166,7 +1175,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  @param ochan The output channel for port oport.
      *  @param iport The input port whose channel is to be determined.
      *  @return input channel on iport or null.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting 
+     *  the receivers.
      */
     protected Integer _getInputChannel(Port oport, int ochan, Port iport)
             throws IllegalActionException {
@@ -1214,7 +1224,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  @param iport The input port whose channel is to be determined.
      *  @param ichan The input channel for port iport.
      *  @return output channel on oport or null.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  remote receivers.
      */
     protected Integer _getOutputChannel(Port oport, Port iport, int ichan)
             throws IllegalActionException {

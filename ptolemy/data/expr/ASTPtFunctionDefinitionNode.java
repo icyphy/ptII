@@ -73,10 +73,17 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.Token
  */
 public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
+    /** Create a function definition node with an id.
+     *  @param id the id.
+     */
     public ASTPtFunctionDefinitionNode(int id) {
         super(id);
     }
 
+    /** Create a function definition node with a parser and an id.
+     *  @param p The parser
+     *  @param id the id
+     */
     public ASTPtFunctionDefinitionNode(PtParser p, int id) {
         super(p, id);
     }
@@ -97,6 +104,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     }
 
     /** Return the list of argument names.
+     *  @return The list of argument names.	
      */
     public List getArgumentNameList() {
         return _argList;

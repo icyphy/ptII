@@ -477,7 +477,9 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
 
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  adapter or generating the hardward initialization code for the 
+     *  components.
      */
     protected String _generateInitializeHardwareCode()
             throws IllegalActionException {
