@@ -46,7 +46,7 @@
   <!-- Used in BasicGraphFrame.java -->
   <property name="_importActionClassNames"
             class="ptolemy.data.expr.Parameter"
-            value="{&quot;ptolemy.vergil.basic.imprt.accessor.ImportAccessorAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.g4ltl.ImportG4LTLAction&quot;}"/>
+            value="{&quot;ptolemy.vergil.basic.imprt.accessor.ImportAccessorAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUForQSSAction&quot;, &quot;ptolemy.vergil.basic.imprt.g4ltl.ImportG4LTLAction&quot;}"/>
 
   <!-- Use the KIELER graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
