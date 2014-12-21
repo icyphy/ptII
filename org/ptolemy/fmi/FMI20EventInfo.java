@@ -47,9 +47,8 @@ import com.sun.jna.Structure;
  * a few opensource projects.</a>.</p>
  *
  * @author Christopher Brooks
-@version $Id$
-@since Ptolemy II 10.0
  * @version $Id$
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -84,9 +83,9 @@ public class FMI20EventInfo extends Structure {
      * @param nextEventTimeDefined C type: fmiBoolean
      * @param nextEventTime C type: fmiReal
      */
-    public FMI20EventInfo(byte newDiscreteStatesNeeded,
-	    byte terminateSimulation, byte nominalsOfContinuousStatesChanged,
-	    byte valuesOfContinuousStatesChanged, byte nextEventTimeDefined,
+    public FMI20EventInfo(int newDiscreteStatesNeeded,
+	    int terminateSimulation, int nominalsOfContinuousStatesChanged,
+	    int valuesOfContinuousStatesChanged, int nextEventTimeDefined,
 	    double nextEventTime) {
 	super();
 	this.newDiscreteStatesNeeded = newDiscreteStatesNeeded;
@@ -124,25 +123,34 @@ public class FMI20EventInfo extends Structure {
      */
     public static class ByValue extends FMI20EventInfo implements
 	    Structure.ByValue {
+
+	/** Create an instance that shares its memory with another
+	 *  FMU20EventInfo instance public ByReference(FMI20EventInfo.
+	 *  @param struct The FMI20EventInfo to be shared.
+	 */
+	public ByValue(FMI20EventInfo struct) {
+	    super(struct.getPointer(), 0);
+	}
+
     };
 
     // The fields below are in the order in which they are expected to be in the
     // C structure.
 
     /** C type: fmiBoolean. */
-    public byte newDiscreteStatesNeeded;
+    public int newDiscreteStatesNeeded;
 
     /** C type: fmiBoolean. */
-    public byte terminateSimulation;
+    public int terminateSimulation;
 
     /** C type: fmiBoolean. */
-    public byte nominalsOfContinuousStatesChanged;
+    public int nominalsOfContinuousStatesChanged;
 
     /** C type: fmiBoolean. */
-    public byte valuesOfContinuousStatesChanged;
+    public int valuesOfContinuousStatesChanged;
 
     /** C type: fmiBoolean. */
-    public byte nextEventTimeDefined;
+    public int nextEventTimeDefined;
 
     /** C type: fmiReal. */
     public double nextEventTime;
