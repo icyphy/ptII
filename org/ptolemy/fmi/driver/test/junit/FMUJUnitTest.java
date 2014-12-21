@@ -78,7 +78,7 @@ public class FMUJUnitTest {
   	        + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
         new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
-                true /*logging*/, ',', resultsFileName);
+                LOGGING, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
@@ -220,7 +220,7 @@ public class FMUJUnitTest {
                 + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
         new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1,
-                true /*logging*/, ',', resultsFileName);
+                LOGGING, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
@@ -364,6 +364,9 @@ public class FMUJUnitTest {
     }
 
     static String lineSeparator = "\n";
+
+    /** True if the FMU should be called with enableLogging set to true. */
+    static boolean LOGGING = false;
 
     static String topDirectory;
 
