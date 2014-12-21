@@ -1,0 +1,173 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MoC" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 6, 1184, 712}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 595]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{478.0, 297.5}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 45}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace with accessors">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[696.5625, 219.6875]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model presents a pure dataflow approach to a real-time accessor composition problem.&#10;&#10;We assume a host that provides a data stream that wants to insert and activate &#10;internet-obtained data at certain points. The host uses accessors to fetch the data.&#10;We assume no control over the length and content of internet data.&#10;&#10;Here, the goal is to assemble a song from a set of verse clips and internet data.&#10;The song is &quot;The Fox (What Does The Fox Say?) by Ylvis&#10;http://en.wikipedia.org/wiki/The_Fox_%28What_Does_the_Fox_Say%3F%29&#10;The animal sounds are from SeaWorld:  http://seaworld.org/en/animal-info/animal-sounds/&#10;&#10;Unfortunately, some problems arise:  &#10;1.  Late verse start:  Variable-length inserted data changes the starting times of the verse clips.&#10;2.  Too long:  Variable-length data changes the total run time. &#10;3.  Error handling.  Is that really a mouse?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 265.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires sound clips which can be downloaded from:&#10;http://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?&#10;&#10;Please turn your speakers on :)&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Latronico">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 550.0]">
+        </property>
+    </property>
+    <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays1.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.4375, 150.3125]">
+        </property>
+    </entity>
+    <entity name="ClipPlayer2" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays2.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[228.4375, 150.3125]">
+        </property>
+    </entity>
+    <entity name="ClipPlayer3" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays3.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[393.4375, 150.3125]">
+        </property>
+    </entity>
+    <entity name="ClipPlayer4" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays4.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Dog" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Dog.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Cat" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Cat.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Bird" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Bird.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Mouse?" class="ptolemy.actor.lib.javasound.ClipPlayer">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Panther.wav">
+        </property>
+        <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 215.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ClipPlayer.output" relation="relation4"/>
+    <link port="ClipPlayer2.trigger" relation="relation"/>
+    <link port="ClipPlayer2.output" relation="relation5"/>
+    <link port="ClipPlayer3.trigger" relation="relation2"/>
+    <link port="ClipPlayer3.output" relation="relation6"/>
+    <link port="ClipPlayer4.trigger" relation="relation3"/>
+    <link port="ClipPlayer4.output" relation="relation7"/>
+    <link port="Dog.trigger" relation="relation4"/>
+    <link port="Dog.output" relation="relation"/>
+    <link port="Cat.trigger" relation="relation5"/>
+    <link port="Cat.output" relation="relation2"/>
+    <link port="Bird.trigger" relation="relation6"/>
+    <link port="Bird.output" relation="relation3"/>
+    <link port="Mouse?.trigger" relation="relation7"/>
+</entity>

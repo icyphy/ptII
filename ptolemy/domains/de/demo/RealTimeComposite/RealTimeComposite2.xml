@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RealTimeComposite2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 965, 576}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 978, 615}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 458]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 498]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.0, 229.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.0, 249.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -49,12 +49,12 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 240.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 240.0]">
         </property>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -481,6 +481,30 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 355.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
+    <entity name="Discard2" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 170.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[230.0, 170.0]">
         </vertex>
@@ -515,13 +539,18 @@
         <vertex name="vertex1" value="[315.0, 240.0]">
         </vertex>
     </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Display.input" relation="relation"/>
     <link port="CurrentTime.output" relation="relation"/>
-    <link port="CurrentTime.trigger" relation="relation6"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
     <link port="Clock.output" relation="relation7"/>
     <link port="Clock.trigger" relation="relation5"/>
     <link port="BooleanSwitch.input" relation="relation2"/>
     <link port="BooleanSwitch.control" relation="relation2"/>
+    <link port="BooleanSwitch.trueOutput" relation="relation13"/>
     <link port="BooleanSwitch.falseOutput" relation="relation6"/>
     <link port="RealTimeComposite.trigger" relation="relation7"/>
     <link port="RealTimeComposite.output" relation="relation2"/>
@@ -529,6 +558,7 @@
     <link port="Clock2.trigger" relation="relation9"/>
     <link port="BooleanSwitch2.input" relation="relation4"/>
     <link port="BooleanSwitch2.control" relation="relation4"/>
+    <link port="BooleanSwitch2.trueOutput" relation="relation12"/>
     <link port="BooleanSwitch2.falseOutput" relation="relation10"/>
     <link port="RealTimeComposite2.trigger" relation="relation8"/>
     <link port="RealTimeComposite2.output" relation="relation4"/>
@@ -536,6 +566,8 @@
     <link port="TimedDelay2.output" relation="relation9"/>
     <link port="TimedDelay.input" relation="relation3"/>
     <link port="TimedDelay.output" relation="relation5"/>
+    <link port="Discard.input" relation="relation12"/>
+    <link port="Discard2.input" relation="relation13"/>
     <link relation1="relation6" relation2="relation3"/>
     <link relation1="relation10" relation2="relation11"/>
 </entity>
