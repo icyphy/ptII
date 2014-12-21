@@ -43,6 +43,7 @@ import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.ByteByReference;
+import com.sun.jna.ptr.IntByReference;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUModelExchange
@@ -250,10 +251,6 @@ public class FMUModelExchange extends FMUDriver {
             throw new RuntimeException("Could not instantiate model.");
         }
 
-        if (enableLogging) {
-            System.out.println("instantiatedSlave");
-        }
-
         // Should these be on the heap?
         final int numberOfStates = fmiModelDescription.numberOfContinuousStates;
         final int numberOfEventIndicators = fmiModelDescription.numberOfEventIndicators;
@@ -294,11 +291,11 @@ public class FMUModelExchange extends FMUDriver {
             eventInfo20 = new FMI20EventInfo();
 
             double relativeTolerance = 1e-4;
-            byte _toleranceControlled = (byte) 0; // fmiBoolean
+            int _toleranceControlled = 0; // fmiBoolean
 
             invoke(fmiModelDescription, "fmiSetupExperiment", new Object[] {
                     fmiComponent, _toleranceControlled, relativeTolerance,
-                    startTime, (byte) 1, endTime },
+                    startTime, 1, endTime },
                     "Failed to setup the experiment of the FMU: ");
 
             //invoke(setTime, new Object[] { fmiComponent, startTime },
@@ -313,14 +310,14 @@ public class FMUModelExchange extends FMUDriver {
                     "Failed to exit the initialization mode of the FMU:");
 
             // event iteration
-            eventInfo20.newDiscreteStatesNeeded = (byte) 1;
-            eventInfo20.terminateSimulation = (byte) 0;
-            System.out.println("FMUModelExchange: " + eventInfo20.toString());
-            while (eventInfo20.newDiscreteStatesNeeded == (byte) 1
-                    && !(eventInfo20.terminateSimulation == (byte) 1)) {
-                // update discrete states
-                eventInfo20Reference = new FMI20EventInfo.ByReference(
+
+            eventInfo20Reference = new FMI20EventInfo.ByReference(
                         eventInfo20);
+            eventInfo20Reference.newDiscreteStatesNeeded = 1;
+            eventInfo20Reference.terminateSimulation = 0;
+            while (eventInfo20Reference.newDiscreteStatesNeeded == 1
+                    && eventInfo20Reference.terminateSimulation == 0) {
+                // update discrete states
                 invoke(fmiModelDescription, "fmiNewDiscreteStates",
                         new Object[] { fmiComponent, eventInfo20Reference },
                         "could not set a new discrete state");
@@ -329,12 +326,12 @@ public class FMUModelExchange extends FMUDriver {
 
         double time = startTime;
 
-        if (eventInfo20 != null && eventInfo20.terminateSimulation != 0) {
+        if (eventInfo20Reference != null && eventInfo20Reference.terminateSimulation != 0) {
             System.out.println("Model requested terminate at t=" + time);
             endTime = time;
         }
 
-        if ((eventInfo20 != null && eventInfo20.terminateSimulation != 1)
+        if ((eventInfo20Reference != null && eventInfo20Reference.terminateSimulation != 1)
                 || _fmiVersion < 1.5) {
             if (_fmiVersion > 1.5) {
                 invoke(fmiModelDescription, "fmiEnterContinuousTimeMode",
@@ -373,12 +370,18 @@ public class FMUModelExchange extends FMUDriver {
                         .getFmiFunction("fmiGetDerivatives");
                 Function getEventIndicators = fmiModelDescription
                         .getFmiFunction("fmiGetEventIndicators");
+                Function enterEventMode = null;
+                if (_fmiVersion > 1.5) {
+                    enterEventMode = fmiModelDescription
+                        .getFmiFunction("fmiEnterEventMode");
+                }
                 Function setContinuousStates = fmiModelDescription
                         .getFmiFunction("fmiSetContinuousStates");
 
                 boolean stateEvent = false;
 
-                byte stepEvent = (byte) 0;
+                byte stepEventByte = (byte) 0;
+                int stepEventInt = 0;
                 // Loop until the time is greater than the end time.
                 while (time < endTime) {
                     invoke(getContinuousStates, new Object[] { fmiComponent,
@@ -400,8 +403,8 @@ public class FMUModelExchange extends FMUDriver {
                         timeEvent = eventInfo.upcomingTimeEvent == 1
                                 && eventInfo.nextEventTime < time;
                     } else {
-                        timeEvent = eventInfo20.nextEventTimeDefined == 1
-                                && eventInfo20.nextEventTime < time;
+                        timeEvent = eventInfo20Reference.nextEventTimeDefined == 1
+                                && eventInfo20Reference.nextEventTime < time;
                     }
                     if (timeEvent) {
                         time = eventInfo.nextEventTime;
@@ -447,12 +450,12 @@ public class FMUModelExchange extends FMUDriver {
                     // Check to see if we have completed the integrator step.
 
                     if (_fmiVersion < 1.5) {
-                        // Pass stepEvent in by reference. See
+                        // Pass stepEventByte in by reference. See
                         // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
-                        ByteByReference stepEventReference = new ByteByReference(
-                                stepEvent);
+                        ByteByReference stepEventByteReference = new ByteByReference(
+                                stepEventByte);
                         invoke(completedIntegratorStep, new Object[] {
-                                fmiComponent, stepEventReference },
+                                fmiComponent, stepEventByteReference },
                                 "Could not set complete integrator step, time was "
                                         + time + ": ");
 
@@ -461,21 +464,21 @@ public class FMUModelExchange extends FMUDriver {
                             preEventIndicators[i] = eventIndicators[i];
                         }
                     } else {
-                        // Pass stepEvent in by reference. See
+                        // Pass stepEventInt in by reference. See
                         // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
-                        ByteByReference stepEventReference = new ByteByReference(
-                                stepEvent);
-                        Byte terminateSimulation = (byte) 0;
-                        ByteByReference terminateSimulationReference = new ByteByReference(
+                        IntByReference stepEventIntReference = new IntByReference(
+                                stepEventInt);
+                        int terminateSimulation = 0;
+                        IntByReference terminateSimulationReference = new IntByReference(
                                 terminateSimulation);
 
                         invoke(completedIntegratorStep, new Object[] {
-                                fmiComponent, (byte) 1, /* noSetFMUStatePriorToCurrentPoint */
-                                stepEventReference,
+                                fmiComponent, 1 /* noSetFMUStatePriorToCurrentPoint */,
+                                stepEventIntReference,
                                 terminateSimulationReference },
                                 "Could not set complete integrator step, time was "
                                         + time + ": ");
-                        if (terminateSimulation != (byte) 0) {
+                        if (terminateSimulation !=  0) {
                             System.out
                                     .println("Termination requested: " + time);
                             break;
@@ -498,7 +501,13 @@ public class FMUModelExchange extends FMUDriver {
                     }
 
                     // Handle Events
-                    if (stateEvent || stepEvent != (byte) 0 || timeEvent) {
+                    if (stateEvent || stepEventByte != (byte) 0 || stepEventInt != 0 || timeEvent) {
+                        if (_fmiVersion > 1.5) {
+                            invoke(enterEventMode, new Object[] { fmiComponent},
+                                   "Could not enter event mode, time was "
+                                   + time + ": ");
+                        }
+
                         if (stateEvent) {
                             numberOfStateEvents++;
                             if (enableLogging) {
@@ -514,7 +523,7 @@ public class FMUModelExchange extends FMUDriver {
                             }
                         }
 
-                        if (stepEvent != (byte) 0) {
+                        if (stepEventByte != (byte) 0 || stepEventInt != 0 ) {
                             numberOfStepEvents++;
                             if (enableLogging) {
                                 System.out.println("step event at " + time);
@@ -545,13 +554,13 @@ public class FMUModelExchange extends FMUDriver {
                             }
                         } else {
                             // event iteration in one step, ignoring intermediate results
-                            eventInfo20.newDiscreteStatesNeeded = (byte) 1;
-                            eventInfo20.terminateSimulation = (byte) 0;
-                            while ((eventInfo20.newDiscreteStatesNeeded == (byte) 1)
-                                    && !(eventInfo20.terminateSimulation == (byte) 1)) {
+                            eventInfo20Reference.newDiscreteStatesNeeded = 1;
+                            eventInfo20Reference.terminateSimulation = 0;
+                            while ((eventInfo20Reference.newDiscreteStatesNeeded == 1)
+                                    && eventInfo20Reference.terminateSimulation == 0) {
                                 // update discrete states
-                                eventInfo20Reference = new FMI20EventInfo.ByReference(
-                                        eventInfo20);
+                                //eventInfo20Reference = new FMI20EventInfo.ByReference(
+                                //        eventInfo20);
                                 invoke(fmiModelDescription,
                                         "fmiNewDiscreteStates", new Object[] {
                                                 fmiComponent,
@@ -559,7 +568,7 @@ public class FMUModelExchange extends FMUDriver {
                                         "could not set a new discrete state");
                             }
 
-                            if (eventInfo20.terminateSimulation != (byte) 0) {
+                            if (eventInfo20Reference.terminateSimulation != 0) {
                                 System.out.println("Termination requested: "
                                         + time);
                                 break;
@@ -570,14 +579,14 @@ public class FMUModelExchange extends FMUDriver {
                                     new Object[] { fmiComponent },
                                     "could not enter continuous time mode:");
                             // check for change of value of states
-                            if ((eventInfo20.valuesOfContinuousStatesChanged == (byte) 1)
+                            if ((eventInfo20Reference.valuesOfContinuousStatesChanged == 1)
                                     && enableLogging) {
                                 System.out
                                         .println("continuous state values changed at t="
                                                 + time);
                             }
 
-                            if ((eventInfo20.nominalsOfContinuousStatesChanged == (byte) 1)
+                            if ((eventInfo20Reference.nominalsOfContinuousStatesChanged == 1)
                                     && enableLogging) {
                                 System.out
                                         .println("nominals of continuous state changed  at t="
