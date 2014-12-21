@@ -408,7 +408,15 @@ public class FMULog {
         // #<Type><valueReference#, where <Type> is one of
         // r, i, b or s. To print a #, use ##.
 
-        if (parameters != null) {
+        // Currently, parameters is always null because of issues with
+        // passing variadic callbacks.  This means that we can't
+        // do any parsing of the parameters.
+        if (parameters == null) {
+            // If the debug message has not been printed, then print now.
+            if (!_debug) {
+                System.out.println("FMULogger: status: " + status + " message: " + message);
+            }
+        } else {
             StringTokenizer tokenizer = new StringTokenizer(message, "%", false ); // Return delimiters
             ArrayList<Object> parameterList = new ArrayList<Object>();
             int offset = 0;
