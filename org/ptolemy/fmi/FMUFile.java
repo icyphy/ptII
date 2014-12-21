@@ -425,7 +425,14 @@ public class FMUFile {
 
 	    // Handle ModelExchange.
 	    implementation = document.getElementsByTagName("ModelExchange");
-	    if (implementation.getLength() > 1) {
+
+            // If the field has a ModelExchange tag, then set the modelExchange flag.
+            // This is needed by the FMI-2.0 Model Exchange tests in org/ptolemy/fmi.
+	    if (implementation.getLength() > 0) {
+                fmiModelDescription.modelExchange = true;
+	    }
+
+            if (implementation.getLength() > 1) {
 		System.out
 		        .println("Warning: FMU modelDescription provides more than one ModelExchange element");
 	    }
