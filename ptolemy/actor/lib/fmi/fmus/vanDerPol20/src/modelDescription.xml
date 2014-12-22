@@ -2,7 +2,7 @@
 <fmiModelDescription
   fmiVersion="2.0"
   modelName="van der Pol oscillator"
-  guid="{8c4e810f-3da3-4a00-8276-176fa3c9f000}"
+  guid="{8c4e810f-3da3-4a00-8276-176fa3c9f020}"
   numberOfEventIndicators="0">
 
 <CoSimulation

@@ -1,12 +1,12 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU
+ * Sample implementation of an FMU.
  * This demonstrates the use of all FMU variable types.
- * (c) 2010 QTronic GmbH
+ * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
 #define MODEL_IDENTIFIER valuesME1
-#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f004}"
+#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f014}"
 
 // define model size
 #define NUMBER_OF_REALS 2
@@ -42,6 +42,7 @@ const char* month[] = {
 };
 
 static fmiStatus setString(fmiComponent comp, fmiValueReference vr, fmiString value);
+
 // called by fmiInstantiateModel
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiInitialize
@@ -51,7 +52,7 @@ void setStartValues(ModelInstance *comp) {
     i(int_out_) = 0;
     b(bool_in_) = fmiTrue;
     b(bool_out_) = fmiFalse;
-    copy(string_in_, "a string");
+    copy(string_in_, "QTronic");
     copy(string_out_, month[0]);
 }
 
@@ -83,4 +84,3 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-

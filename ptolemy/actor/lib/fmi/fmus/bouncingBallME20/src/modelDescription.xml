@@ -2,7 +2,7 @@
 <fmiModelDescription
   fmiVersion="2.0"
   modelName="bouncingBallME20"
-  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f003}"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f023}"
   numberOfEventIndicators="1">
 
 <ModelExchange

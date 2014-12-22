@@ -3,7 +3,7 @@
   fmiVersion="1.0"
   modelName="valuesME1"
   modelIdentifier="valuesME1"
-  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f004}"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f014}"
   numberOfContinuousStates="1"
   numberOfEventIndicators="0">
 <ModelVariables>
@@ -32,11 +32,3 @@
      <String/>
   </ScalarVariable>
 </ModelVariables>
-<Implementation>
-  <CoSimulation_StandAlone>
-    <Capabilities
-      canHandleVariableCommunicationStepSize="true"
-      canHandleEvents="true"/>
-  </CoSimulation_StandAlone>
-</Implementation>
-</fmiModelDescription>

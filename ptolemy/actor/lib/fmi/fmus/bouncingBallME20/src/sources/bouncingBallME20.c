@@ -18,7 +18,7 @@
 
 // define class name and unique id
 #define MODEL_IDENTIFIER bouncingBallME20
-#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f003}"
+#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f023}"
 
 // define model size
 #define NUMBER_OF_REALS 6
