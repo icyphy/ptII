@@ -1,12 +1,11 @@
 /* ---------------------------------------------------------------------------*
  * Sample implementation of an FMU - increments an int counter every second.
- * (c) 2010 QTronic GmbH
- * See documentation/fmusdk_license.txt
+ * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
-// Define class name and unique id. Match the values in modelDescription.xml
+// define class name and unique id
 #define MODEL_IDENTIFIER incME1
-#define MODEL_GUID "{8c4e810f-3df3-dead-beef-176fa3c9f000}"
+#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f018}"
 
 // define model size
 #define NUMBER_OF_REALS 0
@@ -29,14 +28,12 @@
 // called by fmiInstantiateModel
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiInitialize
-#define setStartValues                  fmiFullName(_setStartValues)
 void setStartValues(ModelInstance *comp) {
     i(counter_) = 1;
 }
 
 // called by fmiInitialize() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-#define initialize                  fmiFullName(_initialize)
 void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->upcomingTimeEvent   = fmiTrue;
     eventInfo->nextEventTime       = 1 + comp->time;
@@ -44,17 +41,15 @@ void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 
 // called by fmiEventUpdate() after setting eventInfo to defaults
 // Used to set the next time event, if any.
-#define eventUpdate                  fmiFullName(_eventUpdate)
 void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     i(counter_) += 1;
-    if (i(counter_) == 13)
+    if (i(counter_) == 13) 
         eventInfo->terminateSimulation = fmiTrue;
     else {
         eventInfo->upcomingTimeEvent   = fmiTrue;
         eventInfo->nextEventTime       = 1 + comp->time;
     }
-}
+} 
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-

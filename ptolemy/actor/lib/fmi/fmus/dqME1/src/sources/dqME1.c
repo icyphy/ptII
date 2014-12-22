@@ -1,15 +1,14 @@
 /* ---------------------------------------------------------------------------*
  * Sample implementation of an FMU - the Dahlquist test equation.
  *
- *   der(x) = - k * x and x(0) = 1.
+ *   der(x) = - k * x and x(0) = 1. 
  *   Analytical solution: x(t) = exp(-k*t).
- *
- * (c) 2010 QTronic GmbH
+ * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
 #define MODEL_IDENTIFIER dqME1
-#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f000}"
+#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f010}"
 
 // define model size
 #define NUMBER_OF_REALS 3
@@ -59,9 +58,7 @@ fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
 
 // Used to set the next time event, if any.
 void eventUpdate(fmiComponent comp, fmiEventInfo* eventInfo) {
-}
+} 
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-
-

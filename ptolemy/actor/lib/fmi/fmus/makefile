@@ -146,7 +146,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball 
 install: subinstall jars
 
-# Update the .fmu files in the ../test/auto/directory.
+# Update the .fmu files in the ../test/auto/ directory.
+# This run unzips the .fmu files in ../test/auto/ and updates any changed files.
+#
+# If any of the non-shared library files change, then remove the .fmu file
+# from test/auto/ and run 'make update' for each platform
 update:
 	@if [ "x$(FMUS)" != "x" ]; then \
 		set $(FMUS); \
@@ -159,6 +163,15 @@ update:
 		    fi ; \
 		done ; \
 	fi
+
+update_1_0_CS:
+	@if [ "x$(FMUS_1_0_CS)" != "x" ]; then \
+		set $(FMUS_1_0_CS); \
+		for x do \
+			(cd $$x; make update;) \
+		done ; \
+	fi
+
 # Update the .fmu files in the ../test/auto/directory.
 update_1_0_ME:
 	@if [ "x$(FMUS_1_0_ME)" != "x" ]; then \
@@ -222,16 +235,6 @@ update_2_0_hfiles:
 	fi
 	echo "Be sure to update the fmus by removing the shared libraries for all platforms with: make clean_2_0; make update_2_0" 
 
-# Update the FMI-1.0 fmus from the FMUSDK
-update_1_0_cs:
-	@if [ "x$(FMUS_1_0_CS)" != "x" ]; then \
-		set $(FMUS_1_0_CS); \
-		for x do \
-			echo "Running template/mkfmudir10 $$x"; \
-			rm -rf $$x; template/mkfmudir10 $$x; \
-		done ; \
-	fi
-
 # Remove the FMI 2.0 fmus from the test/auto directory.
 # This rule is run when the .h files change
 clean_2_0:
@@ -266,6 +269,17 @@ fmucheck:
 			(cd $$x; fmuCheck $$x.fmu); \
 		done ; \
 	fi
+
+# Make the FMI-1.0 fmus from the FMUSDK.  This gets run rarely.
+make_1_0_cs:
+	@if [ "x$(FMUS_1_0_CS)" != "x" ]; then \
+		set $(FMUS_1_0_CS); \
+		for x do \
+			echo "Running template/mkfmudir10 $$x"; \
+			rm -rf $$x; template/mkfmudir10 $$x; \
+		done ; \
+	fi
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
