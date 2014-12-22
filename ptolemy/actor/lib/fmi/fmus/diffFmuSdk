@@ -1,0 +1,43 @@
+#!/bin/sh
+# A script that diffs the .c and modelDescription.xml files against those in FMUSDK.
+# In general, only the guid and the name should be different
+
+FMUSDK=$HOME/src/fmi/fmusdk2.0.3
+FMUSDK2=$HOME/src/fmi/fmusdk2
+
+FMUSDK10=$FMUSDK/fmu10/src/models
+FMUSDK210=$FMUSDK2/fmu10/src/models
+
+excludes="-I MODEL_IDENTIFIER -I modelIdentifier -I MODEL_GUID -I guid= -I modelName"
+
+models="bouncingball dq inc values vanDerPol"
+for model in $models
+do
+    # FMI-1.0 Co-Simulation
+    cfile=$model/src/sources/$model.c
+    if [ -f $cfile ]; then
+        set -x
+        diff -rwb $excludes $FMUSDK10/$model/$model.c $cfile
+        diff -rwb $excludes $FMUSDK10/$model/modelDescription.xml $model/src/modelDescription.xml
+        #diff -rwb $FMUSDK210/fmuTemplate.c $model/src/sources/fmuTemplate.c
+        #diff -rwb $FMUSDK210/fmuTemplate.h $model/src/sources/fmuTemplate.h
+        set +x
+    else
+        echo "$0: $cfile does not exist?"
+    fi
+
+    # FMI-1.0 Model Exchange
+    cfile=${model}ME1/src/sources/${model}ME1.c
+    if [ -f $cfile ]; then
+        set -x
+        diff -rwb $excludes $FMUSDK10/$model/$model.c $cfile
+        diff -rwb $excludes $FMUSDK10/$model/modelDescription.xml ${model}ME1/src/modelDescription.xml
+        #diff -rwb $FMUSDK210/fmuTemplate.c ${model}ME1/src/sources/fmuTemplate.c
+        #diff -rwb $FMUSDK210/fmuTemplate.h ${model}ME1/src/sources/fmuTemplate.h
+        set +x
+    else
+        echo "$0: $cfile does not exist?"
+    fi
+
+    
+done
