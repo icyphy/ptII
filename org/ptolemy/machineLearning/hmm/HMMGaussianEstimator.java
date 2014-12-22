@@ -249,10 +249,9 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected boolean _checkForConvergence(int iterations) {
-
-        if ((m_new[0] != m_new[0]) || (s_new[0] != s_new[0])
-                || (A_new[0] != A_new[0]) || (prior_new[0] != prior_new[0])) {
+    protected boolean _checkForConvergence(int iterations) { 
+        if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
+                || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
             // if no convergence in 10 iterations, issue warning message.
             if ((iterations >= _nIterations - 1)) {
                 // return the guess parameters

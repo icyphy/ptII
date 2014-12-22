@@ -325,8 +325,7 @@ public class HSMMMultiInputGenerator extends TypedAtomicActor {
             int trials = 0;
             double[][] ys = new double[_windowSize][_obsDimension];
             int [] xs = new int [_windowSize];
-            while (!validSequenceFound && trials < MAX_TRIALS) {
-                double cumulativePower = 0.0;
+            while (!validSequenceFound && trials < MAX_TRIALS) { 
                 for (int i = 0; i < _windowSize; i ++ ) {  
                     if (_firstIteration) {
                         // sample hidden state from prior
@@ -451,11 +450,7 @@ public class HSMMMultiInputGenerator extends TypedAtomicActor {
 
     /* Duration priors - nStates x nDurations*/
     protected double[] _durationPriors;
-
-    /* new duration distribution */
-    protected double[][] D_new = null;
-    /* initial duration distribution */
-    protected double[][] _D0 = null;
+  
     /* current duration distribution */
     protected double[][] _D = null;
     /* maximum duration ( in time steps)c  */

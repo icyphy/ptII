@@ -137,9 +137,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
                     "Parameter guess vectors need to have the same length.");
         }
 
-        int[] classifyStates = new int[_observations.length];
-
-        classifyStates = classifyHMM(_observations, _priors,
+        int[] classifyStates = classifyHMM(_observations, _priors,
                 _transitionMatrixEstimate);
 
         IntToken[] _outTokenArray = new IntToken[classifyStates.length];
