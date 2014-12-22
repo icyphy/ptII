@@ -349,6 +349,9 @@ public final class ModelPoly {
         // xMdl{t} = c0 + c1*dt + c2*dt^2 + ...
         // Start with c0.
         String res = String.format("%.4g", coeffs[0]);
+        StringBuilder res_sb = new StringBuilder();
+        // Initialize string builder with c0.
+        res_sb.append(res);
 
         if( _maxCoeffIdx > 0 ) {
 
@@ -365,19 +368,23 @@ public final class ModelPoly {
 
             // Add c1*dt.
             if( coeffs[1] != 0 ) {
-                res += String.format(" %+.4g*%s", coeffs[1], dtStr);
+                //res += String.format(" %+.4g*%s", coeffs[1], dtStr);
+                res = String.format(" %+.4g*%s", coeffs[1], dtStr);
+                res_sb.append(res);
             }
 
-            // Add higher-order terms.
+            // Add higher-order terms.        
             for( int ii=2; ii<=_maxCoeffIdx; ++ii ) {
                 if( coeffs[ii] != 0 ) {
-                    res += String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
+                    //res += String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
+                    res = String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
+                    res_sb.append(res);
                 }
             }
 
         }
 
-        return( res );
+        return( res_sb.toString() );
 
     }  // End method toString().
 
