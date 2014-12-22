@@ -29,7 +29,6 @@ package org.ptolemy.fmi;
 
 import java.util.LinkedList;
 
-import org.ptolemy.fmi.type.FMIRealType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -68,7 +67,6 @@ public class FMI20ContinuousStateDerivative {
     public FMI20ContinuousStateDerivative(
             FMIModelDescription fmiModelDescription, Node element) {
         String indexAttr;
-        this.fmiModelDescription = fmiModelDescription;
         // Get the index of the state derivative
         indexAttr = ((Element) element).getAttribute("index");
         try {
@@ -109,9 +107,6 @@ public class FMI20ContinuousStateDerivative {
 
     ///////////////////////////////////////////////////////////////////
     ////             public fields                                 ////
-
-    /** The Model description for this variable. */
-    public FMIModelDescription fmiModelDescription;
 
     /** The index of the state derivative. */
     public Integer index;
