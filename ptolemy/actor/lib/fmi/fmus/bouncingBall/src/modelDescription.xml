@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="bouncingBall"
+  modelIdentifier="bouncingBall"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f003}"
+  numberOfContinuousStates="2"
+  numberOfEventIndicators="1">
+<ModelVariables>
+  <ScalarVariable name="h" valueReference="0" description="height, used as state">
+     <Real start="1" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(h)" valueReference="1" description="velocity of ball">
+     <Real/>
+  </ScalarVariable> 
+  <ScalarVariable name="v" valueReference="2" description="velocity of ball, used as state">
+     <Real/>
+  </ScalarVariable>
+  <ScalarVariable name="der(v)" valueReference="3" description="acceleration of ball">
+     <Real/>
+  </ScalarVariable>
+  <ScalarVariable name="g" valueReference="4" description="acceleration of gravity"
+                  variability="parameter">
+     <Real start="9.81" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable name="e" valueReference="5" description="dimensionless parameter"
+                  variability="parameter">
+     <Real start="0.7" fixed="true"/>
+  </ScalarVariable>
+</ModelVariables>
+
