@@ -3,7 +3,7 @@
   fmiVersion="1.0"
   modelName="dqME1"
   modelIdentifier="dqME1"
-  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f000}"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f010}"
   numberOfContinuousStates="1"
   numberOfEventIndicators="0">
 <ModelVariables>
@@ -18,11 +18,3 @@
   </ScalarVariable>
 </ModelVariables>
 
-<Implementation>
-  <CoSimulation_StandAlone>
-    <Capabilities
-      canHandleVariableCommunicationStepSize="true"
-      canHandleEvents="true"/>
-  </CoSimulation_StandAlone>
-</Implementation>
-</fmiModelDescription>

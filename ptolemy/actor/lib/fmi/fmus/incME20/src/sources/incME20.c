@@ -1,11 +1,11 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - incME20rements an int counter every second.
+ * Sample implementation of an FMU - increments an int counter every second.
  * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
 #define MODEL_IDENTIFIER incME20
-#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f008}"
+#define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f028}"
 
 // define model size
 #define NUMBER_OF_REALS 0

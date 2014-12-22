@@ -11,7 +11,7 @@
 
 // define class name and unique id
 #define MODEL_IDENTIFIER vanDerPol20
-#define MODEL_GUID "{8c4e810f-3da3-4a00-8276-176fa3c9f000}"
+#define MODEL_GUID "{8c4e810f-3da3-4a00-8276-176fa3c9f020}"
 
 // define model size
 #define NUMBER_OF_REALS 5

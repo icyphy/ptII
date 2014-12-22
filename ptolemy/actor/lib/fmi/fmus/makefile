@@ -33,9 +33,12 @@ ME =		ptolemy/actor/lib/fmi/fmus
 
 # Co-simulation FMUS.
 
+# Co-simulation FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
+FMUS_1_0_CS = bouncingBall dq inc values vanDerPol
+
 # Co-simulation FMUs that have a modelDescription.xml file that has fmiVersion < 2.0.  Typically, this is 1.0 and 1.5.
 # 1.5 is the Ptolemy-specific prototypes.
-FMUS_PRE_2_0_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
+FMUS_PRE_2_0_CS =	$(FMUS_1_0_CS) ballDynamics helloWorld levelStairs onOffSupervisor \
 		stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
@@ -218,6 +221,16 @@ update_2_0_hfiles:
 		done ; \
 	fi
 	echo "Be sure to update the fmus by removing the shared libraries for all platforms with: make clean_2_0; make update_2_0" 
+
+# Update the FMI-1.0 fmus from the FMUSDK
+update_1_0_cs:
+	@if [ "x$(FMUS_1_0_CS)" != "x" ]; then \
+		set $(FMUS_1_0_CS); \
+		for x do \
+			echo "Running template/mkfmudir10 $$x"; \
+			rm -rf $$x; template/mkfmudir10 $$x; \
+		done ; \
+	fi
 
 # Remove the FMI 2.0 fmus from the test/auto directory.
 # This rule is run when the .h files change

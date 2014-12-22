@@ -2,7 +2,7 @@
 <fmiModelDescription
   fmiVersion="2.0"
   modelName="valuesME20"
-  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f004}"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f034}"
   numberOfEventIndicators="0">
 
 <ModelExchange

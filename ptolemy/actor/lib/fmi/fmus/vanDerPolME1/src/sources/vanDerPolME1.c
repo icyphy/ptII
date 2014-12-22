@@ -1,18 +1,17 @@
 /* ---------------------------------------------------------------------------*
+ * Copyright QTronic GmbH. All rights reserved.
  * Sample implementation of an FMU - the Van der Pol oscillator.
  * See http://en.wikipedia.org/wiki/Van_der_Pol_oscillator
- *
+ *  
  *   der(x0) = x1
  *   der(x1) = mu * ((1 - x0 ^ 2) * x1) - x0;
  *
  *   start values: x0=2, x1=0, mue=1
- *
- * (c) 2011 QTronic GmbH
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
 #define MODEL_IDENTIFIER vanDerPolME1
-#define MODEL_GUID "{8c4e810f-3da3-4a00-8276-176fa3c9f000}"
+#define MODEL_GUID "{8c4e810f-3da3-4a00-8276-176fa3c9f010}"
 
 // define model size
 #define NUMBER_OF_REALS 5
@@ -67,7 +66,7 @@ fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
 
 // Used to set the next time event, if any.
 void eventUpdate(fmiComponent comp, fmiEventInfo* eventInfo) {
-}
+} 
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

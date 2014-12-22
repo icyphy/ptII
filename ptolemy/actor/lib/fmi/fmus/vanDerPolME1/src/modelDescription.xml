@@ -2,8 +2,8 @@
 <fmiModelDescription
   fmiVersion="1.0"
   modelName="van der Pol oscillator"
-  modelIdentifier="vanDerPolME1"
-  guid="{8c4e810f-3da3-4a00-8276-176fa3c9f000}"
+  modelIdentifier="vanDerPol"
+  guid="{8c4e810f-3da3-4a00-8276-176fa3c9f010}"
   numberOfContinuousStates="2"
   numberOfEventIndicators="0">
 <ModelVariables>
@@ -23,11 +23,3 @@
      <Real start="1" fixed="true"/>
   </ScalarVariable>
 </ModelVariables>
-<Implementation>
-  <CoSimulation_StandAlone>
-    <Capabilities
-      canHandleVariableCommunicationStepSize="true"
-      canHandleEvents="true"/>
-  </CoSimulation_StandAlone>
-</Implementation>
-</fmiModelDescription>
