@@ -3,7 +3,7 @@
   fmiVersion="1.0"
   modelName="incME1"
   modelIdentifier="incME1"
-  guid="{8c4e810f-3df3-dead-beef-176fa3c9f000}"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f018}"
   numberOfContinuousStates="0"
   numberOfEventIndicators="0">
 <ModelVariables>
@@ -11,4 +11,3 @@
      <Integer start="1" fixed="true"/>
   </ScalarVariable>
 </ModelVariables>
-</fmiModelDescription>
