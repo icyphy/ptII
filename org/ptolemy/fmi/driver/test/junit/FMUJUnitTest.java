@@ -242,7 +242,7 @@ public class FMUJUnitTest {
     public void modelExchange(String testName) throws Exception {
         modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName
                 + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
-                        + testName + "_me.csv");
+                        + testName + ".csv");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
@@ -250,7 +250,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeBouncingBall() throws Exception {
-        modelExchange("bouncingBall");
+        modelExchange("bouncingBallME1");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
@@ -258,7 +258,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeBouncingBall20() throws Exception {
-        modelExchange("bouncingBall20");
+        modelExchange("bouncingBallME20");
     }
 
     /** Run the dq model exchange functional mock-up unit test.
@@ -266,7 +266,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeDq() throws Exception {
-        modelExchange("dq");
+        modelExchange("dqME1");
     }
 
         /** Run the dq model exchange functional mock-up unit test.
@@ -274,7 +274,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeDq20() throws Exception {
-        modelExchange("dq20");
+        modelExchange("dqME20");
     }
 
     /** Run the inc model exchange functional mock-up unit test.
@@ -282,7 +282,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeInc() throws Exception {
-        modelExchange("inc");
+        modelExchange("incME1");
     }
     
     /** Run the inc model exchange functional mock-up unit test.
@@ -290,7 +290,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeInc20() throws Exception {
-        modelExchange("inc20");
+        modelExchange("incME20");
     }
 
     /** Run the values model exchange functional mock-up unit test.
@@ -298,7 +298,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeValues() throws Exception {
-        modelExchange("values");
+        modelExchange("valuesME1");
     }
 
     /** Run the values model exchange functional mock-up unit test.
@@ -306,7 +306,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeValues20() throws Exception {
-        modelExchange("values20");
+        modelExchange("valuesME20");
     }
 
     /** Run the vanDerPol model exchange functional mock-up unit test.
@@ -314,7 +314,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeVanDerPol() throws Exception {
-        modelExchange("vanDerPol");
+        modelExchange("vanDerPolME1");
     }
 
     /** Run the vanDerPol model exchange functional mock-up unit test.
@@ -322,7 +322,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeVanDerPol20() throws Exception {
-        modelExchange("vanDerPol20");
+        modelExchange("vanDerPolME20");
     }
 
     /** Run FMI model exchange tests.
