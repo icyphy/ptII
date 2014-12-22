@@ -48,7 +48,7 @@ import org.w3c.dom.Node;
  * </p>
  *
  * @author Thierry S. Nouidui
- * @version $Id: FMI20ContinuousStateDerivative.java 68428 2014-02-18 19:45:46Z cxh $
+ * @version $Id: FMI20Output.java 68428 2014-02-18 19:45:46Z cxh $
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -65,7 +65,6 @@ public class FMI20Output {
      */
     public FMI20Output(FMIModelDescription fmiModelDescription, Node element) {
         String indexAttr;
-        this.fmiModelDescription = fmiModelDescription;
         // Get the index of the output
         indexAttr = ((Element) element).getAttribute("index");
         try {
@@ -102,9 +101,6 @@ public class FMI20Output {
 
     ///////////////////////////////////////////////////////////////////
     ////             public fields                                 ////
-
-    /** The Model description for this variable. */
-    public FMIModelDescription fmiModelDescription;
 
     /** The index of the output derivative. */
     public Integer index;
