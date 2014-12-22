@@ -103,7 +103,7 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
 
         standardDeviation = new TypedIOPort(this, "standardDeviation", false,
                 true); 
-        
+
         mean = new TypedIOPort(this, "mean", false, true);
 
         meanVectorGuess = new Parameter(this, "meanVectorGuess");
@@ -243,16 +243,14 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
 
         boolean nanDetected = false;
         for (int i = 0; i < m_new.length; i++) {
-            if ((m_new[i] != m_new[i]) || (s_new[i] != s_new[i])
-                    || (A_new[i][i] != A_new[i][i])
-                    || (prior_new[i] != prior_new[i]) || (D_new[i] != D_new[i])) {
+            if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
+                    || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
                 nanDetected = true;
                 break;
             }
         }
-        if (nanDetected) {
-
-            if (D_new[0] != D_new[0]) {
+        if (nanDetected) { 
+            if (Double.isNaN(D_new[0][0])) {
                 D_new = _D0;
             }
 
@@ -339,7 +337,6 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     @Override
     protected void _updateEstimates() {
         _transitionMatrix = A_new;
-        _sigma = _sigma0;
         //_sigma = s_new; 
         _mu = (m_new);
         _priorIn = prior_new; // set to the original priors

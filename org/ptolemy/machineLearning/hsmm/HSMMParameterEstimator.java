@@ -220,6 +220,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             _durationPriors[i] = ((DoubleToken) (dT).getElement(i))
                     .doubleValue();
         } 
+        _maxDuration = ((IntToken) maxStateDuration.getToken()).intValue(); 
         DoubleMatrixToken m =((DoubleMatrixToken) durationProbabilities
                 .getToken());
         if (m==null) {
@@ -632,10 +633,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     protected double[] _dPriors0 = null;
     /* maximum duration ( in time steps)c  */
-    protected int _maxDuration;
-
-
-    protected int _obsDimension;
+    protected int _maxDuration; 
 
     protected List<Double> _likelihoodHistory;
 }

@@ -172,8 +172,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
         super.fire();
 
         if (input.hasToken(0)) {
-            // Read input ports
-
+            // Read input ports 
             Token observationArray = input.get(0);
             _classificationLength = ((ArrayToken) observationArray).length();
             if (((ArrayToken)observationArray).getElementType().isCompatible(BaseType.DOUBLE)) {
