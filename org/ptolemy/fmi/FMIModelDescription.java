@@ -132,12 +132,6 @@ public class FMIModelDescription {
     public boolean modelExchange;
 
     /**
-     * If true, then the FMU is intended for model exchange, with QSS
-     * integrator.
-     */
-    public boolean qssIntegration;
-
-    /**
      * The FMI modelIdentifier, typically the value of the modelIdentifier
      * attribute from a .fmu file. The modelIdentifier is the basename for the
      * shared library.
