@@ -179,7 +179,7 @@ public class QSSToken extends DoubleToken {
     @Override
     public String toString() {
     	String s = super.toString();
-    	s += ". Derivatives = " + derivativeValues().toString() + ".";
+    	s += ". Higher order derivatives = " + derivativeValues().toString() + ".";
     	return s;
     }
 
