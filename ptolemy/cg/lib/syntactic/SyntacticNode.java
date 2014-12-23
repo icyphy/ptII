@@ -248,8 +248,11 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @param port Port to add
      *  @param isin True if input, False if output.
      *  @return number of SyntacticPorts added (= width).
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while getting
+     *  the port width, creating a new port, creating a new
+     *  StringAttribute or setting the expression.
+     *  @exception NameDuplicationException If thrown while
+     *  creating a new port.
      */
     public int addPorts(Port port, boolean isin) throws IllegalActionException,
     NameDuplicationException {
@@ -283,12 +286,14 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Represent an exterior port with a purely syntactic Node.
      *
      *  @param port The port to represent on the node.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  creating a new port, creating a new cardinal attribute
+     *  or setting the cardinal expression.
+     *  @exception NameDuplicationException If thrown while
+     *  creating a new port or creating a new cardinal attribute.
      */
     public void representExteriorPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
-
+            NameDuplicationException {
         if (port instanceof IOPort) {
             IOPort ioport = (IOPort) port;
             int width = 1;//ioport.getWidthInside();
@@ -338,9 +343,12 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Set node as purely syntactic, not representing any Entity.
      *  @param inputs Number of inputs.
      *  @param outputs Number of outputs.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
-     * */
+     *  @exception IllegalActionException If thrown while
+     *  creating a new port, creating a new cardinal attribute
+     *  or setting the cardinality.
+     *  @exception NameDuplicationException If thrown while
+     *  creating a new port or creating a new cardinal attribute.
+     */
     public void setSyntactic(int inputs, int outputs)
             throws IllegalActionException, NameDuplicationException {
         _isInitial = inputs == 0;
@@ -367,11 +375,15 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
     /** Set node as an identity.
      *
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
+     *  @exception NameDuplicationException  If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
      */
     public void setIdentity() throws IllegalActionException,
-    NameDuplicationException {
+             NameDuplicationException {
         setSyntactic(1, 1);
         _nodeType = NodeType.IDENTITY;
         _attachText("_iconDescription", _identityIcon);
@@ -379,8 +391,12 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
     /** Set node as a feedback node in specified direction, true being feed out.
      *  @param direction The direction to make the feedback node.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
+     *  @exception NameDuplicationException  If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
      */
     public void setFeedback(boolean direction) throws IllegalActionException,
     NameDuplicationException {
@@ -399,8 +415,12 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  The true direction splits, the false merges.
      *  @param direction The direction to make the mediator node.
      *  @param valence The amount of endpoints on the opposite side.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
+     *  @exception NameDuplicationException  If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
      */
     public void setMediator(boolean direction, int valence)
             throws IllegalActionException, NameDuplicationException {
@@ -422,8 +442,12 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
     /** Set node as a initial or terminal node in specified direction, true being out.
      *  @param direction The direction to make the cap node.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
+     *  @exception NameDuplicationException  If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
      */
     public void setCap(boolean direction) throws IllegalActionException,
     NameDuplicationException {
@@ -438,8 +462,12 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
     /** Set node as a bijective permutation node with a specified permutation.
      *  @param permutation The permutation to represent as the node.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
+     *  @exception NameDuplicationException  If thrown while
+     *  setting the node as purely syntactic, not representing
+     *  any Entity.
      */
     public void setPermutation(int permutation[])
             throws IllegalActionException, NameDuplicationException {
@@ -533,8 +561,11 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Set the location of the node in layout.
      *  @param x The x-coordinate
      *  @param y The y-coordinate
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while
+     *  creating a new location or setting the coordinates
+     *  of the location.
+     *  @exception NameDuplicationException If thrown
+     *  while creating a new location.
      */
     public void setLocation(double x, double y) throws IllegalActionException,
     NameDuplicationException {
@@ -954,9 +985,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         SyntacticPort sport = null;
         try {
             sport = _outputs.get(base.intValue() + offset);
-        }
-
-        catch (IndexOutOfBoundsException ex) {
+        } catch (IndexOutOfBoundsException ex) {
+	    // Ignored.
         }
 
         return sport;
@@ -965,8 +995,10 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Generate icon for permutation node.
      *  @param permutation Array of permutation values.
      *  @return svg code for generated icon.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If thrown while creating
+     *  a new variable with the name "_portSpread".
+     *  @exception NameDuplicationException If thrown while creating
+     *  a new variable with the name "_portSpread".*sh
      */
     protected String _makePermutationIcon(int permutation[])
             throws IllegalActionException, NameDuplicationException {

@@ -708,6 +708,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      * parse tree node is true.  If it is false, then throw a new
      * InternalErrorException that describes the node that includes
      * the given message.
+     * @param flag If false, then throw an InternalErrorException
+     * @param node The node
+     * @param message The message included in the exception
      */
     protected void _assert(boolean flag, ASTPtRootNode node, String message) {
         if (!flag) {
