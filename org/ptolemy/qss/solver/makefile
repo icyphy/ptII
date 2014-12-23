@@ -1,6 +1,6 @@
-# Makefile for Quantized State Systems Actors.
+# Makefile for Quantized State Systems solver.
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69601 2014-07-30 13:51:01Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2014 The Regents of the University of California.
@@ -30,12 +30,12 @@
 ##########################################################################
 
 # Root of Ptolemy II directory
-ROOT = ../../..
+ROOT = ../../../..
 
-DIRS = util test demo
+DIRS =
 
 # $(ME) is used in ptdir.mk
-ME = org/ptolemy/qss
+ME = org/ptolemy/qss/solver
 
 CLASSPATH =	$(ROOT)
 
@@ -47,12 +47,19 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = qss
+PTPACKAGE = solver
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	QSSIntegrator.java \
-	QSSVectorIntegrator.java
+	LIQSS1.java \
+	LIQSS2Fd.java \
+	QSS1.java \
+	QSS2Fd.java \
+	QSS2Pts.java \
+	QSS2Qts.java \
+	QSS3Fd.java \
+	QSS3Pts.java \
+	QSSBase.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -61,7 +68,7 @@ EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = solver utils
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
