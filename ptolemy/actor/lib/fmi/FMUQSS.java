@@ -192,11 +192,11 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 		// continues
 		// the event iteration at the initial time or switches to Continuous
 		// mode.
-		byte newDiscreteStatesNeeded = 1;
-		byte terminateSimulation = 0;
-		byte nominalsOfContinuousStatesChanged = 0;
-		byte valuesOfContinuousStatesChanged = 0;
-		byte nextEventTimeDefined = 0;
+		int newDiscreteStatesNeeded = 1;
+		int terminateSimulation = 0;
+		int nominalsOfContinuousStatesChanged = 0;
+		int valuesOfContinuousStatesChanged = 0;
+		int nextEventTimeDefined = 0;
 		double nextEventTime = 0;
 
 		// In FMI-2.0, this is a pointer to the structure, which is by
