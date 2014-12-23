@@ -149,6 +149,9 @@ public class FMIModelDescription {
 
     /** The list of continuous states. */
     public List<ContinuousState> continuousStates = new LinkedList<ContinuousState>();
+    
+    /** The list of continuous states names. */
+    public List<String> continuousStateNames = new LinkedList<String>();
 
     /** The list of state derivatives. */
     public List<FMI20ContinuousStateDerivative> continousStateDerivatives = new LinkedList<FMI20ContinuousStateDerivative>();
@@ -219,6 +222,10 @@ public class FMIModelDescription {
                 state.scalarVariable = modelVariables
                         .get(((FMIRealType) scalar.type).indexState - 1);
                 _continuousStates.put(i, state);
+                // Create a list that contains the names of the continuous states.
+                // This list is just for convenience and is used in FMUImport 
+                // to check if an input is a continuous state (see fire()).
+                continuousStateNames.add(state.name);              
                 count++;
             }
         }
@@ -232,7 +239,7 @@ public class FMIModelDescription {
         Iterator<ContinuousState> valueIterator = _continuousStates.values()
                 .iterator();
         while (valueIterator.hasNext()) {
-            continuousStates.add((ContinuousState) valueIterator.next());
+            continuousStates.add((ContinuousState) valueIterator.next()); 
         }
         numberOfContinuousStates = continuousStates.size();
     }
