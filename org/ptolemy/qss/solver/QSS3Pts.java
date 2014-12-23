@@ -334,7 +334,7 @@ public final class QSS3Pts
             }
             // Here, tMostRecent + dt < quantEvtTimeMax.
             predQuantEvtTime = tMostRecent.addUnchecked(dt);
-            if( predQuantEvtTime.compareTo(tMostRecent) == 1 ) {
+            if( predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
                 // Here, added {dt} and got a distinct, greater, time.
                 break;
             }

@@ -1179,7 +1179,7 @@ public abstract class QSSBase {
         throws Exception {
 
         // Check inputs.
-        if( nextSimTime.compareTo(_currSimTime) != 1 ) {
+        if( nextSimTime.compareTo(_currSimTime) < 1 ) {
             throw new IllegalArgumentException("Simulation time must advance");
         }
 
