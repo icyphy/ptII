@@ -228,8 +228,8 @@ public class IORelation extends ComponentRelation {
      *  @param except The port to exclude, or null to not
      *   exclude any ports.
      *  @return The receivers associated with this relation.
-     * @exception IllegalActionException If throwen while determining the cascade.
-     * @exception InvalidStateException
+     *  @exception IllegalActionException If thrown while determining
+     *  the cascade.
      */
     public Receiver[][] deepReceivers(IOPort except)
             throws /*InvalidStateException,*/IllegalActionException {
