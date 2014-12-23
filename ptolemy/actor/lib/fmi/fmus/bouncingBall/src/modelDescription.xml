@@ -28,4 +28,6 @@
      <Real start="0.7" fixed="true"/>
   </ScalarVariable>
 </ModelVariables>
+</fmiModelDescription>
+
 
