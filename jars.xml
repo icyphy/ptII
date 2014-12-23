@@ -183,6 +183,7 @@
     <include name="ptolemy/domains/ptinyos/demo/demo.jar" />
     <include name="ptolemy/domains/ptinyos/doc/doc.jar" />
     <include name="ptolemy/domains/ptinyos/ptinyos.jar" />
+    <include name="ptolemy/domains/qss/qss.jar" />
     <include name="ptolemy/domains/rendezvous/rendezvous.jar" />
     <include name="ptolemy/domains/rendezvous/demo/demo.jar" />
     <include name="ptolemy/domains/rendezvous/doc/doc.jar" />
@@ -4176,6 +4177,8 @@
 	 >
       <fileset dir="${basedir}">
         <include name="org/ptolemy/qss/*.class"/>
+        <include name="org/ptolemy/qss/solver/*.class"/>
+        <include name="org/ptolemy/qss/util/*.class"/>
       </fileset>
   </jar>
 
@@ -5091,6 +5094,15 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ptinyos/doc/*.htm"/>
       </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/qss/qss.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/qss/qss.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/qss/*.class"/>
+	<include name="ptolemy/domains/qss/lib/*.class"/>
     </jar>
 
     <!-- doc/codeDocVisualSense.jar -->

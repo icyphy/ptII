@@ -505,11 +505,14 @@ FULL_10_0_JARS = \
 	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
 
 FULL_11_0_JARS = \
+	org/ptolemy/qss/qss.jar \
+	org/ptolemy/qss/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar \
 	ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar \
 	ptolemy/actor/lib/jjs/modules/vertxBus/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/vertxBus/vertxBus.jar \
 	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar \
+	ptolemy/domains/qss/qss.jar \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTVERTX_JARS)
 
