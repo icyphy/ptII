@@ -34,43 +34,61 @@ ME =		ptolemy/actor/lib/fmi/fmus
 # Co-simulation FMUS.
 
 # Co-simulation FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
-FMUS_1_0_CS = bouncingBall dq inc values vanDerPol
+FMUSDK2_FMUS_1_0_CS = bouncingBall dq inc values vanDerPol
 
 # Co-simulation FMUs that have a modelDescription.xml file that has fmiVersion < 2.0.  Typically, this is 1.0 and 1.5.
 # 1.5 is the Ptolemy-specific prototypes.
-FMUS_PRE_2_0_CS =	$(FMUS_1_0_CS) ballDynamics helloWorld levelStairs onOffSupervisor \
+FMUS_PRE_2_0_CS =	$(FMUSDK2_FMUS_1_0_CS) ballDynamics helloWorld levelStairs onOffSupervisor \
 		stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
+
+# Co-simulation FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
+FMUSDK2_FMUS_2_0_CS = bouncingBall20 dq20 inc20 values20 vanDerPol20
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
-FMUS_2_0_CS =	bouncingBall20 bouncingBall20RC1 \
-		dq20 dq20RC1 heaterFlowResistance \
-		inc20 inc20RC1 inc20RC1pt \
+FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
+		dq20RC1 heaterFlowResistance \
+		inc20RC1 inc20RC1pt \
 		output20RC1pt scale20RC1pt \
 		scale20RC1 stairsA20RC1F pumpConstantSpeed tankOpen \
-		values20 values20RC1 \
-		vanDerPol20 vanDerPol20RC1 floor20pt\
+		values20RC1 \
+		vanDerPol20RC1 floor20pt\
 		inc20pt out20pt fmuA20pt scale20pt fmuB20pt fmuC20pt \
 		fmuD20pt
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
+# All the CS FMUSDK2 FMUs.
+FMUSDK2_FMUS_CS = $(FMUSDK2_FMUS_1_0_CS) $(FMUSDK2_FMUS_2_0_CS)
+
+
 ## Model Exchange FMUS.
 
 # FMUs that have a modelDescription.xml file that has fmiVersion < 2.0.  Typically, this is 1.0 and 1.5.
 # 1.5 is the Ptolemy-specific prototypes.
-FMUS_1_0_ME = bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1 
+# Model-exchange FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
+FMUSDK2_FMUS_1_0_ME = bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1 
 FMUS_PRE_2_0_ME = heaterFlowResistance pumpConstantSpeed tankOpen 
 
 # FMUs that have have fmiVersion >= 2.0
-# New Model Exchange FMUS should be added here.
-FMUS_2_0_ME = bouncingBallME20 dqME20 helloWorldME2 incME20 valuesME20 vanDerPolME20
 
-FMUS_ME =	$(FMUS_1_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
+# Model-exchange FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
+FMUSDK2_FMUS_2_0_ME = bouncingBallME20 dqME20 helloWorldME2 incME20 valuesME20 vanDerPolME20
+
+# New Model Exchange FMUS should be added here.
+FMUS_2_0_ME = helloWorldME2
+
+FMUS_ME =	$(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
 
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
+
+# All the ME FMUSDK2 FMUs.
+FMUSDK2_FMUS_ME = $(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME)
+
+# All the CS and ME FMUSDK2 FMUs.
+FMUSDK2_FMUS = $(FMUSDK2_FMUS_CS) $(FMUSDK2_FMUS_ME) 
 
 # FMI 2.0 FMUS
 FMUS_2_0 = $(FMUS_2_0_CS) $(FMUS_2_0_ME)
@@ -164,15 +182,19 @@ update:
 		done ; \
 	fi
 
+# Update just the FMI-1.0 CS files in../test/auto/.
 update_1_0_CS:
 	@if [ "x$(FMUS_1_0_CS)" != "x" ]; then \
 		set $(FMUS_1_0_CS); \
 		for x do \
-			(cd $$x; make update;) \
+			( cd $$x ; \
+			echo making update in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) clean update ;\
+			) \
 		done ; \
 	fi
 
-# Update the .fmu files in the ../test/auto/directory.
+# Update just the FMI-1.0 ME files in../test/auto/.
 update_1_0_ME:
 	@if [ "x$(FMUS_1_0_ME)" != "x" ]; then \
 		set $(FMUS_1_0_ME); \
@@ -182,6 +204,39 @@ update_1_0_ME:
 			echo making update in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) clean update ;\
 			) \
+		    fi ; \
+		done ; \
+	fi
+
+# Update just the FMUSDK CS and ME fmus
+update_fmusdk2:
+	@if [ "x$(FMUSDK2_FMUS)" != "x" ]; then \
+		set $(FMUSDK2_FMUS); \
+		for x do \
+			( cd $$x ; \
+			echo making update in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) clean update ;\
+			) \
+		done ; \
+	fi
+
+# Update the .fmu files in the $PTII/org/ptolemy/fmi/fmu/{cs,me}
+update_jfmi:
+	@if [ "x$(FMUSDK2_FMUS_CS)" != "x" ]; then \
+		set $(FMUSDK2_FMUS_CS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			echo "copying $$x/$$x.fmu $(ROOT)/org/ptolemy/fmi/fmu/cs/"; \
+			cp $$x/$$x.fmu $(ROOT)/org/ptolemy/fmi/fmu/cs/; \
+		    fi ; \
+		done ; \
+	fi
+	@if [ "x$(FMUSDK2_FMUS_ME)" != "x" ]; then \
+		set $(FMUSDK2_FMUS_ME); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			echo "copying $$x/$$x.fmu $(ROOT)/org/ptolemy/fmi/fmu/me/"; \
+			cp $$x/$$x.fmu $(ROOT)/org/ptolemy/fmi/fmu/me/; \
 		    fi ; \
 		done ; \
 	fi
@@ -234,6 +289,17 @@ update_2_0_hfiles:
 		done ; \
 	fi
 	echo "Be sure to update the fmus by removing the shared libraries for all platforms with: make clean_2_0; make update_2_0" 
+
+# Remove the FMUSDK2 fmus from the test/auto directory.
+# This rule is run when the .h files change
+clean_fmusdk2:
+	@if [ "x$(FMUSDK2_FMUS)" != "x" ]; then \
+		set $(FMUSDK2_FMUS); \
+		for x do \
+			echo "Removing ../test/auto/$$x.fmu"; \
+			rm ../test/auto/$$x.fmu; \
+		done ; \
+	fi
 
 # Remove the FMI 2.0 fmus from the test/auto directory.
 # This rule is run when the .h files change
