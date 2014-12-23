@@ -52,7 +52,7 @@ DOMAINS =	algebraic ca ci continuous \
 		$(PTMETROII_DIR) \
 		ontologies \
 		openmodelica \
-		petrinet rendezvous sysml \
+		petrinet qss rendezvous sysml \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos \
 		scr $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
@@ -93,6 +93,7 @@ PTAUXALLJARS = \
 		ptera/ptera.jar \
 		pthales/pthales.jar \
 		ptides/ptides.jar \
+		qss/qss.jar \
 		scr/scr.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		sysml/sysml.jar \
