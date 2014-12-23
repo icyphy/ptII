@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A token for QSS integration.
 
  @author Thierry S. Nouidui and Michael Wetter
- @version $Id: QSSToken.java 69608 2014-07-30 18:15:49Z cxh $
+ @version $Id$
  @since Ptolemy II 10
  @Pt.ProposedRating Red (mw)
  @Pt.AcceptedRating Red (mw)

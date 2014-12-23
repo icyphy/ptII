@@ -192,7 +192,7 @@ Principles for Heterogeneous Modeling and Design of Embedded Systems.
 EMSOFT, Salzburg, Austria, October, ACM.
 
 @author Thierry S. Nouidui based on DEDirector.java
-@version $Id: QSSDirector.java 69159 2014-05-08 23:32:34Z eal $
+@version $Id$
 @since Ptolemy 10
 @Pt.ProposedRating 
 @Pt.AcceptedRating 

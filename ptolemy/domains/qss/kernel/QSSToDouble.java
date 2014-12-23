@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  This actor converts a QSSToken to a double.  
 
  @author Thierry S. Nouidui
- @version $Id: QSSToDouble.java 69607 2014-07-30 17:07:26Z thn $
+ @version $Id$
  @Pt.ProposedRating Green (thn)
  @Pt.AcceptedRating Red (thn)
  */
