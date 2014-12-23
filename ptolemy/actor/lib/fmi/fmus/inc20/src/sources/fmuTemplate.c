@@ -99,6 +99,7 @@ static fmi2Status unsupportedFunction(fmi2Component c, const char *fName, int st
 }
 
 fmi2Status setString(fmi2Component comp, fmi2ValueReference vr, fmi2String value) {
+    fprintf(stderr, "~/src/ptII/ptolemy/actor/lib/fmi/fmus/inc20/src/sources/fmuTemplate.c setString\n");
     return fmi2SetString(comp, &vr, 1, &value);
 }
 
@@ -499,6 +500,7 @@ fmi2Status fmi2SetBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t
 fmi2Status fmi2SetString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2String value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
+    fprintf(stderr, "~/src/ptII/ptolemy/actor/lib/fmi/fmus/inc20/src/sources/fmuTemplate.c fmi2setString\n");
     if (invalidState(comp, "fmi2SetString", MASK_fmi2SetString))
         return fmi2Error;
     if (nvr>0 && nullPointer(comp, "fmi2SetString", "vr[]", vr))

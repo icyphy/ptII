@@ -51,6 +51,7 @@ fmi2Boolean isCategoryLogged(ModelInstance *comp, int categoryIndex);
 #ifndef FMI_COSIMULATION
 static fmi2Boolean invalidNumber(ModelInstance *comp, const char *f, const char *arg, int n, int nExpected) {
     if (n != nExpected) {
+        fprintf(stderr, "values20invalidNumber\n");
         comp->state = modelError;
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "%s: Invalid argument %s = %d. Expected %d.", f, arg, n, nExpected)
         return fmi2True;
@@ -63,6 +64,7 @@ static fmi2Boolean invalidState(ModelInstance *comp, const char *f, int statesEx
     if (!comp)
         return fmi2True;
     if (!(comp->state & statesExpected)) {
+        fprintf(stderr, "values20 fmuTemplate.c: 1<<10: %d, invalidState: %d, expected %d\n", 1<<10, comp->state, statesExpected);
         comp->state = modelError;
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "%s: Illegal call sequence.", f)
         return fmi2True;
@@ -72,6 +74,7 @@ static fmi2Boolean invalidState(ModelInstance *comp, const char *f, int statesEx
 
 static fmi2Boolean nullPointer(ModelInstance* comp, const char *f, const char *arg, const void *p) {
     if (!p) {
+        fprintf(stderr, "values20nullPointer\n");
         comp->state = modelError;
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "%s: Invalid argument %s = NULL.", f, arg)
         return fmi2True;
@@ -82,6 +85,7 @@ static fmi2Boolean nullPointer(ModelInstance* comp, const char *f, const char *a
 static fmi2Boolean vrOutOfRange(ModelInstance *comp, const char *f, fmi2ValueReference vr, int end) {
     if (vr >= end) {
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "%s: Illegal value reference %u.", f, vr)
+        fprintf(stderr, "values20vrOutOfRange\n");
         comp->state = modelError;
         return fmi2True;
     }
@@ -99,6 +103,7 @@ static fmi2Status unsupportedFunction(fmi2Component c, const char *fName, int st
 }
 
 fmi2Status setString(fmi2Component comp, fmi2ValueReference vr, fmi2String value) {
+    fprintf(stderr, "~/src/ptII/ptolemy/actor/lib/fmi/fmus/values20/src/sources/fmuTemplate.c setString\n");
     return fmi2SetString(comp, &vr, 1, &value);
 }
 
@@ -123,6 +128,7 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
                             fmi2Boolean visible, fmi2Boolean loggingOn) {
     // ignoring arguments: fmuResourceLocation, visible
     ModelInstance *comp;
+    fprintf(stderr, "values20fmi2Instantiate: start\n");
     if (!functions->logger) {
         return NULL;
     }
@@ -179,6 +185,7 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     comp->componentEnvironment = functions->componentEnvironment;
     comp->loggingOn = loggingOn;
     comp->state = modelInstantiated;
+    fprintf(stderr, "values20fmi2Instantiate: state: %d\n", comp->state);
     setStartValues(comp); // to be implemented by the includer of this file
     comp->isDirtyValues = 1; // because we just called setStartValues
 
@@ -190,7 +197,7 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     comp->eventInfo.nextEventTime = 0;
 
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2Instantiate: GUID=%s", fmuGUID)
-
+    fprintf(stderr, "values20fmi2Instantiate: end\n");
     return comp;
 }
 
@@ -199,8 +206,10 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fm
 
     // ignore arguments: stopTimeDefined, stopTime
     ModelInstance *comp = (ModelInstance *)c;
-    if (invalidState(comp, "fmi2SetupExperiment", MASK_fmi2SetupExperiment))
+    if (invalidState(comp, "fmi2SetupExperiment", MASK_fmi2SetupExperiment)) {
+        fprintf(stderr, "values20: fmi2SetupExperiment: invalidState\n");
         return fmi2Error;
+    }
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetupExperiment: toleranceDefined=%d tolerance=%g",
         toleranceDefined, tolerance)
 
@@ -499,6 +508,7 @@ fmi2Status fmi2SetBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t
 fmi2Status fmi2SetString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2String value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
+    fprintf(stderr, "~/src/ptII/ptolemy/actor/lib/fmi/fmus/values20/src/sources/fmuTemplate.c fmi2SetString\n");
     if (invalidState(comp, "fmi2SetString", MASK_fmi2SetString))
         return fmi2Error;
     if (nvr>0 && nullPointer(comp, "fmi2SetString", "vr[]", vr))
@@ -522,6 +532,7 @@ fmi2Status fmi2SetString (fmi2Component c, const fmi2ValueReference vr[], size_t
                 if (string) comp->functions->freeMemory(string);
                 comp->s[vr[i]] = comp->functions->allocateMemory(1 + strlen(value[i]), sizeof(char));
                 if (!comp->s[vr[i]]) {
+                    fprintf(stderr, "values20fmiSetString\n");
                     comp->state = modelError;
                     FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "fmi2SetString: Out of memory.")
                     return fmi2Error;
@@ -633,6 +644,7 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
     if (communicationStepSize <= 0) {
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR,
             "fmi2DoStep: communication step size must be > 0. Fount %g.", communicationStepSize)
+        fprintf(stderr, "values20 stepSize 0\n");
         comp->state = modelError;
         return fmi2Error;
     }
