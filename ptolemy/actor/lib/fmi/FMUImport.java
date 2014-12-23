@@ -639,10 +639,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 		    // vector.
 		    if ((_fmiVersion >= 2.0)
 			    && _fmiModelDescription.modelExchange
-			    && _fmiModelDescription.continuousStates
-			    .contains(input.port.getName())) {
-			_index = _fmiModelDescription.continuousStates
-				.indexOf(input.port.getName());
+			    && _fmiModelDescription.continuousStateNames
+			    .contains(input.scalarVariable.name)) {
+			_index = _fmiModelDescription.continuousStateNames
+				.indexOf(input.scalarVariable.name);
 			_newStates[_index] = ((DoubleToken) token)
 				.doubleValue();
 		    }
@@ -1172,10 +1172,14 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	// support the current platform.
 	FMIModelDescription fmiModelDescription = FMUFile
 		.parseFMUFile(fmuFileName);
-
-	// Assign the model exchange flag for correct import.
 	
+	if (modelExchange) {
+	    fmiModelDescription.modelExchange = true;
+	}
+
+	// Assign the model exchange flag for correct import
     fmiModelDescription.modelExchange = true;
+    
 	// FIXME: Use URLs, not files so that we can work from JarZip files.
 
 	// If a location is given as a URL, construct MoML to
