@@ -583,6 +583,8 @@ ALLPACKAGES = \
 	$(USER_PACKAGES) \
 	doc.doclets \
 	org.ptolemy.qss \
+	org.ptolemy.qss.solver \
+	org.ptolemy.qss.util \
 	org.ptolemy.ssm \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
@@ -626,6 +628,7 @@ ALLPACKAGES = \
 	ptolemy.domains.pthales.JNI \
 	ptolemy.domains.pthales.kernel \
 	ptolemy.domains.pthales.lib \
+	ptolemy.domains.qss.kernel \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
 	ptolemy.domains.scr \
