@@ -99,7 +99,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         playToCompletion.setTypeEquals(BaseType.BOOLEAN);
         playToCompletion.setExpression("false");
         
-        outputOnlyOnStop = new Parameter(this, "onlyOutputOnStop");
+        outputOnlyOnStop = new Parameter(this, "outputOnlyOnStop");
         outputOnlyOnStop.setTypeEquals(BaseType.BOOLEAN);
         outputOnlyOnStop.setExpression("false");
 
