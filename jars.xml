@@ -5103,6 +5103,7 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/qss/*.class"/>
 	<include name="ptolemy/domains/qss/lib/*.class"/>
+      </fileset>
     </jar>
 
     <!-- doc/codeDocVisualSense.jar -->
