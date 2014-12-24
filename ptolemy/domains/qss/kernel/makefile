@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/qss/kernel
 
-DIRS = 		solver util test demo
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,12 +44,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-#PTCLASSJAR = 	$(PTPACKAGE).jar
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	solver/solver.jar \
-	util/util.jar
+#PTCLASSALLJARS = \
+
 
 JSRCS = \
 	QSSDirector.java \
