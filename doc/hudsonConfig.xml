@@ -98,7 +98,7 @@ CERTI_HOST=localhost
 CERTI_HOME=/usr/local/certi
 CERTI_FED=/usr/local/certi/share/federations
 PTII=${WORKSPACE}
-LD_LIBRARY_PATH=${CERTI_HOME}/lib:${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab/recent/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:/usr/local/gcc-4.8.2/lib64:${LD_LIBRARY_PATH}
+LD_LIBRARY_PATH=${CERTI_HOME}/lib:${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab/recent/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:/usr/lib64:/usr/local/gcc-4.8.2/lib64:${LD_LIBRARY_PATH}
 CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
 DISPLAY=localhost:6.0
 OPENMODELICAHOME=/usr/local/openmodelica
@@ -303,6 +303,21 @@ ${FAILED_TESTS}
       </external-property>
     </entry>
     <entry>
+      <string>hudson-tasks-BuildTrigger</string>
+      <external-property>
+        <originalValue class="hudson.tasks.BuildTrigger">
+          <childProjects>ptII10</childProjects>
+          <threshold>
+            <name>SUCCESS</name>
+            <ordinal>0</ordinal>
+            <color>GREEN</color>
+          </threshold>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>false</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>builders</string>
       <describable-list-property>
         <originalValue class="hudson.util.DescribableList">
@@ -353,12 +368,10 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
               <verbosity>NORMAL</verbosity>
               <offline>false</offline>
               <snapshotUpdateMode>NORMAL</snapshotUpdateMode>
-              <profiles/>
               <recursive>true</recursive>
               <checksumMode>NORMAL</checksumMode>
               <failMode>NORMAL</failMode>
               <makeMode>NONE</makeMode>
-              <projects/>
               <settingsId>NONE</settingsId>
               <globalSettingsId>NONE</globalSettingsId>
               <toolChainsId>NONE</toolChainsId>
