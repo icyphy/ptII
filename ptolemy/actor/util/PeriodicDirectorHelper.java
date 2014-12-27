@@ -125,13 +125,15 @@ public class PeriodicDirectorHelper {
                 return currentTime;
             }
         }
-        if (time.isInfinite() || currentTime.compareTo(time) > 0) {
-            // Either the requested time is infinite or it is in the past.
+        // If the requested time is infinite, equal to current time, or in
+        // the past, then the respond with the next available firing.
+        if (time.isInfinite() || currentTime.compareTo(time) >= 0) {
+            // Either the requested time is infinite or it is in the past or present.
             Time result = currentTime.add(periodValue);
             return result;
         }
         Time futureTime = currentTime;
-        while (time.compareTo(futureTime) > 0) {
+        while (time.compareTo(futureTime) >= 0) {
             futureTime = futureTime.add(periodValue);
             if (futureTime.equals(time)) {
                 return time;

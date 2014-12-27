@@ -2,30 +2,28 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ABRO" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 22, 1022, 719}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 22, 1043, 719}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 609]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1557913351017">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{150.3315029907126, 207.4651067166464}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{150.33150299071255, 207.46510671664635}">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, -20.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This famous ABRO SyncCharts example, taken &#10;from &quot;Semantics of SyncCharts&quot; of Charles &#10;Andr&#231;, illustrates concurrency, hierarchy,&#10;normal termination and strong or weak aborts.&#10;Though not everything is natively supported&#10;by the modal model concept of Ptolemy (like &#10;conruccency or normal termination) it &#10;illustrates patterns to accomplish these lacks.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This famous ABRO SyncCharts example, taken &#10;from &quot;Semantics of SyncCharts&quot; of Charles &#10;Andrç, illustrates concurrency, hierarchy,&#10;normal termination and strong or weak aborts.&#10;Though not everything is natively supported&#10;by the modal model concept of Ptolemy (like &#10;conruccency or normal termination) it &#10;illustrates patterns to accomplish these lacks.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, 210.0]">
         </property>
@@ -193,8 +191,6 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-4.792289749929779">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
@@ -213,8 +209,6 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.060691485943004">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
             </relation>
             <link port="waiting.incomingPort" relation="relation"/>
             <link port="waiting.incomingPort" relation="relation3"/>
@@ -228,7 +222,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 65}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={528, 304, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={528, 262, 834, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -316,13 +310,12 @@
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="default"/>
                         </property>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -443,13 +436,12 @@
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                         </property>
-                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="default"/>
                         </property>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
                     <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
