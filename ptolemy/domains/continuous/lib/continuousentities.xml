@@ -62,7 +62,7 @@
 				class="ptolemy.actor.lib.MicrostepDelay"/>
 		<entity name="ResettableTimer"
 				class="ptolemy.actor.lib.ResettableTimer"/>
-		<entity name="Merge"
+		<entity name="ContinuousMerge"
                 class="ptolemy.domains.continuous.lib.ContinuousMerge"/>
 		<entity name="Discrete TimeDelay"
                 class="ptolemy.actor.lib.TimeDelay"/>
