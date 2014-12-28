@@ -314,7 +314,7 @@ public class FMUCoSimulation extends FMUDriver {
                 // fmiTerminateSlave calls free the slave for us.
                 Function freeSlaveInstance = fmiModelDescription
                         .getFmiFunction("fmiFreeSlaveInstance");
-                // In FMI-1.0, fmiFreeModelInstance() returns void.
+                // In FMI-1.0, fmiFreeSlaveInstance() returns void.
                 freeSlaveInstance.invoke(new Object[] { fmiComponent });
             } else {
                 invoke(fmiModelDescription, "fmiTerminate",
