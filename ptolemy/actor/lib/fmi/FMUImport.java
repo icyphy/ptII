@@ -2554,12 +2554,12 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	if (_fmiVersion < 2.0) {
 	    if (_fmiModelDescription.modelExchange) {
 		_fmiFreeModelInstanceFunction
-		.invokeInt(new Object[] { _fmiComponent });
+		.invoke(new Object[] { _fmiComponent });
 	    } else {
 		// fmiFreeSlaveInstance is a void function.
 		// No returned status.
 		_fmiFreeSlaveInstanceFunction
-		.invokeInt(new Object[] { _fmiComponent });
+		.invoke(new Object[] { _fmiComponent });
 	    }
 	} else {
 	    _fmiFreeInstanceFunction.invoke(new Object[] { _fmiComponent });
