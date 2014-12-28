@@ -312,21 +312,17 @@ public class FMUCoSimulation extends FMUDriver {
                         "Could not terminate slave: ");
                 // Don't throw an exception while freeing a slave.  Some
                 // fmiTerminateSlave calls free the slave for us.
-                Function freeSlave = fmiModelDescription
+                Function freeSlaveInstance = fmiModelDescription
                         .getFmiFunction("fmiFreeSlaveInstance");
-                int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
-                        new Object[] { fmiComponent })).intValue();
-                if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-                    new Exception("Warning: Could not free slave instance: "
-                            + fmiFlag).printStackTrace();
-                }
+                // In FMI-1.0, fmiFreeModelInstance() returns void.
+                freeSlaveInstance.invoke(new Object[] { fmiComponent });
             } else {
                 invoke(fmiModelDescription, "fmiTerminate",
                         new Object[] { fmiComponent },
                         "Could not terminate slave:");
-                invoke(fmiModelDescription, "fmiFreeInstance",
-                        new Object[] { fmiComponent },
-                        "Could not free the Co-Simulation instance:");
+                // In FMI-2.0, fmi2FreeInstance() returns void.
+                Function function = fmiModelDescription.getFmiFunction("fmiFreeInstance");
+                function.invoke(new Object[] { fmiComponent });
             }
 
         } finally {

@@ -610,24 +610,17 @@ public class FMUModelExchange extends FMUDriver {
                     // fmiTerminateSlave calls free the slave for us.
                     Function freeModelInstance = fmiModelDescription
                             .getFmiFunction("fmiFreeModelInstance");
-                    int fmiFlag = ((Integer) freeModelInstance.invoke(
-                            Integer.class, new Object[] { fmiComponent }))
-                            .intValue();
-                    if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-                        System.err
-                                .println("Warning: Could not free slave instance: "
-                                        + FMIModelDescription
-                                                .fmiStatusDescription(fmiFlag));
-                    }
+                    // In FMI-1.0, fmiFreeModelInstance() returns void.
+                    freeModelInstance.invoke(new Object[] { fmiComponent });
                 } else {
                     if (!(eventInfo20.terminateSimulation == 1)) {
                         invoke(fmiModelDescription, "fmiTerminate",
                                 new Object[] { fmiComponent },
                                 "Could not terminate: ");
                     }
-                    invoke(fmiModelDescription, "fmiFreeInstance",
-                            new Object[] { fmiComponent },
-                            "Could not free the Co-Simulation instance:");
+                    // In FMI-2.0, fmi2FreeInstance() returns void.
+                    Function function = fmiModelDescription.getFmiFunction("fmiFreeInstance");
+                    function.invoke(new Object[] { fmiComponent });
                 }
             } finally {
                 if (file != null) {
