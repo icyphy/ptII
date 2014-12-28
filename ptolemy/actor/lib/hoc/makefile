@@ -55,6 +55,7 @@ JSRCS = \
 	ApplyFunctionOverSequence.java \
 	Case.java \
 	CaseDirector.java \
+	CatchUpComposite.java \
 	ExecuteActor.java \
 	ExecuteCompositeActor.java \
 	IterateOverArray.java \
