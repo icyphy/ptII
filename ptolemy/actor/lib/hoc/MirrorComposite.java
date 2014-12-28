@@ -38,11 +38,14 @@ import ptolemy.kernel.util.Workspace;
 //// MirrorComposite
 
 /**
- A composite that contains one actor and mirror the ports and
- parameters of that actor. Differs from the base class as allows
- ports of type MirrorPort or ParameterMirrorPort to be added.
+ A composite that contains one actor and mirrors the ports and
+ parameters of that actor. This is identical to the base class
+ except that it requires its ports to be of type MirrorPort or
+ ParameterMirrorPort. That is, every port of this composite is
+ mirrored in the inside model, whereas the base class tolerates ports
+ that are not mirrored (typically instances of TypedIOPort).
 
- @author Edward A. Lee
+ @author Ilge Akkaya, Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
@@ -110,8 +113,8 @@ public class MirrorComposite extends ReflectComposite {
     ////                         protected methods                 ////
 
     /** Add a port to this actor. This overrides the base class to
-     *  mirror the new port in the contained actor, if there is one,
-     *  and to establish a connection to a port on the contained actor.
+     *  throw an exception if the port is not an instance of MirrorPort
+     *  or ParameterMirrorPort.
      *  @param port The TypedIOPort to add to this actor.
      *  @exception IllegalActionException If the port is not an instance
      *   of IteratePort, or the port has no name.
