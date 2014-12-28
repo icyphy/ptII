@@ -4,8 +4,8 @@
   modelName="Influenza"
   guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
   description=""
-  generationTool="OpenModelica Compiler 1.9.1+dev (r22153) (Bootstrapping version)"
-  generationDateAndTime="2014-09-05T09:49:20Z"
+  generationTool="OpenModelica Compiler 1.9.2+dev (r23912)"
+  generationDateAndTime="2014-12-28T08:47:08Z"
   variableNamingConvention="structured"
   numberOfEventIndicators="0">
   <ModelExchange
@@ -13,6 +13,19 @@
   </ModelExchange>
   <TypeDefinitions>
   </TypeDefinitions>
+  <LogCategories>
+    <Category name="logEvents" />
+    <Category name="logSingularLinearSystems" />
+    <Category name="logNonlinearSystems" />
+    <Category name="logDynamicStateSelection" />
+    <Category name="logStatusWarning" />
+    <Category name="logStatusDiscard" />
+    <Category name="logStatusError" />
+    <Category name="logStatusFatal" />
+    <Category name="logStatusPending" />
+    <Category name="logAll" />
+    <Category name="logFmi2Call" />
+  </LogCategories>
   <DefaultExperiment startTime="0.0" stopTime="1.0" tolerance="1e-06"/>
   <ModelVariables>
   <!-- Index of variable = "1" -->
@@ -21,7 +34,7 @@
     valueReference="0"
     variability="continuous"
     causality="local"
-    initial="exact">
+    initial="approx">
     <Real start="0.0"/>
   </ScalarVariable>
   <!-- Index of variable = "2" -->
@@ -30,7 +43,7 @@
     valueReference="1"
     variability="continuous"
     causality="local"
-    initial="exact">
+    initial="approx">
     <Real start="0.0"/>
   </ScalarVariable>
   <!-- Index of variable = "3" -->
@@ -39,7 +52,7 @@
     valueReference="2"
     variability="continuous"
     causality="local"
-    initial="exact">
+    initial="approx">
     <Real start="0.0"/>
   </ScalarVariable>
   <!-- Index of variable = "4" -->
@@ -48,7 +61,7 @@
     valueReference="3"
     variability="continuous"
     causality="local"
-    initial="exact">
+    initial="approx">
     <Real start="0.0"/>
   </ScalarVariable>
   <!-- Index of variable = "5" -->
@@ -57,7 +70,7 @@
     valueReference="4"
     variability="continuous"
     causality="local"
-    initial="exact">
+    initial="approx">
     <Real start="499000.0"/>
   </ScalarVariable>
   <!-- Index of variable = "6" -->
@@ -173,11 +186,11 @@
     <Outputs>
     </Outputs>
     <Derivatives>
-      <Unknown index="6" dependencies="1" dependenciesKind="fixed" />
-      <Unknown index="7" dependencies="2" dependenciesKind="fixed" />
-      <Unknown index="8" dependencies="3" dependenciesKind="fixed" />
-      <Unknown index="9" dependencies="4" dependenciesKind="fixed" />
-      <Unknown index="10" dependencies="5" dependenciesKind="fixed" />
+      <Unknown index="6" dependencies="2" dependenciesKind="dependent" />
+      <Unknown index="7" dependencies="3 5 2" dependenciesKind="dependent dependent dependent" />
+      <Unknown index="8" dependencies="2" dependenciesKind="dependent" />
+      <Unknown index="9" dependencies="2" dependenciesKind="dependent" />
+      <Unknown index="10" dependencies="3 5 2" dependenciesKind="dependent dependent dependent" />
     </Derivatives>
     <InitialUnknowns>
     </InitialUnknowns>

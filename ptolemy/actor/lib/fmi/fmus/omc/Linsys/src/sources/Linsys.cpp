@@ -40,31 +40,130 @@ using namespace sfmi;
 #define _A_1_1__ 7 
 #define _A_1_1_ (data->real_vars[7]) 
 
-#define PRE_x_0__ 0 
-#define PRE_x_0_ (data->pre_real_vars[0]) 
-#define PRE_x_1__ 1 
-#define PRE_x_1_ (data->pre_real_vars[1]) 
-#define PRE_DER_x_0__ 2 
-#define PRE_DER_x_0_ (data->pre_real_vars[2]) 
-#define PRE_DER_x_1__ 3 
-#define PRE_DER_x_1_ (data->pre_real_vars[3]) 
-#define PRE_A_0_0__ 4 
-#define PRE_A_0_0_ (data->pre_real_vars[4]) 
-#define PRE_A_0_1__ 5 
-#define PRE_A_0_1_ (data->pre_real_vars[5]) 
-#define PRE_A_1_0__ 6 
-#define PRE_A_1_0_ (data->pre_real_vars[6]) 
-#define PRE_A_1_1__ 7 
-#define PRE_A_1_1_ (data->pre_real_vars[7]) 
+#define _PRE_x_0__ 0 
+#define _PRE_x_0_ (data->pre_real_vars[0]) 
+#define _PRE_x_1__ 1 
+#define _PRE_x_1_ (data->pre_real_vars[1]) 
+#define _PRE_DER_x_0__ 2 
+#define _PRE_DER_x_0_ (data->pre_real_vars[2]) 
+#define _PRE_DER_x_1__ 3 
+#define _PRE_DER_x_1_ (data->pre_real_vars[3]) 
+#define _PRE_A_0_0__ 4 
+#define _PRE_A_0_0_ (data->pre_real_vars[4]) 
+#define _PRE_A_0_1__ 5 
+#define _PRE_A_0_1_ (data->pre_real_vars[5]) 
+#define _PRE_A_1_0__ 6 
+#define _PRE_A_1_0_ (data->pre_real_vars[6]) 
+#define _PRE_A_1_1__ 7 
+#define _PRE_A_1_1_ (data->pre_real_vars[7]) 
 
 // define initial state vector as vector of value references
 static const fmi2ValueReference STATES[NUMBER_OF_STATES] = { _x_0__, _x_1__ };
 static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { _DER_x_0__, _DER_x_1__ };
 
 
+// Removed equations
+
+
 // dynamic equation functions
 
 
+/*
+ equation index: 11
+ type: SIMPLE_ASSIGN
+ der(x[2]) = A[2,1] * x[1] + A[2,2] * x[2]
+ */
+static void eqFunction_11(model_data *data)
+{
+    _DER_x_1_ = ((_A_1_0_ * _x_0_) + (_A_1_1_ * _x_1_));
+}
+/*
+ equation index: 12
+ type: SIMPLE_ASSIGN
+ der(x[1]) = A[1,1] * x[1] + A[1,2] * x[2]
+ */
+static void eqFunction_12(model_data *data)
+{
+    _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
+}
+
+// Zero crossing functions
+
+
+// Dependency graph for sparse updates
+static void setupEquationGraph(model_data *data)
+{
+    // Dynamic equations
+    data->link(eqFunction_11,&_DER_x_1_);
+    data->link(&_A_1_0_,eqFunction_11);
+    data->link(&_x_0_,eqFunction_11);
+    data->link(&_A_1_1_,eqFunction_11);
+    data->link(&_x_1_,eqFunction_11);
+    data->link(eqFunction_12,&_DER_x_0_);
+    data->link(&_A_0_0_,eqFunction_12);
+    data->link(&_x_0_,eqFunction_12);
+    data->link(&_A_0_1_,eqFunction_12);
+    data->link(&_x_1_,eqFunction_12);
+    // Zero crossings
+}
+
+// initial condition equations
+
+
+/*
+ equation index: 4
+ type: SIMPLE_ASSIGN
+ A[2,2] = -1.0
+ */
+static void eqFunction_4(model_data *data)
+{
+    _A_1_1_ = -1.0;
+}
+/*
+ equation index: 3
+ type: SIMPLE_ASSIGN
+ A[2,1] = 0.0
+ */
+static void eqFunction_3(model_data *data)
+{
+    _A_1_0_ = 0.0;
+}
+/*
+ equation index: 2
+ type: SIMPLE_ASSIGN
+ A[1,2] = 0.0
+ */
+static void eqFunction_2(model_data *data)
+{
+    _A_0_1_ = 0.0;
+}
+/*
+ equation index: 1
+ type: SIMPLE_ASSIGN
+ A[1,1] = -0.5
+ */
+static void eqFunction_1(model_data *data)
+{
+    _A_0_0_ = -0.5;
+}
+/*
+ equation index: 5
+ type: SIMPLE_ASSIGN
+ x[2] = 2.0
+ */
+static void eqFunction_5(model_data *data)
+{
+    _x_1_ = 2.0;
+}
+/*
+ equation index: 6
+ type: SIMPLE_ASSIGN
+ x[1] = 1.0
+ */
+static void eqFunction_6(model_data *data)
+{
+    _x_0_ = 1.0;
+}
 /*
  equation index: 7
  type: SIMPLE_ASSIGN
@@ -80,64 +179,6 @@ static void eqFunction_7(model_data *data)
  der(x[1]) = A[1,1] * x[1] + A[1,2] * x[2]
  */
 static void eqFunction_8(model_data *data)
-{
-    _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
-}
-
-// Zero crossing functions
-
-
-// Dependency graph for sparse updates
-static void setupEquationGraph(model_data *data)
-{
-    data->link(eqFunction_7,&_DER_x_1_);
-    data->link(&_A_1_0_,eqFunction_7);
-    data->link(&_x_0_,eqFunction_7);
-    data->link(&_A_1_1_,eqFunction_7);
-    data->link(&_x_1_,eqFunction_7);
-    data->link(eqFunction_8,&_DER_x_0_);
-    data->link(&_A_0_0_,eqFunction_8);
-    data->link(&_x_0_,eqFunction_8);
-    data->link(&_A_0_1_,eqFunction_8);
-    data->link(&_x_1_,eqFunction_8);
-}
-
-// initial condition equations
-
-
-/*
- equation index: 1
- type: SIMPLE_ASSIGN
- x[2] = 2.0
- */
-static void eqFunction_1(model_data *data)
-{
-    _x_1_ = 2.0;
-}
-/*
- equation index: 2
- type: SIMPLE_ASSIGN
- x[1] = 1.0
- */
-static void eqFunction_2(model_data *data)
-{
-    _x_0_ = 1.0;
-}
-/*
- equation index: 3
- type: SIMPLE_ASSIGN
- der(x[2]) = A[2,1] * x[1] + A[2,2] * x[2]
- */
-static void eqFunction_3(model_data *data)
-{
-    _DER_x_1_ = ((_A_1_0_ * _x_0_) + (_A_1_1_ * _x_1_));
-}
-/*
- equation index: 4
- type: SIMPLE_ASSIGN
- der(x[1]) = A[1,1] * x[1] + A[1,2] * x[2]
- */
-static void eqFunction_4(model_data *data)
 {
     _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
 }
@@ -160,10 +201,23 @@ static void setDefaultStartValues(model_data *comp)
 // Solve for unknowns in the model's initial equations
 static void initialEquations(model_data* data)
 {
-    eqFunction_1(data);
-    eqFunction_2(data);
-    eqFunction_3(data);
+
     eqFunction_4(data);
+    eqFunction_3(data);
+    eqFunction_2(data);
+    eqFunction_1(data);
+    eqFunction_5(data);
+    eqFunction_6(data);
+    eqFunction_7(data);
+    eqFunction_8(data);
+
+}
+
+// Solve all dynamic equations
+static void allEquations(model_data* data)
+{
+    eqFunction_11(data);
+    eqFunction_12(data);
 
 }
 
@@ -182,8 +236,11 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean, fmi2Real, fmi2Real 
     return fmi2SetTime(c,startTime);
 }
 
-fmi2Status fmi2EnterInitializationMode(fmi2Component)
+fmi2Status fmi2EnterInitializationMode(fmi2Component c)
 {
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_INIT_MODE);
     return fmi2OK;
 }
 
@@ -192,6 +249,8 @@ fmi2Status fmi2ExitInitializationMode(fmi2Component c)
     model_data* data = static_cast<model_data*>(c);
     if (data == NULL) return fmi2Error;
     initialEquations(data);
+    allEquations(data);
+    data->push_pre();
     return fmi2OK;
 }
 
@@ -206,6 +265,9 @@ fmi2Status fmi2Reset(fmi2Component c)
     if (data == NULL) return fmi2Error;
     setDefaultStartValues(data);
     initialEquations(data);
+    allEquations(data);
+    data->push_pre();
+    data->set_mode(FMI_INIT_MODE);
     return fmi2OK;
 }
 
@@ -227,10 +289,12 @@ fmi2Status fmi2GetDerivatives(fmi2Component c, fmi2Real* der, size_t nvr)
     return fmi2OK;
 }
 
-fmi2Status fmi2GetEventIndicators(fmi2Component, fmi2Real[], size_t)
+fmi2Status fmi2GetEventIndicators(fmi2Component c, fmi2Real* z, size_t nvr)
 {
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL || nvr > NUMBER_OF_EVENT_INDICATORS) return fmi2Error;
+    for (size_t i = 0; i < nvr; i++) z[i] = data->z[i];
+    return fmi2OK;
 }
 
 fmi2Status fmi2GetContinuousStates(fmi2Component c, fmi2Real* states, size_t nvr)
@@ -261,25 +325,44 @@ fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c, fmi2Real* nominals
     return fmi2OK;
 }
 
- fmi2Status fmi2EnterEventMode(fmi2Component)
+ fmi2Status fmi2EnterEventMode(fmi2Component c)
  {
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_EVENT_MODE);
+    return fmi2OK;
  }
 
- fmi2Status fmi2NewDiscreteStates(fmi2Component, fmi2EventInfo* event_info)
+ fmi2Status fmi2NewDiscreteStates(fmi2Component c, fmi2EventInfo* event_info)
  {
-    event_info->newDiscreteStatesNeeded = fmi2False;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->push_pre();
+    data->update();
+    if (data->test_pre())
+    {
+       event_info->newDiscreteStatesNeeded = fmi2False;
+       event_info->valuesOfContinuousStatesChanged = fmi2False;
+    }
+    else
+    {
+       event_info->newDiscreteStatesNeeded = fmi2True;
+       event_info->valuesOfContinuousStatesChanged = fmi2True;
+    }
     event_info->terminateSimulation = fmi2False;
     event_info->nominalsOfContinuousStatesChanged = fmi2False;
-    event_info->valuesOfContinuousStatesChanged = fmi2False;
     event_info->nextEventTimeDefined = fmi2False;
     event_info->nextEventTime = 0.0;
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    return fmi2OK;
  }
 
- fmi2Status fmi2EnterContinuousTimeMode(fmi2Component) { return fmi2OK; }
+ fmi2Status fmi2EnterContinuousTimeMode(fmi2Component c)
+ {
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_CONT_TIME_MODE);
+    return fmi2OK;
+ }
 
  fmi2Status fmi2CompletedIntegratorStep(fmi2Component c, fmi2Boolean,
      fmi2Boolean* enterEventMode, fmi2Boolean* terminateSimulation)
@@ -425,6 +508,7 @@ fmi2Instantiate(
     setupEquationGraph(data);
     setDefaultStartValues(data);
     initialEquations(data);
+    allEquations(data);
     return static_cast<fmi2Component>(data);
 }
 

@@ -58,55 +58,58 @@ using namespace sfmi;
 #define _TransmissionProb_ 16 
 #define _TransmissionProb (data->real_vars[16]) 
 
-#define PRE_Deceased_ 0 
-#define PRE_Deceased (data->pre_real_vars[0]) 
-#define PRE_Infectious_ 1 
-#define PRE_Infectious (data->pre_real_vars[1]) 
-#define PRE_Recovered_ 2 
-#define PRE_Recovered (data->pre_real_vars[2]) 
-#define PRE_Removed_ 3 
-#define PRE_Removed (data->pre_real_vars[3]) 
-#define PRE_Susceptible_ 4 
-#define PRE_Susceptible (data->pre_real_vars[4]) 
-#define PRE_DER_Deceased_ 5 
-#define PRE_DER_Deceased (data->pre_real_vars[5]) 
-#define PRE_DER_Infectious_ 6 
-#define PRE_DER_Infectious (data->pre_real_vars[6]) 
-#define PRE_DER_Recovered_ 7 
-#define PRE_DER_Recovered (data->pre_real_vars[7]) 
-#define PRE_DER_Removed_ 8 
-#define PRE_DER_Removed (data->pre_real_vars[8]) 
-#define PRE_DER_Susceptible_ 9 
-#define PRE_DER_Susceptible (data->pre_real_vars[9]) 
-#define PRE_Population_ 10 
-#define PRE_Population (data->pre_real_vars[10]) 
-#define PRE_R_ 11 
-#define PRE_R (data->pre_real_vars[11]) 
-#define PRE_EncounterRate_ 12 
-#define PRE_EncounterRate (data->pre_real_vars[12]) 
-#define PRE_MortalityProb_ 13 
-#define PRE_MortalityProb (data->pre_real_vars[13]) 
-#define PRE_MortalityTime_ 14 
-#define PRE_MortalityTime (data->pre_real_vars[14]) 
-#define PRE_RecoveryTime_ 15 
-#define PRE_RecoveryTime (data->pre_real_vars[15]) 
-#define PRE_TransmissionProb_ 16 
-#define PRE_TransmissionProb (data->pre_real_vars[16]) 
+#define _PRE_Deceased_ 0 
+#define _PRE_Deceased (data->pre_real_vars[0]) 
+#define _PRE_Infectious_ 1 
+#define _PRE_Infectious (data->pre_real_vars[1]) 
+#define _PRE_Recovered_ 2 
+#define _PRE_Recovered (data->pre_real_vars[2]) 
+#define _PRE_Removed_ 3 
+#define _PRE_Removed (data->pre_real_vars[3]) 
+#define _PRE_Susceptible_ 4 
+#define _PRE_Susceptible (data->pre_real_vars[4]) 
+#define _PRE_DER_Deceased_ 5 
+#define _PRE_DER_Deceased (data->pre_real_vars[5]) 
+#define _PRE_DER_Infectious_ 6 
+#define _PRE_DER_Infectious (data->pre_real_vars[6]) 
+#define _PRE_DER_Recovered_ 7 
+#define _PRE_DER_Recovered (data->pre_real_vars[7]) 
+#define _PRE_DER_Removed_ 8 
+#define _PRE_DER_Removed (data->pre_real_vars[8]) 
+#define _PRE_DER_Susceptible_ 9 
+#define _PRE_DER_Susceptible (data->pre_real_vars[9]) 
+#define _PRE_Population_ 10 
+#define _PRE_Population (data->pre_real_vars[10]) 
+#define _PRE_R_ 11 
+#define _PRE_R (data->pre_real_vars[11]) 
+#define _PRE_EncounterRate_ 12 
+#define _PRE_EncounterRate (data->pre_real_vars[12]) 
+#define _PRE_MortalityProb_ 13 
+#define _PRE_MortalityProb (data->pre_real_vars[13]) 
+#define _PRE_MortalityTime_ 14 
+#define _PRE_MortalityTime (data->pre_real_vars[14]) 
+#define _PRE_RecoveryTime_ 15 
+#define _PRE_RecoveryTime (data->pre_real_vars[15]) 
+#define _PRE_TransmissionProb_ 16 
+#define _PRE_TransmissionProb (data->pre_real_vars[16]) 
 
 // define initial state vector as vector of value references
 static const fmi2ValueReference STATES[NUMBER_OF_STATES] = { _Deceased_, _Infectious_, _Recovered_, _Removed_, _Susceptible_ };
 static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { _DER_Deceased_, _DER_Infectious_, _DER_Recovered_, _DER_Removed_, _DER_Susceptible_ };
 
 
+// Removed equations
+
+
 // dynamic equation functions
 
 
 /*
- equation index: 13
+ equation index: 18
  type: SIMPLE_ASSIGN
  der(Removed) = (DIVISION(MortalityProb, MortalityTime) + DIVISION(1.0 - MortalityProb, RecoveryTime)) * Infectious
  */
-static void eqFunction_13(model_data *data)
+static void eqFunction_18(model_data *data)
 {
     modelica_real tmp0;
     modelica_real tmp1;
@@ -115,58 +118,58 @@ static void eqFunction_13(model_data *data)
     _DER_Removed = ((tmp0 + tmp1) * _Infectious);
 }
 /*
- equation index: 14
+ equation index: 19
  type: SIMPLE_ASSIGN
  der(Deceased) = MortalityProb * der(Removed)
  */
-static void eqFunction_14(model_data *data)
+static void eqFunction_19(model_data *data)
 {
     _DER_Deceased = (_MortalityProb * _DER_Removed);
 }
 /*
- equation index: 15
+ equation index: 20
  type: SIMPLE_ASSIGN
  der(Recovered) = (1.0 - MortalityProb) * der(Removed)
  */
-static void eqFunction_15(model_data *data)
+static void eqFunction_20(model_data *data)
 {
     _DER_Recovered = ((1.0 - _MortalityProb) * _DER_Removed);
 }
 /*
- equation index: 16
+ equation index: 21
  type: SIMPLE_ASSIGN
  Population = Recovered + Infectious + Susceptible
  */
-static void eqFunction_16(model_data *data)
+static void eqFunction_21(model_data *data)
 {
     _Population = (_Recovered + (_Infectious + _Susceptible));
 }
 /*
- equation index: 17
+ equation index: 22
  type: SIMPLE_ASSIGN
  R = TransmissionProb * EncounterRate * DIVISION(Susceptible, Population)
  */
-static void eqFunction_17(model_data *data)
+static void eqFunction_22(model_data *data)
 {
     modelica_real tmp2;
     tmp2 = DIVISION(_Susceptible, _Population);
     _R = (_TransmissionProb * (_EncounterRate * tmp2));
 }
 /*
- equation index: 18
+ equation index: 23
  type: SIMPLE_ASSIGN
  der(Susceptible) = (-R) * Infectious
  */
-static void eqFunction_18(model_data *data)
+static void eqFunction_23(model_data *data)
 {
     _DER_Susceptible = ((-_R) * _Infectious);
 }
 /*
- equation index: 19
+ equation index: 24
  type: SIMPLE_ASSIGN
  der(Infectious) = 1.0 + R * Infectious + sin(0.01095890410958904 * time) - der(Removed)
  */
-static void eqFunction_19(model_data *data)
+static void eqFunction_24(model_data *data)
 {
     modelica_real tmp3;
     tmp3 = sin((0.01095890410958904 * timeValue));
@@ -179,121 +182,168 @@ static void eqFunction_19(model_data *data)
 // Dependency graph for sparse updates
 static void setupEquationGraph(model_data *data)
 {
-    data->link(eqFunction_13,&_DER_Removed);
-    data->link(&_MortalityProb,eqFunction_13);
-    data->link(&_MortalityTime,eqFunction_13);
-    data->link(&_MortalityProb,eqFunction_13);
-    data->link(&_RecoveryTime,eqFunction_13);
-    data->link(&_Infectious,eqFunction_13);
-    data->link(eqFunction_14,&_DER_Deceased);
-    data->link(&_MortalityProb,eqFunction_14);
-    data->link(&_Removed,eqFunction_14);
-    data->link(eqFunction_15,&_DER_Recovered);
-    data->link(&_MortalityProb,eqFunction_15);
-    data->link(&_Removed,eqFunction_15);
-    data->link(eqFunction_16,&_Population);
-    data->link(&_Recovered,eqFunction_16);
-    data->link(&_Infectious,eqFunction_16);
-    data->link(&_Susceptible,eqFunction_16);
-    data->link(eqFunction_17,&_R);
-    data->link(&_TransmissionProb,eqFunction_17);
-    data->link(&_EncounterRate,eqFunction_17);
-    data->link(&_Susceptible,eqFunction_17);
-    data->link(&_Population,eqFunction_17);
-    data->link(eqFunction_18,&_DER_Susceptible);
-    data->link(&_R,eqFunction_18);
+    // Dynamic equations
+    data->link(eqFunction_18,&_DER_Removed);
+    data->link(&_MortalityProb,eqFunction_18);
+    data->link(&_MortalityTime,eqFunction_18);
+    data->link(&_MortalityProb,eqFunction_18);
+    data->link(&_RecoveryTime,eqFunction_18);
     data->link(&_Infectious,eqFunction_18);
-    data->link(eqFunction_19,&_DER_Infectious);
-    data->link(&_R,eqFunction_19);
-    data->link(&_Infectious,eqFunction_19);
-    data->link(&timeValue,eqFunction_19);
+    data->link(eqFunction_19,&_DER_Deceased);
+    data->link(&_MortalityProb,eqFunction_19);
     data->link(&_Removed,eqFunction_19);
+    data->link(eqFunction_20,&_DER_Recovered);
+    data->link(&_MortalityProb,eqFunction_20);
+    data->link(&_Removed,eqFunction_20);
+    data->link(eqFunction_21,&_Population);
+    data->link(&_Recovered,eqFunction_21);
+    data->link(&_Infectious,eqFunction_21);
+    data->link(&_Susceptible,eqFunction_21);
+    data->link(eqFunction_22,&_R);
+    data->link(&_TransmissionProb,eqFunction_22);
+    data->link(&_EncounterRate,eqFunction_22);
+    data->link(&_Susceptible,eqFunction_22);
+    data->link(&_Population,eqFunction_22);
+    data->link(eqFunction_23,&_DER_Susceptible);
+    data->link(&_R,eqFunction_23);
+    data->link(&_Infectious,eqFunction_23);
+    data->link(eqFunction_24,&_DER_Infectious);
+    data->link(&_R,eqFunction_24);
+    data->link(&_Infectious,eqFunction_24);
+    data->link(&timeValue,eqFunction_24);
+    data->link(&_Removed,eqFunction_24);
+    // Zero crossings
 }
 
 // initial condition equations
 
 
 /*
+ equation index: 5
+ type: SIMPLE_ASSIGN
+ EncounterRate = 4.0
+ */
+static void eqFunction_5(model_data *data)
+{
+    _EncounterRate = 4.0;
+}
+/*
+ equation index: 4
+ type: SIMPLE_ASSIGN
+ TransmissionProb = 0.15
+ */
+static void eqFunction_4(model_data *data)
+{
+    _TransmissionProb = 0.15;
+}
+/*
+ equation index: 3
+ type: SIMPLE_ASSIGN
+ MortalityTime = 1.0
+ */
+static void eqFunction_3(model_data *data)
+{
+    _MortalityTime = 1.0;
+}
+/*
+ equation index: 2
+ type: SIMPLE_ASSIGN
+ RecoveryTime = 3.0
+ */
+static void eqFunction_2(model_data *data)
+{
+    _RecoveryTime = 3.0;
+}
+/*
  equation index: 1
+ type: SIMPLE_ASSIGN
+ MortalityProb = 0.01
+ */
+static void eqFunction_1(model_data *data)
+{
+    _MortalityProb = 0.01;
+}
+/*
+ equation index: 6
  type: SIMPLE_ASSIGN
  Removed = $_start(Removed)
  */
-static void eqFunction_1(model_data *data)
+static void eqFunction_6(model_data *data)
 {
     modelica_real tmp4;
     tmp4 = $__start(_Removed);
     _Removed = tmp4;
 }
 /*
- equation index: 2
+ equation index: 7
  type: SIMPLE_ASSIGN
  Deceased = $_start(Deceased)
  */
-static void eqFunction_2(model_data *data)
+static void eqFunction_7(model_data *data)
 {
     modelica_real tmp5;
     tmp5 = $__start(_Deceased);
     _Deceased = tmp5;
 }
 /*
- equation index: 3
+ equation index: 8
  type: SIMPLE_ASSIGN
  Susceptible = $_start(Susceptible)
  */
-static void eqFunction_3(model_data *data)
+static void eqFunction_8(model_data *data)
 {
     modelica_real tmp6;
     tmp6 = $__start(_Susceptible);
     _Susceptible = tmp6;
 }
 /*
- equation index: 4
+ equation index: 9
  type: SIMPLE_ASSIGN
  Recovered = $_start(Recovered)
  */
-static void eqFunction_4(model_data *data)
+static void eqFunction_9(model_data *data)
 {
     modelica_real tmp7;
     tmp7 = $__start(_Recovered);
     _Recovered = tmp7;
 }
 /*
- equation index: 5
+ equation index: 10
  type: SIMPLE_ASSIGN
  Infectious = $_start(Infectious)
  */
-static void eqFunction_5(model_data *data)
+static void eqFunction_10(model_data *data)
 {
     modelica_real tmp8;
     tmp8 = $__start(_Infectious);
     _Infectious = tmp8;
 }
 /*
- equation index: 6
+ equation index: 11
  type: SIMPLE_ASSIGN
  Population = Recovered + Infectious + Susceptible
  */
-static void eqFunction_6(model_data *data)
+static void eqFunction_11(model_data *data)
 {
     _Population = (_Recovered + (_Infectious + _Susceptible));
 }
 /*
- equation index: 7
+ equation index: 12
  type: SIMPLE_ASSIGN
  R = TransmissionProb * EncounterRate * DIVISION(Susceptible, Population)
  */
-static void eqFunction_7(model_data *data)
+static void eqFunction_12(model_data *data)
 {
     modelica_real tmp9;
     tmp9 = DIVISION(_Susceptible, _Population);
     _R = (_TransmissionProb * (_EncounterRate * tmp9));
 }
 /*
- equation index: 8
+ equation index: 13
  type: SIMPLE_ASSIGN
  der(Removed) = (DIVISION(MortalityProb, MortalityTime) + DIVISION(1.0 - MortalityProb, RecoveryTime)) * Infectious
  */
-static void eqFunction_8(model_data *data)
+static void eqFunction_13(model_data *data)
 {
     modelica_real tmp10;
     modelica_real tmp11;
@@ -302,38 +352,38 @@ static void eqFunction_8(model_data *data)
     _DER_Removed = ((tmp10 + tmp11) * _Infectious);
 }
 /*
- equation index: 9
+ equation index: 14
  type: SIMPLE_ASSIGN
  der(Deceased) = MortalityProb * $DER.Removed
  */
-static void eqFunction_9(model_data *data)
+static void eqFunction_14(model_data *data)
 {
     _DER_Deceased = (_MortalityProb * _DER_Removed);
 }
 /*
- equation index: 10
+ equation index: 15
  type: SIMPLE_ASSIGN
  der(Recovered) = (1.0 - MortalityProb) * $DER.Removed
  */
-static void eqFunction_10(model_data *data)
+static void eqFunction_15(model_data *data)
 {
     _DER_Recovered = ((1.0 - _MortalityProb) * _DER_Removed);
 }
 /*
- equation index: 11
+ equation index: 16
  type: SIMPLE_ASSIGN
  der(Susceptible) = (-R) * Infectious
  */
-static void eqFunction_11(model_data *data)
+static void eqFunction_16(model_data *data)
 {
     _DER_Susceptible = ((-_R) * _Infectious);
 }
 /*
- equation index: 12
+ equation index: 17
  type: SIMPLE_ASSIGN
  der(Infectious) = 1.0 + R * Infectious + sin(0.01095890410958904 * time) - $DER.Removed
  */
-static void eqFunction_12(model_data *data)
+static void eqFunction_17(model_data *data)
 {
     modelica_real tmp12;
     tmp12 = sin((0.01095890410958904 * timeValue));
@@ -367,11 +417,12 @@ static void setDefaultStartValues(model_data *comp)
 // Solve for unknowns in the model's initial equations
 static void initialEquations(model_data* data)
 {
-    eqFunction_1(data);
-    eqFunction_2(data);
-    eqFunction_3(data);
-    eqFunction_4(data);
+
     eqFunction_5(data);
+    eqFunction_4(data);
+    eqFunction_3(data);
+    eqFunction_2(data);
+    eqFunction_1(data);
     eqFunction_6(data);
     eqFunction_7(data);
     eqFunction_8(data);
@@ -379,6 +430,24 @@ static void initialEquations(model_data* data)
     eqFunction_10(data);
     eqFunction_11(data);
     eqFunction_12(data);
+    eqFunction_13(data);
+    eqFunction_14(data);
+    eqFunction_15(data);
+    eqFunction_16(data);
+    eqFunction_17(data);
+
+}
+
+// Solve all dynamic equations
+static void allEquations(model_data* data)
+{
+    eqFunction_18(data);
+    eqFunction_19(data);
+    eqFunction_20(data);
+    eqFunction_21(data);
+    eqFunction_22(data);
+    eqFunction_23(data);
+    eqFunction_24(data);
 
 }
 
@@ -397,8 +466,11 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean, fmi2Real, fmi2Real 
     return fmi2SetTime(c,startTime);
 }
 
-fmi2Status fmi2EnterInitializationMode(fmi2Component)
+fmi2Status fmi2EnterInitializationMode(fmi2Component c)
 {
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_INIT_MODE);
     return fmi2OK;
 }
 
@@ -407,6 +479,8 @@ fmi2Status fmi2ExitInitializationMode(fmi2Component c)
     model_data* data = static_cast<model_data*>(c);
     if (data == NULL) return fmi2Error;
     initialEquations(data);
+    allEquations(data);
+    data->push_pre();
     return fmi2OK;
 }
 
@@ -421,6 +495,9 @@ fmi2Status fmi2Reset(fmi2Component c)
     if (data == NULL) return fmi2Error;
     setDefaultStartValues(data);
     initialEquations(data);
+    allEquations(data);
+    data->push_pre();
+    data->set_mode(FMI_INIT_MODE);
     return fmi2OK;
 }
 
@@ -442,10 +519,12 @@ fmi2Status fmi2GetDerivatives(fmi2Component c, fmi2Real* der, size_t nvr)
     return fmi2OK;
 }
 
-fmi2Status fmi2GetEventIndicators(fmi2Component, fmi2Real[], size_t)
+fmi2Status fmi2GetEventIndicators(fmi2Component c, fmi2Real* z, size_t nvr)
 {
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL || nvr > NUMBER_OF_EVENT_INDICATORS) return fmi2Error;
+    for (size_t i = 0; i < nvr; i++) z[i] = data->z[i];
+    return fmi2OK;
 }
 
 fmi2Status fmi2GetContinuousStates(fmi2Component c, fmi2Real* states, size_t nvr)
@@ -476,25 +555,44 @@ fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c, fmi2Real* nominals
     return fmi2OK;
 }
 
- fmi2Status fmi2EnterEventMode(fmi2Component)
+ fmi2Status fmi2EnterEventMode(fmi2Component c)
  {
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_EVENT_MODE);
+    return fmi2OK;
  }
 
- fmi2Status fmi2NewDiscreteStates(fmi2Component, fmi2EventInfo* event_info)
+ fmi2Status fmi2NewDiscreteStates(fmi2Component c, fmi2EventInfo* event_info)
  {
-    event_info->newDiscreteStatesNeeded = fmi2False;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->push_pre();
+    data->update();
+    if (data->test_pre())
+    {
+       event_info->newDiscreteStatesNeeded = fmi2False;
+       event_info->valuesOfContinuousStatesChanged = fmi2False;
+    }
+    else
+    {
+       event_info->newDiscreteStatesNeeded = fmi2True;
+       event_info->valuesOfContinuousStatesChanged = fmi2True;
+    }
     event_info->terminateSimulation = fmi2False;
     event_info->nominalsOfContinuousStatesChanged = fmi2False;
-    event_info->valuesOfContinuousStatesChanged = fmi2False;
     event_info->nextEventTimeDefined = fmi2False;
     event_info->nextEventTime = 0.0;
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    return fmi2OK;
  }
 
- fmi2Status fmi2EnterContinuousTimeMode(fmi2Component) { return fmi2OK; }
+ fmi2Status fmi2EnterContinuousTimeMode(fmi2Component c)
+ {
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_CONT_TIME_MODE);
+    return fmi2OK;
+ }
 
  fmi2Status fmi2CompletedIntegratorStep(fmi2Component c, fmi2Boolean,
      fmi2Boolean* enterEventMode, fmi2Boolean* terminateSimulation)
@@ -640,6 +738,7 @@ fmi2Instantiate(
     setupEquationGraph(data);
     setDefaultStartValues(data);
     initialEquations(data);
+    allEquations(data);
     return static_cast<fmi2Component>(data);
 }
 

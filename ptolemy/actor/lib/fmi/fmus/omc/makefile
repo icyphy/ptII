@@ -34,8 +34,11 @@ ME =		ptolemy/actor/lib/fmi/fmus/omc
 # Co-Simulation FMUS.
 FMUS_CS =
 
+# Sparse FMI FMUS
+FMUS_SFMI =	Influenza Linsys Linsys2 Test1
+
 # Model Exchange FMUS.
-FMUS_ME =	Influenza Linsys Linsys2 Test1
+FMUS_ME =	$(FMUS_SFMI)
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
@@ -99,6 +102,25 @@ update:
 		    fi ; \
 		done ; \
 	fi
+
+# Update sfmi_runtime.h and sfmi_runtime.cpp.
+SFMI_RUNTIME=$(HOME)/src/fmu/sparse_fmi/runtime
+update_sfmi:
+	@if [ "x$(FMUS_SFMI)" != "x" ]; then \
+		set $(FMUS_SFMI); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo "$$x: Copying sfmi_runtime.h and sfmi_runtime.cpp from $(SFMI_RUNTIME)"; \
+			cp $(SFMI_RUNTIME)/sfmi_runtime.h src/sources/; \
+			cp $(SFMI_RUNTIME)/sfmi_runtime.cpp src/sources/; \
+			echo "$$x: Copying ../template/sources/fmu.mk"; \
+			cp ../template/sources/fmu.mk src/sources; \
+			) \
+		    fi ; \
+		done ; \
+	fi
+
 
 # Update fmu.mk, build_fmu and build_fmu.bat from the files in the template/ directory.
 update_files:
