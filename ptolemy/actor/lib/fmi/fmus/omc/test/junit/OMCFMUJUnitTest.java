@@ -29,13 +29,17 @@
 package ptolemy.actor.lib.fmi.fmus.omc.test.junit;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 
 import org.junit.Assert;
 import org.ptolemy.fmi.driver.FMUCoSimulation;
@@ -121,20 +125,21 @@ public class OMCFMUJUnitTest {
      *  @param knownGoodFileName The absolute pathname of the known good results.
      *  Note that when the test is run, the output includes the command that could
      *  be run to create the known good file.
+     *  @return the file name of the .csv file that is created.
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
      */
-    public void modelExchange(String fmuFileName, String knownGoodFileName)
+    public String modelExchange(String fmuFileName, String knownGoodFileName)
             throws Exception {
-        String resultsFileName = File.createTempFile("OMCFMUJUnitTest", "csv")
+        String resultsFileName = File.createTempFile("OMCFMUJUnitTest", ".csv")
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
 	        + System.getProperty("path.separator")
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
-                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName;
+                + fmuFileName + " 1.0 0.001 false c " + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
-        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1,
+        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.001,
                 LOGGING, ',', resultsFileName);
 
         String results = OMCFMUJUnitTest.readFile(resultsFileName);
@@ -145,20 +150,94 @@ public class OMCFMUJUnitTest {
                     + "\nresults:\n" + results + "\nknownGood:\n" + knownGood);
         }
         assertArrayEquals(results.getBytes(), knownGood.getBytes());
+        return resultsFileName;
     }
 
     /** Invoke the Model exchange driver on a .fmu file.  The known
      *  good output is expected to be in a file whose name ends with
      *  "_me.csv".
      *  @param testName The name of the test with no file extension.
+     *  @return the file name of the .csv file that is created.
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
      */
-    public void modelExchange(String testName) throws Exception {
-        modelExchange(topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/auto/"
+    public String modelExchange(String testName) throws Exception {
+        return modelExchange(topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/auto/"
                 + testName + ".fmu", 
                 topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/junit/"
                 + testName + ".csv");
+    }
+
+    /** Check the csv file against equations.
+     *  The equations come from sparse_fmi by James Nutaro.
+     *  Some variance is acceptable, though the test fails if there is too much.
+     *  @param testName The name of the test, ex. "Linsys".
+     *  @param csvFile The comma separated file to be checked, typically generated
+     *  by the {@link #modelExchange(String)} method.
+     *  @param checkX2 True if the 3rd argument is x2 and should be checked.
+     *  @exception Exception If there is a problem parsing the file.
+     */
+    public void modelExchangeCheck(String testName, String csvFile, boolean checkX2)
+    throws Exception {
+        // Read in the csv file and check the results
+        double x1MaximumError = 0.0;
+        double x2MaximumError = 0.0;
+
+        // This value comes from the sparse_fmi/test/*_check.cpp files.
+        double epsilon = 0.003;
+        int row = 0;
+        String line = null;
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(csvFile));
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] fields = line.split(",");
+                row++;
+                // Skip the header.
+                if (row > 1 ) {
+                    double t = Double.valueOf(fields[0]);
+                    double x1 = Double.valueOf(fields[1]);
+                    double x1CalculatedValue = 0.0;
+                    double x2 = 0.0;
+                    double x2CalculatedValue = 0.0;
+                    String message = "Error: While validating the results for "
+                                + testName + " and reading " + csvFile
+                                + " row: " + row
+                                + "\n t: " + t
+                                + "\nx1: " + x1
+                                + " calculatedValue: " + x1CalculatedValue
+                                + (checkX2
+                                        ? ("\nx2: " + x2
+                                                + " caclulatedValue: " + x2CalculatedValue)
+                                        : "");
+
+                    if (checkX2) {
+                        // From sparse_fmi/test/Linsys_check.cpp or Linsys2_check.cpp
+                        x1CalculatedValue = 1.0 * Math.exp(-0.5 * t);
+                        x2 = Double.valueOf(fields[2]);
+                        x2CalculatedValue = 2.0 * Math.exp(-1.0 * t);
+                        x2MaximumError = Math.max(x2MaximumError, Math.abs(x2 - x2CalculatedValue));
+                        assertEquals(message, x2, x2CalculatedValue, epsilon);
+                    } else {
+                        // Test1_check.cpp
+                        x1CalculatedValue = 1.0 * Math.exp(-1.0 * t);
+                    }
+                    x1MaximumError = Math.max(x1MaximumError, Math.abs(x1 - x1CalculatedValue));
+                    assertEquals(message, x1, x1CalculatedValue, epsilon);
+                }
+            } 
+        } finally {
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+        }
+        System.out.println(testName + ": x1 maximum error: " + x1MaximumError
+                + (checkX2 ? (", x2 maximum error: " + x2MaximumError) : "")
+                + " (Optional: Compare this against running the tests in sparse_fmi/test)");
+        assertTrue("The error for x1 was " + x1MaximumError + ", which is greater than " + epsilon,
+                x1MaximumError < epsilon);
+        assertTrue("The error for x2 was " + x2MaximumError + ", which is greater than " + epsilon,
+                x2MaximumError < epsilon);
     }
 
     /** Run the influenza model exchange functional mock-up unit test.
@@ -174,7 +253,12 @@ public class OMCFMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeLinsys2() throws Exception {
-        modelExchange("Linsys2");
+        String testName = "Linsys2";
+        // Generate the csv file and compare the results. 
+        String csvFile = modelExchange(testName);
+
+        // Check the results against a calculation.
+        modelExchangeCheck(testName, csvFile, true);
     }
 
     /** Run the linsys model exchange functional mock-up unit test.
@@ -182,7 +266,12 @@ public class OMCFMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeLinsys() throws Exception {
-        modelExchange("Linsys");
+        String testName = "Linsys";
+        // Generate the csv file and compare the results. 
+        String csvFile = modelExchange(testName);
+
+        // Check the results against a calculation.
+        modelExchangeCheck(testName, csvFile, true);
     }
 
     /** Run the Test1 model exchange functional mock-up unit test.
@@ -190,7 +279,12 @@ public class OMCFMUJUnitTest {
      */
     @org.junit.Test
     public void modelExchangeTest1() throws Exception {
-        modelExchange("Test1");
+        String testName = "Test1";
+        // Generate the csv file and compare the results. 
+        String csvFile = modelExchange(testName);
+
+        // Check the results against a calculation.
+        modelExchangeCheck(testName, csvFile, false);
     }
 
     /** Run the OpenModelica FMI model exchange tests.
