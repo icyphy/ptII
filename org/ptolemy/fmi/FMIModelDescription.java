@@ -489,13 +489,35 @@ public class FMIModelDescription {
 	    // IOException(String, Throwable). We
 	    // sometimes compile this with gcj, which is
 	    // Java 1.5
+            String osMessage = "";
+            String dependencyMessage = "includes the appropriate directories containing the necessary libraries.";
+            String osName = System.getProperty("os.name").toLowerCase(
+                    Locale.getDefault());
+            if (osName.startsWith("linux")) {
+                osMessage = "Under Linux, try running \n"
+                    + "  ldd " + sharedLibrary
+                    + "\nand check that your LD_LIBRARY_PATH "
+                    + dependencyMessage;
+            } else if (osName.startsWith("mac os")) {
+                osMessage = "Under Mac OS X, try running \n"
+                    + "  otool -L " + sharedLibrary
+                    + "\nand check that your DY_LD_LIBRARY_PATH "
+                    + dependencyMessage;
+            } else if (osName.startsWith("windows")) {
+                osMessage = "Under Windows, download the dependenc walker from http://www.dependencywalker.com "
+                    + "and run it on the shared library at " + sharedLibrary
+                    + ". Then check that your PATH "
+                    + dependencyMessage;
+            }
+
 	    IOException exception = new IOException(
 		    "Error loading \""
 		            + sharedLibrary
 		            + "\" shared library.  "
 		            + "To debug loading errors, "
 		            + "Restart Java with \"-Djna.debug_load=true\".  "
-		            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging.");
+		            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
+                            + osMessage);
 	    exception.initCause(throwable3);
 	    throw exception;
 	}
