@@ -2562,7 +2562,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 		.invokeInt(new Object[] { _fmiComponent });
 	    }
 	} else {
-	    _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
+	    _fmiFreeInstanceFunction.invoke(new Object[] { _fmiComponent });
 	}
     }
 
