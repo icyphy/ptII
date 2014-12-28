@@ -4,8 +4,8 @@
   modelName="Linsys"
   guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
   description=""
-  generationTool="OpenModelica Compiler 1.9.1+dev (r21841) (Bootstrapping version)"
-  generationDateAndTime="2014-08-25T09:37:48Z"
+  generationTool="OpenModelica Compiler 1.9.2+dev (r23912)"
+  generationDateAndTime="2014-12-28T09:02:43Z"
   variableNamingConvention="structured"
   numberOfEventIndicators="0">
   <ModelExchange
@@ -13,6 +13,19 @@
   </ModelExchange>
   <TypeDefinitions>
   </TypeDefinitions>
+  <LogCategories>
+    <Category name="logEvents" />
+    <Category name="logSingularLinearSystems" />
+    <Category name="logNonlinearSystems" />
+    <Category name="logDynamicStateSelection" />
+    <Category name="logStatusWarning" />
+    <Category name="logStatusDiscard" />
+    <Category name="logStatusError" />
+    <Category name="logStatusFatal" />
+    <Category name="logStatusPending" />
+    <Category name="logAll" />
+    <Category name="logFmi2Call" />
+  </LogCategories>
   <DefaultExperiment startTime="0.0" stopTime="1.0" tolerance="1e-06"/>
   <ModelVariables>
   <!-- Index of variable = "1" -->
@@ -92,8 +105,8 @@
     <Outputs>
     </Outputs>
     <Derivatives>
-      <Unknown index="3" dependencies="1" dependenciesKind="fixed" />
-      <Unknown index="4" dependencies="2" dependenciesKind="fixed" />
+      <Unknown index="3" dependencies="1 2" dependenciesKind="dependent dependent" />
+      <Unknown index="4" dependencies="1 2" dependenciesKind="dependent dependent" />
     </Derivatives>
     <InitialUnknowns>
     </InitialUnknowns>

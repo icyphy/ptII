@@ -19,7 +19,13 @@ model_data::model_data(
 	pre_int_vars(new fmi2Integer[num_ints]),
 	pre_bool_vars(new fmi2Boolean[num_bools]),
 	pre_str_vars(new string[num_strs]),
-	z(new fmi2Real[num_events])
+	z(new fmi2Real[num_events]),
+	num_reals(num_reals),
+	num_ints(num_ints),
+	num_strs(num_strs),
+	num_bools(num_bools),
+	num_events(num_events),
+	mode(FMI_INIT_MODE)
 {
 }
 
@@ -49,6 +55,31 @@ model_data::~model_data()
 	delete [] pre_bool_vars;
 	delete [] pre_str_vars;
 	delete [] z;
+}
+
+bool model_data::test_pre()
+{
+	for (int i = 0; i < num_reals; i++)
+		if (pre_real_vars[i] != real_vars[i]) return false;
+	for (int i = 0; i < num_ints; i++)
+		if (pre_int_vars[i] != int_vars[i]) return false;
+	for (int i = 0; i < num_strs; i++)
+		if (pre_str_vars[i] != str_vars[i]) return false;
+	for (int i = 0; i < num_bools; i++)
+		if (pre_bool_vars[i] != bool_vars[i]) return false;
+	return true;
+}
+
+void model_data::push_pre()
+{
+	for (int i = 0; i < num_reals; i++)
+		pre_real_vars[i] = real_vars[i];
+	for (int i = 0; i < num_ints; i++)
+		pre_int_vars[i] = int_vars[i];
+	for (int i = 0; i < num_strs; i++)
+		pre_str_vars[i] = str_vars[i];
+	for (int i = 0; i < num_bools; i++)
+		pre_bool_vars[i] = bool_vars[i];
 }
 
 void model_data::update()
@@ -88,7 +119,6 @@ void model_data::update()
 	}
 }
 
-
 // Functions from LAPACK
 extern "C"
 {
@@ -102,6 +132,7 @@ extern "C"
 void sfmi::GETRF(double* A, long size, long* p)
 {
 	long ok = 0;
+	if (size == 1) return;
 	dgetrf_(&size,&size,A,&size,p,&ok);
 	assert(ok==0);
 }
@@ -111,6 +142,7 @@ void sfmi::GETRS(double* A, long size, long* p, double* B)
 	long ok = 0;
 	long nrhs = 1;
 	char N = 'N';
+	if (size == 1) return;
 	dgetrs_(&N,&size,&nrhs,A,&size,p,B,&size,&ok);
 	assert(ok==0);
 }

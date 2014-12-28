@@ -13,9 +13,9 @@ ARCH = darwin64
 ARCH_DIR = ../binaries/$(ARCH)/
 
 # This is for co-simulation
-INCLUDE = -DFMI_COSIMULATION -I.
+#INCLUDE = -DFMI_COSIMULATION -I.
 # This is for model exhange
-#INCLUDE =  -I.
+INCLUDE =  -I.
 
 # For co-simulation FMUs, modelExchange.mk does not exist.
 # For model exchange FMUs, modelExchange.mk defines INCLUDE.
@@ -83,14 +83,14 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CXX) $(CBITSFLAGS) $(USER_CFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CXX) $(CBITSFLAGS) $(USER_CFLAGS) $(PIC) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< sfmi_runtime.cpp $(CFLAGS)
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	cl /LD /wd04090 /nologo $< 
+	cl /LD /wd04090 /nologo $< sfmi_runtime.cpp
 
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.cpp
