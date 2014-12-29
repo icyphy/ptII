@@ -4,8 +4,8 @@
   modelName="Test1"
   guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
   description=""
-  generationTool="OpenModelica Compiler 1.9.1+dev (r22486) (Bootstrapping version)"
-  generationDateAndTime="2014-09-29T12:55:47Z"
+  generationTool="OpenModelica Compiler 1.9.2+dev (r23914)"
+  generationDateAndTime="2014-12-29T08:17:14Z"
   variableNamingConvention="structured"
   numberOfEventIndicators="0">
   <ModelExchange
@@ -34,7 +34,7 @@
     valueReference="0"
     variability="continuous"
     causality="local"
-    initial="exact">
+    initial="approx">
     <Real start="1.0"/>
   </ScalarVariable>
   <!-- Index of variable = "2" -->

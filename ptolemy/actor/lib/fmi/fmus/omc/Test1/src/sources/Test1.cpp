@@ -1,7 +1,7 @@
 // define class name and unique id
-//#ifdef FMI_FROM_SOURCE
-//#define FMI2_FUNCTION_PREFIX Test1_
-//#endif
+#ifdef FMI_FROM_SOURCE
+#define FMI2_FUNCTION_PREFIX Test1_
+#endif
 #include <fmi2TypesPlatform.h>
 #include <fmi2Functions.h>
 #define MODEL_GUID "{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
@@ -30,27 +30,30 @@ using namespace sfmi;
 #define _a_ 2 
 #define _a (data->real_vars[2]) 
 
-#define PRE_x_ 0 
-#define PRE_x (data->pre_real_vars[0]) 
-#define PRE_DER_x_ 1 
-#define PRE_DER_x (data->pre_real_vars[1]) 
-#define PRE_a_ 2 
-#define PRE_a (data->pre_real_vars[2]) 
+#define _PRE_x_ 0 
+#define _PRE_x (data->pre_real_vars[0]) 
+#define _PRE_DER_x_ 1 
+#define _PRE_DER_x (data->pre_real_vars[1]) 
+#define _PRE_a_ 2 
+#define _PRE_a (data->pre_real_vars[2]) 
 
 // define initial state vector as vector of value references
 static const fmi2ValueReference STATES[NUMBER_OF_STATES] = { _x_ };
 static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { _DER_x_ };
 
 
+// Removed equations
+
+
 // dynamic equation functions
 
 
 /*
- equation index: 3
+ equation index: 4
  type: SIMPLE_ASSIGN
  der(x) = a * x
  */
-static void eqFunction_3(model_data *data)
+static void eqFunction_4(model_data *data)
 {
     _DER_x = (_a * _x);
 }
@@ -61,9 +64,11 @@ static void eqFunction_3(model_data *data)
 // Dependency graph for sparse updates
 static void setupEquationGraph(model_data *data)
 {
-    data->link(eqFunction_3,&_DER_x);
-    data->link(&_a,eqFunction_3);
-    data->link(&_x,eqFunction_3);
+    // Dynamic equations
+    data->link(eqFunction_4,&_DER_x);
+    data->link(&_a,eqFunction_4);
+    data->link(&_x,eqFunction_4);
+    // Zero crossings
 }
 
 // initial condition equations
@@ -72,20 +77,29 @@ static void setupEquationGraph(model_data *data)
 /*
  equation index: 1
  type: SIMPLE_ASSIGN
- x = $_start(x)
+ a = -1.0
  */
 static void eqFunction_1(model_data *data)
+{
+    _a = -1.0;
+}
+/*
+ equation index: 2
+ type: SIMPLE_ASSIGN
+ x = $_start(x)
+ */
+static void eqFunction_2(model_data *data)
 {
     modelica_real tmp0;
     tmp0 = $__start(_x);
     _x = tmp0;
 }
 /*
- equation index: 2
+ equation index: 3
  type: SIMPLE_ASSIGN
  der(x) = a * x
  */
-static void eqFunction_2(model_data *data)
+static void eqFunction_3(model_data *data)
 {
     _DER_x = (_a * _x);
 }
@@ -103,8 +117,17 @@ static void setDefaultStartValues(model_data *comp)
 // Solve for unknowns in the model's initial equations
 static void initialEquations(model_data* data)
 {
+
     eqFunction_1(data);
     eqFunction_2(data);
+    eqFunction_3(data);
+
+}
+
+// Solve all dynamic equations
+static void allEquations(model_data* data)
+{
+    eqFunction_4(data);
 
 }
 
@@ -123,8 +146,11 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean, fmi2Real, fmi2Real 
     return fmi2SetTime(c,startTime);
 }
 
-fmi2Status fmi2EnterInitializationMode(fmi2Component)
+fmi2Status fmi2EnterInitializationMode(fmi2Component c)
 {
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_INIT_MODE);
     return fmi2OK;
 }
 
@@ -133,6 +159,8 @@ fmi2Status fmi2ExitInitializationMode(fmi2Component c)
     model_data* data = static_cast<model_data*>(c);
     if (data == NULL) return fmi2Error;
     initialEquations(data);
+    allEquations(data);
+    data->push_pre();
     return fmi2OK;
 }
 
@@ -147,6 +175,9 @@ fmi2Status fmi2Reset(fmi2Component c)
     if (data == NULL) return fmi2Error;
     setDefaultStartValues(data);
     initialEquations(data);
+    allEquations(data);
+    data->push_pre();
+    data->set_mode(FMI_INIT_MODE);
     return fmi2OK;
 }
 
@@ -168,10 +199,12 @@ fmi2Status fmi2GetDerivatives(fmi2Component c, fmi2Real* der, size_t nvr)
     return fmi2OK;
 }
 
-fmi2Status fmi2GetEventIndicators(fmi2Component, fmi2Real[], size_t)
+fmi2Status fmi2GetEventIndicators(fmi2Component c, fmi2Real* z, size_t nvr)
 {
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL || nvr > NUMBER_OF_EVENT_INDICATORS) return fmi2Error;
+    for (size_t i = 0; i < nvr; i++) z[i] = data->z[i];
+    return fmi2OK;
 }
 
 fmi2Status fmi2GetContinuousStates(fmi2Component c, fmi2Real* states, size_t nvr)
@@ -202,25 +235,44 @@ fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c, fmi2Real* nominals
     return fmi2OK;
 }
 
- fmi2Status fmi2EnterEventMode(fmi2Component)
+ fmi2Status fmi2EnterEventMode(fmi2Component c)
  {
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_EVENT_MODE);
+    return fmi2OK;
  }
 
- fmi2Status fmi2NewDiscreteStates(fmi2Component, fmi2EventInfo* event_info)
+ fmi2Status fmi2NewDiscreteStates(fmi2Component c, fmi2EventInfo* event_info)
  {
-    event_info->newDiscreteStatesNeeded = fmi2False;
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->push_pre();
+    data->update();
+    if (data->test_pre())
+    {
+       event_info->newDiscreteStatesNeeded = fmi2False;
+       event_info->valuesOfContinuousStatesChanged = fmi2False;
+    }
+    else
+    {
+       event_info->newDiscreteStatesNeeded = fmi2True;
+       event_info->valuesOfContinuousStatesChanged = fmi2True;
+    }
     event_info->terminateSimulation = fmi2False;
     event_info->nominalsOfContinuousStatesChanged = fmi2False;
-    event_info->valuesOfContinuousStatesChanged = fmi2False;
     event_info->nextEventTimeDefined = fmi2False;
     event_info->nextEventTime = 0.0;
-    if (NUMBER_OF_EVENT_INDICATORS == 0) return fmi2OK;
-    return fmi2Error;
+    return fmi2OK;
  }
 
- fmi2Status fmi2EnterContinuousTimeMode(fmi2Component) { return fmi2OK; }
+ fmi2Status fmi2EnterContinuousTimeMode(fmi2Component c)
+ {
+    model_data* data = static_cast<model_data*>(c);
+    if (data == NULL) return fmi2Error;
+    data->set_mode(FMI_CONT_TIME_MODE);
+    return fmi2OK;
+ }
 
  fmi2Status fmi2CompletedIntegratorStep(fmi2Component c, fmi2Boolean,
      fmi2Boolean* enterEventMode, fmi2Boolean* terminateSimulation)
@@ -366,6 +418,7 @@ fmi2Instantiate(
     setupEquationGraph(data);
     setDefaultStartValues(data);
     initialEquations(data);
+    allEquations(data);
     return static_cast<fmi2Component>(data);
 }
 
