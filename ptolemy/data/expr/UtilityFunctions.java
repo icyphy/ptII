@@ -346,6 +346,14 @@ public class UtilityFunctions {
     public static ArrayToken emptyArray(Token prototype) {
         return new ArrayToken(prototype.getType());
     }
+    
+    /** Return the type of an empty array of unspecified length.
+     *  @param prototype A token specifying the element type.
+     *  @return An empty array.
+     */
+    public static Type emptyArrayReturnType(Type prototype) {
+        return new ArrayType(prototype);
+    }
 
     /** Extract a sub-array consisting of all of the elements of an
      *  array for which the given predicate function returns true.
