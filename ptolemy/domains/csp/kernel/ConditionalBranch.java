@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Nameable;
  and the "execution" of the communication is in the run() method.
  A guarded communication statement is of the form
  <P>
- <CENTER>guard; communication => statements </CENTER>
+ <center>guard; communication =&gt; statements </center>
  <P>
  If the guard is true, or absent which implies true, then the branch
  is enabled. If a branch is not enabled, then this it does not participate
@@ -62,25 +62,26 @@ import ptolemy.kernel.util.Nameable;
  two forms of conditional communication constructs from classical
  CSP: "conditional if" (CIF) and
  "conditional do" (CDO). These constructs are analogous to,
- but different from, the common <I>if</I> and <I>do</I> statements.
+ but different from, the common <i>if</i> and <i>do</i> statements.
  Each guarded communication statement is one branch of a CIF or CDO.
  <p>
  A CDO has the form
- <P>
+ <pre>
  CDO {
- <br>G1; C1 => S1;
- <br>[]
- <br>G2; C2 => S2;
- <br>[]
- <br>...
- <br>}
- <P>
+  G1; C1 =&gt; S1;
+ []
+  G2; C2 =&gt; S2;
+ []
+ ...
+ }
+ </pre>
+ <p>
  The G1, G2 etc. represent the guards. The C1, C2 etc. represent the
  communication associated with that branch, and may be either a send()
  or a get(). The S1, S2 etc. represent the blocks of statements
  associated with that branch. They are executed if that branch is
  successful. The "[]" hints at the fact that the guards are all evaluated
- in parallel (as opposed to sequentially in a common <I>if</I> statement).
+ in parallel (as opposed to sequentially in a common <i>if</i> statement).
  <p>
  While at least one of the branches is enabled, the construct continues
  to evaluate and execute one of the enabled branches. If more than one

@@ -48,36 +48,41 @@ import ptolemy.kernel.util.Workspace;
  <p>Produce an output token on each firing with a value that is
  equal to the specified trigonometric function of the input.
  The input and output types are DoubleToken.  The functions
- are exactly those in the java.lang.Math class.  They are:
+ are exactly those in the java.lang.Math class.  They are:</p>
  <ul>
  <li> <b>acos</b>: The arc cosine of an angle, in the range from
  0.0 through pi. If the argument is NaN or its absolute value is
- greater than 1, then the result is NaN.
- </li><li> <b>asin</b>: The arc sine of an angle, in the range of
+ greater than 1, then the result is NaN.</li>
+ <li> <b>asin</b>: The arc sine of an angle, in the range of
  -pi/2 through pi/2. If the argument is NaN or its absolute
  value is greater than 1, then the result is NaN.
  If the argument is positive zero, then the result is positive zero;
  if the argument is negative zero, then the result is negative zero.
- </li><li> <b>atan</b>: The arc tangent of an angle, in the range of
+ </li>
+ <li> <b>atan</b>: The arc tangent of an angle, in the range of
  -pi/2 through pi/2. If the argument is NaN, then the result is NaN.
  If the argument is positive zero, then the result is positive zero;
  if the argument is negative zero, then the result is negative zero.
- </li><li> <b>cos</b>: The trigonometric cosine of an angle.
+ </li>
+ <li> <b>cos</b>: The trigonometric cosine of an angle.
  If the argument is NaN or an infinity, then the result is NaN.
- </li><li> <b>sin</b>: The trigonometric sine of an angle.
+ </li>
+ <li> <b>sin</b>: The trigonometric sine of an angle.
  If the argument is NaN or an infinity, then the result is NaN.
- </li><li> <b>tan</b>: The trigonometric tangent of an angle.
+ </li>
+ <li> <b>tan</b>: The trigonometric tangent of an angle.
  If the argument is NaN or an infinity, then the result is NaN.
  If the argument is positive zero, then the result is positive zero;
  if the argument is negative zero, then the result is negative zero
- </li></ul>
- (NOTE: The above documentation is adapted from the class documentation
+ </li>
+ </ul>
+ <p>(NOTE: The above documentation is adapted from the class documentation
  for java.lang.Math as released in JDK 1.3).
  </p><p>
  (NOTE: This actor will eventually be augmented to do hyperbolic trig
  functions, and possibly to operate on matrices and arrays).
  </p><p>
- The following functions in java.lang.Math are implemented elsewhere:
+ The following functions in java.lang.Math are implemented elsewhere:</p>
  <ul>
  <li> <b>abs</b>: AbsoluteValue actor.
  </li><li> <b>atan2</b>: CartesianToPolar actor.
@@ -93,7 +98,6 @@ import ptolemy.kernel.util.Workspace;
  </li><li> <b>toDegrees</b>: Scale actor (with factor 180.0/PI).
  </li><li> <b>toRadians</b>: Scale actor (with factor PI/180.0).
  </li></ul>
- </p>
 
  @author Edward A. Lee
  @version $Id$

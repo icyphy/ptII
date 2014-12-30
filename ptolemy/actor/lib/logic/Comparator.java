@@ -46,10 +46,12 @@ import ptolemy.kernel.util.StringAttribute;
 //// Comparator
 
 /**
- <p>Compare two double-valued inputs, and output the boolean result
- of the comparison.  The exact comparison performed is given by the
+ Compare two double-valued inputs, and output the boolean result
+ of the comparison.
+
+ <p>The exact comparison performed is given by the
  <i>comparison</i> attribute, which can take any of the following
- values:
+ values:</p>
  <ul>
  <li> <b>&gt;</b>: <i>left</i> &gt; <i>right</i></li>
  <li> <b>&gt;=</b>: <i>left</i> &gt;= <i>right</i></li>
@@ -57,20 +59,18 @@ import ptolemy.kernel.util.StringAttribute;
  <li> <b>&lt;=</b>: <i>left</i> &lt;= <i>right</i></li>
  <li> <b>==</b>: <i>left</i> == <i>right</i></li>
  </ul>
- The default is "&gt;".
- The input ports are named <i>left</i> and <i>right</i> to indicate
- which side of the comparison operator their value appears on.
- </p>
- <p>
- The <i>tolerance</i> parameter, which defaults to zero, defines
+
+ <p>The default is "&gt;".  The input ports are named <i>left</i> and
+ <i>right</i> to indicate which side of the comparison operator their
+ value appears on.</p>
+
+ <p> The <i>tolerance</i> parameter, which defaults to zero, defines
  an error tolerance.  That is, the actor may produce true even if
  the specified test is not exactly satisfied, but rather is almost
- satisfied, within the specified tolerance.
- </p>
- <p>
- Note that this actor will work with any data type that can be losslessly
- converted to doubles, such as integers.
- </p>
+ satisfied, within the specified tolerance.</p>
+
+ <p> Note that this actor will work with any data type that can be
+ losslessly converted to doubles, such as integers.</p>
 
  @author Edward A. Lee
  @version $Id$

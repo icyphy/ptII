@@ -6,8 +6,8 @@ import java.util.concurrent.SynchronousQueue;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A class to convert methods that implement the Collector<> class into a standard Iterable<>, using
- * a new thread created for the collection process, and a SynchronousQueue<> object.
+ * A class to convert methods that implement the Collector&lt;&gt; class into a standard Iterable&lt;&gt;, using
+ * a new thread created for the collection process, and a SynchronousQueue&lt;&gt; object.
  */
 public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
 
@@ -52,14 +52,14 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
     }
 
     /**
-     * Convert a method that implements the Collector<> class with a standard Iterable<>. This means
+     * Convert a method that implements the Collector&lt;&gt; class with a standard Iterable&lt;&gt;. This means
      * that the collecting method can use complex recursive logic, but still allows the calling code
      * to handle the results with a standard iterator. Results are returned immediately and do not
      * incur overhead of being stored in a list. Calculation overhead is only performed for the
      * results that are requested through the iterator.
      *
      * This is implemented using a new thread created for the collection process, and a
-     * SynchronousQueue<> object.
+     * SynchronousQueue&lt;&gt; object.
      */
     @Override
     public YieldAdapterIterable<T> adapt(final Collector<T> client) {

@@ -65,7 +65,6 @@ public class FMULog {
      *  defined by the tool that created the fmu.  Typical
      *  values are "log" or "error".
      *  @param message The message in printf format
-     *  @param parameters The printf style parameters.
      */
     public static void log(FMIModelDescription modelDescription,
 	    Pointer fmiComponent, String instanceName, int status,

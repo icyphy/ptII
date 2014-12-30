@@ -49,11 +49,11 @@ import com.jgoodies.forms.layout.RowSpec;
  * in column and row specifications will be visible. And cell constraint
  * alignments that use or override the column and row defaults are visible too.
  * <pre>
- * ColumnSpec("p")   -> ColumnSpec("fill:pref:0");
- * ColumnSpec("p:1") -> ColumnSpec("fill:pref:1");
+ * ColumnSpec("p")   -&gt; ColumnSpec("fill:pref:0");
+ * ColumnSpec("p:1") -&gt; ColumnSpec("fill:pref:1");
  *
- * RowSpec("p")      -> RowSpec("center:pref:0");
- * RowSpec("p:1")    -> RowSpec("center:pref:1");
+ * RowSpec("p")      -&gt; RowSpec("center:pref:0");
+ * RowSpec("p:1")    -&gt; RowSpec("center:pref:1");
  * </pre>
  *
  * @author        Karsten Lentzsch

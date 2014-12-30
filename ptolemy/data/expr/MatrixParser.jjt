@@ -59,8 +59,9 @@ This Class provides a parser for read matrices in matlab format.
 public class MatrixParser {
 
     /** Read a Matrix from File.
-        @exception IllegalActionException If an error occurs during parsing.
-    */
+     *  @return A Vector containing the contents of the file.
+     *  @exception IllegalActionException If an error occurs during parsing.
+     */
     public Vector readMatrix() throws IllegalActionException {
 	Vector m = null;
 	try {

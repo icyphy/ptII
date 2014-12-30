@@ -1231,8 +1231,9 @@ public class UtilityFunctions {
     }
     
     /** Generate a sample from a multivariate Gaussian distribution.
-     *  @param mean The mean.
-     *  @param covariance The covariance.
+     *  @param mean The mean array.
+     *  @param S The covariance matrix, whose length must match
+     *  that of the mean array and be square.
      *  @return a sample from a multivariate Gaussian distribution
      */
     public static ArrayToken multivariateGaussian(double[] mean,

@@ -63,9 +63,9 @@ import com.jgoodies.forms.layout.FormLayout;
  * <code>#addTitle</code>, and <code>#addSeparator</code> can contain
  * an optional mnemonic marker. The mnemonic and mnemonic index
  * are indicated by a single ampersand (<tt>&amp;</tt>). For example
- * <tt>&quot;&amp;Save&quot</tt>, or <tt>&quot;Save&nbsp;&amp;as&quot</tt>.
+ * <tt>&quot;&amp;Save&quot;</tt>, or <tt>&quot;Save&nbsp;&amp;as&quot;</tt>.
  * To use the ampersand itself duplicate it, for example
- * <tt>&quot;Look&amp;&amp;Feel&quot</tt>.<p>
+ * <tt>&quot;Look&amp;&amp;Feel&quot;</tt>.<p>
  *
  * <strong>Example:</strong><br>
  * This example creates a panel with 3 columns and 3 rows.
@@ -76,11 +76,11 @@ import com.jgoodies.forms.layout.FormLayout;
  *
  * PanelBuilder builder = new PanelBuilder(layout);
  * CellConstraints cc = new CellConstraints();
- * builder.addLabel("&Title",      cc.xy  (1, 1));
+ * builder.addLabel("&amp;Title",      cc.xy  (1, 1));
  * builder.add(new JTextField(),   cc.xywh(3, 1, 3, 1));
- * builder.addLabel("&Price",      cc.xy  (1, 3));
+ * builder.addLabel("&amp;Price",      cc.xy  (1, 3));
  * builder.add(new JTextField(),   cc.xy  (3, 3));
- * builder.addLabel("&Author",     cc.xy  (1, 5));
+ * builder.addLabel("&amp;Author",     cc.xy  (1, 5));
  * builder.add(new JTextField(),   cc.xy  (3, 5));
  * builder.add(new JButton("..."), cc.xy  (5, 5));
  * return builder.getPanel();
@@ -179,7 +179,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * addLabel("Name");       // No Mnemonic
      * addLabel("N&amp;ame");      // Mnemonic is 'a'
      * addLabel("Save &amp;as");   // Mnemonic is the second 'a'
-     * addLabel("Look&amp;&amp;Feel"); // No mnemonic, text is "look&feel"
+     * addLabel("Look&amp;&amp;Feel"); // No mnemonic, text is "look&amp;feel"
      * </pre>
      *
      * @param textWithMnemonic   the label's text -

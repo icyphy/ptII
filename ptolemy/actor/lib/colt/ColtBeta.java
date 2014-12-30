@@ -53,15 +53,14 @@ import cern.jet.random.Beta;
  alpha and beta both set to 2.0.
 
  <p>A definition of NegativeBinomial by Wolfgang Hoschek can be found at
- <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)"<code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)</code></a>:
+ <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)"><code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)</code></a>:</p>
  <blockquote>
- <h3>
- beta</h3>
+ <h3>beta</h3>
  <pre>public static double <b>beta</b>(double&nbsp;a,
  double&nbsp;b,
  double&nbsp;x)</pre>
  <p>Returns the area from zero to <tt>x</tt> under the beta density
- function.
+ function.</p>
  <pre>                          x
             -             -
            | (a+b)       | |  a-1      b-1
@@ -71,13 +70,14 @@ import cern.jet.random.Beta;
                          0
  </pre>
 
- This function is identical to the incomplete beta
- integral function <tt>Gamma.incompleteBeta(a, b, x)</tt>.
+ <p>This function is identical to the incomplete beta
+ integral function <tt>Gamma.incompleteBeta(a, b, x)</tt>.</p>
 
- The complemented function is
+ <p>The complemented function is</p>
 
- <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;
+ <p><tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;</p>
  </blockquote>
+
  The above description of beta() is
  <a href="doc-files/colt-copyright.htm">copyrighted</a>.
  <br>In this actor, <i>alpha</i> corresponds with <i>a</i>

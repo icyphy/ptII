@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Settable;
  Base class for source actors that will only fire a limited number of
  times.  This actor has a parameter,
  <i>firingCountLimit</i>, that optionally limits the number of iterations
- for which the actor is fired.  If this number is <i>n</i> > 0, then
+ for which the actor is fired.  If this number is <i>n</i> &gt; 0, then
  the <i>n</i>-th invocation of postfire() returns false, which indicates
  to the scheduler that it should stop invocations of this actor.
  The default value of <i>firingCountLimit</i>

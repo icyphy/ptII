@@ -187,7 +187,7 @@ public class SampleDelay extends SDFTransformer {
         getDirector().invalidateResolvedTypes();
     }
 
-    /** Sets up backward type constraint that sets output <= input
+    /** Sets up backward type constraint that sets output &lt; input
      *  if backward type inference is enabled.
      *  @return A set of Inequalities.
      */

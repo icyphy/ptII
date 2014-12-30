@@ -156,6 +156,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     /** Return the type of this node.  This value may be set during
      *  parsing, if this represents a constant value, or may be set
      *  during parse tree evaluation.
+     *  @return The type of this node.
      */
     public ptolemy.data.type.Type getType() {
         return _ptType;
@@ -332,6 +333,7 @@ public class ASTPtRootNode implements Node, Cloneable {
 
     /** Return the prefix, followed by the string value of this node.
      *  @param prefix The prefix
+     *  @return The prefix followed by the string value of this node.
      */
     public String toString(String prefix) {
         return prefix + toString();
@@ -340,7 +342,7 @@ public class ASTPtRootNode implements Node, Cloneable {
     /** Traverse this node with the given visitor.
      *  Subclasses should override this method to invoke the appropriate
      *  method in the visitor.
-     *  @param vistor The visitor.
+     *  @param visitor The visitor.
      *  @exception IllegalActionException Always thrown in this base
      *  class the visit() method is not implemented here.
      */

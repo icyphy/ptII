@@ -61,18 +61,18 @@ import ptolemy.kernel.util.Workspace;
 
  This is achieved using three type constraints:
  <ul>
- <li><tt>input &gt;= {|x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}</tt>,
+ <li><tt>input &ge; {|x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}</tt>,
  which requires the types of the fields in the input union to be compatible
  with the corresponding output ports. This constraint is set in the
  constructor of this class.
  </li>
- <li><tt>each output &gt;= the type of the corresponding field inside the input
+ <li><tt>each output &ge; the type of the corresponding field inside the input
  union</tt>, which is similar to the usual default constraints, however this
  constraint establishes a dependency between fields inside the input union
  and the outputs, instead of just between inputs and outputs.
  </li>
  </ul>
- Note that the constraint <tt>input &gt;= {|x = GENERAL, y = GENERAL, ..|}
+ Note that the constraint <tt>input &ge; {|x = GENERAL, y = GENERAL, ..|}
  </tt>, which is used in <code>RecordDisassembler</code> to force the input
  to  contain a corresponding field for each output port, is useless for
  <code>UnionDisassembler</code>. This is due to the inverse width subtyping
@@ -172,18 +172,18 @@ public class UnionDisassembler extends TypedAtomicActor {
 
     /** Set up and returns two type constraints.
      *  <ul>
-     *  <li><tt>input >= {|x = typeOf(outputPortX), y = typeOf(outputPortY)
+     *  <li><tt>input &ge; {|x = typeOf(outputPortX), y = typeOf(outputPortY)
      *  , ..|}</tt>, which requires the types of the fields in the input union
      *  to be compatible with the types of the corresponding output ports.</li>
      *
-     *  <li><tt>each output >= the type of the corresponding field inside the
+     *  <li><tt>each output &ge; the type of the corresponding field inside the
      *  input union</tt>, which is similar to the usual default constraints,
      *  however this constraint establishes a dependency between fields inside
      *  the input union and the outputs of this actor, instead of just between
      *  its inputs and outputs.</li>
      *  </ul>
      *
-     *  <p>Note that the constraint <tt>input &lt;= {|x = GENERAL, y = GENERAL, ..|}
+     *  <p>Note that the constraint <tt>input &le; {|x = GENERAL, y = GENERAL, ..|}
      *  </tt>, which is used in RecordDisassembler to force the input to
      *  contain a corresponding field for each output port, is useless for
      *  UnionDisassembler. This is due to the inverse width subtyping of

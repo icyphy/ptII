@@ -109,7 +109,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
     /** If the argument is the <i>nodeId</i> parameter, then reset the
      *  state to the specified value.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If <i>nodeId<i> cannot be evaluated
+     *  @exception IllegalActionException If <i>nodeId</i> cannot be evaluated
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */

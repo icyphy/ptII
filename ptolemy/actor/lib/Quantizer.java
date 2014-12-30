@@ -57,9 +57,9 @@ import ptolemy.kernel.util.Workspace;
  </p>
  <p>
  <i>y</i> = <i>a</i>, for <i>u</i> &lt;= (<i>b</i>+<i>a</i>)/2;
- <br><i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;</br>
- <br><i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;</br>
- <br><i>y</i> = <i>c</i>, for <i>u</i> &gt; (<i>c</i>+<i>b</i>)/2;</br>
+ <br><i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;<br>
+ <br><i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;<br>
+ <br><i>y</i> = <i>c</i>, for <i>u</i> &gt; (<i>c</i>+<i>b</i>)/2;<br>
  </p><p>
  Thus, for the default <i>levels</i>, the output is (almost)
  the signum function of the input, or +1.0 if the input is positive,

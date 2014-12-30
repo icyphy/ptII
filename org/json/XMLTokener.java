@@ -82,10 +82,10 @@ public class XMLTokener extends JSONTokener {
 
     /**
      * Get the next XML outer token, trimming whitespace. There are two kinds
-     * of tokens: the '<' character which begins a markup tag, and the content
+     * of tokens: the '&lt;' character which begins a markup tag, and the content
      * text between markup tags.
      *
-     * @return  A string, or a '<' Character, or null if there is no more
+     * @return  A string, or a '&lt;' Character, or null if there is no more
      * source text.
      * @exception JSONException
      */
@@ -141,9 +141,9 @@ public class XMLTokener extends JSONTokener {
     }
 
     /**
-     * Returns the next XML meta token. This is used for skipping over <!...>
-     * and <?...?> structures.
-     * @return Syntax characters (<code>< > / = ! ?</code>) are returned as
+     * Returns the next XML meta token. This is used for skipping over &lt;!...&gt;
+     * and &lt;?...?&gt; structures.
+     * @return Syntax characters (<code>&lt; &gt; / = ! ?</code>) are returned as
      *  Character, and strings and names are returned as Boolean. We don't care
      *  what the values actually are.
      * @exception JSONException If a string is not properly closed or if the XML
@@ -207,7 +207,7 @@ public class XMLTokener extends JSONTokener {
 
     /**
      * Get the next XML Token. These tokens are found inside of angle
-     * brackets. It may be one of these characters: <code>/ > = ! ?</code> or it
+     * brackets. It may be one of these characters: <code>/ &gt; = ! ?</code> or it
      * may be a string wrapped in single quotes or double quotes, or it may be a
      * name.
      * @return a String or a Character.

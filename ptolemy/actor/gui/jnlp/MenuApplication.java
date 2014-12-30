@@ -51,10 +51,10 @@ import ptolemy.util.StringUtilities;
  <br> "There is no disk in the drive. Please insert a disk into drive A"
  with the standard Abort/Retry/Ignore buttons.
  See:
- <a href="http://forum.java.sun.com/thread.jsp?forum=38&thread=71610">http://forum.java.sun.com/thread.jsp?forum=38&thread=71610</a>
+ <a href="http://forum.java.sun.com/thread.jsp?forum=38&amp;thread=71610">http://forum.java.sun.com/thread.jsp?forum=38&amp;thread=71610</a>
 
  <li> Speed things up, see
- <a href="http://forums.java.sun.com/thread.jsp?forum=38&thread=134393">http://forums.java.sun.com/thread.jsp?forum=38&thread=134393</a>
+ <a href="http://forums.java.sun.com/thread.jsp?forum=38&amp;thread=134393">http://forums.java.sun.com/thread.jsp?forum=38&amp;thread=134393</a>
  </ol>
 
 

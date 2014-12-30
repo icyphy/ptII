@@ -128,16 +128,16 @@ import ptolemy.kernel.util.Workspace;
  Before the message is received and after its duration
  expires, this power is zero.  The <i>i</i>-th message
  is successfully received if
- <quote>
- <i>p</i><sub><i>i</i></sub>(<i>t</i>) >= <i>P</i>
+ <blockquote>
+ <i>p</i><sub><i>i</i></sub>(<i>t</i>) &ge; <i>P</i>
  <font face="Symbol">S</font><sub>(<i>j</i> != <i>i</i>)</sub>
  <i>p</i><sub><i>j</i></sub>(<i>t</i>)
- </quote>
- for all <i>t</i> where <i>p</i><sub><i>i</i></sub>(<i>t</i>) > 0,
+ </blockquote>
+ for all <i>t</i> where <i>p</i><sub><i>i</i></sub>(<i>t</i>) &gt; 0,
  where
- <quote>
+ <blockquote>
  <i>P</i> = 10^(<i>SNRThresholdInDB</i>/10)
- </quote>
+ </blockquote>
  which is the signal to interference ratio in a linear scale.
  <p>
  The way this actor works is that each input that has sufficient power

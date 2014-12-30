@@ -59,15 +59,15 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * <pre>
  *       action: propose FIRE_BEGIN
- * START ---------------------------------------> BEGIN
+ * START ---------------------------------------&gt; BEGIN
  *
  *       guard: FIRE_BEGIN is notified
  *       action: call fire(), propose FIRE_END
- * BEGIN ---------------------------------------> FIRE_END
+ * BEGIN ---------------------------------------&gt; FIRE_END
  *
  *       guard: FIRE_BEGIN is not notified
  *       action: propose FIRE_BEGIN
- * BEGIN ---------------------------------------> BEGIN
+ * BEGIN ---------------------------------------&gt; BEGIN
  * </pre>
  *
  * @author Liangpeng Guo

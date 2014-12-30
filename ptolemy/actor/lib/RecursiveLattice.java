@@ -94,7 +94,7 @@ import ptolemy.kernel.util.Workspace;
  J. Makhoul, "Linear Prediction: A Tutorial Review",
  <i>Proc. IEEE</i>, Vol. 63, pp. 561-580, Apr. 1975.
  <p>[2]
- S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
+ S. M. Kay, <i>Modern Spectral Estimation: Theory &amp; Application</i>,
  Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
  @see ptolemy.actor.lib.IIR

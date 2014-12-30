@@ -59,18 +59,18 @@ import ptolemy.kernel.util.NameDuplicationException;
  ArrayToken, with length matching the number of channels.
  Suppose for example that the width of the input is one,
  and the first three inputs should be 1, 2, and 3.  Then you can
- set <i>correctValues</i> to
+ set <i>correctValues</i> to</p>
  <pre>
  {1, 2, 3}
  </pre>
- Suppose instead that the input has width two, and the correct values
+ <p>Suppose instead that the input has width two, and the correct values
  in the first iteration are 1 on the first channel and 2 on the second.
  Then on the second iteration, the correct values are 3 on the first
- channel and 4 on the second.  Then you can set <i>correctValues</i> to
+ channel and 4 on the second.  Then you can set <i>correctValues</i> to</p>
  <pre>
  {{1, 2}, {3, 4}}
  </pre>
- With this setting, no tests are performed after the first two iterations
+ <p> With this setting, no tests are performed after the first two iterations
  of this actor.
  </p><p>
  The input values are checked in the fire() method, which checks to

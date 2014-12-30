@@ -37,8 +37,8 @@ import java.util.List;
  has a name. Subclasses will typically should set TreeType to
  be the subclass itself.
 
- For instance, IfTree extends NamedTree &lt IfTree &gt
- *
+ For instance, IfTree extends NamedTree &lt; IfTree &gt;.
+
  <p>
  @author Adam Cataldo, Elaine Cheong
  @version $Id$

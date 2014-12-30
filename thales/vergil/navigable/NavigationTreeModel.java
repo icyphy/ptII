@@ -43,11 +43,11 @@ import ptolemy.vergil.tree.ClassAndEntityTreeModel;
  <p>Titre : NavigationTreeModel</p>
  <p>Description : used to represent all the entities of a MoML file</p>
  <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson  * 01 sept. 2003
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson  * 01 sept. 2003
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating @ProposedRating Yellow (jerome.blanc)
- @Pt.AcceptedRating @AcceptedRating
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class NavigationTreeModel extends ClassAndEntityTreeModel {
     public NavigationTreeModel(NamedObj root) {

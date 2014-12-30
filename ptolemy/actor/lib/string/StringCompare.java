@@ -47,9 +47,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// StringCompare
 
 /**
- <p>Compare two strings specified either as inputs or parameters. The output
+ Compare two strings specified either as inputs or parameters. The output
  is either true or false, depending on whether the comparison function is
- satisfied. The comparison functions are:
+ satisfied.
+
+ <p> The comparison functions are:</p>
  <ul>
  <li> <b>equals</b>: Output true if the strings are equal (Default).</li>
  <li> <b>startsWith</b>: Output true if <i>firstString</i> starts with
@@ -59,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <li> <b>contains</b>: Output true if <i>firstString</i> contains
  <i>secondString</i>.</li>
  </ul>
- The strings to be compared will be taken from the inputs if they are
+ <p>The strings to be compared will be taken from the inputs if they are
  available, and otherwise will be taken from the corresponding parameters.</p>
 
  @author Vinay Krishnan, Daniel L&aacute;zaro Cuadrado (contributor: Edward A. Lee)

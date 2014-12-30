@@ -1,6 +1,6 @@
 /* An actor that handles an HttpRequest by producing an output and waiting for an input.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -824,7 +824,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  the handling of the request, sending back the response
      *  that has been provided by the enclosing actor.
      *
-     *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
+     *  See <a href="http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
      */
     @SuppressWarnings("serial")
     protected class ActorServlet extends HttpServlet {

@@ -61,28 +61,29 @@ firing.
 The type of the output port is a UnionType of which the labels much match
 the names of the input ports. This is achieved using two type constraints:
 The labels for the output UnionToken are the names of the input
-ports. This is achieved using two type constraints:
+ports. This is achieved using two type constraints:</p>
 
 <ul>
-<li><tt>output >= {| x = typeOf(inputPortX), y = typeOf(inputPortY), .. |}
+
+<li><tt>output &ge; {| x = typeOf(inputPortX), y = typeOf(inputPortY), .. |}
 </tt>, which requires the types of the input ports to be compatible
-with the corresponding types in the output union.
-</li>
-<li><tt>each input <= the type of the corresponding field inside the
+with the corresponding types in the output union.</li>
+
+<li><tt>each input &le; the type of the corresponding field inside the
 output union</tt>, which is similar to the usual default constraints,
 however this constraint establishes a dependency between the inputs of
 this actor and the fields inside the output union, instead of just
-between its inputs and outputs.
-</li>
+between its inputs and outputs.</li>
+
 </ul>
 
-Note that the output UnionType is required to contain a corresponding
+<p>Note that the output UnionType is required to contain a corresponding
 field for every input. However, due to the subtyping relation of UnionType
 that is opposite to the subtyping of RecordType, the type constraint
 that the output port of this actor must be greater than or equal to the GLB
 of the types of its receivers (implied by the connections), is always
-satisfied.
-</p>
+satisfied.</p>
+
 <p>
 To use this actor, instantiate it, and then add input ports
 (instances of TypedIOPort).
@@ -174,11 +175,11 @@ public class UnionMerge extends TypedAtomicActor {
 
     /** Set up and return two type constraints.
      *  <ul>
-     *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
+     *  <li><tt>output &ge; {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
      *  </tt>, which requires the types of the input ports to be compatible
      *  with the corresponding types in the output union.
      *  </li>
-     *  <li><tt>each input <= the type of the corresponding field inside the
+     *  <li><tt>each input &le; the type of the corresponding field inside the
      *  output union</tt>, which is similar to the usual default constraints,
      *  however this constraint establishes a dependency between the inputs of
      *  this actor and the fields inside the output union, instead of just

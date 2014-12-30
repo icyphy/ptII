@@ -94,17 +94,17 @@ public class OrderedResourceBundle {
      * @param baseName
      *            String denoting the name of the properties file that will be
      *            read to populate this ResourceBundle.<br>
-     *            </br> Example 1: if the baseName is MyPropsFile, and the
+     *            <br> Example 1: if the baseName is MyPropsFile, and the
      *            default Locale is en_US, a properties file named:
      *            <code>MyPropsFile_en_US.properties</code> will be sought on
      *            the classpath.<br>
-     *            </br> Example 2: if the baseName is
+     *            <br> Example 2: if the baseName is
      *            org.mydomain.pkg.MyPropsFile, and the default Locale is en_US,
      *            a properties file named:
      *            <code>org/mydomain/pkg/MyPropsFile_en_US.properties</code>
      *            will be sought on the classpath.<br>
-     *            </br> NOTE: valid comment chars are # and !<br>
-     *            </br> valid delimiters are (space) : =
+     *            <br> NOTE: valid comment chars are # and !<br>
+     *            <br> valid delimiters are (space) : =
      * @return OrderedResourceBundle - a ResourceBundle with its entries in the
      *         same order as those in the original properties file
      * @exception IOException

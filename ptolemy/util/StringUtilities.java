@@ -147,8 +147,8 @@ public class StringUtilities {
      *  <pre>
      *  &amp; becomes &amp;amp;
      *  " becomes &amp;quot;
-     *  < becomes &amp;lt;
-     *  > becomes &amp;gt;
+     *  &lt; becomes &amp;lt;
+     *  &gt; becomes &amp;gt;
      *  newline becomes &amp;#10;
      *  carriage return becomes $amp;#13;
      *  </pre>
@@ -1076,10 +1076,10 @@ public class StringUtilities {
      *
      *  <p>In this method, we make the following translations:
      *  <pre>
-     *  &amp;amp; becomes &amp
+     *  &amp;amp; becomes &amp;
      *  &amp;quot; becomes "
-     *  &amp;lt; becomes <
-     *  &amp;gt; becomes >
+     *  &amp;lt; becomes &lt;
+     *  &amp;gt; becomes &gt;
      *  &amp;#10; becomes newline
      *  &amp;#13; becomes carriage return
      *  </pre>
@@ -1110,7 +1110,7 @@ public class StringUtilities {
      *  options that take arguments where the first
      *  element is a String naming the command line option, and the
      *  second element is the argument, for example
-     *  <code>{"-class", "<classname>")</code>
+     *  <code>{"-class", "&lt;classname&gt;")</code>
      *  @param commandFlags An array of Strings that list command-line
      *  options that are either present or not.
      *  @return A string that describes the command.
@@ -1136,7 +1136,7 @@ public class StringUtilities {
      *  options that take arguments where the first
      *  element is a String naming the command line option, and the
      *  second element is the argument, for example
-     *  <code>{"-class", "<classname>")</code>
+     *  <code>{"-class", "&lt;classname&gt;")</code>
      *  @param commandFlagsWithDescriptions A 2xM array of Strings that list
      *  command-line options that are either present or not and a description
      *  of what the command line option does.

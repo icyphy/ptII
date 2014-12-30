@@ -99,7 +99,7 @@ public class DateToModelTime extends Transformer {
     }
 
     /** Read DateToken on input and output corresponding model time value.
-     *  @exception Not thrown here.
+     *  @exception IllegalActionException If thrown in the parent class.
      */
     @Override
     public void fire() throws IllegalActionException {

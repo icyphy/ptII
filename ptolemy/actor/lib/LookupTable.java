@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  In LookupTable, the array is a parameter, and the index is read
  in as an input.</p>
 
- <p>Note that there are three similar actors here
+ <p>Note that there are three similar actors here:</p>
  <dl>
  <dt>LookupTable</dt>
  <dd>array is a parameter, index is a port.</dd>
@@ -61,7 +61,6 @@ import ptolemy.kernel.util.Workspace;
  <dt>Array<i>XXX</i> (not yet developed)</dt>
  <dd>array and index are both ports</dd>
  </dl>
- </p>
 
  @see ArrayElement
  @author Paul Whitaker, Christopher Hylands

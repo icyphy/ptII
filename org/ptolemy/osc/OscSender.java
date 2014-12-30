@@ -79,7 +79,6 @@ public class OscSender extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
-     *  @param trainingSequence The input string that the oracle is built from
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an

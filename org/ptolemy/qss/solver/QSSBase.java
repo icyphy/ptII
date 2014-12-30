@@ -212,7 +212,7 @@ import ptolemy.actor.util.Time;
  * <li>{@link #setDqTol()}</li>
  * <li>{@link #setDqTols()}</li>
  * <li>{@link #setCurrSimTime()}</li>
- * <li>{@link #setStateValue()}</li>
+ * <li>{@link #setStateValue(int, double)}</li>
  * <li>{@link #setQuantEvtTimeMax()}</li>
  * <li>{@link #validate()}</li>
  * </ul>
@@ -350,10 +350,11 @@ public abstract class QSSBase {
      * form of constructor for creating <code>Time</code> objects.
      * Therefore the user has to construct and provide the initial time.</p>
      *
-     * @param derivFcn Object that implements the DerivativeFcn interface.
+     * @param initSimTime The initial time.
      */
     public final void init_simTime(final Time initSimTime) {
-
+        // FIXME: Remove the underscore.  Rename to initializeSimulationTime.
+        
         // Check inputs.
         if( null == initSimTime ) {
             throw new IllegalArgumentException("Require a valid initSimTime");
@@ -418,7 +419,7 @@ public abstract class QSSBase {
      * function of time, when integrating the derivative function.</p>
      *
      * <p>The initial state model is constant at a value of 0.
-     * Use method {@link #setStateValue()} to change this initial value.</p>
+     * Use method {@link #setStateValue(int, doiuble)} to change this initial value.</p>
      *
      * <p>Never change the model parameters directly.
      * The QSS integrator claims exclusive write access to the model.</p>
@@ -442,7 +443,7 @@ public abstract class QSSBase {
      * Therefore the user must not assert write access on any state model.</li>
      * <li>The user should <em>never</em> write new parameters to the
      * state model.</li>
-     * <li>The user should call method {@link #setStateValue()}, in order
+     * <li>The user should call method {@link #setStateValue(int, double)}, in order
      * to initialize the state, <em>before</em> starting the integration.</li>
      * </ul>
      *
@@ -466,13 +467,13 @@ public abstract class QSSBase {
      * <p>From an encapsulation viewpoint, the integrator does not have to
      * expose its state models to the rest of the simulation.
      * It could, instead, force the user to evaluate the quantized state models
-     * using method {@link #evalStateMdl()}.
+     * using method {@link #evalStateMdl(int, Time)}.
      * Alternately, it could copy the quantized state model to a user-supplied
      * model object, thus keeping the integrator's private copy hidden.
      * However, both these approaches are relatively high overhead, compared
      * to simply exposing the model for the user to evaluate as needed.</p>
      *
-     * @param stateIdx Index of state, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx Index of state, 0 &le; stateIdx &lt; this.getStateCt().
      * @param qStateMdl Model to use.
      */
     public final ModelPoly getStateMdl(final int stateIdx) {
@@ -487,7 +488,7 @@ public abstract class QSSBase {
      * This method checks whether that requirement has been met.</p>
      *
      * @return Index of an input variable for which the user has yet to add a
-     *   model, 0 <= idx < this.getArgCt().  Return -1 if all models have been
+     *   model, 0 &le; idx &le; this.getArgCt().  Return -1 if all models have been
      *   added (or if the derivative function takes no input variables).
      */
     public final int needInputVarMdlIdx() {
@@ -567,7 +568,7 @@ public abstract class QSSBase {
      * a design goal, and may be lost in the future.</li>
      * </ul>
      *
-     * @param ivIdx Index of input variable, 0 <= ivIdx < this.getInputVarCt().
+     * @param ivIdx Index of input variable, 0 &le; ivIdx &lt; this.getInputVarCt().
      * @param ivMdl Model to use.
      */
     public final void addInputVarMdl(final int ivIdx, final ModelPoly ivMdl) {
@@ -608,9 +609,9 @@ public abstract class QSSBase {
      * <p>This method sets the tolerances used to find the quantum.
      * It also updates the quantum to reflect the new tolerances.</p>
      *
-     * @param stateIdx Index of state, 0 <= stateIdx < this.getStateCt().
-     * @param absTol Absolute tolerance, absTol > 0 [units of <i>x[j]</i>].
-     * @param relTol Relative tolerance, relTol >= 0 [1].
+     * @param stateIdx Index of state, 0 &le; stateIdx &lt; this.getStateCt().
+     * @param absTol Absolute tolerance, absTol &gt; 0 [units of <i>x[j]</i>].
+     * @param relTol Relative tolerance, relTol &gt; 0 [1].
      */
     public final void setDqTol(final int stateIdx, final double absTol, final double relTol) {
 
@@ -638,8 +639,8 @@ public abstract class QSSBase {
      * <p>Apply the same tolerances to all the states the integrator predicts.
      * For details, see method {@link #setDqTol()}.</p>
      *
-     * @param absTol Absolute tolerance, absTol > 0 [units of <i>x[j]</i>].
-     * @param relTol Relative tolerance, relTol >= 0 [1].
+     * @param absTol Absolute tolerance, absTol &gt; 0 [units of <i>x[j]</i>].
+     * @param relTol Relative tolerance, relTol &ge; 0 [1].
      */
     public final void setDqTols(final double absTol, final double relTol) {
 
@@ -803,6 +804,7 @@ public abstract class QSSBase {
      * @return Value of the state model at <code>simTime</code>.
      */
     public final double evalStateMdl(final int stateIdx, final Time simTime) {
+        // FIXME: Chanage the name of this to evaluateStateModel. Method names should use complete words.
         return( _qStateMdls[stateIdx].eval(simTime) );
     }
 

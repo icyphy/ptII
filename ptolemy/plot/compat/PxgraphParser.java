@@ -1,4 +1,4 @@
-/* Parser for pxgraph command line arguments and binary files.
+/* parser for pxgraph command line arguments and binary files.
 
  @Author: Edward A. Lee and Christopher Hylands
 
@@ -197,7 +197,7 @@ is provided by command line arguments.
         </dl>
       </li>
     </ol>
-    <br/>To view a binary plot file under unix, we can use the
+    <br>To view a binary plot file under unix, we can use the
     <code>od</code> command.  Note that the first character is a <code>d</code>
     followed by eight bytes of data consisting of two floats of four bytes.
     <pre>
@@ -205,7 +205,7 @@ is provided by command line arguments.
       0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
       0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
     </pre>
-    <br/>For further information about endian-ism, see the
+    <br>For further information about endian-ism, see the
     <code>-bigendian</code> and <code>-littleendian</code> command
     line argument documentation.
   </dd>

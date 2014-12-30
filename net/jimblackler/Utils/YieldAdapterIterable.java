@@ -1,7 +1,7 @@
 package net.jimblackler.Utils;
 
 /**
- * A special version of Iterable<> that returns YieldAdapterIterators<>.
+ * A special version of Iterable&lt;&gt; that returns YieldAdapterIterators&lt;&gt;.
  */
 public interface YieldAdapterIterable<T> extends Iterable<T> {
 

@@ -39,7 +39,7 @@ import org.ptolemy.ptango.lib.WebServer;
  *  and provides a servlet to handle requests. If this interface is
  *  implemented by an actor or attribute in a model that contains
  *  an instance of {@link WebServer}, then requests to that server
- *  that match the relative path set by the {@link #setRelativePath(URI)}
+ *  that match the relative path set by the {@link #setEndpoint(WebSocketEndpoint)}
  *  method of this interface will be delegated to that actor or attribute.
  *  <p>
  *  @see WebServer
@@ -50,7 +50,6 @@ import org.ptolemy.ptango.lib.WebServer;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-
 public interface WebSocketService {
 
     ///////////////////////////////////////////////////////////////////
@@ -67,11 +66,12 @@ public interface WebSocketService {
     public boolean isClient();
     
     /** Notify service of a WebSocket message event.
-     * @param sender The PtolemyWebSocketEndpoint that sent the message
      * @param message The message that was received
      */
     public void onMessage(String message);
 
-    /** Set the endpoint responsible for this service's communication. */
+    /** Set the endpoint responsible for this service's communication.
+     *  @param endpoint The endpoint.   
+     */
     public void setEndpoint(WebSocketEndpoint endpoint);
 }

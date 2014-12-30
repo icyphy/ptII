@@ -43,17 +43,18 @@ import ptolemy.kernel.util.Nameable;
 
 /**
  Represents a guarded communication statement in which the
- communication is a send(). Thus is represents
- <P>
- <CENTER>guard; send() => statements </CENTER>
- <P>
- It is one branch of either a CDO or a CIF conditional
- communication construct.
- <p>
- The branches used in a conditional communication construct are
- controlled by the chooseBranch() method of ConditionalBranchController.
- <p>
- Each branch is created to perform one communication. If more than
+ communication is a send(). 
+
+ <p>Thus is represents:</p>
+ <center>guard; send() =&gt; statements </center>
+
+ <p> It is one branch of either a CDO or a CIF conditional
+ communication construct.</p>
+
+ <p> The branches used in a conditional communication construct are
+ controlled by the chooseBranch() method of ConditionalBranchController.</p>
+
+ <p> Each branch is created to perform one communication. If more than
  one branch is enabled (the guard is true or absent), then a thread
  is created for each enabled branch to try and perform
  the appropriate rendezvous. If the branch
@@ -61,7 +62,7 @@ import ptolemy.kernel.util.Nameable;
  the controller and the thread it is running in dies. Otherwise it
  continues to try and rendezvous until it succeeds or it is notified that
  another branch has succeeded in with its rendezvous, in which case this
- branch has failed and the thread it is running in dies.
+ branch has failed and the thread it is running in dies.</p>
  <p>
  For rendezvous, the receiver is the key synchronization point. The
  receiver with which this branch will try to rendezvous is set upon

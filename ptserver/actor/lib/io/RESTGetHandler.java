@@ -142,7 +142,7 @@ public class RESTGetHandler extends TypedAtomicActor {
      * modelName/x/y  - Returns actor y, whose parent is x, whose parent is the
      * top-level entity, and a list of resources contained by y
      *
-     * modelName/ontology.name=unitSystem&concept=Temperature -  Returns all
+     * modelName/ontology.name=unitSystem&amp;concept=Temperature -  Returns all
      * entities who have a port annotated with the concept "Temperature" from
      * the ontology "unitSystem"
      */

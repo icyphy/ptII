@@ -974,7 +974,7 @@ public class OptimalScheduleFinder {
          * on arbitrary other criteria
          * @param o1 first object to compare
          * @param o2 second object to compare
-         * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
+         * @return -1 if o1 &lt; o2, +1 if o1 &gt; o2 0 otherwise
          */
         @Override
         public int compare(Object o1, Object o2) {
@@ -1023,7 +1023,7 @@ public class OptimalScheduleFinder {
          * Compare the states based on smallest number of remaining firings.
          * @param o1 first object to compare
          * @param o2 second object to compare
-         * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
+         * @return -1 if o1 &lt; o2, +1 if o1 &gt; o2 0 otherwise
          */
         @Override
         public int compare(Object o1, Object o2) {

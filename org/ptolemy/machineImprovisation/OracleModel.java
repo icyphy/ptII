@@ -61,20 +61,27 @@ public class OracleModel extends ModalRefinement {
      *
      * @param container         The Container
      * @param name              The name
-     * @param trainingSequence  training sequence of the factor oracle
-     * @param repetitionFactor  a double indicating repetition factor on forward links
-     * @param pitch             a boolean -- true if pitch oracle
-     * @param validate          a boolean -- true if pitch validation is enabled
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
+     * @exception NameDuplicationException If thrown by the parent class.
+     * @exception IllegalActionException If thrown by the parent class.
      */
     public OracleModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         //_init();
-
     }
 
+    /**
+     * Constructs an OracleModel object.
+     *
+     * @param container         The Container
+     * @param name              The name
+     * @param trainingSequence  training sequence of the factor oracle
+     * @param repetitionFactor  a double indicating repetition factor on forward links
+     * @param pitch             a boolean -- true if pitch oracle
+     * @param validate          a boolean -- true if pitch validation is enabled
+     * @exception NameDuplicationException If thrown by the parent class.
+     * @exception IllegalActionException If thrown by the parent class.
+     */
     public OracleModel(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor, boolean pitch,
             boolean validate) throws NameDuplicationException,
@@ -85,25 +92,27 @@ public class OracleModel extends ModalRefinement {
     }
 
     /**
-     * Specifies the controller value.
+     * Set the controller value.
+     * @param f The FactorOracle.
      */
     public void setController(FactorOracle f) {
         _controller = f;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Initialize the model.
+    ////                         protected methods                 ////
 
     /**
-     * Create a Factor Oracle controller
-     * @param trainingSequence
-     * @param repetitionFactor
-     * @param pitch
-     * @param validate
-     * @return
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+     * Create a Factor Oracle controller.
+     * @param trainingSequence  training sequence of the factor oracle
+     * @param repetitionFactor  a double indicating repetition factor on forward links
+     * @param pitch             a boolean -- true if pitch oracle
+     * @param validate          a boolean -- true if pitch validation is enabled
+     * @return A Factor Oracle controller.
+     * @exception IllegalActionException If thrown while creating a
+     * FactorOracle.
+     * @exception NameDuplicationException If thrown while creating a
+     * FactorOracle.
      */
     protected FactorOracle _createController(Object[] trainingSequence,
             double repetitionFactor, boolean pitch, boolean validate)
@@ -113,6 +122,20 @@ public class OracleModel extends ModalRefinement {
                 repetitionFactor, pitch, validate);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the model.
+     * @param trainingSequence  training sequence of the factor oracle
+     * @param repetitionFactor  a double indicating repetition factor on forward links
+     * @param pitch             a boolean -- true if pitch oracle
+     * @param validate          a boolean -- true if pitch validation is enabled
+     * @return A Factor Oracle controller.
+     * @exception IllegalActionException If thrown while creating a
+     * FactorOracle.
+     * @exception NameDuplicationException If thrown while creating a
+     * FactorOracle.
+     */
     private void _init(Object[] trainingSequence, double repetitionFactor,
             boolean pitch, boolean validate) throws IllegalActionException,
     NameDuplicationException {

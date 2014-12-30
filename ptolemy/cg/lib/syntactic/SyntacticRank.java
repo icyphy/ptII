@@ -139,11 +139,11 @@ public class SyntacticRank {
 
     /** Generate code representation of rank.
      *  The form of this representation is as follows:
-     *  <br/> &lt;forward in (reverse out) -&gt; forward out (reverse in)&gt;
+     *  <br> &lt;forward in (reverse out) -&gt; forward out (reverse in)&gt;
      *
-     *  <br/> or, if the reverse components are 0:
+     *  <br> or, if the reverse components are 0:
      *
-     *  <br/>   &lt;forward in -&gt; forward out&gt;
+     *  <br>   &lt;forward in -&gt; forward out&gt;
      *
      *  @return code representation of rank.
      */

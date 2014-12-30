@@ -593,7 +593,7 @@ public class PtinyOSDirector extends Director {
      *  event handling can proceed.
      *
      *  @return The value of result of the call to postfire() of the
-     *  super class && the value of the <i>simulate</i> parameter
+     *  super class &amp;&amp; the value of the <i>simulate</i> parameter
      *  @exception IllegalActionException If thrown while reading the
      *  <i>simulate</i> parameter.
      */
@@ -1095,7 +1095,7 @@ public class PtinyOSDirector extends Director {
      *
      *  In {@link #selectorClose(Selector)}, Selector.close() is
      *  called, but because of a bug in J2SE described in <a
-     *  href="http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029">http://forum.java.sun.com/thread.jspa?threadID=293213&messageID=2671029</a>,
+     *  href="http://forum.java.sun.com/thread.jspa?threadID=293213&amp;messageID=2671029">http://forum.java.sun.com/thread.jspa?threadID=293213&amp;messageID=2671029</a>,
      *  the call to Selector.close() in {@link
      *  #selectorClose(Selector)} may never return because a thread is
      *  blocked in the call to Selector.select() in this method.  So,

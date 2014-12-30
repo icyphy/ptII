@@ -59,9 +59,11 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
      *  of names from being replaced.  The given parse tree is not
      *  destroyed in the process.
      *  @param node The node
-     *  @param excludeNames the names to be excluded
-     *  @param The scope
+     *  @param excludedNames the names to be excluded
+     *  @param scope The scope
      *  @return The new parse tree
+     *  @exception IllegalActionException If the node can't be cloned
+     *  or if thrown while visiting.
      */
     public ASTPtRootNode specialize(ASTPtRootNode node, List excludedNames,
             ParserScope scope) throws IllegalActionException {
@@ -246,7 +248,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     ////                         protected methods                 ////
 
     /** Return true if all of the children of this node are constant.
-     *  @param the node
+     *  @param node the node
      *  @return True if all of the children of this node are constant.
      */
     protected boolean _childrenAreConstant(ASTPtRootNode node) {

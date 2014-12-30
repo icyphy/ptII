@@ -173,7 +173,7 @@ public class ReduceWorker extends TypedAtomicActor {
      *  changed is <i>classNameForReduce</i>, update this actor accordingly.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
-     *   to this container.  If the class set in <i>classNameForReduce<i/>
+     *   to this container.  If the class set in <i>classNameForReduce</i>
      *   does not exist, or if the class exists but does not contain a map
      *   method with an appropriate signature, this exception will be thrown.
      */

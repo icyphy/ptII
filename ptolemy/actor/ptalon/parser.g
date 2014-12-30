@@ -294,7 +294,7 @@ assignment!
 
 /**
  * Parse anything inside XML-like block
- * <p>&lt  /&gt
+ * <p>&lt;  /&gt;
  * <p>Generate the tree
  * <p>#(EXPRESSION)
  * <p>where the text of the token EXPRESSION is the expression

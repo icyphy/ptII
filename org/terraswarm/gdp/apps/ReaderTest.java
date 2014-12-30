@@ -203,21 +203,20 @@ public class ReaderTest {
      *  <dl>
      *  <dt><code>-D <i>debuggingSpecification</i></code></dt>
      *  <dd>, where an example of <i>debuggingSpecifiction</i> is,
-     *  <code>gdp.api=100</code>.  See the gdp .c files for debugging specifications</dd>.
+     *  <code>gdp.api=100</code>.  See the gdp .c files for debugging specifications.</dd>
      *
      *  <dt><code>-f <i>firstRecordNumber</i></code></dt>
-     *  <dd>FIXME: what does this do?</dd>
-     *
-     *  <p><code>-G <i>gdpdAddress</i></code>, which names the IP
+     *  <dd>FIXME: what does this do?
+     *  <code>-G <i>gdpdAddress</i></code>, which names the IP
      *  address and port name of the gdp daemon (<code>gdpd</code>)
      *  where an example of <i>gdpdAddress</i> is <code>127.0.0.1:2468</code>.  If <code>-G</code> is not
-     *  present, then the default address of <code>127.0.0.1:2468</code> is used.
+     *  present, then the default address of <code>127.0.0.1:2468</code> is used.</dd>
      *
      *  <dt><code>-m</code>
      *  <dd>Multiread FIXME: what does this do?</dd>
      *
      *  <dt><code>-n <i>numberOfRecords</i></code></dt>
-     *  <dd>FIXME: what does this do?</dp>
+     *  <dd>FIXME: what does this do?</dd>
      *
      *  <dt><code>-s</code></dt>
      *  <dd>Subscribe FIXME: what does this do?</dd>

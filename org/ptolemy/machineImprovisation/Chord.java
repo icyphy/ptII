@@ -109,8 +109,7 @@ public class Chord {
 
     /**
      * Set the notes contained by this chord by a dictionary lookup.
-     * @param chord The chord name
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the chord name is undefined.
      */
     public void setChordTones() throws IllegalActionException {
 

@@ -88,16 +88,16 @@ import ptolemy.kernel.util.Workspace;
  *  it already contains a PtidesDirector. A PtidesPlatform must be
  *  embedded in a timed director such as DE or Continuous. The time of
  *  this enclosing director simulates physical time.
- *  The localClock of this PtidesDirector simulates platformTime.
+ *  The localClock of this PtidesDirector simulates platformTime.</p>
  *
  *  <p> The Ptides director is based on the DE director. Like the DE
  *  director, this director maintains a totally ordered set of events.
  *  Event timestamps are given in logical time. The logical time is decoupled
  *  from the platformTime. The model time of the director is the
  *  platformTime unless an actor is fired; then the model time is
- *  the timestamp of the event that caused the actor firing.
+ *  the timestamp of the event that caused the actor firing.</p>
  *
- *  Unlike the DE Director, this director can process events out of timestamp order
+ *  <p>Unlike the DE Director, this director can process events out of timestamp order
  *  if they are not causally related. Whether events can be processed
  *  is checked in a safe-to-process analysis.
  *  This analysis returns a boolean to indicate whether an event
@@ -114,7 +114,7 @@ import ptolemy.kernel.util.Workspace;
  *  Other, smarter kinds of safe-to-process analysis can be
  *  implemented in future versions. </p>
  *
- *  Currently, only
+ *  <p>Currently, only
  *  the DE director can be used as the enclosing director. One reason
  *  for using the DE director is that time cannot go backwards in DE,
  *  which is an important physical time property. More importantly,
@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  *  href="http://chess.eecs.berkeley.edu/pubs/430.html">Leveraging
  *  Synchronous Language Principles for Heterogeneous Modeling
  *  and Design of Embedded Systems</a>, Proceedings of the
- *  7th ACM & IEEE international conference on Embedded
+ *  7th ACM &amp; IEEE international conference on Embedded
  *  software, ACM, 114-123, 2007.</p>
  *
  *  <p> This director provides a set of features to address both
@@ -136,18 +136,16 @@ import ptolemy.kernel.util.Workspace;
  *  (e.g., a microprocessor), while the enclosing director simulates
  *  the physical world. Actors under the Ptides director then communicate
  *  to the outside via SensorPorts, ActuatorPorts, or network ports
- *  (NetworkReceivers, NetworkTransmitters).
- *  </p>
+ *  (NetworkReceivers, NetworkTransmitters).</p>
  *
  *  <p> This director allows for simulation of execution time. If the PtidesPlatform
  *  contains ResourceSchedulers, the scheduling of actors is performed by these.
  *  Actors must specify in parameters which ResourceSchedulers they are assigned
  *  to and the executionTime. The passage of execution time equals the passage
- *  of platformTime. Execution time has no influence on the event timestamps.
+ *  of platformTime. Execution time has no influence on the event timestamps.</p>
  *
  *  <p> In a Ptides environment, all platforms are assumed to be synchronized
- *  within a bounded error.
- *
+ *  within a bounded error.</p>
  *
  *  <p> The platform time is used in the following
  *  situations: generating timestamps for sensor events, enforcing deadlines
@@ -158,7 +156,6 @@ import ptolemy.kernel.util.Workspace;
  *  the actual error exceeds this bound, the safe-to-process analysis could
  *  produce an incorrect result. The demo PtidesNetworkLatencyTest illustrates
  *  this error.</p>
- *
  *
  *  <p> The implementation is based on the operational semantics
  *  of Ptides, as described in: Jia Zou, Slobodan Matic, Edward

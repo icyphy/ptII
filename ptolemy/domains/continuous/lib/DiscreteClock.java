@@ -40,13 +40,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  <p>This actor is identical to {@link ptolemy.actor.lib.DiscreteClock},
  except that for backward compatibility the default values of the parameters
- are changed to
+ are changed to</p>
  <ul>
- <li> period: 2.0
- <li> offsets: {0.0, 1.0}
- <li> values {1, 0}
+ <li> period: 2.0</li>
+ <li> offsets: {0.0, 1.0}</li>
+ <li> values {1, 0}</li>
  </ul>
- </p>
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$

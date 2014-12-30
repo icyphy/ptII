@@ -44,33 +44,31 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * <p>
  * The FireMachine has the following states. Each represents a state of the
- * wrapped actor:
+ * wrapped actor:</p>
  * <ol>
  * <li>START: initial state.</li>
  * <li>BEGIN: the actor is not fired.</li>
  * <li>END: the actor is fired.</li>
  * <li>FINAL: final state.</li>
  * </ol>
- * And each of the states BEGIN and END is associated with a 'state event',
+ * <p>And each of the states BEGIN and END is associated with a 'state event',
  * which is the full name of the actor without model name plus one of the
- * following suffixes:
+ * following suffixes:</p>
  * <ol>
  * <li>FIRE_BEGIN</li>
  * <li>FIRE_END</li>
  * </ol>
- * For example, 'Ramp' is the name of a top level actor in a model 'Test'. The
+ * <p>For example, 'Ramp' is the name of a top level actor in a model 'Test'. The
  * full actor name is 'Test.Ramp'. The MetroII state event associated with the
  * state BEGIN of the actor is 'Ramp.FIRE_BEGIN'.
- * </p>Ptolemy
+ * </p>
  *
  * <p>
  * Neither START nor FINAL is associated with any state event.
  * </p>
  *
- * <p>
- * To understand the transition table of the FSM, @see
- * #startOrResume(LinkedList)
- * </p>
+ * <p> To understand the transition table of the FSM, 
+ * {@link #startOrResume(LinkedList)}.</p>
  *
  *
  * @author Liangpeng Guo
@@ -103,22 +101,20 @@ public class BlockingFire extends FireMachine {
      * to the next state, clear eventList and add the MetroII event associated
      * with the state to eventList (referred to as propose events). If the state
      * is associated with no state event, eventList is an empty list. The 'next'
-     * state is defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
+     * state is defined as follows: STAR -&gt; BEGIN -&gt; END -&gt; FINAL. For example,
      *
      * <pre>
      *       action: propose FIRE_BEGIN
-     * START ---------------------------------------> BEGIN
+     * START ---------------------------------------&gt; BEGIN
      *
      *       guard: FIRE_BEGIN is notified
      *       action: call fire(), propose FIRE_END
-     * BEGIN ---------------------------------------> FIRE_END
+     * BEGIN ---------------------------------------&gt; FIRE_END
      *
      *       guard: FIRE_BEGIN is not notified
      *       action: propose FIRE_BEGIN
-     * BEGIN ---------------------------------------> BEGIN
+     * BEGIN ---------------------------------------&gt; BEGIN
      * </pre>
-     *
-     *
      *
      * @param metroIIEventList
      *            a list of MetroII events that are proposed. It is set by

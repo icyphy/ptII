@@ -48,7 +48,7 @@ import thales.vergil.SingleWindowApplication;
  A simple copy of the ActorGraphFrame with additional functionalities for
  navigation
 
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and Technology, 01 sept. 2003
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson, Thales Research and Technology, 01 sept. 2003
  @version $Id$
  @since Ptolemy II 3.1
  @Pt.ProposedRating Red (jerome.blanc)

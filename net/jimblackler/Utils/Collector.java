@@ -3,7 +3,7 @@ package net.jimblackler.Utils;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * Defines a class that collects values of type T and submits each value to a ResultHandler<>
+ * Defines a class that collects values of type T and submits each value to a ResultHandler&lt;&gt;
  * object immediately on collection.
  */
 public interface Collector<T> {

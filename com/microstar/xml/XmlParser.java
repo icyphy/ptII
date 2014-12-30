@@ -1517,8 +1517,8 @@ public class XmlParser {
 
     /**
      * Read a character reference.
-     * [67] CharRef ::= '&#' [0-9]+ ';' | '&#x' [0-9a-fA-F]+ ';'
-     * *NOTE: the '&#' has already been read.
+     * [67] CharRef ::= '&amp;#' [0-9]+ ';' | '&amp;#x' [0-9a-fA-F]+ ';'
+     * *NOTE: the '&amp;#' has already been read.
      */
     void parseCharRef() throws java.lang.Exception {
         int value = 0;
@@ -1610,8 +1610,8 @@ public class XmlParser {
 
     /**
      * Parse a reference.
-     * [69] EntityRef ::= '&' Name ';'
-     * *NOTE: the '&' has already been read.
+     * [69] EntityRef ::= '&amp;' Name ';'
+     * *NOTE: the '&amp;' has already been read.
      * @param externalAllowed External entities are allowed here.
      */
     void parseEntityRef(boolean externalAllowed) throws java.lang.Exception {
@@ -2053,12 +2053,12 @@ public class XmlParser {
 
     /**
      * Read a literal.
-     * [10] AttValue ::= '"' ([^&lt;&"] | Reference)* '"'
-     *                 | "'" ([^&lt;&'] | Reference)* "'"
+     * [10] AttValue ::= '"' ([^&lt;&amp;"] | Reference)* '"'
+     *                 | "'" ([^&lt;&amp;'] | Reference)* "'"
      * [11] SystemLiteral ::= '"' URLchar* '"' | "'" (URLchar - "'")* "'"
      * [13] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
-     * [9] EntityValue ::= '"' ([^%&"] | PEReference | Reference)* '"'
-     *                   | "'" ([^%&'] | PEReference | Reference)* "'"
+     * [9] EntityValue ::= '"' ([^%&amp;"] | PEReference | Reference)* '"'
+     *                   | "'" ([^%&amp;'] | PEReference | Reference)* "'"
      */
     String readLiteral(int flags) throws java.lang.Exception {
         char delim;

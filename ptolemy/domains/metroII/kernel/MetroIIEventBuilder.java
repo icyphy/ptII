@@ -107,7 +107,7 @@ public class MetroIIEventBuilder {
 
     /**
      * Trims the substring from the beginning to the first delimiter '.' from a
-     * given string. Example: XXX.YYY.ZZZ -> YYY.ZZZ
+     * given string. Example: XXX.YYY.ZZZ -&gt; YYY.ZZZ
      *
      * @param name
      *            The input string

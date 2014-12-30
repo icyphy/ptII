@@ -268,7 +268,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
     /** Get the stop time.
      *  @return The stop time.
      *  @deprecated As of Ptolemy II 4.1, replaced by
-     *  {@link #getModelStopTime}
+     *  {@link ptolemy.actor.lib.PoissonClock#getModelStopTime}
      */
     @Deprecated
     public double getStopTime() {
