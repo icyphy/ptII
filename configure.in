@@ -4013,6 +4013,21 @@ else
 	        JOGL_DIR=$withval,
 	        JOGL_DIR=)
 
+            if test -f /System/Library/Java/Extensions/j3dcore.jar; then
+               AC_MSG_WARN([/System/Library/Java/Extensions/j3dcore.jar exists.
+
+    Under Mac OS X 10.9 (Mavericks) and later with Java 1.8, Java 3D
+    will probably not work if
+    /System/Library/Java/Extensions/j3dcore.jar and other files exist.
+    Instead, Ptolemy II uses a version of Java 3D in
+    $PTII/vendors/j3d.  If you run Ptolemy with the version of Java3D
+    installed in /System/Library/Java/Extensions, the the demo will
+    fail to render the 3D viewer and you may see messages like:
+       JavaVM WARNING: JAWT_GetAWT must be called after loading a JVM
+       AWT not found
+    The fix is to remove the files from /System/Library/Java/Extensions:
+       sudo rm /System/Library/Java/Extensions/{*J3D*,*j3d*}])
+            fi
 	    if test -z "$JOGL_DIR" ; then
                 directory=`ls -d $PTII/vendors/jogl/*/jar`
                 if test -d "$directory"; then
@@ -4025,7 +4040,24 @@ else
 		    updateClasspath "$JOGL_JAR_DIR/gluegen.jar"
 		    updateClasspath "$JOGL_JAR_DIR/jogl-all.jar"
 		else
-		    AC_MSG_WARN([Could not fine the Jogl directory.  This could be problem at runtime for Mac OS X with Java 3D.])
+		    AC_MSG_WARN([Could not find the Jogl directory.
+   This could be problem at runtime for Mac OS X with Java 3D.
+   We don't include Jogl in the ptII source code repository because it is so large.
+   To install, do
+       mkdir -p $PTII/vendors/jogl
+       cd $PTI/vendors/jogl
+       wget http://jogamp.org/deployment/v2.2.4/archive/jogamp-all-platforms.7z
+       7z x jogamp-all-platforms.7z
+       cd $PTII
+       ./configure
+   If you don't have 7z, the on the Mac install Mac Ports from https://www.macports.org/
+   and then do
+       sudo port install p7zip
+   and then proceed with:
+       7z x jogamp-all-platforms.7z
+       cd $PTII
+       ./configure
+])
 		fi
             fi
        fi
