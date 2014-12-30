@@ -51,13 +51,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	FMUImport.java
+	FMUImport.java \
+	FMUQSS.java
 
 OTHER_FILES_TO_BE_JARED = \
 	fmi.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,14 +71,15 @@ OPTIONAL_FILES = \
 	doc \
 	'FMUImport$$1.class' \
 	'FMUImport$$Input.class' \
-	'FMUImport$$Output.class'
+	'FMUImport$$Output.class' \
+	'FMUQSS$$1.class' \
+	'FMUQSS$$Input.class' \
+	'FMUQSS$$Output.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
