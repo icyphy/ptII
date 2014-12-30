@@ -63,34 +63,37 @@ import ptolemy.util.RecursiveFileFilter;
 //// DirectoryListing
 
 /**
- <p>Given a URL or directory name, this actor produces an array of file names
- in that directory that match an (optional) pattern.  The file names
- include the complete path, unless <i>relative</i> is set to true, in which case,
- the names are relative to the directory. The pattern is
- a regular expression. For a reference on regular expression syntax see:
- <a href="http://download.oracle.com/javase/tutorial/essential/regex/#in_browser">
- http://download.oracle.com/javase/tutorial/essential/regex/</a>
- </p><p>
- If <i>directoryOrURL</i> is a local directory (not a URL), then you can
+ Given a URL or directory name, produce an array of file names in that
+ directory that match an (optional) pattern.
+
+ <p>The file names include the complete path, unless <i>relative</i>
+ is set to true, in which case, the names are relative to the
+ directory. The pattern is a regular expression. For a reference on
+ regular expression syntax see: <a href="http://download.oracle.com/javase/tutorial/essential/regex/#in_browser">http://download.oracle.com/javase/tutorial/essential/regex/</a></p>
+
+ <p>If <i>directoryOrURL</i> is a local directory (not a URL), then you can
  optionally list only contained files or directories.
  If <i>listOnlyDirectories</i> is true, then only directories will be
  listed on the output.  If <i>listOnlyFiles</i> is true, then only
  files will be listed on the output. If both are true, then an exception
- is thrown.
- </p><p>
- If <i>directoryOrURL</i> is a URL, then this actor assumes that the
+ is thrown.</p>
+
+ <p>If <i>directoryOrURL</i> is a URL, then this actor assumes that the
  server will list the contents of the referenced directory in an
- HTML file where each file listed will have the following form:
+ HTML file where each file listed will have the following form:</p>
+
  <pre>
  &lt;a href="filename"&gt;filename&lt;/a&gt;
  </pre>
- If the filename is longer than 20 characters, then only the first
+
+ <p>If the filename is longer than 20 characters, then only the first
  20 characters of the two appearances of the filename are compared,
- since some servers truncate the file names.
- </p><p>
- If <i>allowEmptyDirectory</i> controls whether reading an empty directory
- will throw an exception.
- </p><p>Note that DirectoryListing returns the contents of the directory
+ since some servers truncate the file names.</p>
+
+ <p>If <i>allowEmptyDirectory</i> controls whether reading an empty directory
+ will throw an exception.</p>
+
+ <p>Note that DirectoryListing returns the contents of the directory
  in a different order depending on whether one is using the Sun JVM
  or the IBM JVM.  Thus, you may want to connect the output to an
  ArraySort actor.</p>
@@ -391,28 +394,34 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 // Get rid of the jar:file and read up to the !
                 String jarPath = sourceURL.getPath().substring(5,
                         sourceURL.getPath().indexOf("!"));
-                JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+                JarFile jar = null;
+                try {
+                    jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+                    Enumeration<JarEntry> entries = jar.entries();
+                    while (entries.hasMoreElements()) {
+                        String name = entries.nextElement().getName();
+                        if (name.startsWith(path)) {
+                            String entry = name.substring(path.length());
+                            int slashIndex = entry.indexOf("/");
+                            if (slashIndex >= 0) {
+                                entry = entry.substring(0, slashIndex);
+                            }
 
-                Enumeration<JarEntry> entries = jar.entries();
-                while (entries.hasMoreElements()) {
-                    String name = entries.nextElement().getName();
-                    if (name.startsWith(path)) {
-                        String entry = name.substring(path.length());
-                        int slashIndex = entry.indexOf("/");
-                        if (slashIndex >= 0) {
-                            entry = entry.substring(0, slashIndex);
-                        }
-
-                        // FIXME: recursion on URLs not yet supported.
-                        if (_recursiveFileFilter.accept(null, entry)) {
-                            StringToken results = new StringToken(entry);
-                            // Add the results here if it is not present.
-                            // We want to preserve the order, otherwise we could
-                            // use a Set.
-                            if (!resultsList.contains(results)) {
-                                resultsList.add(results);
+                            // FIXME: recursion on URLs not yet supported.
+                            if (_recursiveFileFilter.accept(null, entry)) {
+                                StringToken results = new StringToken(entry);
+                                // Add the results here if it is not present.
+                                // We want to preserve the order, otherwise we could
+                                // use a Set.
+                                if (!resultsList.contains(results)) {
+                                    resultsList.add(results);
+                                }
                             }
                         }
+                    }
+                } finally {
+                    if (jar != null) {
+                        jar.close();
                     }
                 }
             }
