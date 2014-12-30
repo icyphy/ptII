@@ -28,6 +28,8 @@
 package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.parameters.ParameterMirrorPort;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
@@ -136,6 +138,21 @@ public class MirrorComposite extends ReflectComposite {
 
     private void _init() {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
+    }
+    
+    /** Return true if the specified inside port should be mirrored.
+     *  This overrides the base class to return true for all ports
+     *  unless the port is an instance of ParameterPort and the
+     *  constructor specified that parameter ports should not be mirrored.
+     *  @param insidePort The port that may be mirrored.
+     *  @return True if the inside port should be mirrored.
+     */
+    protected boolean _mirrorPort(ComponentPort insidePort) {
+        // do not mirror ports that are not instances of MirrorPort
+        if (!_mirrorParameterPorts && insidePort instanceof ParameterPort) {
+            return false;
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
