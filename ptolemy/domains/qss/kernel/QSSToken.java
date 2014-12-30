@@ -1,30 +1,30 @@
-/* A token that contains a double precision number.
+/* A token for QSS integration that contains a double and a derivative.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2014 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.domains.qss.kernel;
 
 import ptolemy.data.BooleanToken;
@@ -38,16 +38,16 @@ import ptolemy.kernel.util.IllegalActionException;
 //// QSSToken
 
 /**
- A token for QSS integration.
+   A token for QSS integration that contains a double and
+   a derivative.
 
- @author Thierry S. Nouidui and Michael Wetter
- @version $Id$
- @since Ptolemy II 10
- @Pt.ProposedRating Red (mw)
- @Pt.AcceptedRating Red (mw)
- */
+   @author Thierry S. Nouidui and Michael Wetter
+   @version $Id$
+   @since Ptolemy II 10
+   @Pt.ProposedRating Red (mw)
+   @Pt.AcceptedRating Red (mw)
+*/
 public class QSSToken extends DoubleToken {
-
 
     /** Construct a QSSToken with the specified value and derivative.
      *  @param value The specified value.
@@ -57,34 +57,32 @@ public class QSSToken extends DoubleToken {
     	super(value);
     }
 	
-	/** Construct a QSSToken with the specified value and derivative.
+    /** Construct a QSSToken with the specified value and derivative.
      *  @param value The specified value.
      *  @param derivative The specified derivative.
      */
     public QSSToken(double value, 
-    		        double[] derivative) {
+            double[] derivative) {
     	super(value);
     	_derivatives = derivative;
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
     public double[] valueAndDerivatives() {
     	if (_derivatives == null){
-    		final double[] r ={super.doubleValue()};
-    		return r;
+            final double[] r ={super.doubleValue()};
+            return r;
     	}
     	else{
-        	double[] r = new double[_derivatives.length + 1];
-        	r[0] = super.doubleValue();
-        	System.arraycopy(_derivatives, 0, r, 1, _derivatives.length);
-        	return r;
+            double[] r = new double[_derivatives.length + 1];
+            r[0] = super.doubleValue();
+            System.arraycopy(_derivatives, 0, r, 1, _derivatives.length);
+            return r;
     	}
     }
 
@@ -108,17 +106,17 @@ public class QSSToken extends DoubleToken {
     public boolean equals(Object object) {
     	boolean r = super.equals(object);
     	if (r) {
-    		double[] der = ((QSSToken) object).derivativeValues();
-    		if (der.length != _derivatives.length)
-    			return false;
-    		for(int i = 0; i < _derivatives.length; i++){
-    			if (der[i] != _derivatives[i])
-    				return false;
-    		}
-    		return true;
+            double[] der = ((QSSToken) object).derivativeValues();
+            if (der.length != _derivatives.length)
+                return false;
+            for(int i = 0; i < _derivatives.length; i++){
+                if (der[i] != _derivatives[i])
+                    return false;
+            }
+            return true;
     	}
     	else
-    		return r;
+            return r;
     }
 
     /** Return the type of this token.
@@ -179,7 +177,7 @@ public class QSSToken extends DoubleToken {
     @Override
     public String toString() {
     	String s = super.toString();
-    	s += ". Higher order derivatives = " + derivativeValues().toString() + ".";
+    	s += ". Higher order derivatives = " + derivativeValues() + ".";
     	return s;
     }
 
@@ -212,7 +210,7 @@ public class QSSToken extends DoubleToken {
         final double quotient = super.doubleValue() / div;
         double[] der = new double[_derivatives.length];
         for(int i = 0; i < _derivatives.length; i++)
-        	der[i] = _derivatives[i]/div;
+            der[i] = _derivatives[i]/div;
         return new QSSToken(quotient, der);
     }
 
