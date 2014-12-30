@@ -37,7 +37,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.MirrorPortParameter;
 import ptolemy.actor.parameters.ParameterMirrorPort;
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -59,11 +58,12 @@ import ptolemy.moml.HandlesInternalLinks;
 //// ReflectComposite
 
 /**
- A composite that contains one actor and mirror the ports and
- parameters of that actor. If TypedIOPorts exist as part of the
- class definition, these are not mirrored.
+ A composite that contains one actor and mirrors the ports and
+ parameters of that actor. In this base class, ports that are
+ not instances of MirrorPort are not mirrored. The subclass
+ MirrorComposite will mirror those ports.
 
- @author Edward A. Lee
+ @author Ilge Akkaya and Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
@@ -253,7 +253,7 @@ public class ReflectComposite extends TypedCompositeActor implements
                 // because only at this point can we be sure that the
                 // change request that triggered this has completed (i.e. that
                 // the entity being added has been added.
-                synchronized (this) {
+                synchronized (ReflectComposite.this) {
                     try {
                         workspace().getWriteAccess();
 
@@ -303,10 +303,10 @@ public class ReflectComposite extends TypedCompositeActor implements
                         while (entityPorts.hasNext()) {
                             ComponentPort insidePort = (ComponentPort) entityPorts
                                     .next();
-                            // do not mirror ports that are not instances of MirrorPort
-                            if ((!_mirrorParameterPorts && insidePort instanceof ParameterPort)
-                                    || !(insidePort instanceof MirrorPort)) {
-                                continue;
+                            // Use a strategy pattern here so that subclasses can control
+                            // which ports are mirrored.
+                            if (!_mirrorPort(insidePort)) {
+                        	continue;
                             }
                             String name = insidePort.getName();
 
@@ -387,7 +387,7 @@ public class ReflectComposite extends TypedCompositeActor implements
                     // change request to here because only at this
                     // point can we be sure that the change request
                     // that triggered this has completed.
-                    synchronized (this) {
+                    synchronized (ReflectComposite.this) {
                         // Create and connect a matching inside port
                         // on contained entities.
                         // NOTE: We assume this propagates to derived
@@ -516,6 +516,20 @@ public class ReflectComposite extends TypedCompositeActor implements
             ComponentEntity entity = (ComponentEntity) entities.next();
             entity.exportMoML(output, depth);
         }
+    }
+    
+    /** Return true if the specified inside port should be mirrored.
+     *  This base class returns true if the inside port is an instance
+     *  of MirrorPort.
+     *  @param insidePort The port that may be mirrored.
+     *  @return True if the inside port should be mirrored.
+     */
+    protected boolean _mirrorPort(ComponentPort insidePort) {
+        // do not mirror ports that are not instances of MirrorPort
+        if (insidePort instanceof MirrorPort) {
+            return true;
+        }
+        return false;
     }
 
     /** Override the base class to remove the ports and inside relations
