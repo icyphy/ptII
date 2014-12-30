@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This famous ABRO SyncCharts example, taken &#10;from &quot;Semantics of SyncCharts&quot; of Charles &#10;Andr&eacute;, illustrates concurrency, hierarchy,&#10;normal termination and strong or weak aborts.&#10;Though not everything is natively supported&#10;by the modal model concept of Ptolemy (like &#10;conruccency or normal termination) it &#10;illustrates patterns to accomplish these lacks.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This famous ABRO SyncCharts example, taken &#10;from &quot;Semantics of SyncCharts&quot; of Charles &#10;Andr&#233;, illustrates concurrency, hierarchy,&#10;normal termination and strong or weak aborts.&#10;Though not everything is natively supported&#10;by the modal model concept of Ptolemy (like &#10;conruccency or normal termination) it &#10;illustrates patterns to accomplish these lacks.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-180.0, 290.0]">
         </property>
