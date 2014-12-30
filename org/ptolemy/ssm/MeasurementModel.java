@@ -147,7 +147,5 @@ implements StateSpaceActor {
         color.setExpression("{0.4,0.2,1.0,1.0}");
     }
 
-    private final String MEASUREMENT_PARAMETER_POSTFIX = "Parameter";
-
-
+    private static final String MEASUREMENT_PARAMETER_POSTFIX = "Parameter";
 }
