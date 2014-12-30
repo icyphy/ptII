@@ -162,8 +162,8 @@ public class RunningMaximum extends Transformer {
         return null;
     }
 
-    /** Set input <= output, input <= Scalar. If backward type inference is
-     *  enabled and input has no declared type, also set input >= output.
+    /** Set input &le; output, input &le; Scalar. If backward type inference is
+     *  enabled and input has no declared type, also set input &ge; output.
      *  @return A set of inequality constraints.
      */
     @Override

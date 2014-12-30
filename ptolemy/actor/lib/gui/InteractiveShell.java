@@ -164,7 +164,7 @@ ShellInterpreter, UsesInvokeAndWait {
     /** The output port. */
     public TypedIOPort output;
 
-    /** The prompt.  The initial default is the string ">> ".  Double
+    /** The prompt.  The initial default is the string "&gt;&gt; ".  Double
      * quotes are not necessary.  If you would like to have no prompt
      * (aka, the empty string), create a Parameter that has the value
      * "" (for example <code>foo</code>) and then set the value of the

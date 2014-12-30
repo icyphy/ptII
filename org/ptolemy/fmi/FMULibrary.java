@@ -85,7 +85,6 @@ public interface FMULibrary extends FMILibrary {
 	 *  defined by the tool that created the fmu.  Typical
 	 *  values are "log" or "error".
 	 *  @param message The printf style format string.
-         *  @param parameters The printf style parameters.
 	 */
 	@Override
 	public void apply(Pointer fmiComponent, String instanceName,

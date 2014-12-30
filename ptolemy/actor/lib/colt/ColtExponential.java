@@ -52,7 +52,7 @@ import cern.jet.random.Exponential;
  <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Exponential.html">cern.jet.random.Exponential</a> object with
  lambda set to 1.0.  The distribution is defined as
  <pre>
- p(x) = lambda*exp(-x*lambda) for x >= 0, lambda > 0
+ p(x) = lambda*exp(-x*lambda) for x &ge; 0, lambda &gt; 0
  </pre>
  The above description of Exponential is
  <a href="doc-files/colt-copyright.htm">copyrighted</a>.

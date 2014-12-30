@@ -69,8 +69,8 @@ import ptolemy.math.Fraction;
  contain the actors in the different levels, indicating they can be executed
  in parallel.
  I.e.:
- <table border = "0" cellpadding = "0" cellspacing = "0" width = "300"
- align = "center">
+ <table border = "0" cellpadding = "0" cellspacing = "0" width = "300" align = "center">
+ <caption>Schedules and subschedules</caption>
  <tr>
  <td width = "20%" align = "center">&nbsp;</td>
  <td width = "20%" align = "center">&nbsp;</td>

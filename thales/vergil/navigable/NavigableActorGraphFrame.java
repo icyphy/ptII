@@ -58,7 +58,7 @@ import thales.vergil.SingleWindowApplication;
  with additional functionalities for the navigation.</p>
  <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
 
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson
  01 sept. 2003
  @since Ptolemy II 3.1
  @Pt.ProposedRating Red (jerome.blanc)

@@ -96,9 +96,9 @@ import ptolemy.util.StringUtilities;
  as the process was executing.</p>
 
  <p>For information about Runtime.exec(), see:
- <br><a href="http://www.javaworld.com/javaworld/jw-12-2007/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a></br>
- <br>and</br>
- <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a></br>
+ <br><a href="http://www.javaworld.com/javaworld/jw-12-2007/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+ and
+ <a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>.
  </p>
 
  @author Christopher Hylands Brooks, Contributors: Edward A. Lee, Daniel Crawl

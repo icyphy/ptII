@@ -6,7 +6,7 @@ import java.util.Iterator;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * This reference adapter simply invokes the Collector<>, first gathering the results into a list.
+ * This reference adapter simply invokes the Collector&lt;&gt;, first gathering the results into a list.
  * It is provided to illustrate the simplicity of the function of the adapter, and to aid debugging
  * if threading issues are suspected as the cause of problems in the calling code.
  *
@@ -17,7 +17,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ReferenceYieldAdapter<T> implements YieldAdapter<T> {
 
     /**
-     * Convert a method that implements the Collector<> class with a standard Iterable<>, by
+     * Convert a method that implements the Collector&lt;&gt; class with a standard Iterable&lt;&gt;, by
      * collecting the results in a list, and returning an iterator to that list.
      * @exception IllegalActionException
      */

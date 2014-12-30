@@ -236,17 +236,17 @@ public class NewComponentDialog extends JPanel {
         componentNameTextField.setText(componentName);
     }
 
-    /** Get the component's <imports> section. */
+    /** Get the component's &lt;imports&gt; section. */
     public String getImports() {
         return importsComponent.getText().trim();
     }
 
-    /** Get the component's <declarations> section. */
+    /** Get the component's &lt;declarations&gt; section. */
     public String getDeclarations() {
         return declarationsComponent.getText().trim();
     }
 
-    /** Get the component's <configuration> section. */
+    /** Get the component's &lt;configuration&gt; section. */
     public String getConfiguration() {
         return configureComponent.getText().trim();
     }
@@ -326,14 +326,13 @@ public class NewComponentDialog extends JPanel {
 
     /**
      * Creates and displays a dialog for defining a new component's settings. The
-      dialog should be used as follows:
-      <code>
-    NewComponentDialog dlg = NewComponentDialog.doDialog(frame, componentDef);
-    if (dlg.succeeded())
-    {
-    [do something with dlg.componentDef]
-    }
-    <code>
+     * dialog should be used as follows:
+     * <code>
+     * NewComponentDialog dlg = NewComponentDialog.doDialog(frame, componentDef);
+     * if (dlg.succeeded()) {
+     *    [do something with dlg.componentDef]
+     * }
+     * </code>
      */
     public static NewComponentDialog doDialog(JFrame owner,
             ComponentDef componentDef) {

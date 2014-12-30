@@ -121,137 +121,143 @@ import ptolemy.util.MessageHandler;
    If it is a parameter, then the script is compiled in the initialize()
    method, and any changes made to it are ignored until the next initiatlization
    of the model.
-   <p>
-   To use this actor, add input and output ports and parameters, and specify
+
+   <p>To use this actor, add input and output ports and parameters, and specify
    a script.
-   Your script should define one or more of the following functions:
+   Your script should define one or more of the following functions:</p>
    <ul>
    <li> <b>initialize</b>. This function is invoked each time this actor
    is initialized, or if an initialize function is provided on the
    <i>scriptIn</i> input port, then it will be invoked when this
    actor fires and consumes that input. This function can read
    parameter values using valueOf() (see below), normally there
-   will be no inputs, so it should not read inputs.
-   </li>
+   will be no inputs, so it should not read inputs.</li>
+
    <li> <b>fire</b>. This function is invoked each time this actor fires.
    It can read parameters, read inputs using get(), and write outputs
    using send(). Note that all inputs from all ports are consumed during
    a firing, even if the script does not contain a call to get() for
    a port. Multiple calls to get() during a
-   firing will return the same value.
-   </li>
+   firing will return the same value.</li>
+
    <li> <b>wrapup</b>. This function is invoked at the end of execution of
    of the model. It can read parameters, but normally should not
-   read inputs nor write outputs.
-   </li>
+   read inputs nor write outputs.</li>
    </ul>
-   <p>
-   Usually, you will need to explicitly specify the types
+
+   <p>Usually, you will need to explicitly specify the types
    of the output ports. Alternatively, you can enable backward
    type inference on the enclosing model, and the types of output
-   ports will be inferred by how the data are used.
-   <p>
-   You may also need to set the type of input ports. Usually, forward
+   ports will be inferred by how the data are used.</p>
+
+   <p>You may also need to set the type of input ports. Usually, forward
    type inference will work, and the type of the input port will be based
    on the source of data. However,
    if the input comes from an output port whose output is undefined,
    such as JSONToToken or HttpRequestHandler, then you may want to
    enable backward type inference, and specify here the type of input
-   that your script requires.
-   <p>
-   The context in which your functions run provide the following methods:
+   that your script requires.</p>
+
+   <p>The context in which your functions run provide the following methods:</p>
    <ul>
-   <li> alert(string): pop up a dialog with the specified message.
-   <li> clearTimeout(int): clear a timeout with the specified handle.
-   <li> error(string): throw an IllegalActionException with the specified message.
-   <li> get(port, n): get an input from a port on channel n (return null if there is no input).
-   <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)
-   <li> print(string): print the specified string to the console (standard out).
-   <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).
-   <li> send(value, port, n): send a value to an output port on channel n
-   <li> setTimeout(function, int): set the function to execute after specified time and return handle.
-   <li> valueOf(parameter): retrieve the value of a parameter.
+   <li> alert(string): pop up a dialog with the specified message.</li>
+   <li> clearTimeout(int): clear a timeout with the specified handle.</li>
+   <li> error(string): throw an IllegalActionException with the specified message.</li>
+   <li> get(port, n): get an input from a port on channel n (return null if there is no input).</li>
+   <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
+   <li> print(string): print the specified string to the console (standard out).</li>
+   <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
+   <li> send(value, port, n): send a value to an output port on channel n</li>
+   <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
+   <li> valueOf(parameter): retrieve the value of a parameter.</li>
    </ul>
-   The last argument of get() and send() is optional.
+   <p>The last argument of get() and send() is optional.
    If you leave it off, the channel number will be assumed to be zero
-   (designating the first channel connected to the port).
-   <p>
-   The following example script calculates the factorial of the input.
+   (designating the first channel connected to the port).</p>
+
+   <p>The following example script calculates the factorial of the input.</p>
+
    <pre>
    function fire() {
-   var value = get(input);
-   if (value < 0) {
-   error("Input must be greater than or equal to 0.");
-   } else {
-   var total = 1;
-   while (value > 1) {
-   total *= value;
-   value--;
-   }
-   send(total, output);
-   }
+       var value = get(input);
+       if (value &lt; 0) {
+           error("Input must be greater than or equal to 0.");
+       } else {
+           var total = 1;
+           while (value &gt; 1) {
+               total *= value;
+               value--;
+           }
+           send(total, output);
+       }
    }
    </pre>
-   <p>
-   Your script may also store values from one firing to the next, or from
-   initialization to firing.  For example,
+
+   <p>Your script may also store values from one firing to the next, or from
+   initialization to firing.  For example,</p>
+
    <pre>
    var init;
    function initialize() {
-   init = 0;
+       init = 0;
    }
    function fire() {
-   init = init + 1;
-   send(init, output);
+       init = init + 1;
+       send(init, output);
    }
    </pre>
-   will send a count of firings to the output named "output".
-   <p>
-   Notice that you may name ports or parameters of this actor in such
+   <p>will send a count of firings to the output named "output".</p>
+
+   <p>Notice that you may name ports or parameters of this actor in such
    a way as to shadow objects in the global scope. For example,
    JavaScript provides a JSON object that you can use to operate
    on JSON strings, for example with the function JSON.parse().
    However, if you name a port or parameter "JSON", then any reference
    to JSON in your fire() method, for example, will refer to the port
    or parameter, and not to the global object.  To explicitly refer
-   to the global object, use the syntax "this.JSON".
-   <p>
-   In addition, the symbol "actor" is defined to be the instance of
+   to the global object, use the syntax "this.JSON".</p>
+
+   <p>In addition, the symbol "actor" is defined to be the instance of
    this actor. In JavaScript, you can invoke methods on it.
-   For example, the JavaScript
+   For example, the JavaScript</p>
    <pre>
    actor.toplevel().getName();
    </pre>
-   will return the name of the top-level composite actor containing
-   this actor.
-   <p>
-   Not all Ptolemy II data types translate naturally to
+   <p>will return the name of the top-level composite actor containing
+   this actor.</p>
+
+   <p>Not all Ptolemy II data types translate naturally to
    JavaScript types. This actor converts Ptolemy types int,
    double, string, and boolean to and from equivalent JavaScript
    types. In addition, arrays are converted to native
    JavaScript arrays. Ptolemy II records are converted into
    JavaScript objects, and JavaScript objects with enumerable
-   properties into records.
-   <p>
-   For other Ptolemy II types, the script will see the
+   properties into records.</p>
+
+   <p>For other Ptolemy II types, the script will see the
    corresponding Token object.  For example, if you send
    a number of type long to an input of a JavaScript actor,
-   the script (inside a fire() function):
+   the script (inside a fire() function):</p>
+
    <pre>
    var value = get(input);
    print(value.getClass().toString());
    </pre>
-   will print on standard out the string
+
+   <p>will print on standard out the string</p>
+
    <pre>
    "class ptolemy.data.LongToken"
    </pre>
-   JavaScript does not have a long data type (as of this writing), so instead the
+
+   <p>JavaScript does not have a long data type (as of this writing), so instead the
    get() call returns a JavaScript Object wrapping the Ptolemy II
    LongToken object. You can then invoke methods on that token,
-   such as getClass(), as done above.
-   <p>
-   Scripts can instantiate Java classes and invoke methods on them.
-   For example, the following script will build a simple Ptolemy II model:
+   such as getClass(), as done above.</p>
+
+   <p>Scripts can instantiate Java classes and invoke methods on them.
+   For example, the following script will build a simple Ptolemy II model:</p>
+
    <pre>
    importPackage(Packages.ptolemy.actor);
    importClass(Packages.ptolemy.actor.lib.Ramp);
@@ -267,21 +273,21 @@ import ptolemy.util.MessageHandler;
    var director = new SDFDirector(toplevel, "SDFDirector");
    director.iterations.setExpression("10");
    </pre>
-   You can even send this out on an output port.
-   For example,
+
+   <p>You can even send this out on an output port.
+   For example,</p>
    <pre>
    send(toplevel, output, 0);
    </pre>
-   where "output" is the name of the output port.
-   <p>
-   Subclasses of this actor may put it in "restricted" mode, which
-   limits the functionality as follows:
+   <p>where "output" is the name of the output port.</p>
+
+   <p>Subclasses of this actor may put it in "restricted" mode, which
+   limits the functionality as follows:</p>
    <ul>
-   <li> The "actor" variable (referring to this instance of the actor) does not get created.
+   <li> The "actor" variable (referring to this instance of the actor) does not get created.</li>
    <li> The readURL method only supports the HTTP protocol (in particular,
-   it does not support the "file" protocol, and hence cannot access local files).
+   it does not support the "file" protocol, and hence cannot access local files).</li>
    </ul>
-   </p>
 
    @author Edward A. Lee
    @version $Id$
@@ -1575,7 +1581,7 @@ public class JavaScript extends TypedAtomicActor {
 
         /**
          * Open a new tab in the default system browser.
-         * See also <a href="http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/">http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/></a>.
+         * <p>See also <a href="http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/">http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/</a>.</p>
          *
          * @param url The URL that the browser shall retrieve.
          * @return The empty string.

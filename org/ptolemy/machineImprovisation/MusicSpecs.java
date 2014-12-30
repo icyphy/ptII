@@ -419,8 +419,8 @@ public class MusicSpecs {
     }
 
     /**
-     * Translate a letter note to MIDI key
-     * @param note a letter note
+     * Translate a letter note to MIDI key.
+     * @param keyLetter a letter note
      * @return the MIDI key index in base 12
      */
     public static int translateLetterToKeyIndex(String keyLetter) {

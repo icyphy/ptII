@@ -42,25 +42,25 @@ import com.jgoodies.forms.util.LayoutStyle;
  * A factory that creates instances of FormLayout for frequently used
  * form layouts. It makes form creation easier and more consistent.<p>
  *
- * <strong>I consider removing the <code>FormLayout</code> factory methods.
+ * <p><strong>I consider removing the <code>FormLayout</code> factory methods.
  * These seem to be less useful and may lead to poor layout readability.
  * If you want to use these methods, you may consider copying them
- * to your codebase.</strong><p>
+ * to your codebase.</strong></p>
  *
- * The forms are described by major and minor columns. Major columns
+ * <p>The forms are described by major and minor columns. Major columns
  * consist of a leading label and a set of related components, for example: a
  * label plus textfield, or label plus textfield plus button. The component
  * part of a major column is divided into minor columns as shown in this
- * layout:
+ * layout:</p>
  * <pre>
- * <-    major column 1        ->  <-     major column 2       ->
+ * &lt;-    major column 1        -&gt;  &lt;-     major column 2       -&gt;
  * label1 textfield1a textfield1b  label2 textfield2a textfield2b
  * label3 textfield3a textfield3b  label4 textfield4
  * label5 textfield5               label6 textfield6
- * </pre><p>
+ * </pre>
  *
- * Many forms use 1, 2, 3 or 4 major columns, which in turn are often split
- * into 1, 2, 3 or 4 minor columns.
+ * <p>Many forms use 1, 2, 3 or 4 major columns, which in turn are often split
+ * into 1, 2, 3 or 4 minor columns.</p>
  *
  * @author        Karsten Lentzsch
  * @version $Revision$

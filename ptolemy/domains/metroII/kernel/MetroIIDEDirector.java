@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  * Typically, a Ptolemy event is associated with a fire() action of an actor.
  * Executing the Ptolemy event triggers the firing of the actor. In
  * MetroIIDEDirector, the firing has two variances, depending on the types of
- * the actor:
+ * the actor:</p>
  * <ol>
  * <li>If the actor is a normal Ptolemy actor, the execution of the event
  * instantly triggers fire() of the actor.</li>
@@ -82,7 +82,7 @@ import ptolemy.kernel.util.Workspace;
  * PROPOSED. The firing will not be executed until the MetroII event is
  * NOTIFIED.</li>
  * </ol>
- * A MetroII actor is a Ptolemy actor that implements GetFirable interface,
+ * <p>A MetroII actor is a Ptolemy actor that implements GetFirable interface,
  * which includes MetroIICompositeActor. To understand MetroII event and its
  * states (e.g. PROPOSED, WAITING, NOTIFIED), please @see MetroIIDirector.
  * </p>
@@ -98,7 +98,7 @@ import ptolemy.kernel.util.Workspace;
  * </p>
  *
  * <p>
- * It's highly recommend not to place MetroIIDEDirector in a
+ * It is highly recommend not to place MetroIIDEDirector in a
  * MetroIICompositeActor under another MetroIIDEDirector because there would be
  * a semantic conflict if the enclosed MetroIIDEDirector directs a normal
  * Ptolemy actor.

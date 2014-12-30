@@ -53,20 +53,19 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  A simple use of this actor is to pad a block of inputs with zeros.
  Set <i>offset</i> to zero and use <i>numberToWrite &gt; numberToRead</i>.
- <a name="zero padding"></a>
+ <a name="zeroPadding"></a>
  <a name="padding"></a></p>
  <p>
  Another simple use is to obtain overlapping windows from
  an input stream.
  Set <i>usePastInputs</i> to true, use <i>numberToWrite &gt; numberToRead</i>,
  and set <i>offset</i> equal to <i>numberToWrite - numberToRead</i>.
- <a name="overlapping windows"></a>
+ <a name="overlappingWindows"></a>
  <a name="windowing"></a></p>
  <p>
  The general operation is illustrated with the following examples.
  If <i>offset</i> is positive,
  there two possible scenarios, illustrated by the following examples:</p>
- <p>
  <pre>
      iiiiii                  numberToRead = 6
       \    \                 offset = 2
@@ -75,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
      iiiiii                  numberToRead = 6
       \ \  \                 offset = 2
      ppiii                   numberToWrite = 5
- </pre></p>
+ </pre>
  <p>
  The symbol "i" refers to any input token. The leftmost symbol
  refers to the oldest input token of the ones consumed in a given
@@ -92,7 +91,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  When the <i>offset</i> is negative, this indicates that the
  first <i>offset</i> input tokens that are read should be
  discarded.  The corresponding scenarios are shown below:</p>
- <p>
  <pre>
      iiiiii                  numberToRead = 6
     / /  /                   offset = -2
@@ -102,7 +100,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     / / //                   offset = -2
      iii                     numberToWrite = 3
  </pre>
-</p>
  <p>
  In the first of these examples, the first two input tokens are
  discarded.  In the second example, the first two and the last input

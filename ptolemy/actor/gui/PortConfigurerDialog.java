@@ -138,10 +138,10 @@ ChangeListener {
      * changes in the ports. When the apply button is pressed the contents of
      * the table is used to update the ports. When Commit is pressed an apply
      * is done before exiting.
-     * <p>
-     * This dialog is is not modal. In particular, changes can be undone by
-     * clicking Edit->Undo, and the help screen can be manipulated while this
-     * dialog exists. The dialog is placed relative to the owner.
+     *
+     * <p>This dialog is is not modal. In particular, changes can be undone by
+     * clicking Edit-&gt;Undo, and the help screen can be manipulated while this
+     * dialog exists. The dialog is placed relative to the owner.</p>
      *
      * @param tableau The DialogTableau.
      * @param owner The object that, per the user, appears to be generating the

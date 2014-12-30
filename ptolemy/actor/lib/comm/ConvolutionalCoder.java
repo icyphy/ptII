@@ -46,7 +46,9 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  Encode an input sequence with a convolutional code. The inputs and
- outputs are booleans. The input sequence
+ outputs are booleans. 
+
+ <p>The input sequence
  enters a shift register, and the contents of the shift register are
  combined using boolean functions given by the <i>polynomialArray</i>
  parameter. The initial state of the shift register is given by the
@@ -57,34 +59,35 @@ import ptolemy.kernel.util.Workspace;
  array of positive integers. Each integer indicates one polynomial
  used for computing output bits. To get a <i>k</i>/<i>n</i>
  convolutional code, set <i>uncodedRate</i> to <i>k</i> and provide
- <i>n</i> integers in <i>polynomialArray</i>.
- <p>
- The integers in <i>polynomialArray</i> are usually most conveniently
+ <i>n</i> integers in <i>polynomialArray</i>.</p>
+
+ <p> The integers in <i>polynomialArray</i> are usually most conveniently
  given as octal numbers. A leading zero indicates an octal
  number. The <i>i</i>-th bit of the integer indicates whether the
  <i>i</i>-th tap of the delay line should be used.  All bits that
  are used are exclusive-ored, thus yielding the parity of the selected
  bits. See more details in Scrambler actor on using an integer to
  define a polynomial. The <i>n</i> parity results are produced on
- the output in a sequence.
- <p>
- A good convolutional code should have large Hamming distance between
+ the output in a sequence.</p>
+
+ <p> A good convolutional code should have large Hamming distance between
  any two of its codewords. This is not easily checked, but there are some
- simple rules that all "good" codes should satisfy:
+ simple rules that all "good" codes should satisfy:</p>
  <ol>
  <li> <i>k</i> should be strictly smaller than <i>n</i>, otherwise
  the code is not uniquely decodable.  Thus, <i>uncodedRate</i>
- should be less than the length of <i>polynomialArray</i>.
+ should be less than the length of <i>polynomialArray</i>.</li>
  <li> <i>k</i> should not be higher than the highest order of
  all polynomials, otherwise, some input bits never get
- involved in computing parities.
+ involved in computing parities.</li>
  </ol>
- If these rules are violated, the actor will throw an exception.
+
+ <p>If these rules are violated, the actor will throw an exception.
  However, these rules do not guarantee the codeword can be decoded
  successfully, and it is not always true that larger polynomials
  yield better codes. Users should check tables for convolutional
  codes from professional references. For convenience, we list here
- some convolutional codes that have large distance property.
+ some convolutional codes that have large distance property.</p>
  <pre>
  Rate = 1/2
  polynomialArray
@@ -93,7 +96,7 @@ import ptolemy.kernel.util.Workspace;
  {031, 027}
  {065, 057}
  {0155, 0117}
- <p>
+
  Rate = 1/3
  polynomialArray
  {05, 07, 07}
@@ -101,7 +104,7 @@ import ptolemy.kernel.util.Workspace;
  {025, 033, 037}
  {071, 065, 057}
  {0155, 0123, 0137}
- <p>
+
  Rate = 1/4
  polynomialArray
  {05, 07, 07, 07}
@@ -109,53 +112,53 @@ import ptolemy.kernel.util.Workspace;
  {025, 035, 033, 037}
  {065, 073, 047, 057}
  {0135, 0135, 0163, 0147}
- <p>
+
  Rate = 1/5
  polynomialArray
  {07, 07, 07, 05, 05}
  {017, 017, 015, 013, 013}
  {037, 035, 033, 025, 027}
  {057, 047, 067, 053, 075}
- <p>
+
  Rate = 1/6
  polynomialArray
  {07, 07, 07, 07, 05, 05}
  {017, 017, 015, 015, 013, 013}
  {037, 027, 035, 033, 025, 027}
  {067, 057, 055, 053, 071, 075}
- <p>
+
  Rate = 2/3
  polynomialArray
  {017, 06, 013}
  {072, 057, 027}
  {0171, 0166, 0273}
- <p>
+
  Rate = k/5
  k     polynomialArray
  2     {017, 016, 011, 05, 02}
  2     {072, 047, 025, 053, 075}
  3     {056, 062, 057, 043, 071}
- <p>
+
  Rate = k/7
  k     polynomialArray
  2     {012, 06, 05, 013, 013, 015, 017}
  2     {066, 055, 027, 071, 052, 056, 057}
  3     {051, 042, 036, 023, 075, 061, 047}
- <p>
+
  Rate  polynomialArray
  3/4   {064, 052, 043, 071}
  3/8   {054, 021, 062, 043, 045, 036, 057, 071}
  </pre>
- <p>
- Note that this implementation is limited to a shift register
+
+ <p> Note that this implementation is limited to a shift register
  length of 32 because of the specification of the polynomials and
- initial shift register state as 32-bit integers.
- <p>
- For more information on convolutional codes, see Proakis, Digital
+ initial shift register state as 32-bit integers.</p>
+
+ <p>For more information on convolutional codes, see Proakis, Digital
  Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477,
  or Barry, Lee and Messerschmitt, <i>Digital Communication</i>, Third Edition,
- Kluwer, 2004.
- <p>
+ Kluwer, 2004.</p>
+
  @author Ye Zhou, contributor: Edward A. Lee
  @version $Id$
  @since Ptolemy II 3.0

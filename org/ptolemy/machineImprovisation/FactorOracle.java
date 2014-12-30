@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
  * a specification.
  *
  <p> As an example, if a transition that would generate a "C4" upon firing, the
- guard expression would look like: <i> validatePitch("C4") && probability(p) </i>,
+ guard expression would look like: <i> validatePitch("C4") &amp;&amp; probability(p) </i>,
  where p is a double in range [0.0,1.0]. This transition would be taken
  (i) if the probability() transition evaluates to true AND (ii) if
  * validatePitch() returns true.
@@ -488,7 +488,8 @@ public class FactorOracle extends ModalController {
     /** A function that evaluates to true if the "pitch" that would be produced
      * as a result of taking this transition satisfies chord specifications. In
      * the current application, the specifications are given by
-     * {@link org.ptolemy.machineImprovsation.ChordSpecifications.getChordPitches(String, boolean)} */
+     * {@link org.ptolemy.machineImprovisation.MusicSpecs#getChordPitches(String, boolean)}.
+     */
     protected class ChordFunction implements Function {
         @Override
         public Token apply(Token[] arguments) throws IllegalActionException {

@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  *  <p>
  *  This actor consumes one input token and creates a stream of output tokens, each with
- *  the timestamp specified as a part of the token.>/p?
+ *  the timestamp specified as a part of the token.</p>
  *
  *  @author Ilge Akkaya
  *  @version $Id$

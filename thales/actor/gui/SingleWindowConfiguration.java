@@ -53,7 +53,7 @@ import thales.vergil.SingleWindowApplication;
  A Configuration that intercept created Tableau, and the content of its
  Frame into a TabbedPane.
 
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson, Thales Research and technology, 01 sept. 2003
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (jerome.blanc)

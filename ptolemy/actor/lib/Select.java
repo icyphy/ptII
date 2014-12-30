@@ -59,9 +59,9 @@ import ptolemy.kernel.util.StringAttribute;
  not fire() (although it will continue to consume tokens on the
  <i>control</i> port in its prefire() method).
 
- </p><p> This actor is similar to the {@link Multiplexor} actor, except that it
- never discards input tokens.  Tokens on channels that are not selected
- are not consumed.
+ </p><p> This actor is similar to the {@link ptolemy.actor.lib.Multiplexor}
+ actor, except that it never discards input tokens.  Tokens on
+ channels that are not selected are not consumed.
 
  </p><p> Note that in the DE domain, where this actor is commonly used, if
  a new value is given to the <i>control</i> port, then all previously

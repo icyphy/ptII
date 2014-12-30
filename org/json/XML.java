@@ -36,7 +36,7 @@ import java.util.Iterator;
  */
 public class XML {
 
-    /** The Character '&'. */
+    /** The Character '&amp;'. */
     public static final Character AMP = new Character('&');
 
     /** The Character '''. */
@@ -48,10 +48,10 @@ public class XML {
     /** The Character '='. */
     public static final Character EQ = new Character('=');
 
-    /** The Character '>'. */
+    /** The Character '&gt;'. */
     public static final Character GT = new Character('>');
 
-    /** The Character '<'. */
+    /** The Character '&lt;'. */
     public static final Character LT = new Character('<');
 
     /** The Character '?'. */
@@ -295,7 +295,7 @@ public class XML {
      * does not like to distinguish between elements and attributes.
      * Sequences of similar elements are represented as JSONArrays. Content
      * text may be placed in a "content" member. Comments, prologs, DTDs, and
-     * <code>&lt;[ [ ]]></code> are ignored.
+     * <code>&lt;[ [ ]]&gt;</code> are ignored.
      * @param string The source string.
      * @return A JSONObject containing the structured data from the XML string.
      * @exception JSONException

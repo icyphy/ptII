@@ -131,8 +131,7 @@ public class SearchResultPanel extends JPanel {
      * Call getValue() for the ModelPanel.  If it returns true (checkbox is checked),
      * Add the model name to the ArrayList.
      *
-     * @return ArrayList<String>
-     *         A list of models that have been selected for loading.
+     * @return A list of models that have been selected for loading.
      */
     public ArrayList<String> getSelections() {
 

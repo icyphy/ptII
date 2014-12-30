@@ -62,7 +62,7 @@ For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&l
  <pre>
 
     &lt;property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute"&gt;
-        &lt;property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a state machine here (and ports, if needed) and&#10;create refinements for the states. Each refinement needs a director.&#10;For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&lt;/configure&gt;
+        &lt;property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a state machine here (and ports, if needed) and&amp;#10;create refinements for the states. Each refinement needs a director.&amp;#10;For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&lt;/configure&gt;
         &lt;/property&gt;
         &lt;property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 65.0]"&gt;
         &lt;/property&gt;

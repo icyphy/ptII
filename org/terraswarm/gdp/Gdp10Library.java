@@ -673,7 +673,7 @@ public interface Gdp10Library extends Library {
 	 * post a status<br>
 	 * Original signature : <code>EP_STAT ep_stat_post(EP_STAT, const char*, null)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:36</i><br>
-	 * @deprecated use the safer methods {@link #ep_stat_post(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, java.lang.Object)} and {@link #ep_stat_post(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_stat_post(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, java.lang.Object...)} and {@link #ep_stat_post(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, java.lang.Object...)} instead
 	 */
 	@Deprecated 
 	ByValue ep_stat_post(ByValue c, Pointer defmsg, Object... varArgs1);
@@ -686,7 +686,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * Original signature : <code>EP_STAT ep_stat_vpost(EP_STAT, const char*, va_list)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:38</i><br>
-	 * @deprecated use the safer methods {@link #ep_stat_vpost(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, java.lang.Object)} and {@link #ep_stat_vpost(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_stat_vpost(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, java.lang.Object...)} and {@link #ep_stat_vpost(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, java.lang.Object...)} instead
 	 */
 	@Deprecated 
 	ByValue ep_stat_vpost(ByValue c, Pointer defmsg, Object... av);
@@ -699,7 +699,7 @@ public interface Gdp10Library extends Library {
 	 * print a status<br>
 	 * Original signature : <code>void ep_stat_print(EP_STAT, const char*, FILE*, null)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:43</i><br>
-	 * @deprecated use the safer methods {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} and {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object...)} and {@link #ep_stat_print(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object...)} instead
 	 */
 	@Deprecated 
 	void ep_stat_print(ByValue c, Pointer defmsg, Gdp10Library.FILE fp, Object... varArgs1);
@@ -712,7 +712,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * Original signature : <code>void ep_stat_vprint(EP_STAT, const char*, FILE*, va_list)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_stat.h:45</i><br>
-	 * @deprecated use the safer methods {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} and {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, java.lang.String, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object...)} and {@link #ep_stat_vprint(org.terraswarm.gdp.EP_STAT.ByValue, com.sun.jna.Pointer, org.terraswarm.gdp.Gdp10Library.FILE, java.lang.Object...)} instead
 	 */
 	@Deprecated 
 	void ep_stat_vprint(ByValue c, Pointer defmsg, Gdp10Library.FILE fp, Object... av);
@@ -1279,7 +1279,7 @@ public interface Gdp10Library extends Library {
 	/**
 	 * Original signature : <code>int gdp_buf_printf(gdp_buf_t*, const char*, null)</code><br>
 	 * <i>native declaration : src/gdp/gdp/gdp_buf.h:24</i><br>
-	 * @deprecated use the safer methods {@link #gdp_buf_printf(com.sun.jna.ptr.PointerByReference, java.lang.String, java.lang.Object)} and {@link #gdp_buf_printf(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #gdp_buf_printf(com.sun.jna.ptr.PointerByReference, java.lang.String, java.lang.Object...)} and {@link #gdp_buf_printf(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer, java.lang.Object...)} instea.d
 	 */
 	@Deprecated 
 	int gdp_buf_printf(Pointer buf, Pointer fmt, Object... varArgs1);
@@ -1787,7 +1787,7 @@ public interface Gdp10Library extends Library {
 	 * printing debug output (uses stddbg)<br>
 	 * Original signature : <code>void ep_dbg_printf(const char*, null)</code><br>
 	 * <i>native declaration : src/gdp/ep/ep_dbg.h:44</i><br>
-	 * @deprecated use the safer methods {@link #ep_dbg_printf(java.lang.String, java.lang.Object)} and {@link #ep_dbg_printf(com.sun.jna.Pointer, java.lang.Object)} instead
+	 * @deprecated use the safer methods {@link #ep_dbg_printf(java.lang.String, java.lang.Object...)} and {@link #ep_dbg_printf(com.sun.jna.Pointer, java.lang.Object...)} instead
 	 */
 	@Deprecated 
 	void ep_dbg_printf(Pointer fmt, Object... varArgs1);

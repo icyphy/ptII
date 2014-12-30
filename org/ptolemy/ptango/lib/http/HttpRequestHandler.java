@@ -251,18 +251,18 @@ public class HttpRequestHandler extends TypedAtomicActor implements
 
     /** The header information of an HTTP request as a record.
      *  Standard message header field names are given at
-     *  {@link http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers}
-     *  (see also {@link http://en.wikipedia.org/wiki/List_of_HTTP_header_fields}).
+     *  <a href="http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers">http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers</a>
+     *  (see also <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields">http://en.wikipedia.org/wiki/List_of_HTTP_header_fields</a>).
      *  Common header fields include
      *  <ul>
      *  <li> "Accept", which designates what Content-Type
-     *  for responses are acceptable, and might have value, for example, "text/html".
+     *  for responses are acceptable, and might have value, for example, "text/html".</li>
      *  <li> "Content-Type", which designates the content type of the body of the request
-     *  (for POST and PUT requests that include a body).
-     *  <li> "Date", the date and time that the request was sent, in HTTP-date format.
-     *  <li> "Host", the domain name (and port) of the server to which the request is sent.
+     *  (for POST and PUT requests that include a body).</li>
+     *  <li> "Date", the date and time that the request was sent, in HTTP-date format.</li>
+     *  <li> "Host", the domain name (and port) of the server to which the request is sent.</li>
      *  <li> "User-Agent", a string identifying the originator of the request (see
-     *  {@link en.wikipedia.org/wiki/User_agent}).
+     *  <a href="http://en.wikipedia.org/wiki/User_agent">http://en.wikipedia.org/wiki/User_agent</a></li>
      *  </ul>
      *  See the class comments for type constraints
      *  on output ports that produce records.
@@ -331,7 +331,7 @@ public class HttpRequestHandler extends TypedAtomicActor implements
      *  provided, but a response has been provided on the
      *  {@link #responseBody} input port, then the response code
      *  will be 200 (OK). Standard response codes are described at
-     *  {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}.
+     *  <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a>.
      *  This port has type int.
      */
     public TypedIOPort responseCode;
@@ -342,7 +342,7 @@ public class HttpRequestHandler extends TypedAtomicActor implements
      *  Valid alternatives include "text/plain", "text/csv", "text/xml", "application/javascript",
      *  "application/json", and many others.
      *  Standard content types are described at
-     *  {@link http://en.wikipedia.org/wiki/Internet_media_type}.
+     *  <a href="http://en.wikipedia.org/wiki/Internet_media_type">http://en.wikipedia.org/wiki/Internet_media_type</a>.
      */
     public PortParameter responseContentType;
 
@@ -353,8 +353,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
      *  information provided in the response will be Content-Type as given by
      *  {@link #responseContentType}.
      *  Standard message header field names are given at
-     *  {@link http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers}
-     *  (see also {@link http://en.wikipedia.org/wiki/List_of_HTTP_header_fields}).
+     *  <a href="http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers">http://www.iana.org/assignments/message-headers/message-headers.xml#perm-headers</a>
+     *  (see also <a href="http://en.wikipedia.org/wiki/List_of_HTTP_header_fields">http://en.wikipedia.org/wiki/List_of_HTTP_header_fields</a>).
      */
     public PortParameter responseHeaders;
 
@@ -1339,7 +1339,7 @@ public class HttpRequestHandler extends TypedAtomicActor implements
      *  the handling of the request, sending back the response
      *  that has been provided by the enclosing actor.
      *
-     *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
+     *  <p>See <a href="http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>.</p>
      */
     @SuppressWarnings("serial")
     protected class ActorServlet extends HttpServlet {

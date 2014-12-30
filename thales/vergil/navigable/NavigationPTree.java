@@ -42,7 +42,7 @@ import thales.vergil.SingleWindowApplication;
  <p>Titre : NavigationPTree</p>
  <p>Description : A navigation tree to browse a Ptolemy model</p>
  <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson  01 sept. 2003
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson  01 sept. 2003
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (jerome.blanc)

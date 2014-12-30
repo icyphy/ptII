@@ -58,11 +58,11 @@ import ptolemy.kernel.util.Workspace;
  using two type constraints:
 
  <ul>
- <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
+ <li><tt>output &ge; {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
  </tt>, which requires the types of the input ports to be compatible
  with the corresponding types in the output record.
  </li>
- <li><tt>each input >= the type of the corresponding field inside the
+ <li><tt>each input &ge; the type of the corresponding field inside the
  output record</tt>, which together with the first constraint forces
  the input types to be exactly equal to the types of the corresponding
  fields in the output record. This constraint is intended to back-
@@ -201,11 +201,11 @@ public class RecordAssembler extends TypedAtomicActor {
 
     /** Set up and return two type constraints.
      *  <ul>
-     *  <li><tt>output >= {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
+     *  <li><tt>output &ge; {x = typeOf(inputPortX), y = typeOf(inputPortY), ..}
      *  </tt>, which requires the types of the input ports to be compatible
      *  with the corresponding types in the output record.
      *  </li>
-     *  <li><tt>each input >= the type of the corresponding field inside the
+     *  <li><tt>each input &ge; the type of the corresponding field inside the
      *  output record</tt>, which together with the first constraint forces
      *  the input types to be exactly equal to the types of the corresponding
      *  fields in the output record. This constraint is intended to back-

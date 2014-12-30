@@ -2197,8 +2197,8 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      *
      * <p>
      * Under FMI-2.0, if the fmi2CompletedIntegrationStep() method sets the
-     * value of the terminateSimulation parameter to true, then {&link
-     * ptolemy.actor.Director#finish()} is invoked.
+     * value of the terminateSimulation parameter to true, then 
+     * {@link ptolemy.actor.Director#finish()} is invoked.
      * </p>
      *
      * @param eventOccuredOrNoSetFMUStatePriorToCurrentPoint
@@ -3189,7 +3189,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      * in the zipped file named by the <i>fmuFile</i> parameter
      *
      * @exception IllegalActionException
-     *                If the file named by the <i>fmuFile<i> parameter cannot be
+     *                If the file named by the <i>fmuFile</i> parameter cannot be
      *                unzipped or if there is a problem deleting any
      *                pre=existing parameters or creating new parameters.
      * @exception NameDuplicationException

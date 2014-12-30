@@ -99,7 +99,6 @@ public class FMI20ModelInstance extends Structure {
     /**
      * The type.
      * C type : fmi2Type
-     * @see fmi2Type
      */
     public int type;
 
@@ -121,7 +120,6 @@ public class FMI20ModelInstance extends Structure {
     /**
      * The state of the model.
      * C type : ModelState
-     * @see ModelState
      */
     public int state;
 

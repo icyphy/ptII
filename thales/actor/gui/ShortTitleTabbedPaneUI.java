@@ -36,7 +36,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
  <p>Description : A customized UI for the TabbedPane use to navigate</p>
 
  <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (jerome.blanc)

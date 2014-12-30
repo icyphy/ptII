@@ -108,8 +108,7 @@ public class ParentHierarchyPanel extends JPanel {
     /** Traverse the list of ParentPanels.  If a ParentPanel's checkbox is
      * checked, add the model name to the returned list of model names (strings).
      *
-     * @return ArrayList<String>
-     *         A list of parent models that have been selected for loading.
+     * @return A list of parent models that have been selected for loading.
      */
     public ArrayList<String> getSelections() {
 

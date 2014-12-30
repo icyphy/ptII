@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  illustration of how to perform changes to the topology.
  <p>
  @author Neil Smyth
- @version @$Id$
+ @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Red (nsmyth)
  @Pt.AcceptedRating Red (cxh)

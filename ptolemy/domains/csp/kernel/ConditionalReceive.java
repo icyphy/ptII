@@ -39,17 +39,19 @@ import ptolemy.kernel.util.Nameable;
 
 /**
  Represents a <I>guarded communication statement</I> in which the
- communication is a get(). Thus it represents
- <P>
- <CENTER> guard; get() => statements</CENTER>
- <P>
- It is one branch of either a CDO or a CIF conditional
- communication construct.
- <p>
- The branches used in a conditional communication construct are
- controlled by the chooseBranch() method of ConditionalBranchController.
- <p>
- Each branch is created to perform one communication. If more than
+ communication is a get().
+
+ <p>Thus it represents:</p>
+
+ <center> guard; get() =&gt; statements</center>
+
+ <p>It is one branch of either a CDO or a CIF conditional
+ communication construct.</p>
+
+ <p>The branches used in a conditional communication construct are
+ controlled by the chooseBranch() method of ConditionalBranchController.</p>
+
+ <p>Each branch is created to perform one communication. If more than
  one branch is enabled (the guard is true or absent), then a thread
  is created for each enabled branch to try and perform
  the appropriate rendezvous. If the branch

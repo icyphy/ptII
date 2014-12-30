@@ -1,7 +1,7 @@
 /* A class that stores a reference to a WebSocket connection and notifies
  the parent WebSocketService of incoming messages.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ import org.ptolemy.ptango.lib.webSocket.WebSocketService;
 
 
 ///////////////////////////////////////////////////////////////////
-////WebSocketEndpoint
+//// WebSocketEndpoint
 
 /** A class that keeps a reference to the WebSocket connection, notifies
  *  services of incoming messages and allows services to write to the WebSocket.
@@ -53,11 +53,9 @@ import org.ptolemy.ptango.lib.webSocket.WebSocketService;
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
  */
-
 public class WebSocketEndpoint implements OnTextMessage {
 
-    /** Create a new WebSocketEndpoint with the given parent service.
-    * @param service  The WebSocketService to be notified of messages.
+    /** Create a new WebSocketEndpoint.
     */
    public WebSocketEndpoint() {
        _connection = null;

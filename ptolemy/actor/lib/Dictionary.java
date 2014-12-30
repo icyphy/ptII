@@ -163,6 +163,7 @@ public class Dictionary extends TypedAtomicActor {
      *  with "$", which get substituted
      *  with the appropriate values.</p>
      *  <table>
+     *  <caption>"Properties that are substituted.</caption>
      *  <tr>
      *  <th>String</th>
      *  <th>Description</th>

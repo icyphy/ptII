@@ -53,11 +53,11 @@ package thales.actor.gui;
  a MoML file. Used to avoid MoMLparser bugs on older Ptolemy MoML files.</p>
 
  <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating @ProposedRating Red (jerome.blanc)
- @Pt.AcceptedRating @AcceptedRating
+ @Pt.ProposedRating Yellow (jerome.blanc)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class ModelValidator {
     //    private DOMParser _parser;

@@ -56,7 +56,7 @@ import thales.vergil.navigable.NavigationTreeModel;
  An effigy for navigable models.
 
 
- @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+ @author J&eacute;r&ocirc;me Blanc &amp; Benoit Masson, Thales Research and technology, 01 sept. 2003
  @version $Id$
  @since Ptolemy II 3.1
  @Pt.ProposedRating Yellow (jerome.blanc)
@@ -526,7 +526,7 @@ public class NavigableEffigy extends PtolemyEffigy {
     /** A factory for creating new Ptolemy effigies, but without the
      *  capability of creating a new blank effigy.  Use this factory
      *  in a configuration if you do not want the factory to appear
-     *  in the File->New menu.
+     *  in the File-&gt;New menu.
      */
     public static class FactoryWithoutNew extends Factory {
         /** Create a factory with the given name and container.

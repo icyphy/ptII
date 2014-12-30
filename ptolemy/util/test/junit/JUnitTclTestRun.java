@@ -37,37 +37,28 @@ import tcl.lang.TclException;
 //// JUnitTclTestRun
 /**
  * Run the Tcl tests under JUnit.
- * <p>
- * If the fileName JVM property is set, then the file named by that property is
+ *
+ * <p>If the fileName JVM property is set, then the file named by that property is
  * sourced. Otherwise, the testDefs.tcl file is sourced and the doallTests Tcl
  * proc that is defined in $PTII/util/testsuite/testDefs.tcl is invoked and then
- * any models in the auto/ directory are invoked.
- * </p>
+ * any models in the auto/ directory are invoked.</p>
  *
- * <p>
- * To run one test file (NamedObj.tcl):
- *
+ * <p>To run one test file (NamedObj.tcl):</p>
  * <pre>
  * cd $PTII/ptolemy/kernel/util/test
  * java -DfileName=NamedObj.tcl -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.JUnitTclTest
  * </pre>
  *
- * </p>
- *
- * <p>
- * To run all the .tcl files:
- *
+ * <p>To run all the .tcl files:</p>
  * <pre>
  * cd $PTII/ptolemy/kernel/util/test
  * java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
  * </pre>
  *
- * </p>
- *
- * <p>
- * A copy of this file appears in each test/ subdirectory so that it is easy for
- * developers to run tests. The master file is in
- * $PTII/util/testsuite/JUnitTclTest.java.in. To update all the files, run
+ * <p>A copy of this file appears in each test/ subdirectory so that
+ * it is easy for developers to run tests. The master file is in
+ * $PTII/util/testsuite/JUnitTclTest.java.in. To update all the files,
+ * run updateJUnitTclTest.</p>
  *
  * @author Christopher Brooks
  * @version $Id$

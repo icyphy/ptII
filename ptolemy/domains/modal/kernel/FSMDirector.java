@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  * <i>isInitialState</i> parameter is true.  The states and
  * transitions can have <i>refinements</i>, which are composite
  * actors. In outline, a firing of this director is a sequence of
- * steps:
+ * steps:</p>
  *
  * <ol>
  * <li>Read inputs.
@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  * <li>Execute the output actions of the chosen transition.
  * <li>Fire the transition refinements of the chosen transition.
  * </ol>
- * In postfire, the following steps are performed:
+ * <p>In postfire, the following steps are performed:</p>
  * <ol>
  * <li>Postfire the refinements of the current state if they were fired.
  * <li>Initialize the refinements of the destination state if the transition is a reset
@@ -107,7 +107,7 @@ import ptolemy.kernel.util.Workspace;
  * <li>Change the current state to the destination of the chosen transition.
  * </ol>
 
- * Since this director makes no persistent state changes in its fire()
+ * <p>Since this director makes no persistent state changes in its fire()
  * method, it conforms with the <i>actor abstract
  * semantics</i>. Assuming the state and transition refinements also
  * conform, this director can be used inside any Ptolemy II actor

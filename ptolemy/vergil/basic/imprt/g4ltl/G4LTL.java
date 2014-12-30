@@ -70,7 +70,7 @@ public class G4LTL {
      * @param optionTechnique and integer where 0 means CoBeuchi, 1 means Beuchi
      * @param unrollSteps The number of unroll steps.
      * @param findStrategy True if a strategy should be found, false if a counter-strategy should
-     * be found.  Typically a strategy is found first and then if the result does not contain a "<",
+     * be found.  Typically a strategy is found first and then if the result does not contain a "&lt;",
      * this method is called with findStrategy set to false to find a counter-strategy.
      * @return The moml of a state machine that represents the LTL file.
      * @exception Exception If thrown while synthesizing.

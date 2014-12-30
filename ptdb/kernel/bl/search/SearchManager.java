@@ -64,8 +64,8 @@ public class SearchManager {
      * search criteria. It is invoked by the Search GUI frame.
      *
      * <p>Algorithm: The search manager first creates all the searchers needed
-     * in the search, and configures them in the order of attribute searcher ->
-     * command searcher -> graph searcher.<br>
+     * in the search, and configures them in the order of attribute searcher -&gt;
+     * command searcher -&gt; graph searcher.<br>
      *
      * Once all the results are searched and found, the results will be passed
      * to the hierarchy fetcher to fetch the referencing information.<br>

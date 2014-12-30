@@ -317,7 +317,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  a MoML file, then also return null. A MoML file is required
          *  to have the MoML DTD designation in the first five lines.
          *  That is, it must contain a line beginning with the string
-         *  "<!DOCTYPE" and ending with the string
+         *  "&lt;!DOCTYPE" and ending with the string
          *  'PUBLIC \"-//UC Berkeley//DTD MoML"'.
          *  The specified base is used to expand any relative file references
          *  within the URL.
@@ -649,7 +649,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     /** A factory for creating new Ptolemy effigies, but without the
      *  capability of creating a new blank effigy.  Use this factory
      *  in a configuration if you do not want the factory to appear
-     *  in the File->New menu.
+     *  in the File-&gt;New menu.
      */
     public static class FactoryWithoutNew extends Factory {
         /** Create a factory with the given name and container.

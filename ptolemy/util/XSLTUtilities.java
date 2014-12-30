@@ -95,9 +95,10 @@ public class XSLTUtilities {
 
      * @param args At least three arguments:
      * <ul>
-     * <li> The first argument is the input file name.
-     * <li> The second through n-1 arguments are the named xsl files.
-     * <li> The final argument is the output file name.
+     * <li> The first argument is the input file name.</li>
+     * <li> The second through n-1 arguments are the named xsl files.</li>
+     * <li> The final argument is the output file name.</li>
+     * </ul>
      * @exception Exception If there are problems with the transform.
      */
     public static void main(String[] args) throws Exception {

@@ -73,14 +73,17 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface DerivativeFcn {
 
+    // FIXME: Rename this to DerivativeFunction because in Ptolemy,
+    // class names should consist of complete words.
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
 
     /** Return the count of state variables.
      *
-     * <p>Expect <code>0 < this.getStateCt()</code>.</p>
+     * <p>Expect <code>0 &lt; this.getStateCt()</code>.</p>
      *
      * @return Count of state variables.
      */
@@ -89,7 +92,7 @@ public interface DerivativeFcn {
 
     /** Return the count of input variables.
      *
-     * <p>Expect <code>0 <= this.getInputVarCt()</code>.</p>
+     * <p>Expect <code>0 &le; this.getInputVarCt()</code>.</p>
      *
      * @return Count of input variables.
      */

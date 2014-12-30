@@ -67,14 +67,14 @@ import ptolemy.kernel.util.Workspace;
  events at times <i>t1</i>, <i>t2</i>, and <i>t3</i>, respectively.
  Then this actor looks for a solution for <i>x</i> and <i>t</i>
  in the following equations:
- <quote>
+ <blockquote>
  distance(<i>x</i>, <i>y1</i>)/<i>v</i> = <i>t1</i> - <i>t</i>,
  <br>
  distance(<i>x</i>, <i>y2</i>)/<i>v</i> = <i>t2</i> - <i>t</i>,
  <br>
  distance(<i>x</i>, <i>y3</i>)/<i>v</i> = <i>t3</i> - <i>t</i>,
  <br>
- </quote>
+ </blockquote>
  where <i>v</i> is the value of <i>propagationSpeed</i>.
  If such a solution is found, then the output <i>x</i> is produced.
  <p>

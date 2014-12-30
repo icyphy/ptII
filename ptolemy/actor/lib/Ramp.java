@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  the associated <i>step</i> port. Note that the increment will show
  up in the output only on the next iteration. If you need it to show
  up on the current iteration, use the
- {@link ptolemy.actor.lib.Accumulator Accumulator} actor.
+ {@link ptolemy.actor.lib.Accumulator} actor.
  The type of the output is determined by the constraint that it must
  be greater than or equal to the types of the parameter (and/or the
  <i>step</i> port, if it is connected).
@@ -124,7 +124,7 @@ public class Ramp extends SequenceSource {
     /** If the argument is the <i>init</i> parameter, then reset the
      *  state to the specified value.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If <i>init<i> cannot be evaluated
+     *  @exception IllegalActionException If <i>init</i> cannot be evaluated
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */

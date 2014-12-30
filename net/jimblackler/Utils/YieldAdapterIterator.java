@@ -5,7 +5,7 @@ import java.util.Iterator;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A version of a standard Iterator<> used by the yield adapter. The only addition is a dispose()
+ * A version of a standard Iterator&lt;&gt; used by the yield adapter. The only addition is a dispose()
  * function to clear resources manually when required.
  */
 public abstract class YieldAdapterIterator<T> implements Iterator<T> {

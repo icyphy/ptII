@@ -73,7 +73,7 @@ import ptolemy.util.MessageHandler;
  </p><p>
  The update to the variable
  may occur at two different times, depending on the value of the
- <it>delayed</it> parameter.
+ <i>delayed</i> parameter.
  If <i>delayed</i> is true, then the change to
  the value of the variable is implemented in a change request, and
  consequently will not take hold until the end of the current

@@ -1,7 +1,7 @@
 package net.jimblackler.Utils;
 
 /**
- * Defines objects that handle results from a Collector<>, with a function called immediately as
+ * Defines objects that handle results from a Collector&lt;&gt;, with a function called immediately as
  * each value is gathered.
  */
 public interface ResultHandler<T> {

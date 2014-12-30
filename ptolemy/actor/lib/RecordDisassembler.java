@@ -63,14 +63,14 @@ import ptolemy.kernel.util.Workspace;
  The labels for the RecordToken must match the names of the output ports.
  This is achieved using three type constraints:
  <ul>
- <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
+ <li><tt>input &ge; {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
  </tt>, which requires the types of the fields in the input record to be
  compatible with the types of the corresponding output ports.
  </li>
- <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires the
+ <li><tt>input &le; {x = GENERAL, y = GENERAL, ..}</tt>, which requires the
  input record to contain a corresponding field for each output port.
  </li>
- <li><tt>each output >= the type of the corresponding field inside the input
+ <li><tt>each output &ge; the type of the corresponding field inside the input
  record</tt>, which is similar to the usual default constraints, however
  this constraint establishes a dependency between fields inside the input
  record and the outputs of this actor, instead of just between its inputs
@@ -190,14 +190,14 @@ public class RecordDisassembler extends TypedAtomicActor {
 
     /** Set up and return three type constraints.
      *  <ul>
-     *  <li><tt>input >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
+     *  <li><tt>input &ge; {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
      *  </tt>, which requires the types of the fields in the input record to be
      *  compatible with the types of the corresponding output ports.
      *  </li>
-     *  <li><tt>input <= {x = GENERAL, y = GENERAL, ..}</tt>, which requires
+     *  <li><tt>input &le; {x = GENERAL, y = GENERAL, ..}</tt>, which requires
      *  the input record to contain a corresponding field for each output port.
      *  </li>
-     *  <li><tt>each output >= the type of the corresponding field inside the
+     *  <li><tt>each output &ge; the type of the corresponding field inside the
      *  input record</tt>, which is similar to the usual default constraints,
      *  however this constraint establishes a dependency between fields inside
      *  the input record and the outputs of this actor, instead of just between

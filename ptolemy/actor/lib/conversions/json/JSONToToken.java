@@ -54,22 +54,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 An actor that converts a string containing JSON-formatted data into a Token.
-Depending on the top level structure found in the JSON string, it produces
+
+<p>Depending on the top level structure found in the JSON string, it produces
 either a RecordToken or an ArrayToken on its output port. Nested structures
 in the JSON data will translate to correspondingly nested structures in the
-Token.
+Token.</p>
+
 <p>The JSONObject parser processes values as follows:
 Delimited values are always parsed as a String. Values that are not delimited
 are tested in the order noted below. The first test that succeeds determines
-the type.
+the type.</p>
 <ul>
-  <li>'true' | 'false' => Boolean (case insensitive)</li>
-  <li>'null' => JSONObject.NULL (case insensitive)</li>
-  <li>'0x..' => Integer (hexadecimal)</li>
-  <li>x'.'y | exponent encoded => Double</li>
-  <li>x => Long, or Integer if value remains the same after conversion</li>
+  <li>'true' | 'false' =&gt; Boolean (case insensitive)</li>
+  <li>'null' =&gt; JSONObject.NULL (case insensitive)</li>
+  <li>'0x..' =&gt; Integer (hexadecimal)</li>
+  <li>x'.'y | exponent encoded =&gt; Double</li>
+  <li>x =&gt; Long, or Integer if value remains the same after conversion</li>
 </ul>
-If non of the above apply, the value is interpreted as a String.</p>
+<p>If non of the above apply, the value is interpreted as a String.</p>
 <p>Note that JSON allows array elements to have different types, whereas the
 <code>ArrayToken</code> does not. Conversion of such mixed array will result
 in an <code>ArrayToken</code> of which the types of all elements are cast to

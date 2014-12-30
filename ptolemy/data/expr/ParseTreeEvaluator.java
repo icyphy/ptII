@@ -1371,6 +1371,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  This is usually called while visiting the given node.
      *  @param node The node
      *  @param i The index of the node
+     *  @return The token
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)

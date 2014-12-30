@@ -108,14 +108,14 @@ import ptolemy.util.StringUtilities;
  <p>Note that strings need to have double quotes converted to
  <code>&amp;quot;</code> so to set a parameter named <code>c</code>
  to the string <code>"bar"</code> it might be necessary to do
- something like:
+ something like:</p>
  <pre>
  $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c "&amp;quot;bar&amp;quot;"
  </pre>
- The <code>&amp;quot;</code> is necessary to convert the double quote
+ <p>The <code>&amp;quot;</code> is necessary to convert the double quote
  to something safe to in an XML file.  The backslashes are necessary
- to protect the <code>&amp</code> and <code>;</code> from the shell
- in the shell script.
+ to protect the <code>&amp;</code> and <code>;</code> from the shell
+ in the shell script.</p>
 
  <p>Note that the ptolemy.actor.parameters.ParameterSet attribute is
  a better way to set parameters at run time.  ParameterSet is

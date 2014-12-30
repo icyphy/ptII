@@ -57,9 +57,9 @@ import com.jgoodies.forms.util.Utilities;
  * The texts used in methods <code>#createLabel(String)</code> and
  * <code>#createTitle(String)</code> can contain an optional mnemonic marker.
  * The mnemonic and mnemonic index are indicated by a single ampersand
- * (<tt>&amp;</tt>). For example <tt>&quot;&amp;Save&quot</tt>,
- * or <tt>&quot;Save&nbsp;&amp;as&quot</tt>. To use the ampersand itself
- * duplicate it, for example <tt>&quot;Look&amp;&amp;Feel&quot</tt>.
+ * (<tt>&amp;</tt>). For example <tt>&quot;&amp;Save&quot;</tt>,
+ * or <tt>&quot;Save&nbsp;&amp;as&quot;</tt>. To use the ampersand itself
+ * duplicate it, for example <tt>&quot;Look&amp;&amp;Feel&quot;</tt>.
  *
  * @author Karsten Lentzsch
  * @version $Revision$
@@ -99,9 +99,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
      *
      * <pre>
      * createLabel("Name");       // No mnemonic
-     * createLabel("N&ame");      // Mnemonic is 'a'
-     * createLabel("Save &as");   // Mnemonic is the second 'a'
-     * createLabel("Look&&Feel"); // No mnemonic, text is Look&Feel
+     * createLabel("N&amp;ame");      // Mnemonic is 'a'
+     * createLabel("Save &amp;as");   // Mnemonic is the second 'a'
+     * createLabel("Look&amp;&amp;Feel"); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic  the label's text -
@@ -121,9 +121,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
      *
      * <pre>
      * createTitle("Name");       // No mnemonic
-     * createTitle("N&ame");      // Mnemonic is 'a'
-     * createTitle("Save &as");   // Mnemonic is the second 'a'
-     * createTitle("Look&&Feel"); // No mnemonic, text is Look&Feel
+     * createTitle("N&amp;ame");      // Mnemonic is 'a'
+     * createTitle("Save &amp;as");   // Mnemonic is the second 'a'
+     * createTitle("Look&amp;&amp;Feel"); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic  the label's text -
@@ -145,9 +145,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
      *
      * <pre>
      * createSeparator("Name");       // No mnemonic
-     * createSeparator("N&ame");      // Mnemonic is 'a'
-     * createSeparator("Save &as");   // Mnemonic is the second 'a'
-     * createSeparator("Look&&Feel"); // No mnemonic, text is Look&Feel
+     * createSeparator("N&amp;ame");      // Mnemonic is 'a'
+     * createSeparator("Save &amp;as");   // Mnemonic is the second 'a'
+     * createSeparator("Look&amp;&amp;Feel"); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic  the label's text -
@@ -166,9 +166,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * <pre>
      * final int LEFT = SwingConstants.LEFT;
      * createSeparator("Name",       LEFT); // No mnemonic
-     * createSeparator("N&ame",      LEFT); // Mnemonic is 'a'
-     * createSeparator("Save &as",   LEFT); // Mnemonic is the second 'a'
-     * createSeparator("Look&&Feel", LEFT); // No mnemonic, text is Look&Feel
+     * createSeparator("N&amp;ame",      LEFT); // Mnemonic is 'a'
+     * createSeparator("Save &amp;as",   LEFT); // Mnemonic is the second 'a'
+     * createSeparator("Look&amp;&amp;Feel", LEFT); // No mnemonic, text is Look&amp;Feel
      * </pre>
      *
      * @param textWithMnemonic  the label's text -

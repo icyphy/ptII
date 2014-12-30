@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  This is implemented using the IEEEremainder() method of the java Math
  class, which computes the remainder as prescribed by the IEEE 754
  standard. The method documentation states:</p>
- <quote>
+ <blockquote>
  "The remainder value is mathematically equal to f1 - f2 ? n, where n
  is the mathematical integer closest to the exact mathematical value
  of the quotient f1/f2, and if two mathematical integers are equally
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <li> If the first argument is finite and the second argument is
  infinite, then the result is the same as the first argument."</li>
  </ul>
- </quote>
+ </blockquote>
 
  <p>Note: The divisor parameter is available as an input port in
  the MathFunction.Modulo() method. If you need to change the divisor

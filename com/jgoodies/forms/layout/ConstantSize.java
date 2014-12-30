@@ -47,6 +47,7 @@ import java.util.Locale;
  *
  * This class supports different size units:
  * <table>
+ * <caption>Size units</caption>
  * <tr><td><b>Unit</b>&nbsp;
  * </td><td>&nbsp;<b>Abbreviation</b>&nbsp;</td><td>&nbsp;
  * <b>Size</b></td></tr>

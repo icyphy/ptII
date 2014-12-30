@@ -35,7 +35,7 @@ import java.util.ListIterator;
 
 /**
  A RelationList object contains a list of relations of a guard expression.
- Relations are comparison operations, for example "x >= 10", where x is
+ Relations are comparison operations, for example "x &ge; 10", where x is
  a variable.  This class provides facilities for measuring how far the
  expression is from the threshold; for example, if x = 7, then the
  distance to the threshold is 3.  Moreover, it provides a mechanism

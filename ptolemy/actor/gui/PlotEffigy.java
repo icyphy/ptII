@@ -163,7 +163,7 @@ public class PlotEffigy extends PtolemyEffigy {
          *  ".xml", then return null.  If the extension is ".xml",
          *  then read the file and return null if it does not contain
          *  a line that starts with the string
-         *  "<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML"
+         *  <code>&gt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML</code>
          *  within the first five lines.
          *  Note that as of this writing, the plotter
          *  parses any file you give it without complaint, so we cannot

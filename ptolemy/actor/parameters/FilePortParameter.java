@@ -80,6 +80,7 @@ import ptolemy.util.FileUtilities;
  with "$", which get substituted
  with the appropriate values.
  <table>
+ <caption>Variables that get substituted.</caption>
  <tr>
  <th>String</th>
  <th>Description</th>

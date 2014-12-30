@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  because the number of iterations that the actor experiences per unit
  time is not easily determined or controlled.  This actor has a parameter,
  <i>firingCountLimit</i>, that optionally limits the number of iterations
- for which the actor is fired.  If this number is <i>n</i> > 0, then
- the <i>n</i>-th invocation of postfire() returns false, which indicates
+ for which the actor is fired.  If this number is <i>n</i> &gt; 0, then
+ the <i>n</i>-th invocation of postfire() returns false, which ggindicates
  to the scheduler that it should stop invocations of this actor.
  The default value of <i>firingCountLimit</i>
  is NONE, which results in postfire always returning

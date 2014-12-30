@@ -149,7 +149,7 @@ public class WebSocketEndpointManager {
    
    /** Return true if the path refers to a remote resource; false otherwise.
     * Throw an exception if the path is not a valid URI.
-    * @param path  The candidate URI.
+    * @param uri The candidate URI.
     * @return True if the path refers to a remote resource; false otherwise.
     */
    public static boolean isRemoteURI(URI uri) {

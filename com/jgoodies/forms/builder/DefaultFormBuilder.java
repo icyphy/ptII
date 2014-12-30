@@ -90,9 +90,9 @@ import com.jgoodies.forms.layout.RowSpec;
  * methods <code>#appendI15d</code> and <code>#appendI15dTitle</code>
  * can contain an optional mnemonic marker. The mnemonic and mnemonic index
  * are indicated by a single ampersand (<tt>&amp;</tt>).
- * For example <tt>&quot;&amp;Save&quot</tt>, or
- * <tt>&quot;Save&nbsp;&amp;as&quot</tt>. To use the ampersand itself,
- * duplicate it, for example <tt>&quot;Look&amp;&amp;Feel&quot</tt>.<p>
+ * For example <tt>&quot;&amp;Save&quot;</tt>, or
+ * <tt>&quot;Save&nbsp;&amp;as&quot;</tt>. To use the ampersand itself,
+ * duplicate it, for example <tt>&quot;Look&amp;&amp;Feel&quot;</tt>.<p>
  *
  * <strong>Example:</strong>
  * <pre>
