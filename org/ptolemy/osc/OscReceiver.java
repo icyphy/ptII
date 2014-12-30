@@ -77,7 +77,6 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
-     *  @param trainingSequence The input string that the oracle is built from
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
@@ -255,17 +254,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
                 }
                 for (int i = 0; i < message.length; i++) {
                     Object b = message[i];
-                    if (b instanceof Double) {
-                        tokenList.add(b);
-                    } else if (b instanceof Integer) {
-                        tokenList.add(b);
-                    } else if (b instanceof String) {
-                        tokenList.add(b);
-                    } else if (b instanceof Float) {
-                        tokenList.add(b);
-                    } else {
-                        tokenList.add(b);
-                    }
+                    tokenList.add(b);
                 }
                 _receivedTokens.put(identifier, tokenList);
             }
