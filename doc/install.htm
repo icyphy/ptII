@@ -281,6 +281,54 @@ cp c:/Program\ Files/Java/jdk1.7.0_51/jre/lib/ext/vecmath.jar  c:/Program\ Files
 <p>We have verified the demos with the 
 <code>java3d-1_5_1-windows-amd64.exe</code> installer.
 
+<h4>Java 3D under Mac OS X</h4>
+<p>Under Mac OS X 10.7 and Java 1.6 supplied by Apple, Java 3D is installed by default and works.</p>
+
+<p>Under Mac OS X 10.9 and Java 1.8 supplied by Oracle, Java 3D can be made to work, but requires Jogl and that Java 3D is not in
+  <code>/System/Library/Java/Extensions</code>. The configure script checks for these issues, but below are instructions.
+</p>
+
+<p>One symptom of needing to use a different version of Java 3D is when the following exception appears under Mac OS X:</p>
+<pre>
+  ptolemy.kernel.util.IllegalActionException: in .Pendulum.manager
+  Because:
+  apple/awt/CGraphicsDevice
+</pre>
+<p>The solution is to install Jogl and use the Java 3D included with Ptolemy II.</p>
+  
+<h5>Install Jogl</h5>
+<p> Under Mac OS X with Oracle Java, we use a custom built version of Java 3D, see <code>$PTII/vendors/j3d</code> and
+  <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D#in_browser" target="_top">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D</a>.  This version of Java 3D requies Jogl.  To install Jogl, first install <code>7z<code>, which is easiest to install use Mac Ports.  Below are the steps.</p>
+<ol>
+  <li>Install Mac Ports, see <a href="https://www.macports.org#in_browser" target="_top">https://www.macports.org</a>.</li>
+  <li>Install 7z: <code>sudo port install p7zip</code></li>
+  <li>Download and install Jogl:
+    <pre>
+       mkdir -p $PTII/vendors/jogl
+       cd $PTI/vendors/jogl
+       wget http://jogamp.org/deployment/v2.2.4/archive/jogamp-all-platforms.7z
+       7z x jogamp-all-platforms.7z
+    </pre>
+  </li>
+  <li> Reconfigure:
+    <pre>
+       cd $PTII
+       ./configure
+    </pre>
+  </li>
+</ol>
+
+<h5>AWT not found</h5>
+<p>Under Mac OS X with Java 1.8, if you get a message on standard out like:</p>
+  <pre>
+JavaVM WARNING: JAWT_GetAWT must be called after loading a JVM
+AWT not found
+  </pre>
+<p>Then the problem is likely that an older version of Java 3D is installed in /Systems/Library/Java/Extensions.  The solution is to remove Java 3D from that location with:</p>
+  <pre>
+    sudo rm /System/Library/Java/Extensions/{*J3D*,*j3d*}
+  </pre>
+
 
 <h3>Joystick</h3>
 The <a name="codeDoc/ptolemy/actor/lib/joystick/Joystick.html">Joystick actor</a>
