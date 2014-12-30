@@ -40,15 +40,17 @@ import javax.sound.sampled.LineListener;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ClassUtilities;
 
@@ -56,10 +58,23 @@ import ptolemy.util.ClassUtilities;
 //// ClipPlayer
 
 /**
- An actor that plays an audio clip given in a file. If the <i>overlay</i>
+ An actor that plays an audio clip given in a file. Each time this
+ actor fires, it starts playing the clip given by the
+ <i>fileOrURL</i> parameter. If the <i>overlay</i>
  parameter is false (the default), then it will terminate any previously
  playing clip before playing the new instance. Otherwise, it will mix
  in the new instance with the currently playing clip.
+ If <i>playToCompletion</i> is true, then each firing returns only after
+ the clip has finished playing. Otherwise, the firing returns immediately,
+ and another firing will result in either truncating the current clip or
+ overlaying a new instance of it, depending on the value of <i>overlay</i>.
+ If <i>outputOnlyOnStop</i> is false (the default), then this actor will
+ produce an output (with value false) only when the current clip has finished playing.
+ Otherwise, it will also produce an output (with value true) when the clip starts
+ playing. If <i>playToCompletion</i> is true, both of these outputs will occur
+ in the same firing. Otherwise, when the clip starts or stops (which occurs
+ in another thread), this actor will request that the director fire it,
+ and when it fires, it will produce the appropriate output.
  @author  Edward A. Lee
  @version  $Id$
  @since Ptolemy II 6.1
@@ -83,13 +98,17 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        stop = new TypedIOPort(this, "stop", true, false);
+        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
 
-        fileOrURL = new FileParameter(this, "fileOrURL");
+        stop = new TypedIOPort(this, "stop", true, false);
+        new SingletonParameter(stop, "_showName").setToken(BooleanToken.TRUE);
+
+        fileOrURL = new FilePortParameter(this, "fileOrURL");
         // Use $CLASSPATH instead of $PTII so that this actor can find its
         // audio file under Web Start.
-        fileOrURL
-        .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        fileOrURL.setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        // new SingletonParameter(fileOrURL.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new StringAttribute(fileOrURL.getPort(), "_cardinal").setExpression("SOUTH");
 
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
@@ -116,7 +135,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
     /** The file or URL giving the audio clip.
      *  This is set by default to a file containing a voice signal.
      */
-    public FileParameter fileOrURL;
+    public FilePortParameter fileOrURL;
 
     /** Output port used to indicate starts and stops.
      *  This is a boolean port. A true output indicates that
@@ -197,13 +216,19 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         return newObject;
     }
 
-    /** Produce outputs indicating that the clip has started or stopped.
+    /** Produce any pending outputs indicating that the clip has started or stopped,
+     *  then if the stop input has a token, stop all clips that may be playing,
+     *  then if the trigger input has a token, start a new instance of the clip
+     *  playing. If playToCompletion is true, then do not return until the clip
+     *  has completed playing. Otherwise, return immediately.
      *  @exception IllegalActionException Not thrown in this class.
      */
     @Override
     public void fire() throws IllegalActionException {
        
         super.fire();
+        
+        fileOrURL.update();
         
         // If refired to send an output, do only that.
         // This actor will be refired once per output.  Send exactly one token
@@ -240,7 +265,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             }
         }
         
-        // If stop port has a token, stop playback of any clips and return
+        // If stop port has a token, stop playback of any clips and return.
         // If both stop and trigger have a token, stop playback first, then
         // start playback
         
@@ -250,7 +275,6 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 stop.get(i);
             }
         }
-        
         
         if (hasStop) {
             for (Clip clip : _clips) {
@@ -389,6 +413,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        
+        _outputEvents.clear();
 
         // Stop playback. Close any open sound files. Free
         // up audio system resources.

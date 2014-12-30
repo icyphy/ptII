@@ -95,7 +95,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Drop1.aif">
+            <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Drop1.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -135,7 +135,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/glup.aif">
+            <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/glup.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -212,7 +212,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Kys2.aif">
+            <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Kys2.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
