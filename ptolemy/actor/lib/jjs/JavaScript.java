@@ -996,8 +996,9 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Container class for built-in methods.
      */
-    public class PtolemyJavaScript { // extends ScriptableObject {
-	
+    public static class PtolemyJavaScript { // extends ScriptableObject {
+	// FindBugs suggests making this class static.
+        
 	// FIXME: These are not converted from Rhino yet.
 
         public String getClassName() {
