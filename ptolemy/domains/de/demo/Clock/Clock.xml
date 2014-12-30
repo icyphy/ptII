@@ -367,7 +367,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
     </entity>
     <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/Clock/gong.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/domains/de/demo/Clock/gong.wav">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 165.0]">
         </property>

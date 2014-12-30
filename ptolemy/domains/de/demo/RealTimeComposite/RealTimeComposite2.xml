@@ -213,7 +213,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Drop1.aif">
+            <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Drop1.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -377,7 +377,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Kys2.aif">
+            <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Kys2.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>

@@ -4,7 +4,7 @@
 <entity name="MoC" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 6, 1184, 712}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 1190, 705}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 595]">
     </property>
@@ -47,97 +47,97 @@
         </property>
     </property>
     <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays1.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="FoxSays1.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[73.4375, 150.3125]">
         </property>
     </entity>
     <entity name="ClipPlayer2" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays2.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="FoxSays2.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[228.4375, 150.3125]">
         </property>
     </entity>
     <entity name="ClipPlayer3" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays3.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="FoxSays3.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[393.4375, 150.3125]">
         </property>
     </entity>
     <entity name="ClipPlayer4" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="FoxSays4.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="FoxSays4.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 150.0]">
         </property>
     </entity>
     <entity name="Dog" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Dog.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Dog.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 215.0]">
         </property>
     </entity>
     <entity name="Cat" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Cat.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Cat.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
         </property>
     </entity>
     <entity name="Bird" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Bird.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Bird.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 215.0]">
         </property>
     </entity>
     <entity name="Mouse?" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Panther.wav">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Panther.wav">
         </property>
         <property name="overlay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 215.0]">
         </property>
