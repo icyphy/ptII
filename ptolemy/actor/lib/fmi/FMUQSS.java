@@ -1,3 +1,31 @@
+/*  Invoke a Functional Mock-up Interface (FMI) 2.0 Model Exchange Functional
+    Mock-up Unit (FMU) which will be integrated using QSS.
+
+   Copyright (c) 2014 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
+
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
+
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
+
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+
+ */
 package ptolemy.actor.lib.fmi;
 
 import java.io.File;
@@ -581,25 +609,22 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 	/**
 	 * Evaluate directional derivative function.
 	 *
-	 * <p>
-	 * Prescribed by interface <code>DerivativeFcn</code>.
-	 * </p>
+	 * <p>Prescribed by interface <code>DerivativeFcn</code>.</p>
 	 * 
-	 * @param jacobian
-	 *            (output) Construct the Jacobian elements rowwise for state
-	 *            derivatives at <code>current time</code>.
+         * @param idx The index
+         * @param xx_dot The xx_dot
+         * @param uu_dot The uu_dot
 	 * @return Success (0 for success, else user-defined error code).
-	 * @throws IllegalActionException
+	 * @throws IllegalActionException If thrown while getting the
+	 * input directional derivative.
 	 */
 	public final double evalDirectionalDerivs(final int idx,
 			final double[] xx_dot, final double[] uu_dot)
 			throws IllegalActionException {
-
 		// Get second derivative of current input
 		return (_inputDirectionalDerivative(idx, uu_dot) + _stateDirectionalDerivative(
 				idx, xx_dot));
-
-	}
+        }
 
 	/**
 	 * Override the importFMU in FMUImport base class.
@@ -614,8 +639,6 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 	 *            The x-axis value of the actor to be created.
 	 * @param y
 	 *            The y-axis value of the actor to be created.
-	 * @param modelExchange
-	 *            If true, import for model exchange (vs. co-simulation).
 	 * @exception IllegalActionException
 	 *                If there is a problem instantiating the actor.
 	 * @exception IOException
@@ -1514,7 +1537,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 			throw new IllegalActionException(
 					this,
 					String.format(
-							"Failed to get continuous states at time %s. Return value of fmiGetContinuousStates() was %d",
+							"Failed to get continuous states at time %s. Return value of fmiGetContinuousStates() was %s",
 							currTime.toString(), _fmiStatusDescription(fmiFlag)));
 		}
 
