@@ -175,14 +175,14 @@ implements InferenceActor {
 
         String[] completeName = fullName.split("_");  
         String decoratorName = completeName[0];
-        String portName = "";
+        StringBuffer portName = new StringBuffer();
         for (int i = 1; i < completeName.length; i++) {
-            portName += completeName[i];
+            portName.append(completeName[i]);
         }
         GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
         if (m != null) {
             String postfix = m.getMeasurementParameterPostfix();
-            Attribute attr = this.getDecoratorAttribute(m,portName+postfix); 
+            Attribute attr = this.getDecoratorAttribute(m, portName + postfix); 
 
             if ( attr != null) {
                 return ((Parameter)attr); 
