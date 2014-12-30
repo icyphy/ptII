@@ -46,6 +46,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (thn)
  */
 public class QSSToDouble extends Converter {
+
+    // FIXME: Move this to domains/qss/lib because it is an actor.
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -57,7 +60,6 @@ public class QSSToDouble extends Converter {
     public QSSToDouble(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -76,7 +78,8 @@ public class QSSToDouble extends Converter {
             inputToken = (QSSToken) input.get(0);
         } catch (ClassCastException e) {
         	throw new IllegalActionException(
-					" The input token" + inputToken.toString() 
+					" The input token"
+                                        + (inputToken == null ? "null": inputToken.toString()) 
 					+" cannot be cast to a QSSToken");
         }
         output.send(0, new DoubleToken(inputToken.doubleValue()));
