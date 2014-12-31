@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------*
  * fmuTemplate.c
  * Implementation of the FMI interface based on functions and macros to
- * be defined by the includer of this file.
+ * be defined by the includer of this file. 
  * If FMI_COSIMULATION is defined, this implements "FMI for Co-Simulation 2.0",
  * otherwise "FMI for Model Exchange 2.0".
  * The "FMI for Co-Simulation 2.0", implementation assumes that exactly the
@@ -25,7 +25,7 @@
  * Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
-// macro to be used to log messages. The macro check if current
+// macro to be used to log messages. The macro check if current 
 // log category is valid and, if true, call the logger provided by simulator.
 #define FILTERED_LOG(instance, status, categoryIndex, message, ...) if (isCategoryLogged(instance, categoryIndex)) \
         instance->functions->logger(instance->functions->componentEnvironment, instance->instanceName, status, \
@@ -269,10 +269,12 @@ void fmi2FreeInstance(fmi2Component c) {
     if (comp->i) comp->functions->freeMemory(comp->i);
     if (comp->b) comp->functions->freeMemory(comp->b);
     if (comp->s) {
+#if NUMBER_OF_STRINGS>0
         int i;
         for (i = 0; i < NUMBER_OF_STRINGS; i++){
             if (comp->s[i]) comp->functions->freeMemory((void *)comp->s[i]);
         }
+#endif
         comp->functions->freeMemory((void *)comp->s);
     }
     if (comp->isPositive) comp->functions->freeMemory(comp->isPositive);
@@ -608,12 +610,12 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
     ModelInstance *comp = (ModelInstance *)c;
     double h = communicationStepSize / 10;
     int k;
-#if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
+#if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0 
     int i;
 #endif
     const int n = 10; // how many Euler steps to perform for one do step
-#if NUMBER_OF_REALS>0
-    double prevState[max(NUMBER_OF_STATES, 1)];
+#if NUMBER_OF_REALS>0 
+    //double prevState[max(NUMBER_OF_STATES, 1)];
 #endif
 #if NUMBER_OF_EVENT_INDICATORS>0
     double prevEventIndicators[max(NUMBER_OF_EVENT_INDICATORS, 1)];
@@ -650,9 +652,9 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
         comp->time += h;
 
 #if NUMBER_OF_REALS>0
-        for (i = 0; i < NUMBER_OF_STATES; i++) {
-            prevState[i] = r(vrStates[i]);
-        }
+        //for (i = 0; i < NUMBER_OF_STATES; i++) {
+        //    prevState[i] = r(vrStates[i]);
+        //}
         for (i = 0; i < NUMBER_OF_STATES; i++) {
             fmi2ValueReference vr = vrStates[i];
             r(vr) += h * getReal(comp, vr + 1); // forward Euler step
