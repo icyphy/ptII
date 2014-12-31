@@ -86,7 +86,7 @@ public class VertxBusHelper {
     
     
     /** Return whether the web socket is opened successfully. 
-     * @return
+     * @return True if the socket was opened successfully.
      */
     public boolean isOpen() {
     	if (_webSocket == null) {
