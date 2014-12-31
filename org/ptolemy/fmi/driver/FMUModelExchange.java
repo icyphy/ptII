@@ -29,6 +29,7 @@ package org.ptolemy.fmi.driver;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 
 import org.ptolemy.fmi.FMI20CallbackFunctions;
 import org.ptolemy.fmi.FMI20EventInfo;
@@ -341,7 +342,8 @@ public class FMUModelExchange extends FMUDriver {
 
             PrintStream file = null;
             try {
-                file = new PrintStream(outputFileName);
+                // Fix for FindBugs: Dm: Reliance on default encoding.
+                file = new PrintStream(outputFileName, Charset.defaultCharset().toString());
                 if (enableLogging) {
                     System.out
                             .println("FMUModelExchange: about to write header");

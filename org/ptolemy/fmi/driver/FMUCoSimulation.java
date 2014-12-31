@@ -29,6 +29,7 @@ package org.ptolemy.fmi.driver;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 
 import org.ptolemy.fmi.FMI20CallbackFunctions;
 import org.ptolemy.fmi.FMICallbackFunctions;
@@ -277,7 +278,9 @@ public class FMUCoSimulation extends FMUDriver {
         try {
             // gcj does not have this constructor
             //file = new PrintStream(outputFile);
-            file = new PrintStream(outputFileName);
+
+            // Fix for FindBugs: Dm: Reliance on default encoding.
+            file = new PrintStream(outputFileName, Charset.defaultCharset().toString());
             if (enableLogging) {
                 System.out.println("FMUCoSimulation: about to write header");
             }
