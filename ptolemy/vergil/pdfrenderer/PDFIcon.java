@@ -79,35 +79,6 @@ public class PDFIcon extends DynamicEditorIcon {
     public PDFIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try {
-            // Avoid (cd $PTII/doc/test/junit; make) throwing an exception under Java 1.8
-            // under Mac OS X and Linux.  Also, the colors are wrong under Mac OS X 10.9.
-            // The exception is:
-            //    java.awt.color.CMMException: LCMS error 13: Couldn't link the profiles
-            //         at sun.java2d.cmm.lcms.LCMS.createNativeTransform(Native Method)
-            //         at sun.java2d.cmm.lcms.LCMS.createTransform(LCMS.java:156)
-            //         at sun.java2d.cmm.lcms.LCMSTransform.doTransform(LCMSTransform.java:155)
-            //         at sun.java2d.cmm.lcms.LCMSTransform.colorConvert(LCMSTransform.java:629)
-            //         at java.awt.color.ICC_ColorSpace.toRGB(ICC_ColorSpace.java:182)
-            //         at com.sun.pdfview.colorspace.PDFColorSpace.getPaint(PDFColorSpace.java:222)
-            //         at com.sun.pdfview.PDFParser.iterate(PDFParser.java:656)
-            //         at com.sun.pdfview.BaseWatchable.run(BaseWatchable.java:101)
-            //         at java.lang.Thread.run(Thread.java:745)
-            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/PDF-renderer
-            // and https://stackoverflow.com/questions/26535842/multithreaded-jpeg-image-processing-in-java
-            Class.forName("javax.imageio.ImageIO");
-            Class.forName("java.awt.color.ICC_ColorSpace");
-
-            // This class is not present under Linux?
-            try {
-                Class.forName("sun.java2d.cmm.lcms.LCMS");
-            } catch (Throwable throwable) {
-                // Ignore.
-            }
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Could not instantiate a Java2d class?");
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
