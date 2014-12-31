@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUBuilder
@@ -230,8 +231,9 @@ public class FMUBuilder {
 	@Override
 	public void run() {
 	    try {
+                // Fix for FindBugs: Dm: Reliance on default encoding.
 		InputStreamReader inputStreamReader = new InputStreamReader(
-		        _inputStream);
+		        _inputStream, Charset.defaultCharset());
 		BufferedReader bufferedReader = new BufferedReader(
 		        inputStreamReader);
 		String line = null;
