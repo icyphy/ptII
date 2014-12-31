@@ -163,11 +163,11 @@ implements InferenceActor {
     } 
 
     /**
-     * Return the first encountered value for now
-     * FIXME
-     * @param eqnName
-     * @return
-     * @throws IllegalActionException
+     * Return the first encountered value for now.
+     * @param fullName The name of the measurement parameter.
+     * @return THe value of the measurement parameter.
+     * @throws IllegalActionException If there is a problem
+     * getting the parameter.
      */
     @Override
     protected Parameter getMeasurementParameter(String fullName) 
