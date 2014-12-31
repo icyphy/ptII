@@ -181,10 +181,12 @@ void freeInstance(char* fname, fmiComponent c) {
     if (comp->i) comp->functions.freeMemory(comp->i);
     if (comp->b) comp->functions.freeMemory(comp->b);
     if (comp->s) {
+#if NUMBER_OF_STRINGS>0
         int i;
         for (i=0; i<NUMBER_OF_STRINGS; i++){
             if (comp->s[i]) comp->functions.freeMemory((void *)comp->s[i]);
         }
+#endif
         comp->functions.freeMemory((void *)comp->s);
     }
     if (comp->isPositive) comp->functions.freeMemory(comp->isPositive);
@@ -497,7 +499,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
 #endif
     const int n = 10; // how many Euler steps to perform for one do step
 #if NUMBER_OF_REALS>0
-    double prevState[max(NUMBER_OF_STATES, 1)];
+    //double prevState[max(NUMBER_OF_STATES, 1)];
 #endif
 #if NUMBER_OF_EVENT_INDICATORS>0
     double prevEventIndicators[max(NUMBER_OF_EVENT_INDICATORS, 1)];
@@ -531,9 +533,9 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         comp->time += h;
 
 #if NUMBER_OF_REALS>0
-        for (i=0; i<NUMBER_OF_STATES; i++) {
-            prevState[i] = r(vrStates[i]);
-        }
+        //for (i=0; i<NUMBER_OF_STATES; i++) {
+        //    prevState[i] = r(vrStates[i]);
+        //}
         for (i=0; i<NUMBER_OF_STATES; i++) {
             fmiValueReference vr = vrStates[i];
             r(vr) += h * getReal(comp, vr+1); // forward Euler step
