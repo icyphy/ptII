@@ -105,8 +105,6 @@ public class SearchCriteriaManager {
                 .newInstance();
         DocumentBuilder documentBuilder;
 
-        BufferedReader bufferedReader = null;
-
         try {
 
             documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -122,21 +120,29 @@ public class SearchCriteriaManager {
                 if (nodeName.equals("pattern")) {
 
                     // The pattern part exists, fetch the sub string of pattern.
+                    String criteriaString = "";
                     FileInputStream fileInputStream = new FileInputStream(
                             criteriaFile);
-                    bufferedReader = new BufferedReader(new InputStreamReader(
-                            fileInputStream));
+                    BufferedReader bufferedReader = null;
+                    try {
+                        bufferedReader = new BufferedReader(new InputStreamReader(
+                                        fileInputStream));
 
-                    StringBuffer criteriaStringBuffer = new StringBuffer("");
+                        StringBuffer criteriaStringBuffer = new StringBuffer("");
 
-                    String line = bufferedReader.readLine();
+                        String line = bufferedReader.readLine();
 
-                    while (line != null) {
-                        criteriaStringBuffer.append(line);
-                        line = bufferedReader.readLine();
+                        while (line != null) {
+                            criteriaStringBuffer.append(line);
+                            line = bufferedReader.readLine();
+                        }
+                        criteriaString = criteriaStringBuffer.toString();
+                    } finally {
+                        if (bufferedReader != null) {
+                            bufferedReader.close();
+                        }
                     }
 
-                    String criteriaString = criteriaStringBuffer.toString();
 
                     int startIndex = criteriaString.indexOf("<pattern>");
                     int endIndex = criteriaString.indexOf("</pattern>");
@@ -199,10 +205,6 @@ public class SearchCriteriaManager {
             throw new SearchCriteriaParseException(
                     "Fail to parse the stored search criteria file in "
                             + searchCriteriaFileName, e);
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
         }
 
         return storedSearchCriteria;

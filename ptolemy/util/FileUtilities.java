@@ -187,8 +187,16 @@ public class FileUtilities {
                                 + "directory for \"" + destinationFile + "\".");
                     }
                 } else {
-                    _binaryCopyStream(jarFile.getInputStream(jarEntry),
-                            destinationFile);
+                    InputStream jarInputStream = null;
+                    try {
+                        jarInputStream = jarFile.getInputStream(jarEntry);
+                        _binaryCopyStream(jarInputStream,
+                                destinationFile);
+                    } finally {
+                        if (jarInputStream != null) {
+                            jarInputStream.close();
+                        }
+                    }
                 }
             }
         } finally {
