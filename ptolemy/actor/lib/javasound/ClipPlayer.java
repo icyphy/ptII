@@ -234,9 +234,9 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         // This actor will be refired once per output.  Send exactly one token
         // per refiring.  (0 tokens if outputting only on STOP and refiring 
         // due to a START event).
-        if (!_outputEvents.isEmpty()) {
+        synchronized (_outputEvents) {
+            if (!_outputEvents.isEmpty()) {
             // Produce all outputs that have been requested.
-            synchronized (_outputEvents) {
                 BooleanToken token = _outputEvents.get(0);
                 
                 if (_outputOnlyOnStop){
@@ -250,8 +250,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     output.send(0, token);
                 } 
                 _outputEvents.remove(0);
+                return;
             }
-            return;
         }
         
         boolean hasStop = false;
@@ -414,7 +414,9 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         
-        _outputEvents.clear();
+        synchronized(_outputEvents) {
+            _outputEvents.clear();
+        }
 
         // Stop playback. Close any open sound files. Free
         // up audio system resources.
