@@ -1054,11 +1054,8 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r2
-    catch {$r2 getWidth} msg1    
-    #puts $msg1
-    set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.*"
-    string match $widthInferenceNotDeterministic $msg1
-} {1}
+    $r2 getWidth    
+} {0}
 
 test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
 		set ex [java::new ptolemy.actor.CompositeActor]
@@ -1078,10 +1075,8 @@ test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     set r3 [java::new ptolemy.actor.IORelation $ex R3]
     $r3 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r3
-    catch {$r3 getWidth} msg1
-    string match $widthInferenceNotDeterministic $msg1
-} {1}
-
+    $r3 getWidth
+} {0}
 
 test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     set ex [java::new ptolemy.actor.CompositeActor]
@@ -1131,9 +1126,8 @@ test IOPort-11.7 {No two relations from both inside and outside can be a bus} {
     set r2 [java::new ptolemy.actor.IORelation $ex R2]
     $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r2
-    catch {$r2 getWidth} msg1
-    string match $widthInferenceNotDeterministic $msg1
-} {1}
+    $r2 getWidth
+} {0}
 
 ######################################################################
 ####

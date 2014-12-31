@@ -167,11 +167,7 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width. No
     $p1 link $r1
     catch {$r1 getWidth} msg
     list $msg    
-} {{ptolemy.kernel.util.IllegalActionException: The width of relation .E1.R1 can not be uniquely inferred.
-One possible solution is to create a toplevel parameter named "_defaultInferredWidthTo1" with the boolean value true.
-Please make the width inference deterministic by explicitly specifying the width of this relation. In the user interface, right click on the relation, select Configure and change the width.  Note that some actors may need to have their  Java code updated to call setDefaultWidth(1) on the output port. The relation is deeply connected to these ports:
-.E1.E2.P1
-  in .E1.R1}}
+} {0}
 
 
 
@@ -246,12 +242,9 @@ test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
     # NOTE: Append to previous design
     set r4 [java::new ptolemy.actor.IORelation $e1 R4]
     $r4 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
-    $p2 link $r4    
-    catch {$r4 getWidth} msg
-
-    set widthInferenceNotDeterministic {ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.*}
-    string match $widthInferenceNotDeterministic $msg
-} {1}
+    $p2 link $r4
+    $r4 getWidth
+} {0}
   
 test IORelation-3.11.1 {Test getWidth of a port with inferred relation width} {
     # NOTE: Append to previous design
@@ -299,11 +292,7 @@ test IORelation-3.13 {Test getWidth of a port with inferred relation width} {
     $p2 link $r1
     catch {$r1 getWidth} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The width of relation .E0.R1 can not be uniquely inferred.
-One possible solution is to create a toplevel parameter named "_defaultInferredWidthTo1" with the boolean value true.
-Please make the width inference deterministic by explicitly specifying the width of this relation. In the user interface, right click on the relation, select Configure and change the width.  Note that some actors may need to have their  Java code updated to call setDefaultWidth(1) on the output port. The relation is deeply connected to these ports:
-.E0.E2.P2
-  in .E0.R1}}
+} {0}
 
 test IORelation-3.14 {No two relations from both inside and outside can be a bus} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -320,9 +309,8 @@ test IORelation-3.14 {No two relations from both inside and outside can be a bus
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r2
-    catch {$r2 getWidth} msg    
-    string match $widthInferenceNotDeterministic $msg
-} {1}
+    $r2 getWidth    
+} {0}
 
 test IORelation-3.15 {No two relations from both inside and outside can be a bus} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -339,9 +327,8 @@ test IORelation-3.15 {No two relations from both inside and outside can be a bus
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
 	  $p0 link $r2
     $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
-    catch {$r2 getWidth} msg
-    string match $widthInferenceNotDeterministic $msg
-} {1}
+    $r2 getWidth
+} {0}
 
 test IORelation-3.16 {Resolve width through three levels} {
     # E0 contains E1 contains E2
@@ -368,6 +355,7 @@ test IORelation-3.16 {Resolve width through three levels} {
     # it is not okay to not specify widths of relations across different levels
     $p0 link $r1
     catch {$r1 getWidth} msg
+    set widthInferenceNotDeterministic {ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.*}
     string match $widthInferenceNotDeterministic $msg
 } {1}
 
