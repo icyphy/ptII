@@ -169,7 +169,7 @@ public class PtIndexer {
             int numberOfFiles = 0;
             int numberOfLines = 0;
             try {
-                stdin = new BufferedReader(new InputStreamReader(System.in));
+                stdin = new BufferedReader(new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
                 String fileName = null;
                 String line = null;
                 while ((fileName = stdin.readLine()) != null) {

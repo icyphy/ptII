@@ -247,7 +247,7 @@ public class NC2MoML {
 
         try {
             // Open the file containing the list of .nc files.
-            in = new BufferedReader(new FileReader(inputFiles));
+            in = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(inputFiles), java.nio.charset.Charset.defaultCharset()));
 
             String inputFileName;
 

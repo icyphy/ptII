@@ -189,7 +189,7 @@ public class OMCFMUJUnitTest {
         String line = null;
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader(csvFile));
+            bufferedReader = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(csvFile), java.nio.charset.Charset.defaultCharset()));
             while ((line = bufferedReader.readLine()) != null) {
                 String[] fields = line.split(",");
                 row++;

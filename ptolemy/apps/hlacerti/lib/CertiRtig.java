@@ -282,7 +282,7 @@ public class CertiRtig extends NamedObj {
         _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
             super(name);
             _inputStream = inputStream;
-            _inputStreamReader = new InputStreamReader(_inputStream);
+            _inputStreamReader = new InputStreamReader(_inputStream, java.nio.charset.Charset.defaultCharset());
             _actor = actor;
             _stringBuffer = new StringBuffer();
         }

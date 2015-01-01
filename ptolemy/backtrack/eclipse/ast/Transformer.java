@@ -369,7 +369,7 @@ public class Transformer {
             String outputFileName = file.getName();
             SourceOutputStream outputStream = SourceOutputStream.getStream(
                     _rootPath, packageName, outputFileName, _overwrite);
-            writer = new OutputStreamWriter(outputStream);
+            writer = new OutputStreamWriter(outputStream, java.nio.charset.Charset.defaultCharset());
             needClose = true;
         }
 
@@ -524,7 +524,7 @@ public class Transformer {
 
             OutputStreamWriter writer = null;
             try {
-                writer = new OutputStreamWriter(stream);
+                writer = new OutputStreamWriter(stream, java.nio.charset.Charset.defaultCharset());
                 XmlOutput.outputXmlTree(parser.getTree(), writer);
             } finally {
                 if (writer != null) {

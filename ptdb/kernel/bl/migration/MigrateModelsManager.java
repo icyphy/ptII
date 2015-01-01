@@ -211,7 +211,7 @@ public class MigrateModelsManager {
 
         StringBuilder contents = new StringBuilder();
 
-        BufferedReader input = new BufferedReader(new FileReader(file));
+        BufferedReader input = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), java.nio.charset.Charset.defaultCharset()));
 
         try {
 

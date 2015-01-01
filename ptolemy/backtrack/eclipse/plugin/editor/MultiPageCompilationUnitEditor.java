@@ -198,7 +198,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         IFile previewFile = _getPreviewFile();
 
         PipedOutputStream outputStream = new PipedOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream, java.nio.charset.Charset.defaultCharset());
 
         try {
             Environment.createFolders(previewFile.getParent());

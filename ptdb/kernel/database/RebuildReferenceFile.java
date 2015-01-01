@@ -448,7 +448,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @exception IOException If thrown while reading input from the console.
      */
     private static String _readInput() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
 
         String userInput = null;
         try {

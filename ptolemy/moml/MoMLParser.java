@@ -1511,7 +1511,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     @Deprecated
     public NamedObj parse(URL base, InputStream input) throws Exception {
-        return parse(base, new InputStreamReader(input));
+        return parse(base, new InputStreamReader(input, java.nio.charset.Charset.defaultCharset()));
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -1530,7 +1530,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public NamedObj parse(URL base, String systemID, InputStream input)
             throws Exception {
-        return parse(base, systemID, new InputStreamReader(input));
+        return parse(base, systemID, new InputStreamReader(input, java.nio.charset.Charset.defaultCharset()));
     }
 
     /** Parse the given stream, using the specified url as the base

@@ -125,7 +125,7 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 streamOut = new FileOutputStream(fileName);
                 writerOut = new PrintWriter(new EscapedWriter(
-                        new OutputStreamWriter(streamOut)));
+                        new OutputStreamWriter(streamOut, java.nio.charset.Charset.defaultCharset())));
 
                 Printer printer = Printer.v();
                 printer.setOption(Integer.MAX_VALUE);

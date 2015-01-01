@@ -175,7 +175,7 @@ public class ExportModelJUnitTest {
         try {
             fileInputStream = new FileInputStream(modelsFile);
             dataInputStream = new DataInputStream(fileInputStream);
-            reader = new BufferedReader(new InputStreamReader(dataInputStream));
+            reader = new BufferedReader(new InputStreamReader(dataInputStream, java.nio.charset.Charset.defaultCharset()));
             String line;
             while ((line = reader.readLine()) != null) {
                 // Lines in models.txt look like
