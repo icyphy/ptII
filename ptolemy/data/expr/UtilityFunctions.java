@@ -1428,7 +1428,7 @@ public class UtilityFunctions {
         String newline = System.getProperty("line.separator");
 
         try {
-            fin = new BufferedReader(new FileReader(file));
+            fin = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), java.nio.charset.Charset.defaultCharset()));
 
             while (true) {
                 try {

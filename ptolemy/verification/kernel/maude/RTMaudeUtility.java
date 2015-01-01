@@ -216,7 +216,7 @@ public class RTMaudeUtility {
             BufferedReader reader = null;
             Stack<BufferedReader> readerStack = null;
             try {
-                reader = new BufferedReader(new InputStreamReader(stream));
+                reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
                 readerStack = new Stack<BufferedReader>();
                 readerStack.push(null);
                 while (!readerStack.isEmpty()) {
@@ -233,7 +233,7 @@ public class RTMaudeUtility {
                                 if (stream != null) {
                                     readerStack.push(reader);
                                     reader = new BufferedReader(
-                                            new InputStreamReader(stream));
+                                            new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
                                     skip = true;
                                 }
                             }

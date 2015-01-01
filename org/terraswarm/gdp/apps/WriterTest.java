@@ -209,7 +209,7 @@ public class WriterTest {
         BufferedReader bufferedReader = null;
         try {
             bufferedReader = new BufferedReader(
-                    new InputStreamReader(System.in));
+                    new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
             String line;
             // 200 is a magic number from writer-test and seems wrong.
             final int bufferLength = 200;

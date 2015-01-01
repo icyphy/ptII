@@ -2032,7 +2032,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      */
     @Override
     public synchronized void write(OutputStream out, String dtd) {
-        write(new OutputStreamWriter(out), dtd);
+        write(new OutputStreamWriter(out, java.nio.charset.Charset.defaultCharset()), dtd);
     }
 
     /** Write the current data and plot configuration to the

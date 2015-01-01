@@ -118,7 +118,7 @@ public class CodeGeneratorUtilities {
         BufferedReader inputFile;
 
         try {
-            inputFile = new BufferedReader(new FileReader(inputFileName));
+            inputFile = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(inputFileName), java.nio.charset.Charset.defaultCharset()));
         } catch (IOException ex) {
             try {
                 // Try it as a URL

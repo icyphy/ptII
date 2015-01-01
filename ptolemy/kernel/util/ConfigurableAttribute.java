@@ -352,7 +352,7 @@ Settable {
             BufferedReader reader = null;
 
             try {
-                reader = new BufferedReader(new InputStreamReader(stream));
+                reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
 
                 String line = reader.readLine();
 

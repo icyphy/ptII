@@ -105,7 +105,7 @@ public abstract class URLReader extends Source {
         refresh.setTypeEquals(BaseType.BOOLEAN);
 
         if (_stdIn == null) {
-            _stdIn = new BufferedReader(new InputStreamReader(System.in));
+            _stdIn = new BufferedReader(new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
         }
 
         _setURLReader(_stdIn);

@@ -157,7 +157,7 @@ public class TestMigrateModelsManager {
 
             File csvFile = new File(csvFilePath);
 
-            BufferedReader input = new BufferedReader(new FileReader(csvFile));
+            BufferedReader input = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(csvFile), java.nio.charset.Charset.defaultCharset()));
 
             try {
 
@@ -207,7 +207,7 @@ public class TestMigrateModelsManager {
 
             File csvFile = new File(csvFilePath);
 
-            BufferedReader input = new BufferedReader(new FileReader(csvFile));
+            BufferedReader input = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(csvFile), java.nio.charset.Charset.defaultCharset()));
 
             try {
                 int count = 0;
@@ -257,7 +257,7 @@ public class TestMigrateModelsManager {
 
             File csvFile = new File(csvFilePath);
 
-            BufferedReader input = new BufferedReader(new FileReader(csvFile));
+            BufferedReader input = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(csvFile), java.nio.charset.Charset.defaultCharset()));
 
             try {
 

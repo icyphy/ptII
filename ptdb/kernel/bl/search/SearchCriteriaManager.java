@@ -283,7 +283,7 @@ public class SearchCriteriaManager {
         FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         BufferedWriter bufferedWriter = new BufferedWriter(
-                new OutputStreamWriter(fileOutputStream));
+                new OutputStreamWriter(fileOutputStream, java.nio.charset.Charset.defaultCharset()));
 
         try {
 

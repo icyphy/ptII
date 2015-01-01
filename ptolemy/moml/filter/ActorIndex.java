@@ -96,7 +96,7 @@ public class ActorIndex {
             ActorModuleInitializer.initializeInjector();
 
             // Read classesFileName and populate the classes Set
-            classesReader = new BufferedReader(new FileReader(classesFileName));
+            classesReader = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(classesFileName), java.nio.charset.Charset.defaultCharset()));
             String className;
             while ((className = classesReader.readLine()) != null) {
                 System.out.println("Going to index " + className);
@@ -105,7 +105,7 @@ public class ActorIndex {
 
             // Read modelsFileName and parse each model, looking
             // for classes in which we are interested.
-            modelReader = new BufferedReader(new FileReader(modelsFileName));
+            modelReader = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(modelsFileName), java.nio.charset.Charset.defaultCharset()));
             String modelName;
             MoMLParser parser = new MoMLParser();
 

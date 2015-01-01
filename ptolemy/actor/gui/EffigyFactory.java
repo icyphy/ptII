@@ -148,7 +148,7 @@ public class EffigyFactory extends CompositeEntity {
         boolean foundDTD = false;
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(stream));
+            reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
             int lineCount = 0;
             while (lineCount < 5) {
                 String contents = reader.readLine();

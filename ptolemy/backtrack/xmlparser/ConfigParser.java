@@ -169,7 +169,7 @@ public class ConfigParser {
     public void parseConfigFile(String fileName, Set<String> includedClasses,
             boolean backtrackingElement) throws Exception {
         XmlParser parser = new XmlParser();
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        BufferedReader br = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(fileName), java.nio.charset.Charset.defaultCharset()));
         ConfigXmlHandler handler = new ConfigXmlHandler(_xmlTree, fileName,
                 includedClasses);
         handler.addExcludedFiles(_excludedFiles);
