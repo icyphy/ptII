@@ -1176,9 +1176,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 	if (modelExchange) {
 	    fmiModelDescription.modelExchange = true;
 	}
-
-	// Assign the model exchange flag for correct import
-    fmiModelDescription.modelExchange = true;
     
 	// FIXME: Use URLs, not files so that we can work from JarZip files.
 
