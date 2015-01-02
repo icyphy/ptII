@@ -3405,6 +3405,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
     /** Function to get the directional derivatives of a model-exchange FMU. */
     protected Function _fmiGetDirectionalDerivativeFunction;
     
+    /** Function to get the event indicators of the FMU for model exchange. */
+    protected Function _fmiGetEventIndicatorsFunction;
+    
     /**
      * Callback functions provided to the C code as a struct. This reference is
      * non-null between creation of the struct in preinitialize() and invocation
@@ -3888,9 +3891,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** Function to free memory allocated to store the state of the FMU. */
     private Function _fmiFreeFMUstateFunction;
-
-    /** Function to get the event indicators of the FMU for model exchange. */
-    private Function _fmiGetEventIndicatorsFunction;
 
     /** Function to retrieve the current state of the FMU. */
     private Function _fmiGetFMUstateFunction;
