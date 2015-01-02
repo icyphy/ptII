@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import org.ptolemy.fmi.FMI20ContinuousStateDerivative;
 import org.ptolemy.fmi.FMI20EventInfo;
 import org.ptolemy.fmi.FMILibrary;
@@ -209,6 +210,9 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
 		// Enter and exit the initialization mode.
 		_fmiInitialize();
+		
+		// To initialize the event indicators, call this.
+		_checkEvents();
 
 		// The specification says on page 75 that after calling
 		// fmiExitInitializationMode, the FMU is implicitly in Event Mode
@@ -275,7 +279,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 					"Could not enter continuous mode for FMU: "
 							+ _fmiStatusDescription(fmiFlag));
 		}
-
+		
 		// Get and configure the QSS integrator.
 		_initializeQssIntegrator();
 
@@ -924,9 +928,63 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
 	// /////////////////////////////////////////////////////////////////
 	// // private methods ////
+	 /**
+     * Return true if we are not in the first firing and the sign of some event
+     * indicator has changed.
+     *
+     * @return True if a state event has occurred.
+     * @exception IllegalActionException
+     *                If the fmiGetEventIndicators function is missing, or if
+     *                calling it does not return fmiOK.
+     */
+    private boolean _checkEvents() throws IllegalActionException {
+	int number = _fmiModelDescription.numberOfEventIndicators;
+	if (number == 0) {
+	    // No event indicators.
+	    return false;
+	}
+	if (_eventIndicators == null || _eventIndicators.length != number) {
+	    _eventIndicators = new double[number];
+	}
+	if (_fmiGetEventIndicatorsFunction == null) {
+	    throw new IllegalActionException(this, "Could not get the "
+		    + _fmiModelDescription.modelIdentifier
+		    + "_fmiGetEventIndicators"
+		    + "() C function?  Perhaps the .fmu file \""
+		    + fmuFile.asFile()
+		    + "\" does not contain a shared library for the current "
+		    + "platform?  ");
+	}
 
+	int fmiFlag = ((Integer) _fmiGetEventIndicatorsFunction.invoke(
+		Integer.class, new Object[] { _fmiComponent, _eventIndicators,
+		    new NativeSizeT(number) })).intValue();
+
+	if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+	    throw new IllegalActionException(this,
+		    "Failed to get event indicators" + ", return result was "
+			    + _fmiStatusDescription(fmiFlag));
+	}
+
+	if (_firstRound) {
+	    _eventIndicatorsPrevious = _eventIndicators;
+	    _eventIndicators = null;
+	    return false;
+	}
+	// Check for polarity change.
+	for (int i = 0; i < number; i++) {
+	    if (_eventIndicatorsPrevious[i] * _eventIndicators[i] < 0.0) {
+		return true;
+	    }
+	}
+	_eventIndicatorsPrevious = _eventIndicators;
+	return false;
+    }
+
+	
+	
 	/**
-	 * Handle state, time and step events.
+	 * Handle time, state and step events.
 	 *
 	 * @throws IllegalActionException
 	 */
@@ -934,23 +992,24 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 		// Complete the integrator step.
 		// True if fmi2SetFMUState() will not be called for times
 		// before the current time in this simulation.
+		// Check event indicators.
+		boolean stateEvent = _checkEvents();
 		boolean noSetFMUStatePriorToCurrentPoint = true;
 		boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
 		boolean timeEvent = ((_eventInfo.nextEventTimeDefined == 1) && (_eventInfo.nextEventTime < timeValue));
 
-		if (timeEvent || /* stateEvent || */stepEvent) {
+		if (timeEvent || stateEvent || stepEvent) {
 			_enterEventMode();
 			if (timeEvent) {
 				// nTimeEvents++;
 				if (_debugging) {
 					_debug("time event at t=" + timeValue);
 				}
-				// if (stateEvent) {
-				// nStateEvents++;
-				// if (loggingOn) for (i=0; i<nz; i++)
-				// printf("state event %s z[%d] at t=%.16g\n",
-				// (prez[i]>0 && z[i]<0) ? "-\\-" : "-/-", i, time);
-				// }
+				 if (stateEvent) {
+					if (_debugging) {
+						_debug("state event at t=" + timeValue);
+						}
+					}
 				if (stepEvent) {
 					// nStepEvents++;
 					// if (loggingOn) printf("step event at t=%.16g\n",
@@ -2267,6 +2326,12 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 	 * Vector of state derivative references.
 	 */
 	private long[] _xxDotRef;
+	
+    /** Buffer for event indicators. */
+    private double[] _eventIndicators;
+
+    /** Buffer for previous event indicators. */
+    private double[] _eventIndicatorsPrevious;
 
 	// /////////////////////////////////////////////////////////////////
 	// // inner classes ////
