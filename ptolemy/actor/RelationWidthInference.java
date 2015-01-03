@@ -156,11 +156,6 @@ public class RelationWidthInference {
                                 // If connected to non-multiports => the relation should be 1
                                 List<?> linkedObjects = relation
                                         .linkedObjectsList();
-                                // If there is no port linked to the relation, we
-                                // declare the width of the relation to be zero.
-                                // FIXME: If there is only one port, the width should
-                                // also be zero. But there seem to be many tests that
-                                // depend on it being non-zero.
                                 if (linkedObjects.isEmpty()) {
                                     relation._setInferredWidth(0);
                                     workingRelationSet.add(relation);
@@ -171,6 +166,9 @@ public class RelationWidthInference {
 
                                             if (!port.isMultiport()) {
                                                 relation._setInferredWidth(1);
+                                                //FIXME: Can be zero in the case that this relation
+                                                //      has no other port connected to it
+
                                                 workingRelationSet
                                                 .add(relation);
                                                 break; //Break the for loop.
@@ -377,15 +375,17 @@ public class RelationWidthInference {
                     }
                 }
 
-                while (!unspecifiedSet.isEmpty()) {
-                    
+                if (!unspecifiedSet.isEmpty()) {
+
                     boolean defaultInferredWidthTo1 = false;
 
-                    Token defaultTo1 = ModelScope.preferenceValue(
-                	    _topLevel, "_defaultInferredWidthTo1");
-                    if (defaultTo1 instanceof BooleanToken) {
-                	defaultInferredWidthTo1 = ((BooleanToken) defaultTo1)
-                		.booleanValue();
+                    {
+                        Token defaultTo1 = ModelScope.preferenceValue(
+                                _topLevel, "_defaultInferredWidthTo1");
+                        if (defaultTo1 instanceof BooleanToken) {
+                            defaultInferredWidthTo1 = ((BooleanToken) defaultTo1)
+                                    .booleanValue();
+                        }
                     }
 
                     if (defaultInferredWidthTo1) {
@@ -395,71 +395,46 @@ public class RelationWidthInference {
                     } else {
                         StringBuffer portDetails = new StringBuffer();
                         IORelation relation = unspecifiedSet.iterator().next();
-                        List<IOPort> linkedPorts = relation.deepLinkedPortList();
-                        
-                        // Look for a special case where a relation is linking a multiport
-                        // inside a composite to the inside of one or more multiports that are
-                        // not connected to anything on the outside. In this case, the width
-                        // will be zero. The pattern we look for that no more than one port
-                        // is linked on the outside.
-                        boolean foundOutside = false;
-                        boolean giveUp = false;
-                        for (IOPort port : linkedPorts) {
-                            if (port.isInsideGroupLinked(relation)) {
-                        	continue;
-                            } else {
-                        	if (foundOutside) {
-                        	    // relation links more than one port on the outside,
-                        	    // so there is nothing more we can do.
-                        	    giveUp = true;
-                        	    break;
-                        	}
-                        	foundOutside = true;
+                        Iterator deepPorts = relation.deepLinkedPortList()
+                                .iterator();
+                        while (deepPorts.hasNext()) {
+                            if (portDetails.length() > 0) {
+                                portDetails.append("\n");
                             }
+                            portDetails.append(((IOPort) deepPorts.next())
+                                    .getFullName());
                         }
-                        if (giveUp) {
-                            Iterator deepPorts = linkedPorts.iterator();
-                            while (deepPorts.hasNext()) {
-                        	if (portDetails.length() > 0) {
-                        	    portDetails.append("\n");
-                        	}
-                        	portDetails.append(((IOPort) deepPorts.next())
-                        		.getFullName());
-                            }
 
-                            String message1 = "The width of relation "
-                        	    + relation.getFullName()
-                        	    + " can not be uniquely inferred.\n";
-                            String message2 = "One possible solution is to create a toplevel parameter "
-                        	    + "named \"_defaultInferredWidthTo1\" with the boolean "
-                        	    + "value true.\n"
-                        	    + "Please make the width inference deterministic by"
-                        	    + " explicitly specifying the width of this relation."
-                        	    + " In the user interface, right click on the "
-                        	    + "relation, select Configure and change the width. "
-                        	    + " Note that some actors may need to have their "
-                        	    + " Java code updated to call setDefaultWidth(1) "
-                        	    + "on the output port. "
-                        	    + "The relation is deeply connected to these ports:\n"
-                        	    + portDetails.toString();
-                            Manager manager = ((CompositeActor) relation.toplevel())
-                        	    .getManager();
-                            if (manager != null
-                        	    && manager.getState() != Manager.IDLE) {
-                        	throw new IllegalActionException(
-                        		relation,
-                        		message1
-                        		+ "The model is not idle, so stopping the model "
-                        		+ "might help.\n" + message2);
-                            }
-                            throw new IllegalActionException(relation, message1
-                        	    + message2);
-                        } else {
-                            relation._setInferredWidth(0);
-                            unspecifiedSet.remove(relation);
+                        String message1 = "The width of relation "
+                                + relation.getFullName()
+                                + " can not be uniquely inferred.\n";
+                        String message2 = "One possible solution is to create a toplevel parameter "
+                                + "named \"_defaultInferredWidthTo1\" with the boolean "
+                                + "value true.\n"
+                                + "Please make the width inference deterministic by"
+                                + " explicitly specifying the width of this relation."
+                                + " In the user interface, right click on the "
+                                + "relation, select Configure and change the width. "
+                                + " Note that some actors may need to have their "
+                                + " Java code updated to call setDefaultWidth(1) "
+                                + "on the output port. "
+                                + "The relation is deeply connected to these ports:\n"
+                                + portDetails.toString();
+                        Manager manager = ((CompositeActor) relation.toplevel())
+                                .getManager();
+                        if (manager != null
+                                && manager.getState() != Manager.IDLE) {
+                            throw new IllegalActionException(
+                                    relation,
+                                    message1
+                                    + "The model is not idle, so stopping the model "
+                                    + "might help.\n" + message2);
                         }
+                        throw new IllegalActionException(relation, message1
+                                + message2);
                     }
                 }
+
             } finally {
                 _inferringWidths = false;
                 _topLevel.workspace().doneTemporaryWriting();
