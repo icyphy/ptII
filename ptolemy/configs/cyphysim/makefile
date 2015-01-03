@@ -61,13 +61,13 @@ OTHER_FILES_TO_BE_JARED = \
 	authors.htm \
 	configuration.xml \
 	copyright.htm \
+	cyphysimEffigies.xml \
 	demonstrations.htm \
 	docs.htm \
 	help.htm \
 	hoc.xml \
 	intro.htm \
 	io.xml \
-	pnEffigies.xml \
 	sinks.xml \
 	sources.xml \
 	welcomeWindow.xml
