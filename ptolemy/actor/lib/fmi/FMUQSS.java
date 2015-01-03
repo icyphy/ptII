@@ -106,7 +106,7 @@ import ptolemy.util.StringUtilities;
  * from FMUImport.java and should be used along with the QSSDirector.
  *
  * @author Thierry S. Nouidui, David M. Lorenzetti, Michael Wetter
- * @version $Id: FMUQSS.java 68735 2014-04-02 01:28:33Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating
  * @Pt.AcceptedRating
@@ -1005,7 +1005,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 				if (_debugging) {
 					_debug("time event at t=" + timeValue);
 				}
-				 if (stateEvent) {
+				if (stateEvent) {
 					if (_debugging) {
 						_debug("state event at t=" + timeValue);
 						}
