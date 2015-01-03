@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (2006-11-01): populator.g -> PtalonPopulatorTokenTypes.txt$
+// $ANTLR 2.7.6 (2005-12-22): populator.g -> PtalonPopulatorTokenTypes.txt$
 PtalonPopulator    // output token vocab name
 PORT="port"=4
 LBRACKET=5
