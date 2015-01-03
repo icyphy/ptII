@@ -3,6 +3,9 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
+<!-- The contents of <doc>...</doc> are reported by vergil -help. -->
+<doc>Configuration for CyPhySim, the Cyber-Physical Simulator.</doc>
+
 <!-- Specify the about file to open. -->
 <property name="_about"
           class="ptolemy.data.expr.FileParameter"
