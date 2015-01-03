@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IO" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that read and write to the file system or network.</doc>
+      
+      <entity name="DirectoryListing"
+              class="ptolemy.actor.lib.io.DirectoryListing">
+      </entity>
+
+      <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+        <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+      </entity>
+
+      <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
+        <doc>Write one token per line to a text file as an expression</doc>
+      </entity>
+      
+      <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <doc>Read an entire file and output as a string</doc>
+      </entity>
+      
+
+      <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
+        <doc>Read one line at a time from a text file and output as a string</doc>
+      </entity>
+      <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+      </entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

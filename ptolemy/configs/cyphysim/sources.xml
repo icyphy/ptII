@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Sources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <!-- Copied from ptolemy/actor/lib/genericsources.xml -->
+  <!-- Copied from ptolemy/actor/lib/sequencesources.xml-->
+  <!-- Rearranged to be alphabetical. -->
+
+<entity name="Const" class="ptolemy.actor.lib.Const">
+<doc>Create a constant sequence.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="60"/>
+   </property>
+</entity>
+
+<entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+<doc>Produce strings from an interactive shell on the screen</doc>
+</entity>
+
+<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+<doc>Create a sequence of tokens with increasing value</doc>
+</entity>
+
+<entity name="Sequence" class="ptolemy.actor.lib.Sequence"/>
+
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
+
+<entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
+<doc>Create values from a sketch on the screen</doc>
+</entity>
+
+<entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+<doc>Create a constant sequence with a string value.</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="80"/>
+      <property name="displayHeight" value="10"/>
+   </property>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+ 
+
+

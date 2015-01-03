@@ -33,7 +33,7 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		bcvtb doc dsp full fullViewer hyvisual jxta test \
+DIRS =		bcvtb cyphysim doc dsp full fullViewer hyvisual jxta test \
 		pn ptdb ptiny ptinyKepler \
 		ptinyViewer ptserver \
 		space viptos visualsense
@@ -129,6 +129,7 @@ OTHER_FILES_TO_BE_JARED = \
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		bcvtb/bcvtb.jar \
+		cyphysim/cyphysim.jar \
 		doc/doc.jar \
 		dsp/dsp.jar \
 		full/full.jar \
