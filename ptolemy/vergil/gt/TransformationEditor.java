@@ -843,8 +843,10 @@ MenuItemListener, TableModelListener, ValueListener {
                     } else {
                         i = 0;
                         for (MatchingAttributeAction radioAction : radioActions) {
-                            if (radioAction.getAttributeClass().equals(
-                                    attributeClass)) {
+                            // Coverity Scan: Dereference null return value because
+                            // radioAction can be null, see MatchingAttributeAction.getAttributeClass.
+                            // so we call equals on attributeClass.
+                            if (attributeClass.equals(radioAction.getAttributeClass()) {
                                 radioItems[i].setSelected(true);
                                 break;
                             }
