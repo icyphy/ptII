@@ -53,6 +53,13 @@ foreach i $configs {
 	continue
     }
 
+    if {[regexp "viptos/" $i] == 1} {
+        if {[java::call System getenv TOSROOT] == ""} {
+            puts "Skipping viptos because TOSROOT is not set in the environment, so we are assuming that TinyOS is not installed."
+            continue
+        }
+    }
+
     puts " Force everything to get expanded ptolemy/configs/$i"
     puts "    (Skipping certain optional packages)"
 
@@ -92,6 +99,15 @@ foreach i $configs {
     $inputFileNamesToSkip add "/matlab.xml"
     $inputFileNamesToSkip add "/x10/x10.xml"
     $inputFileNamesToSkip add "utilityIDAttribute.xml"
+
+    set osName [java::call System getProperty {os.name}]
+
+    set osNameStartsWith [string range $osName 0 5]
+
+    if {$osNameStartsWith == "Mac OS"} {
+	puts "Skipping backtrack.xml because Backtracking has problems on the Mac"
+	$inputFileNamesToSkip add "/backtrack.xml"
+    }
 
     # Tell the parser to skip inputting the above files
     java::field $parser inputFileNamesToSkip $inputFileNamesToSkip 
