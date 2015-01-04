@@ -106,7 +106,7 @@ proc pxgraphTest { args } {
     # Xvfb :2 -screen 0 1024x768x24 &
     # export DISPLAY=localhost:2.0
     # ant test.single -Dtest.name=ptolemy.plot.test.junit.JUnitTclTest -Djunit.formatter=plain
-    regsub -all "<title></title>" \
+    regsub -all "<title></title>\n" \
                 $results2 "" results3
     regsub -all {<!-- Ptolemy plot, version .* -->} $results3 "<!-- Ptolemy plot, version XXX -->" results4
     return $results4
