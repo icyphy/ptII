@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.10.beta requires Java 1.5 or later because we use Java generics
+Ptplot 5.11.devel requires Java 1.5 or later because we use Java generics
 @Deprecated tags and assert statements.  Ptplot will work with Java 1.6 (aka Java 6 SE),
 we have not tested under Java 1.7.
 
@@ -17,7 +17,7 @@ we have not tested under Java 1.7.
 (JDK) or an equivalent Java development environment is required.  The
 JDK includes a Java compiler.
 
-<p>To run Ptplot 5.10.beta applets, you must install the version 1.5
+<p>To run Ptplot 5.11.devel applets, you must install the version 1.5
 or later of the
 <a href="http://www.javasoft.com/products/plugin/#in_browser" target="_top">Javasoft Java Plug-in</a>.
 
@@ -46,14 +46,14 @@ recompile.  However, if you are using the standalone scripts such as
 <CODE>ptplot</CODE>, then you may want to go through the installation
 procedure so that the standalone scripts are properly localized.
 
- <p>This tar file (ptplot5.10.beta.tar.gz), will unpack into called
-ptplot5.10.beta, and the configure-make-make install process will not
-install any files outside of this ptplot5.10.beta directory.  So if you
+ <p>This tar file (ptplot5.11.devel.tar.gz), will unpack into called
+ptplot5.11.devel, and the configure-make-make install process will not
+install any files outside of this ptplot5.11.devel directory.  So if you
 unpack the tar file into /usr/local, after installing you will have
-/usr/local/ptplot5.10.beta, and you may want to tell users to add
-/usr/local/ptplot5.10.beta/bin to their PATH.  The scripts in the bin
+/usr/local/ptplot5.11.devel, and you may want to tell users to add
+/usr/local/ptplot5.11.devel/bin to their PATH.  The scripts in the bin
 directory will run the plotter as a standalone application, or they
-can add /usr/local/ptplot5.10.beta to their Java CLASSPATH.
+can add /usr/local/ptplot5.11.devel to their Java CLASSPATH.
 
  <p> If you are using Windows and you want to rebuild Ptplot or
 localize the standalone scripts, then you will need to install the
@@ -78,12 +78,12 @@ is in your path.
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
-setenv PTII ~/src/ptolemy/ptplot5.10.beta
+setenv PTII ~/src/ptolemy/ptplot5.11.devel
 </pre>
 
 Under Cygwin with bash:
 <pre>
-PTII=c:\\ptolemy\\ptplot5.10.beta
+PTII=c:\\ptolemy\\ptplot5.11.devel
 export PTII
 </pre>
 
@@ -177,12 +177,12 @@ downloaded the tar or zip files.
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
-C:\ptolemy\ptplot5.10.beta&gt; PTII=c:\\ptolemy\\ptplot5.10.beta
+C:\ptolemy\ptplot5.11.devel&gt; PTII=c:\\ptolemy\\ptplot5.11.devel
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
 <br>(The double backslash is necessary because otherwise bash will interpret 
-<code>c:\ptolemy\ptplot5.10.beta</code> as <code>c:ptolemyptolemy5.10.beta</code>)
+<code>c:\ptolemy\ptplot5.11.devel</code> as <code>c:ptolemyptolemy5.11.devel</code>)
 
 <li> Be sure that <code>java</code> is in your path by running
 <code>java -version</code>
@@ -200,26 +200,26 @@ Cygwin.
 ptolemy\plot.
 
 <pre>
-C:\ptolemy\ptplot5.10.beta&gt; cd ptolemy\plot
+C:\ptolemy\ptplot5.11.devel&gt; cd ptolemy\plot
 </pre>
 
 
 <li> set your CLASSPATH to ..\..
 <pre>
-C:\ptolemy\ptplot5.10.beta\ptolemy\plot&gt;set CLASSPATH=..\..
-C:\ptolemy\ptplot5.10.beta\ptolemy\plot&gt;echo %CLASSPATH%
+C:\ptolemy\ptplot5.11.devel\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptolemy\ptplot5.11.devel\ptolemy\plot&gt;echo %CLASSPATH%
 ..\..
 </pre>
 
 <li> Remove the old Java files and compile them
 <pre>
-C:\ptolemy\ptplot5.10.beta\ptolemy\plot&gt;del  *.class
-C:\ptolemy\ptplot5.10.beta\ptolemy\plot&gt;javac *.java
+C:\ptolemy\ptplot5.11.devel\ptolemy\plot&gt;del  *.class
+C:\ptolemy\ptplot5.11.devel\ptolemy\plot&gt;javac *.java
 </pre>
 
 <li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
 <pre>
-C:\ptolemy\ptplot5.10.beta\ptolemy\plot&gt;ptplot.bat
+C:\ptolemy\ptplot5.11.devel\ptolemy\plot&gt;ptplot.bat
 </pre>
 
 </ol>
