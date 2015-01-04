@@ -740,7 +740,8 @@ public class TemplateParser {
         int currentPos = _getMacroStartIndex(code, 0);
 
         // Set to true for lots of information about the processing.
-        boolean debug = false;
+        // Coverity Scan: 'Constant' variable guards dead code.  Make this final to avoid the warning.
+        final boolean debug = false;
         if (currentPos < 0) {
             // No "$" in the string
             return code;
