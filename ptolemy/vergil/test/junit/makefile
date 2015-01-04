@@ -36,8 +36,8 @@ ME =		ptolemy/vergil/test/junit
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+# COMPLETE_CLASSPATH is determined by $PTII/configure and set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
