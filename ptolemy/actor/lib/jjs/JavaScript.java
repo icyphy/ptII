@@ -570,6 +570,10 @@ public class JavaScript extends TypedAtomicActor {
         ScriptEngineManager factory = new ScriptEngineManager();
         // Create a Nashorn script engine
         _engine = factory.getEngineByName("nashorn");
+        if (_engine == null) {
+            // Coverity Scan is happier if we check for null here.
+            throw new IllegalActionException(this, "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Is Nashorn present in JDK 1.8 and later.");
+        }
         try {
             if (_debugging) {
                 _debug("** Instantiated engine. Loading local and basic functions.");
