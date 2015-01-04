@@ -114,8 +114,16 @@ proc histogramTest { args } {
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
                 $results "\n" results2
-    regsub -all {<!-- Ptolemy plot, version .* -->} $results2 "<!-- Ptolemy plot, version XXX -->" results3
-    return $results3}
+    # In PlotBox, if _title is null, then write() does not emit a  <title></title>
+    # This occurs on hudson as part of the nightly build:
+    # Xvfb :2 -screen 0 1024x768x24 &
+    # export DISPLAY=localhost:2.0
+    # ant test.single -Dtest.name=ptolemy.plot.test.junit.JUnitTclTest -Djunit.formatter=plain
+    regsub -all "<title></title>\n" \
+                $results2 "" results3
+    regsub -all {<!-- Ptolemy plot, version .* -->} $results3 "<!-- Ptolemy plot, version XXX -->" results4
+    return $results4
+}
 
 
 test Histogram-1.1 {Get the sample output} {

@@ -200,13 +200,14 @@ test PlotBox-14.1 {write} {
     $printStream flush
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
-                [$stream toString] "\n" output
+                [$stream toString] "\n" results2
+    regsub -all {<!-- Ptolemy plot, version .* -->} $results2 "<!-- Ptolemy plot, version XXX -->" results3
 
-    list $output
+    list $results3
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "xxx">
 <plot>
-<!-- Ptolemy plot, version 5.8.beta , PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <title>Software Downloads</title>
 <xLabel>Year</xLabel>
 <yLabel>Downloads</yLabel>
