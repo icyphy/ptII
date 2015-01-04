@@ -66,22 +66,28 @@ proc runModel {modelFileName outputStream} {
 
 puts "HLATest.tcl: Be sure to source certi/share/scripts/myCERTI_env.sh"
 
-######################################################################
-#### Run two HLA models
-#
-test HLATest-1.0 {Run the HLA MultiDataTypes} {
+if {[java::call System getenv CERTI_HOME] == ""} {
+    test HLATest-1.0-CERTI_HOME-NotSet {Skipping running HLA tests because CERTI_HOME is not set} {
+        error {Skipping running HLA tests because CERTI_HOME is not set}
+    } {} {Skipping running HLA tests because CERTI_HOME is not set}
+} else {
 
-    # Success is when the Test actor in the consumer gets all of its values.
-    set consumerListenerOutput [java::new java.io.ByteArrayOutputStream]
-    set consumer [runModel MultiDataTypesConsumer.xml $consumerListenerOutput]
-    sleep 1 false
-    set producerListenerOutput [java::new java.io.ByteArrayOutputStream]
-    set producer [runModel MultiDataTypesProducer.xml $producerListenerOutput]
-    # Return something useful as another check
-    sleep 5 false
-    list [$consumer getFullName] [$producer getFullName] \
-	[$consumerListenerOutput toString] [$producerListenerOutput toString]
-} {.MultiDataTypesConsumer .MultiDataTypesProducer {preinitializing
+    ######################################################################
+    #### Run two HLA models
+    #
+    test HLATest-1.0 {Run the HLA MultiDataTypes} {
+
+        # Success is when the Test actor in the consumer gets all of its values.
+        set consumerListenerOutput [java::new java.io.ByteArrayOutputStream]
+        set consumer [runModel MultiDataTypesConsumer.xml $consumerListenerOutput]
+        sleep 1 false
+        set producerListenerOutput [java::new java.io.ByteArrayOutputStream]
+        set producer [runModel MultiDataTypesProducer.xml $producerListenerOutput]
+        # Return something useful as another check
+        sleep 5 false
+        list [$consumer getFullName] [$producer getFullName] \
+            [$consumerListenerOutput toString] [$producerListenerOutput toString]
+    } {.MultiDataTypesConsumer .MultiDataTypesProducer {preinitializing
 resolving types
 initializing
 } {preinitializing
@@ -89,6 +95,8 @@ resolving types
 initializing
 executing number 1
 }}
+
+}
 
 ######################################################################
 #### Run two HLA models
