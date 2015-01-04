@@ -169,7 +169,9 @@ public class UnitUtilities {
      */
     public static ArrayList categoryList() {
         // The port configuration window uses this.
-        return new ArrayList(_categoryList);
+        synchronized (_indexTable) {
+            return new ArrayList(_categoryList);
+        }
     }
 
     /** Return a copy of the given units array. If the given array is
@@ -215,7 +217,9 @@ public class UnitUtilities {
      *  @return the number of currently registered categories.
      */
     public static int getNumCategories() {
-        return _categories;
+        synchronized (_indexTable) {
+            return _categories;
+        }
     }
 
     /** Return the index assigned to the specified unit category.
