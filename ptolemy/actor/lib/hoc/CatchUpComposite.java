@@ -1,7 +1,7 @@
 /* A composite where events can occur inside between the times when
    the outside model invokes the composite.
 
- Copyright (c) 2004-2014 The Regents of the University of California.
+ Copyright (c) 2004-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -105,18 +105,25 @@ public class CatchUpComposite extends MirrorComposite {
     public CatchUpComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setClassName("ptolemy.actor.lib.hoc.CatchUpComposite");
+        _init();
+    }
 
-        // Create the CatchUpDirector in the proper workspace.
-        _director = new CatchUpDirector(workspace());
-        _director.setContainer(this);
-        _director.setName("CatchUpDirector");
-        
-        // Create the composite actor for the contents.
-        _contents = new MirrorComposite.MirrorCompositeContents(this, "Contents");
-        
-        // Override the default icon.
-        _attachText("_iconDescription", _defaultIcon);
+    /** Construct a CatchUpComposite in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name of the
+     *   director coincides with an actor already in the container.
+     */
+    public CatchUpComposite(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        // This constructor is needed if CatchUpComposite is used as an
+        // actor-oriented class.
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,6 +240,27 @@ public class CatchUpComposite extends MirrorComposite {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    private void _init()  throws IllegalActionException, NameDuplicationException {
+        setClassName("ptolemy.actor.lib.hoc.CatchUpComposite");
+
+        // Create the CatchUpDirector in the proper workspace.
+        _director = new CatchUpDirector(workspace());
+        _director.setContainer(this);
+        _director.setName("CatchUpDirector");
+        
+        // Create the composite actor for the contents.
+        _contents = new MirrorComposite.MirrorCompositeContents(this, "Contents");
+        
+        // Override the default icon.
+        _attachText("_iconDescription", _defaultIcon);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

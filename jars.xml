@@ -1395,20 +1395,11 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sr/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sr/kernel/*.xml"/>
 	<include name="ptolemy/domains/sr/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sr/lib/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sr/lib/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/tester/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/tester/lib/*.class"/>
       </fileset>
     </jar>
@@ -4477,14 +4468,9 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sr/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/domains/sr/kernel/*.xml"/>
 	<include name="ptolemy/domains/sr/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sr/lib/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/sr/lib/gui/*.class"/>
       </fileset>
     </jar>
@@ -5102,6 +5088,7 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/qss/*.class"/>
+        <include name="ptolemy/domains/qss/*.xml"/>
 	<include name="ptolemy/domains/qss/lib/*.class"/>
       </fileset>
     </jar>

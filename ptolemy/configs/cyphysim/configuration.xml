@@ -88,6 +88,9 @@
 
   <input source="ptolemy/configs/utilitiesLibrary.xml"/>
 
+  <!-- director library. -->
+  <input source="ptolemy/configs/cyphysim/directors.xml"/>
+    
   <!-- Custom actor library. -->
   <entity name="Actors" class="ptolemy.moml.EntityLibrary">
     <configure>
