@@ -49,7 +49,7 @@ import org.w3c.dom.Node;
  * </p>
  *
  * @author Thierry S. Nouidui
- * @version $Id: FMI20ContinuousStateDerivative.java 68428 2014-02-18 19:45:46Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

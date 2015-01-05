@@ -57,10 +57,12 @@ PTCLASSALLJAR = 	fmi.jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	FMI20CallbackFunctions.java \
+	FMI20ContinuousStateDerivative.java \
+	FMI20CoSimulationCapabilities.java \
 	FMI20ModelExchangeCapabilities.java \
 	FMI20ModelInstance.java \
-	FMI20CallbackFunctions.java \
-	FMI20CoSimulationCapabilities.java \
+	FMI20Output.java \
 	FMICallbackFunctions.java \
 	FMICapabilities.java \
 	FMICoSimulationCapabilities.java \
@@ -92,9 +94,11 @@ OPTIONAL_FILES = \
 	manifest.tmp \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
-	'FMICallbackFunctions$$ByValue.class' \
 	'FMI20EventInfo$$ByReference.class' \
 	'FMI20EventInfo$$ByValue.class' \
+	'FMI20ModelInstance$$ByReference.class' \
+	'FMI20ModelInstance$$ByValue.class' \
+	'FMICallbackFunctions$$ByValue.class' \
 	'FMIEventInfo$$ByReference.class' \
 	'FMIEventInfo$$ByValue.class' \
 	'FMILibrary$$FMICallbackAllocateMemory.class' \
@@ -103,8 +107,7 @@ OPTIONAL_FILES = \
 	'FMILibrary$$FMIStatus.class' \
 	'FMILibrary$$FMIStatusKind.class' \
 	'FMILibrary$$FMIStepFinished.class' \
-	'FMI20ModelInstance$$ByReference.class' \
-	'FMI20ModelInstance$$ByValue.class' \
+	'FMIModelDescription$$ContinuousState.class' \
 	'FMIScalarVariable$$Alias.class' \
 	'FMIScalarVariable$$Causality.class' \
 	'FMIScalarVariable$$Variability.class' \
