@@ -111,16 +111,19 @@ public class FindPackages {
     private static void _getDirectories(File directory, Set directoriesSeen,
             Set classFilesSeen) {
         File directories[] = directory.listFiles(new DirectoryFileFilter());
-        for (int i = 0; i < directories.length; i++) {
-            if (!directoriesSeen.contains(directories[i])
-                    && !directories[i].getName().endsWith("adm")
-                    && !directories[i].getName().endsWith("CVS")
-                    && !directories[i].getName().endsWith("vendors")) {
-                File classFiles[] = directories[i]
+        // Coverity Scan: Dereference null value returns.  directories could be null.
+        if (directories != null) {
+            for (int i = 0; i < directories.length; i++) {
+                if (!directoriesSeen.contains(directories[i])
+                        && !directories[i].getName().endsWith("adm")
+                        && !directories[i].getName().endsWith("CVS")
+                        && !directories[i].getName().endsWith("vendors")) {
+                    File classFiles[] = directories[i]
                         .listFiles(new ClassFileFilter());
-                classFilesSeen.add(classFiles);
-                directoriesSeen.add(directories[i]);
-                _getDirectories(directories[i], directoriesSeen, classFilesSeen);
+                    classFilesSeen.add(classFiles);
+                    directoriesSeen.add(directories[i]);
+                    _getDirectories(directories[i], directoriesSeen, classFilesSeen);
+                }
             }
         }
     }
