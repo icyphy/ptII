@@ -278,6 +278,11 @@ public class MoMLLib {
 
         File[] children = dir.listFiles(filterForDirs);
 
+        // Coverity Scan: Dereference null value returns.  children could be null.
+        if (children == null) {
+            return;
+        }
+
         // Recursive call.
         for (int i = 0; i < children.length; i++) {
             // Output filename same as index filename for non-top level.
