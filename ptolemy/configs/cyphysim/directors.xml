@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Directors" class="ptolemy.moml.EntityLibrary">
+
+  <!-- Marker so that tree view expands the library. -->
+  <property name="_libraryMarker"
+            class="ptolemy.kernel.util.SingletonAttribute"/>
+
+  <property name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector">
+  </property>
+  <entity name="MoreDirectors" class="ptolemy.moml.EntityLibrary">
+    <configure>
+    <?moml
+      <group>
+      <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector"/>
+      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+      <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector"/>
+      <property name="Director" class="ptolemy.actor.Director">
+         <doc>Simple director that executes actors in the order in which they were created.</doc>
+          <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+          </property>
+      </property>
+      </group>
+    ?>
+    </configure>
+  </entity>
+</entity>

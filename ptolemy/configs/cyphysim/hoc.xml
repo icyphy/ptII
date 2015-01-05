@@ -14,6 +14,10 @@
         <doc>The function is applied to its input data.</doc>
       </entity>      
 
+      <entity name="ContinuousComposite" class="ptolemy.domains.qss.kernel.ContinuousComposite">
+        <doc>A CatchUpComposite that contains a QSS director.</doc>
+        </entity>
+        
       <entity name="MultiInstanceComposite" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
         <doc>Creates multiple instances of itself</doc>
         <property name="SDF Director"
@@ -22,6 +26,10 @@
         </property>
       </entity>
 
+      <entity name="PeriodicComposite" class="ptolemy.domains.sr.kernel.PeriodicComposite">
+        <doc>A TypedCompositeActor that contains an SR director with a non-zero period.</doc>
+        </entity>
+        
       </group>
     ?>
   </configure>
