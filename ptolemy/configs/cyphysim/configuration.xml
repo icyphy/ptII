@@ -86,6 +86,21 @@
   <property name="_libraryMarker"
             class="ptolemy.kernel.util.SingletonAttribute"/>
 
+  <!-- Override utilities library. -->
+  <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+
+    <input source="ptolemy/domains/qss/kernel/ContinuousComposite.xml" />
+    <input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" />
+
+    <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
+    <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+      
+    <input source="ptolemy/configs/basicUtilities.xml"/>
+    <!-- Do not include this as singleton parameters are buggy. -->
+    <!-- input source="ptolemy/configs/customize.xml"/ -->
+    <input source="ptolemy/data/unit/unitSystems.xml"/>
+  </entity>
+
   <input source="ptolemy/configs/utilitiesLibrary.xml"/>
 
   <!-- director library. -->
