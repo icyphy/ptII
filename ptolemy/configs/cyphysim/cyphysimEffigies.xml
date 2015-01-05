@@ -2,7 +2,7 @@
     <!-- Use a custom graph editor with a QSS director already in it. -->
     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="PN Director"
+        <property name="QSS Director"
                   class="ptolemy.domains.qss.kernel.QSSDirector">
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
