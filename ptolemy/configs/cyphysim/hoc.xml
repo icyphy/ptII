@@ -26,10 +26,6 @@
         </property>
       </entity>
 
-      <entity name="PeriodicComposite" class="ptolemy.domains.sr.kernel.PeriodicComposite">
-        <doc>A TypedCompositeActor that contains an SR director with a non-zero period.</doc>
-        </entity>
-        
       </group>
     ?>
   </configure>
