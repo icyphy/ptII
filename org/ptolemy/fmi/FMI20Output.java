@@ -48,7 +48,7 @@ import org.w3c.dom.Node;
  * </p>
  *
  * @author Thierry S. Nouidui
- * @version $Id: FMI20Output.java 68428 2014-02-18 19:45:46Z cxh $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -72,6 +72,10 @@ public class FMI20Output {
         } catch (NumberFormatException ex) {
             throw new NumberFormatException(
                     "Failed to parse output variable index " + indexAttr);
+        }
+        if (index < 1) {
+            throw new IllegalArgumentException("The index for the node \"" + element
+                    + "\" was " + index + ", which is less than 1.  The index must be greater than or equal to 1, see p. 61 of the FMI-2.0 spec.");
         }
         // Get the corresponding scalar variable.
         scalarVariable = fmiModelDescription.modelVariables.get(index - 1);

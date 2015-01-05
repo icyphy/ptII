@@ -61,9 +61,9 @@ import com.sun.jna.Structure;
  * a few opensource projects.</a>.</p>
  *
  * @author Christopher Brooks
-@version $Id: FMICallbackFunctions.java 70939 2014-12-10 22:25:57Z cxh $
+@version $Id$
 @since Ptolemy II 10.0
- * @version $Id: FMICallbackFunctions.java 70939 2014-12-10 22:25:57Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
