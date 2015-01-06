@@ -36,19 +36,15 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MatrixType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.DoubleMatrixMath;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -82,7 +78,7 @@ sequence given the parameter estimates converges to a value within <i>likelihood
 the parameter estimation stops iterating and delivers the parameter estimates.
 
  @author Ilge Akkaya
- @version $Id: HSMMGaussianEstimator.java 70402 2014-10-23 00:52:20Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating

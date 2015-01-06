@@ -27,7 +27,7 @@
  */
 package org.ptolemy.ssm;
 
-import ptolemy.data.expr.Parameter; 
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

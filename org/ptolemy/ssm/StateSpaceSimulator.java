@@ -27,12 +27,8 @@
  */ 
 package org.ptolemy.ssm;
 
-import java.util.HashMap; 
-
-import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter; 
 import org.ptolemy.machineLearning.particleFilter.AbstractStateSpaceSimulator;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -42,7 +38,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 ////ParticleFilterSSM

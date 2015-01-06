@@ -69,7 +69,7 @@ the Hidden Semi-Markov Model family.
 
 
  @author Ilge Akkaya
- @version $Id: HSMMGenerator.java 69607 2014-07-30 17:07:26Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating

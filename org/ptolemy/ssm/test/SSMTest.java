@@ -29,7 +29,9 @@
 package org.ptolemy.ssm.test;
 
 import java.util.Iterator;
+
 import org.ptolemy.ssm.StateSpaceModel;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Workspace;
@@ -51,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
  * </pre>
  *
  * @author Christopher Brooks
- * @version $Id: FMULog.java 70970 2014-12-13 01:32:38Z cxh $
+ * @version $Id$
  * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
