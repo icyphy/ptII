@@ -36,7 +36,7 @@ import org.w3c.dom.Node;
 //// FMI20ContinuousStateDerivative
 
 /**
- * An object that represents the Derivatives of a 
+ * An object that represents the Derivatives of a
  * continuous state variable of an FMU for FMI-2.0.
  *
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
@@ -75,13 +75,13 @@ public class FMI20ContinuousStateDerivative {
             throw new NumberFormatException("Failed to parse derivative index "
                     + indexAttr);
         }
-        
+
         // Get the scalar variable representing the state derivative.
-        scalarVariable = fmiModelDescription.modelVariables.get(index-1);
-        
+        scalarVariable = fmiModelDescription.modelVariables.get(index - 1);
+
         // Build the list of dependent variables.
         dependentScalarVariables = new LinkedList<FMIScalarVariable>();
-        
+
         // Get the dependent variables.
         dependencies = (((Element) element).getAttribute("dependencies"))
                 .split(" ");
@@ -90,8 +90,7 @@ public class FMI20ContinuousStateDerivative {
             // Substract 1 from the index since the numbering in XML start with 1 whereas the modelVariables start with 0.
             if (dependencies[i].isEmpty()) {
                 continue;
-            }
-            else{
+            } else {
                 try {
                     FMIScalarVariable scalar = fmiModelDescription.modelVariables
                             .get(Integer.parseInt(dependencies[i]) - 1);
@@ -116,16 +115,16 @@ public class FMI20ContinuousStateDerivative {
 
     /** The list of dependent ScalarVariable elements. */
     public LinkedList<FMIScalarVariable> dependentScalarVariables;
-    
+
     /** The FMI scalar variable for this state. */
     public FMIScalarVariable scalarVariable;
-    
+
     /** The signal indicating changed. */
     public boolean hasChanged;
-    
+
     /** The list of indexes of dependent input elements. */
     public LinkedList<Integer> dependentInputIndexes;
-    
+
     /** The list of indexes of dependent continuous elements. */
     public LinkedList<Integer> dependentStateIndexes;
 }

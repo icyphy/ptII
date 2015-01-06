@@ -76,9 +76,9 @@ public class FMICallbackFunctions extends Structure {
      * contains the FMI call backs.
      */
     public FMICallbackFunctions() {
-	super();
-	// Don't call initFieldOrder with JNA later than jna-3.5.0
-	//initFieldOrder();
+        super();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Instantiate a Java representation of the C structure that
@@ -93,23 +93,23 @@ public class FMICallbackFunctions extends Structure {
      * (C type: FmiStepFinished)
      */
     public FMICallbackFunctions(FMICallbackLogger logger,
-	    FMICallbackAllocateMemory allocateMemory,
-	    FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
-	super();
-	this.logger = logger;
-	this.allocateMemory = allocateMemory;
-	this.freeMemory = freeMemory;
-	this.stepFinished = stepFinished;
-	// Avoid crashes by aligning.
-	// See
-	// http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
-	//setAlignType(Structure.ALIGN_DEFAULT);
-	//setAlignType(Structure.ALIGN_GNUC);
-	//setAlignType(Structure.ALIGN_MSVC);
-	//setAlignType(Structure.ALIGN_NONE;
+            FMICallbackAllocateMemory allocateMemory,
+            FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
+        super();
+        this.logger = logger;
+        this.allocateMemory = allocateMemory;
+        this.freeMemory = freeMemory;
+        this.stepFinished = stepFinished;
+        // Avoid crashes by aligning.
+        // See
+        // http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
+        //setAlignType(Structure.ALIGN_DEFAULT);
+        //setAlignType(Structure.ALIGN_GNUC);
+        //setAlignType(Structure.ALIGN_MSVC);
+        //setAlignType(Structure.ALIGN_NONE;
 
-	// Don't call initFieldOrder with JNA later than jna-3.5.0
-	//initFieldOrder();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /**
@@ -144,29 +144,29 @@ public class FMICallbackFunctions extends Structure {
      *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.</p>
      */
     public static class ByValue extends FMICallbackFunctions implements
-	    Structure.ByValue {
-	/**  Access the structure by reference.
-	 *
-	 *  <p>See
-	 *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#structures">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#structures</a>:
-	 *  "To pass a structure by value, first define the structure,
-	 *  then define an empty class from that which implements
-	 *  Structure.ByValue. Use the ByValue class as the argument
-	 *  or return type."
-	 * @param logger The method called to log a status message
-	 * (C type: fmiCallbackLogger).
-	 * @param allocateMemory The method called to allocate cleared memory
-	 * (C type: fmiCallbackAllocateMemory
-	 * @param freeMemory The method called to free allocated memory
-	 * (C type: fmiCallbackFreeMemory)
-	 * @param stepFinished The method called when the step is finished.
-	 * (C type: FmiStepFinished)
-	 */
-	public ByValue(FMICallbackLogger logger,
-	        FMICallbackAllocateMemory allocateMemory,
-	        FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
-	    super(logger, allocateMemory, freeMemory, stepFinished);
-	}
+            Structure.ByValue {
+        /**  Access the structure by reference.
+         *
+         *  <p>See
+         *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#structures">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#structures</a>:
+         *  "To pass a structure by value, first define the structure,
+         *  then define an empty class from that which implements
+         *  Structure.ByValue. Use the ByValue class as the argument
+         *  or return type."
+         * @param logger The method called to log a status message
+         * (C type: fmiCallbackLogger).
+         * @param allocateMemory The method called to allocate cleared memory
+         * (C type: fmiCallbackAllocateMemory
+         * @param freeMemory The method called to free allocated memory
+         * (C type: fmiCallbackFreeMemory)
+         * @param stepFinished The method called when the step is finished.
+         * (C type: FmiStepFinished)
+         */
+        public ByValue(FMICallbackLogger logger,
+                FMICallbackAllocateMemory allocateMemory,
+                FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
+            super(logger, allocateMemory, freeMemory, stepFinished);
+        }
     };
 
     /** C type: fmiCallbackLogger. */
@@ -187,8 +187,8 @@ public class FMICallbackFunctions extends Structure {
      */
     @Override
     protected List getFieldOrder() {
-	return Arrays.asList(new String[] { "logger", "allocateMemory",
-	        "freeMemory", "stepFinished" });
+        return Arrays.asList(new String[] { "logger", "allocateMemory",
+                "freeMemory", "stepFinished" });
     }
 
     /** Set the initialization order of the fields so that the order
@@ -197,10 +197,10 @@ public class FMICallbackFunctions extends Structure {
      */
     @Deprecated
     protected void initFieldOrder() {
-	// Note that the name of this method does not have a leading
-	// underscore because the name of the protected method in the
-	// parent class does not have an underscore.
-	setFieldOrder(new String[] { "logger", "allocateMemory", "freeMemory",
-	        "stepFinished" });
+        // Note that the name of this method does not have a leading
+        // underscore because the name of the protected method in the
+        // parent class does not have an underscore.
+        setFieldOrder(new String[] { "logger", "allocateMemory", "freeMemory",
+                "stepFinished" });
     }
 }

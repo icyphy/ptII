@@ -30,19 +30,11 @@ package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.act
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.modal.kernel.FSMActor;
-import ptolemy.domains.modal.modal.ModalController;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor

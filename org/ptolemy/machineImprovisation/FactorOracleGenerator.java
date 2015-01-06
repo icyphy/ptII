@@ -30,6 +30,7 @@ package org.ptolemy.machineImprovisation;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;

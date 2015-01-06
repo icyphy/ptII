@@ -59,9 +59,9 @@ public class FMIEventInfo extends Structure {
      * structure that contains information about events.
      */
     public FMIEventInfo() {
-	super();
-	// Don't call initFieldOrder with JNA later than jna-3.5.0
-	//initFieldOrder();
+        super();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Instantiate a Java structure that that represents the C
@@ -75,31 +75,31 @@ public class FMIEventInfo extends Structure {
      * @param nextEventTime C type: fmiReal
      */
     public FMIEventInfo(byte iterationConverged,
-	    byte stateValueReferencesChanged, byte stateValuesChanged,
-	    byte terminateSimulation, byte upcomingTimeEvent,
-	    double nextEventTime) {
-	super();
-	this.iterationConverged = iterationConverged;
-	this.stateValueReferencesChanged = stateValueReferencesChanged;
-	this.stateValuesChanged = stateValuesChanged;
-	this.terminateSimulation = terminateSimulation;
-	this.upcomingTimeEvent = upcomingTimeEvent;
-	this.nextEventTime = nextEventTime;
+            byte stateValueReferencesChanged, byte stateValuesChanged,
+            byte terminateSimulation, byte upcomingTimeEvent,
+            double nextEventTime) {
+        super();
+        this.iterationConverged = iterationConverged;
+        this.stateValueReferencesChanged = stateValueReferencesChanged;
+        this.stateValuesChanged = stateValuesChanged;
+        this.terminateSimulation = terminateSimulation;
+        this.upcomingTimeEvent = upcomingTimeEvent;
+        this.nextEventTime = nextEventTime;
 
-	// Don't call initFieldOrder with JNA later than jna-3.5.0
-	//initFieldOrder();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Access the structure by reference.
      */
     public static class ByReference extends FMIEventInfo implements
-	    Structure.ByReference {
+            Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
     public static class ByValue extends FMIEventInfo implements
-	    Structure.ByValue {
+            Structure.ByValue {
     };
 
     // The fields below are in the order in which they are expected to be in the
@@ -129,9 +129,9 @@ public class FMIEventInfo extends Structure {
      */
     @Override
     protected List getFieldOrder() {
-	return Arrays.asList(new String[] { "iterationConverged",
-	        "stateValueReferencesChanged", "stateValuesChanged",
-	        "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
+        return Arrays.asList(new String[] { "iterationConverged",
+                "stateValueReferencesChanged", "stateValuesChanged",
+                "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
     }
 
     /** Set the initialization order of the fields so that the order
@@ -140,11 +140,11 @@ public class FMIEventInfo extends Structure {
      */
     @Deprecated
     protected void initFieldOrder() {
-	// Note that the name of this method does not have a leading
-	// underscore because the name of the protected method in the
-	// parent class does not have an underscore.
-	setFieldOrder(new String[] { "iterationConverged",
-	        "stateValueReferencesChanged", "stateValuesChanged",
-	        "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
+        // Note that the name of this method does not have a leading
+        // underscore because the name of the protected method in the
+        // parent class does not have an underscore.
+        setFieldOrder(new String[] { "iterationConverged",
+                "stateValueReferencesChanged", "stateValuesChanged",
+                "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
     }
 }

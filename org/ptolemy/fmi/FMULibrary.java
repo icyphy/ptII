@@ -65,110 +65,110 @@ public interface FMULibrary extends FMILibrary {
     /** The logging callback function. */
     public class FMULogger implements FMICallbackLogger {
 
-	/** Instantiate a FMULogger.
-	 *  @param modelDescription The model description that
-	 *  contains the names of the variables.  The FMI
-	 *  specification states that the variable names might not be
-	 *  stored in the C-functions, which is why we can't just use
-	 *  the fmiComponent.
-	 */
-	public FMULogger(FMIModelDescription modelDescription) {
-	    _modelDescription = modelDescription;
-	}
+        /** Instantiate a FMULogger.
+         *  @param modelDescription The model description that
+         *  contains the names of the variables.  The FMI
+         *  specification states that the variable names might not be
+         *  stored in the C-functions, which is why we can't just use
+         *  the fmiComponent.
+         */
+        public FMULogger(FMIModelDescription modelDescription) {
+            _modelDescription = modelDescription;
+        }
 
-	/** Log a message.
-	 *  @param fmiComponent The component that was instantiated.
-	 *  @param instanceName The name of the instance of the FMU.
-	 *  @param status The fmiStatus, see
-	 *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
-	 *  @param category The category of the message,
-	 *  defined by the tool that created the fmu.  Typical
-	 *  values are "log" or "error".
-	 *  @param message The printf style format string.
-	 */
-	@Override
-	public void apply(Pointer fmiComponent, String instanceName,
-	        int status, String category, String message
-                /*, Pointer*/ /*...*/ /*parameters*/) {
-	    // We place this method in separate file for testing purposes.
-	    FMULog.log(_modelDescription, fmiComponent, instanceName, status,
-		    category, message/*, parameters*/);
-	}
+        /** Log a message.
+         *  @param fmiComponent The component that was instantiated.
+         *  @param instanceName The name of the instance of the FMU.
+         *  @param status The fmiStatus, see
+         *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
+         *  @param category The category of the message,
+         *  defined by the tool that created the fmu.  Typical
+         *  values are "log" or "error".
+         *  @param message The printf style format string.
+         */
+        @Override
+        public void apply(Pointer fmiComponent, String instanceName,
+                int status, String category, String message
+        /*, Pointer*//*...*//*parameters*/) {
+            // We place this method in separate file for testing purposes.
+            FMULog.log(_modelDescription, fmiComponent, instanceName, status,
+                    category, message/*, parameters*/);
+        }
 
-	/** The model description that contains the names of the
-	 * variables.
-	 */
-	protected FMIModelDescription _modelDescription;
+        /** The model description that contains the names of the
+         * variables.
+         */
+        protected FMIModelDescription _modelDescription;
     }
 
     /** Class for the allocate memory callback function. */
     public class FMUAllocateMemory implements FMICallbackAllocateMemory {
 
-	/** Allocate memory.
-	 *  @param numberOfObjects The number of objects to allocate.
-	 *  @param size The size of the object in bytes.
-	 *  @return a Pointer to the allocated memory.
-	 */
-	@Override
-	public Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size) {
-	    // For hints, see http://markmail.org/message/6ssggt4q6lkq3hen
+        /** Allocate memory.
+         *  @param numberOfObjects The number of objects to allocate.
+         *  @param size The size of the object in bytes.
+         *  @return a Pointer to the allocated memory.
+         */
+        @Override
+        public Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size) {
+            // For hints, see http://markmail.org/message/6ssggt4q6lkq3hen
 
-	    int numberOfObjectsValue = numberOfObjects.intValue();
-	    if (numberOfObjectsValue <= 0) {
-		// instantiateModel() in fmuTemplate.c
-		// will try to allocate 0 reals, integers, booleans or
-		// strings.
-		// However, instantiateModel() later checks to see if
-		// any of the allocated spaces are null and fails with
-		// "out of memory" if they are null.
-		numberOfObjectsValue = 1;
-	    }
-	    // FIXME: Perhaps the +4 is needed for the align command to work below?
-	    int bytes = numberOfObjectsValue * size.intValue() + 4;
-	    Memory memory = new Memory(bytes);
-	    // FIXME: not sure about alignment.
-	    Memory alignedMemory = memory.align(4);
-	    memory.clear();
-	    Pointer pointer = alignedMemory.share(0);
+            int numberOfObjectsValue = numberOfObjects.intValue();
+            if (numberOfObjectsValue <= 0) {
+                // instantiateModel() in fmuTemplate.c
+                // will try to allocate 0 reals, integers, booleans or
+                // strings.
+                // However, instantiateModel() later checks to see if
+                // any of the allocated spaces are null and fails with
+                // "out of memory" if they are null.
+                numberOfObjectsValue = 1;
+            }
+            // FIXME: Perhaps the +4 is needed for the align command to work below?
+            int bytes = numberOfObjectsValue * size.intValue() + 4;
+            Memory memory = new Memory(bytes);
+            // FIXME: not sure about alignment.
+            Memory alignedMemory = memory.align(4);
+            memory.clear();
+            Pointer pointer = alignedMemory.share(0);
 
-	    // Need to keep a reference so the memory does not get gc'd.
-	    // Here, we keep a reference to both the Pointer and the Memory.
-	    // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html
-	    pointers.put(pointer, memory);
+            // Need to keep a reference so the memory does not get gc'd.
+            // Here, we keep a reference to both the Pointer and the Memory.
+            // See http://osdir.com/ml/java.jna.user/2008-09/msg00065.html
+            pointers.put(pointer, memory);
 
-	    return pointer;
-	}
+            return pointer;
+        }
 
-	/** Keep references to memory that has been allocated and
-	 *  avoid problems with the memory being garbage collected.
-	 *  FindBugs suggests that this be final.
-	 */
-	public static final Map<Pointer, Memory> pointers = new HashMap<Pointer, Memory>();
+        /** Keep references to memory that has been allocated and
+         *  avoid problems with the memory being garbage collected.
+         *  FindBugs suggests that this be final.
+         */
+        public static final Map<Pointer, Memory> pointers = new HashMap<Pointer, Memory>();
     }
 
     /** A class providing a callback method that frees memory.
      */
     public class FMUFreeMemory implements FMICallbackFreeMemory {
-	/** Free memory.
-	 *  @param object The object to be freed.
-	 */
-	@Override
-	public void apply(Pointer object) {
-	    FMUAllocateMemory.pointers.remove(object);
-	}
+        /** Free memory.
+         *  @param object The object to be freed.
+         */
+        @Override
+        public void apply(Pointer object) {
+            FMUAllocateMemory.pointers.remove(object);
+        }
     }
 
     /** A callback for when the step is finished. */
     public class FMUStepFinished implements FMIStepFinished {
-	/** The step is finished.
-	 *  @param fmiComponent The FMI component that was instantiate.
-	 *  @param status The status flag.  See the FMI documentation.
-	 */
-	@Override
-	public void apply(Pointer fmiComponent, int status) {
-	    // FIXME: More should be done here.
-	    System.out.println("Java fmiStepFinished: " + fmiComponent + " "
-		    + status);
-	}
+        /** The step is finished.
+         *  @param fmiComponent The FMI component that was instantiate.
+         *  @param status The status flag.  See the FMI documentation.
+         */
+        @Override
+        public void apply(Pointer fmiComponent, int status) {
+            // FIXME: More should be done here.
+            System.out.println("Java fmiStepFinished: " + fmiComponent + " "
+                    + status);
+        }
     };
 }

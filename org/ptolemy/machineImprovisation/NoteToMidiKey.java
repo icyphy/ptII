@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.machineImprovisation;
 
-import org.ptolemy.machineImprovisation.MusicSpecs;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;

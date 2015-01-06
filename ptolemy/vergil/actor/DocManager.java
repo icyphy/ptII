@@ -1391,17 +1391,4 @@ public class DocManager extends HandlerBase {
 
     /** The version field. */
     private String _version;
-
-    /** The NamedObj class, used to check to see if the class we are
-     *  looking for is assignable from NamedObj.  If it is not, we look
-     *  for the codeDoc .html file.
-     */
-    private static Class _namedObjClass;
-    static {
-        try {
-            _namedObjClass = Class.forName("ptolemy.kernel.util.NamedObj");
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 }

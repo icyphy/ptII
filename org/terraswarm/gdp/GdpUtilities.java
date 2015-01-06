@@ -34,7 +34,6 @@ import java.util.TimeZone;
 
 import org.ptolemy.fmi.NativeSizeT;
 
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 

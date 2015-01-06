@@ -33,13 +33,11 @@ import java.nio.charset.Charset;
 
 import org.ptolemy.fmi.FMI20CallbackFunctions;
 import org.ptolemy.fmi.FMICallbackFunctions;
-import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMULibrary;
 
 import com.sun.jna.Function;
-import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
@@ -153,7 +151,7 @@ public class FMUCoSimulation extends FMUDriver {
     @Override
     public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName)
-                    throws Exception {
+            throws Exception {
 
         // Avoid a warning from FindBugs.
         _setEnableLogging(enableLogging);
@@ -162,7 +160,7 @@ public class FMUCoSimulation extends FMUDriver {
         FMIModelDescription fmiModelDescription = FMUFile
                 .parseFMUFile(fmuFileName);
 
-        // Load the shared library.  
+        // Load the shared library.
         _nativeLibrary = fmiModelDescription.getNativeLibrary();
 
         // The modelName may have spaces in it.
@@ -175,16 +173,16 @@ public class FMUCoSimulation extends FMUDriver {
         // Timeout in ms., 0 means wait forever.
         double timeout = 1000;
         // There is no simulator UI.
-	// FMI-2.0, so we have two variables.
+        // FMI-2.0, so we have two variables.
         byte visible = 0;
-	int toBeVisibleFMI2 = 0;
+        int toBeVisibleFMI2 = 0;
 
         // Run the simulator without user interaction.
         byte interactive = 0;
 
         // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
         byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
- 	int loggingOnFMI2 = _enableLogging ? 1 : 0;
+        int loggingOnFMI2 = _enableLogging ? 1 : 0;
 
         _fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
 
@@ -200,24 +198,24 @@ public class FMUCoSimulation extends FMUDriver {
                     .getFmiFunction("fmiInstantiateSlave");
             fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                     new Object[] { _modelIdentifier, fmiModelDescription.guid,
-                            fmuLocation, mimeType, timeout, visible,
-                            interactive, callbacks, loggingOn });
+                fmuLocation, mimeType, timeout, visible,
+                interactive, callbacks, loggingOn });
 
         } else {
             // FMI 1.5 and greater.
-	    // In FMI-1.5 and FMI-2.0, this is a pointer to the structure, which
-	    // is by
-	    // default how a subclass of Structure is handled, so there is no
-	    // need for the inner class ByValue, as above.
+            // In FMI-1.5 and FMI-2.0, this is a pointer to the structure, which
+            // is by
+            // default how a subclass of Structure is handled, so there is no
+            // need for the inner class ByValue, as above.
             FMI20CallbackFunctions callbacks20 = new FMI20CallbackFunctions(
                     new FMULibrary.FMULogger(fmiModelDescription),
                     fmiModelDescription.getFMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished(),
-		    // FIXME: It is not clear if we should pass
-		    // fmiComponent here.  Instead, we should
-		    // pass an environment?  See the spec
-		    fmiComponent  );
+                    // FIXME: It is not clear if we should pass
+                    // fmiComponent here.  Instead, we should
+                    // pass an environment?  See the spec
+                    fmiComponent);
             Function fmiInstantiateFunction = fmiModelDescription
                     .getFmiFunction("fmiInstantiate");
 
@@ -233,9 +231,9 @@ public class FMUCoSimulation extends FMUDriver {
             }
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
                     Pointer.class, new Object[] { _modelIdentifier, fmiType,
-                            fmiModelDescription.guid,
-                            fmiModelDescription.fmuResourceLocation, callbacks20,
-                            toBeVisibleFMI2, loggingOnFMI2 });
+                        fmiModelDescription.guid,
+                        fmiModelDescription.fmuResourceLocation,
+                            callbacks20, toBeVisibleFMI2, loggingOnFMI2 });
         }
 
         if (fmiComponent.equals(Pointer.NULL)) {
@@ -280,7 +278,8 @@ public class FMUCoSimulation extends FMUDriver {
             //file = new PrintStream(outputFile);
 
             // Fix for FindBugs: Dm: Reliance on default encoding.
-            file = new PrintStream(outputFileName, Charset.defaultCharset().toString());
+            file = new PrintStream(outputFileName, Charset.defaultCharset()
+                    .toString());
             if (enableLogging) {
                 System.out.println("FMUCoSimulation: about to write header");
             }
@@ -303,7 +302,7 @@ public class FMUCoSimulation extends FMUDriver {
                 }
                 invoke(doStep, new Object[] { fmiComponent, time, stepSize,
                         (byte) 1 }, "doStep(): Could not simulate, time was "
-                        + time + ": ");
+                                + time + ": ");
                 time += stepSize;
                 // Generate a line for this step
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
@@ -324,7 +323,8 @@ public class FMUCoSimulation extends FMUDriver {
                         new Object[] { fmiComponent },
                         "Could not terminate slave:");
                 // In FMI-2.0, fmi2FreeInstance() returns void.
-                Function function = fmiModelDescription.getFmiFunction("fmiFreeInstance");
+                Function function = fmiModelDescription
+                        .getFmiFunction("fmiFreeInstance");
                 function.invoke(new Object[] { fmiComponent });
             }
 

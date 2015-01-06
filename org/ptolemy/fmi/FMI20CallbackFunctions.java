@@ -82,9 +82,9 @@ public class FMI20CallbackFunctions extends Structure {
      * contains the FMI call backs.
      */
     public FMI20CallbackFunctions() {
-	super();
-	// Don't call initFieldOrder with JNA later than jna-3.5.0
-	//initFieldOrder();
+        super();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** Instantiate a Java representation of the C structure that
@@ -99,26 +99,26 @@ public class FMI20CallbackFunctions extends Structure {
      * (C type: FmiStepFinished)
      */
     public FMI20CallbackFunctions(FMICallbackLogger logger,
-	    FMICallbackAllocateMemory allocateMemory,
+            FMICallbackAllocateMemory allocateMemory,
             FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished,
             Pointer componentEnvironment) {
-	super();
-	this.logger = logger;
-	this.allocateMemory = allocateMemory;
-	this.freeMemory = freeMemory;
-	this.stepFinished = stepFinished;
+        super();
+        this.logger = logger;
+        this.allocateMemory = allocateMemory;
+        this.freeMemory = freeMemory;
+        this.stepFinished = stepFinished;
         this.componentEnvironment = componentEnvironment;
 
-	// Avoid crashes by aligning.
-	// See
-	// http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
-	//setAlignType(Structure.ALIGN_DEFAULT);
-	//setAlignType(Structure.ALIGN_GNUC);
-	//setAlignType(Structure.ALIGN_MSVC);
-	//setAlignType(Structure.ALIGN_NONE;
+        // Avoid crashes by aligning.
+        // See
+        // http://today.java.net/article/2009/11/11/simplify-native-code-access-jna
+        //setAlignType(Structure.ALIGN_DEFAULT);
+        //setAlignType(Structure.ALIGN_GNUC);
+        //setAlignType(Structure.ALIGN_MSVC);
+        //setAlignType(Structure.ALIGN_NONE;
 
-	// Don't call initFieldOrder with JNA later than jna-3.5.0
-	//initFieldOrder();
+        // Don't call initFieldOrder with JNA later than jna-3.5.0
+        //initFieldOrder();
     }
 
     /** C type: fmiCallbackLogger. */
@@ -142,8 +142,8 @@ public class FMI20CallbackFunctions extends Structure {
      */
     @Override
     protected List getFieldOrder() {
-	return Arrays.asList(new String[] { "logger", "allocateMemory",
-               "freeMemory", "stepFinished", "componentEnvironment" });
+        return Arrays.asList(new String[] { "logger", "allocateMemory",
+                "freeMemory", "stepFinished", "componentEnvironment" });
     }
 
     /** Set the initialization order of the fields so that the order
@@ -152,10 +152,10 @@ public class FMI20CallbackFunctions extends Structure {
      */
     @Deprecated
     protected void initFieldOrder() {
-	// Note that the name of this method does not have a leading
-	// underscore because the name of the protected method in the
-	// parent class does not have an underscore.
-	setFieldOrder(new String[] { "logger", "allocateMemory", "freeMemory",
-               "stepFinished", "componentEnvironment" });
+        // Note that the name of this method does not have a leading
+        // underscore because the name of the protected method in the
+        // parent class does not have an underscore.
+        setFieldOrder(new String[] { "logger", "allocateMemory", "freeMemory",
+                "stepFinished", "componentEnvironment" });
     }
 }

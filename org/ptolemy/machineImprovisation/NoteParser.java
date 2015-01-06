@@ -33,9 +33,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.ptolemy.machineImprovisation.MusicSpecs;
-import org.ptolemy.machineImprovisation.Note;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;

@@ -9,7 +9,7 @@ do
             echo "Skipping $file, it probably is not a text file"
         else 
 	    line=""
-	    line=`od -c $file | egrep '\\\\\r' | head -1`
+	    line=`od -c $file | egrep '\\\r' | head -1`
 	    if [ "$line" != "" ]; then
 	        echo "$file  has controlms"
 	        #echo "$line"

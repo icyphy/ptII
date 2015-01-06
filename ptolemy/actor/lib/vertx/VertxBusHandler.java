@@ -32,7 +32,6 @@ package ptolemy.actor.lib.vertx;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;

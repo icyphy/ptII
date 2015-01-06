@@ -55,7 +55,6 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;

@@ -30,22 +30,17 @@ package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.act
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Node;
-
-import java.util.List;
-
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 ////Director

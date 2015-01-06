@@ -34,7 +34,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;

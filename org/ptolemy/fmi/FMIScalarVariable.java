@@ -80,139 +80,139 @@ public class FMIScalarVariable {
      *  @param element The XML Element that contains attributes.
      */
     public FMIScalarVariable(FMIModelDescription fmiModelDescription,
-	    Element element) {
-	this.fmiModelDescription = fmiModelDescription;
-	name = element.getAttribute("name");
-	description = element.getAttribute("description");
+            Element element) {
+        this.fmiModelDescription = fmiModelDescription;
+        name = element.getAttribute("name");
+        description = element.getAttribute("description");
 
-	alias = Alias.noAlias;
-	if (element.hasAttribute("alias")) {
-	    String attribute = element.getAttribute("alias");
-	    if (attribute.equals("alias")) {
-		alias = Alias.alias;
-	    } else if (attribute.equals("negatedAlias")) {
-		// In bouncingBall, 'g' has a negatedAlias.
-		alias = Alias.negatedAlias;
-	    } else if (attribute.equals("noAlias")) {
-		// FIXME: I'm not sure if alias="noAlias" ever appears
-		alias = Alias.noAlias;
-	    } else {
-		throw new IllegalArgumentException("alias \"" + attribute
-		        + "\" must be one of alias, negatedAlias or noAlias"
-		        + " in " + name + ", " + description);
-	    }
-	}
+        alias = Alias.noAlias;
+        if (element.hasAttribute("alias")) {
+            String attribute = element.getAttribute("alias");
+            if (attribute.equals("alias")) {
+                alias = Alias.alias;
+            } else if (attribute.equals("negatedAlias")) {
+                // In bouncingBall, 'g' has a negatedAlias.
+                alias = Alias.negatedAlias;
+            } else if (attribute.equals("noAlias")) {
+                // FIXME: I'm not sure if alias="noAlias" ever appears
+                alias = Alias.noAlias;
+            } else {
+                throw new IllegalArgumentException("alias \"" + attribute
+                        + "\" must be one of alias, negatedAlias or noAlias"
+                        + " in " + name + ", " + description);
+            }
+        }
 
-	causality = Causality.internal;
-	// We have fmiVersion=1.0, 1.5 and 2.0
-	if (fmiModelDescription.fmiVersion.compareTo("2.0") >= 0) {
-	    causality = Causality.local;
-	}
+        causality = Causality.internal;
+        // We have fmiVersion=1.0, 1.5 and 2.0
+        if (fmiModelDescription.fmiVersion.compareTo("2.0") >= 0) {
+            causality = Causality.local;
+        }
 
-	if (element.hasAttribute("causality")) {
-	    String attribute = element.getAttribute("causality");
+        if (element.hasAttribute("causality")) {
+            String attribute = element.getAttribute("causality");
 
-	    // FIXME: Check this for 2.0:
-	    String choices = "calculatedParameter, input, internal, local, output, none or parameter";
-	    if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
-		choices = "input,  internal, output, or none";
-	    }
-	    String message = "must be one of " + choices + " in " + name + ", "
-		    + description;
+            // FIXME: Check this for 2.0:
+            String choices = "calculatedParameter, input, internal, local, output, none or parameter";
+            if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+                choices = "input,  internal, output, or none";
+            }
+            String message = "must be one of " + choices + " in " + name + ", "
+                    + description;
 
-	    if (attribute.equals("calculatedParameter")) {
-		// FMI-2.0rc1
-		_fmi2AttributeCheck(fmiModelDescription, attribute, message);
-		causality = Causality.calculatedParameter;
-	    } else if (attribute.equals("input")) {
-		causality = Causality.input;
-	    } else if (attribute.equals("internal")) {
-		causality = Causality.internal;
-	    } else if (attribute.equals("local")) {
-		// FMI-2.0rc1
-		_fmi2AttributeCheck(fmiModelDescription, attribute, message);
-		causality = Causality.local;
-	    } else if (attribute.equals("output")) {
-		causality = Causality.output;
-	    } else if (attribute.equals("none")) {
-		causality = Causality.none;
-	    } else if (attribute.equals("parameter")) {
-		// FMI-2.0rc1
-		_fmi2AttributeCheck(fmiModelDescription, attribute, message);
-		causality = Causality.parameter;
-	    } else {
-		throw new IllegalArgumentException("causality \"" + attribute
-		        + "\" " + message);
-	    }
-	}
+            if (attribute.equals("calculatedParameter")) {
+                // FMI-2.0rc1
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                causality = Causality.calculatedParameter;
+            } else if (attribute.equals("input")) {
+                causality = Causality.input;
+            } else if (attribute.equals("internal")) {
+                causality = Causality.internal;
+            } else if (attribute.equals("local")) {
+                // FMI-2.0rc1
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                causality = Causality.local;
+            } else if (attribute.equals("output")) {
+                causality = Causality.output;
+            } else if (attribute.equals("none")) {
+                causality = Causality.none;
+            } else if (attribute.equals("parameter")) {
+                // FMI-2.0rc1
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                causality = Causality.parameter;
+            } else {
+                throw new IllegalArgumentException("causality \"" + attribute
+                        + "\" " + message);
+            }
+        }
 
-	if (element.hasAttribute("valueReference")) {
-	    String valueReferenceString = element
-		    .getAttribute("valueReference");
-	    try {
-		valueReference = Long.parseLong(valueReferenceString);
-	    } catch (NumberFormatException ex) {
-		throw new NumberFormatException(
-		        "Failed to parse valueReference "
-		                + valueReferenceString + " of " + name);
-	    }
-	}
-	if (element.hasAttribute("variability")) {
-	    String attribute = element.getAttribute("variability");
+        if (element.hasAttribute("valueReference")) {
+            String valueReferenceString = element
+                    .getAttribute("valueReference");
+            try {
+                valueReference = Long.parseLong(valueReferenceString);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException(
+                        "Failed to parse valueReference "
+                                + valueReferenceString + " of " + name);
+            }
+        }
+        if (element.hasAttribute("variability")) {
+            String attribute = element.getAttribute("variability");
 
-	    // FIXME: Check this for 2.0:
-	    String choices = "constant, continuous, fixed, discrete or tunable.";
-	    if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
-		choices = "constant, continuous, discrete or parameter.";
-	    }
-	    String message = "must be one of " + choices + " in " + name + ", "
-		    + description;
+            // FIXME: Check this for 2.0:
+            String choices = "constant, continuous, fixed, discrete or tunable.";
+            if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+                choices = "constant, continuous, discrete or parameter.";
+            }
+            String message = "must be one of " + choices + " in " + name + ", "
+                    + description;
 
-	    if (attribute.equals("constant")) {
-		variability = Variability.constant;
-	    } else if (attribute.equals("continuous")) {
-		variability = Variability.continuous;
-	    } else if (attribute.equals("discrete")) {
-		variability = Variability.discrete;
-	    } else if (attribute.equals("parameter")) {
-		variability = Variability.parameter;
-	    } else if (attribute.equals("fixed")) {
-		// FMI-2.0
-		_fmi2AttributeCheck(fmiModelDescription, attribute, message);
-		variability = Variability.fixed;
-	    } else if (attribute.equals("tunable")) {
-		variability = Variability.tunable;
-	    } else {
-		throw new IllegalArgumentException("variability \"" + attribute
-		        + "\"" + message);
-	    }
-	}
+            if (attribute.equals("constant")) {
+                variability = Variability.constant;
+            } else if (attribute.equals("continuous")) {
+                variability = Variability.continuous;
+            } else if (attribute.equals("discrete")) {
+                variability = Variability.discrete;
+            } else if (attribute.equals("parameter")) {
+                variability = Variability.parameter;
+            } else if (attribute.equals("fixed")) {
+                // FMI-2.0
+                _fmi2AttributeCheck(fmiModelDescription, attribute, message);
+                variability = Variability.fixed;
+            } else if (attribute.equals("tunable")) {
+                variability = Variability.tunable;
+            } else {
+                throw new IllegalArgumentException("variability \"" + attribute
+                        + "\"" + message);
+            }
+        }
 
-	directDependency = new HashSet<String>();
+        directDependency = new HashSet<String>();
 
-	NodeList children = element.getChildNodes(); // NodeList. Worst. Ever.
-	for (int i = 0; i < children.getLength(); i++) {
-	    Node child = element.getChildNodes().item(i);
-	    if (child instanceof Element) {
-		Element childElement = (Element) child;
-		// Check to see if the childElement is DirectDependency.  If it is, then process
-		// it.  If not, then we assume that it is a type and set _typeName.
-		// There was a bug where a modelDescription.xml file from Dymola had
-		// <ScalarVariable
-		//  name="Troo_1"
-		//  valueReference="335544320"
-		//  causality="output">
-		//  <Real
-		//   declaredType="Modelica.Blocks.Interfaces.RealOutput"
-		//   unit="degC"
-		//   min="-273.15"/>
-		// <DirectDependency/>
-		// </ScalarVariable>
-		// and we got:
-		// Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
-		//
-		String nodeName = childElement.getNodeName();
-                // Handle FMI-1.0 DirectDependency elements.  
+        NodeList children = element.getChildNodes(); // NodeList. Worst. Ever.
+        for (int i = 0; i < children.getLength(); i++) {
+            Node child = element.getChildNodes().item(i);
+            if (child instanceof Element) {
+                Element childElement = (Element) child;
+                // Check to see if the childElement is DirectDependency.  If it is, then process
+                // it.  If not, then we assume that it is a type and set _typeName.
+                // There was a bug where a modelDescription.xml file from Dymola had
+                // <ScalarVariable
+                //  name="Troo_1"
+                //  valueReference="335544320"
+                //  causality="output">
+                //  <Real
+                //   declaredType="Modelica.Blocks.Interfaces.RealOutput"
+                //   unit="degC"
+                //   min="-273.15"/>
+                // <DirectDependency/>
+                // </ScalarVariable>
+                // and we got:
+                // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
+                //
+                String nodeName = childElement.getNodeName();
+                // Handle FMI-1.0 DirectDependency elements.
                 // $PTII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuous1.xml
                 // and $PTII/ptolemy/actor/lib/fmi/test/auto/FMUStepCounterContinuousTwoFMUs1.xml
                 // require this code.
@@ -228,7 +228,7 @@ public class FMIScalarVariable {
                             Node name = element.getChildNodes().item(i);
                             if (name instanceof Element) {
                                 String childType = ((Element) name)
-                                    .getNodeName();
+                                        .getNodeName();
                                 if (childType.equals("Name")) {
                                     // FIXME: Is getNodeValue() the way to get "foo"
                                     // from <Name>foo</Name>?
@@ -239,40 +239,40 @@ public class FMIScalarVariable {
                         }
                     }
                 } else if (nodeName.equals("isLinear")
-		        || nodeName.equals("VariableCategory")) {
-		    if (!_errorElements.contains(_typeName)) {
-			_errorElements.add(_typeName);
-			System.out.println(element + ": Child element \""
-			        + nodeName + "\" not implemented yet.");
-		    }
-		} else {
-		    _typeName = nodeName;
-		    if (_typeName.equals("Boolean")) {
-			type = new FMIBooleanType(name, description,
-			        childElement);
-		    } else if (_typeName.equals("Enumeration")) {
-			type = new FMIIntegerType(name, description,
-			        childElement);
-			_typeName = "Integer";
-		    } else if (_typeName.equals("Integer")) {
-			type = new FMIIntegerType(name, description,
-			        childElement);
-		    } else if (_typeName.equals("Real")) {
-			type = new FMIRealType(name, description, childElement);
-		    } else if (_typeName.equals("String")) {
-			type = new FMIStringType(name, description,
-			        childElement);
-		    } else {
-			if (!_errorElements.contains(_typeName)) {
-			    _errorElements.add(_typeName);
-			    System.out.println(element + ": Child element \""
-				    + _typeName + "\" not implemented yet.");
-			}
-			_typeName = "skip";
-		    }
-		}
-	    }
-	}
+                        || nodeName.equals("VariableCategory")) {
+                    if (!_errorElements.contains(_typeName)) {
+                        _errorElements.add(_typeName);
+                        System.out.println(element + ": Child element \""
+                                + nodeName + "\" not implemented yet.");
+                    }
+                } else {
+                    _typeName = nodeName;
+                    if (_typeName.equals("Boolean")) {
+                        type = new FMIBooleanType(name, description,
+                                childElement);
+                    } else if (_typeName.equals("Enumeration")) {
+                        type = new FMIIntegerType(name, description,
+                                childElement);
+                        _typeName = "Integer";
+                    } else if (_typeName.equals("Integer")) {
+                        type = new FMIIntegerType(name, description,
+                                childElement);
+                    } else if (_typeName.equals("Real")) {
+                        type = new FMIRealType(name, description, childElement);
+                    } else if (_typeName.equals("String")) {
+                        type = new FMIStringType(name, description,
+                                childElement);
+                    } else {
+                        if (!_errorElements.contains(_typeName)) {
+                            _errorElements.add(_typeName);
+                            System.out.println(element + ": Child element \""
+                                    + _typeName + "\" not implemented yet.");
+                        }
+                        _typeName = "skip";
+                    }
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -285,9 +285,9 @@ public class FMIScalarVariable {
      *  @see #setBoolean(Pointer, boolean)
      */
     public boolean getBoolean(Pointer fmiComponent) {
-	IntBuffer valueBuffer = IntBuffer.allocate(1);
-	_getValue(fmiComponent, valueBuffer, FMIBooleanType.class);
-	return valueBuffer.get(0) != 0;
+        IntBuffer valueBuffer = IntBuffer.allocate(1);
+        _getValue(fmiComponent, valueBuffer, FMIBooleanType.class);
+        return valueBuffer.get(0) != 0;
     }
 
     /** Return the value of this variable as a double.
@@ -299,22 +299,22 @@ public class FMIScalarVariable {
      *  @see #setDouble(Pointer, double)
      */
     public double getDouble(Pointer fmiComponent) {
-	double result;
-	//IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-	//        (int) valueReference);
-	if (type instanceof FMIIntegerType) {
-	    IntBuffer valueBuffer = IntBuffer.allocate(1);
-	    _getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
-	    result = valueBuffer.get(0);
-	} else if (type instanceof FMIRealType) {
-	    DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
-	    _getValue(fmiComponent, valueBuffer, FMIRealType.class);
-	    result = valueBuffer.get(0);
-	} else {
-	    // FIXME: Why a runtime exception?
-	    throw new RuntimeException("Type " + type + " not supported.");
-	}
-	return result;
+        double result;
+        //IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+        //        (int) valueReference);
+        if (type instanceof FMIIntegerType) {
+            IntBuffer valueBuffer = IntBuffer.allocate(1);
+            _getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
+            result = valueBuffer.get(0);
+        } else if (type instanceof FMIRealType) {
+            DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
+            _getValue(fmiComponent, valueBuffer, FMIRealType.class);
+            result = valueBuffer.get(0);
+        } else {
+            // FIXME: Why a runtime exception?
+            throw new RuntimeException("Type " + type + " not supported.");
+        }
+        return result;
     }
 
     /** Return the value of this variable as an int.
@@ -324,9 +324,9 @@ public class FMIScalarVariable {
      *  @see #setInt(Pointer, int)
      */
     public int getInt(Pointer fmiComponent) {
-	IntBuffer valueBuffer = IntBuffer.allocate(1);
-	_getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
-	return valueBuffer.get(0);
+        IntBuffer valueBuffer = IntBuffer.allocate(1);
+        _getValue(fmiComponent, valueBuffer, FMIIntegerType.class);
+        return valueBuffer.get(0);
     }
 
     /** Return the value of this variable as a String.
@@ -336,16 +336,16 @@ public class FMIScalarVariable {
      *  @see #setString(Pointer, String)
      */
     public String getString(Pointer fmiComponent) {
-	PointerByReference pointerByReference = new PointerByReference();
-	_getValue(fmiComponent, pointerByReference, FMIStringType.class);
-	Pointer reference = pointerByReference.getValue();
-	String result = null;
-	if (reference != null) {
-	    // If _fmiGetString is not supported, then we might
-	    // have reference == null.
-	    result = reference.getString(0);
-	}
-	return result;
+        PointerByReference pointerByReference = new PointerByReference();
+        _getValue(fmiComponent, pointerByReference, FMIStringType.class);
+        Pointer reference = pointerByReference.getValue();
+        String result = null;
+        if (reference != null) {
+            // If _fmiGetString is not supported, then we might
+            // have reference == null.
+            result = reference.getString(0);
+        }
+        return result;
     }
 
     /** Set the value of this variable as a boolean.
@@ -355,9 +355,9 @@ public class FMIScalarVariable {
      *  @see #getBoolean(Pointer fmiComponent)
      */
     public void setBoolean(Pointer fmiComponent, boolean value) {
-	IntBuffer valueBuffer = IntBuffer.allocate(1).put(0,
-	        value ? (byte) 1 : (byte) 0);
-	_setValue(fmiComponent, valueBuffer, FMIBooleanType.class);
+        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0,
+                value ? (byte) 1 : (byte) 0);
+        _setValue(fmiComponent, valueBuffer, FMIBooleanType.class);
     }
 
     /** Set the value of this variable as a double.
@@ -367,8 +367,8 @@ public class FMIScalarVariable {
      *  @see #getDouble(Pointer)
      */
     public void setDouble(Pointer fmiComponent, double value) {
-	DoubleBuffer valueBuffer = DoubleBuffer.allocate(1).put(0, value);
-	_setValue(fmiComponent, valueBuffer, FMIRealType.class);
+        DoubleBuffer valueBuffer = DoubleBuffer.allocate(1).put(0, value);
+        _setValue(fmiComponent, valueBuffer, FMIRealType.class);
     }
 
     /** Set the value of this variable as an integer.
@@ -378,9 +378,9 @@ public class FMIScalarVariable {
      *  @see #getInt(Pointer)
      */
     public void setInt(Pointer fmiComponent, int value) {
-	IntBuffer valueBuffer = IntBuffer.allocate(1).put(0, value);
-	// FIXME: What about enums?
-	_setValue(fmiComponent, valueBuffer, FMIIntegerType.class);
+        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0, value);
+        // FIXME: What about enums?
+        _setValue(fmiComponent, valueBuffer, FMIIntegerType.class);
     }
 
     /** Set the value of this variable as a String.
@@ -392,17 +392,17 @@ public class FMIScalarVariable {
      *  @see #getString(Pointer)
      */
     public void setString(Pointer fmiComponent, String value) {
-	PointerByReference pointerByReference = new PointerByReference();
-	// We use FMUAllocateMemory so that we can retain a reference
-	// to the allocated memory and the memory does not get gc'd.
+        PointerByReference pointerByReference = new PointerByReference();
+        // We use FMUAllocateMemory so that we can retain a reference
+        // to the allocated memory and the memory does not get gc'd.
 
-	// Include the trailing null character.
-	Pointer reference = fmiModelDescription.getFMUAllocateMemory().apply(
-	        new NativeSizeT(value.length() + 1), new NativeSizeT(1));
-	reference.setString(0, value);
-	pointerByReference.setValue(reference);
+        // Include the trailing null character.
+        Pointer reference = fmiModelDescription.getFMUAllocateMemory().apply(
+                new NativeSizeT(value.length() + 1), new NativeSizeT(1));
+        reference.setString(0, value);
+        pointerByReference.setValue(reference);
 
-	_setValue(fmiComponent, pointerByReference, FMIStringType.class);
+        _setValue(fmiComponent, pointerByReference, FMIStringType.class);
     }
 
     //    public String getTypeName() {
@@ -416,44 +416,44 @@ public class FMIScalarVariable {
      *  Alias variables occur during assignment operations.
      */
     public enum Alias {
-	/** This is an alias variable, use the valueReference handle
-	 * to set or get the actual value.
-	 */
-	alias,
-	/** This is an alias value, but the value returned must be
-	 * negated.
-	 */
-	negatedAlias,
-	/** This is not an alias (the default). */
-	noAlias
+        /** This is an alias variable, use the valueReference handle
+         * to set or get the actual value.
+         */
+        alias,
+        /** This is an alias value, but the value returned must be
+         * negated.
+         */
+        negatedAlias,
+        /** This is not an alias (the default). */
+        noAlias
     };
 
     /** Acceptable values for the causality xml attribute.
      *  Causality defines the visibility of the variable from outside of the model.
      */
     public enum Causality {
-	/** New in FMI-2.0rc1. */
-	calculatedParameter,
-	/** The value is defined from the outside.  The value is
-	 * initially the value of the start attribute.
-	 */
-	input,
-	/** After initialization, a result may be stored.
-	 *  However, the value cannot be used in a connection.
-	 *  The default Causality is "internal".
-	 */
-	internal,
-	/** New in FMI-2.0rc1. */
-	local,
-	/** The value can be read from the outside with a connection.
-	 */
-	output,
-	/** New in FMI-2.0rc1. */
-	parameter,
-	/** The value does not affect computation.  Typically, "none"
-	 *  values are tool specific and used to enable logging.
-	 */
-	none
+        /** New in FMI-2.0rc1. */
+        calculatedParameter,
+        /** The value is defined from the outside.  The value is
+         * initially the value of the start attribute.
+         */
+        input,
+        /** After initialization, a result may be stored.
+         *  However, the value cannot be used in a connection.
+         *  The default Causality is "internal".
+         */
+        internal,
+        /** New in FMI-2.0rc1. */
+        local,
+        /** The value can be read from the outside with a connection.
+         */
+        output,
+        /** New in FMI-2.0rc1. */
+        parameter,
+        /** The value does not affect computation.  Typically, "none"
+         *  values are tool specific and used to enable logging.
+         */
+        none
     }
 
     /** Acceptable values for the variability xml attribute.
@@ -461,26 +461,26 @@ public class FMIScalarVariable {
      *  which determines when the value should be read.
      */
     public enum Variability {
-	/** The value does not change.
-	 */
-	constant,
-	/** The value changes at any moment.  A continuous
-	 *  variable must be of type Real.
-	 *  The default Variability is "continuous".
-	 */
-	continuous,
-	/** The value only changes during initialization
-	 *  and at event instances.
-	 */
-	discrete,
-	/** The value does not change after initialization.
-	 */
-	parameter,
-	/** FMI-2.0. */
-	fixed,
-	/** The value is constant between external events.
-	 */
-	tunable
+        /** The value does not change.
+         */
+        constant,
+        /** The value changes at any moment.  A continuous
+         *  variable must be of type Real.
+         *  The default Variability is "continuous".
+         */
+        continuous,
+        /** The value only changes during initialization
+         *  and at event instances.
+         */
+        discrete,
+        /** The value does not change after initialization.
+         */
+        parameter,
+        /** FMI-2.0. */
+        fixed,
+        /** The value is constant between external events.
+         */
+        tunable
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -506,7 +506,7 @@ public class FMIScalarVariable {
 
     /** The value of the type xml attribute. */
     public FMIType type;
-    
+
     /** The boolean attribute for state variable. */
     public boolean isState = false;
 
@@ -533,24 +533,24 @@ public class FMIScalarVariable {
      *  @param getOrSetFunction the fmiGet or fmiSet function.
      */
     private void _getOrSetValue(Pointer fmiComponent, Object valueBuffer,
-	    Class typeClass, Function getOrSetFunction) {
-	// This is syntactic sugar that helps us avoid duplicated code.
-	if (!typeClass.isInstance(type)) {
-	    throw new RuntimeException("Variable " + name + " is not a "
-		    + typeClass.getName() + ", it is a "
-		    + type.getClass().getName());
-	}
-	IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
-	        (int) valueReference);
-	int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
-	        fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-	        valueBuffer })).intValue();
-	if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-	    throw new RuntimeException("Could not get or set \"" + name
-		    + "\" as a " + typeClass.getName() + ", it was of type \""
-		    + _typeName + "\": "
-		    + FMULogUtilities.fmiStatusToString(fmiFlag));
-	}
+            Class typeClass, Function getOrSetFunction) {
+        // This is syntactic sugar that helps us avoid duplicated code.
+        if (!typeClass.isInstance(type)) {
+            throw new RuntimeException("Variable " + name + " is not a "
+                    + typeClass.getName() + ", it is a "
+                    + type.getClass().getName());
+        }
+        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                (int) valueReference);
+        int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
+                fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                valueBuffer })).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new RuntimeException("Could not get or set \"" + name
+                    + "\" as a " + typeClass.getName() + ", it was of type \""
+                    + _typeName + "\": "
+                    + FMULogUtilities.fmiStatusToString(fmiFlag));
+        }
     }
 
     /** If the fmi version is not 2.0 or later, then throw
@@ -564,13 +564,13 @@ public class FMIScalarVariable {
      *  is not 2.0 or later.
      */
     private void _fmi2AttributeCheck(FMIModelDescription fmiModelDescription,
-	    String attribute, String message) throws IllegalArgumentException {
-	if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
-	    throw new IllegalArgumentException("The attribute \"" + attribute
-		    + "\" is only accepted in FMI-2.0 and later.  "
-		    + "The fmiVersion was \"" + fmiModelDescription + "\"."
-		    + "It " + message);
-	}
+            String attribute, String message) throws IllegalArgumentException {
+        if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+            throw new IllegalArgumentException("The attribute \"" + attribute
+                    + "\" is only accepted in FMI-2.0 and later.  "
+                    + "The fmiVersion was \"" + fmiModelDescription + "\"."
+                    + "It " + message);
+        }
     }
 
     /** Get the value of this variable.
@@ -582,22 +582,22 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _getValue(Pointer fmiComponent, Object valueBuffer,
-	    Class typeClass) {
-	if (_fmiGetFunction == null) {
-	    if (_typeName.equals("skip")) {
-		System.out
-		        .println("Could not process type, it was marked as skip.");
-		return;
-	    }
-	    try {
-		_fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet"
-		        + _typeName);
-	    } catch (IOException ex) {
-		throw new RuntimeException(
-		        "Failed to find the native library.", ex);
-	    }
-	}
-	_getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
+            Class typeClass) {
+        if (_fmiGetFunction == null) {
+            if (_typeName.equals("skip")) {
+                System.out
+                        .println("Could not process type, it was marked as skip.");
+                return;
+            }
+            try {
+                _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet"
+                        + _typeName);
+            } catch (IOException ex) {
+                throw new RuntimeException(
+                        "Failed to find the native library.", ex);
+            }
+        }
+        _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
     }
 
     /** Set the value of this variable.
@@ -609,22 +609,22 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      */
     private void _setValue(Pointer fmiComponent, Object valueBuffer,
-	    Class typeClass) {
-	if (_fmiSetFunction == null) {
-	    if (_typeName.equals("skip")) {
-		System.out
-		        .println("Could not process type, it was marked as skip.");
-		return;
-	    }
-	    try {
-		_fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet"
-		        + _typeName);
-	    } catch (IOException ex) {
-		throw new RuntimeException(
-		        "Failed to find the native library.", ex);
-	    }
-	}
-	_getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
+            Class typeClass) {
+        if (_fmiSetFunction == null) {
+            if (_typeName.equals("skip")) {
+                System.out
+                        .println("Could not process type, it was marked as skip.");
+                return;
+            }
+            try {
+                _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet"
+                        + _typeName);
+            } catch (IOException ex) {
+                throw new RuntimeException(
+                        "Failed to find the native library.", ex);
+            }
+        }
+        _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
     }
 
     ///////////////////////////////////////////////////////////////////

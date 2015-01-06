@@ -52,7 +52,7 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
  */
-
+@SuppressWarnings("serial")
 public class PtolemyWebSocketServlet extends WebSocketServlet {
 
     /** Create a new servlet associated with the given endpoint. */

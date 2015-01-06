@@ -38,7 +38,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;

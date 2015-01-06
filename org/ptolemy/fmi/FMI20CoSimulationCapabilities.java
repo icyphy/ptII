@@ -67,7 +67,7 @@ public class FMI20CoSimulationCapabilities extends FMICapabilities {
      *  @param element The XML Element that contains attributes.
      */
     public FMI20CoSimulationCapabilities(Element element) {
-	super(element);
+        super(element);
     }
 
     ///////////////////////////////////////////////////////////////////

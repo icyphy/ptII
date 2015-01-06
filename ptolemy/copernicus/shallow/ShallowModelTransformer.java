@@ -32,7 +32,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.EntitySootClass;

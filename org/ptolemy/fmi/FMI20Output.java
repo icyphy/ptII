@@ -36,7 +36,7 @@ import org.w3c.dom.Node;
 //// FMI20ContinuousStateDerivative
 
 /**
- * An object that represents the Output of an FMU 
+ * An object that represents the Output of an FMU
  *
  * <p>A Functional Mock-up Unit file is a .fmu file in zip format that
  * contains a .xml file named "modelDescription.xml". In that file,
@@ -70,12 +70,16 @@ public class FMI20Output {
         try {
             index = Integer.parseInt(indexAttr);
         } catch (NumberFormatException ex) {
-            throw new NumberFormatException(
-                    "Node: " + element.getNodeName() + " Failed to parse output variable index " + indexAttr);
+            throw new NumberFormatException("Node: " + element.getNodeName()
+                    + " Failed to parse output variable index " + indexAttr);
         }
         if (index < 1) {
-            throw new IllegalArgumentException("The index for the node \"" + element.getNodeName()
-                    + "\" was " + index + ", which is less than 1.  The index must be greater than or equal to 1, see p. 61 of the FMI-2.0 spec.");
+            throw new IllegalArgumentException(
+                    "The index for the node \""
+                            + element.getNodeName()
+                            + "\" was "
+                            + index
+                            + ", which is less than 1.  The index must be greater than or equal to 1, see p. 61 of the FMI-2.0 spec.");
         }
         // Get the corresponding scalar variable.
         scalarVariable = fmiModelDescription.modelVariables.get(index - 1);
@@ -88,8 +92,7 @@ public class FMI20Output {
             // Substract 1 from the index since the numbering in XML start with 1 whereas the modelVariables start with 0.
             if (dependencies[i].isEmpty()) {
                 continue;
-            }
-            else{
+            } else {
                 try {
                     FMIScalarVariable scalar = fmiModelDescription.modelVariables
                             .get(Integer.parseInt(dependencies[i]) - 1);
