@@ -380,6 +380,8 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
             <command>#!/bin/sh -x
 export PTII=$WORKSPACE
 pwd
+echo &quot;LD_LIBRARY_PATH: $LD_LIBRARY_PATH&quot;
+echo &quot;PATH: $PATH&quot;
 ./configure
 Xvfb :6 -screen 0 1024x768x24 &amp;
 echo &quot;DISPLAY is $DISPLAY, which is set above with the other env variables&quot;
