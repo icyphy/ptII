@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// DerivativeFcn
+//// DerivativeFunction
 
 
 /** Provide an interface for representing derivative functions.
@@ -65,16 +65,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * <li>The count of input variables <i>Nu >= 0</i>.</li>
  * </ul>
  *
- * @author David M. Lorenzetti
+ * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui
  * @version $id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */
-public interface DerivativeFcn {
-
-    // FIXME: Rename this to DerivativeFunction because in Ptolemy,
-    // class names should consist of complete words.
+public interface DerivativeFunction {
 
     
     ///////////////////////////////////////////////////////////////////
@@ -87,7 +84,7 @@ public interface DerivativeFcn {
      *
      * @return Count of state variables.
      */
-    public int getStateCt();
+    public int getStateCount();
 
 
     /** Return the count of input variables.
@@ -96,7 +93,7 @@ public interface DerivativeFcn {
      *
      * @return Count of input variables.
      */
-    public int getInputVarCt();
+    public int getInputVariableCount();
 
 
 	/**
@@ -122,12 +119,12 @@ public interface DerivativeFcn {
      * </ul>
      *
      * @param time Simulation time.
-     * @param xx Vector of state variables at <code>time</code>.
-     * @param uu Vector of input variables at <code>time</code>.
-     * @param xdot (output) Vector of time rates of change of the state variables at <code>time</code>.
+     * @param xx The vector of state variables at <code>time</code>.
+     * @param uu The vector of input variables at <code>time</code>.
+     * @param xdot (output) The vector of time rates of change of the state variables at <code>time</code>.
      * @return Success (0 for success, else user-defined error code).
      */
-    public int evalDerivs(final Time time, double[] xx, double[] uu,
+    public int evaluateDerivatives(final Time time, double[] xx, double[] uu,
         final double[] xdot)
         throws Exception;
 
@@ -144,8 +141,8 @@ public interface DerivativeFcn {
      * @return xdot_dot The second derivative with respect to time.
      * @throws IllegalActionException
      */
-   public double evalDirectionalDerivs(int idx, double[] xx_dot, double[] uu_dot)
+   public double evaluateDirectionalDerivatives(int idx, double[] xx_dot, double[] uu_dot)
        throws Exception;
 
 
-}  // End interface DerivativeFcn.
+} 
