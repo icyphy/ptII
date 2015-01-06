@@ -46,7 +46,7 @@ import ptolemy.actor.util.Time;
  * second derivative for the internal, continuous state model using a
  * "pertubation time scale" procedure.</p>
  *
- * @author David M. Lorenzetti
+ * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui
  * @version $id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
@@ -62,7 +62,7 @@ public final class QSS3Pts
 
     /** Initialize object fields (QSS-specific).
      */
-    public final void _init_work() {
+    public final void initializeWorker() {
 
         // Check internal consistency.
         assert( _stateVals_xx == null );
@@ -78,12 +78,12 @@ public final class QSS3Pts
             _ivVals_xx = new double[_ivCt];
         }
 
-    }  // End method _init_work().
+    }  
 
 
     /** Get the order of the external, quantized state models exposed by the integrator.
      */
-    public final int getStateMdlOrder() {
+    public final int getStateModelOrder() {
         return( 2 );
     }
 
@@ -93,8 +93,9 @@ public final class QSS3Pts
 
 
     /** Form a new external, quantized state model (QSS-specific).
+     *  @param stateIdx The state index.
      */
-    protected final void _triggerQuantEvt_work(final int stateIdx) {
+    protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
         // Note the superclass takes care of updating status variables and so on.
 
@@ -109,12 +110,12 @@ public final class QSS3Pts
         qStateMdl.coeffs[1] = cStateMdl.evalDeriv(dtStateMdl);
         qStateMdl.coeffs[2] = cStateMdl.evalDeriv2(dtStateMdl) / 2;
 
-    }  // End method _triggerQuantEvt_work().
+    }  
 
 
     /** Form new internal, continuous state models (QSS-specific).
      */
-    protected final void _triggerRateEvt_work()
+    protected final void _triggerRateEventWorker()
         throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -265,12 +266,14 @@ public final class QSS3Pts
                 (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii] - _rtDerivs_xx[ii]*dtSample2);
         }
 
-    }  // End method _triggerRateEvt_work().
+    }  
 
 
     /** Get the predicted quantization-event time for a state (QSS-specific).
+     *  @param stateIdx The state index.
+     *  @param quantEvtTimeMax The maximum quantization event time.
      */
-    protected final Time _predictQuantEvtTime_work(
+    protected final Time _predictQuantizationEventTimeWorker(
         final int stateIdx, final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
@@ -293,11 +296,11 @@ public final class QSS3Pts
         if( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
             // Here, most recent event was a quantization-event.
             tMostRecent = qStateMdl.tMdl;
-            dt = _predictQuantEvtDeltaTime_qss3_qFromC(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS3QFromC(qStateMdl, cStateMdl, dq);
         } else {
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;
-            dt = _predictQuantEvtDeltaTime_qss3_general(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS3General(qStateMdl, cStateMdl, dq);
         }
 
         // Require {dt} > 0.
@@ -344,7 +347,7 @@ public final class QSS3Pts
 
         return( predQuantEvtTime );
 
-    }  // End method _predictQuantEvtTime_work().
+    }  
 
 
     ///////////////////////////////////////////////////////////////////
@@ -363,4 +366,4 @@ public final class QSS3Pts
     private double[] _ivVals_xx;
 
 
-}  // End class QSS3_pts.
+}  
