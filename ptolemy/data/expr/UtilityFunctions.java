@@ -2142,6 +2142,13 @@ public class UtilityFunctions {
                         // Ignore.
                     }
 
+		    String javaLibraryPath = "<<java.library.path unknown>>";
+		    try {
+			javaLibraryPath = System.getProperty("java.library.path");
+		    } catch (Throwable throwable3) {
+			// Ignore.
+		    }
+
                     String classpath = "<<classpath unknown>>";
                     try {
                         classpath = System.getProperty("java.class.path");
@@ -2160,7 +2167,9 @@ public class UtilityFunctions {
                                     + ") and the classpath for '"
                                     + libraryPath
                                     + "', but that was not found either.\n"
-                                    + "The Java classpath was: "
+			            + "The java.library.path property was: "
+			            + javaLibraryPath
+                                    + "\nThe Java classpath was: "
                                     + classpath
                                     + "\nIn addition, loadLibrary(\""
                                     + shortLibraryName
