@@ -30,9 +30,9 @@ COPYRIGHTENDKEY
 package org.ptolemy.qss.solver;
 
 
-import org.ptolemy.qss.util.DerivativeFcn;
-import org.ptolemy.qss.util.ModelPoly;
-import org.ptolemy.qss.util.PolyRoot;
+import org.ptolemy.qss.util.DerivativeFunction;
+import org.ptolemy.qss.util.ModelPolynomial;
+import org.ptolemy.qss.util.PolynomialRoot;
 
 import ptolemy.actor.util.Time;
 
@@ -312,7 +312,7 @@ public abstract class QSSBase {
      *
      * @param derivFcn Object that implements the DerivativeFcn interface.
      */
-    public final void initializeDerivativeFunction(final DerivativeFcn derivFcn) {
+    public final void initializeDerivativeFunction(final DerivativeFunction derivFcn) {
 
         // Check inputs.
         if( null == derivFcn ) {
@@ -476,7 +476,7 @@ public abstract class QSSBase {
      * @param stateIdx The state index, 0 &le; stateIdx &lt; this.getStateCt().
      * @param qStateMdl The model to use.
      */
-    public final ModelPoly getStateMdl(final int stateIdx) {
+    public final ModelPolynomial getStateMdl(final int stateIdx) {
         return( _qStateMdls[stateIdx] );
     }
 
@@ -571,7 +571,7 @@ public abstract class QSSBase {
      * @param ivIdx The index of input variable, 0 &le; ivIdx &lt; this.getInputVarCt().
      * @param ivMdl The model to use.
      */
-    public final void addInputVariableModel(final int ivIdx, final ModelPoly ivMdl) {
+    public final void addInputVariableModel(final int ivIdx, final ModelPolynomial ivMdl) {
 
         // Check inputs.
         if( ivMdl == null ) {
@@ -715,7 +715,7 @@ public abstract class QSSBase {
         // _need_predQuantEvtTimes[stateIdx] = true;  // This will follow from changes above.
 
         // Make the quantized state model constant at {newValue}.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
         _makeModelConstant(qStateMdl, newValue, _qStateMdlOrder);
 
         // Make the continuous state model constant at {newValue}.
@@ -740,7 +740,7 @@ public abstract class QSSBase {
      *
      * @param quantEvtTimeMax The maximum time for predicted quantization-events.
      */
-    public final void setQuantizationEventTimeMax(final Time quantEvtTimeMax) {
+    public final void setQuantizationEventTimeMaximum(final Time quantEvtTimeMax) {
 
         // Check inputs.
         if( quantEvtTimeMax.getDoubleValue() <= 0 ) {
@@ -804,7 +804,7 @@ public abstract class QSSBase {
      * @return Value of the state model at <code>simTime</code>.
      */
     public final double evaluateStateModel(final int stateIdx, final Time simTime) {
-        return( _qStateMdls[stateIdx].eval(simTime) );
+        return( _qStateMdls[stateIdx].evaluate(simTime) );
     }
 
 
@@ -817,7 +817,7 @@ public abstract class QSSBase {
      * @return Value of the state model at <code>simTime</code>.
      */
     public final double evaluateStateModelContinuous(final int stateIdx, final Time simTime) {
-        return( _cStateMdls[stateIdx].eval(simTime) );
+        return( _cStateMdls[stateIdx].evaluate(simTime) );
     }
 
 
@@ -1398,14 +1398,14 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2QFromC(
-        final ModelPoly qStateMdl, final ModelPoly cStateMdl, final double dq) {
+        final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaxOrder() >= 1 );
-        assert( cStateMdl.getMaxOrder() == qStateMdl.getMaxOrder()+1 );
+        assert( qStateMdl.getMaximumOrder() >= 1 );
+        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
         assert( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 );  // Require {qStateMdl} more recent.
         assert( dq > 0 );
 
@@ -1461,14 +1461,14 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2General(
-        final ModelPoly qStateMdl, final ModelPoly cStateMdl, final double dq) {
+        final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaxOrder() >= 1 );
-        assert( cStateMdl.getMaxOrder() == qStateMdl.getMaxOrder()+1 );
+        assert( qStateMdl.getMaximumOrder() >= 1 );
+        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
         assert( dq > 0 );
 
         double dt;
@@ -1490,9 +1490,9 @@ public abstract class QSSBase {
             // the QSS1 solution.  However, leave that decision up to caller.
             dt = Double.POSITIVE_INFINITY;
         } else {
-            final double dtAddDq = PolyRoot.findMinPosRoot2(qea, qeb, qecConst+dq);
+            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot2(qea, qeb, qecConst+dq);
             assert( dtAddDq >= 0 );
-            final double dtSubDq = PolyRoot.findMinPosRoot2(qea, qeb, qecConst-dq);
+            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot2(qea, qeb, qecConst-dq);
             assert( dtSubDq >= 0 );
             if( dtAddDq>0
                 &&
@@ -1538,14 +1538,14 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3QFromC(
-        final ModelPoly qStateMdl, final ModelPoly cStateMdl, final double dq) {
+        final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaxOrder() >= 2 );
-        assert( cStateMdl.getMaxOrder() == qStateMdl.getMaxOrder()+1 );
+        assert( qStateMdl.getMaximumOrder() >= 2 );
+        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
         assert( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 );  // Require {qStateMdl} more recent.
         assert( dq > 0 );
 
@@ -1591,14 +1591,14 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3General(
-        final ModelPoly qStateMdl, final ModelPoly cStateMdl, final double dq) {
+        final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaxOrder() >= 2 );
-        assert( cStateMdl.getMaxOrder() == qStateMdl.getMaxOrder()+1 );
+        assert( qStateMdl.getMaximumOrder() >= 2 );
+        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
         assert( dq > 0 );
 
         double dt;
@@ -1627,9 +1627,9 @@ public abstract class QSSBase {
         } else {
             final double absTol = 1e-15;
             final double relTol = 1e-9;
-            final double dtAddDq = PolyRoot.findMinPosRoot3(cea, ceb, cec, cedConst+dq, absTol, relTol);
+            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst+dq, absTol, relTol);
             assert( dtAddDq >= 0 );
-            final double dtSubDq = PolyRoot.findMinPosRoot3(cea, ceb, cec, cedConst-dq, absTol, relTol);
+            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst-dq, absTol, relTol);
             assert( dtSubDq >= 0 );
             if( dtAddDq>0
                 &&
@@ -1670,8 +1670,8 @@ public abstract class QSSBase {
 
         // Check assumptions about method init_derivFcn().
         assert( _derivFcn != null );
-        assert( _stateCt == _derivFcn.getStateCt() );
-        assert( _ivCt == _derivFcn.getInputVarCt() );
+        assert( _stateCt == _derivFcn.getStateCount() );
+        assert( _ivCt == _derivFcn.getInputVariableCount() );
         assert( _cStateMdls!=null && _cStateMdls.length==_stateCt );
         assert( _qStateMdls!=null && _qStateMdls.length==_stateCt );
         assert( _need_quantEvts!=null && _need_quantEvts.length==_stateCt );
@@ -1706,13 +1706,13 @@ public abstract class QSSBase {
 
         // Require have valid models for all input variables.
         for( int ii=0; ii<_ivCt; ++ii ) {
-            final ModelPoly currMdl = _ivMdls[ii];
+            final ModelPolynomial currMdl = _ivMdls[ii];
             if( null == currMdl ) {
                 return( String.format("Need model for input variable %d", ii) );
             }
-            if( currMdl.getWriterCt() != 1 ) {
+            if( currMdl.getWriterCount() != 1 ) {
                 return( String.format("Need 1 writer for input variable %d; got %d",
-                    ii, currMdl.getWriterCt()
+                    ii, currMdl.getWriterCount()
                     ) );
             }
             if( null == currMdl.tMdl ) {
@@ -1732,11 +1732,11 @@ public abstract class QSSBase {
      * @param constValue The new value for model.
      * @param maxOrd The maximum order of the model, maxOrd==constMdl.getMaxOrder().
      */
-    private final void _makeModelConstant(final ModelPoly constMdl, final double constValue,
+    private final void _makeModelConstant(final ModelPolynomial constMdl, final double constValue,
         final int maxOrd) {
 
         // Check assumptions.
-        assert( maxOrd == constMdl.getMaxOrder() );
+        assert( maxOrd == constMdl.getMaximumOrder() );
 
         // Initialize.
         final double[] coeffs = constMdl.coeffs;
@@ -1765,15 +1765,15 @@ public abstract class QSSBase {
      *
      * @param derivFcn Object that implements the DerivativeFcn interface.
      */
-    private final void _initializeDerivativeFunction(final DerivativeFcn derivFcn) {
+    private final void _initializeDerivativeFunction(final DerivativeFunction derivFcn) {
 
         // Check internal consistency.
         assert( _derivFcn == null );
 
         // Derivative function.
         _derivFcn = derivFcn;
-        _stateCt = derivFcn.getStateCt();
-        _ivCt = derivFcn.getInputVarCt();
+        _stateCt = derivFcn.getStateCount();
+        _ivCt = derivFcn.getInputVariableCount();
 
         assert( _stateCt > 0 );
         assert( _ivCt >= 0 );
@@ -1794,11 +1794,11 @@ public abstract class QSSBase {
         // the actual models here.  However, the model times do not get set
         // until the initial value is set.  Therefore no need to allocate
         // {Time} objects here.
-        _cStateMdls = new ModelPoly[_stateCt];
+        _cStateMdls = new ModelPolynomial[_stateCt];
         final int cStateOrder = _qStateMdlOrder + 1;
         assert( cStateOrder >= 1 );
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = new ModelPoly(cStateOrder);
+            final ModelPolynomial cStateMdl = new ModelPolynomial(cStateOrder);
             cStateMdl.claimWriteAccess();
             _cStateMdls[ii] = cStateMdl;
         }
@@ -1812,10 +1812,10 @@ public abstract class QSSBase {
         // the actual models here.  However, the model times do not get set
         // until the initial value is set.  Therefore no need to allocate
         // {Time} objects here.
-        _qStateMdls = new ModelPoly[_stateCt];
+        _qStateMdls = new ModelPolynomial[_stateCt];
         assert( _qStateMdlOrder >= 0 );
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly qStateMdl = new ModelPoly(_qStateMdlOrder);
+            final ModelPolynomial qStateMdl = new ModelPolynomial(_qStateMdlOrder);
             qStateMdl.claimWriteAccess();
             _qStateMdls[ii] = qStateMdl;
         }
@@ -1841,7 +1841,7 @@ public abstract class QSSBase {
         //   Note these are references to user-supplied models.  Therefore no
         // need to allocate the actual models.
         if( _ivCt > 0 ) {
-            _ivMdls = new ModelPoly[_ivCt];
+            _ivMdls = new ModelPolynomial[_ivCt];
         }
 
     } 
@@ -1919,12 +1919,12 @@ public abstract class QSSBase {
     private final int _qStateMdlOrder = getStateModelOrder();
 
     // Derivative function.
-    protected DerivativeFcn _derivFcn;
+    protected DerivativeFunction _derivFcn;
     protected int _stateCt, _ivCt;
 
     // States.
-    protected ModelPoly[] _cStateMdls;  // Internal, continuous state models.
-    protected ModelPoly[] _qStateMdls;  // External, quantized state models.
+    protected ModelPolynomial[] _cStateMdls;  // Internal, continuous state models.
+    protected ModelPolynomial[] _qStateMdls;  // External, quantized state models.
     private boolean _need_rateEvt;  // True if, in order to step forward
         // from {_currSimTime}, need to trigger a rate-event (i.e., need to
         // (form new internal, continuous state models).
@@ -1933,7 +1933,7 @@ public abstract class QSSBase {
         // need to form a new external, quantized state model).
 
     // Input variables.
-    protected ModelPoly[] _ivMdls;
+    protected ModelPolynomial[] _ivMdls;
 
     // Quanta.
     protected double[] _dqs;  // Quantum for each state.

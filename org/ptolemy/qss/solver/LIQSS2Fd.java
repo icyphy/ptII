@@ -30,7 +30,7 @@ COPYRIGHTENDKEY
 package org.ptolemy.qss.solver;
 
 
-import org.ptolemy.qss.util.ModelPoly;
+import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.util.Time;
 
@@ -71,9 +71,9 @@ public final class LIQSS2Fd
 
         // Allocate memory for diagonalized state model.
         _jacDiags = new double[_stateCt];
-        _inputTermMdls = new ModelPoly[_stateCt];
+        _inputTermMdls = new ModelPolynomial[_stateCt];
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly inputTermMdl = new ModelPoly(1);
+            final ModelPolynomial inputTermMdl = new ModelPolynomial(1);
             inputTermMdl.claimWriteAccess();
             _inputTermMdls[ii] = inputTermMdl;
         }
@@ -112,14 +112,14 @@ public final class LIQSS2Fd
         // Note the superclass takes care of updating status variables and so on.
 
         // Initialize.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
-        final ModelPoly cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
         final double dtStateMdl = _currSimTime.subtractToDouble(cStateMdl.tMdl);
 
-        final double cState = cStateMdl.eval(dtStateMdl);
-        final double cStateDeriv = cStateMdl.evalDeriv(dtStateMdl);
+        final double cState = cStateMdl.evaluate(dtStateMdl);
+        final double cStateDeriv = cStateMdl.evaluateDerivative(dtStateMdl);
 
-        final double qStateLastMdl = qStateMdl.eval(_currSimTime);
+        final double qStateLastMdl = qStateMdl.evaluate(_currSimTime);
         final double jacDiag = _jacDiags[stateIdx];
 
         // Save values needed for finding predicted quantization-event time.
@@ -135,11 +135,11 @@ public final class LIQSS2Fd
         qTestDeriv = cStateDeriv;
         if( jacDiag != 0 ) {
             // Check whether {qTest} gives consistent diagonalized state model.
-            final ModelPoly inputTermMdl = _inputTermMdls[stateIdx];
-            final double inputTermAtCurrSimTime = inputTermMdl.eval(dtStateMdl);
+            final ModelPolynomial inputTermMdl = _inputTermMdls[stateIdx];
+            final double inputTermAtCurrSimTime = inputTermMdl.evaluate(dtStateMdl);
             final double diagStateMdlSlope2 = jacDiag*jacDiag*qTest
-                + jacDiag*inputTermAtCurrSimTime + inputTermMdl.evalDeriv(dtStateMdl);
-            final double cStateDeriv2 = cStateMdl.evalDeriv2(dtStateMdl);
+                + jacDiag*inputTermAtCurrSimTime + inputTermMdl.evaluateDerivative(dtStateMdl);
+            final double cStateDeriv2 = cStateMdl.evaluateDerivative2(dtStateMdl);
             if( diagStateMdlSlope2*cStateDeriv2 <= 0 ) {
                 // Here, slopes of the state and diagonalized state models do
                 // not have the same sign.
@@ -181,21 +181,21 @@ public final class LIQSS2Fd
         Time tStateMdl = null;
         double dtStateMdl = 0;
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Check for different model time.  Note testing object identity OK.
             if( cStateMdl.tMdl != tStateMdl ) {
                 tStateMdl = cStateMdl.tMdl;
                 dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
             }
-            _stateVals_xx[ii] = cStateMdl.eval(dtStateMdl);
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // In general, don't expect input variable models to have same times.
         for( int ii=0; ii<_ivCt; ++ii ) {
-            _ivVals_xx[ii] = _ivMdls[ii].eval(_currSimTime);
+            _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
-        int retVal = _derivFcn.evalDerivs(_currSimTime, _stateVals_xx, _ivVals_xx,
+        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
             _stateDerivs_xx);
         if( 0 != retVal ) {
             throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
@@ -205,8 +205,8 @@ public final class LIQSS2Fd
         //   Note have to do this before update the internal, continuous state models,
         // since need the rate of the old one.
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly qStateMdl = _qStateMdls[ii];
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial qStateMdl = _qStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Estimate the diagonal element of the Jacobian.
             //   If component {ii} did not just have a quantization-event, set
             // estimate to zero.
@@ -224,16 +224,16 @@ public final class LIQSS2Fd
                 final double qStateMdlDiff = _qStateMdlDiffs[ii];
                 if( qStateMdlDiff != 0 ) {
                     jacDiag =
-                        (_stateDerivs_xx[ii] - cStateMdl.evalDeriv(_currSimTime))
+                        (_stateDerivs_xx[ii] - cStateMdl.evaluateDerivative(_currSimTime))
                         / qStateMdlDiff;
                 }
             }
             _jacDiags[ii] = jacDiag;
             // Update the input terms.
-            final ModelPoly inputTermMdl = _inputTermMdls[ii];
+            final ModelPolynomial inputTermMdl = _inputTermMdls[ii];
             final double dtQStateMdl = _currSimTime.subtractToDouble(qStateMdl.tMdl);
-            inputTermMdl.coeffs[0] = _stateDerivs_xx[ii] - jacDiag*qStateMdl.eval(dtQStateMdl);
-            inputTermMdl.coeffs[1] = 2*cStateMdl.coeffs[2] - jacDiag*qStateMdl.evalDeriv(dtQStateMdl);
+            inputTermMdl.coeffs[0] = _stateDerivs_xx[ii] - jacDiag*qStateMdl.evaluate(dtQStateMdl);
+            inputTermMdl.coeffs[1] = 2*cStateMdl.coeffs[2] - jacDiag*qStateMdl.evaluateDerivative(dtQStateMdl);
         }
 
         // Update the internal, continuous state models.
@@ -244,7 +244,7 @@ public final class LIQSS2Fd
         //   This also updates the rate model, which is just the derivative of
         // the state model.
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             cStateMdl.tMdl = _currSimTime;
             cStateMdl.coeffs[0] = _stateVals_xx[ii];
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
@@ -260,14 +260,14 @@ public final class LIQSS2Fd
         //   Note that here, know all continous state models have same time.
         // Therefore can use same delta-time for all evals.
         for( int ii=0; ii<_stateCt; ++ii ) {
-            _stateVals_xx[ii] = _cStateMdls[ii].eval(dtSample);
+            _stateVals_xx[ii] = _cStateMdls[ii].evaluate(dtSample);
         }
         for( int ii=0; ii<_ivCt; ++ii ) {
-            _ivVals_xx[ii] = _ivMdls[ii].eval(tSample);
+            _ivVals_xx[ii] = _ivMdls[ii].evaluate(tSample);
         }
 
         // Evaluate derivative function at {tSample}.
-        retVal = _derivFcn.evalDerivs(tSample, _stateVals_xx, _ivVals_xx,
+        retVal = _derivFcn.evaluateDerivatives(tSample, _stateVals_xx, _ivVals_xx,
             _stateDerivsSample_xx);
         if( 0 != retVal ) {
             throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
@@ -293,8 +293,8 @@ public final class LIQSS2Fd
         // storing the returned result.
 
         // Initialize.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
-        final ModelPoly cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
         final double dq = _dqs[stateIdx];
 
         // Check internal consistency.
@@ -378,7 +378,7 @@ public final class LIQSS2Fd
 
     // Memory for diagonalized state model.
     private double[] _jacDiags;
-    private ModelPoly[] _inputTermMdls;
+    private ModelPolynomial[] _inputTermMdls;
     private double[] _qStateMdlDiffs;  // Difference between previous and current
         // quantized state models, at the time current one was formed.
 
