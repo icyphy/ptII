@@ -49,7 +49,7 @@
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
 
-  <!-- The state and transition refinements. Use SDF director version. -->
+  <!-- The state refinements for modal models. -->
   <input source="ptolemy/configs/cyphysim/cyphysimRefinements.xml"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
@@ -89,6 +89,7 @@
     <!-- Override utilities library. -->
     <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
 
+      <!-- Note that regardless of the order here, classes get listed before entities. -->
       <input source="ptolemy/domains/qss/kernel/ContinuousComposite.xml" />
       <input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" />
       <input source="ptolemy/domains/qss/kernel/ContinuousCompositeClass.xml" />
