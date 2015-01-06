@@ -36,7 +36,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;

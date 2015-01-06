@@ -42,7 +42,7 @@ import com.sun.jna.Native;
 public class NativeSizeT extends IntegerType {
     /** Construct a zero-sized object. */
     public NativeSizeT() {
-	this(0);
+        this(0);
     }
 
     /** Construct size_t object with the given value.
@@ -51,6 +51,6 @@ public class NativeSizeT extends IntegerType {
      *  @param value The given value.
      */
     public NativeSizeT(long value) {
-	super(Native.SIZE_T_SIZE, value);
+        super(Native.SIZE_T_SIZE, value);
     }
 }

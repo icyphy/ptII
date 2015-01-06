@@ -43,7 +43,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.data.StringToken;

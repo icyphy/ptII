@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
-import org.ptolemy.ptango.lib.webSocket.WebSocketService;
 
 
 ///////////////////////////////////////////////////////////////////

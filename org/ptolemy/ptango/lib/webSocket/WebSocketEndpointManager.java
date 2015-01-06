@@ -36,8 +36,6 @@ import java.util.Hashtable;
 
 import org.eclipse.jetty.websocket.WebSocketClient;
 import org.eclipse.jetty.websocket.WebSocketClientFactory;
-import org.ptolemy.ptango.lib.webSocket.WebSocketEndpoint;
-import org.ptolemy.ptango.lib.webSocket.WebSocketService;
 
 import ptolemy.kernel.util.IllegalActionException;
 

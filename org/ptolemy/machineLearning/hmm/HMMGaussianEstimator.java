@@ -27,18 +27,14 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.machineLearning.hmm;
 
-import java.util.Arrays;
-
 import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -47,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.DoubleMatrixMath;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization

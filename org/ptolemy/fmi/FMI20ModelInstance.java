@@ -49,7 +49,7 @@ public class FMI20ModelInstance extends Structure {
      * structure that contains information about events.
      */
     public FMI20ModelInstance() {
-	super();
+        super();
     }
 
     /** Instantiate a Java structure that that represents the C
@@ -57,19 +57,19 @@ public class FMI20ModelInstance extends Structure {
      * @param peer The peer
      */
     public FMI20ModelInstance(Pointer peer) {
-	super(peer);
+        super(peer);
     }
 
     /** Access the structure by reference.
      */
     public static class ByReference extends FMI20ModelInstance implements
-	    Structure.ByReference {
+            Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
     public static class ByValue extends FMI20ModelInstance implements
-	    Structure.ByValue {
+            Structure.ByValue {
     };
 
     ///////////////////////////////////////////////////////////////////
@@ -133,9 +133,9 @@ public class FMI20ModelInstance extends Structure {
     ////                         protected methods                 ////
 
     protected List<?> getFieldOrder() {
-	return Arrays.asList("r", "i", "b", "s", "isPositive", "time",
-	        "instanceName", "type", "GUID", "functions", "loggingOn",
-	        "logCategories", "componentEnvironment", "state", "eventInfo",
-	        "isDirtyValues");
+        return Arrays.asList("r", "i", "b", "s", "isPositive", "time",
+                "instanceName", "type", "GUID", "functions", "loggingOn",
+                "logCategories", "componentEnvironment", "state", "eventInfo",
+                "isDirtyValues");
     }
 }

@@ -523,14 +523,6 @@ public class PtidesPlatform extends MirrorComposite {
         /** Label of the timestamp that is transmitted within the RecordToken.
          */
         private static final String timestamp = "timestamp";
-
-        /** Label of the microstep that is transmitted within the RecordToken.
-         */
-        private static final String microstep = "microstep";
-
-        /** Label of the payload that is transmitted within the RecordToken.
-         */
-        private static final String payload = "payload";
     }
 
     ///////////////////////////////////////////////////////////////////

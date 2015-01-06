@@ -24,16 +24,15 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.ptolemy.fmi;
-
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import com.sun.jna.Pointer;
 
 /**
  * A Functional Mock-up Interface (FMI) log method implementation.
@@ -67,9 +66,9 @@ public class FMULog {
      *  @param message The message in printf format
      */
     public static void log(FMIModelDescription modelDescription,
-	    Pointer fmiComponent, String instanceName, int status,
-	    String category, String message
-            /*, Pointer*/ /*...*/ /*parameters*/ ) {
+            Pointer fmiComponent, String instanceName, int status,
+            String category, String message
+    /*, Pointer*//*...*//*parameters*/) {
 
         // // FIXME: Use the old logger now.
         // FMULog._logOld(modelDescription,
@@ -90,11 +89,10 @@ public class FMULog {
             }
         }
 
-	if (! _useVariadicExtensions) {
+        if (!_useVariadicExtensions) {
             // We don't have the variadic extensions, so we fall back.
-            FMULog._nonVariadicLog(modelDescription,
-                    fmiComponent, instanceName, status,
-                    category, message, null /*parameters*/);
+            FMULog._nonVariadicLog(modelDescription, fmiComponent,
+                    instanceName, status, category, message, null /*parameters*/);
             return;
         }
 
@@ -102,7 +100,8 @@ public class FMULog {
             // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
             // functions which allow us to access variadic arguments.
 
-            long ffi_cif = ((Long)_nativeCif.invoke(null, new Object [] {fmiComponent})).longValue();
+            long ffi_cif = ((Long) _nativeCif.invoke(null,
+                    new Object[] { fmiComponent })).longValue();
 
             // FIXME: Need to handle the fmi-specific # format:
             // #<Type><valueReference#, where <Type> is one of
@@ -111,14 +110,14 @@ public class FMULog {
             if (ffi_cif == 0) {
                 if (!_printedMessage) {
                     _printedMessage = true;
-                    System.err.println("org/ptolemy/fmi/FMULog.java called Pointer.nativeCif(fmiCoomponent), "
-                            + "but received a value of 0?  This can happen if the the jna jar file has the "
-                            + "Java side of the variadic extensions, but the C side of the variadic extensions "
-                            + "have not been compiled for your platform.  To compile them, see "
-                            + "http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
-                    FMULog._nonVariadicLog(modelDescription,
-                            fmiComponent, instanceName, status,
-                            category, message, null /*parameters*/);
+                    System.err
+                            .println("org/ptolemy/fmi/FMULog.java called Pointer.nativeCif(fmiCoomponent), "
+                                    + "but received a value of 0?  This can happen if the the jna jar file has the "
+                                    + "Java side of the variadic extensions, but the C side of the variadic extensions "
+                                    + "have not been compiled for your platform.  To compile them, see "
+                                    + "http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
+                    FMULog._nonVariadicLog(modelDescription, fmiComponent,
+                            instanceName, status, category, message, null /*parameters*/);
                 }
             } else {
                 final char[] msg = message.toCharArray();
@@ -138,9 +137,9 @@ public class FMULog {
                         // Skip over all the formatting parts besides the
                         // conversion at the end.
                         // XXX There must be a better way...
-                        final char[] conversions = new char[] { 'd', 'i', 'o', 'x',
-                                                                'X', 'e', 'E', 'f', 'F', 'g', 'G', 'a', 'A', 'c',
-                                                                's', 'p', 'n', 'u', '%' };
+                        final char[] conversions = new char[] { 'd', 'i', 'o',
+                                'x', 'X', 'e', 'E', 'f', 'F', 'g', 'G', 'a',
+                                'A', 'c', 's', 'p', 'n', 'u', '%' };
 
                         // Find the conversion
                         StringBuffer flags = new StringBuffer();
@@ -169,10 +168,12 @@ public class FMULog {
                         case 'd':
                         case 'i':
                             out.append(String.format(
-                                            "%" + flags.toString() + msg[i],
-                                            foundLong
-                                            ? _ffi_closure_va_sint64.invoke(null, new Object[] {ffi_cif})
-                                            : _ffi_closure_va_sint32.invoke(null, new Object[] {ffi_cif})));
+                                    "%" + flags.toString() + msg[i],
+                                    foundLong ? _ffi_closure_va_sint64.invoke(
+                                            null, new Object[] { ffi_cif })
+                                            : _ffi_closure_va_sint32.invoke(
+                                                    null,
+                                                    new Object[] { ffi_cif })));
                             break;
 
                         case 'o': // Unsigned octal
@@ -180,13 +181,16 @@ public class FMULog {
                         case 'X': // Unsigned hex
                         case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesnot handle it.
                             out.append(String.format(
-                                            "%" + flags.toString()
-                                            + (msg[i] == 'u' ? 'd' : msg[i]),
-                                            foundLong ? _ffi_closure_va_uint64.invoke(null, new Object[] {ffi_cif})
-                                            : _ffi_closure_va_uint32.invoke(null, new Object[]{ffi_cif})));
+                                    "%" + flags.toString()
+                                    + (msg[i] == 'u' ? 'd' : msg[i]),
+                                    foundLong ? _ffi_closure_va_uint64.invoke(
+                                            null, new Object[] { ffi_cif })
+                                            : _ffi_closure_va_uint32.invoke(
+                                                    null,
+                                                    new Object[] { ffi_cif })));
                             break;
 
-                            // DOU are deprecated.  Does FMI support them?
+                        // DOU are deprecated.  Does FMI support them?
                         case 'e':
                         case 'E':
                         case 'f':
@@ -197,41 +201,46 @@ public class FMULog {
                         case 'A':
                             // XXX Can you handle a long double in Java?  Not checking foundLong
                             out.append(String.format("%" + flags.toString()
-                                            + msg[i], _ffi_closure_va_double.invoke(null, new Object[] {ffi_cif})));
+                                    + msg[i], _ffi_closure_va_double.invoke(
+                                    null, new Object[] { ffi_cif })));
                             break;
 
                         case 'c': // Unsigned char
                             // Assuming 1 byte char
                             out.append(String.format("%" + flags.toString()
-                                            + msg[i],
-                                            // Don't cast to (char)
-                                            // here, thus avoiding
-                                            // FB.BX_UNBOXING_IMMEDIATELY_REBOXED
-                                            _ffi_closure_va_uint8.invoke(null, new Object[] {ffi_cif})));
+                                    + msg[i],
+                            // Don't cast to (char)
+                            // here, thus avoiding
+                            // FB.BX_UNBOXING_IMMEDIATELY_REBOXED
+                                    _ffi_closure_va_uint8.invoke(null,
+                                            new Object[] { ffi_cif })));
                             break;
 
                         case 's': // String
                             // C strings: Read until you hit NUL (utf-8 is NUL safe).
                             String formatValue = "";
-                            Pointer closureVaPointer = (Pointer)
-                                _ffi_closure_va_pointer.invoke(null, new Object [] {ffi_cif});
+                            Pointer closureVaPointer = (Pointer) _ffi_closure_va_pointer
+                                    .invoke(null, new Object[] { ffi_cif });
                             if (closureVaPointer == null) {
                                 formatValue = "<null>";
                             } else {
                                 formatValue = closureVaPointer.getString(0);
                             }
-                            out.append(String.format("%" + flags.toString() + "s",
-                                            formatValue));
+                            out.append(String.format("%" + flags.toString()
+                                    + "s", formatValue));
                             break;
 
                         case 'p': // Pointer
-                            out.append(Pointer.nativeValue(
-                                            (Pointer)_ffi_closure_va_pointer.invoke(null, new Object [] {ffi_cif})));
+                            out.append(Pointer
+                                    .nativeValue((Pointer) _ffi_closure_va_pointer
+                                            .invoke(null,
+                                                    new Object[] { ffi_cif })));
                             break;
 
                         case 'n':
                             // This can take a length modifier but it's the same void * here
-                            Pointer p = (Pointer)_ffi_closure_va_pointer.invoke(null, new Object[] {ffi_cif});
+                            Pointer p = (Pointer) _ffi_closure_va_pointer
+                                    .invoke(null, new Object[] { ffi_cif });
                             p.setInt(0, out.length());
                             break;
 
@@ -241,7 +250,8 @@ public class FMULog {
 
                         default:
                             // XXX Should not be here: invalid conversion
-                            System.out.println("XXX Should not be here: " + msg[i]);
+                            System.out.println("XXX Should not be here: "
+                                    + msg[i]);
                             out.append(msg[i]);
                             break;
                         }
@@ -299,9 +309,8 @@ public class FMULog {
                                 modelDescription, out.toString()));
             }
         } catch (Throwable throwable) {
-            FMULog._nonVariadicLog(modelDescription,
-                    fmiComponent, instanceName, status,
-                    category, message, null /*parameters*/);
+            FMULog._nonVariadicLog(modelDescription, fmiComponent,
+                    instanceName, status, category, message, null /*parameters*/);
         }
     }
 
@@ -318,7 +327,8 @@ public class FMULog {
         if (!_debug) {
             return;
         }
-        System.out.print("dump: " + pointer + "<" + size + "," + offset + "," + Pointer.nativeValue(pointer) + ">");
+        System.out.print("dump: " + pointer + "<" + size + "," + offset + ","
+                + Pointer.nativeValue(pointer) + ">");
         System.out.printf("<%x>", Pointer.nativeValue(pointer));
         byte bytes[] = pointer.getByteArray(offset, size);
         for (int i = 0; i < size; ++i) {
@@ -353,26 +363,26 @@ public class FMULog {
                     throwable);
         }
         // Native methods;
-        _ffi_closure_va_double = _nativeClass.getMethod("ffi_closure_va_double",
-                new Class[] { long.class });
+        _ffi_closure_va_double = _nativeClass.getMethod(
+                "ffi_closure_va_double", new Class[] { long.class });
 
-        _ffi_closure_va_pointer = _nativeClass.getMethod("ffi_closure_va_pointer",
-                new Class[] { long.class });
+        _ffi_closure_va_pointer = _nativeClass.getMethod(
+                "ffi_closure_va_pointer", new Class[] { long.class });
 
-        _ffi_closure_va_sint32 = _nativeClass.getMethod("ffi_closure_va_sint32",
-                new Class[] { long.class });
+        _ffi_closure_va_sint32 = _nativeClass.getMethod(
+                "ffi_closure_va_sint32", new Class[] { long.class });
 
-        _ffi_closure_va_sint64 = _nativeClass.getMethod("ffi_closure_va_sint64",
-                new Class[] { long.class });
+        _ffi_closure_va_sint64 = _nativeClass.getMethod(
+                "ffi_closure_va_sint64", new Class[] { long.class });
 
         _ffi_closure_va_uint8 = _nativeClass.getMethod("ffi_closure_va_uint8",
                 new Class[] { long.class });
-        
-        _ffi_closure_va_uint32 = _nativeClass.getMethod("ffi_closure_va_uint32",
-                new Class[] { long.class });
 
-        _ffi_closure_va_uint64 = _nativeClass.getMethod("ffi_closure_va_uint64",
-                new Class[] { long.class });
+        _ffi_closure_va_uint32 = _nativeClass.getMethod(
+                "ffi_closure_va_uint32", new Class[] { long.class });
+
+        _ffi_closure_va_uint64 = _nativeClass.getMethod(
+                "ffi_closure_va_uint64", new Class[] { long.class });
 
         // Pointer method.
         _nativeCif = _pointerClass.getMethod("nativeCif",
@@ -397,8 +407,7 @@ public class FMULog {
      */
     private static void _nonVariadicLog(FMIModelDescription modelDescription,
             Pointer fmiComponent, String instanceName, int status,
-            String category, String message,
-            Pointer /*...*/ parameters) {
+            String category, String message, Pointer /*...*/parameters) {
 
         _debugMessage("Java FMULogger, status: " + status);
         _debugMessage("Java FMULogger, message: " + message);
@@ -413,10 +422,11 @@ public class FMULog {
         if (parameters == null) {
             // If the debug message has not been printed, then print now.
             if (!_debug) {
-                System.out.println("FMULogger: status: " + status + " message: " + message);
+                System.out.println("FMULogger: status: " + status
+                        + " message: " + message);
             }
         } else {
-            StringTokenizer tokenizer = new StringTokenizer(message, "%", false ); // Return delimiters
+            StringTokenizer tokenizer = new StringTokenizer(message, "%", false); // Return delimiters
             ArrayList<Object> parameterList = new ArrayList<Object>();
             int offset = 0;
             Pointer newPointer = parameters;
@@ -440,12 +450,13 @@ public class FMULog {
                         foundType = true;
                         _debugMessage("newPointer: " + newPointer);
                         int value = (int) Pointer.nativeValue(newPointer);
-                        _debugMessage("Token: " + token + " type:" + type + " value:" + value + " offset: " + offset);
+                        _debugMessage("Token: " + token + " type:" + type
+                                + " value:" + value + " offset: " + offset);
                         if (offset != 0) {
                             if (!_printedMessage) {
                                 _printedMessage = true;
                                 System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 666 instead");
+                                        .println("FIXME: logger: only know how to get the first value, using 666 instead");
                             }
                             value = 666;
                         }
@@ -459,7 +470,9 @@ public class FMULog {
                     case 'G':
                         foundType = true;
                         double doubleValue = Pointer.nativeValue(newPointer);
-                        _debugMessage("Token: " + token + " type:" + type + " doubleValue:" + doubleValue + " offset: " + offset);
+                        _debugMessage("Token: " + token + " type:" + type
+                                + " doubleValue:" + doubleValue + " offset: "
+                                + offset);
                         if (doubleValue > 9999.0) {
                             _dump(newPointer, 4, 0);
                         }
@@ -467,7 +480,7 @@ public class FMULog {
                             if (!_printedMessage) {
                                 _printedMessage = true;
                                 System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
+                                        .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
                             }
                             doubleValue = 666.666;
                         }
@@ -480,7 +493,7 @@ public class FMULog {
                             if (!_printedMessage) {
                                 _printedMessage = true;
                                 System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
+                                        .println("FIXME: logger: only know how to get the first value, using 666.666 instead");
                             }
                             doubleValue = 666.666;
                         }
@@ -489,7 +502,7 @@ public class FMULog {
                         if (!_printedMessage) {
                             _printedMessage = true;
                             System.out
-                                .println("FIXME: logger: don't know how to get chars, using ! instead.");
+                                    .println("FIXME: logger: don't know how to get chars, using ! instead.");
                         }
                         parameterList.add(Character.valueOf('!'));
                         offset += 1;
@@ -498,20 +511,21 @@ public class FMULog {
                         foundType = true;
                         _debugMessage("type=s, parameters = " + parameters
                                 + " offset: " + offset);
-                        _debugMessage("type=s "
-                                + parameters.share(offset));
+                        _debugMessage("type=s " + parameters.share(offset));
 
                         if (offset == 0) {
                             String result = newPointer.getString(offset);
                             //offset += result.length() + 1;
-                            newPointer = new Pointer(Pointer.nativeValue(newPointer) + 4);
-                            _debugMessage("Token: " + token + " type: " + type + " result: " + result);
+                            newPointer = new Pointer(
+                                    Pointer.nativeValue(newPointer) + 4);
+                            _debugMessage("Token: " + token + " type: " + type
+                                    + " result: " + result);
                             parameterList.add(result);
                         } else {
                             if (!_printedMessage) {
                                 _printedMessage = true;
                                 System.out
-                                    .println("FIXME: logger: don't know how to get string other than the first string, using 666 instead.");
+                                        .println("FIXME: logger: don't know how to get string other than the first string, using 666 instead.");
                             }
                             parameterList.add("666");
                         }
@@ -524,7 +538,7 @@ public class FMULog {
                             if (!_printedMessage) {
                                 _printedMessage = true;
                                 System.out
-                                    .println("FIXME: logger: only know how to get the first value, using 6666 instead");
+                                        .println("FIXME: logger: only know how to get the first value, using 6666 instead");
                             }
                             longValue = 6666;
                         }
@@ -552,7 +566,8 @@ public class FMULog {
             }
             // Java format does not handle %u.  Lamers.
             message = message.replace("%u", "%d");
-            _debugMessage("Java FMULogger, message0: " + message + " " + parameterList.size() + " " + parameterList);
+            _debugMessage("Java FMULogger, message0: " + message + " "
+                    + parameterList.size() + " " + parameterList);
             System.out.format("Java FMULogger: " + message,
                     parameterList.toArray());
             System.out.println("");

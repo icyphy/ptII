@@ -44,7 +44,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.util.IllegalActionException;
 
 import com.sun.jna.Function;
 import com.sun.jna.Library;
@@ -149,7 +148,7 @@ public class FMIModelDescription {
 
     /** The list of continuous states. */
     public List<ContinuousState> continuousStates = new LinkedList<ContinuousState>();
-    
+
     /** The list of continuous states names. */
     public List<String> continuousStateNames = new LinkedList<String>();
 
@@ -191,8 +190,8 @@ public class FMIModelDescription {
     /**
      * Create the state vector. This should only be called on fmis with a
      * fmiVersion greater than 1.5.
-     * 
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public void createStateVector() throws IOException {
         // Create the state vector.
@@ -223,9 +222,9 @@ public class FMIModelDescription {
                         .get(((FMIRealType) scalar.type).indexState - 1);
                 _continuousStates.put(i, state);
                 // Create a list that contains the names of the continuous states.
-                // This list is just for convenience and is used in FMUImport 
+                // This list is just for convenience and is used in FMUImport
                 // to check if an input is a continuous state (see fire()).
-                continuousStateNames.add(state.name);              
+                continuousStateNames.add(state.name);
                 count++;
             }
         }
@@ -239,7 +238,7 @@ public class FMIModelDescription {
         Iterator<ContinuousState> valueIterator = _continuousStates.values()
                 .iterator();
         while (valueIterator.hasNext()) {
-            continuousStates.add((ContinuousState) valueIterator.next()); 
+            continuousStates.add(valueIterator.next());
         }
         numberOfContinuousStates = continuousStates.size();
     }
@@ -249,17 +248,17 @@ public class FMIModelDescription {
      * allocated by the allocate memory callback.
      */
     public void dispose() {
-	if (_fmuAllocateMemory != null) {
-	    // Prevent a memory leak by releasing Memory and Pointer objects to
-	    // the GC.
-	    // FIXME: This is wrong! This releases all instances of Memory and
-	    // Pointer that have been created!
-	    // It should only release those for this FMU.
-	    FMULibrary.FMUAllocateMemory.pointers.clear();
-	}
-	if (_nativeLibrary != null) {
-	    _nativeLibrary.dispose();
-	}
+        if (_fmuAllocateMemory != null) {
+            // Prevent a memory leak by releasing Memory and Pointer objects to
+            // the GC.
+            // FIXME: This is wrong! This releases all instances of Memory and
+            // Pointer that have been created!
+            // It should only release those for this FMU.
+            FMULibrary.FMUAllocateMemory.pointers.clear();
+        }
+        if (_nativeLibrary != null) {
+            _nativeLibrary.dispose();
+        }
     }
 
     /**
@@ -270,22 +269,22 @@ public class FMIModelDescription {
      * @return a String describing the status.
      */
     public static String fmiStatusDescription(int fmiStatus) {
-	// FIXME: FMI 2.0 has apparently lost fmiWarning and fmiFatal.
-	// What is the new encoding? Need the header file.
-	switch (fmiStatus) {
-	case 0:
-	    return "fmiOK";
-	case 1:
-	    return "fmiWarning";
-	case 2:
-	    return "fmiDiscard";
-	case 3:
-	    return "fmiError";
-	case 4:
-	    return "fmiFatal";
-	default:
-	    return "fmiPending";
-	}
+        // FIXME: FMI 2.0 has apparently lost fmiWarning and fmiFatal.
+        // What is the new encoding? Need the header file.
+        switch (fmiStatus) {
+        case 0:
+            return "fmiOK";
+        case 1:
+            return "fmiWarning";
+        case 2:
+            return "fmiDiscard";
+        case 3:
+            return "fmiError";
+        case 4:
+            return "fmiFatal";
+        default:
+            return "fmiPending";
+        }
     }
 
     /**
@@ -296,7 +295,7 @@ public class FMIModelDescription {
      *         memory.
      */
     public FMULibrary.FMUAllocateMemory getFMUAllocateMemory() {
-	return _fmuAllocateMemory;
+        return _fmuAllocateMemory;
     }
 
     /**
@@ -312,55 +311,55 @@ public class FMIModelDescription {
      *                platform.
      */
     public String getNativeLibraryPath() throws IOException {
-	// The following should not be done until at least the modelIdentifier
-	// has been set in fmiModelDescription.
-	if (modelIdentifier == null || modelIdentifier.trim().equals("")) {
-	    // FIXME: Don't use runtime exception.
-	    throw new RuntimeException("No modelIdentifier is given");
-	}
+        // The following should not be done until at least the modelIdentifier
+        // has been set in fmiModelDescription.
+        if (modelIdentifier == null || modelIdentifier.trim().equals("")) {
+            // FIXME: Don't use runtime exception.
+            throw new RuntimeException("No modelIdentifier is given");
+        }
 
-	// Get the name of the shared library file for the current platform.
-	String sharedLibrary = FMUFile.fmuSharedLibrary(this);
+        // Get the name of the shared library file for the current platform.
+        String sharedLibrary = FMUFile.fmuSharedLibrary(this);
 
-	File sharedLibraryFile = new File(sharedLibrary);
-	if (!sharedLibraryFile.exists()) {
-	    List<String> binariesFiles = new LinkedList<String>();
-	    for (File file : files) {
-		if (file.toString().indexOf("binaries") != -1) {
-		    binariesFiles.add(file.toString() + "\n");
-		}
-	    }
-	    String message = "Current platform not supported by this FMU. "
-		    + "Attempted to load \"" + sharedLibrary
-		    + "\" shared library, " + "The fmu file contains the "
-		    + "following files with 'binaries' in the path:\n"
-		    + binariesFiles;
-	    if (!sharedLibraryFile.exists()) {
-		FMUBuilder builder = new FMUBuilder();
-		boolean isBuildOK = false;
-		try {
-		    isBuildOK = builder.build(sharedLibraryFile);
-		    System.out.println("FMU Builder messages:\n"
-			    + builder.buffer);
-		} catch (Throwable throwable2) {
-		    // Java 1.5 does not support IOException(String, Throwable).
-		    // We sometimes compile this with gcj, which is Java 1.5
-		    IOException exception = new IOException(
-			    "Failed to build \"" + sharedLibraryFile
-			            + "\".\nThe build was:\n" + builder.buffer
-			            + "\n" + message);
-		    exception.initCause(throwable2);
-		    throw exception;
+        File sharedLibraryFile = new File(sharedLibrary);
+        if (!sharedLibraryFile.exists()) {
+            List<String> binariesFiles = new LinkedList<String>();
+            for (File file : files) {
+                if (file.toString().indexOf("binaries") != -1) {
+                    binariesFiles.add(file.toString() + "\n");
+                }
+            }
+            String message = "Current platform not supported by this FMU. "
+                    + "Attempted to load \"" + sharedLibrary
+                    + "\" shared library, " + "The fmu file contains the "
+                    + "following files with 'binaries' in the path:\n"
+                    + binariesFiles;
+            if (!sharedLibraryFile.exists()) {
+                FMUBuilder builder = new FMUBuilder();
+                boolean isBuildOK = false;
+                try {
+                    isBuildOK = builder.build(sharedLibraryFile);
+                    System.out.println("FMU Builder messages:\n"
+                            + builder.buffer);
+                } catch (Throwable throwable2) {
+                    // Java 1.5 does not support IOException(String, Throwable).
+                    // We sometimes compile this with gcj, which is Java 1.5
+                    IOException exception = new IOException(
+                            "Failed to build \"" + sharedLibraryFile
+                                    + "\".\nThe build was:\n" + builder.buffer
+                                    + "\n" + message);
+                    exception.initCause(throwable2);
+                    throw exception;
 
-		}
-		if (!isBuildOK) {
-		    throw new IOException("It was not possible to build \""
-			    + sharedLibraryFile + "\": " + builder.buffer
-			    + "\n" + message);
-		}
-	    }
-	}
-	return sharedLibraryFile.getCanonicalPath();
+                }
+                if (!isBuildOK) {
+                    throw new IOException("It was not possible to build \""
+                            + sharedLibraryFile + "\": " + builder.buffer
+                            + "\n" + message);
+                }
+            }
+        }
+        return sharedLibraryFile.getCanonicalPath();
     }
 
     /**
@@ -396,49 +395,49 @@ public class FMIModelDescription {
      *                If the native library cannot be found.
      */
     public Function getFmiFunction(String functionName)
-	    throws UnsatisfiedLinkError, IOException {
-	// A different implementation would try to guess which
-	// function is named depending on if there is C code present
-	// and whether there is a dynamic library present. However,
-	// for Java, it is unlikely that a static library is being
-	// accessed and determining whether source is present to
-	// determine the function name is asinine (cxh, 7/16/13)
-	if (_nativeLibrary == null) {
-	    getNativeLibrary();
-	}
-	Function function = null;
-	// FMI-2.0
-	String name1 = modelIdentifier + "_"
-	        + functionName.replace("fmi", "fmi2");
-	String name2 = functionName.replace("fmi", "fmi2");
-	// FMI-2.0RC1
-	String name3 = modelIdentifier + "_" + functionName;
-	// FMI-1.0?
-	String name4 = functionName;
-	try {
-	    function = _nativeLibrary.getFunction(name1);
-	} catch (UnsatisfiedLinkError error) {
-	    try {
-		function = _nativeLibrary.getFunction(name2);
-	    } catch (UnsatisfiedLinkError error2) {
-		try {
-		    function = _nativeLibrary.getFunction(name3);
-		} catch (UnsatisfiedLinkError error3) {
-		    try {
-			function = _nativeLibrary.getFunction(name4);
-		    } catch (UnsatisfiedLinkError error4) {
-			UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
-			        "Could not find the function, \"" + name1
-			                + "\" or \"" + name2 + "\" or \""
-			                + name3 + "\" or \"" + name4 + "\" in "
-			                + _nativeLibrary);
-			// linkError.initCause(error);
-			throw linkError;
-		    }
-		}
-	    }
-	}
-	return function;
+            throws UnsatisfiedLinkError, IOException {
+        // A different implementation would try to guess which
+        // function is named depending on if there is C code present
+        // and whether there is a dynamic library present. However,
+        // for Java, it is unlikely that a static library is being
+        // accessed and determining whether source is present to
+        // determine the function name is asinine (cxh, 7/16/13)
+        if (_nativeLibrary == null) {
+            getNativeLibrary();
+        }
+        Function function = null;
+        // FMI-2.0
+        String name1 = modelIdentifier + "_"
+                + functionName.replace("fmi", "fmi2");
+        String name2 = functionName.replace("fmi", "fmi2");
+        // FMI-2.0RC1
+        String name3 = modelIdentifier + "_" + functionName;
+        // FMI-1.0?
+        String name4 = functionName;
+        try {
+            function = _nativeLibrary.getFunction(name1);
+        } catch (UnsatisfiedLinkError error) {
+            try {
+                function = _nativeLibrary.getFunction(name2);
+            } catch (UnsatisfiedLinkError error2) {
+                try {
+                    function = _nativeLibrary.getFunction(name3);
+                } catch (UnsatisfiedLinkError error3) {
+                    try {
+                        function = _nativeLibrary.getFunction(name4);
+                    } catch (UnsatisfiedLinkError error4) {
+                        UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
+                                "Could not find the function, \"" + name1
+                                        + "\" or \"" + name2 + "\" or \""
+                                        + name3 + "\" or \"" + name4 + "\" in "
+                                        + _nativeLibrary);
+                        // linkError.initCause(error);
+                        throw linkError;
+                    }
+                }
+            }
+        }
+        return function;
     }
 
     /**
@@ -453,16 +452,16 @@ public class FMIModelDescription {
      *                platform.
      */
     public NativeLibrary getNativeLibrary() throws IOException {
-	if (_nativeLibrary != null) {
-	    return _nativeLibrary;
-	}
-	String sharedLibrary = getNativeLibraryPath();
-	try {
+        if (_nativeLibrary != null) {
+            return _nativeLibrary;
+        }
+        String sharedLibrary = getNativeLibraryPath();
+        try {
             String osName = System.getProperty("os.name").toLowerCase(
                     Locale.getDefault());
             if (osName.startsWith("linux")) {
                 // Call dlopen() with RTLD_LAZY and not with RTLD_GLOBAL, which is the
-                // default. 
+                // default.
                 // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#LinuxSymbolProblems
                 // See https://github.com/twall/jna/issues/44
                 // One symptom of this failing is that if we run different values fmus,
@@ -477,51 +476,53 @@ public class FMIModelDescription {
                 Integer RTLD_LAZY = new Integer(1);
                 options.put(Library.OPTION_OPEN_FLAGS, RTLD_LAZY);
 
-                _nativeLibrary = NativeLibrary.getInstance(sharedLibrary, options);
+                _nativeLibrary = NativeLibrary.getInstance(sharedLibrary,
+                        options);
             } else {
                 // Under other platforms, such as Windows,
                 // use the defaults.  The Dymola fmus require
                 // this or we get Invalid Memory Access.
                 _nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
             }
-	} catch (Throwable throwable3) {
-	    // Java 1.5 does not support
-	    // IOException(String, Throwable). We
-	    // sometimes compile this with gcj, which is
-	    // Java 1.5
+        } catch (Throwable throwable3) {
+            // Java 1.5 does not support
+            // IOException(String, Throwable). We
+            // sometimes compile this with gcj, which is
+            // Java 1.5
             String osMessage = "";
             String dependencyMessage = "includes the appropriate directories containing the necessary libraries.";
             String osName = System.getProperty("os.name").toLowerCase(
                     Locale.getDefault());
             if (osName.startsWith("linux")) {
-                osMessage = "Under Linux, try running \n"
-                    + "  ldd " + sharedLibrary
-                    + "\nand check that your LD_LIBRARY_PATH "
-                    + dependencyMessage;
+                osMessage = "Under Linux, try running \n" + "  ldd "
+                        + sharedLibrary
+                        + "\nand check that your LD_LIBRARY_PATH "
+                        + dependencyMessage;
             } else if (osName.startsWith("mac os")) {
-                osMessage = "Under Mac OS X, try running \n"
-                    + "  otool -L " + sharedLibrary
-                    + "\nand check that your DY_LD_LIBRARY_PATH "
-                    + dependencyMessage;
+                osMessage = "Under Mac OS X, try running \n" + "  otool -L "
+                        + sharedLibrary
+                        + "\nand check that your DY_LD_LIBRARY_PATH "
+                        + dependencyMessage;
             } else if (osName.startsWith("windows")) {
                 osMessage = "Under Windows, download the dependenc walker from http://www.dependencywalker.com "
-                    + "and run it on the shared library at " + sharedLibrary
-                    + ". Then check that your PATH "
-                    + dependencyMessage;
+                        + "and run it on the shared library at "
+                        + sharedLibrary
+                        + ". Then check that your PATH "
+                        + dependencyMessage;
             }
 
-	    IOException exception = new IOException(
-		    "Error loading \""
-		            + sharedLibrary
-		            + "\" shared library.  "
-		            + "To debug loading errors, "
-		            + "Restart Java with \"-Djna.debug_load=true\".  "
-		            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
+            IOException exception = new IOException(
+                    "Error loading \""
+                            + sharedLibrary
+                            + "\" shared library.  "
+                            + "To debug loading errors, "
+                            + "Restart Java with \"-Djna.debug_load=true\".  "
+                            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
                             + osMessage);
-	    exception.initCause(throwable3);
-	    throw exception;
-	}
-	return _nativeLibrary;
+            exception.initCause(throwable3);
+            throw exception;
+        }
+        return _nativeLibrary;
     }
 
     /**
@@ -531,7 +532,7 @@ public class FMIModelDescription {
      */
     @Override
     public String toString() {
-	return modelName;
+        return modelName;
     }
 
     /**
@@ -539,44 +540,44 @@ public class FMIModelDescription {
      *
      */
     public void parseDependenciese(Node node) {
-	NamedNodeMap attributes = node.getAttributes();
-	Long valueReference = Long.parseLong(attributes.getNamedItem("index")
-	        .getNodeValue());
+        NamedNodeMap attributes = node.getAttributes();
+        Long valueReference = Long.parseLong(attributes.getNamedItem("index")
+                .getNodeValue());
 
-	Node dependencyNode = attributes.getNamedItem("dependencies");
-	if (dependencyNode != null
-	        && dependencyNode.getNodeValue().trim().length() != 0) {
-	    String[] dependencies = dependencyNode.getNodeValue().trim()
-		    .split(" ");
+        Node dependencyNode = attributes.getNamedItem("dependencies");
+        if (dependencyNode != null
+                && dependencyNode.getNodeValue().trim().length() != 0) {
+            String[] dependencies = dependencyNode.getNodeValue().trim()
+                    .split(" ");
 
-	    for (int i = 0; i < modelVariables.size(); i++) {
-		if (modelVariables.get(i).valueReference == valueReference) {
-		    modelVariables.get(i).directDependency.clear();
-		    for (int j = 0; j < dependencies.length; j++) {
+            for (int i = 0; i < modelVariables.size(); i++) {
+                if (modelVariables.get(i).valueReference == valueReference) {
+                    modelVariables.get(i).directDependency.clear();
+                    for (int j = 0; j < dependencies.length; j++) {
 
-			for (int k = 0; k < modelVariables.size(); k++) {
-			    try {
-				if (modelVariables.get(k).valueReference == Long
-				        .parseLong(dependencies[j])
-				        && modelVariables.get(k).causality
-				                .equals(Causality.input)) {
-				    modelVariables.get(i).directDependency
-					    .add(modelVariables.get(k).name);
-				    break;
-				}
-			    } catch (NumberFormatException ex) {
-				NumberFormatException nfx = new NumberFormatException(
-				        "Failed to parse \"" + dependencies[j]
-				                + "\", which is the " + j
-				                + " (0-based) dependency.");
-				nfx.initCause(ex);
-				throw nfx;
-			    }
-			}
-		    }
-		}
-	    }
-	}
+                        for (int k = 0; k < modelVariables.size(); k++) {
+                            try {
+                                if (modelVariables.get(k).valueReference == Long
+                                        .parseLong(dependencies[j])
+                                        && modelVariables.get(k).causality
+                                                .equals(Causality.input)) {
+                                    modelVariables.get(i).directDependency
+                                            .add(modelVariables.get(k).name);
+                                    break;
+                                }
+                            } catch (NumberFormatException ex) {
+                                NumberFormatException nfx = new NumberFormatException(
+                                        "Failed to parse \"" + dependencies[j]
+                                                + "\", which is the " + j
+                                                + " (0-based) dependency.");
+                                nfx.initCause(ex);
+                                throw nfx;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -584,26 +585,27 @@ public class FMIModelDescription {
      *
      */
     public void addDefaultInputDependencies() {
-	List<String> inputVariables = new ArrayList<String>();
+        List<String> inputVariables = new ArrayList<String>();
 
-	// Get the list of all the input variables
-	for (int i = 0; i < modelVariables.size(); i++) {
-	    if (modelVariables.get(i).causality.equals(Causality.input)) {
-		inputVariables.add(modelVariables.get(i).name);
-	    }
-	}
+        // Get the list of all the input variables
+        for (int i = 0; i < modelVariables.size(); i++) {
+            if (modelVariables.get(i).causality.equals(Causality.input)) {
+                inputVariables.add(modelVariables.get(i).name);
+            }
+        }
 
-	// Set default dependencies
-	for (int i = 0; i < modelVariables.size(); i++) {
-	    if (modelVariables.get(i).causality.equals(Causality.output)
-		    && inputVariables != null) {
-		for (int j = 0; j < inputVariables.size(); j++) {
-		    modelVariables.get(i).directDependency.add(inputVariables
-			    .get(j));
-		}
-	    }
-	}
+        // Set default dependencies
+        for (int i = 0; i < modelVariables.size(); i++) {
+            if (modelVariables.get(i).causality.equals(Causality.output)
+                    && inputVariables != null) {
+                for (int j = 0; j < inputVariables.size(); j++) {
+                    modelVariables.get(i).directDependency.add(inputVariables
+                            .get(j));
+                }
+            }
+        }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -630,7 +632,7 @@ public class FMIModelDescription {
 
         /** The Ptolemy state port for this state. */
         public TypedIOPort port;
-        
+
         /** The flag which indicates a change of a state. */
         public boolean hasChanged;
     }
@@ -649,7 +651,6 @@ public class FMIModelDescription {
      * in the .fmu file.
      */
     private NativeLibrary _nativeLibrary;
-
 
     /** Record of continuous state variables. */
     private static HashMap<Integer, ContinuousState> _continuousStates;

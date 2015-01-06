@@ -89,98 +89,98 @@ public class FMULogUtilities {
      * @return a String with the variable references replaced.
      */
     public static String replaceVariableReferences(
-	    FMIModelDescription modelDescription, String messageString) {
-	int i = 0;
-	StringBuffer results = new StringBuffer();
-	char[] message = messageString.toCharArray();
-	char c = message[i];
-	while (i < message.length) {
-	    if (c != '#') {
-		results.append(c);
-		i++;
-		if (i >= message.length) {
-		    break;
-		}
-		c = message[i];
-	    } else {
-		int end = messageString.indexOf('#', i + 1);
-		if (end == -1) {
-		    results.append("(Unmatched '#' in \"" + messageString
-			    + "\".)");
-		    results.append('#');
-		    break;
-		}
-		if (end - i == 1) {
-		    // ## detected, output #
-		    results.append('#');
-		    i += 2;
-		    if (i >= message.length) {
-			throw new ArrayIndexOutOfBoundsException(
-			        "Internal Error");
-		    }
-		    c = message[i];
-		} else {
-		    Class fmiTypeClass = null;
-		    char typeName = message[i + 1]; // one of ribs
-		    switch (typeName) {
-		    case 'r':
-			fmiTypeClass = FMI_REAL_TYPE_CLASS;
-			break;
-		    case 'i':
-			fmiTypeClass = FMI_INTEGER_TYPE_CLASS;
-			break;
-		    case 'b':
-			fmiTypeClass = FMI_BOOLEAN_TYPE_CLASS;
-			break;
-		    case 's':
-			fmiTypeClass = FMI_STRING_TYPE_CLASS;
-			break;
-		    default:
-			fmiTypeClass = null;
-			break;
-		    }
+            FMIModelDescription modelDescription, String messageString) {
+        int i = 0;
+        StringBuffer results = new StringBuffer();
+        char[] message = messageString.toCharArray();
+        char c = message[i];
+        while (i < message.length) {
+            if (c != '#') {
+                results.append(c);
+                i++;
+                if (i >= message.length) {
+                    break;
+                }
+                c = message[i];
+            } else {
+                int end = messageString.indexOf('#', i + 1);
+                if (end == -1) {
+                    results.append("(Unmatched '#' in \"" + messageString
+                            + "\".)");
+                    results.append('#');
+                    break;
+                }
+                if (end - i == 1) {
+                    // ## detected, output #
+                    results.append('#');
+                    i += 2;
+                    if (i >= message.length) {
+                        throw new ArrayIndexOutOfBoundsException(
+                                "Internal Error");
+                    }
+                    c = message[i];
+                } else {
+                    Class fmiTypeClass = null;
+                    char typeName = message[i + 1]; // one of ribs
+                    switch (typeName) {
+                    case 'r':
+                        fmiTypeClass = FMI_REAL_TYPE_CLASS;
+                        break;
+                    case 'i':
+                        fmiTypeClass = FMI_INTEGER_TYPE_CLASS;
+                        break;
+                    case 'b':
+                        fmiTypeClass = FMI_BOOLEAN_TYPE_CLASS;
+                        break;
+                    case 's':
+                        fmiTypeClass = FMI_STRING_TYPE_CLASS;
+                        break;
+                    default:
+                        fmiTypeClass = null;
+                        break;
+                    }
 
-		    if (fmiTypeClass == null) {
-			results.append("(TypeName: '" + typeName
-			        + "' not supported, must be r, i, b or s.)");
-			i++;
-		    } else {
-			String integerString = messageString.substring(i + 2,
-			        end);
-			try {
-			    int variableReference = Integer
-				    .parseInt(integerString);
-			    boolean foundIt = false;
-			    for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
-				if (scalarVariable.valueReference == variableReference
-				        && scalarVariable.type.getClass()
-				                .isAssignableFrom(fmiTypeClass)) {
-				    foundIt = true;
-				    results.append(scalarVariable.name);
-				    break;
-				}
-			    }
-			    if (!foundIt) {
-				results.append("?");
-			    }
-			    i += (end - i + 1);
-			    if (i >= message.length) {
-				throw new ArrayIndexOutOfBoundsException(
-				        "Internal Error");
-			    }
-			    c = message[i];
-			} catch (NumberFormatException ex) {
-			    results.append("(NumberFormatException: \""
-				    + integerString + "\" in \""
-				    + messageString + "\")");
-			    results.append('#');
-			    break;
-			}
-		    }
-		}
-	    }
-	}
-	return results.toString();
+                    if (fmiTypeClass == null) {
+                        results.append("(TypeName: '" + typeName
+                                + "' not supported, must be r, i, b or s.)");
+                        i++;
+                    } else {
+                        String integerString = messageString.substring(i + 2,
+                                end);
+                        try {
+                            int variableReference = Integer
+                                    .parseInt(integerString);
+                            boolean foundIt = false;
+                            for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
+                                if (scalarVariable.valueReference == variableReference
+                                        && scalarVariable.type.getClass()
+                                                .isAssignableFrom(fmiTypeClass)) {
+                                    foundIt = true;
+                                    results.append(scalarVariable.name);
+                                    break;
+                                }
+                            }
+                            if (!foundIt) {
+                                results.append("?");
+                            }
+                            i += (end - i + 1);
+                            if (i >= message.length) {
+                                throw new ArrayIndexOutOfBoundsException(
+                                        "Internal Error");
+                            }
+                            c = message[i];
+                        } catch (NumberFormatException ex) {
+                            results.append("(NumberFormatException: \""
+                                    + integerString + "\" in \""
+                                    + messageString + "\")");
+                            results.append('#');
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return results.toString();
     }
 
     /** Given a fmiStatus value, return a string description.
@@ -189,31 +189,31 @@ public class FMULogUtilities {
      *  @return A string that describes the status.
      */
     public static String fmiStatusToString(int status) {
-	String results = "";
-	switch (status) {
-	case FMILibrary.FMIStatus.fmiOK:
-	    results = "ok";
-	    break;
-	case FMILibrary.FMIStatus.fmiWarning:
-	    results = "warning";
-	    break;
-	case FMILibrary.FMIStatus.fmiDiscard:
-	    results = "discard";
-	    break;
-	case FMILibrary.FMIStatus.fmiError:
-	    results = "error";
-	    break;
-	case FMILibrary.FMIStatus.fmiFatal:
-	    results = "fatal";
-	    break;
-	case FMILibrary.FMIStatus.fmiPending:
-	    results = "fmiPending";
-	    break;
-	default:
-	    results = "?";
-	    break;
-	}
-	return results;
+        String results = "";
+        switch (status) {
+        case FMILibrary.FMIStatus.fmiOK:
+            results = "ok";
+            break;
+        case FMILibrary.FMIStatus.fmiWarning:
+            results = "warning";
+            break;
+        case FMILibrary.FMIStatus.fmiDiscard:
+            results = "discard";
+            break;
+        case FMILibrary.FMIStatus.fmiError:
+            results = "error";
+            break;
+        case FMILibrary.FMIStatus.fmiFatal:
+            results = "fatal";
+            break;
+        case FMILibrary.FMIStatus.fmiPending:
+            results = "fmiPending";
+            break;
+        default:
+            results = "?";
+            break;
+        }
+        return results;
     }
 
     /** The FMIRealType class. */
@@ -229,17 +229,17 @@ public class FMULogUtilities {
     static Class FMI_STRING_TYPE_CLASS;
 
     static {
-	try {
-	    FMI_REAL_TYPE_CLASS = Class
-		    .forName("org.ptolemy.fmi.type.FMIRealType");
-	    FMI_INTEGER_TYPE_CLASS = Class
-		    .forName("org.ptolemy.fmi.type.FMIIntegerType");
-	    FMI_BOOLEAN_TYPE_CLASS = Class
-		    .forName("org.ptolemy.fmi.type.FMIBooleanType");
-	    FMI_STRING_TYPE_CLASS = Class
-		    .forName("org.ptolemy.fmi.type.FMIStringType");
-	} catch (ClassNotFoundException ex) {
-	    throw new ExceptionInInitializerError(ex);
-	}
+        try {
+            FMI_REAL_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIRealType");
+            FMI_INTEGER_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIIntegerType");
+            FMI_BOOLEAN_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIBooleanType");
+            FMI_STRING_TYPE_CLASS = Class
+                    .forName("org.ptolemy.fmi.type.FMIStringType");
+        } catch (ClassNotFoundException ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
     }
 }

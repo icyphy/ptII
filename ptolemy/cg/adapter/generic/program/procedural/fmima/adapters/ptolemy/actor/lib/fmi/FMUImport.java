@@ -27,19 +27,8 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.lib.fmi;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.List;
-import java.util.Enumeration;
-import java.util.zip.*;
-import java.io.*;
-
-import org.ptolemy.fmi.FMIScalarVariable;
-
-import com.microstar.xml.XmlParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// FMUImport
@@ -69,42 +58,42 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
      */
     @Override
     public String generateFMIMA() throws IllegalActionException {
-//        StringBuffer code = new StringBuffer();
-//        
-//        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
-//        code.append(getCodeGenerator()
-//                .comment(
-//                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java "
-//                                + _eol
-//                                + "   "
-//                                + actor.getName()
-//                                + " is a FMUImport: "));
-//        
-//        
-//        for (TypedIOPort input : actor.inputPortList()) {
-//        	
-//        	List connected_ports = input.connectedPortList();
-//        	
-//        	String input_module_name = input.getContainer().getName();
-//        	        	
-//        	for (int port_idx = 0; port_idx < connected_ports.size(); port_idx++)
-//        	{
-//        		TypedIOPort output = (TypedIOPort)connected_ports.get(port_idx);
-//        		ptolemy.actor.lib.fmi.FMUImport source_actor = (ptolemy.actor.lib.fmi.FMUImport) output.getContainer();
-//        		String out_module_name = output.getContainer().getName();
-//        		
-//        		code.append("connections[" + out_module_name + "_" + output.getName() + "].sourceFMU = &fmus[" + out_module_name + "];\n"
-//        				+ "connections[" + out_module_name + "_" + output.getName() + "].sourcePort = getValueReference(getScalarVariable(fmus["
-//        					+ out_module_name + "].modelDescription, " + source_actor.getValueReference(output.getName()) + "));\n"
-//                        + "connections[" + out_module_name + "_" + output.getName() + "].sourceType = " + source_actor.getTypeOfPort(output.getName()) + ";\n"
-//                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkFMU = &fmus[" + input_module_name + "];\n"
-//                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkPort = getValueReference(getScalarVariable(fmus["
-//                        	+ input_module_name + "].modelDescription, " + actor.getValueReference(input.getName()) + "));\n"
-//                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkType = " + actor.getTypeOfPort(input.getName()) + ";\n");
-//        	}
-//
-//        }        
-//        return /*processCode(code.toString())*/code.toString();
-    	return "";
+        //        StringBuffer code = new StringBuffer();
+        //        
+        //        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
+        //        code.append(getCodeGenerator()
+        //                .comment(
+        //                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java "
+        //                                + _eol
+        //                                + "   "
+        //                                + actor.getName()
+        //                                + " is a FMUImport: "));
+        //        
+        //        
+        //        for (TypedIOPort input : actor.inputPortList()) {
+        //        	
+        //        	List connected_ports = input.connectedPortList();
+        //        	
+        //        	String input_module_name = input.getContainer().getName();
+        //        	        	
+        //        	for (int port_idx = 0; port_idx < connected_ports.size(); port_idx++)
+        //        	{
+        //        		TypedIOPort output = (TypedIOPort)connected_ports.get(port_idx);
+        //        		ptolemy.actor.lib.fmi.FMUImport source_actor = (ptolemy.actor.lib.fmi.FMUImport) output.getContainer();
+        //        		String out_module_name = output.getContainer().getName();
+        //        		
+        //        		code.append("connections[" + out_module_name + "_" + output.getName() + "].sourceFMU = &fmus[" + out_module_name + "];\n"
+        //        				+ "connections[" + out_module_name + "_" + output.getName() + "].sourcePort = getValueReference(getScalarVariable(fmus["
+        //        					+ out_module_name + "].modelDescription, " + source_actor.getValueReference(output.getName()) + "));\n"
+        //                        + "connections[" + out_module_name + "_" + output.getName() + "].sourceType = " + source_actor.getTypeOfPort(output.getName()) + ";\n"
+        //                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkFMU = &fmus[" + input_module_name + "];\n"
+        //                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkPort = getValueReference(getScalarVariable(fmus["
+        //                        	+ input_module_name + "].modelDescription, " + actor.getValueReference(input.getName()) + "));\n"
+        //                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkType = " + actor.getTypeOfPort(input.getName()) + ";\n");
+        //        	}
+        //
+        //        }        
+        //        return /*processCode(code.toString())*/code.toString();
+        return "";
     }
 }

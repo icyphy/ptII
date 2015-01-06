@@ -1087,7 +1087,6 @@ ValueListener, ChangeListener, CloseListener {
      *  @param attributeName The name of the attribute edited by the component.
      *  @param attribute The attribute edited by the component.
      */
-    @SuppressWarnings("serial")
     private void _addSubmitAction(final JComponent component,
             final String attributeName, final Settable attribute) {
         component.getInputMap().put(

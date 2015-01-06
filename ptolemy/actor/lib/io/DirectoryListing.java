@@ -35,14 +35,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.actor.parameters.FilePortParameter;

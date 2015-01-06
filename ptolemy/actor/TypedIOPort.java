@@ -988,6 +988,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Exception class for run-time type errors.
      */
+    @SuppressWarnings("serial")
     public static class RunTimeTypeCheckException extends
             IllegalActionException {
         /** Create an run-time type error exception.

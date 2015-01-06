@@ -29,12 +29,11 @@ package ptolemy.actor.util;
 
 import java.math.BigInteger;
 
-import ptolemy.util.DoubleUtils;
-
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.ExtendedMath;
+import ptolemy.util.DoubleUtils;
 
 ///////////////////////////////////////////////////////////////////
 //// Time

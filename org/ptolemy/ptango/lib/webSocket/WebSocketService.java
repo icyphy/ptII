@@ -4,7 +4,6 @@ package org.ptolemy.ptango.lib.webSocket;
 
 import java.net.URI;
 
-import org.eclipse.jetty.websocket.WebSocket.Connection;
 import org.ptolemy.ptango.lib.WebServer;
 
 /*
