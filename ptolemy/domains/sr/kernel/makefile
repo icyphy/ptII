@@ -52,7 +52,8 @@ JSRCS = \
 	SRRandomizedScheduler.java
 
 OTHER_FILES_TO_BE_JARED = \
-	PeriodicComposite.xml
+	PeriodicComposite.xml \
+	PeriodicCompositeClass.xml
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 

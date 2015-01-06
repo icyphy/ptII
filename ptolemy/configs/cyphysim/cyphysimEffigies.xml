@@ -1,6 +1,6 @@
 <group>
     <!-- Use a custom graph editor with a QSS director already in it. -->
-    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <entity name="Continuous-Time Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
         <property name="QSS Director"
                   class="ptolemy.domains.qss.kernel.QSSDirector">
@@ -10,6 +10,19 @@
         </property>
       </entity>
     </entity>
+
+    <entity name="Periodic Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+          <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+          </property>
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+        </property>
+      </entity>
+    </entity>
+
     <!-- We need an FSM editor, but do not want it to appear in the -->
     <!-- File->New menu. -->
     <entity name="Modal Model"

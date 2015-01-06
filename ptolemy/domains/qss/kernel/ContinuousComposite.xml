@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="ContinuousCompositeClass" extends="ptolemy.actor.lib.hoc.CatchUpComposite">
+<entity name="ContinuousComposite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
   <doc>Composite actor where inside can catch up with the outside</doc>
   <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
   </property>
@@ -15,4 +15,4 @@
       </property>
     </property>
   </entity>
-</class>
+</entity>
