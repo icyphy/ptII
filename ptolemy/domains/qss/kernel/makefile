@@ -56,7 +56,8 @@ JSRCS = \
 	QSSToken.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ContinuousComposite.xml
+	ContinuousComposite.xml \
+	ContinuousCompositeClass.xml
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 

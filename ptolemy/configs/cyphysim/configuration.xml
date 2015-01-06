@@ -3,135 +3,141 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
-<!-- The contents of <doc>...</doc> are reported by vergil -help. -->
-<doc>Configuration for CyPhySim, the Cyber-Physical Simulator.</doc>
+  <!-- The contents of <doc>...</doc> are reported by vergil -help. -->
+  <doc>Configuration for CyPhySim, the Cyber-Physical Simulator.</doc>
 
-<!-- Specify the about file to open. -->
-<property name="_about"
-          class="ptolemy.data.expr.FileParameter"
-          value="$CLASSPATH/ptolemy/configs/cyphysim/intro.htm"/>
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/cyphysim/intro.htm"/>
 
-<!-- Specify the help file to open. -->
-<property name="_help"
-          class="ptolemy.data.expr.FileParameter"
-          value="$CLASSPATH/ptolemy/configs/doc/docs.htm"/>
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/doc/docs.htm"/>
 
-<property name="_classesToRemove" 
-          class="ptolemy.data.expr.Parameter"
-          value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;}">
-  <doc>An array of Strings, where each element names a class to be removed by the MoMLFilter.</doc>
-</property>
+  <property name="_classesToRemove" 
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;}">
+    <doc>An array of Strings, where each element names a class to be removed by the MoMLFilter.</doc>
+  </property>
 
-<!-- Add support for exporting PDFs. -->
-<!-- Used in BasicGraphFrame.java -->
-<property name="_exportPDFActionClassName"
-          class="ptolemy.data.expr.StringParameter"
-          value="ptolemy.vergil.basic.export.itextpdf.ExportPDFAction"/>
+  <!-- Add support for exporting PDFs. -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_exportPDFActionClassName"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.export.itextpdf.ExportPDFAction"/>
 
-<!-- Add support for exporting HTML. -->
-<!-- Used in BasicGraphFrame.java -->
-<input source="ptolemy/vergil/basic/export/html/htmlExportConfiguration.xml"/>
+  <!-- Add support for exporting HTML. -->
+  <!-- Used in BasicGraphFrame.java -->
+  <input source="ptolemy/vergil/basic/export/html/htmlExportConfiguration.xml"/>
 
-<!-- Add support for importing Field Mock-up Units (FMUs). -->
-<!-- Used in BasicGraphFrame.java -->
-<property name="_importActionClassNames"
-          class="ptolemy.data.expr.Parameter"
-          value="{&quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUForQSSAction&quot;}"/>
+  <!-- Add support for importing Field Mock-up Units (FMUs). -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_importActionClassNames"
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUForQSSAction&quot;}"/>
 
-<!-- Use the KIELER graph layout algorithms. -->
-<!--  Used in BasicGraphFrame.java-->
-<property name="_layoutGraphAction"
-          class="ptolemy.data.expr.StringParameter"
-          value="ptolemy.vergil.basic.layout.kieler.KielerLayoutAction"/>
+  <!-- Use the KIELER graph layout algorithms. -->
+  <!--  Used in BasicGraphFrame.java-->
+  <property name="_layoutGraphAction"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.layout.kieler.KielerLayoutAction"/>
 
-<!-- The directory of open models, each represented by an effigy. -->
-<!-- Note that this begins empty. -->
-<entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
-</entity>
-
-<!-- The state and transition refinements. Use SDF director version. -->
-<input source="ptolemy/configs/sdfRefinements.xml"/>
-
-<!-- The list of effigy factories, which defines what goes in  -->
-<!-- the New menu, and also what sorts of files can be opened. -->
-<!-- These are searched in the order listed here, until one of -->
-<!-- the effigies agrees to open the file. -->
-<!-- Any of these effigies that return true to canCreateBlankEffigy -->
-<!-- will appear in the New menu.  If there is a contained entity   -->
-<!-- named "blank", then the effigy will initially refer to a clone -->
-<!-- of that blank entity. -->
-<entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-  <input source="ptolemy/configs/cyphysim/cyphysimEffigies.xml"/>
-  <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
-</entity>
-
-<!-- The list of tableau factories, which defines the visual   -->
-<!-- editors that are available.  After an effigy is created   -->
-<!-- for a model, these factories are tried in order until one -->
-<!-- is willing to open the model. Each editor contains a list -->
-<!-- of other editors that appear in the View menu.            -->
-<property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-  <input source="ptolemy/configs/modalTableauFactory.xml"/>
-  <input source="ptolemy/configs/graphTableauFactory.xml"/>
-  <input source="ptolemy/configs/extendedTableauFactories.xml"/>
-</property>
-
-<!-- Main default library is normally the following. Override below. -->
-<!-- input source="ptolemy/configs/basicLibrary.xml"-->
-
-<!-- Main actor library -->
-<entity name="actor library" class="ptolemy.kernel.CompositeEntity">
-
-  <!-- Marker so that tree view expands the library. -->
-  <property name="_libraryMarker"
-            class="ptolemy.kernel.util.SingletonAttribute"/>
-
-  <!-- Override utilities library. -->
-  <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
-
-    <input source="ptolemy/domains/qss/kernel/ContinuousComposite.xml" />
-    <input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" />
-
-    <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
-    <input source="ptolemy/configs/utilityCompositeActor.xml"/>
-      
-    <input source="ptolemy/configs/basicUtilities.xml"/>
-    <!-- Do not include this as singleton parameters are buggy. -->
-    <!-- input source="ptolemy/configs/customize.xml"/ -->
-    <input source="ptolemy/data/unit/unitSystems.xml"/>
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
 
-  <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+  <!-- The state and transition refinements. Use SDF director version. -->
+  <input source="ptolemy/configs/sdfRefinements.xml"/>
 
-  <!-- director library. -->
-  <input source="ptolemy/configs/cyphysim/directors.xml"/>
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <input source="ptolemy/configs/cyphysim/cyphysimEffigies.xml"/>
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/modalTableauFactory.xml"/>
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main default library is normally the following. Override below. -->
+  <!-- input source="ptolemy/configs/basicLibrary.xml"-->
+
+  <!-- Main actor library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Override utilities library. -->
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+
+      <input source="ptolemy/domains/qss/kernel/ContinuousComposite.xml" />
+      <input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" />
+      <input source="ptolemy/domains/qss/kernel/ContinuousCompositeClass.xml" />
+      <input source="ptolemy/domains/sr/kernel/PeriodicCompositeClass.xml" />
+
+      <input source="ptolemy/configs/utilityModalModel.xml"/>
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+      <input source="ptolemy/data/unit/unitSystems.xml"/>
+    </entity>
+
+    <!-- Custom actor library. -->
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+          <!-- Libraries are mostly customized to make them spartan. -->
+          <input source="ptolemy/configs/cyphysim/sources.xml"/>
+          <input source="ptolemy/configs/cyphysim/sinks.xml"/>
+          <input source="ptolemy/actor/lib/array.xml"/>
+          <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+          <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+          <input source="ptolemy/configs/cyphysim/hoc.xml"/>
+          <input source="ptolemy/configs/cyphysim/io.xml"/>
+          <input source="ptolemy/actor/lib/logic/logic.xml"/>
+          <input source="ptolemy/actor/lib/math.xml"/>
+          <input source="ptolemy/actor/lib/matrix.xml"/>
+          <input source="ptolemy/actor/lib/random.xml"/>
+          <input source="ptolemy/actor/lib/realtime.xml"/>
+          <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+          <input source="ptolemy/actor/lib/string/string.xml"/>
+
+<!-- input source="ptolemy/domains/qss/lib/qssentities.xml"/ -->
+
+</group>
+        ?>
+      </configure>
+    </entity>
+
+    <entity name="DomainSpecific" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+          <doc>Common Domain Specific Actors</doc>
+          <input source="ptolemy/domains/de/lib/deentities.xml"/>
+          <input source="ptolemy/domains/sr/lib/srentities.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
     
-  <!-- Custom actor library. -->
-  <entity name="Actors" class="ptolemy.moml.EntityLibrary">
-    <configure>
-      <?moml
-        <group>
-        <!-- Libraries are mostly customized to make them spartan. -->
-        <input source="ptolemy/configs/cyphysim/sources.xml"/>
-        <input source="ptolemy/configs/cyphysim/sinks.xml"/>
-        <input source="ptolemy/actor/lib/array.xml"/>
-        <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
-        <input source="ptolemy/actor/lib/flowcontrol.xml"/>
-        <input source="ptolemy/configs/cyphysim/hoc.xml"/>
-        <input source="ptolemy/configs/cyphysim/io.xml"/>
-        <input source="ptolemy/actor/lib/logic/logic.xml"/>
-        <input source="ptolemy/actor/lib/math.xml"/>
-        <input source="ptolemy/actor/lib/matrix.xml"/>
-        <input source="ptolemy/actor/lib/random.xml"/>
-        <input source="ptolemy/actor/lib/realtime.xml"/>
-        <input source="ptolemy/actor/lib/signalprocessing.xml"/>
-        <input source="ptolemy/actor/lib/string/string.xml"/>
-
-        <!-- input source="ptolemy/domains/qss/lib/qssentities.xml"/ -->
-
-        </group>
-      ?>
-    </configure>
   </entity>
-</entity>
 </entity>
