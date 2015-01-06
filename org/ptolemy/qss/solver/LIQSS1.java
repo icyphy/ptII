@@ -41,7 +41,7 @@ import ptolemy.actor.util.Time;
 
 /** Implement the LIQSS1 method for solving ordinary differential equations.
  *
- * @author David M. Lorenzetti
+ * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui
  * @version $id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
@@ -57,7 +57,7 @@ public final class LIQSS1
 
     /** Initialize object fields (QSS-specific).
      */
-    public final void _init_work() {
+    public final void initializeWorker() {
 
         // Check internal consistency.
         assert( _stateVals_xx == null );
@@ -79,12 +79,12 @@ public final class LIQSS1
             _ivVals_xx = new double[_ivCt];
         }
 
-    }  // End method _init_work().
+    }  
 
 
     /** Get the order of the external, quantized state models exposed by the integrator.
      */
-    public final int getStateMdlOrder() {
+    public final int getStateModelOrder() {
         return( 0 );
     }
 
@@ -94,8 +94,9 @@ public final class LIQSS1
 
 
     /** Form a new external, quantized state model (QSS-specific).
+     *  @param stateIdx The state index.
      */
-    protected final void _triggerQuantEvt_work(final int stateIdx) {
+    protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
         // Note the superclass takes care of updating status variables and so on.
 
@@ -139,12 +140,12 @@ public final class LIQSS1
         // Update information needed to form diagonalized state model.
         _qStateMdlDiffs[stateIdx] = qTest - qStateLastMdl;
 
-    }  // End method _triggerQuantEvt_work().
+    }  
 
 
     /** Form new internal, continuous state models (QSS-specific).
      */
-    protected final void _triggerRateEvt_work()
+    protected final void _triggerRateEventWorker()
         throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -225,12 +226,14 @@ public final class LIQSS1
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
         }
 
-    }  // End method _triggerRateEvt_work().
+    }  
 
 
     /** Get the predicted quantization-event time for a state (QSS-specific).
+     *  @param stateIdx The state index.
+     *  @param quantEvtTimeMax The maximum quantization event time.
      */
-    protected final Time _predictQuantEvtTime_work(
+    protected final Time _predictQuantizationEventTimeWorker(
         final int stateIdx, final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
@@ -315,7 +318,7 @@ public final class LIQSS1
 
         return( predQuantEvtTime );
 
-    }  // End method _predictQuantEvtTime_work().
+    } 
 
 
     ///////////////////////////////////////////////////////////////////
@@ -341,4 +344,4 @@ public final class LIQSS1
     private double[] _ivVals_xx;
 
 
-}  // End class LIQSS1.
+}  
