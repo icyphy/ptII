@@ -50,7 +50,7 @@
   </entity>
 
   <!-- The state and transition refinements. Use SDF director version. -->
-  <input source="ptolemy/configs/sdfRefinements.xml"/>
+  <input source="ptolemy/configs/cyphysim/cyphysimRefinements.xml"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
