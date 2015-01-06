@@ -34,13 +34,12 @@ import java.util.List;
 
 import org.ptolemy.ssm.MirrorDecoratorListener.DecoratorEvent;
 
-import ptolemy.actor.CommunicationAspectListener;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort; 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.expr.Parameter; 
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;

@@ -33,15 +33,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter.InputType;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.Expression;
-import ptolemy.actor.lib.SetVariable;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.parameters.SharedParameter;
@@ -49,7 +45,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.RecordToken; 
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -69,7 +65,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -80,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  Abstract simulator base class 
 
  @author Ilge Akkaya
- @version $Id: ParticleFilter.java 70534 2014-11-11 21:56:08Z ilgea $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating Red (ilgea)

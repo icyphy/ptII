@@ -27,10 +27,10 @@
  */ 
 package org.ptolemy.ssm;
 
-import java.util.HashMap; 
+import java.util.HashMap;
 import java.util.Set;
 
-import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter; 
+import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -41,7 +41,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 ////ParticleFilterSSM
@@ -126,7 +125,7 @@ implements InferenceActor {
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
-        Set test = this.decorators();
+        /*Set test =*/ this.decorators();
         for (Decorator d : this.decorators()) {
             if (d instanceof StateSpaceModel) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");

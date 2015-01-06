@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Convert a date to a string.
 
  @author Patricia Derler
- @version $Id: StringToDate.java 70580 2014-11-13 19:47:57Z pd $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)

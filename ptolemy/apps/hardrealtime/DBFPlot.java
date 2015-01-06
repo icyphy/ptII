@@ -47,7 +47,7 @@ import ptolemy.plot.Plot;
  * A plotter for the demand bound function of periodic and multiframe tasks.
  * 
  * @author Patricia Derler
- * @version $Id: TaskPlot.java 68364 2014-02-08 19:24:51Z cxh $
+ * @version $Id$
  * @Pt.ProposedRating Red (chster)
  * @Pt.AcceptedRating Red (chster)
  */

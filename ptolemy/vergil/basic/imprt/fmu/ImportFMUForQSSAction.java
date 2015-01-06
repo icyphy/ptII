@@ -80,7 +80,7 @@ import diva.graph.GraphController;
    to manage because the ports could change.</p>
 
    @author  Thierry S. Nouidui.  Based on ImportFMUAction.java by Christopher Brooks
-   @version $Id: ImportFMUAForQSSction.java 68606 2014-03-11 15:28:05Z cxh $
+   @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (thn)
    @Pt.AcceptedRating Red (thn)

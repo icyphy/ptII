@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.ptolemy.machineLearning.Algorithms; 
+import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -53,7 +53,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
-import ptolemy.data.RecordToken; 
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -86,7 +86,7 @@ import ptolemy.math.SignalProcessing;
  @see org.ptolemy.machineLearning.particleFilter.ParticleFilter
 
  @author Ilge Akkaya
- @version $Id: ParticleFilter.java 70534 2014-11-11 21:56:08Z ilgea $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating Red (ilgea)
