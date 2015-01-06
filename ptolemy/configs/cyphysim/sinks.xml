@@ -10,9 +10,6 @@
   <!-- Copied from ptolemy/actor/lib/sequencesinks.xml-->
   <!-- Rearranged to be alphabetical. -->
 
-<entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter"/>
-<entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY"/>
-<entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
 <entity name="Discard" class="ptolemy.actor.lib.Discard">
   <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true"/>
   <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -30,8 +27,8 @@
       <property name="displayWidth" value="displayWidth"/>
    </property>
 </entity>
-<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
-<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope"/>
+<entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
+<entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
 <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
 <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
 

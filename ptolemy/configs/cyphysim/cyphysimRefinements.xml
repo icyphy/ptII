@@ -1,0 +1,45 @@
+<group>
+  <!-- An entity giving default state refinements for modal models containing SDF directors. -->
+  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Continuous Composite Refinement" class="ptolemy.domains.modal.modal.Refinement">
+      <property name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]"/>
+      </property>
+    </entity>
+    <entity name="Periodic Composite Refinement" class="ptolemy.domains.modal.modal.Refinement">
+      <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 65}">
+        </property>
+      </property>
+    </entity>
+    <entity name="State Machine Refinement" class="ptolemy.domains.modal.modal.ModalRefinement">
+      <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory"/>
+      <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <input source="ptolemy/configs/basicUtilities.xml"/>
+              <entity name="state" class="ptolemy.domains.modal.kernel.State">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"/>
+              </entity>
+            </entity>
+          </configure>
+        </property>
+      </entity>
+    </entity>
+  </entity>
+
+  <!-- An entity giving default transition refinements for modal models. -->
+  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Default Refinement" class="ptolemy.domains.modal.modal.Refinement">
+      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+          <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+          </property>
+      </property>
+    </entity>
+  </entity>
+</group>
+
