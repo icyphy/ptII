@@ -30,7 +30,7 @@
 
 <ModelStructure>
   <Outputs>
-    <Unknown index="1" dependencies="0" />
+    <Unknown index="2" dependencies="1" />
   </Outputs>
 </ModelStructure>
 
