@@ -30,7 +30,7 @@ COPYRIGHTENDKEY
 package org.ptolemy.qss.solver;
 
 
-import org.ptolemy.qss.util.ModelPoly;
+import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.util.Time;
 
@@ -101,14 +101,14 @@ public final class LIQSS1
         // Note the superclass takes care of updating status variables and so on.
 
         // Initialize.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
-        final ModelPoly cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
         final double dtStateMdl = _currSimTime.subtractToDouble(cStateMdl.tMdl);
 
-        final double cState = cStateMdl.eval(dtStateMdl);
-        final double cStateDeriv = cStateMdl.evalDeriv(dtStateMdl);
+        final double cState = cStateMdl.evaluate(dtStateMdl);
+        final double cStateDeriv = cStateMdl.evaluateDerivative(dtStateMdl);
 
-        final double qStateLastMdl = qStateMdl.eval(_currSimTime);
+        final double qStateLastMdl = qStateMdl.evaluate(_currSimTime);
         final double jacDiag = _jacDiags[stateIdx];
 
         // Save values needed for finding predicted quantization-event time.
@@ -164,21 +164,21 @@ public final class LIQSS1
         Time tStateMdl = null;
         double dtStateMdl = 0;
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Check for different model time.  Note testing object identity OK.
             if( cStateMdl.tMdl != tStateMdl ) {
                 tStateMdl = cStateMdl.tMdl;
                 dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
             }
-            _stateVals_xx[ii] = cStateMdl.eval(dtStateMdl);
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // In general, don't expect input variable models to have same times.
         for( int ii=0; ii<_ivCt; ++ii ) {
-            _ivVals_xx[ii] = _ivMdls[ii].eval(_currSimTime);
+            _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
-        final int retVal = _derivFcn.evalDerivs(_currSimTime, _stateVals_xx, _ivVals_xx,
+        final int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
             _stateDerivs_xx);
         if( 0 != retVal ) {
             throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
@@ -188,8 +188,8 @@ public final class LIQSS1
         //   Note have to do this before update the internal, continuous state models,
         // since need the rate of the old one.
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly qStateMdl = _qStateMdls[ii];
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial qStateMdl = _qStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Estimate the diagonal element of the Jacobian.
             //   If component {ii} did not just have a quantization-event, set
             // estimate to zero.
@@ -207,7 +207,7 @@ public final class LIQSS1
                 final double qStateMdlDiff = _qStateMdlDiffs[ii];
                 if( qStateMdlDiff != 0 ) {
                     jacDiag =
-                        (_stateDerivs_xx[ii] - cStateMdl.evalDeriv(_currSimTime))
+                        (_stateDerivs_xx[ii] - cStateMdl.evaluateDerivative(_currSimTime))
                         / qStateMdlDiff;
                 }
             }
@@ -220,7 +220,7 @@ public final class LIQSS1
         //   This also updates the rate model, which is just the derivative of
         // the state model.
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             cStateMdl.tMdl = _currSimTime;
             cStateMdl.coeffs[0] = _stateVals_xx[ii];
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
@@ -240,8 +240,8 @@ public final class LIQSS1
         // storing the returned result.
 
         // Initialize.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
-        final ModelPoly cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
         final double dq = _dqs[stateIdx];
         final double cStateDeriv = cStateMdl.coeffs[1];
 

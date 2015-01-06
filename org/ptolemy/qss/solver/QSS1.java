@@ -30,7 +30,7 @@ COPYRIGHTENDKEY
 package org.ptolemy.qss.solver;
 
 
-import org.ptolemy.qss.util.ModelPoly;
+import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.util.Time;
 
@@ -93,12 +93,12 @@ public final class QSS1
         // Note the superclass takes care of updating status variables and so on.
 
         // Initialize.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
-        final ModelPoly cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
 
         // Update the external, quantized state model.
         qStateMdl.tMdl = _currSimTime;
-        qStateMdl.coeffs[0] = cStateMdl.eval(_currSimTime);
+        qStateMdl.coeffs[0] = cStateMdl.evaluate(_currSimTime);
 
     }  
 
@@ -124,21 +124,21 @@ public final class QSS1
         Time tStateMdl = null;
         double dtStateMdl = 0;
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Check for different model time.  Note testing object identity OK.
             if( cStateMdl.tMdl != tStateMdl ) {
                 tStateMdl = cStateMdl.tMdl;
                 dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
             }
-            _stateVals_xx[ii] = cStateMdl.eval(dtStateMdl);
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // In general, don't expect input variable models to have same times.
         for( int ii=0; ii<_ivCt; ++ii ) {
-            _ivVals_xx[ii] = _ivMdls[ii].eval(_currSimTime);
+            _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
-        final int retVal = _derivFcn.evalDerivs(_currSimTime, _stateVals_xx, _ivVals_xx,
+        final int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
             _stateDerivs_xx);
         if( 0 != retVal ) {
             throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
@@ -148,7 +148,7 @@ public final class QSS1
         //   This also updates the rate model, which is just the derivative of
         // the state model.
         for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPoly cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
             cStateMdl.tMdl = _currSimTime;
             cStateMdl.coeffs[0] = _stateVals_xx[ii];
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
@@ -168,8 +168,8 @@ public final class QSS1
         // storing the returned result.
 
         // Initialize.
-        final ModelPoly qStateMdl = _qStateMdls[stateIdx];
-        final ModelPoly cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
         final double dq = _dqs[stateIdx];
         final double cStateDeriv = cStateMdl.coeffs[1];
 
