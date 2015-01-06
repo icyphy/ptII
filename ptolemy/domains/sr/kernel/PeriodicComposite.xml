@@ -1,13 +1,19 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PeriodicComposite" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Periodic Composite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
+  <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+  </property>
+  <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+  </property>
   <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 170.0}">
   </property>
-  <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+  <entity name="Contents" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Periodic Director" class="ptolemy.domains.sr.kernel.SRDirector">
+      <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+      </property>
+      <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 65}">
+      </property>
     </property>
-    <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 65}">
-    </property>
-  </property>
+  </entity>
 </entity>

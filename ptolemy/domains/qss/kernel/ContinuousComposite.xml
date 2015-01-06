@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ContinuousComposite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
+<entity name="CyPhy Composite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
   <doc>Composite actor where inside can catch up with the outside</doc>
   <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
   </property>
@@ -10,7 +10,7 @@
   <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 95.0]">
   </property>
   <entity name="Contents" class="ptolemy.actor.TypedCompositeActor">
-    <property name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector">
+    <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
       <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]">
       </property>
     </property>

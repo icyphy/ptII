@@ -1,8 +1,8 @@
 <group>
     <!-- Use a custom graph editor with a QSS director already in it. -->
-    <entity name="Continuous-Time Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <entity name="CyPhy Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="QSS Director"
+        <property name="CyPhy Director"
                   class="ptolemy.domains.qss.kernel.QSSDirector">
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
@@ -13,7 +13,7 @@
 
     <entity name="Periodic Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="Periodic Director" class="ptolemy.domains.sr.kernel.SRDirector">
           <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
           </property>
           <property name="_location"

@@ -1,12 +1,12 @@
 <group>
   <!-- An entity giving default state refinements for modal models containing SDF directors. -->
   <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Continuous Composite Refinement" class="ptolemy.domains.modal.modal.Refinement">
+    <entity name="Aperiodic Refinement" class="ptolemy.domains.modal.modal.Refinement">
       <property name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]"/>
       </property>
     </entity>
-    <entity name="Periodic Composite Refinement" class="ptolemy.domains.modal.modal.Refinement">
+    <entity name="Periodic Refinement" class="ptolemy.domains.modal.modal.Refinement">
       <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
