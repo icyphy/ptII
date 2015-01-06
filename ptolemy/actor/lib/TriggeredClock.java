@@ -28,8 +28,10 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -71,6 +73,7 @@ public class TriggeredClock extends Clock {
         // start port.
         start = new TypedIOPort(this, "start");
         start.setInput(true);
+        new SingletonParameter(start, "_showName").setToken(BooleanToken.TRUE);
 
         // type is undeclared.
         // Annotate DISCRETE, for the benefit of CT.
@@ -79,6 +82,7 @@ public class TriggeredClock extends Clock {
         // stop port.
         stop = new TypedIOPort(this, "stop");
         stop.setInput(true);
+        new SingletonParameter(stop, "_showName").setToken(BooleanToken.TRUE);
 
         // type is undeclared.
         // Annotate DISCRETE, for the benefit of CT.
