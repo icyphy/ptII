@@ -93,7 +93,6 @@
           <localVarText>ANT_HOME=/usr/local/apache-ant
 ANT_OPTS=-Xmx1024m
 BCVTB_HOME=${WORKSPACE}/lbnl
-CCHOME=/opt/centos/devtoolset-1.1/root/usr
 CERTI_HOST=localhost
 CERTI_HOME=/usr/local/certi
 CERTI_FED=/usr/local/certi/share/federations
@@ -102,7 +101,7 @@ LD_LIBRARY_PATH=${CERTI_HOME}/lib:${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/u
 CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
 DISPLAY=localhost:6.0
 OPENMODELICAHOME=/usr/local/openmodelica
-PATH=${CCHOME}/bin:/usr/local/bin:${CERTI_HOME}/share/scripts:${CERTI_HOME}/bin:${OPENMODELICAHOME}/bin:${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
+PATH=/usr/local/bin:${CERTI_HOME}/share/scripts:${CERTI_HOME}/bin:${OPENMODELICAHOME}/bin:${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
 TOSROOT=${WORKSPACE}/vendors/ptinyos/tinyos-1.x
 TOSDIR=${WORKSPACE}/vendors/ptinyos/tinyos-1.x/tos
 PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
