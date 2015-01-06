@@ -31,7 +31,7 @@ package org.ptolemy.qss.util;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// PolyRoot
+//// PolynomialRoot
 
 
 /** Find roots of polynomials.
@@ -40,20 +40,20 @@ package org.ptolemy.qss.util;
  *
  * <p>TODO: Need a unit test for this class.</p>
  *
- * @author David M. Lorenzetti
+ * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui
  * @version $id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */
-public final class PolyRoot {
+public final class PolynomialRoot {
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
 
-    /* Find the smallest positive real root of a second-order (quadratic) equation.
+    /** Find the smallest positive real root of a second-order (quadratic) equation.
      *
      * <p>Equation is
      * <i>a*x^2 + b*x + c = 0</i>.</p>
@@ -61,11 +61,11 @@ public final class PolyRoot {
      * @param qea Coefficient `a`.
      * @param qeb Coefficient `b`.
      * @param qec Coefficient `c`.
-     * @return Smallest positive real root.
+     * @return The smallest positive real root.
      *   Return `Double.POSITIVE_INFINITY` if no root.
      *   Return 0 if only nonpositive roots.
      */
-    public final static double findMinPosRoot2(final double qea, final double qeb, final double qec) {
+    public final static double findMinimumPositiveRoot2(final double qea, final double qeb, final double qec) {
 
         double minPosRoot;
         final double disc = qeb*qeb - 4*qea*qec;
@@ -120,10 +120,10 @@ public final class PolyRoot {
 
         return( minPosRoot );
 
-        }  // End method findMinPosRoot2().
+        } 
 
 
-    /* Find the smallest positive real root of a third-order (cubic) equation.
+    /** Find the smallest positive real root of a third-order (cubic) equation.
      *
      * <p>Equation is
      * <i>a*x^3 + b*x^2 + c*x + d = 0</i>.</p>
@@ -138,13 +138,13 @@ public final class PolyRoot {
      * @param ceb Coefficient `b`.
      * @param cec Coefficient `c`.
      * @param ced Coefficient `d`.
-     * @param absTol Size of residual at which end search.
-     * @apram relTol Fractional difference in bracket on x, at which end search.
-     * @return Smallest positive real root.
+     * @param absTol The size of residual at which end search.
+     * @apram relTol The fractional difference in bracket on x, at which end search.
+     * @return The smallest positive real root.
      *   Return `Double.POSITIVE_INFINITY` if no root.
      *   Return 0 if only nonpositive roots.
      */
-    public final static double findMinPosRoot3(final double cea, final double ceb, final double cec, final double ced,
+    public final static double findMinimumPositiveRoot3(final double cea, final double ceb, final double cec, final double ced,
         final double absTol, final double relTol) {
 
         // Check inputs.
@@ -159,12 +159,12 @@ public final class PolyRoot {
         if( cea == 0 ) {
             // Here, have a quadratic equation:
             // y = b*x^2 + c*x + d = 0
-            return( findMinPosRoot2(ceb, cec, ced) );
+            return( findMinimumPositiveRoot2(ceb, cec, ced) );
         }
         if( ced == 0 ) {
             // Here, know a root is zero.  Divide polynomial by x:
             // y = a*x^2 + b*x + c = 0
-            return( findMinPosRoot2(cea, ceb, cec) );
+            return( findMinimumPositiveRoot2(cea, ceb, cec) );
         }
 
         // Here, have a cubic.
@@ -343,7 +343,7 @@ public final class PolyRoot {
         final double minPosRoot = (xL>0 && Math.abs(yL)<Math.abs(yR)) ? xL : xR;
         return( minPosRoot );
 
-    }  // End method findMinPosRoot3().
+    }  
 
 
     ///////////////////////////////////////////////////////////////////
@@ -386,7 +386,7 @@ public final class PolyRoot {
 
     return( bracketType );
 
-    }  // End method _getBracketType().
+    }  
 
 
-}  // End class PolyRoot.
+}  

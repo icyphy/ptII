@@ -34,7 +34,7 @@ import ptolemy.actor.util.Time;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// QssBase
+//// ModelPolynomial
 
 
 /** Model how a variable changes with time, using a polynomial.
@@ -57,7 +57,7 @@ import ptolemy.actor.util.Time;
  *
  * <h2>Need for a model time</h2>
  *
- * <p>Each <code>ModelPoly</code> object needs to have an associated simulation
+ * <p>Each <code>ModelPolynomial</code> object needs to have an associated simulation
  * time, in order to define the model.
  * Add this simulation time by setting field <code>this.tMdl</code> to the
  * desired <code>Time</code> object.
@@ -104,14 +104,14 @@ import ptolemy.actor.util.Time;
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */
-public final class ModelPoly {
+public final class ModelPolynomial {
 
 
     /** Construct a <code>ModelPoly</code>.
      *
      * @param maxOrder Maximum order of the polynomial (0=constant, 1=line, etc).
      */
-    public ModelPoly(final int maxOrder) {
+    public ModelPolynomial(final int maxOrder) {
 
         // Check inputs.
         assert( maxOrder >= 0 );
@@ -128,8 +128,9 @@ public final class ModelPoly {
 
 
     /** Get the maximum order of the polynomial.
+     * @return The maximum order of the polynomial.
      */
-    public final int getMaxOrder() {
+    public final int getMaximumOrder() {
         return(_maxCoeffIdx);
     }
 
@@ -137,19 +138,20 @@ public final class ModelPoly {
     /** Evaluate the model at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the model.
+     * @return The model evaluated at a simulation time.
      */
-    public final double eval(final Time simTime) {
+    public final double evaluate(final Time simTime) {
         return(
-            this.eval(simTime.subtractToDouble(tMdl))
+            this.evaluate(simTime.subtractToDouble(tMdl))
             );
-    }  // End method eval().
-
+    }  
 
     /** Evaluate the model at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the model.
+     * @return The model evaluated at a delta-time.     
      */
-    public final double eval(final double dt) {
+    public final double evaluate(final double dt) {
 
         // Initialize.
         double val;
@@ -192,25 +194,27 @@ public final class ModelPoly {
 
         return( val );
 
-    }  // End method eval().
+    }  
 
 
     /** Evaluate d{model}/d{t} at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the derivative.
+     * @return The model derivative evaluated at a simulation time.
      */
-    public final double evalDeriv(final Time simTime) {
+    public final double evaluateDerivative(final Time simTime) {
         return(
-            this.evalDeriv(simTime.subtractToDouble(tMdl))
+            this.evaluateDerivative(simTime.subtractToDouble(tMdl))
             );
-    }  // End method evalDeriv().
+    } 
 
 
     /** Evaluate d{model}/d{t} at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
+     * @return The model derivative evaluated at a delta-time.
      */
-    public final double evalDeriv(final double dt) {
+    public final double evaluateDerivative(final double dt) {
 
         // Initialize.
         double deriv;
@@ -252,25 +256,27 @@ public final class ModelPoly {
 
         return( deriv );
 
-    }  // End method evalDeriv().
+    }  
 
 
     /** Evaluate d^2{model}/d{t}^2 at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the derivative.
+     * @return The model second derivative evaluated at a simulation time.
      */
-    public final double evalDeriv2(final Time simTime) {
+    public final double evaluateDerivative2(final Time simTime) {
         return(
-            this.evalDeriv2(simTime.subtractToDouble(tMdl))
+            this.evaluateDerivative2(simTime.subtractToDouble(tMdl))
             );
-    }  // End method evalDeriv2().
+    } 
 
 
     /** Evaluate d^2{model}/d{t}^2 at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
+     * @return The model second derivative evaluated at a delta-time.
      */
-    public final double evalDeriv2(final double dt) {
+    public final double evaluateDerivative2(final double dt) {
 
         // Initialize.
         double deriv2;
@@ -313,12 +319,13 @@ public final class ModelPoly {
 
         return( deriv2 );
 
-    }  // End method evalDeriv2().
+    } 
 
 
     /** Find out how many objects claim write access.
+     * @return The number of objects that claim write access.
      */
-    public final int getWriterCt() {
+    public final int getWriterCount() {
         return(_writerCt);
     }
 
@@ -333,7 +340,6 @@ public final class ModelPoly {
 
 
     /** Release claim of write access.
-     *
      * @return Count of all remaining claims of write access.
      */
     public final int releaseWriteAccess() {
@@ -342,6 +348,7 @@ public final class ModelPoly {
 
 
     /** Return a string representation of the model.
+     * @return The string representation of the model.
      */
     public final String toString() {
 
@@ -386,7 +393,7 @@ public final class ModelPoly {
 
         return( res_sb.toString() );
 
-    }  // End method toString().
+    } 
 
 
     ///////////////////////////////////////////////////////////////////
@@ -425,4 +432,4 @@ public final class ModelPoly {
     private int _writerCt;
 
 
-}  // End class ModelPoly.
+}
