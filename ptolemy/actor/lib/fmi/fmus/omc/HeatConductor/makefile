@@ -34,7 +34,32 @@ FMU_NAME = HeatConductor
 
 include ../fmus.mk
 
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu
+
+
 export:
-	export LD_LIBRARY_PATH=/usr/local/gcc-4.8.2/lib64:/usr/local/lib:${LD_LIBRARY_PATH}
-	export OPENMODELICALIBRARY=`pwd`:/usr/local/openmodelica/lib
-	omc +tearingMethod=noTearing exportFMU.mos
+	#export LD_LIBRARY_PATH=/usr/local/gcc-4.8.2/lib64:/usr/local/lib:${LD_LIBRARY_PATH}
+	export OPENMODELICALIBRARY=`pwd`:/usr/lib/omlibrary:$MODELICAPATH; omc +tearingMethod=noTearing exportFMU.mos
+	mkdir -p src/sources
+	mv modelDescription.xml src/
+	rm $(FMU_NAME).fmu $(FMU_NAME)_FMU.log
+	mv HeatConductor_* src/sources/
+foo:
+	cp ../template/sources/build_fmu src/sources/
+	cp ../../template/sources/build_fmu.bat src/sources/
+	cp ../template/sources/fmu.mk src/sources/
+	cp ../../template/sources/fmuTemplate_fmiv20.c src/sources/fmuTemplate.c
+	cp ../../template/sources/fmuTemplate_fmiv20.h src/sources/fmuTemplate.h
+	cp ../../template/fmiv20/{fmi2FunctionTypes.h,fmi2Functions.h,fmi2TypesPlatform.h} src/sources/
+	cp ../../template/model.png src/
+	mkdir -p src/documentation
+	sed 's/@FMU_NAME@/$(FMU_NAME)/g' ../../template/documentation/_main.html > src/documentation/_main.html
+	echo "# The name of the FMU to be built." > src/sources/makefile
+	echo "FMU_NAME = $(FMU_NAME)" >> src/sources/makefile
+	echo "" >> src/sources/makefile
+	echo "CFLAGS = -I/opt/openmodelica/include -llapack -lblas -L/opt/local/lib/gcc49 -lgfortran" >> src/sources/makefile
+	echo "" >> src/sources/makefile
+	echo "# The rules are in a separate file so that we can easily update them." >> src/sources/makefile
+	echo "include fmu.mk" >> src/sources/makefile
+
+
