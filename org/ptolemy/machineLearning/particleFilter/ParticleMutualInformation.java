@@ -65,7 +65,7 @@ B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Ro
 @see com.cureos.numerics
 
 @author Shuhei Emoto
-@version $Id: ParticleMutualInformation.java 70402 2014-10-23 00:52:20Z cxh $
+@version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (shuhei)
 @Pt.AcceptedRating

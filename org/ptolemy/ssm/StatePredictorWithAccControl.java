@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the last value of cotrol_inputs is used until the step of prediction horizon.
 
  @author Shuhei Emoto
- @version $Id: StatePredictorWithControl.java 70573 2014-11-13 01:19:45Z shuhei $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (shuhei)
  @Pt.AcceptedRating Red (shuhei)
