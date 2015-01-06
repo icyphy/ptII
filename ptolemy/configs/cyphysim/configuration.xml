@@ -32,7 +32,7 @@
   <!-- Used in BasicGraphFrame.java -->
   <input source="ptolemy/vergil/basic/export/html/htmlExportConfiguration.xml"/>
 
-  <!-- Add support for importing Field Mock-up Units (FMUs). -->
+  <!-- Add support for importing Functional Mock-up Units (FMUs). -->
   <!-- Used in BasicGraphFrame.java -->
   <property name="_importActionClassNames"
             class="ptolemy.data.expr.Parameter"
@@ -90,13 +90,17 @@
     <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
 
       <!-- Note that regardless of the order here, classes get listed before entities. -->
-      <input source="ptolemy/domains/qss/kernel/ContinuousComposite.xml" />
+      <input source="ptolemy/domains/qss/kernel/CyPhyComposite.xml" />
       <input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" />
-      <input source="ptolemy/domains/qss/kernel/ContinuousCompositeClass.xml" />
+      <input source="ptolemy/domains/qss/kernel/CyPhyCompositeClass.xml" />
       <input source="ptolemy/domains/sr/kernel/PeriodicCompositeClass.xml" />
 
       <input source="ptolemy/configs/utilityModalModel.xml"/>
       <input source="ptolemy/configs/basicUtilities.xml"/>
+      <!-- Override default background color so that CyPhySim looks different. -->
+      <property name="LocalPreferences">
+        <property name="backgroundColor" value="{0.8, 0.85, 0.9, 1.0}"/>
+      </property>
       <input source="ptolemy/data/unit/unitSystems.xml"/>
     </entity>
 

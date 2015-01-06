@@ -14,7 +14,7 @@
         <doc>The function is applied to its input data.</doc>
       </entity>      
 
-      <entity name="ContinuousComposite" class="ptolemy.domains.qss.kernel.ContinuousComposite">
+      <entity name="CyPhyComposite" class="ptolemy.domains.qss.kernel.CyPhyComposite">
         <doc>A CatchUpComposite that contains a QSS director.</doc>
         </entity>
         
