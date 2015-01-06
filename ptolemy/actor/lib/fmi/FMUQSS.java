@@ -53,8 +53,8 @@ import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 import org.ptolemy.qss.solver.QSSBase;
-import org.ptolemy.qss.util.DerivativeFcn;
-import org.ptolemy.qss.util.ModelPoly;
+import org.ptolemy.qss.util.DerivativeFunction;
+import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -110,7 +110,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating
  * @Pt.AcceptedRating
  */
-public class FMUQSS extends FMUImport implements DerivativeFcn {
+public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     public FMUQSS(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -153,12 +153,11 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * Overrides preinitialize( of the base class to redeclare input.output
      * dependencies.
      * 
-     * @exception IllegalActionException
-     *                if an exception occurs.
+     * @exception IllegalActionException if an exception occurs.
      */
     public void preinitialize() throws IllegalActionException {
         // Initialize continuous states
-        _initContinuousState();
+        _initializeContinuousStates();
 
         // Initialize the input list
         _getInputs();
@@ -186,8 +185,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * out any initial messages."
      * </p>
      *
-     * @exception IllegalActionException
-     *                If the slave FMU cannot be initialized.
+     * @exception IllegalActionException If the slave FMU cannot be initialized.
      */
     public void initialize() throws IllegalActionException {
 
@@ -211,7 +209,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         _fmiInitialize();
 
         // To initialize the event indicators, call this.
-        _checkEvents();
+        _checkStateEvents();
 
         // The specification says on page 75 that after calling
         // fmiExitInitializationMode, the FMU is implicitly in Event Mode
@@ -249,7 +247,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
                             + _fmiStatusDescription(fmiFlag));
         }
 
-        // FIXME we check to see whether we should stay in the event mode but do
+        // FIXME: we check to see whether we should stay in the event mode but do
         // not
         // do anything if we have to stay in event mode.
         // We assume that there is no event and that we can switch to the
@@ -280,7 +278,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         }
 
         // Get and configure the QSS integrator.
-        _initializeQssIntegrator();
+        _initializeQSSIntegrator();
 
         return;
 
@@ -297,8 +295,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * </p>
      *
      * @return True.
-     * @exception IllegalActionException
-     *                Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         return true;
@@ -319,8 +316,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * retrieve and send out any outputs for which all inputs on which the
      * output depends are known.
      * 
-     * @exception IllegalActionException
-     *                If FMU indicates a failure.
+     * @exception IllegalActionException If FMU indicates a failure.
      */
     public void fire() throws IllegalActionException {
 
@@ -338,7 +334,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         }
 
         // Assume do not need a quantization-event.
-        assert (_qssIgr.needQuantEvtIdx() == -1);
+        assert (_qssIgr.needQuantizationEventIndex() == -1);
 
         // Step.
         // Only step if it will advance the integrator.
@@ -347,14 +343,14 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         // TODO: Still need to figure out whether/how to commit integrator to a
         // step, in cases where Ptolemy calls the fire() and postfire() methods
         // multiple times at a single step.
-        if (_qssIgr.getCurrSimTime().compareTo(currTime) == -1) {
+        if (_qssIgr.getCurrentSimulationTime().compareTo(currTime) == -1) {
             try {
                 _qssIgr.stepToTime(currTime);
             } catch (Exception ee) {
                 throw new IllegalActionException(this, ee.getMessage());
             }
             // Requantize if necessary.
-            _triggerQuantEvts(currTime, false);
+            _triggerQuantizationEvents(currTime, false);
         }
 
     }
@@ -375,8 +371,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * If there is a new input, read it and update the slope.
      *
      * @return True if the base class returns true.
-     * @throws IllegalActionException
-     *             If reading inputs or parameters fails.
+     * @throws IllegalActionException If reading inputs or parameters fails.
      */
     public boolean postfire() throws IllegalActionException {
 
@@ -394,16 +389,17 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         }
 
         if (_firstRound) {
-            _initializeQssIntegrator_inputVars(currTime);
+            _initializeQSSIntegratorInputVariables(currTime);
             _firstRound = false;
         }
 
         // Update the internal, continuous state models if necessary.
-        _triggerRateEvt(currTime, false);
+        _triggerRateEvent(currTime, false);
 
         // Find the next firing time, assuming nothing else in simulation
         // changes.
-        final Time possibleFireAtTime = _qssIgr.predictQuantEvtTime_earliest();
+        final Time possibleFireAtTime = _qssIgr
+                .predictQuantizationEventTimeEarliest();
         if (_debugging) {
             _debugToStdOut(String.format("-- Id{%d} want to fire by time %s",
                     System.identityHashCode(this),
@@ -453,12 +449,9 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * If the specified attribute is <i>fmuFile</i>, then unzip the file and
      * load in the .xml file, creating and deleting parameters as necessary.
      * 
-     * @param attribute
-     *            The attribute that has changed.
-     * @exception IllegalActionException
-     *                If the specified attribute is <i>fmuFile</i> and the file
-     *                cannot be opened or there is a problem creating or
-     *                destroying the parameters listed in thile.
+     * @param attribute The attribute that has changed.
+     * @exception IllegalActionException If the specified attribute is <i>fmuFile</i> and the file
+     * cannot be opened or there is a problem creating or destroying the parameters listed in this file.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -478,7 +471,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
                         "Invalid fmiVersion. Required to be of the form n.m, where n and m are natural numbers.");
             }
         }
-        // FIXME - Need to find a better to catch exception if we don't have
+        // FIXME: - Need to find a better to catch exception if we don't have
         // FMUs for model exchange
         // Set the boolean for model exchange automatically to true.
         // The assumption is that we always have FMU for model exchange
@@ -490,8 +483,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Overwides the wrapup(). Terminate and free the slave fmu.
      * 
-     * @exception IllegalActionException
-     *                If the slave fmu cannot be terminated or freed.
+     * @exception IllegalActionException If the slave fmu cannot be terminated or freed.
      */
     public void wrapup() throws IllegalActionException {
         _checkFmiCommon();
@@ -512,24 +504,15 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
     /**
      * Return the count of state variables.
-     *
-     * <p>
-     * Prescribed by interface <code>DerivativeFcn</code>.
-     * </p>
-     *
-     *
-     * @return Count of state variables.
+     * 
+     * @return The number of state variables.
      */
-    public final int getStateCt() {
+    public final int getStateCount() {
         return (_fmiModelDescription.numberOfContinuousStates);
     }
 
     /**
      * Indicate existence of directional derivatives.
-     *
-     * <p>
-     * Prescribed by interface <code>DerivativeFcn</code>.
-     * </p>
      *
      * @return True if directional derivatives are provided.
      */
@@ -540,43 +523,32 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Return the count of input variables.
      *
-     * <p>
-     * Prescribed by interface <code>DerivativeFcn</code>.
-     * </p>
-     *
-     * @return Count of input variables.
+     * @return The number of input variables.
      */
-    public final int getInputVarCt() {
+    public final int getInputVariableCount() {
         return _inputs.size();
     }
 
     /**
      * Evaluate the derivative function.
      *
-     * <p>
-     * Prescribed by interface <code>DerivativeFcn</code>.
-     * </p>
-     *
-     * @param time
-     *            Simulation time.
-     * @param xx
-     *            Vector of state variables at <code>time</code>.
-     * @param uu
-     *            Vector of input variables at <code>time</code>.
-     * @param xdot
-     *            (output) Vector of time rates of change of the state variables
-     *            at <code>time</code>.
+
+     * @param time The simulation time.
+     * @param xx The vector of state variables at <code>time</code>.
+     * @param uu The vector of input variables at <code>time</code>.
+     * @param xdot The (output) vector of time rates of change of the state variables 
+     * at <code>time</code>.
      * @return Success (0 for success, else user-defined error code).
      * @throws IllegalActionException
      */
-    public final int evalDerivs(final Time time, final double[] xx,
+    public final int evaluateDerivatives(final Time time, final double[] xx,
             final double[] uu, final double[] xdot)
             throws IllegalActionException {
 
         // Check assumptions.
-        assert (getStateCt() > 0);
-        assert (xx.length == getStateCt());
-        assert (xdot.length == getStateCt());
+        assert (getStateCount() > 0);
+        assert (xx.length == getStateCount());
+        assert (xdot.length == getStateCount());
 
         // Give {time} to the FMU.
         final double timeValue = time.getDoubleValue();
@@ -603,7 +575,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         }
 
         // Give {xdot} to FMU and evaluate the derivative function.
-        _fmiGetDerivatives(getStateCt(), xdot);
+        _fmiGetDerivatives(getStateCount(), xdot);
 
         return 0;
 
@@ -612,40 +584,30 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Evaluate directional derivative function.
      *
-     * <p>Prescribed by interface <code>DerivativeFcn</code>.</p>
-     *
-     * @param idx The index
-     * @param xx_dot The xx_dot
-     * @param uu_dot The uu_dot
+     * @param idx The state index.
+     * @param xx_dot The vector of state derivatives.
+     * @param uu_dot The vector of input derivatives.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException If thrown while getting the
-     * input directional derivative.
+     * @throws IllegalActionException If thrown while getting the input directional derivative.
      */
-    public final double evalDirectionalDerivs(final int idx,
+    public final double evaluateDirectionalDerivatives(final int idx,
             final double[] xx_dot, final double[] uu_dot)
             throws IllegalActionException {
         // Get second derivative of current input
-        return (_inputDirectionalDerivative(idx, uu_dot) + _stateDirectionalDerivative(
+        return (_evaluateInputDirectionalDerivatives(idx, uu_dot) + _evaluateStateDirectionalDerivatives(
                 idx, xx_dot));
     }
 
     /**
      * Override the importFMU in FMUImport base class.
      * 
-     * @param originator
-     *            The originator of the change request.
-     * @param fmuFileParameter
-     *            The .fmuFile
-     * @param context
-     *            The context in which the FMU actor is created.
-     * @param x
-     *            The x-axis value of the actor to be created.
-     * @param y
-     *            The y-axis value of the actor to be created.
-     * @exception IllegalActionException
-     *                If there is a problem instantiating the actor.
-     * @exception IOException
-     *                If there is a problem parsing the fmu file.
+     * @param originator The originator of the change request.
+     * @param fmuFileParameter The .fmuFile
+     * @param context The context in which the FMU actor is created.
+     * @param x The x-axis value of the actor to be created.
+     * @param y The y-axis value of the actor to be created.
+     * @exception IllegalActionException If there is a problem instantiating the actor.
+     * @exception IOException If there is a problem parsing the fmu file.
      */
     public static void importFMU(Object originator,
             FileParameter fmuFileParameter, NamedObj context, double x, double y)
@@ -928,15 +890,14 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     // /////////////////////////////////////////////////////////////////
     // // private methods ////
     /**
-    * Return true if we are not in the first firing and the sign of some event
-    * indicator has changed.
-    *
-    * @return True if a state event has occurred.
-    * @exception IllegalActionException
-    *                If the fmiGetEventIndicators function is missing, or if
-    *                calling it does not return fmiOK.
-    */
-    private boolean _checkEvents() throws IllegalActionException {
+     * Return true if we are not in the first firing and the sign of some event
+     * indicator has changed.
+     *
+     * @return True if a state event has occurred.
+     * @exception IllegalActionException If the fmiGetEventIndicators function is missing, or if
+     * calling it does not return fmiOK.
+     */
+    private boolean _checkStateEvents() throws IllegalActionException {
         int number = _fmiModelDescription.numberOfEventIndicators;
         if (number == 0) {
             // No event indicators.
@@ -983,14 +944,15 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Handle time, state and step events.
      *
-     * @throws IllegalActionException
+     * @param timeValue The current time.
+     * @throws IllegalActionException If an error occurs when handling events.
      */
     private void _handleEvents(double timeValue) throws IllegalActionException {
         // Complete the integrator step.
         // True if fmi2SetFMUState() will not be called for times
         // before the current time in this simulation.
         // Check event indicators.
-        boolean stateEvent = _checkEvents();
+        boolean stateEvent = _checkStateEvents();
         boolean noSetFMUStatePriorToCurrentPoint = true;
         boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
         boolean timeEvent = ((_eventInfo.nextEventTimeDefined == 1) && (_eventInfo.nextEventTime < timeValue));
@@ -1055,15 +1017,12 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Evaluate input directional derivative function.
      *
-     * 
-     * @param idx
-     *            Input index
-     * @param uu_dot
-     *            Input directional derivatives at <code>current time</code>.
+     * @param idx The input index.
+     * @param uu_dot The input derivative.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException
+     * @throws IllegalActionException If an error when getting directional derivatives.
      */
-    private double _inputDirectionalDerivative(final int idx,
+    private double _evaluateInputDirectionalDerivatives(final int idx,
             final double[] uu_dot) throws IllegalActionException {
         final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continousStateDerivatives
                 .get(idx);
@@ -1098,14 +1057,12 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * Evaluate state directional derivative function.
      *
      * 
-     * @param idx
-     *            State index
-     * @param xx_dot
-     *            State directional derivatives at <code>current time</code>.
+     * @param idx The state index.
+     * @param xx_dot The state derivative.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException
+     * @throws IllegalActionException If an error when getting directional derivatives.
      */
-    private double _stateDirectionalDerivative(final int idx,
+    private double _evaluateStateDirectionalDerivatives(final int idx,
             final double[] xx_dot) throws IllegalActionException {
 
         final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continousStateDerivatives
@@ -1145,10 +1102,8 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * particular output, then then it only depends on those inputs that it
      * declares.
      * 
-     * @exception IllegalActionException
-     *                Not thrown in this base class, derived classes should
-     *                throw this exception if the delay dependency cannot be
-     *                computed.
+     * @exception IllegalActionException Not thrown in this base class, derived classes should
+     * throw this exception if the delay dependency cannot be computed.
      * @see #getCausalityInterface()
      * @see #_declareDelayDependency(IOPort, IOPort, double)
      */
@@ -1192,13 +1147,12 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
     /**
      * Initialize the values of the continuous state ports with their
-     * dependencies..
+     * dependencies.
      * 
-     * @exception IllegalActionException
-     *                If no port matching the name of a variable declared as an
-     *                input is found.
+     * @exception IllegalActionException If no port matching the name of 
+     * a variable declared as an input is found.
      */
-    private void _initContinuousState() throws IllegalActionException {
+    private void _initializeContinuousStates() throws IllegalActionException {
         // Get the number of continuous states.
         final int numContStates = _fmiModelDescription.numberOfContinuousStates;
         // Initialize arrays
@@ -1283,9 +1237,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Initialize variable from type parameters.
      *
-     *
-     * @exception IllegalActionException
-     *                If the slave FMU cannot be initialized.
+     * @exception IllegalActionException If the FMU cannot be initialized.
      */
     private void _initializeFMUParameters() throws IllegalActionException {
 
@@ -1345,9 +1297,8 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * reference to the port and a reference to the {@link FMIScalarVariable}.
      * 
      * @return A list of inputs of the FMU.
-     * @exception IllegalActionException
-     *                If no port matching the name of a variable declared as an
-     *                input is found.
+     * @exception IllegalActionException If no port matching the name of a variable declared as an
+     * input is found.
      */
     private List<Input> _getInputs() throws IllegalActionException {
         if (workspace().getVersion() == _inputsVersion) {
@@ -1411,9 +1362,8 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * declaration).
      * 
      * @return A list of outputs of the FMU.
-     * @exception IllegalActionException
-     *                If an expected output is not found, or if the width of the
-     *                output cannot be determined.
+     * @exception IllegalActionException If an expected output is not found, or if the width of the
+     * output cannot be determined.
      */
     private List<Output> _getOutputs() throws IllegalActionException {
         if (workspace().getVersion() == _outputsVersion) {
@@ -1504,10 +1454,8 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Set the time of the FMU to the specified time.
      * 
-     * @param time
-     *            The time.
-     * @exception IllegalActionException
-     *                If the FMU does not return fmiOK.
+     * @param time The current simulation time.
+     * @exception IllegalActionException If the FMU does not return fmiOK.
      */
     private void _fmiSetTime(double time) throws IllegalActionException {
         // Set the time in the FMU.
@@ -1527,9 +1475,10 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Return the derivatives of the continuous states provided by the FMU.
      * 
-     * @return The derivatives of the FMU.
-     * @exception IllegalActionException
-     *                If the FMU does not return fmiOK.
+     * @param numberOfStates The number of continuous states.
+     * @param derivatives The state derivatives.
+     * @return The state derivatives.
+     * @exception IllegalActionException If the FMU does not return fmiOK.
      */
     private void _fmiGetDerivatives(int numberOfStates, double[] derivatives)
             throws IllegalActionException {
@@ -1550,10 +1499,10 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
     /**
      * Get and configure the QSS integrator.
-     *
-     * @throws IllegalActionException
+     * 
+     * @throws IllegalActionException if integrator cannot be initialized.
      */
-    private final void _initializeQssIntegrator() throws IllegalActionException {
+    private final void _initializeQSSIntegrator() throws IllegalActionException {
 
         // Get director.
         directorGen = getDirector();
@@ -1575,14 +1524,14 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
         // Initialize QSS integrator.
         _qssIgr = director.get_QSSSolver();
-        _qssIgr.init_derivFcn(this);
-        _qssIgr.init_simTime(currTime);
-        _qssIgr.setQuantEvtTimeMax(director.getModelStopTime());
+        _qssIgr.initializeDerivativeFunction(this);
+        _qssIgr.initializeSimulationTime(currTime);
+        _qssIgr.setQuantizationEventTimeMaximum(director.getModelStopTime());
 
         // Get initial state values from FMU.
         // TODO: Does the FMUQSS need to carry {_states}? Shouldn't all state
         // information be delegated to the integrator {_qssIgr}?
-        final int stateCt = _qssIgr.getStateCt();
+        final int stateCt = _qssIgr.getStateCount();
         _states = new double[stateCt];
         final int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction.invoke(
                 Integer.class, new Object[] { _fmiComponent, _states,
@@ -1614,16 +1563,16 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             if (absTol < absTolMin) {
                 absTol = absTolMin;
             }
-            _qssIgr.setDqTol(ii, absTol, relTol);
+            _qssIgr.setDqTolerance(ii, absTol, relTol);
         }
 
         // Tell integrator to quantize.
         // Expect this to fail-- integrator should want to do a rate-event also,
         // but don't yet have input variable models.
-        _triggerQuantEvts(currTime, false); // TODO: Currently set
-                                            // forceAll==false, to test code,
-                                            // but should be true, to indicate
-                                            // intent.
+        _triggerQuantizationEvents(currTime, false); // TODO: Currently set
+        // forceAll==false, to test code,
+        // but should be true, to indicate
+        // intent.
 
         // Diagnostic output.
         if (_debugging) {
@@ -1632,7 +1581,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             _debugToStdOut(String
                     .format("-- Id{%d} has input ports:", hashCode));
             int ii = 0;
-            if (_qssIgr.getInputVarCt() > 0) {
+            if (_qssIgr.getInputVariableCount() > 0) {
                 for (Input input : _inputs) {
                     _debugToStdOut(String.format("-- %4d: %s", ii,
                             input.scalarVariable.name));
@@ -1645,7 +1594,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             _debugToStdOut(String.format(
                     "-- Id{%d} has output ports for quantized states:",
                     hashCode));
-            for (ii = 0; ii < _qssIgr.getStateCt(); ++ii) {
+            for (ii = 0; ii < _qssIgr.getStateCount(); ++ii) {
                 final TypedIOPort outPort = _fmiModelDescription.continuousStates
                         .get(ii).port;
                 _debugToStdOut(String.format("-- %4d: %s", ii,
@@ -1682,9 +1631,10 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * This cannot be done during initialization stage, because did not yet have
      * all the information needed.
      * </p>
+     * @param currTime The current simulation time.
      */
-    private final void _initializeQssIntegrator_inputVars(final Time currTime)
-            throws IllegalActionException {
+    private final void _initializeQSSIntegratorInputVariables(
+            final Time currTime) throws IllegalActionException {
 
         if (_debugging) {
             _debugToStdOut(String
@@ -1693,9 +1643,9 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         }
 
         // Create array for input models.
-        final int ivCt = _qssIgr.getInputVarCt();
+        final int ivCt = _qssIgr.getInputVariableCount();
         if (ivCt > 0) {
-            _ivMdls = new ModelPoly[ivCt];
+            _ivMdls = new ModelPolynomial[ivCt];
         }
 
         // Create input variable models.
@@ -1703,7 +1653,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         // Reason-- when input variable models get variable order, will want to
         // read the model order from the model. Can't do that until have tokens.
         // But don't have tokens yet at this point in the initialization.
-        final int ivMdlOrder = _qssIgr.getStateMdlOrder();
+        final int ivMdlOrder = _qssIgr.getStateModelOrder();
         for (int ii = 0; ii < ivCt; ++ii) {
             // Get the input corresponding to input variable {ii}.
             final Input input = _inputs.get(ii);
@@ -1716,12 +1666,12 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             // Create the model.
             // Note the port may not have a token on it yet. Therefore,
             // while can create the model, can't initialize its time or value.
-            final ModelPoly ivMdl = new ModelPoly(ivMdlOrder);
+            final ModelPolynomial ivMdl = new ModelPolynomial(ivMdlOrder);
             _ivMdls[ii] = ivMdl;
             // ivMdl.tMdl = currTime; // TODO: Confirm where time set.
             ivMdl.claimWriteAccess();
             // Give model to the integrator.
-            _qssIgr.addInputVarMdl(ii, ivMdl);
+            _qssIgr.addInputVariableModel(ii, ivMdl);
         }
 
         // Load input variable models with data.
@@ -1761,7 +1711,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             // Get the model.
             // We only initialize the first coefficient
             // since we don't have other coefficients yet.
-            final ModelPoly ivMdl = _ivMdls[ii];
+            final ModelPolynomial ivMdl = _ivMdls[ii];
             ivMdl.coeffs[0] = initialValue;
             ivMdl.tMdl = currTime;
         }
@@ -1774,13 +1724,13 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
         // Set up integrator's state models.
         // TODO: Not sure this is necessary.
-        _triggerQuantEvts(currTime, false);
+        _triggerQuantizationEvents(currTime, false);
         try {
             // TODO: This may not be allowed-- rate events change internal
             // state,
             // which is meant to happen in postfire(). ??? Check Ptolemy user
             // guide.
-            _qssIgr.triggerRateEvt();
+            _qssIgr.triggerRateEvent();
         } catch (Exception ee) {
             // Method triggerRateEvt() is declared to throw an Exception, but
             // this
@@ -1799,16 +1749,14 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * Update the external, quantized state models.
      * </p>
      *
-     * @param currTime
-     *            Current simulation time.
-     * @param forceAll
-     *            If true, requantize all state models.
+     * @param currTime The current simulation time.
+     * @param forceAll If true, requantize all state models.
      */
-    private final void _triggerQuantEvts(final Time currTime,
+    private final void _triggerQuantizationEvents(final Time currTime,
             final boolean forceAll) throws IllegalActionException {
 
         // Initialize.
-        final int stateCt = _qssIgr.getStateCt();
+        final int stateCt = _qssIgr.getStateCount();
 
         if (_debugging) {
             _debugToStdOut(String.format(
@@ -1822,7 +1770,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
         }
         // Loop over states that need to be requantized.
         int qIdx = -1;
-        final int order = _qssIgr.getStateMdlOrder();
+        final int order = _qssIgr.getStateModelOrder();
         while (true) {
 
             // Get next state.
@@ -1832,14 +1780,14 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
                     break;
                 }
             } else {
-                qIdx = _qssIgr.needQuantEvtIdx();
+                qIdx = _qssIgr.needQuantizationEventIndex();
                 if (qIdx < 0) {
                     break;
                 }
             }
 
             // Requantize the state.
-            _qssIgr.triggerQuantEvt(qIdx);
+            _qssIgr.triggerQuantizationEvent(qIdx);
 
             // Export to rest of simulation.
             // TODO: Convert this to export models, not just values.
@@ -1848,7 +1796,8 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
 
             // Added a check to produce outputs to port which are connected.
             if (outPort.getWidth() > 0) {
-                _sendMdlToPort(order, _qssIgr.getStateMdl(qIdx).coeffs, outPort);
+                _sendModelToPort(order, _qssIgr.getStateMdl(qIdx).coeffs,
+                        outPort);
             }
             // Only produce outputs that depend on the states.
             _produceOutputs(currTime, outPort, order);
@@ -1876,10 +1825,9 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * <p>
      * FMU can produce outputs that don't correspond to states.
      * </p>
-     *
-     *
-     * @param currTime
-     *            Current simulation time.
+     * 
+     * @param currTime The current simulation time.
+     * @param order The state model order.
      */
     private final void _produceOutputs(final Time currTime, final int order)
             throws IllegalActionException {
@@ -1911,7 +1859,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             } else if (scalarVariable.type instanceof FMIRealType) {
                 double result = scalarVariable.getDouble(_fmiComponent);
                 final double[] ooArr = { result, 0.0, 0.0 };
-                _sendMdlToPort(order, ooArr, port);
+                _sendModelToPort(order, ooArr, port);
                 // token = new DoubleToken(result);
             } else if (scalarVariable.type instanceof FMIStringType) {
                 throw new IllegalActionException("Type " + scalarVariable.type
@@ -1942,9 +1890,8 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * FMU can produce outputs that don't correspond to states.
      * </p>
      *
-     *
-     * @param currTime
-     *            Current simulation time.
+     * @param currTime The current simulation time.
+     * @param order The state model order.
      */
     private final void _produceOutputs(final Time currTime,
             final TypedIOPort outPort, final int order)
@@ -1980,7 +1927,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
                     double result = scalarVariable.getDouble(_fmiComponent);
                     // token = new DoubleToken(result);
                     final double[] ooArr = { result, 0.0, 0.0 };
-                    _sendMdlToPort(order, ooArr, port);
+                    _sendModelToPort(order, ooArr, port);
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     throw new IllegalActionException("Type "
                             + scalarVariable.type + " not supported.");
@@ -2007,15 +1954,11 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Send state and output models to port.
      *
-     *
-     * @param ord
-     *            State model order.
-     * @param val
-     *            Values to be sent.
-     * @param prt
-     *            Port where values will be sent.
+     * @param ord The state model order.
+     * @param val The values to be sent.
+     * @param prt The port where values will be sent.
      */
-    private void _sendMdlToPort(final int ord, final double[] val,
+    private void _sendModelToPort(final int ord, final double[] val,
             final TypedIOPort prt) throws NoRoomException,
             IllegalActionException {
         // Send values (Qss1)
@@ -2043,14 +1986,11 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Get state and output models and parameterize input models.
      *
-     * @param ord
-     *            State model order.
-     * @param ivMdl
-     *            Input model to parametrize.
-     * @param tok
-     *            Token values for parametrization.
+     * @param ord The state model order.
+     * @param ivMdl The input model to parametrize.
+     * @param tok The token values for parametrization.
      */
-    private void _getMdlFromPort(final int ord, final ModelPoly ivMdl,
+    private void _getModelFromPort(final int ord, final ModelPolynomial ivMdl,
             final Token tok) throws NoRoomException, IllegalActionException {
 
         final int ncoeffs = ord + 1;
@@ -2131,15 +2071,13 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
      * Update the internal, continuous state models.
      * </p>
      *
-     * @param currTime
-     *            Current simulation time.
-     * @param force
-     *            If true, always trigger a rate-event. Otherwise, only trigger
-     *            a rate-event if an input changed or if the integrator signals
-     *            it needs one to satisfy internal logic.
+     * @param currTime The current simulation time.
+     * @param force If true, always trigger a rate-event. Otherwise, only trigger 
+     * a rate-event if an input changed or if the integrator signals
+     * it needs one to satisfy internal logic.
      */
-    private final void _triggerRateEvt(final Time currTime, final boolean force)
-            throws IllegalActionException {
+    private final void _triggerRateEvent(final Time currTime,
+            final boolean force) throws IllegalActionException {
 
         if (_debugging) {
             _debugToStdOut(String.format(
@@ -2168,10 +2106,10 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
                 // if (!token.equals(input.lastToken)) {
                 // assert (token instanceof DoubleMatrixToken);
                 // Update the model.
-                final ModelPoly ivMdl = _ivMdls[currIdx];
+                final ModelPolynomial ivMdl = _ivMdls[currIdx];
 
-                final int order = _qssIgr.getStateMdlOrder();
-                _getMdlFromPort(order, ivMdl, token);
+                final int order = _qssIgr.getStateModelOrder();
+                _getModelFromPort(order, ivMdl, token);
                 // TODO: Here, just assuming that if have a new input, means
                 // the
                 // model
@@ -2208,18 +2146,18 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
             }
             currIdx++;
         }
-        assert (_qssIgr.getInputVarCt() == currIdx);
+        assert (_qssIgr.getInputVariableCount() == currIdx);
 
         // Trigger rate-event if necessary.
-        if (force || updatedInputVarMdl || _qssIgr.needRateEvt()) {
+        if (force || updatedInputVarMdl || _qssIgr.needRateEvent()) {
             if (_debugging) {
                 _debugToStdOut(String
                         .format("-- Id{%d} trigger rate-event because force=%b, updatedInputVarMdl=%b, _qssIgr.needRateEvt()=%b",
                                 System.identityHashCode(this), force,
-                                updatedInputVarMdl, _qssIgr.needRateEvt()));
+                                updatedInputVarMdl, _qssIgr.needRateEvent()));
             }
             try {
-                _qssIgr.triggerRateEvt();
+                _qssIgr.triggerRateEvent();
             } catch (Exception ee) {
                 throw new IllegalActionException(this, ee.getMessage());
             }
@@ -2281,7 +2219,7 @@ public class FMUQSS extends FMUImport implements DerivativeFcn {
     /**
      * Models for communicating with the integrator.
      */
-    private ModelPoly[] _ivMdls;
+    private ModelPolynomial[] _ivMdls;
 
     /** The eventInfo. */
     private FMI20EventInfo _eventInfo;
