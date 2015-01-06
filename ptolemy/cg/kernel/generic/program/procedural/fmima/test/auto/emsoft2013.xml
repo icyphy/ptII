@@ -13,9 +13,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.9999999999997, 251.99999999999983}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To invoke the code generator:&#10;$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \&#10;      -generatorPackagelist generic.program.procedural.fmima \&#10;      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml&#10;&#10;(Some day we will have a FMIMA  Code Generator Icon)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To invoke the code generator:&#10;$PTII/bin/ptcg -language fmima \&#10;      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml&#10;&#10;(Some day we will have a FMIMA  Code Generator Icon)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, 245.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
