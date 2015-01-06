@@ -530,6 +530,7 @@ public class TableauFrame extends Top {
                         .entityList(EffigyFactory.class);
                 Iterator factories = factoryList.iterator();
 
+                boolean first = true;
                 while (factories.hasNext()) {
                     final EffigyFactory factory = (EffigyFactory) factories
                             .next();
@@ -549,7 +550,8 @@ public class TableauFrame extends Top {
                     item.setMnemonic(name.charAt(0));
                     item.addActionListener(menuListener);
                     _newMenuItems.addElement(item);
-                    if (name.equals("Graph Editor")) {
+                    if (first) {
+                	first = false;
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(KeyStroke.getKeyStroke(
                                 KeyEvent.VK_N, Toolkit.getDefaultToolkit()
