@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="CyPhy Composite Class" extends="ptolemy.actor.lib.hoc.CatchUpComposite">
-  <doc>Composite cyber-physical system.</doc>
+<entity name="CyPhyComposite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
+  <doc>Composite actor where inside can include event times not present outside</doc>
   <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
   </property>
   <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
@@ -15,4 +15,4 @@
       </property>
     </property>
   </entity>
-</class>
+</entity>
