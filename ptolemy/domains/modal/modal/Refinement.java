@@ -54,12 +54,8 @@ import ptolemy.kernel.util.NamedObj;
  This typed composite actor supports mirroring of its ports in its container
  (which is required to be a ModalModel), which in turn assures
  mirroring of ports in each of the refinements and the controller.
- Refinements fulfills the CTStepSizeControlActor interface so that
- it can be used to construct hybrid systems using the CT domain.
- Refinements also fulfills the CTEventGenerator interface so that
- they can report events generated inside.
 
- @author Edward A. Lee
+ @author Thomas Huining Feng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (eal)
