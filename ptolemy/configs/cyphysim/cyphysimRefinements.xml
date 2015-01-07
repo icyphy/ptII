@@ -30,16 +30,5 @@
       </entity>
     </entity>
   </entity>
-
-  <!-- An entity giving default transition refinements for modal models. -->
-  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Default Refinement" class="ptolemy.domains.modal.modal.Refinement">
-      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
-          <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-          </property>
-      </property>
-    </entity>
-  </entity>
 </group>
 
