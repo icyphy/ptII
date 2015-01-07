@@ -44,7 +44,9 @@ import ptolemy.kernel.util.Workspace;
 /**
  An actor that executes one of several refinements depending on the
  value provided by the <i>control</i> port-parameter. To use this,
- look inside, add refinement cases, and populate them with computations.
+ drag the Case icon onto the canvas, right click and select Open Actor.
+ To add a refinement, go to the Case menu in the menu bar and select Add Case,
+ then populate populate the refinement with computations.
  Each refinement is a composite that is required to have its own director.
  The name of the refinement is value that the control must have to
  execute this refinement.
