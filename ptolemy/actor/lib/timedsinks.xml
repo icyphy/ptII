@@ -7,6 +7,16 @@
       <group>
 <doc>Sinks that are time based. </doc>
 <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay"/>
+
+<entity name="TimedMonitorValue" class="ptolemy.actor.lib.gui.TimedMonitorValue">
+<doc>Monitor and display values</doc>
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="displayWidth"/>
+   </property>
+   </entity>
+   
 <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
 <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
       </group>

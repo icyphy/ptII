@@ -139,7 +139,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token oldToken = value.getToken();
-            Token newToken = input.get(0);
+            Token newToken = _getInputToken(0);
             if (oldToken == null || !oldToken.equals(newToken)) {
                 value.setToken(newToken);
                 value.validate();
@@ -168,6 +168,22 @@ public class MonitorValue extends Sink implements PortablePlaceable {
                     .getTypeTerm()));
         }
         return result;
+    }
+
+    /** Return a token from the named input channel.
+     *  This is a protected method to allow subclasses to override
+     *  how inputs are observed.
+     *  @param i The channel
+     *  @return A token from the input channel or null if there is
+     *   nothing to display.
+     *  @exception IllegalActionException If reading the input fails.
+     */
+    protected Token _getInputToken(int i) throws IllegalActionException {
+        if (input.hasToken(i)) {
+            Token token = input.get(i);
+            return token;
+        } 
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
