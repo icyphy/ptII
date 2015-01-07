@@ -98,8 +98,11 @@
       <input source="ptolemy/configs/utilityModalModel.xml"/>
       <input source="ptolemy/configs/basicUtilities.xml"/>
       <!-- Override default background color so that CyPhySim looks different. -->
-      <property name="LocalPreferences">
-        <property name="backgroundColor" value="{0.8, 0.85, 0.9, 1.0}"/>
+      <!-- properties have classes here so that doc/test/docManager.tcl can expand the configuration. -->
+      <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
       </property>
       <input source="ptolemy/data/unit/unitSystems.xml"/>
     </entity>
