@@ -124,7 +124,7 @@
           <!-- Libraries are mostly customized to make them spartan. -->
           <input source="ptolemy/configs/cyphysim/sources.xml"/>
           <input source="ptolemy/configs/cyphysim/sinks.xml"/>
-          <input source="ptolemy/domains/de/lib/deotherentities.xml"/>
+          <input source="ptolemy/configs/cyphysim/de.xml"/>
           <input source="ptolemy/actor/lib/array.xml"/>
           <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
           <input source="ptolemy/actor/lib/datastores.xml"/>

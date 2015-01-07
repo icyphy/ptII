@@ -1,10 +1,15 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Sadly, this is a duplicate of a bunch of ptolemy/domains/de/lib/deentities.xml -->
+
+
 <entity name="DiscreteEvent" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
+
 
 <!-- Duplicate of SR Button Time -->
 <!-- entity name="EventButton" class="ptolemy.domains.de.lib.EventButton" -->
