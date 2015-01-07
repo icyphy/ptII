@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Graphics" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>GR (Java 3D) Domain</doc>
+        <entity name="Graphics Composite" class="ptolemy.actor.TypedCompositeActor">
+          <property name="Graphics Director" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="_location"
+                      class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+            </property>            
+          </property>
+        </entity>  
+        <input source="ptolemy/domains/gr/lib/grentities.xml"/>
+        <input source="ptolemy/domains/gr/lib/quicktime/quicktime.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

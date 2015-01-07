@@ -63,15 +63,19 @@ OTHER_FILES_TO_BE_JARED = \
 	copyright.htm \
 	cyphysimEffigies.xml \
 	cyphysimRefinements.xml \
+	de.xml \
 	demonstrations.htm \
 	docs.htm \
+	gr.xml \
 	help.htm \
 	hoc.xml \
 	intro.htm \
 	io.xml \
 	sinks.xml \
 	sources.xml \
-	welcomeWindow.xml
+	sr.xml \
+	welcomeWindow.xml \
+	wireless.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
