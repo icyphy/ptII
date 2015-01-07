@@ -472,13 +472,23 @@ public class ProcessDirector extends Director {
         _stopRequested = true;
         _stopFireRequested = true;
 
-        // Need to copy the active threads set because
+
+        // We used to copy the active thread set because
         // when stop() is called on each thread, the
         // set itself is modified. We could get a
         // ConcurrentModificationException.
-        LinkedList threadsCopy = new LinkedList(_activeThreads);
-        Iterator threads = threadsCopy.iterator();
 
+        // However, we were getting a ConcurrentModificationException anyway 
+        // on terra, to replicate: (cd $PTII/ptolemy/domains/sysml/test/junit; make)
+        // Also, Coverity scan pointed out that we were accessing
+        // _activeThreads without getting a lock here.  So, we lock and
+        // to make our copy.  If this does not work, then we could
+        // put the loop inside the synchronized block.
+        LinkedList threadsCopy = null;
+        synchronized (this) {
+            threadsCopy = new LinkedList(_activeThreads);
+        }
+        Iterator threads = threadsCopy.iterator();
         while (threads.hasNext()) {
             Thread thread = (Thread) threads.next();
 
@@ -554,6 +564,8 @@ public class ProcessDirector extends Director {
 
         // Now stop any threads created by this director.
         LinkedList list = new LinkedList();
+        // FIXME: Coverity Scan points out that we are accessing
+        // _activeThreads without getting a lock here.
         list.addAll(_activeThreads);
         _activeThreads.clear();
 
