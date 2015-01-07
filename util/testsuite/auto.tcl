@@ -83,6 +83,7 @@ if [ file isdirectory auto/nonTerminatingTests ] {
         } {{}}
     }
 }
+
 # IBM JDK 1.4.2 requires the lsort?
 foreach file [lsort [glob auto/*.xml]] {
     set relativeFilename \

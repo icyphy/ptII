@@ -39,7 +39,9 @@ ME =		ptolemy/domains/qss/test
 ROOT =		../../../..
 
 # auto/fsm_de_test.xml uses fsms, which require diva
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# OpenQueuingNetwork.xml uses actor.lib.colt.ColtExponential
+# PTCOLT_JARS is set by configure in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -48,7 +50,8 @@ include $(CONFIG)
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS =
 
-JSRCS =
+JSRCS = \
+	QSSDirectorTest.java
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
@@ -92,6 +95,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
+	# Run the DE tests using QSSDirector
+	(cd ../../de/test; $(JTCLSH) RunDETestsAsQSS.tcl)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
