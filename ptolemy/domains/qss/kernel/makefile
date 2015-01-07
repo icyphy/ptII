@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 61761 2011-08-09 16:46:24Z bldmastr $
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2014-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -56,8 +56,8 @@ JSRCS = \
 	QSSToken.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ContinuousComposite.xml \
-	ContinuousCompositeClass.xml
+	CyPhyCompositeClass.xml \
+	CyPhyComposite.xml \
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 
