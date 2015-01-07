@@ -6,24 +6,59 @@
     <?moml
       <group>
       <doc>Higher-Order Computation Infrastructure.</doc>
-      <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
-        <doc>The function is applied to its input data.</doc>
+      <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/> 
+
+      <entity name="ExecuteActor" class="ptolemy.actor.lib.hoc.ExecuteActor"/>
+
+      <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+          <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]">
+            </property>
+          </property>
+        </entity>
       </entity>
 
-      <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
-        <doc>The function is applied to its input data.</doc>
-      </entity>      
-
-      <!-- Use input here instead of entity so that doc/test/docManager.tcl can expand the configuration. -->
-      <input source="ptolemy/domains/qss/kernel/CyPhyComposite.xml" />
-        
-      <entity name="MultiInstanceComposite" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
-        <doc>Creates multiple instances of itself</doc>
-        <property name="SDF Director"
-                class="ptolemy.domains.sdf.kernel.SDFDirector">
-          <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference"/>
+      <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/>
+      <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+          <property name="echos" value="1"/>
+          <property name="echoBoxColor" value="{0.0, 1.0, 0.0, 1.0}"/>
         </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory"/>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="ThreadedCompositeInside" class="ptolemy.actor.lib.hoc.MirrorComposite$MirrorCompositeContents">
+          <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+          </property>
+        </entity>
       </entity>
+            
+      <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference"/>
 
       </group>
       ?>

@@ -124,8 +124,11 @@
           <!-- Libraries are mostly customized to make them spartan. -->
           <input source="ptolemy/configs/cyphysim/sources.xml"/>
           <input source="ptolemy/configs/cyphysim/sinks.xml"/>
+          <input source="ptolemy/domains/de/lib/deotherentities.xml"/>
           <input source="ptolemy/actor/lib/array.xml"/>
           <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+          <input source="ptolemy/actor/lib/datastores.xml"/>
+          <input source="ptolemy/domains/de/lib/dedateentities.xml"/>
           <input source="ptolemy/actor/lib/flowcontrol.xml"/>
           <input source="ptolemy/configs/cyphysim/hoc.xml"/>
           <input source="ptolemy/configs/cyphysim/io.xml"/>
@@ -135,6 +138,7 @@
           <input source="ptolemy/actor/lib/random.xml"/>
           <input source="ptolemy/actor/lib/realtime.xml"/>
           <input source="ptolemy/actor/lib/test.xml"/>
+          <input source="ptolemy/configs/cyphysim/sr.xml"/>
           <input source="ptolemy/actor/lib/signalprocessing.xml"/>
           <input source="ptolemy/actor/lib/string/string.xml"/>
 
@@ -145,20 +149,7 @@
       </configure>
     </entity>
 
-    <entity name="DomainSpecific" class="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-          <doc>Common Domain Specific Actors</doc>
-          <input source="ptolemy/domains/de/lib/deentities.xml"/>
-          <input source="ptolemy/domains/sr/lib/srentities.xml"/>
-          </group>
-        ?>
-      </configure>
-    </entity>
-    
-
-        <!-- Optional packages that may or may not be present  -->
+    <!-- Optional packages that may or may not be present  -->
     <!-- Alphabetize these  -->
     <entity name="Experimental Libraries" class="ptolemy.moml.EntityLibrary">
       <configure>

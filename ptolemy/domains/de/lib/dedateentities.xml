@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+    <entity name="Date" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <doc>Date actors</doc>
+            <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate"/>
+            <entity name="DateElements" class="ptolemy.actor.lib.DateElements"/>
+            <entity name="DateConstructor" class="ptolemy.actor.lib.DateConstructor"/>
+            <entity name="DateToEvent" class="ptolemy.domains.de.lib.DateToEvent"/>
+            <entity name="DateToModelTime" class="ptolemy.domains.de.lib.DateToModelTime"/>
+            <entity name="EventToDate" class="ptolemy.domains.de.lib.EventToDate"/>
+            <entity name="ModifyDate" class="ptolemy.actor.lib.ModifyDate"/>
+            <entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
