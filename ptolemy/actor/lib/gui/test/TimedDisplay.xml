@@ -7,6 +7,8 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
         </property>
     </property>
@@ -194,9 +196,13 @@
         <link port="_Controller.status" relation="statusRelation"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={502, 128, 500, 246}, maximized=false}">
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={502, 66, 500, 246}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 202]">
+        </property>
+        <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 120.0]">
         </property>
@@ -226,6 +232,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="274.5, 262.0">
         </property>
     </entity>
+    <entity name="TimedMonitorValue" class="ptolemy.actor.lib.gui.TimedMonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 205.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -245,4 +264,5 @@
     <link port="TimedPlotter.input" relation="relation4"/>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="TimedDisplay.input" relation="relation4"/>
+    <link port="TimedMonitorValue.input" relation="relation4"/>
 </entity>

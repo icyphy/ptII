@@ -78,6 +78,7 @@ JSRCS = \
 	TextFieldContainerInterface.java \
 	TextFieldContainerJavaSE.java \
 	TimedDisplay.java \
+	TimedMonitorValue.java \
 	TimedPlotter.java \
 	TimedScope.java \
 	UsesInvokeAndWait.java \
