@@ -1,0 +1,39 @@
+<!-- Copyright (c) 1998-2005 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<html>
+<head>
+<title>diva.gui</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+The Diva GUI framework. This is a simple and extensible
+application framework that most applications should be
+able to build on without too much trouble. There are
+two kinds of class in here:
+
+<ul>
+
+<li> GUI components. The GUI portion makes extensive use of Swing
+widgets. The set of classes of this kind ranges from simple widgets
+that we needed up to full-featured application frames.
+
+<li> Document framework classes. These classes provide a set of
+classes to ease the task of constructing multi-document applications.
+The document framework uses the model-view-controller
+architecture to manage the state of the application.
+
+</ul>
+
+In both cases, we have been careful not to make policy decisions that
+will impact your ability to customize and extend these classes to suit
+your own needs. An example: there is no default menu layout, so you
+are not restricted to using conventional (File, Edit etc) menu layouts
+if you don't want to. There is, however, a good deal of support for
+standard menu entries if you <i>choose</i> to use it!
+
+<p>
+    @since Ptolemy II 1.0
+</body>
+</html>

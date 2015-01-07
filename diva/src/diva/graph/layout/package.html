@@ -1,0 +1,53 @@
+<!-- Copyright (c) 1998-2006 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!--last modified on Saturday, October 24, 1998 08:28 PM -->
+<HTML>
+
+<HEAD>
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+        <META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+        <META NAME="Author" Content="Michael Shilman">
+        <TITLE>untitled</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<P>A graph layout package which provides static and incremental node
+layout and edge routing facilities. This package depends on the
+package <B>diva.graph.model</B> for defining a graph's topology and
+graph update events, but has no dependency on the specific
+implementation of the graph's visual representation. It states certain
+assumptions about information that it needs to complete its layout
+(e.g. a viewport, bounding boxes for nodes, and paths for edges)
+through the interfaces <FONT FACE="Courier New,
+Courier">LayoutEnvironment</FONT>, <FONT FACE="Courier New,
+Courier">LayoutNode</FONT>, <FONT FACE="Courier New,
+Courier">LayoutEdge</FONT>, and <FONT FACE="Courier New,
+Courier">PathLayoutEdge</FONT>.  The <B>diva.graph</B> package
+satisfies these assumptions.</P>
+
+<P>The interfaces for layout engines are specified by <FONT FACE="Courier New, Courier">StaticLayout</FONT> and
+<FONT FACE="Courier New, Courier">IncrementalLayout</FONT>, which perform static and incremental layout on the
+graph, respectively. Static layouts traverse the graph structure and perform layout from scratch, ignoring the
+previous positions of the nodes in the graphs.  Incremental layouts are performed as the graph topology is modified
+and attempt to preserve the visual continuity of the layout.  They are notified of graph modifications via the
+<FONT FACE="Courier New, Courier">GraphListener</FONT> interface.</P>
+
+<P>Edge routing is specified by the interfaces <FONT FACE="Courier New, Courier">StaticPathRouter</FONT> and <FONT
+FACE="Courier New, Courier">DynamicPathRouter</FONT> which are somewhat analogous to the two flavors of layout.
+The <FONT FACE="Courier New, Courier">StaticPathRouter</FONT> interface specifies a routing engine that can route
+a path edge between two nodes statically (i.e. from scratch, ignoring the previous positions of the endpoint nodes);
+the <FONT FACE="Courier New, Courier">DynamicPathRouter</FONT> specifies a routing engine that can dynamically
+adjust an already-routed path edge as one of its endpoint-nodes is moved (e.g. by the user dragging a node around).</P>
+
+<P><B><I>NOTE:</I></B><I> How do we handle users interactively editing the middle of an edge's </I><B>path</B><I>
+and collapsing multiple edges?</I>
+
+</BODY>
+
+</HTML>
+
+
+

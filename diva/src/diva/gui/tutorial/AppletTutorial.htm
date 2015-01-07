@@ -1,0 +1,44 @@
+<!-- $Id: AppletTutorial.htm 70166 2014-09-24 14:50:41Z cxh $ -->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Applet Tutorial: A Simple Text Editor</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Applet Tutorial: A Simple Text Editor</H1>
+
+<p>This is a simple example of how to run an application from within an applet.
+By simply substituting an instance of diva.gui.AppletContext for the 
+ApplicationContext in the constructor for our simple text editor, it runs
+inside an applet.  The appropriate code is:
+<code>
+public class AppletTutorial extends AppletContext {
+    public AppletTutorial() {
+       new ApplicationTutorial(this);
+    }
+}
+</code>
+This roughly corresponds to the main() function we had before.</p>
+
+<center>
+<applet
+code = "diva.gui.tutorial.AppletTutorial" 
+codebase = "../../.." 
+width = "800" 
+height = "600" 
+> 
+<param name = "background" value = "#ffffff" > 
+No Java Plug-in support for applet, see <a href="http://www.java.com/en/download/#in_browser" target="_top"><code>http://www.java.com/en/download/</code></a> 
+</APPLET> 
+</center>
+
+</ul>
+<p><font size="2" color="#cc0000">Last Updated: $Date: 2014-09-24 07:50:41 -0700 (Wed, 24 Sep 2014) $</font>
+</BODY>
+</HTML>
+
+
+
+
+

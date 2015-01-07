@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE builder PUBLIC "-//UC Berkeley//DTD builder 1//EN"
+	"http://www.gigascale.org/diva/dtd/builder.dtd">
+
+<builderDecls>
+  <builder tag="PPTParser"
+    class="pptest.PPTParser"
+    builder="diva.sketch.rcl.SceneClassBuilder"/>
+  <builder tag="VotingSceneRecognizer"
+    class="diva.sketch.recognition.VotingSceneRecognizer"
+    builder="diva.sketch.rcl.VotingSceneBuilder"/>
+  <builder tag="StrokeSceneRecognizer"
+    class="diva.sketch.recognition.StrokeSceneRecognizer"
+    builder="diva.sketch.rcl.StrokeSceneBuilder"/>
+  <builder tag="VotingStrokeRecognizer"
+    class="diva.sketch.recognition.VotingStrokeRecognizer"
+    builder="diva.sketch.rcl.VotingStrokeBuilder"/>
+  <builder tag="ScribbleRecognizer"
+    class="diva.sketch.toolbox.ScribbleRecognizer"
+    builder="diva.sketch.rcl.ClassBuilder"/>
+  <builder tag="BasicStrokeRecognizer"
+    class="diva.sketch.recognition.BasicStrokeRecognizer"
+    builder="diva.sketch.rcl.BasicStrokeBuilder"/>
+  <builder tag="TextParser"
+    class="pptest.TextParser"
+    builder="diva.sketch.rcl.SceneClassBuilder"/>
+  <builder tag="CalligrapherRecognizer"
+    class="diva.sketch.calligrapher.CalligrapherRecognizer"
+    builder="diva.sketch.calligrapher.CalligrapherBuilder"/>
+</builderDecls>
+

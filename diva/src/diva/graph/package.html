@@ -1,0 +1,68 @@
+<!-- Copyright (c) 1998-2006 The Regents of the University of California. -->
+<!-- All rights reserved. See the file COPYRIGHT for details.             -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!--last modified on Saturday, September 26, 1998 05:57 AM -->
+<HTML>
+
+<HEAD>
+        <META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+        <META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+        <META NAME="Author" Content="Michael Shilman">
+        <TITLE>untitled</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<P>A generic and highly-extensible graph visualization library whose basic interface is a widget analogous to <B>java.swing.JTree</B>.
+The <B>diva.graph</B> collection of packages provides three central pieces of functionality:</P>
+
+<UL>
+        <LI>A widget which uses the structured drawing library <B>diva.canvas</B> to provide an extensible framework for
+        graph editing and has a simple interface. By using <B>diva.canvas</B>, it is easy to add your own interactors (e.g.
+        XXX, YYY, etc.) in addition to or in place of the standard set (selection, resize, drag-and-drop, rename, etc.).
+        <LI>A graph data structure interface and default implementation (package <B>diva.graph.model</B>). The data structure
+        is architected to support model-view-controller (MVC), so it can be viewed by multiple parties. It can be used
+        as an intermediary means of communicating a graph structure between an application and the visualization system,
+        or can be easily back-ended by a pre-existing graph package.
+        <LI>A generic interface to graph layout algorithms and a set of default implementations (package <B>diva.graph.layout</B>),
+        which again can be extended or replaced. The most powerful instances of this interface are currently implemented
+        by a set of commercial tools which we are unable to release, but we provide some basic techniques in their place,
+        and hope to grow this part of the library over time.
+</UL>
+
+<P>For a taste of how this library works in its most basic form, the following piece of code instantiates a basic
+graph, containing two nodes connected by an edge (<FONT FACE="Courier New, Courier"> A -&gt; B </FONT>).</P>
+
+
+<BLOCKQUOTE>
+        <P><FONT SIZE="2" COLOR="#990066" FACE="Courier New, Courier"><I>// Construct the widgets</I></FONT><FONT SIZE="2"
+        COLOR="#006600" FACE="Courier New, Courier"><BR>
+        Frame f = new Frame();<BR>
+        JGraph g = new JGraph();<BR>
+        f.add(&quot;Center&quot;, g);</FONT></P>
+
+        <P><FONT SIZE="2" COLOR="#990066" FACE="Courier New, Courier"><I>// Construct the graph</I></FONT><FONT SIZE="2"
+        COLOR="#006600" FACE="Courier New, Courier"><BR>
+        BasicNode a = new BasicNode(&quot;a&quot;);<BR>
+        BasicNode b = new BasicNode(&quot;b&quot;);<BR>
+        BasicEdge e = new BasicEdge(&quot;e&quot;);<BR>
+        jg.getModel().addNode(a);<BR>
+        jg.getModel().addNode(b);<BR>
+        jg.getModel().connect(e, a, b);</FONT></P>
+
+        <P><FONT SIZE="2" COLOR="#990066" FACE="Courier New, Courier"><I>// Display it all</I></FONT><FONT SIZE="2" COLOR="#006600"
+        FACE="Courier New, Courier"><BR>
+        f.setVisible(true);</FONT>
+
+</BLOCKQUOTE>
+
+<p>
+    @since Ptolemy II 1.0
+
+</BODY>
+
+</HTML>
+
+
+

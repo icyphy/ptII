@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE builder PUBLIC "-//UC Berkeley//DTD builder 1//EN"
+	"http://www.gigascale.org/diva/dtd/builder.dtd">
+
+<builderDecls>
+  <builder tag="scene"
+    class="diva.sketch.recognition.BasicScene"
+    builder="diva.sketch.recognition.SceneBuilder"/>
+  <builder tag="compositeElement"
+    class="diva.sketch.recognition.BasicScene$CompositeElt"
+    builder="diva.sketch.recognition.SceneBuilder"/>
+  <builder tag="strokeElement"
+    class="diva.sketch.recognition.BasicScene$StrokeElt"
+    builder="diva.sketch.recognition.SceneBuilder"/>
+  <builder tag="SimpleData"
+    class="diva.sketch.recognition.SimpleData"
+    builder="diva.sketch.recognition.SimpleData"/>
+  <builder tag="BulletedData"
+    class="diva.sketch.recognition.BulletedData"
+    builder="diva.sketch.recognition.BulletedData"/>
+  <builder tag="BulletedData"
+    class="diva.sketch.toolbox.BulletedData"
+    builder="diva.sketch.toolbox.BulletedData"/>
+  <builder tag="BulletedItem"
+    class="diva.sketch.toolbox.BulletedItem"
+    builder="diva.sketch.toolbox.BulletedItem"/>
+  <builder tag="BulletedItems"
+    class="diva.sketch.toolbox.BulletedItems"
+    builder="diva.sketch.toolbox.BulletedItems"/>
+  <builder tag="BulletedLine"
+    class="diva.sketch.toolbox.BulletedLine"
+    builder="diva.sketch.toolbox.BulletedLine"/>
+  <builder tag="BulletedList"
+    class="diva.sketch.toolbox.BulletedList"
+    builder="diva.sketch.toolbox.BulletedList"/>
+  <builder tag="DashedPathData"
+    class="diva.sketch.toolbox.DashedPathData"
+    builder="diva.sketch.toolbox.DashedPathData"/>
+  <builder tag="PanData"
+    class="diva.sketch.toolbox.PanRecognizer.PanData"
+    builder="diva.sketch.toolbox.PanRecognizer.PanData"/>
+  <builder tag="ZoomData"
+    class="diva.sketch.toolbox.ZoomRecognizer.ZoomData"
+    builder="diva.sketch.toolbox.ZoomRecognizer.ZoomData"/>
+  <builder tag="TextBlock"
+    class="diva.sketch.toolbox.TextBlock"
+    builder="diva.sketch.toolbox.TextBlock"/>
+  <builder tag="TextData"
+    class="diva.sketch.toolbox.TextData"
+    builder="diva.sketch.toolbox.TextData"/>
+  <builder tag="TextLine"
+    class="diva.sketch.toolbox.TextLine"
+    builder="diva.sketch.toolbox.TextLine"/>
+</builderDecls>
+
