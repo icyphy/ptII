@@ -48,8 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	FakePlotter.java \
 	OnePort.java \
-	TwoPort.java \
-	TimedDisplay.java
+	TwoPort.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

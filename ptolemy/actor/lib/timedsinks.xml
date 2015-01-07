@@ -6,6 +6,7 @@
     <?moml
       <group>
 <doc>Sinks that are time based. </doc>
+<entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay"/>
 <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
 <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
       </group>
