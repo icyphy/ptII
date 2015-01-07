@@ -151,10 +151,10 @@ import ptolemy.actor.util.Time;
  * states.
  * For example:
  * <ul>
- * <li>Method {@link #evaluateStateModel()} evaluates the quantized state model.
+ * <li>Method {@link #evaluateStateModel(int, Time)} evaluates the quantized state model.
  * Since the user can access that model directly, this is mainly a convenience
  * method.</li>
- * <li>Method {@link #evaluateStateModelContinuous()} evaluates the
+ * <li>Method {@link #evaluateStateModelContinuous(int, Time)} evaluates the
  * internal, continuous state model.
  * This is intended mainly for testing.
  * However, since the internal model does represent the state as a continuous
@@ -184,8 +184,8 @@ import ptolemy.actor.util.Time;
  * <p>The following methods initialize a new integrator.
  * They must be called before doing any work with the integrator:</p>
  * <ul>
- * <li>{@link #initializeDerivativeFunction()}</li>
- * <li>{@link #initializeSimulationTime()}</li>
+ * <li>{@link #initializeDerivativeFunction(DerivativeFunction)}</li>
+ * <li>{@link #initializeSimulationTime(Time)}</li>
  * </ul>
  *
  * <p>The following methods inquire about fixed integrator parameters:</p>
@@ -200,56 +200,56 @@ import ptolemy.actor.util.Time;
  * In general, they should be called before starting a simulation.
  * However, they may also be called during an integration:</p>
  * <ul>
- * <li>{@link #getStateModel()}</li>
+ * <li>{@link #getStateModel(int)}</li>
  * <li>{@link #needInputVariableModelIndex()}</li>
- * <li>{@link #addInputVariableModel()}</li>
+ * <li>{@link #addInputVariableModel(int, ModelPolynomial)}</li>
  * </ul>
  *
  * <p>The following methods configure the integrator.
  * In general, they should be called before its first use.
  * However, they may also be called during an integration:</p>
  * <ul>
- * <li>{@link #setDqTolerance()}</li>
- * <li>{@link #setDqTolerances()}</li>
- * <li>{@link #setCurrentSimulationTime()}</li>
+ * <li>{@link #setDqTolerance(int, double, double)}</li>
+ * <li>{@link #setDqTolerances(double, double)}</li>
+ * <li>{@link #setCurrentSimulationTime(Time)}</li>
  * <li>{@link #setStateValue(int, double)}</li>
- * <li>{@link #setQuantizationEventTimeMaximum()}</li>
+ * <li>{@link #setQuantizationEventTimeMaximum(Time)}</li>
  * <li>{@link #validate()}</li>
  * </ul>
  *
  * <p>The following methods inquire about current values during a simulation:</p>
  * <ul>
  * <li>{@link #getCurrentSimulationTime()}</li>
- * <li>{@link #evaluateStateModel()}</li>
- * <li>{@link #evaluateStateModelContinuous()}</li>
+ * <li>{@link #evaluateStateModel(int, Time)}</li>
+ * <li>{@link #evaluateStateModelContinuous(int, Time)}</li>
  * </ul>
  *
  * <p>The following methods prepare the integrator to take the next time step:</p>
  * <ul>
  * <li>{@link #needQuantizationEventIndex()}</li>
- * <li>{@link #needQuantizationEventIndexes()}</li>
+ * <li>{@link #needQuantizationEventIndexes(boolean[])}</li>
  * <li>{@link #triggerQuantizationEvent()}</li>
- * <li>{@link #triggerQuantizationEvents()}</li>
+ * <li>{@link #triggerQuantizationEvents(boolean)}</li>
  * <li>{@link #needRateEvent()}</li>
  * <li>{@link #triggerRateEvent()}</li>
- * <li>{@link #predictQuantizationEventTime()}</li>
+ * <li>{@link #predictQuantizationEventTime(int)}</li>
  * <li>{@link #predictQuantizationEventTimeEarliest()}</li>
  * </ul>
  *
  * <p>The following methods take a time step:</p>
  * <ul>
- * <li>{@link #stepToTime()}</li>
+ * <li>{@link #stepToTime(Time)}</li>
  * </ul>
  *
  * <p>The following methods primarily facilitate testing:</p>
  * <ul>
- * <li>{@link #stringifyStateModel()}</li>
- * <li>{@link #stringifyStateModelContinuous()}</li>
- * <li>{@link #findDq()}</li>
+ * <li>{@link #stringifyStateModel(int)}</li>
+ * <li>{@link #stringifyStateModelContinuous(int)}</li>
+ * <li>{@link #findDq(int)}</li>
  * </ul>
  *
  * <p>TODO: Describe the general time-stepping model.
- * Steps only accomplished via method {@link #stepToTime()}.
+ * Steps only accomplished via method {@link #stepToTime(Time)}.
  * All other methods elaborate on what happens between time steps.</p>
  *
  * <p>The abstract methods that each subclass must fill in have names ending
@@ -476,14 +476,14 @@ public abstract class QSSBase {
      * @param stateIdx The state index, 0 &le; stateIdx &lt; this.getStateCt().
      * @param qStateMdl The model to use.
      */
-    public final ModelPolynomial getStateMdl(final int stateIdx) {
+    public final ModelPolynomial getStateModel(final int stateIdx) {
         return( _qStateMdls[stateIdx] );
     }
 
 
     /** Return the index of an input variable for which the user has yet to add a model.
      *
-     * <p>The user must call {@link #addInputVariableModel()} at least once for
+     * <p>The user must call {@link #addInputVariableModel(int, ModelPolynomial)} at least once for
      * every input variable taken by the derivative function.
      * This method checks whether that requirement has been met.</p>
      *
@@ -555,7 +555,7 @@ public abstract class QSSBase {
      *
      * <p>Notes on sharing models between roles in the integration:</p>
      * <ul>
-     * <li>See the notes for method {@link #getStateModel()}.</li>
+     * <li>See the notes for method {@link #getStateModel(int)}.</li>
      * </ul>
      *
      * <p>Notes on providing a different model at a later time:</p>
@@ -637,7 +637,7 @@ public abstract class QSSBase {
     /** Set the parameters used to determine the quantum for all states.
      *
      * <p>Apply the same tolerances to all the states the integrator predicts.
-     * For details, see method {@link #setDqTolerance()}.</p>
+     * For details, see method {@link #setDqTolerance(int, double, double)}.</p>
      *
      * @param absTol The absolute tolerance, absTol &gt; 0 [units of <i>x[j]</i>].
      * @param relTol The relative tolerance, relTol &ge; 0 [1].
@@ -777,11 +777,11 @@ public abstract class QSSBase {
     /** Get the current simulation time for the QSS integrator.
      *
      * <p>This is generally the last global simulation time for which
-     * method {@link #stepToTime()} was called.
+     * method {@link #stepToTime(Time)} was called.
      * Exceptions:</p>
      * <ul>
      * <li>When the integrator is first instantiated, it is set to 0.</li>
-     * <li>Method {@link #setCurrentSimulationTime()} changes the value outright.</li>
+     * <li>Method {@link #setCurrentSimulationTime(Time)} changes the value outright.</li>
      * </ul>
      *
      * @return Current simulation time for the QSS integrator.
@@ -797,7 +797,7 @@ public abstract class QSSBase {
      *
      * <p>Note this method evaluates the external, quantized state model.
      * Alternately, the user could acquire the model, via
-     * method {@link #getStateModel()}, and evaluate that model directly.</p>
+     * method {@link #getStateModel(int)}, and evaluate that model directly.</p>
      *
      * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
      * @param simTime Global simulation time.
@@ -873,7 +873,7 @@ public abstract class QSSBase {
      * (i.e., to experience a quantization-event).
      * The new model will be available to the user immediately.</p>
      *
-     * <p>Note method {@link #triggerQuantizationEvents()} can requantize multiple
+     * <p>Note method {@link #triggerQuantizationEvents(boolean)} can requantize multiple
      * state models at once, and can requantize only those states that need it.</p>
      *
      * <p>Form the model about the current simulation time, as returned by
@@ -932,7 +932,7 @@ public abstract class QSSBase {
      * <li>At initialization.</li>
      * <li>When a time step carries the integrator up to, or past, its predicted
      * quantization-event time.
-     * See method {@link #predictQuantizationEventTime()}.</li>
+     * See method {@link #predictQuantizationEventTime(int)}.</li>
      * <li>TODO: Provide, probably in top-level comments, an overview of when
      * an integrator state needs to have a quantization-event.
      * Following this list.
@@ -942,7 +942,7 @@ public abstract class QSSBase {
      *
      * <p>To determine state(s) that need to be requantized, use either
      * method {@link #needQuantizationEventIndex()} or
-     * method {@link #needQuantizationEventIndexes()}.</p>
+     * method {@link #needQuantizationEventIndexes(boolean[])}.</p>
      *
      * @param forceAll If true, requantize all state models.
      */
@@ -1218,7 +1218,7 @@ public abstract class QSSBase {
 
     /** Get the internal, continuous state model for a state predicted by the integrator.
      *
-     * <p>This method is the equivalent of method {@link #getStateModel()},
+     * <p>This method is the equivalent of method {@link #getStateModel(int)},
      * except that it retrieves the internal, continuous state model rather
      * than the external, quantized state model.</p>
      *
@@ -1265,7 +1265,7 @@ public abstract class QSSBase {
      * internal, continuous state model used by the integrator.</p>
      *
      * <p>To change the parameters used to find the quantum, use
-     * method {@link #setDqTolerance()} or method {@link #setDqTolerances()}.</p>
+     * method {@link #setDqTolerance(int, double, double)} or method {@link #setDqTolerances(double, double)}.</p>
      *
      * <p>The user should never have to call this method directly.
      * The QSS integrator invokes it as needed.</p>
@@ -1352,7 +1352,7 @@ public abstract class QSSBase {
 
     /** Get the predicted quantization-event time for a state (QSS-specific).
      *
-     * <p>See comments to method {@link #predictQuantizationEventTime()}.</p>
+     * <p>See comments to method {@link #predictQuantizationEventTime(int)}.</p>
      *
      * <p>The implementation of this "worker" method depends on the
      * specific member of the QSS family.</p>
