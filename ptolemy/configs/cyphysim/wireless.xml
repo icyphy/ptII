@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Wireless" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>Wireless/Sensor network library</doc>
+        <entity name="Wireless Composite" class="ptolemy.actor.TypedCompositeActor">
+          <property name="Wireless Director" class="ptolemy.domains.gr.kernel.Wireless">
+            <property name="_location"
+                      class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+            </property>            
+          </property>
+        </entity>  
+          <input source="ptolemy/domains/wireless/lib/wirelessentities.xml"/>
+          <input source="ptolemy/domains/wireless/lib/channels.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>
