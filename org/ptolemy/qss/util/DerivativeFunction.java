@@ -26,17 +26,13 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
-
 package org.ptolemy.qss.util;
-
 
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DerivativeFunction
-
 
 /** Provide an interface for representing derivative functions.
  *
@@ -73,59 +69,28 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface DerivativeFunction {
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
-
-    /** Return the count of state variables.
-     *
-     * <p>Expect <code>0 &lt; this.getStateCt()</code>.</p>
-     *
-     * @return Count of state variables.
-     */
-    public int getStateCount();
-
-
-    /** Return the count of input variables.
-     *
-     * <p>Expect <code>0 &le; this.getInputVarCt()</code>.</p>
-     *
-     * @return Count of input variables.
-     */
-    public int getInputVariableCount();
-
-
-	/**
-	 * Indicate existence of directional derivatives.
-	 *
-	 * <p>
-	 * Prescribed by interface <code>DerivativeFcn</code>.
-	 * </p>
-	 *
-	 * @return True if directional derivatives are provided.
-	 */
-   public boolean getProvidesDirectionalDerivatives();
-
-
-    /** Evaluate the derivative function.
-     *
-     * <p>Expected implementation conventions:</p>
-     * <ul>
-     * <li>The state variable vector has at least one element.</li>
-     * <li>The method does not change any entry in <code>uu</code>.</li>
-     * <li>If the <code>DerivativeFcn</code> does not take any input variables,
-     * then <code>uu == null</code>.</li>
-     * </ul>
-     *
-     * @param time Simulation time.
-     * @param xx The vector of state variables at <code>time</code>.
-     * @param uu The vector of input variables at <code>time</code>.
-     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
-     * @throws IllegalActionException If derivatives cannot be evaluated. 
-     */
+    /** 
+    * Evaluate the derivative function.
+    *
+    * <p>Expected implementation conventions:</p>
+    * <ul>
+    * <li>The state variable vector has at least one element.</li>
+    * <li>The method does not change any entry in <code>uu</code>.</li>
+    * <li>If the <code>DerivativeFcn</code> does not take any input variables,
+    * then <code>uu == null</code>.</li>
+    * </ul>
+    *
+    * @param time Simulation time.
+    * @param xx The vector of state variables at <code>time</code>.
+    * @param uu The vector of input variables at <code>time</code>.
+    * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
+    * @throws IllegalActionException If derivatives cannot be evaluated. 
+    */
     public int evaluateDerivatives(final Time time, double[] xx, double[] uu,
-        final double[] xdot) throws IllegalActionException;
+            final double[] xdot) throws IllegalActionException;
 
     /**
      * Evaluate directional derivative function.
@@ -139,7 +104,35 @@ public interface DerivativeFunction {
      * @param uu_dot The vector of first input derivatives with respect to <code>time</code>
      * @throws IllegalActionException If directional derivatives cannot be evaluated.
      */
-   public double evaluateDirectionalDerivatives(int idx, double[] xx_dot, double[] uu_dot) throws IllegalActionException;
+    public double evaluateDirectionalDerivatives(int idx, double[] xx_dot,
+            double[] uu_dot) throws IllegalActionException;
 
+    /** Return the count of input variables.
+     *
+     * <p>Expect <code>0 &le; this.getInputVarCt()</code>.</p>
+     *
+     * @return Count of input variables.
+     */
+    public int getInputVariableCount();
 
-} 
+    /**
+     * Indicate existence of directional derivatives.
+     *
+     * <p>
+     * Prescribed by interface <code>DerivativeFcn</code>.
+     * </p>
+     *
+     * @return True if directional derivatives are provided.
+     */
+    public boolean getProvidesDirectionalDerivatives();
+
+    /** 
+     * Return the count of state variables.
+     *
+     * <p>Expect <code>0 &lt; this.getStateCt()</code>.</p>
+     *
+     * @return Count of state variables.
+    */
+    public int getStateCount();
+
+}

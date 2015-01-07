@@ -59,8 +59,15 @@ public final class LIQSS2Fd
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
-
-    /** Initialize object fields (QSS-specific).
+    /** 
+     * Get the order of the external, quantized state models exposed by the integrator.
+     */
+    public final int getStateModelOrder() {
+        return( 1 );
+    }
+    
+    /** 
+     * Initialize object fields (QSS-specific).
      */
     public final void initializeWorker() {
 
@@ -92,19 +99,104 @@ public final class LIQSS2Fd
 
     }  
 
-
-    /** Get the order of the external, quantized state models exposed by the integrator.
-     */
-    public final int getStateModelOrder() {
-        return( 1 );
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
+    /** 
+     *  Get the predicted quantization-event time for a state (QSS-specific).
+     *  
+     *  @param stateIdx The state index.
+     *  @param quantEvtTimeMax The maximum quantization event time.
+     */
+    protected final Time _predictQuantizationEventTimeWorker(
+        final int stateIdx, final Time quantEvtTimeMax) {
 
-    /** Form a new external, quantized state model (QSS-specific).
+        // Note the superclass takes care of updating status variables and
+        // storing the returned result.
+
+        // Initialize.
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
+        final double dq = _dqs[stateIdx];
+
+        // Check internal consistency.
+        assert( dq > 0 );
+        assert( quantEvtTimeMax.getDoubleValue() > 0 );
+        assert( quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0 );
+        assert( quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0 );
+
+        // Find predicted quantization-event time, as change from {tMostRecent}.
+        Time tMostRecent;
+        double dt;
+        if( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
+            // Here, most recent event was a quantization-event.
+            tMostRecent = qStateMdl.tMdl;
+            // Note the math never refers to {qStateMdl.coeffs[0]}, so no need
+            // to force it to use {_cStatesLastQevt[stateIdx]}.
+            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq);
+        } else {
+            // Here, most recent event was a rate-event.
+            tMostRecent = cStateMdl.tMdl;
+            // Note use a modified quantized state model, for which the value
+            // coefficient is reset to the value of continuous state at the time
+            // the quantized state model was formed.
+            // TODO: Consider modifying method _predictQuantEvtDeltaTime_qss2_general()
+            // to handle this as an added input argument.
+            final double qHold = qStateMdl.coeffs[0];
+            qStateMdl.coeffs[0] = _cStatesLastQevt[stateIdx];
+            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq);
+            qStateMdl.coeffs[0] = qHold;
+        }
+
+        // Require {dt} > 0.
+        if( dt <= 0 ) {
+            // In exact arithmetic, and if the integrator is being stepped properly,
+            // this should never happen.  However, if the integrator stepped to a
+            // time very close to the previous predicted quantization-event time,
+            // or given a small numerator and large denominator in expressions
+            // above, can get nonpositive {dt}.
+            //   Reset to as small a value as can manage.
+            //   Use the `ulp`, the "units in the last place".  From the
+            // documentation at {http://docs.oracle.com/javase/7/docs/api/java/lang/Math.html}:
+            // "For a given floating-point format, an ulp of a specific real
+            // number value is the distance between the two floating-point
+            // values bracketing that numerical value."
+            // TODO: Construct integrator with "min time step" parameter,
+            // and pass it in for use it here.
+            dt = java.lang.Math.ulp(tMostRecent.getDoubleValue());
+        }
+
+        // Bound result to reasonable limits.
+        //   At lower end, need a positive number that, when added to {tMostRecent},
+        // produces a distinct time.
+        //   At upper end, can't be larger than {quantEvtTimeMax}.
+        Time predQuantEvtTime;
+        while( true ) {
+            if( quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt ) {
+                // Here, tMostRecent + dt >= quantEvtTimeMax.
+                //   Note determined this case in a slightly roundabout way, since
+                // simply adding {dt} to {tMostRecent} may cause problems if {quantEvtTimeMax}
+                // reflects some inherent limitation of class {Time}.
+                predQuantEvtTime = quantEvtTimeMax;
+                break;
+            }
+            // Here, tMostRecent + dt < quantEvtTimeMax.
+            predQuantEvtTime = tMostRecent.addUnchecked(dt);
+            if( predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
+                // Here, added {dt} and got a distinct, greater, time.
+                break;
+            }
+            // Here, {dt} so small that can't resolve difference from {tMostRecent}.
+            dt *= 2;
+        }
+
+        return( predQuantEvtTime );
+
+    } 
+
+    /** 
+     *  Form a new external, quantized state model (QSS-specific).
+     *  
      *  @param stateIdx The state index.
      */
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
@@ -160,7 +252,8 @@ public final class LIQSS2Fd
     } 
 
 
-    /** Form new internal, continuous state models (QSS-specific).
+    /** 
+     * Form new internal, continuous state models (QSS-specific).
      */
     protected final void _triggerRateEventWorker()
         throws Exception {
@@ -280,99 +373,7 @@ public final class LIQSS2Fd
         }
 
     }  
-
-
-    /** Get the predicted quantization-event time for a state (QSS-specific).
-     *  @param stateIdx The state index.
-     *  @param quantEvtTimeMax The maximum quantization event time.
-     */
-    protected final Time _predictQuantizationEventTimeWorker(
-        final int stateIdx, final Time quantEvtTimeMax) {
-
-        // Note the superclass takes care of updating status variables and
-        // storing the returned result.
-
-        // Initialize.
-        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
-        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
-        final double dq = _dqs[stateIdx];
-
-        // Check internal consistency.
-        assert( dq > 0 );
-        assert( quantEvtTimeMax.getDoubleValue() > 0 );
-        assert( quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0 );
-        assert( quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0 );
-
-        // Find predicted quantization-event time, as change from {tMostRecent}.
-        Time tMostRecent;
-        double dt;
-        if( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
-            // Here, most recent event was a quantization-event.
-            tMostRecent = qStateMdl.tMdl;
-            // Note the math never refers to {qStateMdl.coeffs[0]}, so no need
-            // to force it to use {_cStatesLastQevt[stateIdx]}.
-            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq);
-        } else {
-            // Here, most recent event was a rate-event.
-            tMostRecent = cStateMdl.tMdl;
-            // Note use a modified quantized state model, for which the value
-            // coefficient is reset to the value of continuous state at the time
-            // the quantized state model was formed.
-            // TODO: Consider modifying method _predictQuantEvtDeltaTime_qss2_general()
-            // to handle this as an added input argument.
-            final double qHold = qStateMdl.coeffs[0];
-            qStateMdl.coeffs[0] = _cStatesLastQevt[stateIdx];
-            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq);
-            qStateMdl.coeffs[0] = qHold;
-        }
-
-        // Require {dt} > 0.
-        if( dt <= 0 ) {
-            // In exact arithmetic, and if the integrator is being stepped properly,
-            // this should never happen.  However, if the integrator stepped to a
-            // time very close to the previous predicted quantization-event time,
-            // or given a small numerator and large denominator in expressions
-            // above, can get nonpositive {dt}.
-            //   Reset to as small a value as can manage.
-            //   Use the `ulp`, the "units in the last place".  From the
-            // documentation at {http://docs.oracle.com/javase/7/docs/api/java/lang/Math.html}:
-            // "For a given floating-point format, an ulp of a specific real
-            // number value is the distance between the two floating-point
-            // values bracketing that numerical value."
-            // TODO: Construct integrator with "min time step" parameter,
-            // and pass it in for use it here.
-            dt = java.lang.Math.ulp(tMostRecent.getDoubleValue());
-        }
-
-        // Bound result to reasonable limits.
-        //   At lower end, need a positive number that, when added to {tMostRecent},
-        // produces a distinct time.
-        //   At upper end, can't be larger than {quantEvtTimeMax}.
-        Time predQuantEvtTime;
-        while( true ) {
-            if( quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt ) {
-                // Here, tMostRecent + dt >= quantEvtTimeMax.
-                //   Note determined this case in a slightly roundabout way, since
-                // simply adding {dt} to {tMostRecent} may cause problems if {quantEvtTimeMax}
-                // reflects some inherent limitation of class {Time}.
-                predQuantEvtTime = quantEvtTimeMax;
-                break;
-            }
-            // Here, tMostRecent + dt < quantEvtTimeMax.
-            predQuantEvtTime = tMostRecent.addUnchecked(dt);
-            if( predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
-                // Here, added {dt} and got a distinct, greater, time.
-                break;
-            }
-            // Here, {dt} so small that can't resolve difference from {tMostRecent}.
-            dt *= 2;
-        }
-
-        return( predQuantEvtTime );
-
-    } 
-
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 

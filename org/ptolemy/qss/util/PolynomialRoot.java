@@ -34,7 +34,8 @@ package org.ptolemy.qss.util;
 //// PolynomialRoot
 
 
-/** Find roots of polynomials.
+/** 
+ * Find roots of polynomials.
  *
  * <p>Stand-alone utility functions.</p>
  *
@@ -53,7 +54,8 @@ public final class PolynomialRoot {
     ////                         public methods
 
 
-    /** Find the smallest positive real root of a second-order (quadratic) equation.
+    /** 
+     * Find the smallest positive real root of a second-order (quadratic) equation.
      *
      * <p>Equation is
      * <i>a*x^2 + b*x + c = 0</i>.</p>
@@ -123,7 +125,8 @@ public final class PolynomialRoot {
         } 
 
 
-    /** Find the smallest positive real root of a third-order (cubic) equation.
+    /** 
+     * Find the smallest positive real root of a third-order (cubic) equation.
      *
      * <p>Equation is
      * <i>a*x^3 + b*x^2 + c*x + d = 0</i>.</p>
