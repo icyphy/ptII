@@ -104,7 +104,16 @@
             <display name="Background Color"/>
         </property>
       </property>
-      <input source="ptolemy/data/unit/unitSystems.xml"/>
+      <configure>
+        <?moml
+          <group>
+	  <input source="ptolemy/actor/lib/js/js.xml"/>
+          <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
+	  <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
+          <input source="ptolemy/data/unit/unitSystems.xml"/>
+          </group>
+        ?>
+      </configure>
     </entity>
 
     <!-- Custom actor library. -->
@@ -125,12 +134,13 @@
           <input source="ptolemy/actor/lib/matrix.xml"/>
           <input source="ptolemy/actor/lib/random.xml"/>
           <input source="ptolemy/actor/lib/realtime.xml"/>
+          <input source="ptolemy/actor/lib/test.xml"/>
           <input source="ptolemy/actor/lib/signalprocessing.xml"/>
           <input source="ptolemy/actor/lib/string/string.xml"/>
 
-<!-- input source="ptolemy/domains/qss/lib/qssentities.xml"/ -->
+          <!-- input source="ptolemy/domains/qss/lib/qssentities.xml"/ -->
 
-</group>
+         </group>
         ?>
       </configure>
     </entity>
@@ -147,5 +157,42 @@
       </configure>
     </entity>
     
+
+        <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="Experimental Libraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/actor/lib/aspect/aspect.xml"/>
+            <input source="ptolemy/configs/cosimulation.xml"/>
+            <input source="ptolemy/actor/lib/database/database.xml"/>
+
+            <!-- FIXME:  would provide a composite pre-populated with a director, rather than providing the director. -->
+            <input source="ptolemy/domains/gr/gr.xml"/>
+
+            <input source="ptolemy/actor/lib/image/image.xml"/>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
+            <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
+	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
+            <input source="ptolemy/actor/lib/mail/mail.xml"/>
+
+            <!-- openmodelica actors not really working -->
+	    <!-- input source="ptolemy/domains/openmodelica/lib/openmodelicaentities.xml"/ -->
+
+            <input source="org/ptolemy/optimization/optimization.xml"/>
+	    <input source="org/ptolemy/ptango/lib/ptango.xml"/>
+            <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
+
+            <!-- FIXME:  would provide a composite pre-populated with a director, rather than providing the director. -->
+            <input source="ptolemy/domains/wireless/wireless.xml"/>
+
+            <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
   </entity>
 </entity>
