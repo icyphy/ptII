@@ -121,12 +121,11 @@ public interface DerivativeFunction {
      * @param time Simulation time.
      * @param xx The vector of state variables at <code>time</code>.
      * @param uu The vector of input variables at <code>time</code>.
-     * @param xdot (output) The vector of time rates of change of the state variables at <code>time</code>.
-     * @return Success (0 for success, else user-defined error code).
+     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
+     * @throws IllegalActionException If derivatives cannot be evaluated. 
      */
     public int evaluateDerivatives(final Time time, double[] xx, double[] uu,
-        final double[] xdot)
-        throws Exception;
+        final double[] xdot) throws IllegalActionException;
 
     /**
      * Evaluate directional derivative function.
@@ -136,13 +135,11 @@ public interface DerivativeFunction {
      * </p>
      *
      * @param idx The continuous state index.
-     * @param xx_dot The vector of first state derivatives with respect to time
-     * @param uu_dot The vector of first input derivatives with respect to time
-     * @return xdot_dot The second derivative with respect to time.
-     * @throws IllegalActionException
+     * @param xx_dot The vector of first state derivatives with respect to <code>time</code>
+     * @param uu_dot The vector of first input derivatives with respect to <code>time</code>
+     * @throws IllegalActionException If directional derivatives cannot be evaluated.
      */
-   public double evaluateDirectionalDerivatives(int idx, double[] xx_dot, double[] uu_dot)
-       throws Exception;
+   public double evaluateDirectionalDerivatives(int idx, double[] xx_dot, double[] uu_dot) throws IllegalActionException;
 
 
 } 
