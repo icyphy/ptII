@@ -107,7 +107,8 @@ import ptolemy.actor.util.Time;
 public final class ModelPolynomial {
 
 
-    /** Construct a <code>ModelPolynomial</code>.
+    /** 
+     * Construct a <code>ModelPolynomial</code>.
      *
      * @param maxOrder Maximum order of the polynomial (0=constant, 1=line, etc).
      */
@@ -122,20 +123,21 @@ public final class ModelPolynomial {
 
         }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
 
-    /** Get the maximum order of the polynomial.
-     * @return The maximum order of the polynomial.
+    /** 
+     * Claim write access.
+     *
+     * @return Count of all unique claims of write access (including caller).
      */
-    public final int getMaximumOrder() {
-        return(_maxCoeffIdx);
+    public final int claimWriteAccess() {
+        return(++_writerCt);
     }
 
-
-    /** Evaluate the model at a simulation time.
+    /** 
+     * Evaluate the model at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the model.
      * @return The model evaluated at a simulation time.
@@ -146,7 +148,8 @@ public final class ModelPolynomial {
             );
     }  
 
-    /** Evaluate the model at a delta-time.
+    /** 
+     * Evaluate the model at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the model.
      * @return The model evaluated at a delta-time.     
@@ -197,7 +200,8 @@ public final class ModelPolynomial {
     }  
 
 
-    /** Evaluate d{model}/d{t} at a simulation time.
+    /** 
+     * Evaluate d{model}/d{t} at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the derivative.
      * @return The model derivative evaluated at a simulation time.
@@ -209,7 +213,8 @@ public final class ModelPolynomial {
     } 
 
 
-    /** Evaluate d{model}/d{t} at a delta-time.
+    /** 
+     * Evaluate d{model}/d{t} at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
      * @return The model derivative evaluated at a delta-time.
@@ -259,7 +264,8 @@ public final class ModelPolynomial {
     }  
 
 
-    /** Evaluate d^2{model}/d{t}^2 at a simulation time.
+    /** 
+     * Evaluate d^2{model}/d{t}^2 at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the derivative.
      * @return The model second derivative evaluated at a simulation time.
@@ -271,7 +277,8 @@ public final class ModelPolynomial {
     } 
 
 
-    /** Evaluate d^2{model}/d{t}^2 at a delta-time.
+    /** 
+     * Evaluate d^2{model}/d{t}^2 at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
      * @return The model second derivative evaluated at a delta-time.
@@ -320,24 +327,24 @@ public final class ModelPolynomial {
         return( deriv2 );
 
     } 
+    
+    /** 
+     * Get the maximum order of the polynomial.
+     * 
+     * @return The maximum order of the polynomial.
+     */
+    public final int getMaximumOrder() {
+        return(_maxCoeffIdx);
+    }
 
-
-    /** Find out how many objects claim write access.
+    /** 
+     * Find out how many objects claim write access.
+     * 
      * @return The number of objects that claim write access.
      */
     public final int getWriterCount() {
         return(_writerCt);
     }
-
-
-    /** Claim write access.
-     *
-     * @return Count of all unique claims of write access (including caller).
-     */
-    public final int claimWriteAccess() {
-        return(++_writerCt);
-    }
-
 
     /** Release claim of write access.
      * @return Count of all remaining claims of write access.
@@ -347,7 +354,9 @@ public final class ModelPolynomial {
     }
 
 
-    /** Return a string representation of the model.
+    /** 
+     * Return a string representation of the model.
+     * 
      * @return The string representation of the model.
      */
     public final String toString() {

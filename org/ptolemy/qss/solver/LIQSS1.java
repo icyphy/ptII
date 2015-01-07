@@ -54,8 +54,15 @@ public final class LIQSS1
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
+    /** 
+     * Get the order of the external, quantized state models exposed by the integrator.
+     */
+    public final int getStateModelOrder() {
+        return( 0 );
+    }
 
-    /** Initialize object fields (QSS-specific).
+    /** 
+     * Initialize object fields (QSS-specific).
      */
     public final void initializeWorker() {
 
@@ -81,155 +88,12 @@ public final class LIQSS1
 
     }  
 
-
-    /** Get the order of the external, quantized state models exposed by the integrator.
-     */
-    public final int getStateModelOrder() {
-        return( 0 );
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
-
-    /** Form a new external, quantized state model (QSS-specific).
-     *  @param stateIdx The state index.
-     */
-    protected final void _triggerQuantizationEventWorker(final int stateIdx) {
-
-        // Note the superclass takes care of updating status variables and so on.
-
-        // Initialize.
-        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
-        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
-        final double dtStateMdl = _currSimTime.subtractToDouble(cStateMdl.tMdl);
-
-        final double cState = cStateMdl.evaluate(dtStateMdl);
-        final double cStateDeriv = cStateMdl.evaluateDerivative(dtStateMdl);
-
-        final double qStateLastMdl = qStateMdl.evaluate(_currSimTime);
-        final double jacDiag = _jacDiags[stateIdx];
-
-        // Save values needed for finding predicted quantization-event time.
-        _cStatesLastQevt[stateIdx] = cState;
-
-        // Determine new quantized state.
-        double qTest;
-        if( cStateDeriv > 0 ) {
-            qTest = cState + _dqs[stateIdx];
-        } else {
-            qTest = cState - _dqs[stateIdx];
-        }
-        if( jacDiag != 0 ) {
-            // Check whether {qTest} gives consistent diagonalized state model.
-            final double inputTerm0 = _inputTerms0[stateIdx];
-            final double diagStateMdlSlope = jacDiag*qTest + inputTerm0;
-            if( diagStateMdlSlope*cStateDeriv <= 0 ) {
-                // Here, slopes of the state and diagonalized state models do
-                // not have the same sign.
-                //   Choose quantized state using diagonalized state model.
-                qTest = -inputTerm0 / jacDiag;
-            }
-        }
-
-        // Update the external, quantized state model.
-        qStateMdl.tMdl = _currSimTime;
-        qStateMdl.coeffs[0] = qTest;
-
-        // Update information needed to form diagonalized state model.
-        _qStateMdlDiffs[stateIdx] = qTest - qStateLastMdl;
-
-    }  
-
-
-    /** Form new internal, continuous state models (QSS-specific).
-     */
-    protected final void _triggerRateEventWorker()
-        throws Exception {
-
-        // Note the superclass takes care of updating status variables and so on.
-
-        // Get values, at {_currSimTime}, of arguments to derivative function.
-        //   In general, expect the integrator formed all of its
-        // continuous state models at the same time.  If so, can find a
-        // single delta-time, rather than having to find multiple differences
-        // from {_currSimTime}.  Know that finding time differences is
-        // expensive in Ptolemy, so want to avoid doing that if possible.
-        //   However, there is a chance that the continuous state models were
-        // formed at different times.  For example:
-        // (1) User can reset a single state at any simulation time.
-        // (2) In future, might be possible to avoid updating a
-        // continuous state model if know none of its arguments changed.
-        Time tStateMdl = null;
-        double dtStateMdl = 0;
-        for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPolynomial cStateMdl = _cStateMdls[ii];
-            // Check for different model time.  Note testing object identity OK.
-            if( cStateMdl.tMdl != tStateMdl ) {
-                tStateMdl = cStateMdl.tMdl;
-                dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
-            }
-            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
-        }
-        // In general, don't expect input variable models to have same times.
-        for( int ii=0; ii<_ivCt; ++ii ) {
-            _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
-        }
-
-        // Evaluate derivative function at {_currSimTime}.
-        final int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
-            _stateDerivs_xx);
-        if( 0 != retVal ) {
-            throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
-        }
-
-        // Update the diagonalized state models.
-        //   Note have to do this before update the internal, continuous state models,
-        // since need the rate of the old one.
-        for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPolynomial qStateMdl = _qStateMdls[ii];
-            final ModelPolynomial cStateMdl = _cStateMdls[ii];
-            // Estimate the diagonal element of the Jacobian.
-            //   If component {ii} did not just have a quantization-event, set
-            // estimate to zero.
-            // TODO: Test whether better to simply retain last estimate.
-            double jacDiag = 0;
-            if( qStateMdl.tMdl.compareTo(_currSimTime)==0
-            	&&
-            	cStateMdl.tMdl.compareTo(_currSimTime)!=0 ) {
-                // Here:
-                // (1) Component {ii} just had a quantization-event.
-                // (2) Did not just start simulation, or reset value of
-                // component {ii}, so new quantized state model replaces
-                // a "nearby" old one.
-                // Therefore have information need to estimate Jacobian diagonal.
-                final double qStateMdlDiff = _qStateMdlDiffs[ii];
-                if( qStateMdlDiff != 0 ) {
-                    jacDiag =
-                        (_stateDerivs_xx[ii] - cStateMdl.evaluateDerivative(_currSimTime))
-                        / qStateMdlDiff;
-                }
-            }
-            _jacDiags[ii] = jacDiag;
-            // Update the input terms.
-            _inputTerms0[ii] = _stateDerivs_xx[ii] - jacDiag*qStateMdl.coeffs[0];
-        }
-
-        // Update the internal, continuous state models.
-        //   This also updates the rate model, which is just the derivative of
-        // the state model.
-        for( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPolynomial cStateMdl = _cStateMdls[ii];
-            cStateMdl.tMdl = _currSimTime;
-            cStateMdl.coeffs[0] = _stateVals_xx[ii];
-            cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
-        }
-
-    }  
-
-
-    /** Get the predicted quantization-event time for a state (QSS-specific).
+    /** 
+     *  Get the predicted quantization-event time for a state (QSS-specific).
+     *  
      *  @param stateIdx The state index.
      *  @param quantEvtTimeMax The maximum quantization event time.
      */
@@ -319,7 +183,143 @@ public final class LIQSS1
         return( predQuantEvtTime );
 
     } 
+    
+    /** 
+     * Form a new external, quantized state model (QSS-specific).
+     * 
+     *  @param stateIdx The state index.
+     */
+    protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
+        // Note the superclass takes care of updating status variables and so on.
+
+        // Initialize.
+        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
+        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
+        final double dtStateMdl = _currSimTime.subtractToDouble(cStateMdl.tMdl);
+
+        final double cState = cStateMdl.evaluate(dtStateMdl);
+        final double cStateDeriv = cStateMdl.evaluateDerivative(dtStateMdl);
+
+        final double qStateLastMdl = qStateMdl.evaluate(_currSimTime);
+        final double jacDiag = _jacDiags[stateIdx];
+
+        // Save values needed for finding predicted quantization-event time.
+        _cStatesLastQevt[stateIdx] = cState;
+
+        // Determine new quantized state.
+        double qTest;
+        if( cStateDeriv > 0 ) {
+            qTest = cState + _dqs[stateIdx];
+        } else {
+            qTest = cState - _dqs[stateIdx];
+        }
+        if( jacDiag != 0 ) {
+            // Check whether {qTest} gives consistent diagonalized state model.
+            final double inputTerm0 = _inputTerms0[stateIdx];
+            final double diagStateMdlSlope = jacDiag*qTest + inputTerm0;
+            if( diagStateMdlSlope*cStateDeriv <= 0 ) {
+                // Here, slopes of the state and diagonalized state models do
+                // not have the same sign.
+                //   Choose quantized state using diagonalized state model.
+                qTest = -inputTerm0 / jacDiag;
+            }
+        }
+
+        // Update the external, quantized state model.
+        qStateMdl.tMdl = _currSimTime;
+        qStateMdl.coeffs[0] = qTest;
+
+        // Update information needed to form diagonalized state model.
+        _qStateMdlDiffs[stateIdx] = qTest - qStateLastMdl;
+
+    }  
+
+    /** 
+     * Form new internal, continuous state models (QSS-specific).
+     */
+    protected final void _triggerRateEventWorker()
+        throws Exception {
+
+        // Note the superclass takes care of updating status variables and so on.
+
+        // Get values, at {_currSimTime}, of arguments to derivative function.
+        //   In general, expect the integrator formed all of its
+        // continuous state models at the same time.  If so, can find a
+        // single delta-time, rather than having to find multiple differences
+        // from {_currSimTime}.  Know that finding time differences is
+        // expensive in Ptolemy, so want to avoid doing that if possible.
+        //   However, there is a chance that the continuous state models were
+        // formed at different times.  For example:
+        // (1) User can reset a single state at any simulation time.
+        // (2) In future, might be possible to avoid updating a
+        // continuous state model if know none of its arguments changed.
+        Time tStateMdl = null;
+        double dtStateMdl = 0;
+        for( int ii=0; ii<_stateCt; ++ii ) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            // Check for different model time.  Note testing object identity OK.
+            if( cStateMdl.tMdl != tStateMdl ) {
+                tStateMdl = cStateMdl.tMdl;
+                dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
+            }
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
+        }
+        // In general, don't expect input variable models to have same times.
+        for( int ii=0; ii<_ivCt; ++ii ) {
+            _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
+        }
+
+        // Evaluate derivative function at {_currSimTime}.
+        final int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
+            _stateDerivs_xx);
+        if( 0 != retVal ) {
+            throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
+        }
+
+        // Update the diagonalized state models.
+        //   Note have to do this before update the internal, continuous state models,
+        // since need the rate of the old one.
+        for( int ii=0; ii<_stateCt; ++ii ) {
+            final ModelPolynomial qStateMdl = _qStateMdls[ii];
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            // Estimate the diagonal element of the Jacobian.
+            //   If component {ii} did not just have a quantization-event, set
+            // estimate to zero.
+            // TODO: Test whether better to simply retain last estimate.
+            double jacDiag = 0;
+            if( qStateMdl.tMdl.compareTo(_currSimTime)==0
+            	&&
+            	cStateMdl.tMdl.compareTo(_currSimTime)!=0 ) {
+                // Here:
+                // (1) Component {ii} just had a quantization-event.
+                // (2) Did not just start simulation, or reset value of
+                // component {ii}, so new quantized state model replaces
+                // a "nearby" old one.
+                // Therefore have information need to estimate Jacobian diagonal.
+                final double qStateMdlDiff = _qStateMdlDiffs[ii];
+                if( qStateMdlDiff != 0 ) {
+                    jacDiag =
+                        (_stateDerivs_xx[ii] - cStateMdl.evaluateDerivative(_currSimTime))
+                        / qStateMdlDiff;
+                }
+            }
+            _jacDiags[ii] = jacDiag;
+            // Update the input terms.
+            _inputTerms0[ii] = _stateDerivs_xx[ii] - jacDiag*qStateMdl.coeffs[0];
+        }
+
+        // Update the internal, continuous state models.
+        //   This also updates the rate model, which is just the derivative of
+        // the state model.
+        for( int ii=0; ii<_stateCt; ++ii ) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            cStateMdl.tMdl = _currSimTime;
+            cStateMdl.coeffs[0] = _stateVals_xx[ii];
+            cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
+        }
+
+    }  
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
