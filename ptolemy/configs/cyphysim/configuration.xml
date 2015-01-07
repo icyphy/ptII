@@ -100,7 +100,7 @@
       <!-- Override default background color so that CyPhySim looks different. -->
       <!-- properties have classes here so that doc/test/docManager.tcl can expand the configuration. -->
       <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.83,0.93,0.93,1.0}">
             <display name="Background Color"/>
         </property>
       </property>
