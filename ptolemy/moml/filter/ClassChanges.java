@@ -29,6 +29,7 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
@@ -192,6 +193,32 @@ public class ClassChanges extends MoMLFilterSimple {
         ///////////////////////////////////////////////////////////
         // Actors and attributes that have changed names.
         _classChanges = new HashMap();
+
+        // If the ptolemy.ptII.classesToChange property is set, then
+        // assume that it is consists of fully qualified class names in
+        // pairs.  The first name is the old class name, the second name is the
+        // new name.
+        String propertyName = "ptolemy.ptII.classesToChange";
+        try {
+            String classesToChange = System.getProperty(propertyName);
+            if (classesToChange != null && !classesToChange.equals("")) {
+                StringTokenizer tokenizer = new StringTokenizer(classesToChange);
+                while (tokenizer.hasMoreTokens()) {
+                    String oldClassName = tokenizer.nextToken();
+                    if (tokenizer.hasMoreTokens()) {
+                        String newClassName = tokenizer.nextToken();
+                        System.out.println("ptolemy.moml.filter.ClassChanges(): property "
+                                + propertyName + " was set, adding "
+                                + oldClassName + " -> " + newClassName);
+                        _classChanges.put(oldClassName, newClassName);
+                    }
+                }
+            }
+        } catch (Throwable throwable) {
+            System.err.println("Failed to handle the \"" + propertyName
+                    + "\": " + throwable);
+            throwable.printStackTrace();
+        }
 
         // Location
         _classChanges.put("ptolemy.moml.Location",
