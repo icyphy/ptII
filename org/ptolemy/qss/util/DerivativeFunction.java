@@ -135,7 +135,7 @@ public interface DerivativeFunction {
      * Prescribed by interface <code>DerivativeFcn</code>.
      * </p>
      *
-     * @param idx The continuous state index
+     * @param idx The continuous state index.
      * @param xx_dot The vector of first state derivatives with respect to time
      * @param uu_dot The vector of first input derivatives with respect to time
      * @return xdot_dot The second derivative with respect to time.
