@@ -26,63 +26,60 @@
  @ProposedRating Red (cxh)
  @AcceptedRating Red (cxh)
  */
-package ptolemy.domains.dt.kernel.test;
+package ptolemy.actor.lib.gui;
 
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+//// TimedDisplay
+
+/**
+ * Display the model time and the input.
+ * @author  Christopher Brooks, based on dt/kernel/test/TimedDisplay.java by Chamberlain Fong
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)n
+ */
 public class TimedDisplay extends Display implements SequenceActor {
+
+    /** Construct an actor with an input multiport of type GENERAL that
+     *  displays the model time and the value of the input.   
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public TimedDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        rowsDisplayed.setToken(new IntToken(20));
     }
 
-    @Override
-    public boolean postfire() throws IllegalActionException {
-        int width = input.getWidth();
-        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
+    /** Return a string describing the model time of the containing director 
+     *  a colon and the input on channel i.
+     *  @param i The channel
+     *  @return A string representation of the input, or null if there
+     *  is nothing to display. If there is no director, then only the
+     *  value is returned.
+     *  @exception IllegalActionException If reading the input fails.
+     */
+    protected String _getInputString(int i) throws IllegalActionException {
+        String value = super._getInputString(i);
 
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-                // Read a token, but don't use the value
-                input.get(i);
-
-                Director director = getDirector();
-                String value = " ";
-
-                if (director != null) {
-                    value = "" + director.getModelTime();
-                }
-
-                //String value = (director.getCurrentTime()).toString();
-                textArea.append(value);
-
-                // Append a tab character.
-                if (width > i + 1) {
-                    textArea.append("\t");
-                }
-
-                try {
-                    int lineOffset = textArea.getLineStartOffset(textArea
-                            .getLineCount() - 1);
-                    textArea.setCaretPosition(lineOffset);
-                } catch (BadLocationException ex) {
-                    // Ignore ... worst case is that the scrollbar
-                    // doesn't move.
-                }
-            }
+        Director director = getDirector();
+        if (director != null) {
+            return director.getModelTime() + ": " + value;
         }
-
-        textArea.append("\n");
-        return true;
+        return value;
     }
 }

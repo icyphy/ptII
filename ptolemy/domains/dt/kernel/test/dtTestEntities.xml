@@ -9,18 +9,6 @@
             <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <doc>discrete time test actors</doc>
-            <entity name="TimedDisplay" class="ptolemy.domains.dt.kernel.test.TimedDisplay">
-                <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-                </property>
-                <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-                <property name="title" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-            </entity>
             <entity name="OnePort" class="ptolemy.domains.dt.kernel.test.OnePort">
                 <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>

@@ -10,10 +10,9 @@
         <!-- Copied from ptolemy/actor/lib/sequencesinks.xml-->
 
         <entity name="Timed Sinks" class="ptolemy.moml.EntityLibrary">
+          <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay"/>
           <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
           <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
-          <!-- FIXME: We should create TimedDisplay that displays the current time: value -->
-          <!-- FIXME: We should create TimedMonitorValue that displays the current time: value  -->
         </entity>
 
         <entity name="Triggered Sinks" class="ptolemy.moml.EntityLibrary">
