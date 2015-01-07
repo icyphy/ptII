@@ -14,9 +14,8 @@
         <doc>The function is applied to its input data.</doc>
       </entity>      
 
-      <entity name="CyPhyComposite" class="ptolemy.domains.qss.kernel.CyPhyComposite">
-        <doc>A CatchUpComposite that contains a QSS director.</doc>
-        </entity>
+      <!-- Use input here instead of entity so that doc/test/docManager.tcl can expand the configuration. -->
+      <input source="ptolemy/domains/qss/kernel/CyPhyComposite.xml" />
         
       <entity name="MultiInstanceComposite" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
         <doc>Creates multiple instances of itself</doc>
@@ -27,30 +26,6 @@
       </entity>
 
       </group>
-    ?>
-  </configure>
-</entity>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      ?>
+    </configure>
+  </entity>
