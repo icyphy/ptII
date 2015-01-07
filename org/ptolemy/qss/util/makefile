@@ -51,9 +51,9 @@ PTPACKAGE = util
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DerivativeFcn.java \
-	ModelPoly.java \
-	PolyRoot.java
+	DerivativeFunction.java \
+	ModelPolynomial.java \
+	PolynomialRoot.java
 
 OTHER_FILES_TO_BE_JARED =
 
