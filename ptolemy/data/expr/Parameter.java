@@ -182,7 +182,9 @@ public class Parameter extends Variable {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Parameter newObject = (Parameter) super.clone(workspace);
-        newObject._choices = null;
+        if (_choices != null) {
+            newObject._choices = new ArrayList(_choices);
+        }
 
         return newObject;
     }
