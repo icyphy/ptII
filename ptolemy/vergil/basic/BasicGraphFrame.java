@@ -2627,20 +2627,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         _initBasicGraphFrameRightComponent();
 
         // Background color is parameterizable by preferences.
-        Configuration configuration = getConfiguration();
-        _rightComponent.setBackground(BACKGROUND_COLOR);
-        if (configuration != null) {
-            try {
-                PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
-                if (preferences != null) {
-                    _rightComponent.setBackground(preferences.backgroundColor
-                            .asColor());
-                }
-            } catch (IllegalActionException e1) {
-                // Ignore the exception and use the default color.
-            }
-        }
+        _setBackgroundColor(_rightComponent);
 
         _initBasicGraphFrameRightComponentMouseListeners();
 
@@ -2664,6 +2651,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 _rightComponent.setPreferredSize(new Dimension(700, 500));
                 _rightComponent.setSize(600, 450);
             }
+            _rightComponent.setBorder(BorderFactory.createEtchedBorder());
 
             _initBasicGraphFrameSetZoomAndPan();
         } catch (Throwable throwable) {
@@ -2674,6 +2662,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         // If we don't have a library, we might be trying to only show
         // models
         // FIXME: should we be checking for _library instead?
+        Configuration configuration = getConfiguration();
         if (configuration != null
                 && (CompositeEntity) configuration.getEntity("actor library") != null) {
             // Create the panner.
@@ -2771,6 +2760,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // See _treeViewScrollPane below.
             _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
             _libraryScrollPane.setPreferredSize(new Dimension(200, 300));
+            _libraryScrollPane.setBorder(BorderFactory.createEtchedBorder());
+            _setBackgroundColor(_library);
 
             // create the palette on the left.
             _palettePane = new JPanel();
@@ -2826,6 +2817,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 // See _libraryScrollPane above.
                 _treeViewScrollPane.setMinimumSize(new Dimension(200, 200));
                 _treeViewScrollPane.setPreferredSize(new Dimension(200, 300));
+                _treeViewScrollPane.setBorder(BorderFactory.createEtchedBorder());
+                _setBackgroundColor(_treeView);
 
                 // Make the Ptolemy model visible in the tree.
                 TreePath modelTreePath = null;
@@ -2850,6 +2843,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // Put in the tabbed pane that contains the hierarchy browser and the library
             JTabbedPane libraryTreeTabbedPane = new JTabbedPane();
             libraryTreeTabbedPane.add("Library", _libraryScrollPane);
+
             if (_treeViewScrollPane != null) {
                 libraryTreeTabbedPane.add("Tree", _treeViewScrollPane);
             }
@@ -3121,6 +3115,27 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         }
 
         return fileChooser;
+    }
+    
+    /** Set the background color of the specified component to the default,
+     *  or if it is given, to the background color given in the preferences.
+     *  @param component The component to set the color of.
+     */
+    protected void _setBackgroundColor(Component component) {
+        Configuration configuration = getConfiguration();
+        component.setBackground(BACKGROUND_COLOR);
+        if (configuration != null) {
+            try {
+                PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                if (preferences != null) {
+                    component.setBackground(preferences.backgroundColor
+                            .asColor());
+                }
+            } catch (IllegalActionException e1) {
+                // Ignore the exception and use the default color.
+            }
+        }
     }
 
     /** Set the directory that was last accessed by this window.
