@@ -151,10 +151,10 @@ import ptolemy.actor.util.Time;
  * states.
  * For example:
  * <ul>
- * <li>Method {@link #evalStateMdl()} evaluates the quantized state model.
+ * <li>Method {@link #evaluateStateModel()} evaluates the quantized state model.
  * Since the user can access that model directly, this is mainly a convenience
  * method.</li>
- * <li>Method {@link #evalStateMdl_cont()} evaluates the
+ * <li>Method {@link #evaluateStateModelContinuous()} evaluates the
  * internal, continuous state model.
  * This is intended mainly for testing.
  * However, since the internal model does represent the state as a continuous
@@ -184,8 +184,8 @@ import ptolemy.actor.util.Time;
  * <p>The following methods initialize a new integrator.
  * They must be called before doing any work with the integrator:</p>
  * <ul>
- * <li>{@link #init_derivFcn()}</li>
- * <li>{@link #init_simTime()}</li>
+ * <li>{@link #initializeDerivativeFunction()}</li>
+ * <li>{@link #initializeSimulationTime()}</li>
  * </ul>
  *
  * <p>The following methods inquire about fixed integrator parameters:</p>
@@ -200,39 +200,39 @@ import ptolemy.actor.util.Time;
  * In general, they should be called before starting a simulation.
  * However, they may also be called during an integration:</p>
  * <ul>
- * <li>{@link #getStateMdl()}</li>
+ * <li>{@link #getStateModel()}</li>
  * <li>{@link #needInputVariableModelIndex()}</li>
- * <li>{@link #addInputVarMdl()}</li>
+ * <li>{@link #addInputVariableModel()}</li>
  * </ul>
  *
  * <p>The following methods configure the integrator.
  * In general, they should be called before its first use.
  * However, they may also be called during an integration:</p>
  * <ul>
- * <li>{@link #setDqTol()}</li>
- * <li>{@link #setDqTols()}</li>
- * <li>{@link #setCurrSimTime()}</li>
+ * <li>{@link #setDqTolerance()}</li>
+ * <li>{@link #setDqTolerances()}</li>
+ * <li>{@link #setCurrentSimulationTime()}</li>
  * <li>{@link #setStateValue(int, double)}</li>
- * <li>{@link #setQuantEvtTimeMax()}</li>
+ * <li>{@link #setQuantizationEventTimeMaximum()}</li>
  * <li>{@link #validate()}</li>
  * </ul>
  *
  * <p>The following methods inquire about current values during a simulation:</p>
  * <ul>
  * <li>{@link #getCurrentSimulationTime()}</li>
- * <li>{@link #evalStateMdl()}</li>
- * <li>{@link #evalStateMdl_cont()}</li>
+ * <li>{@link #evaluateStateModel()}</li>
+ * <li>{@link #evaluateStateModelContinuous()}</li>
  * </ul>
  *
  * <p>The following methods prepare the integrator to take the next time step:</p>
  * <ul>
  * <li>{@link #needQuantizationEventIndex()}</li>
- * <li>{@link #needQuantEvtIdxs()}</li>
- * <li>{@link #triggerQuantEvt()}</li>
- * <li>{@link #triggerQuantEvts()}</li>
+ * <li>{@link #needQuantizationEventIndexes()}</li>
+ * <li>{@link #triggerQuantizationEvent()}</li>
+ * <li>{@link #triggerQuantizationEvents()}</li>
  * <li>{@link #needRateEvent()}</li>
  * <li>{@link #triggerRateEvent()}</li>
- * <li>{@link #predictQuantEvtTime()}</li>
+ * <li>{@link #predictQuantizationEventTime()}</li>
  * <li>{@link #predictQuantizationEventTimeEarliest()}</li>
  * </ul>
  *
@@ -243,8 +243,8 @@ import ptolemy.actor.util.Time;
  *
  * <p>The following methods primarily facilitate testing:</p>
  * <ul>
- * <li>{@link #stringifyStateMdl()}</li>
- * <li>{@link #stringifyStateMdl_cont()}</li>
+ * <li>{@link #stringifyStateModel()}</li>
+ * <li>{@link #stringifyStateModelContinuous()}</li>
  * <li>{@link #findDq()}</li>
  * </ul>
  *
@@ -419,7 +419,7 @@ public abstract class QSSBase {
      * function of time, when integrating the derivative function.</p>
      *
      * <p>The initial state model is constant at a value of 0.
-     * Use method {@link #setStateValue(int, doiuble)} to change this initial value.</p>
+     * Use method {@link #setStateValue(int, double)} to change this initial value.</p>
      *
      * <p>Never change the model parameters directly.
      * The QSS integrator claims exclusive write access to the model.</p>
@@ -483,7 +483,7 @@ public abstract class QSSBase {
 
     /** Return the index of an input variable for which the user has yet to add a model.
      *
-     * <p>The user must call {@link #addInputVarMdl()} at least once for
+     * <p>The user must call {@link #addInputVariableModel()} at least once for
      * every input variable taken by the derivative function.
      * This method checks whether that requirement has been met.</p>
      *
@@ -555,7 +555,7 @@ public abstract class QSSBase {
      *
      * <p>Notes on sharing models between roles in the integration:</p>
      * <ul>
-     * <li>See the notes for method {@link #getStateMdl()}.</li>
+     * <li>See the notes for method {@link #getStateModel()}.</li>
      * </ul>
      *
      * <p>Notes on providing a different model at a later time:</p>
@@ -637,7 +637,7 @@ public abstract class QSSBase {
     /** Set the parameters used to determine the quantum for all states.
      *
      * <p>Apply the same tolerances to all the states the integrator predicts.
-     * For details, see method {@link #setDqTol()}.</p>
+     * For details, see method {@link #setDqTolerance()}.</p>
      *
      * @param absTol The absolute tolerance, absTol &gt; 0 [units of <i>x[j]</i>].
      * @param relTol The relative tolerance, relTol &ge; 0 [1].
@@ -712,7 +712,7 @@ public abstract class QSSBase {
         // Set status to note future needs.
         _need_rateEvt = true;
         _need_quantEvts[stateIdx] = true;
-        // _need_predQuantEvtTimes[stateIdx] = true;  // This will follow from changes above.
+        // _need_predQuantizationEventTimes[stateIdx] = true;  // This will follow from changes above.
 
         // Make the quantized state model constant at {newValue}.
         final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
@@ -781,7 +781,7 @@ public abstract class QSSBase {
      * Exceptions:</p>
      * <ul>
      * <li>When the integrator is first instantiated, it is set to 0.</li>
-     * <li>Method {@link #setCurrSimTime()} changes the value outright.</li>
+     * <li>Method {@link #setCurrentSimulationTime()} changes the value outright.</li>
      * </ul>
      *
      * @return Current simulation time for the QSS integrator.
@@ -797,7 +797,7 @@ public abstract class QSSBase {
      *
      * <p>Note this method evaluates the external, quantized state model.
      * Alternately, the user could acquire the model, via
-     * method {@link #getStateMdl()}, and evaluate that model directly.</p>
+     * method {@link #getStateModel()}, and evaluate that model directly.</p>
      *
      * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
      * @param simTime Global simulation time.
@@ -828,7 +828,7 @@ public abstract class QSSBase {
      * This method returns the index, if any, of such states.</p>
      *
      * <p>The user should trigger the quantization-event, e.g., using
-     * method {@link #triggerQuantEvt()}.</p>
+     * method {@link #triggerQuantizationEvent()}.</p>
      *
      * <p>TODO: Put under unit test.</p>
      *
@@ -873,7 +873,7 @@ public abstract class QSSBase {
      * (i.e., to experience a quantization-event).
      * The new model will be available to the user immediately.</p>
      *
-     * <p>Note method {@link #triggerQuantEvts()} can requantize multiple
+     * <p>Note method {@link #triggerQuantizationEvents()} can requantize multiple
      * state models at once, and can requantize only those states that need it.</p>
      *
      * <p>Form the model about the current simulation time, as returned by
@@ -892,7 +892,7 @@ public abstract class QSSBase {
      * method {@link #triggerRateEvent()}.</p>
      *
      * <p>The proper sequence in which to call method {@link #triggerRateEvent()}
-     * and method {@link #triggerQuantEvt()} is a fraught topic.
+     * and method {@link #triggerQuantizationEvent()} is a fraught topic.
      * In general, should requantize all states first, then trigger rate-events.
      * Also, after trigger a rate-event, get new predicted quantization-time.
      * TODO: Write up a higher-level description of the problem.</p>
@@ -921,7 +921,7 @@ public abstract class QSSBase {
 
     /** Form new external, quantized state models.
      *
-     * <p>Convenience method to call method {@link #triggerQuantEvt()} on
+     * <p>Convenience method to call method {@link #triggerQuantizationEvent()} on
      * all states predicted by this integrator.</p>
      *
      * <p>Can apply only to those states that are marked for requantization,
@@ -932,7 +932,7 @@ public abstract class QSSBase {
      * <li>At initialization.</li>
      * <li>When a time step carries the integrator up to, or past, its predicted
      * quantization-event time.
-     * See method {@link #predictQuantEvtTime()}.</li>
+     * See method {@link #predictQuantizationEventTime()}.</li>
      * <li>TODO: Provide, probably in top-level comments, an overview of when
      * an integrator state needs to have a quantization-event.
      * Following this list.
@@ -942,7 +942,7 @@ public abstract class QSSBase {
      *
      * <p>To determine state(s) that need to be requantized, use either
      * method {@link #needQuantizationEventIndex()} or
-     * method {@link #needQuantEvtIdxs()}.</p>
+     * method {@link #needQuantizationEventIndexes()}.</p>
      *
      * @param forceAll If true, requantize all state models.
      */
@@ -1002,10 +1002,10 @@ public abstract class QSSBase {
      * <p>Note the state model of interest here is the
      * internal, continuous state model.
      * In order to re-form the external, quantized state model, use
-     * method {@link #triggerQuantEvt()}.</p>
+     * method {@link #triggerQuantizationEvent()}.</p>
      *
      * <p>The proper sequence in which to call method {@link #triggerRateEvent()}
-     * and method {@link #triggerQuantEvt()} is a fraught topic.
+     * and method {@link #triggerQuantizationEvent()} is a fraught topic.
      * In general, should requantize all states first, then trigger rate-events.
      * Also, after trigger a rate-event, get new predicted quantization-time.
      * TODO: Write up a higher-level description of the problem.</p>
@@ -1077,7 +1077,7 @@ public abstract class QSSBase {
     // next quantization-event time.
     //   Another way to do this might be to add a flag to triggerRateEvt(),
     // telling it to requantize first if necessary.  And a corresponding flag
-    // to triggerQuantEvt(), telling it to handle rate-event at same time if
+    // to triggerQuantizationEvent(), telling it to handle rate-event at same time if
     // necessary.
 
 
@@ -1218,7 +1218,7 @@ public abstract class QSSBase {
 
     /** Get the internal, continuous state model for a state predicted by the integrator.
      *
-     * <p>This method is the equivalent of method {@link #getStateMdl()},
+     * <p>This method is the equivalent of method {@link #getStateModel()},
      * except that it retrieves the internal, continuous state model rather
      * than the external, quantized state model.</p>
      *
@@ -1226,7 +1226,7 @@ public abstract class QSSBase {
      * In principle, the user should not even have to be aware of the existence
      * of the internal, continuous state model, let alone have access to it.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCount().
      * @param qStateMdl The model to use.
      */
     // public final ModelPoly getStateMdl_cont(final int stateIdx) {
@@ -1265,7 +1265,7 @@ public abstract class QSSBase {
      * internal, continuous state model used by the integrator.</p>
      *
      * <p>To change the parameters used to find the quantum, use
-     * method {@link #setDqTol()} or method {@link #setDqTols()}.</p>
+     * method {@link #setDqTolerance()} or method {@link #setDqTolerances()}.</p>
      *
      * <p>The user should never have to call this method directly.
      * The QSS integrator invokes it as needed.</p>
@@ -1329,12 +1329,12 @@ public abstract class QSSBase {
 
     /** Form a new external, quantized state model (QSS-specific).
      *
-     * <p>See comments to method {@link #triggerQuantEvt()}.</p>
+     * <p>See comments to method {@link #triggerQuantizationEvent()}.</p>
      *
      * <p>The implementation of this "worker" method depends on the
      * specific member of the QSS family.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCount().
      */
     protected abstract void _triggerQuantizationEventWorker(final int stateIdx);
 
@@ -1352,7 +1352,7 @@ public abstract class QSSBase {
 
     /** Get the predicted quantization-event time for a state (QSS-specific).
      *
-     * <p>See comments to method {@link #predictQuantEvtTime()}.</p>
+     * <p>See comments to method {@link #predictQuantizationEventTime()}.</p>
      *
      * <p>The implementation of this "worker" method depends on the
      * specific member of the QSS family.</p>
@@ -1374,7 +1374,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
      *
-     * <p>Utility method for use by {@link #_predictQuantEvtTime_work()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWorker()}.</p>
      *
      * <p>Find the time step, from the most recent quantization-event time, of the
      * predicted quantization-event for a state under QSS2.
@@ -1383,7 +1383,7 @@ public abstract class QSSBase {
      * the quantization-event time.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantEvtTime_work()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWorker()}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1438,7 +1438,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
      *
-     * <p>Utility method for use by {@link #_predictQuantEvtTime_work()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWork()}.</p>
      *
      * <p>Find the time step, from the most recent state-event time, of the
      * predicted quantization-event for a state under QSS2.
@@ -1446,7 +1446,7 @@ public abstract class QSSBase {
      * to the continuous state model.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantEvtTime_work()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWork()}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1514,7 +1514,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
      *
-     * <p>Utility method for use by {@link #_predictQuantEvtTime_work()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWork()}.</p>
      *
      * <p>Find the time step, from the most recent quantization-event time, of the
      * predicted quantization-event for a state under QSS3.
@@ -1523,7 +1523,7 @@ public abstract class QSSBase {
      * second derivative at the quantization-event time.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantEvtTime_work()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWork()}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1568,7 +1568,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
      *
-     * <p>Utility method for use by {@link #_predictQuantEvtTime_work()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWork()}.</p>
      *
      * <p>Find the time step, from the most recent state-event time, of the
      * predicted quantization-event for a state under QSS3.
@@ -1576,7 +1576,7 @@ public abstract class QSSBase {
      * to the continuous state model.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantEvtTime_work()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWork()}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>

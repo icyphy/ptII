@@ -107,7 +107,7 @@ import ptolemy.actor.util.Time;
 public final class ModelPolynomial {
 
 
-    /** Construct a <code>ModelPoly</code>.
+    /** Construct a <code>ModelPolynomial</code>.
      *
      * @param maxOrder Maximum order of the polynomial (0=constant, 1=line, etc).
      */
