@@ -106,6 +106,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.LevelSkippingTableauFactory;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
@@ -121,6 +122,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
@@ -1208,12 +1210,38 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      */
     public void openContainer() {
         GraphModel model = _getGraphModel();
-        NamedObj toplevel = (NamedObj) model.getRoot();
-        if (toplevel != toplevel.toplevel()) {
+        NamedObj thisEntity = (NamedObj) model.getRoot();
+        if (thisEntity != thisEntity.toplevel()) {
+            // Not already at the top level.
             try {
+        	// See whether the container contains an instance of LevelSkippingTableauFactory.
+        	NamedObj container = thisEntity.getContainer();
+        	List<LevelSkippingTableauFactory> skip 
+        		= container.attributeList(LevelSkippingTableauFactory.class);
+        	while(skip != null && skip.size() > 0) {
+        	    container = container.getContainer();
+        	    if (container == null) {
+        		// This should not occur.
+        		return;
+        	    }
+        	    skip = container.attributeList(LevelSkippingTableauFactory.class);
+        	}
+        	// If the container is a ModalModel, the also skip a level.
+        	// Note that it is not enough to just check whether the name of the
+        	// class matches ModalModel, because then subclasses of ModalModel
+        	// are not recognized. This unfortunately creates a new dependence
+        	// on the modal package.
+                if (container instanceof ModalModel) {
+        	    container = container.getContainer();
+        	    if (container == null) {
+        		// This should not occur.
+        		return;
+        	    }
+                }
+                
                 Configuration configuration = getConfiguration();
                 // FIXME: do what with the return value?
-                configuration.openInstance(toplevel.getContainer());
+                configuration.openInstance(container);
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to open container", throwable);
             }
@@ -2871,13 +2899,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         _initBasicGraphFrameToolBarZoomButtons();
 
         GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
-        if (getModel() == getModel().toplevel()
-                || getModel().getClass().getName()
-                .equals("ptolemy.domains.modal.modal.ModalController")) {
-            // If we are at the top level, disable.  If we are in a
-            // ModalModel, disable.  See "Up button does not work in
-            // modal models"
-            // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=323
+        if (getModel() == getModel().toplevel()) {
+            // If we are at the top level, disable.
             _openContainerAction.setEnabled(false);
         }
 
