@@ -1,0 +1,82 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DiscreteEvent" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+<!-- Duplicate of SR Button Time -->
+<!-- entity name="EventButton" class="ptolemy.domains.de.lib.EventButton" -->
+<!-- /entity -->
+
+<entity name="AverageOverTime" class="ptolemy.domains.de.lib.AverageOverTime">
+</entity>
+
+<entity name="Derivative" class="ptolemy.domains.de.lib.Derivative">
+<doc>Discrete derivative.</doc>
+</entity>
+
+<entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
+</entity>
+
+<entity name="Inhibit" class="ptolemy.domains.de.lib.Inhibit">
+</entity>
+
+<entity name="Integrator" class="ptolemy.domains.de.lib.Integrator">
+<doc>Discrete integrator.</doc>
+</entity>
+
+<entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+</entity>
+
+<entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+</entity>
+
+<entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
+</entity>
+
+<entity name="PID" class="ptolemy.domains.de.lib.PID">
+<doc>Discrete proportional, integral, and derivative controller.</doc>
+</entity>
+
+<entity name="Previous" class="ptolemy.domains.de.lib.Previous">
+</entity>
+
+<entity name="Queue" class="ptolemy.domains.de.lib.Queue">
+</entity>
+
+<entity name="Register" class="ptolemy.domains.de.lib.Register">
+</entity>
+
+<entity name="ResettableTimer" class="ptolemy.actor.lib.ResettableTimer">
+</entity>
+
+<entity name="Server" class="ptolemy.domains.de.lib.Server">
+</entity>
+
+<entity name="SharedQueue" class="ptolemy.domains.de.lib.SharedQueue">
+</entity>
+
+<entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+</entity>
+
+<entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
+</entity>
+
+<entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+</entity>
+
+<entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
+</entity>
+
+<entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
+</entity>
+
+<!-- entity name="Wire" class="ptolemy.domains.de.lib.Wire" -->
+<!-- /entity -->
+
+      </group>
+      ?>
+    </configure>
+</entity>
