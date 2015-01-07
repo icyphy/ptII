@@ -10,6 +10,7 @@
 /ptolemy/moml/MoMLParser.java
 /ptolemy/moml/MoMLUndoEntry.java
 /ptolemy/moml/ParserAttribute.java
+/ptolemy/moml/SimpleErrorHandler.java
 /ptolemy/moml/UndoContext.java
 /ptolemy/moml/Vertex.java
 /com/microstar/xml/HandlerBase.java

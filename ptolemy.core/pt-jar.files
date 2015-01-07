@@ -419,3 +419,9 @@
 /ptolemy/graph/analysis/strategy/Strategy.java
 # May
 /ptolemy/actor/TimeRegulator.java
+# from further ptolemy modularization
+# from needs for ptolemy.actor.gui
+/ptolemy/actor/parameters/DoubleRangeParameter.java
+/ptolemy/actor/parameters/FilePortParameter.java
+/ptolemy/actor/parameters/IntRangeParameter.java
+
