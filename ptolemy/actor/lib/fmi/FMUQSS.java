@@ -1796,7 +1796,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             // Added a check to produce outputs to port which are connected.
             if (outPort.getWidth() > 0) {
-                _sendModelToPort(order, _qssIgr.getStateMdl(qIdx).coeffs,
+                _sendModelToPort(order, _qssIgr.getStateModel(qIdx).coeffs,
                         outPort);
             }
             // Only produce outputs that depend on the states.
@@ -1807,7 +1807,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _debugToStdOut(String.format(
                         "-- Id{%d} set quantized state model %d to %s", System
                                 .identityHashCode(this), qIdx, _qssIgr
-                                .getStateMdl(qIdx).toString()));
+                                .getStateModel(qIdx).toString()));
             }
 
         }
