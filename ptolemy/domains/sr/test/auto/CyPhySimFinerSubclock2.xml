@@ -47,7 +47,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 205.0}">
         </property>
@@ -57,7 +57,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001111111">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 280.0}">
         </property>
@@ -87,8 +87,6 @@
         </port>
         <port name="out2" class="ptolemy.actor.lib.hoc.MirrorPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <entity name="Contents" class="ptolemy.actor.TypedCompositeActor">
             <property name="Periodic Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -123,8 +121,6 @@
             </port>
             <port name="out2" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 345.0]">
                 </property>
             </port>
@@ -143,7 +139,7 @@
                 </property>
                 <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001111111">
                 </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 190.0}">
                 </property>
@@ -158,7 +154,7 @@
                 </property>
                 <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.001111111">
                 </property>
-                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 270.0]">
                 </property>
@@ -220,7 +216,7 @@
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 280.0}">
         </property>
