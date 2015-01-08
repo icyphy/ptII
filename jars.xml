@@ -41,6 +41,7 @@
     <include name="org/ptolemy/ptango/ptango.jar" />
     <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
+    <include name="org/ptolemy/qss/demo/demo.jar" />
     <include name="org/ptolemy/ssm/ssm.jar" />
     <include name="org/terraswarm/terraswarm.jar" />
     <include name="org/terraswarm/demo/demo.jar" />
@@ -184,6 +185,7 @@
     <include name="ptolemy/domains/ptinyos/doc/doc.jar" />
     <include name="ptolemy/domains/ptinyos/ptinyos.jar" />
     <include name="ptolemy/domains/qss/qss.jar" />
+    <include name="ptolemy/domains/qss/demo/demo.jar" />
     <include name="ptolemy/domains/rendezvous/rendezvous.jar" />
     <include name="ptolemy/domains/rendezvous/demo/demo.jar" />
     <include name="ptolemy/domains/rendezvous/doc/doc.jar" />
@@ -5090,6 +5092,16 @@
 	<include name="ptolemy/domains/qss/*.class"/>
         <include name="ptolemy/domains/qss/*.xml"/>
 	<include name="ptolemy/domains/qss/lib/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/qss/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/qss/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/qss/demo/*/*.class"/>
+	<include name="ptolemy/domains/qss/demo/*/*.xml"/>
       </fileset>
     </jar>
 

@@ -1,9 +1,9 @@
-# Makefile for Java Ptolemy Quantized State System (QSS) domains
+# Makefile for PtolemyII QSS Domain
 #
-# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id: makefile 47480 2007-12-06 18:25:06Z cxh $
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,47 +27,45 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/qss
+ME =		ptolemy/domains/qss/demo
 
-DIRS =		kernel test demo #lib
+# Keep these alphabetical please.
+DIRS =		HelloWorld Lorenz
 
 # Root of Ptolemy II directory
-ROOT =		../../..
-
-CLASSPATH =	$(ROOT)
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	qss
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar 
-
-#		lib/lib.jar
+	HelloWorld/HelloWorld.jar \
+	Lorenz/Lorenz.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel test #lib #doc
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

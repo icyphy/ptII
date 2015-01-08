@@ -1,9 +1,10 @@
-# Makefile for Java Ptolemy Quantized State System (QSS) domains
+# Makefile for Ptolemy II QSS Lorenz demo
 #
-# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands (makefile only)
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
+#
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,14 +28,11 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/qss
+ME =		ptolemy/domains/qss/demo/Lorenz
 
-DIRS =		kernel test demo #lib
-
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,31 +41,43 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	qss
-PTCLASSJAR =
+PTPACKAGE = 	Lorenz
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar 
+JSRCS =
 
-#		lib/lib.jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Lorenz.xml
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel test #lib #doc
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
-all: jclass
-install: jclass jars
+JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
+install: all $(PTCLASSJAR)
+
+demo:  demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Lorenz.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Lorenz.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
