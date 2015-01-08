@@ -1220,6 +1220,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
+                    || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
             ) {
                 // Parameters
                 // Parameter parameter = new Parameter(this, scalar.name);
@@ -1227,40 +1228,75 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // // Prevent exporting this to MoML unless it has
                 // // been overridden.
                 // parameter.setDerivedLevel(1);
-
                 switch (scalar.causality) {
                 case output:
-                case input:
+                    // "fixed" and "tunable" outputs will be available as ports.
+                    // FIXME: Need to see whether it is possible to export
+                    // the unit and the description of a variable and make it
+                    // accessible
+                    // at the actor level.
                     portCount++;
-                    parameterMoML
-                            .append("  <property name=\""
-                                    + StringUtilities.sanitizeName(scalar.name)
-                                    + "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
-                                    + scalar.type + "\"/>\n");
+                    String causality = "output";
+                    boolean hideLocal = false;
+                    portMoML.append("  <port name=\""
+                            + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                            + "    <property name=\""
+                            + causality
+                            + "\"/>\n"
+                            // We set the display name to handle scalars with
+                            // names
+                            // that have periods
+                            // or other characters.
+                            + "    <display name=\""
+                            + StringUtilities.escapeForXML(scalar.name)
+                            + "\"/>\n" + "    <property name=\"_type\" "
+                            + "class=\"ptolemy.actor.TypeAttribute\" value=\""
+                            + _fmiType2PtolemyType(scalar.type) + "\">\n"
+                            + hiddenStyle + "    </property>" + dependency
+                            + showName
+                            // Hide the port.
+                            + (hideLocal ? hide : "") + "  </port>\n");
                     break;
-                case local: // FMI-2.0rc1
+                case input:
+                    // The specification says on page 49 that fixed inputs have
+                    // the same properties as
+                    // fixed parameters. We will for now ignore inputs whose
+                    // Variability are
+                    // "fixed" or tunable.
+                    // portCount++;
+                    // parameterMoML
+                    // .append("  <property name=\""
+                    // + StringUtilities.sanitizeName(scalar.name)
+                    // +
+                    // "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
+                    // + scalar.type + "\"/>\n");
+                    break;
+                case local:
+                    break;
                 case internal:
-                    // Internal variables are outputs that get hidden.
-                case calculatedParameter: // FMI-2.0rc1
-                case parameter: // FMI-2.0rc1
-                case none:
-                    // FIXME: Need to sanitize the value.
+                    break;
+                case calculatedParameter:
+                    break;
+                case parameter:
+                    // Make "fixed" and "tunable" parameters accessible from
+                    // actor.
                     parameterMoML
                             .append("  <property name=\""
                                     + StringUtilities.sanitizeName(scalar.name)
                                     + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                                    + scalar.type + "\" " + "/>\n"
-                            // + (scalar.causality == Causality.internal ? hide
-                            // : "")
-                            // + "</property>\n"
-                            );
+                                    + scalar.type + "\" " + "/>\n");
+                    break;
+                case none:
                     break;
 
                 }
+            } else if (scalar.variability == FMIScalarVariable.Variability.constant) {
+                // Variables with the variability constant will be skipped.
                 continue;
             } else {
-                // Ports
 
+                // Ports
                 // // FIXME: All output ports?
                 // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
                 // true);
@@ -1275,8 +1311,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 boolean hideLocal = false;
 
                 String causality = "";
-                System.out.println("FMUImport: scalar.causality: "
-                        + scalar.causality + " name: " + scalar.name);
                 switch (scalar.causality) {
                 case local:
                     // If an FMU is imported as model exchange, then
@@ -1288,48 +1322,54 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // derivative="index" " appears, then Ptolemy
                     // should read the "index", go to this variable,
                     // and add it to the list of input ports,
+
                     // The default is to hide local scalars
                     hideLocal = true;
                     if (fmiModelDescription.modelExchange) {
                         if (scalar.isState) {
-                            System.out.println("FMUImport: scalar.causality: "
-                                    + scalar.causality + " contains "
-                                    + scalar.name);
-                            // This local scalar is the state variable for a
-                            // scalar
-                            // that has a "<Real derivative=N" element, where N
-                            // is
-                            // the index (starting with 1) of this scalar.
+                            // This local scalar is the state variable
+                            // for a scalar that has a "<Real
+                            // derivative=N" element, where N is the
+                            // index (starting with 1) of this scalar.
                             hideLocal = false;
                         } else {
                             if (scalar.type instanceof FMIRealType) {
                                 if (((FMIRealType) scalar.type).indexState != -1) {
                                     portCount++;
                                     dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                                    causality = "output";
                                 }
                             }
-                            break;
                         }
                     }
+                    // Local variables are outputs do not get hidden.
+                    // portCount is not updated since we want this variable to
+                    // always
+                    // be visible.
+                    causality = "output";
+                    break;
                 case input:
                     portCount++;
+                    hideLocal = false;
                     causality = "input";
                     break;
                 case none:
                     // FIXME: Not sure what to do with causality == none.
-                    continue;
+                    hideLocal = true;
+                    causality = "output";
+                    break;
                 case output:
                     portCount++;
+                    hideLocal = false;
+                    causality = "output";
                     // Override the empty string to provide this parameter.
                     dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                    // Drop through to internal
+                    break;
                 case internal:
                     // Internal variables are outputs that get hidden.
+                    hideLocal = true;
                     causality = "output";
                     break;
                 }
-
                 portMoML.append("  <port name=\""
                         + StringUtilities.sanitizeName(scalar.name)
                         + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
