@@ -37,6 +37,7 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+#set VERBOSE 1
 if {[string compare sdfModel [info procs sdfModel]] != 0} \
         then {
     source [file join $PTII util testsuite models.tcl]
@@ -118,3 +119,45 @@ test FMUImport-1.1 {Test out importFMU} {
     </port>
 </entity>
 }}
+
+
+proc importFMU {fmuFileName} {
+    set e1 [sdfModel 5]
+    set fmuFile [java::call ptolemy.util.FileUtilities nameToFile $fmuFileName [java::null]]
+    set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParmeter]
+    $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
+
+    # Look for FMI-1.0 ME fmus that are named *ME1.fmu
+    set modelExchange false
+    if [regexp {ME1.fmu$} $fmuFile] {
+        set modelExchange true
+    }
+
+    java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 $fmuFileParameter $e1 100.0 100.0 $modelExchange
+
+    set fmuActorFileName [lindex [file split $fmuFileName] end]
+    set fmuActorName [string range $fmuActorFileName 0 [expr {[string length $fmuActorFileName] -5}]]
+    #puts "fmuActorFileName: $fmuActorFileName"
+    #puts "fmuActorName: $fmuActorName"
+    set entityList [$e1 entityList [java::call Class forName ptolemy.actor.lib.fmi.FMUImport]]
+    set fmuActor [java::cast ptolemy.actor.lib.fmi.FMUImport [$entityList get 0]]
+    puts [$fmuActor getFullName]
+    #puts [$e1 exportMoML]
+    #set moml [$fmuActor exportMoML]
+    #return $moml
+}
+
+######################################################################
+####
+#
+
+set i 0
+set files [glob auto/*.fmu]
+foreach file $files {
+    incr i
+    test FMUImport-2.1.$i "test $file" {
+        importFMU $file
+        # Success is not throwing an exception
+        list {}
+    } {{}}
+}
