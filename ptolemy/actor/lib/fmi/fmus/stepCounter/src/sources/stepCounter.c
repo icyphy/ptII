@@ -58,6 +58,7 @@ typedef struct {
     fmiReal relativeTolerance;  // The tolerance specifying accuracy of time of transition.
     const fmiCallbackFunctions *functions;
     fmiString instanceName;
+    fmiBoolean loggingOn;
 } ModelInstance;
 
 // Indexes of instance variables that can be set and gotten by the master.
@@ -104,9 +105,6 @@ int FMIAPI checkFMU(
         return 0;
     }
     if (strcmp(GUID, modelGUID)) {
-        // FIXME: Remove printfs. Replace with logger calls when they work.
-        fprintf(stderr,"fmiInstantiateSlave: Wrong GUID %s. Expected %s.\n", GUID, modelGUID);
-        fflush(stderr);
         functions->logger(NULL, instanceName, fmiError, "error",
                           "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, modelGUID);
         return 0;
@@ -129,12 +127,14 @@ int FMIAPI checkFMU(
 fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance* component = (ModelInstance *) c;
-    // FIXME: Remove printfs. Replace with logger calls. But printf causes segfaults. JNA problem?
-    printf("%s: Invoked fmiDoStep: %g, %g, noSetFMUStatePriorToCurrentPoint: %s\n", component->instanceName,
-           currentCommunicationPoint,
-           communicationStepSize,
-           (noSetFMUStatePriorToCurrentPoint)?"true":"false");
-    fflush(stdout);
+
+    if (component->loggingOn) {
+        component->functions->logger(component, component->instanceName, fmiOK, "message",
+                "Invoked fmiDoStep: %g, %g, noSetFMUStatePriorToCurrentPoint: %s",
+                currentCommunicationPoint,
+                communicationStepSize,
+                (noSetFMUStatePriorToCurrentPoint)?"true":"false");
+    }
     // The following is extremely tricky.
     // If a step is being restarted, then we have to reset the
     // indicator that we have reached the time of the next incrment.
@@ -156,9 +156,11 @@ fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             // Indicate that the last successful time is
             // at the target time.
             component->lastSuccessfulTime = targetTime;
-            printf("%s: Discarding step. endOfStepTime = %g, targetTime = %g, atBreakpoint = %s\n",
-                   component->instanceName, endOfStepTime, targetTime, component->atBreakpoint?"true":"false");
-            fflush(stdout);
+            if (component->loggingOn) {
+                component->functions->logger(component, component->instanceName, fmiOK, "message",
+                        "Discarding step. endOfStepTime = %g, targetTime = %g, atBreakpoint = %s",
+                        endOfStepTime, targetTime, component->atBreakpoint?"true":"false");
+            }
             return fmiDiscard;
         }
         // We are at the target time. Are we
@@ -179,23 +181,29 @@ fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         if (component->atBreakpoint) {
             // Not the first firing. Go ahead an increment.
             component->currentCount++;
-            printf("%s: Incrementing count to %g\n", component->instanceName, component->currentCount);
-            fflush(stdout);
+            if (component->loggingOn) {
+                component->functions->logger(component, component->instanceName, fmiOK, "message",
+                        "Incrementing count to %g", component->currentCount);
+            }
             // Reset the indicator that the increment is needed.
             component->atBreakpoint = fmiFalse;
         } else {
             // This will complete the first firing at the target time.
             // We don't want to increment yet, but we set an indicator
             // that we have had a firing at this time.
-            printf("%s: At time for count to increment, but leaving at %g\n",
-                   component->instanceName, component->currentCount);
-            fflush(stdout);
+            if (component->loggingOn) {
+                component->functions->logger(component, component->instanceName, fmiOK, "message",
+                        "At time for count to increment, but leaving at %g",
+                        component->currentCount);
+            }
             component->atBreakpoint = fmiTrue;
         }
     }
     component->lastSuccessfulTime = endOfStepTime;
-    printf("%s: fmiDoStep succeeded.\n", component->instanceName);
-    fflush(stdout);
+    if (component->loggingOn) {
+        component->functions->logger(component, component->instanceName, fmiOK, "message",
+                "fmiDoStep succeeded.");
+    }
     return fmiOK;
 }
 
@@ -274,19 +282,16 @@ fmiStatus FMIAPI fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t
         } else if (valueReference == CURRENT_COUNT) {
             value[i] = component->currentCount;
         } else {
-            // FIXME: Use logger instead when this works.
-            // component->functions->logger(component, component->instanceName, fmiError, "error",
-            //                                 "fmiGetReal: Value reference out of range: %u.", nvr);
-            printf("%s: fmiGetReal: Value reference out of range: %lu.\n", component->instanceName, nvr);
-            fflush(stdout);
-
+            component->functions->logger(component, component->instanceName, fmiError, "error",
+                    "fmiGetReal: Value reference out of range: %u.", nvr);
             return fmiError;
         }
-        printf("%s: Invoked fmiGetReal on index %d, which has value %g\n",
-               component->instanceName,
-               valueReference,
-               value[i]);
-        fflush(stdout);
+        if (component->loggingOn) {
+            component->functions->logger(component, component->instanceName, fmiOK, "message",
+                    "Invoked fmiGetReal on index %d, which has value %g",
+                    valueReference,
+                    value[i]);
+        }
     }
     return fmiOK;
 }
@@ -304,8 +309,10 @@ fmiStatus FMIAPI fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal
     if (s == fmiLastSuccessfulTime) {
         *value = component->lastSuccessfulTime;
 
-        printf("fmiGetRealStatus returns lastSuccessfulTime is %g\n", *value);
-        fflush(stdout);
+        if (component->loggingOn) {
+            component->functions->logger(component, component->instanceName, fmiOK, "message",
+                    "fmiGetRealStatus returns lastSuccessfulTime is %g", *value);
+        }
 
         return fmiOK;
     }
@@ -344,17 +351,17 @@ fmiComponent FMIAPI fmiInstantiateSlave(
     component->lastSuccessfulTime = -1.0;
     component->atBreakpoint = fmiFalse;
     component->functions = functions;
+    component->loggingOn = loggingOn
 
     // Need to allocate memory and copy the string because JNA stores the string
     // in a temporary buffer that gets GC'd.
     component->instanceName = (char*)functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
     strcpy((char*)component->instanceName, instanceName);
 
-    // FIXME: Use logger instead when this works.
-    // functions->logger(component, instanceName, fmiOK, "message",
-    //                  "Invoked fmiInstantiateSlave for instance %s.", instanceName);
-    printf("%s: Invoked fmiInstantiateSlave.\n", component->instanceName);
-    fflush(stdout);
+    if (component->loggingOn) {
+        functions->logger(component, instanceName, fmiOK, "message",
+                "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+    }
 
     return component;
 }
@@ -376,13 +383,11 @@ fmiStatus FMIAPI fmiInitializeSlave(fmiComponent c,
                              fmiReal tStop) {
 
     ModelInstance* component = (ModelInstance *) c;
-    // FIXME: Use logger instead.
-    // component->functions->logger(c, component->instanceName, fmiOK, "message",
-    //                             "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
-    //                             tStart, stopTimeDefined, tStop);
-    printf("%s: Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g..\n",
-           component->instanceName, tStart, stopTimeDefined, tStop);
-    fflush(stdout);
+    if (component->loggingOn) {
+        component->functions->logger(c, component->instanceName, fmiOK, "message",
+                "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
+                tStart, stopTimeDefined, tStop);
+    }
 
     component->lastSuccessfulTime = tStart;
     component->atBreakpoint = fmiFalse;
@@ -405,22 +410,19 @@ fmiStatus FMIAPI fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
 
-        printf("%s: Setting real value with index %d and value %g.\n", component->instanceName,
-               valueReference, value[i]);
-        fflush(stdout);
+        if (component->loggingOn) {
+            component->functions->logger(component, component->instanceName, fmiOK, "message",
+                    "Setting real value with index %d and value %g.",
+                    valueReference, value[i]);
+        }
 
         if (valueReference == PERIOD) {
             component->period = value[i];
         } else if (valueReference == CURRENT_COUNT) {
             component->currentCount = value[i];
         } else {
-            // FIXME: Use logger instead.
-            // component->functions->logger(component, component->instanceName, fmiError, "error",
-            //            "fmiGetReal: Value reference out of range: %u.", valueReference);
-            printf("%s: fmiGetReal: Value reference out of range: %u.\n",
-                   component->instanceName, valueReference);
-            fflush(stdout);
-
+            component->functions->logger(component, component->instanceName, fmiError, "error",
+                    "fmiGetReal: Value reference out of range: %u.", valueReference);
             return fmiError;
         }
     }
@@ -438,8 +440,10 @@ fmiStatus FMIAPI fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     ModelInstance* component = (ModelInstance *) c;
     ModelInstance* snapshot = (ModelInstance *) FMUstate;
 
-    printf("%s: fmiSetFMUState\n", component->instanceName);
-    fflush(stdout);
+    if (component->loggingOn) {
+        component->functions->logger(component, component->instanceName, fmiOK, "message",
+                "fmiSetFMUState");
+    }
 
     component->currentCount = snapshot->currentCount;
     component->period = snapshot->period;
@@ -460,8 +464,10 @@ fmiStatus FMIAPI fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
 fmiStatus FMIAPI fmiTerminateSlave(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
 
-    printf("%s: fmiTerminateSlave\n", component->instanceName);
-    fflush(stdout);
+    if (component->loggingOn) {
+        component->functions->logger(component, component->instanceName, fmiOK, "message",
+                "fmiTerminateSlave");
+    }
 
     return fmiOK;
 }

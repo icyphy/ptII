@@ -42,6 +42,7 @@ typedef struct {
     fmiReal    *r;
     fmiCallbackFunctions functions;
     fmiString instanceName;
+    fmiBoolean loggingOn;
 } ModelInstance;
 
 // Globally unique ID used to make sure the XML file and the DLL match.
@@ -84,18 +85,23 @@ fmiComponent DllExport fmiInstantiateSlave(fmiString  instanceName, fmiString  G
     component->r[3] = 0.0;    // Flag counting firings at breakpoints.
     component->functions = functions;
     component->instanceName = instanceName;
+    component->loggingOn = loggingOn;
 
-    functions.logger(component, instanceName, fmiOK, "message",
-                     "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+    if (component->loggingOn) {
+        functions.logger(component, instanceName, fmiOK, "message",
+                "Invoked fmiInstantiateSlave for instance %s.", instanceName);
+    }
 
     return component;
 }
 
 fmiStatus DllExport fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTimeDefined, fmiReal tStop) {
     ModelInstance* component = (ModelInstance *) c;
-    (component->functions).logger(c, component->instanceName, fmiOK, "message",
-            "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
-            tStart, stopTimeDefined, tStop);
+    if (component->loggingOn) {
+        (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
+                tStart, stopTimeDefined, tStop);
+    }
     component->r[2] = 0.0;
     component->r[3] = 0.0;
     return fmiOK;
@@ -113,11 +119,15 @@ void DllExport fmiFreeSlaveInstance(fmiComponent c) {
 fmiStatus DllExport fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean newStep) {
     ModelInstance* component = (ModelInstance *) c;
-    printf("%s: Invoked fmiDoStep: %g, %g, newStep: %s\n", component->instanceName,
-           currentCommunicationPoint,
-           communicationStepSize,
-           (newStep)?"true":"false");
-    fflush(stdout);
+
+    if (component->loggingOn) {
+        (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                "Invoked fmiDoStep: %g, %g, newStep: %s",
+                currentCommunicationPoint,
+                communicationStepSize,
+                (newStep)?"true":"false");
+    }
+
     // The following is extremely tricky.
     // Since this FMU is designed to work without rollback,
     // if a step is being restarted, then we have to reset the
@@ -145,9 +155,11 @@ fmiStatus DllExport fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             // Indicate that the last successful time
             // at the target time.
             component->r[2] = targetTime;
-            printf("%s: Discarding step. endOfStepTime = %g, targetTime = %g, component->r[3] = %g\n",
-                   component->instanceName, endOfStepTime, targetTime, component->r[3]);
-            fflush(stdout);
+            if (component->loggingOn) {
+                (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                        "Discarding step. endOfStepTime = %g, targetTime = %g, component->r[3] = %g",
+                        endOfStepTime, targetTime, component->r[3]);
+            }
             return fmiDiscard;
         }
         // We are at the target time. Are we
@@ -156,31 +168,43 @@ fmiStatus DllExport fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         if (component->r[3] > 0.0) {
             // Not the first firing. Go ahead an increment.
             component->r[0]++;
-            printf("%s: Incrementing count to %g\n", component->instanceName, component->r[0]);
-            fflush(stdout);
+
+            if (component->loggingOn) {
+                (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                        "Incrementing count to %g.", component->r[0]);
+            }
+
             // Reset the indicator that the increment is needed.
             component->r[3] = 0.0;
         } else {
             // This will complete the first firing at the target time.
             // We don't want to increment yet, but we set an indicator
             // that we have had a firing at this time.
-            printf("%s: At time for count to increment, but leaving at %g\n",
-                   component->instanceName, component->r[0]);
-            fflush(stdout);
+            if (component->loggingOn) {
+                (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                        "At time for count to increment, but leaving at %g.",
+                        component->r[0]);
+            }
             component->r[3] = 1.0;
         }
     }
     component->r[2] = endOfStepTime;
-    printf("%s: fmiDoStep succeeded.\n", component->instanceName);
-    fflush(stdout);
+
+    if (component->loggingOn) {
+        (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                "fmiDoStep succeeded.");
+    }
     return fmiOK;
 }
 
 fmiStatus DllExport fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
-    printf("%s: Invoked fmiGetReal: %d\n", component->instanceName, (int)nvr);
-    fflush(stdout);
+
+    if (component->loggingOn) {
+        (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                "Invoked fmiGetReal: %d.", (int)nvr);
+    }
 
     if (nvr > 2) {
         component->functions.logger(component, component->instanceName, fmiError, "error",
@@ -189,10 +213,12 @@ fmiStatus DllExport fmiGetReal(fmiComponent c, const fmiValueReference vr[], siz
     }
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
-        printf("%s: Retrieving real value with index %d and value %g.\n", component->instanceName,
-               valueReference, component->r[valueReference]);
-        fflush(stdout);
-            value[i] = component->r[valueReference];
+        if (component->loggingOn) {
+            (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                    "Retrieving real value with index %d and value %g.",
+                    valueReference, component->r[valueReference]);
+        }
+        value[i] = component->r[valueReference];
     }
     return fmiOK;
 }
@@ -210,8 +236,12 @@ fmiStatus DllExport fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiR
 fmiStatus DllExport fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
-    printf("%s: Invoked fmiSetReal: %d ", component->instanceName, (int)nvr);
-    fflush(stdout);
+
+    if (component->loggingOn) {
+        (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                "Invoked fmiSetReal: %d.", (int)nvr);
+    }
+
     if (nvr > 2) {
         component->functions.logger(component, component->instanceName, fmiError, "error",
                                     "fmiGetReal: Value reference out of range: %u.", nvr);
@@ -219,10 +249,12 @@ fmiStatus DllExport fmiSetReal(fmiComponent c, const fmiValueReference vr[], siz
     }
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
-        printf("%s: Setting real value with index %d and value %g.\n", component->instanceName,
-               valueReference, value[i]);
-        fflush(stdout);
-            component->r[valueReference] = value[i];
+        if (component->loggingOn) {
+            (component->functions).logger(c, component->instanceName, fmiOK, "message",
+                    "Setting real value with index %d and value %g.",
+                    valueReference, value[i]);
+        }
+        component->r[valueReference] = value[i];
     }
     return fmiOK;
 }
