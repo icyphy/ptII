@@ -62,10 +62,6 @@ test FMUImport-1.1 {Test out importFMU} {
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 100.0">
     </property>
-    <property name="g" class="ptolemy.data.expr.Parameter" value="9.81">
-    </property>
-    <property name="e" class="ptolemy.data.expr.Parameter" value="0.7">
-    </property>
     <port name="h" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
