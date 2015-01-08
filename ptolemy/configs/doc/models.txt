@@ -383,6 +383,8 @@ $CLASSPATH/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrent
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
+$CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorld.xml
+$CLASSPATH/ptolemy/domains/qss/demo/Lorenz/Lorenz.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
