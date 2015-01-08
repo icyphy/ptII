@@ -240,7 +240,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 + "</svg>\n");
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // parameters ////
 
     /**
@@ -291,8 +291,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     public Parameter visible;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Advance to the specified time.
@@ -2104,8 +2104,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         return inputVariables;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Return true if we are not in the first firing and the sign of some event
@@ -3397,7 +3397,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // protected fields ////
 
     /**
@@ -3455,8 +3455,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     protected FMICallbackFunctions _callbacks;
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * If functions needed for co-simulation are absent, then thrown an
@@ -3882,7 +3882,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         return _outputs;
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // private fields ////
 
     /** Buffer for the derivatives returned by the FMU. */
@@ -4048,8 +4048,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** Boolean indicating whether the director uses an error tolerance. */
     private byte _toleranceControlled;
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner classes ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** A data structure representing an input to the FMU. */
     private static class Input {

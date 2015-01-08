@@ -120,8 +120,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         initFMUParameters.setExpression("true");
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // ports and parameters ////
+    ///////////////////////////////////////////////////////////////////
+////                     ports and parameters                  ////
 
     /**
      * The class name of the QSS solver used for integration. This is a string
@@ -135,8 +135,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     public Parameter initFMUParameters;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return false if any output has been found that not depend directly on an
@@ -371,7 +371,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * If there is a new input, read it and update the slope.
      *
      * @return True if the base class returns true.
-     * @throws IllegalActionException If reading inputs or parameters fails.
+     * @exception IllegalActionException If reading inputs or parameters fails.
      */
     public boolean postfire() throws IllegalActionException {
 
@@ -539,7 +539,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param xdot The (output) vector of time rates of change of the state variables 
      * at <code>time</code>.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public final int evaluateDerivatives(final Time time, final double[] xx,
             final double[] uu, final double[] xdot)
@@ -588,7 +588,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param xx_dot The vector of state derivatives.
      * @param uu_dot The vector of input derivatives.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException If thrown while getting the input directional derivative.
+     * @exception IllegalActionException If thrown while getting the input directional derivative.
      */
     public final double evaluateDirectionalDerivatives(final int idx,
             final double[] xx_dot, final double[] uu_dot)
@@ -887,8 +887,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         context.requestChange(request);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     /**
      * Return true if we are not in the first firing and the sign of some event
      * indicator has changed.
@@ -945,7 +945,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * Handle time, state and step events.
      *
      * @param timeValue The current time.
-     * @throws IllegalActionException If an error occurs when handling events.
+     * @exception IllegalActionException If an error occurs when handling events.
      */
     private void _handleEvents(double timeValue) throws IllegalActionException {
         // Complete the integrator step.
@@ -1020,7 +1020,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param idx The input index.
      * @param uu_dot The input derivative.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException If an error when getting directional derivatives.
+     * @exception IllegalActionException If an error when getting directional derivatives.
      */
     private double _evaluateInputDirectionalDerivatives(final int idx,
             final double[] uu_dot) throws IllegalActionException {
@@ -1060,7 +1060,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param idx The state index.
      * @param xx_dot The state derivative.
      * @return Success (0 for success, else user-defined error code).
-     * @throws IllegalActionException If an error when getting directional derivatives.
+     * @exception IllegalActionException If an error when getting directional derivatives.
      */
     private double _evaluateStateDirectionalDerivatives(final int idx,
             final double[] xx_dot) throws IllegalActionException {
@@ -1500,7 +1500,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /**
      * Get and configure the QSS integrator.
      * 
-     * @throws IllegalActionException if integrator cannot be initialized.
+     * @exception IllegalActionException if integrator cannot be initialized.
      */
     private final void _initializeQSSIntegrator() throws IllegalActionException {
 
@@ -2165,13 +2165,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     }
 
-    // ///////////////////////////////////////////////////////////////////
-    // // protected variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** System dependent line separator. */
     protected final static String LS = System.getProperty("line.separator");
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // private fields ////
 
     /**
@@ -2266,8 +2266,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /** Buffer for previous event indicators. */
     private double[] _eventIndicatorsPrevious;
 
-    // /////////////////////////////////////////////////////////////////
-    // // inner classes ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** A data structure representing an input to the FMU. */
     private static class Input {
