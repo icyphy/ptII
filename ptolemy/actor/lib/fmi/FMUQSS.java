@@ -248,15 +248,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Get current simulation time.
         final Time currentTime = _director.getModelTime();
         if (_debugging) {
-            int currentMicrostep = 1;
-            // FIXME: In _initializeQSSIntegrator, _directorGeneral is set
-            // an exception is thrown if it is not an instance of QSSDirector
-            // which eventually implements SuperdenseTimeDirector.
-            // This, this instanceof and cast is not necessary, though
-            // perhaps there is a chance that _directorGeneral would be null.
-            if (_directorGeneral instanceof SuperdenseTimeDirector) {
-                currentMicrostep = ((SuperdenseTimeDirector) _director).getIndex();
-            }
+            int currentMicrostep =  _director.getIndex();
             _debugToStdOut(String.format(
                     "FMUQSS.fire() on id{%d} at time %s, microstep %d",
                     System.identityHashCode(this), currentTime.toString(),
@@ -421,20 +413,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // FIXME: we check to see whether we should stay in the event mode but do
-        // not
-        // do anything if we have to stay in event mode.
+        // not do anything if we have to stay in event mode.
         // We assume that there is no event and that we can switch to the
-        // continuous mode
+        // continuous mode.
         // We nonetheless warn the user with an exception which does not stop
-        // the simulation
+        // the simulation.
         if (_eventInfo.newDiscreteStatesNeeded != 0) {
             new Exception(
                     "Warning: FIXME: Need to stay in event mode and do an event update.")
                     .printStackTrace();
         }
 
-        // We check whether we should terminate the simulation
-        // If that is the case we call wrapup() and terminate the simulation
+        // We check whether we should terminate the simulation.
+        // If that is the case we call wrapup() and terminate the simulation.
         // If not we enter the continuous mode and do the time integration.
         if (_eventInfo.terminateSimulation != 0) {
             wrapup();
@@ -497,14 +488,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Get current simulation time.
         final Time currentTime = _director.getModelTime();
         if (_debugging) {
-            int currentMicrostep = 1;
-            // FIXME: In _initializeQSSIntegrator, _directorGeneral is set
-            // an exception is thrown if it is not an instance of QSSDirector
-            // which eventually implements SuperdenseTimeDirector.
-            // This, this instanceof and cast is not necessary.
-            if (_directorGeneral instanceof SuperdenseTimeDirector) {
-                currentMicrostep = ((SuperdenseTimeDirector) _director).getIndex();
-            }
+            int currentMicrostep = _director.getIndex();
             _debugToStdOut(String.format(
                     "FMUQSS.postfire() on id{%d} at time %s, microstep %d",
                     System.identityHashCode(this), currentTime.toString(),
