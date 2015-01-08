@@ -32,13 +32,11 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -204,27 +202,31 @@ public class QSSDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
     /** initialize parameters. Set all parameters to their default values.
+     * @throws NameDuplicationException If adding parameters fails.
+     * @throws IllegalActionException If setting parameters fails.
      */
-    private void _initSolverParameters() {
-        _verbose = true;
-        try {
-            errorTolerance = new Parameter(this, "errorTolerance");
-            errorTolerance.setExpression("1e-4");
-            errorTolerance.setTypeEquals(BaseType.DOUBLE);
-            QSSSolver = new StringParameter(this, "QSSSolver");
-            QSSSolver.setExpression("QSS1");
-            QSSSolver.addChoice("QSS1");
-            QSSSolver.addChoice("QSS2Fd");
-            QSSSolver.addChoice("QSS2Pts");
-            QSSSolver.addChoice("QSS2Qts");
-            QSSSolver.addChoice("QSS3Fd");
-            QSSSolver.addChoice("QSS3Pts");
-            QSSSolver.addChoice("LIQSS1");
-            QSSSolver.addChoice("LIQSS2Fd");
-        } catch (KernelException e) {
-            throw new InternalErrorException("Cannot set parameter:\n"
-                    + e.getMessage());
-        }
+    private void _initSolverParameters()
+	    throws IllegalActionException, NameDuplicationException {
+	_verbose = true;	// FIXME: Do we really want this?
+	
+	// The following is probably not needed.
+	// The errors it catches only occur with interaction with
+	// the continuous domain.
+	enforceMicrostepSemantics.setVisibility(Settable.EXPERT);
+	
+	errorTolerance = new Parameter(this, "errorTolerance");
+	errorTolerance.setExpression("1e-4");
+	errorTolerance.setTypeEquals(BaseType.DOUBLE);
+	QSSSolver = new StringParameter(this, "QSSSolver");
+	QSSSolver.setExpression("QSS1");
+	QSSSolver.addChoice("QSS1");
+	QSSSolver.addChoice("QSS2Fd");
+	QSSSolver.addChoice("QSS2Pts");
+	QSSSolver.addChoice("QSS2Qts");
+	QSSSolver.addChoice("QSS3Fd");
+	QSSSolver.addChoice("QSS3Pts");
+	QSSSolver.addChoice("LIQSS1");
+	QSSSolver.addChoice("LIQSS2Fd");
     }
 
     ///////////////////////////////////////////////////////////////////
