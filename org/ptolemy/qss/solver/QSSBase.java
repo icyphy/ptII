@@ -1098,7 +1098,7 @@ public abstract class QSSBase {
             // Perform work defined by specific member of the QSS family.
             predQuantEvtTime = _predictQuantizationEventTimeWorker(stateIdx, _quantEvtTimeMax);
             assert(
-                predQuantEvtTime.compareTo(_cStateMdls[stateIdx].tMdl)==1
+                predQuantEvtTime.compareTo(_cStateMdls[stateIdx].tMdl) > 0
                 ||
                 predQuantEvtTime.compareTo(_quantEvtTimeMax)==0
                 );
@@ -1128,7 +1128,7 @@ public abstract class QSSBase {
         // Run through remaining elements.
         for( int ii=1; ii<_stateCt; ++ii ) {
             final Time newTime = predictQuantizationEventTime(ii);
-            if( newTime.compareTo(predQuantEvtTime) == -1 ) {
+            if( newTime.compareTo(predQuantEvtTime) < 0 ) {
                 predQuantEvtTime = newTime;
             }
         }
