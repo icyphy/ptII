@@ -341,15 +341,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             try {
                 _fmiVersion = Double.parseDouble(fmiVersion.stringValue());
             } catch (NumberFormatException ex) {
-                throw new IllegalActionException(
-                        this,
-                        "Invalid fmiVersion. Required to be of the form n.m, where n and m are natural numbers.");
+                throw new IllegalActionException(this,
+                        "Invalid fmiVersion \"" + fmiVersion
+                        + "\". The version is required to be of the form n.m, where n and m are natural numbers.");
             }
         } else if (attribute == modelExchange) {
-            // If the _fmiModelDescription is null, then this field will be set
-            // when _fmiModelDescription is set, which will happen when the
-            // fmuFile
-            // parameter is changed.
+            // If the _fmiModelDescription is null, then this field
+            // will be set when _fmiModelDescription is set, which
+            // will happen when the fmuFile parameter is changed.
             if (_fmiModelDescription != null) {
                 _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
                         .getToken()).booleanValue();
@@ -1007,6 +1006,32 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /**
+     * Import a FMUFile.
+     *
+     * @param originator The originator of the change request.
+     * @param fmuFileParameter The .fmuFile
+     * @param context The context in which the FMU actor is created.
+     * @param x The x-axis value of the actor to be created.
+     * @param y The y-axis value of the actor to be created.
+     * @param modelExchange True if the FMU should be imported as
+     * a model exchange FMU.
+     * @exception IllegalActionException If there is a problem
+     * instantiating the actor.
+     * @exception IOException If there is a problem parsing the fmu file.
+     */
+    public static void importFMU(Object originator,
+            FileParameter fmuFileParameter, NamedObj context, double x,
+            double y, boolean modelExchange) throws IllegalActionException,
+            IOException {
+
+        // We use a protected method so that we can change
+        // the name of the entity that is instantiated.
+        FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
+                modelExchange, true /*addMaximumStepSize*/,
+                "ptolemy.actor.lib.fmi.FMUImport");
+    }
+
+    /**
      * Initialize this FMU wrapper. For co-simulation, this initializes the FMU.
      * For model exchange, it does not, because for model exchange, the inputs
      * at the start time need to be provided prior to initialization.
@@ -1125,346 +1150,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_debugging) {
             _debugToStdOut("FMIImport.initialize() call completed.");
         }
-    }
-
-    /**
-     * Import a FMUFile.
-     *
-     * @param originator
-     *            The originator of the change request.
-     * @param fmuFileParameter
-     *            The .fmuFile
-     * @param context
-     *            The context in which the FMU actor is created.
-     * @param x
-     *            The x-axis value of the actor to be created.
-     * @param y
-     *            The y-axis value of the actor to be created.
-     * @param modelExchange
-     *            If true, import for model exchange (vs. co-simulation).
-     * @exception IllegalActionException
-     *                If there is a problem instantiating the actor.
-     * @exception IOException
-     *                If there is a problem parsing the fmu file.
-     */
-    public static void importFMU(Object originator,
-            FileParameter fmuFileParameter, NamedObj context, double x,
-            double y, boolean modelExchange) throws IllegalActionException,
-            IOException {
-
-        File fmuFile = fmuFileParameter.asFile();
-
-        String fmuFileName = fmuFile.getCanonicalPath();
-
-        // This method is called by the gui to import a fmu file and
-        // create the actor.
-
-        // The primary issue is that we need to define the ports early
-        // on and handle changes to the ports.
-
-        // Calling parseFMUFile does not load the shared library.
-        // Those are loaded upon the first attempt to use them.
-        // This is important because we want to be able to view
-        // a model that references an FMU even if the FMU does not
-        // support the current platform.
-        FMIModelDescription fmiModelDescription = FMUFile
-                .parseFMUFile(fmuFileName);
-
-        if (modelExchange) {
-            fmiModelDescription.modelExchange = true;
-        }
-
-        // FIXME: Use URLs, not files so that we can work from JarZip files.
-
-        // If a location is given as a URL, construct MoML to
-        // specify a "source".
-        String source = "";
-        // FIXME: not sure about this.
-        if (fmuFileName.startsWith("http://")) {
-            source = " source=\"" + fmuFileName.trim() + "\"";
-        }
-
-        String rootName = new File(fmuFileName).getName();
-        int index = rootName.lastIndexOf('.');
-        if (index != -1) {
-            rootName = rootName.substring(0, index);
-        }
-
-        // Instantiate ports and parameters.
-        int maximumNumberOfPortsToDisplay = 20;
-        int modelVariablesLength = fmiModelDescription.modelVariables.size();
-        String hide = "  <property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\"/>\n";
-
-        // Include the following in a property to make it not show up
-        // in the parameter editing dialog.
-        String hiddenStyle = "       <property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"/>\n";
-
-        // The following parameter is provided to output ports to
-        // allow overriding the dependencies in the FMU xml file.
-        String dependency = "";
-        String showName = "    <property name=\"_showName\" class=\"ptolemy.data.expr.SingletonParameter\""
-                + " value=\"true\">\n" + hiddenStyle + "    </property>";
-        if (modelVariablesLength > maximumNumberOfPortsToDisplay) {
-            MessageHandler.message("Importing \"" + fmuFileName
-                    + "\" resulted in an actor with " + modelVariablesLength
-                    + " variables.  To show as ports, right click and "
-                    + "select Customize -> Ports.");
-        }
-
-        int portCount = 0;
-        StringBuffer parameterMoML = new StringBuffer();
-        StringBuffer portMoML = new StringBuffer();
-        for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            if (scalar.variability == FMIScalarVariable.Variability.parameter
-                    || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
-                    || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
-            ) {
-                // Parameters
-                // Parameter parameter = new Parameter(this, scalar.name);
-                // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
-                // // Prevent exporting this to MoML unless it has
-                // // been overridden.
-                // parameter.setDerivedLevel(1);
-                switch (scalar.causality) {
-                case output:
-                    // "fixed" and "tunable" outputs will be available as ports.
-                    // FIXME: Need to see whether it is possible to export
-                    // the unit and the description of a variable and make it
-                    // accessible
-                    // at the actor level.
-                    portCount++;
-                    String causality = "output";
-                    boolean hideLocal = false;
-                    portMoML.append("  <port name=\""
-                            + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                            + "    <property name=\""
-                            + causality
-                            + "\"/>\n"
-                            // We set the display name to handle scalars with
-                            // names
-                            // that have periods
-                            // or other characters.
-                            + "    <display name=\""
-                            + StringUtilities.escapeForXML(scalar.name)
-                            + "\"/>\n" + "    <property name=\"_type\" "
-                            + "class=\"ptolemy.actor.TypeAttribute\" value=\""
-                            + _fmiType2PtolemyType(scalar.type) + "\">\n"
-                            + hiddenStyle + "    </property>" + dependency
-                            + showName
-                            // Hide the port.
-                            + (hideLocal ? hide : "") + "  </port>\n");
-                    break;
-                case input:
-                    // The specification says on page 49 that fixed inputs have
-                    // the same properties as
-                    // fixed parameters. We will for now ignore inputs whose
-                    // Variability are
-                    // "fixed" or tunable.
-                    // portCount++;
-                    // parameterMoML
-                    // .append("  <property name=\""
-                    // + StringUtilities.sanitizeName(scalar.name)
-                    // +
-                    // "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
-                    // + scalar.type + "\"/>\n");
-                    break;
-                case local:
-                    break;
-                case internal:
-                    break;
-                case calculatedParameter:
-                    break;
-                case parameter:
-                    // Make "fixed" and "tunable" parameters accessible from
-                    // actor.
-                    parameterMoML
-                            .append("  <property name=\""
-                                    + StringUtilities.sanitizeName(scalar.name)
-                                    + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                                    + scalar.type + "\" " + "/>\n");
-                    break;
-                case none:
-                    break;
-
-                }
-            } else if (scalar.variability == FMIScalarVariable.Variability.constant) {
-                // Variables with the variability constant will be skipped.
-                continue;
-            } else {
-
-                // Ports
-                // // FIXME: All output ports?
-                // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
-                // true);
-                // port.setDerivedLevel(1);
-                // // FIXME: set the type
-                // port.setTypeEquals(BaseType.DOUBLE);
-
-                // If the fmu is model exchange and the name of the scalar is
-                // in the list of continuousStates, then we *don't* hide the
-                // scalar,
-                // Otherwise, we do hide the scalar.
-                boolean hideLocal = false;
-
-                String causality = "";
-                switch (scalar.causality) {
-                case local:
-                    // If an FMU is imported as model exchange, then
-                    // Ptolemy should automatically add an input port
-                    // for all state variables. This will allow users
-                    // to connect them to the output of an integrator
-                    // actor. The missing piece is that in
-                    // modelDescription.xml, whenever the entry " Real
-                    // derivative="index" " appears, then Ptolemy
-                    // should read the "index", go to this variable,
-                    // and add it to the list of input ports,
-
-                    // The default is to hide local scalars
-                    hideLocal = true;
-                    if (fmiModelDescription.modelExchange) {
-                        if (scalar.isState) {
-                            // This local scalar is the state variable
-                            // for a scalar that has a "<Real
-                            // derivative=N" element, where N is the
-                            // index (starting with 1) of this scalar.
-                            hideLocal = false;
-                        } else {
-                            if (scalar.type instanceof FMIRealType) {
-                                if (((FMIRealType) scalar.type).indexState != -1) {
-                                    portCount++;
-                                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                                }
-                            }
-                        }
-                    }
-                    // Local variables are outputs do not get hidden.
-                    // portCount is not updated since we want this variable to
-                    // always
-                    // be visible.
-                    causality = "output";
-                    break;
-                case input:
-                    portCount++;
-                    hideLocal = false;
-                    causality = "input";
-                    break;
-                case none:
-                    // FIXME: Not sure what to do with causality == none.
-                    hideLocal = true;
-                    causality = "output";
-                    break;
-                case output:
-                    portCount++;
-                    hideLocal = false;
-                    causality = "output";
-                    // Override the empty string to provide this parameter.
-                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                    break;
-                case internal:
-                    // Internal variables are outputs that get hidden.
-                    hideLocal = true;
-                    causality = "output";
-                    break;
-                }
-                portMoML.append("  <port name=\""
-                        + StringUtilities.sanitizeName(scalar.name)
-                        + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                        + "    <property name=\""
-                        + causality
-                        + "\"/>\n"
-                        // We set the display name to handle scalars with names
-                        // that have periods
-                        // or other characters.
-                        + "    <display name=\""
-                        + StringUtilities.escapeForXML(scalar.name) + "\"/>\n"
-                        + "    <property name=\"_type\" "
-                        + "class=\"ptolemy.actor.TypeAttribute\" value=\""
-                        + _fmiType2PtolemyType(scalar.type) + "\">\n"
-                        + hiddenStyle
-                        + "    </property>"
-                        + dependency
-                        + showName
-                        // Hide the port if we have lots of ports or it is
-                        // internal.
-                        + (portCount > maximumNumberOfPortsToDisplay
-                                || scalar.causality == Causality.internal
-                                || hideLocal // FMI-2.0rc1
-                        ? hide : "") + "  </port>\n");
-            }
-        }
-
-        // In FMI-1.0, the number of these ports is determined by the
-        // numberOfContinuousStates element in modelDescription.xml
-        // Note that numberOfContinuousStates has been removed between FMI-1.0 and 2.0.
-        // because the information can be deduced from the xml file in FMI 2.0
-        // by looking at the Derivatives element.
-        if (modelExchange) {
-
-            // Provide a parameter that indicates that this is a model exchange
-            // FMU.
-            parameterMoML
-                    .append("  <property name=\"modelExchange\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
-
-            // Provide a parameter for a forward Euler maximum step size.
-            parameterMoML
-                    .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
-
-            /*
-             * If we want to use model exchange FMUs with the Continuous
-             * director, then we need to provide the derivatives as output ports
-             * and the continuousStates as input ports, as follows. This is very
-             * tricky, however. The FMU needs to set the states of these
-             * integrators after initialization and after event updates. It
-             * seems more straightforward to just include a solver here, so we
-             * do that for now. if (fmiModelDescription.numberOfContinuousStates
-             * > 0) { // FIXME: What if the names "continuousStates" and
-             * "derivatives" collide with a pre-defined port? // FIXME: Set the
-             * width for the port portMoML.append(
-             * "   <port name=\"continuousStates\" class=\"ptolemy.actor.TypedIOPort\">\n"
-             * + "    <property name=\"input\"/>\n" +
-             * "    <property name=\"multiport\"/>\n" +
-             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
-             * + showName + "   </port>\n"); portMoML.append(
-             * "   <port name=\"derivatives\" class=\"ptolemy.actor.TypedIOPort\">\n"
-             * + "    <property name=\"output\"/>\n" +
-             * "    <property name=\"multiport\"/>\n" +
-             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
-             * + showName + "   </port>\n"); } if
-             * (fmiModelDescription.numberOfEventIndicators > 0) { // FIXME:
-             * What if the names "eventIndicator" and "eventUpdate" collide with
-             * a pre-defined port? // FIXME: Set the width for the port
-             * portMoML.append(
-             * "   <port name=\"eventUpdate\" class=\"ptolemy.actor.TypedIOPort\">\n"
-             * + "    <property name=\"input\"/>\n" +
-             * "    <property name=\"multiport\"/>\n" +
-             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
-             * + showName + "   </port>\n"); portMoML.append(
-             * "   <port name=\"eventIndicator\" class=\"ptolemy.actor.TypedIOPort\">\n"
-             * + "    <property name=\"output\"/>\n" +
-             * "    <property name=\"multiport\"/>\n" +
-             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
-             * + showName + "   </port>\n"); }
-             */
-        }
-
-        // FIXME: Get Undo/Redo working.
-
-        // Use the "auto" namespace group so that name collisions
-        // are automatically avoided by appending a suffix to the name.
-        String moml = "<group name=\"auto\">\n" + " <entity name=\"" + rootName
-                + "\" class=\"ptolemy.actor.lib.fmi.FMUImport\"" + source
-                + ">\n" + "  <property name=\"_location\" "
-                + "class=\"ptolemy.kernel.util.Location\" value=\"" + x + ", "
-                + y + "\">\n" + "  </property>\n"
-                + "  <property name=\"fmuFile\""
-                + "class=\"ptolemy.data.expr.FileParameter\"" + "value=\""
-                + fmuFileParameter.getExpression() + "\">\n"
-                + "  </property>\n" + parameterMoML + portMoML
-                + " </entity>\n</group>\n";
-        MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
-                moml);
-        context.requestChange(request);
     }
 
     /**
@@ -2023,8 +1708,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /**
      * Terminate and free the slave fmu.
      *
-     * @exception IllegalActionException
-     *                If the slave fmu cannot be terminated or freed.
+     * @exception IllegalActionException If the slave fmu cannot be
+     * terminated or freed.
      */
     @Override
     public void wrapup() throws IllegalActionException {
@@ -2103,6 +1788,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Determine if the model description is acceptable.  For example
+     *  a derived class that imports FMI-2.0 ME FMUs might throw an exception.
+     *  @param fmiModelDescription The description of the model to be checked.
+     *  @return true if the model description is acceptable.  In this
+     *  base class, true is always returned.
+     *  @exception IOException If the model description is not acceptable.
+     */
+    protected static boolean _acceptFMU(FMIModelDescription fmiModelDescription)
+            throws IOException {
+        return true;
+    }
 
     /**
      * Return true if we are not in the first firing and the sign of some event
@@ -2980,6 +2677,353 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /**
+     * Import a FMUFile.
+     *
+     * @param originator The originator of the change request.
+     * @param fmuFileParameter The .fmuFile
+     * @param context The context in which the FMU actor is created.
+     * @param x The x-axis value of the actor to be created.
+     * @param y The y-axis value of the actor to be created.
+     * @param addMaximumStepSizeParameter True if a parameter named
+     * "maximumStepSize" should be added.
+     * @param actorClassName The class name of the Ptolemy actor
+     * to be instantiated, for example "ptolemy.actor.lib.fmi.FMUImport".
+     * @exception IllegalActionException If there is a problem
+     * instantiating the actor.
+     * @exception IOException If there is a problem parsing the fmu file.
+     */
+    public static void _importFMU(Object originator,
+            FileParameter fmuFileParameter, NamedObj context, double x,
+            double y, boolean modelExchange,
+            boolean addMaximumStepSizeParameter,
+            String actorClassName)
+            throws IllegalActionException, IOException {
+
+        File fmuFile = fmuFileParameter.asFile();
+
+        String fmuFileName = fmuFile.getCanonicalPath();
+
+        // This method is called by the gui to import a fmu file and
+        // create the actor.
+
+        // The primary issue is that we need to define the ports early
+        // on and handle changes to the ports.
+
+        // Calling parseFMUFile does not load the shared library.
+        // Those are loaded upon the first attempt to use them.
+        // This is important because we want to be able to view
+        // a model that references an FMU even if the FMU does not
+        // support the current platform.
+        FMIModelDescription fmiModelDescription = FMUFile
+                .parseFMUFile(fmuFileName);
+
+        if (modelExchange) {
+            fmiModelDescription.modelExchange = true;
+        }
+
+        // Check that the modelDescription is suitable.
+        // For example FMUQSS only imports FMI-2.0 ME FMUs and
+        // will throw an exception in FMUQSS._acceptFMU().
+        if (!_acceptFMU(fmiModelDescription)) {
+            return;
+        }
+
+        // FIXME: Use URLs, not files so that we can work from JarZip files.
+
+        // If a location is given as a URL, construct MoML to
+        // specify a "source".
+        String source = "";
+        // FIXME: not sure about this.
+        if (fmuFileName.startsWith("http://")) {
+            source = " source=\"" + fmuFileName.trim() + "\"";
+        }
+
+        String rootName = new File(fmuFileName).getName();
+        int index = rootName.lastIndexOf('.');
+        if (index != -1) {
+            rootName = rootName.substring(0, index);
+        }
+
+        // Instantiate ports and parameters.
+        int maximumNumberOfPortsToDisplay = 20;
+        int modelVariablesLength = fmiModelDescription.modelVariables.size();
+        String hide = "  <property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\"/>\n";
+
+        // Include the following in a property to make it not show up
+        // in the parameter editing dialog.
+        String hiddenStyle = "       <property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"/>\n";
+
+        // The following parameter is provided to output ports to
+        // allow overriding the dependencies in the FMU xml file.
+        String dependency = "";
+        String showName = "    <property name=\"_showName\" class=\"ptolemy.data.expr.SingletonParameter\""
+                + " value=\"true\">\n" + hiddenStyle + "    </property>";
+        if (modelVariablesLength > maximumNumberOfPortsToDisplay) {
+            MessageHandler.message("Importing \"" + fmuFileName
+                    + "\" resulted in an actor with " + modelVariablesLength
+                    + " variables.  To show as ports, right click and "
+                    + "select Customize -> Ports.");
+        }
+
+        int portCount = 0;
+        StringBuffer parameterMoML = new StringBuffer();
+        StringBuffer portMoML = new StringBuffer();
+        for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+            if (scalar.variability == FMIScalarVariable.Variability.parameter
+                    || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
+                    || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
+            ) {
+                // Parameters
+                // Parameter parameter = new Parameter(this, scalar.name);
+                // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
+                // // Prevent exporting this to MoML unless it has
+                // // been overridden.
+                // parameter.setDerivedLevel(1);
+                switch (scalar.causality) {
+                case output:
+                    // "fixed" and "tunable" outputs will be available as ports.
+                    // FIXME: Need to see whether it is possible to export
+                    // the unit and the description of a variable and make it
+                    // accessible
+                    // at the actor level.
+                    portCount++;
+                    String causality = "output";
+                    boolean hideLocal = false;
+                    portMoML.append("  <port name=\""
+                            + StringUtilities.sanitizeName(scalar.name)
+                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                            + "    <property name=\""
+                            + causality
+                            + "\"/>\n"
+                            // We set the display name to handle scalars with
+                            // names
+                            // that have periods
+                            // or other characters.
+                            + "    <display name=\""
+                            + StringUtilities.escapeForXML(scalar.name)
+                            + "\"/>\n" + "    <property name=\"_type\" "
+                            + "class=\"ptolemy.actor.TypeAttribute\" value=\""
+                            + _fmiType2PtolemyType(scalar.type) + "\">\n"
+                            + hiddenStyle + "    </property>" + dependency
+                            + showName
+                            // Hide the port.
+                            + (hideLocal ? hide : "") + "  </port>\n");
+                    break;
+                case input:
+                    // The specification says on page 49 that fixed inputs have
+                    // the same properties as
+                    // fixed parameters. We will for now ignore inputs whose
+                    // Variability are
+                    // "fixed" or tunable.
+                    // portCount++;
+                    // parameterMoML
+                    // .append("  <property name=\""
+                    // + StringUtilities.sanitizeName(scalar.name)
+                    // +
+                    // "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
+                    // + scalar.type + "\"/>\n");
+                    break;
+                case local:
+                    break;
+                case internal:
+                    break;
+                case calculatedParameter:
+                    break;
+                case parameter:
+                    // Make "fixed" and "tunable" parameters accessible from
+                    // actor.
+                    parameterMoML
+                            .append("  <property name=\""
+                                    + StringUtilities.sanitizeName(scalar.name)
+                                    + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
+                                    + scalar.type + "\" " + "/>\n");
+                    break;
+                case none:
+                    break;
+
+                }
+            } else if (scalar.variability == FMIScalarVariable.Variability.constant) {
+                // Variables with the variability constant will be skipped.
+                continue;
+            } else {
+
+                // Ports
+                // // FIXME: All output ports?
+                // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
+                // true);
+                // port.setDerivedLevel(1);
+                // // FIXME: set the type
+                // port.setTypeEquals(BaseType.DOUBLE);
+
+                // If the fmu is model exchange and the name of the scalar is
+                // in the list of continuousStates, then we *don't* hide the
+                // scalar,
+                // Otherwise, we do hide the scalar.
+                boolean hideLocal = false;
+
+                String causality = "";
+                switch (scalar.causality) {
+                case local:
+                    // If an FMU is imported as model exchange, then
+                    // Ptolemy should automatically add an input port
+                    // for all state variables. This will allow users
+                    // to connect them to the output of an integrator
+                    // actor. The missing piece is that in
+                    // modelDescription.xml, whenever the entry " Real
+                    // derivative="index" " appears, then Ptolemy
+                    // should read the "index", go to this variable,
+                    // and add it to the list of input ports,
+
+                    // The default is to hide local scalars
+                    hideLocal = true;
+                    if (fmiModelDescription.modelExchange) {
+                        if (scalar.isState) {
+                            // This local scalar is the state variable
+                            // for a scalar that has a "<Real
+                            // derivative=N" element, where N is the
+                            // index (starting with 1) of this scalar.
+                            hideLocal = false;
+                        } else {
+                            if (scalar.type instanceof FMIRealType) {
+                                if (((FMIRealType) scalar.type).indexState != -1) {
+                                    portCount++;
+                                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                                }
+                            }
+                        }
+                    }
+                    // Local variables are outputs do not get hidden.
+                    // portCount is not updated since we want this variable to
+                    // always
+                    // be visible.
+                    causality = "output";
+                    break;
+                case input:
+                    portCount++;
+                    hideLocal = false;
+                    causality = "input";
+                    break;
+                case none:
+                    // FIXME: Not sure what to do with causality == none.
+                    hideLocal = true;
+                    causality = "output";
+                    break;
+                case output:
+                    portCount++;
+                    hideLocal = false;
+                    causality = "output";
+                    // Override the empty string to provide this parameter.
+                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                    break;
+                case internal:
+                    // Internal variables are outputs that get hidden.
+                    hideLocal = true;
+                    causality = "output";
+                    break;
+                }
+                portMoML.append("  <port name=\""
+                        + StringUtilities.sanitizeName(scalar.name)
+                        + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
+                        + "    <property name=\""
+                        + causality
+                        + "\"/>\n"
+                        // We set the display name to handle scalars with names
+                        // that have periods
+                        // or other characters.
+                        + "    <display name=\""
+                        + StringUtilities.escapeForXML(scalar.name) + "\"/>\n"
+                        + "    <property name=\"_type\" "
+                        + "class=\"ptolemy.actor.TypeAttribute\" value=\""
+                        + _fmiType2PtolemyType(scalar.type) + "\">\n"
+                        + hiddenStyle
+                        + "    </property>"
+                        + dependency
+                        + showName
+                        // Hide the port if we have lots of ports or it is
+                        // internal.
+                        + (portCount > maximumNumberOfPortsToDisplay
+                                || scalar.causality == Causality.internal
+                                || hideLocal // FMI-2.0rc1
+                        ? hide : "") + "  </port>\n");
+            }
+        }
+
+        // In FMI-1.0, the number of these ports is determined by the
+        // numberOfContinuousStates element in modelDescription.xml
+        // Note that numberOfContinuousStates has been removed between FMI-1.0 and 2.0.
+        // because the information can be deduced from the xml file in FMI 2.0
+        // by looking at the Derivatives element.
+        if (modelExchange) {
+
+            // Provide a parameter that indicates that this is a model exchange
+            // FMU.
+            parameterMoML
+                    .append("  <property name=\"modelExchange\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
+
+            if (addMaximumStepSizeParameter) {
+                // Provide a parameter for a forward Euler maximum step size.
+                parameterMoML
+                    .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
+            }
+
+            /*
+             * If we want to use model exchange FMUs with the Continuous
+             * director, then we need to provide the derivatives as output ports
+             * and the continuousStates as input ports, as follows. This is very
+             * tricky, however. The FMU needs to set the states of these
+             * integrators after initialization and after event updates. It
+             * seems more straightforward to just include a solver here, so we
+             * do that for now. if (fmiModelDescription.numberOfContinuousStates
+             * > 0) { // FIXME: What if the names "continuousStates" and
+             * "derivatives" collide with a pre-defined port? // FIXME: Set the
+             * width for the port portMoML.append(
+             * "   <port name=\"continuousStates\" class=\"ptolemy.actor.TypedIOPort\">\n"
+             * + "    <property name=\"input\"/>\n" +
+             * "    <property name=\"multiport\"/>\n" +
+             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
+             * + showName + "   </port>\n"); portMoML.append(
+             * "   <port name=\"derivatives\" class=\"ptolemy.actor.TypedIOPort\">\n"
+             * + "    <property name=\"output\"/>\n" +
+             * "    <property name=\"multiport\"/>\n" +
+             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
+             * + showName + "   </port>\n"); } if
+             * (fmiModelDescription.numberOfEventIndicators > 0) { // FIXME:
+             * What if the names "eventIndicator" and "eventUpdate" collide with
+             * a pre-defined port? // FIXME: Set the width for the port
+             * portMoML.append(
+             * "   <port name=\"eventUpdate\" class=\"ptolemy.actor.TypedIOPort\">\n"
+             * + "    <property name=\"input\"/>\n" +
+             * "    <property name=\"multiport\"/>\n" +
+             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
+             * + showName + "   </port>\n"); portMoML.append(
+             * "   <port name=\"eventIndicator\" class=\"ptolemy.actor.TypedIOPort\">\n"
+             * + "    <property name=\"output\"/>\n" +
+             * "    <property name=\"multiport\"/>\n" +
+             * "    <property name=\"_type\" class=\"ptolemy.actor.TypeAttribute\" value=\"double\"/>\n"
+             * + showName + "   </port>\n"); }
+             */
+        }
+
+        // FIXME: Get Undo/Redo working.
+
+        // Use the "auto" namespace group so that name collisions
+        // are automatically avoided by appending a suffix to the name.
+        String moml = "<group name=\"auto\">\n" + " <entity name=\"" + rootName
+                + "\" class=\"" + actorClassName + "\"" + source
+                + ">\n" + "  <property name=\"_location\" "
+                + "class=\"ptolemy.kernel.util.Location\" value=\"" + x + ", "
+                + y + "\">\n" + "  </property>\n"
+                + "  <property name=\"fmuFile\""
+                + "class=\"ptolemy.data.expr.FileParameter\"" + "value=\""
+                + fmuFileParameter.getExpression() + "\">\n"
+                + "  </property>\n" + parameterMoML + portMoML
+                + " </entity>\n</group>\n";
+        MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
+                moml);
+        context.requestChange(request);
+    }
+
+    /**
      * Record the current FMU state. For model exchange, this copies the FMU
      * state into the variable _state using fmiGetContinuousStates(). For
      * co-simulation, if the canGetAndSetFMUstate capability flag for the FMU is
@@ -3277,11 +3321,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             }
 
-            // Specify whether the FMU is for model exchange or co-simulation.
-            // This gets determined when the FMU is initially imported.
-            _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
-                    .getToken()).booleanValue();
-
             if (_fmiModelDescription.fmiVersion != null) {
                 fmiVersion.setExpression(_fmiModelDescription.fmiVersion);
                 // Mysteriously, nondeterministically, the above doesn't always
@@ -3291,6 +3330,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // Anyway, force it here, because if we have the wrong version,
                 // we will get seg faults.
                 attributeChanged(fmiVersion);
+            }
+
+            // An FMI-1.0 FMU may have the same modelDescription.xml file for
+            // both CS and ME.  (See the FMI-1.0 fmus in FMUSDK-2.0.3.)  So,
+            // this value is only used for FMI-1.0 fmus.
+            if (_fmiVersion < 2.0) {
+                // Specify whether the FMU is for model exchange or co-simulation.
+                // This gets determined when the FMU is initially imported.
+                _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
+                        .getToken()).booleanValue();
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,

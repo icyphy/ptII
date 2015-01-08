@@ -57,6 +57,7 @@ import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.Initializable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -76,6 +77,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -104,11 +106,11 @@ import ptolemy.util.StringUtilities;
  * package of QSS solvers can be found in org.ptolemy.qss. This actor extends
  * from FMUImport.java and should be used along with the QSSDirector.
  *
- * @author Thierry S. Nouidui, David M. Lorenzetti, Michael Wetter
+ * @author Thierry S. Nouidui, David M. Lorenzetti, Michael Wetter, Christopher Brooks.
  * @version $Id$
- * @since Ptolemy II 10.0
- * @Pt.ProposedRating
- * @Pt.AcceptedRating
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUQSS extends FMUImport implements DerivativeFunction {
 
@@ -128,6 +130,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         initFMUParameters = new Parameter(this, "initFMUParameters");
         initFMUParameters.setTypeEquals(BaseType.BOOLEAN);
         initFMUParameters.setExpression("true");
+
+        // The modelExchange parameter in the parent class is marked
+        // as expert, which means it is not usually visible to the
+        // user. QSS FMUs are always model exchange, so we change the
+        // visibility to none just to be sure no one tries to edit it.
+        // We can use the parent attributeChanged method.
+        modelExchange.setExpression("true");
+        modelExchange.setVisibility(Settable.NONE);
+
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"7\" "
+                + "style=\"font-size:12\">\n" + "FMUQSS" + "</text>\n"
+                + "</svg>\n");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,6 +155,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * a string that defaults to "QSS1". Solvers are all required to
      * be in package "org.ptolemy.qss".
      */
+    // FIXME: Is this used?  Can it be removed?  It is not set anywhere
     public StringParameter QSSSolver;
 
     /**
@@ -148,51 +166,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /**
-     * If the specified attribute is <i>fmuFile</i>, then unzip the
-     * file and load in the .xml file, creating and deleting
-     * parameters as necessary.
-     * 
-     * @param attribute The attribute that has changed.
-     * @exception IllegalActionException If the specified attribute is
-     * <i>fmuFile</i> and the file cannot be opened or there is a
-     * problem creating or destroying the parameters listed in this
-     * file.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        
-        // This function needed to be overriden as we are not using
-        // any checkbox to identify whether the imported FMU is for
-        // model exchange. See FMUImport.java on the Ptolemy trunk.
-
-        // FIXME: the modelExchange parameter is only necessary for FMI-1.0.
-        // Update FMUImport to better handle this
-        if (attribute == fmuFile) {
-            try {
-                _updateParameters();
-            } catch (NameDuplicationException e) {
-                // This should not occur because the file is not editable.
-                throw new IllegalActionException(this, e, "Name duplication");
-            }
-        } else if (attribute == fmiVersion) {
-            try {
-                _fmiVersion = Double.parseDouble(fmiVersion.stringValue());
-            } catch (NumberFormatException ex) {
-                throw new IllegalActionException(
-                        this,
-                        "Invalid fmiVersion. Required to be of the form n.m, where n and m are natural numbers.");
-            }
-        }
-        // FIXME: - Need to find a better to catch exception if we don't have
-        // FMUs for model exchange
-        // Set the boolean for model exchange automatically to true.
-        // The assumption is that we always have FMU for model exchange
-        if (_fmiModelDescription != null) {
-            _fmiModelDescription.modelExchange = true;
-        }
-    }
 
     /**
      * Evaluate the derivative function.
@@ -208,6 +181,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     public final int evaluateDerivatives(final Time time, final double[] xx,
             final double[] uu, final double[] xdot)
             throws IllegalActionException {
+
+        // FIXME: If xx, uu, and xdot are common ways to refer to these values,
+        // then we can use them, but stateVariables, inputVariables and and
+        // stateVariableDerivatives are more descriptive.
 
         // Check assumptions.
         assert (getStateCount() > 0);
@@ -242,7 +219,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _fmiGetDerivatives(getStateCount(), xdot);
 
         return 0;
-
     }
 
     /**
@@ -279,6 +255,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @exception IllegalActionException If FMU indicates a failure.
      */
     public void fire() throws IllegalActionException {
+        // By design, this method does not call super.fire(), because
+        // this class uses a different algorithm that is specific
+        // to QSS.  However, we need to do what AtomicActor.fire()
+        // does:
+        if (_debugging) {
+            _debug("Called fire()");
+        }
 
         // Get current simulation time.
         final Time currentTime = _director.getModelTime();
@@ -287,7 +270,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // FIXME: In _initializeQSSIntegrator, _directorGeneral is set
             // an exception is thrown if it is not an instance of QSSDirector
             // which eventually implements SuperdenseTimeDirector.
-            // This, this instanceof and cast is not necessary.
+            // This, this instanceof and cast is not necessary, though
+            // perhaps there is a chance that _directorGeneral would be null.
             if (_directorGeneral instanceof SuperdenseTimeDirector) {
                 currentMicrostep = ((SuperdenseTimeDirector) _director).getIndex();
             }
@@ -320,12 +304,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
+     * Return the count of input variables.
+     *
+     * @return The number of input variables.
+     */
+    public final int getInputVariableCount() {
+        return _inputs.size();
+    }
+
+    /**
      * Return the count of state variables.
      * 
      * @return The number of state variables.
      */
     public final int getStateCount() {
-        return (_fmiModelDescription.numberOfContinuousStates);
+        return _fmiModelDescription.numberOfContinuousStates;
     }
 
     /**
@@ -335,15 +328,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     public final boolean getProvidesDirectionalDerivatives() {
         return _fmiModelDescription.providesDirectionalDerivative;
-    }
-
-    /**
-     * Return the count of input variables.
-     *
-     * @return The number of input variables.
-     */
-    public final int getInputVariableCount() {
-        return _inputs.size();
     }
 
     /**
@@ -360,281 +344,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     public static void importFMU(Object originator,
             FileParameter fmuFileParameter, NamedObj context, double x, double y)
             throws IllegalActionException, IOException {
-
-        // FIXME: Refactor the parent class and avoid code duplication.
-        
-        String fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
-
-        // This method is called by the gui to import a fmu file and
-        // create the actor.
-
-        // The primary issue is that we need to define the ports early
-        // on and handle changes to the ports.
-
-        // Calling parseFMUFile does not load the shared library.
-        // Those are loaded upon the first attempt to use them.
-        // This is important because we want to be able to view
-        // a model that references an FMU even if the FMU does not
-        // support the current platform.
-        FMIModelDescription fmiModelDescription = FMUFile
-                .parseFMUFile(fmuFileName);
-
-        // Check if the version of the FMU is higher than 2.0
-        if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
-            final String em = ": The FMI version of this FMU is: "
-                    + fmiModelDescription.fmiVersion
-                    + "which is not supported." + _LS
-                    + "QSS currently only supports FMI version 2.0 RC1.0.";
-            throw new IllegalActionException(em);
-        }
-
-        // Check if the FMU is for model exchange.
-        if (fmiModelDescription.modelExchangeCapabilities == null) {
-            final String em = ": There is no ModelExchange attribute in the model description"
-                    + " file of This FMU to indicate whether it is for model exchange or not."
-                    + _LS
-                    + "QSS currently only supports FMU for model exchange.";
-            throw new IllegalActionException(em);
-        }
-
-        // Check if the FMU has at least one state variable.
-        // FIXME: We need a better check to know whether this FMU is for model
-        // exchange.
-        if (fmiModelDescription.continuousStates.size() < 1) {
-            final String em = ": The number of continuous states of this FMU is: "
-                    + fmiModelDescription.numberOfContinuousStates
-                    + _LS
-                    + "The FMU "
-                    + fmuFileName
-                    + " does not have any state variables."
-                    + _LS
-                    + " FMU needs to have at least one state variable. Please check the FMU.";
-            throw new IllegalActionException(em);
-        }
-        // If a location is given as a URL, construct MoML to
-        // specify a "source".
-        String source = "";
-        // FIXME: not sure about this.
-        if (fmuFileName.startsWith("http://")) {
-            source = " source=\"" + fmuFileName.trim() + "\"";
-        }
-
-        String rootName = new File(fmuFileName).getName();
-        int index = rootName.lastIndexOf('.');
-        if (index != -1) {
-            rootName = rootName.substring(0, index);
-        }
-
-        // Instantiate ports and parameters.
-        int maximumNumberOfPortsToDisplay = 20;
-        int modelVariablesLength = fmiModelDescription.modelVariables.size();
-        String hide = "  <property name=\"_hide\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\"/>\n";
-
-        // Include the following in a property to make it not show up
-        // in the parameter editing dialog.
-        String hiddenStyle = "       <property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"/>\n";
-
-        // The following parameter is provided to output ports to
-        // allow overriding the dependencies in the FMU xml file.
-        String dependency = "";
-        String showName = "    <property name=\"_showName\" class=\"ptolemy.data.expr.SingletonParameter\""
-                + " value=\"true\">\n" + hiddenStyle + "    </property>";
-        if (modelVariablesLength > maximumNumberOfPortsToDisplay) {
-            MessageHandler.message("Importing \"" + fmuFileName
-                    + "\" resulted in an actor with " + modelVariablesLength
-                    + " variables.  To show as ports, right click and "
-                    + "select Customize -> Ports.");
-        }
-
-        int portCount = 0;
-        StringBuffer parameterMoML = new StringBuffer();
-        StringBuffer portMoML = new StringBuffer();
-        for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            if (scalar.variability == FMIScalarVariable.Variability.parameter
-                    || scalar.variability == FMIScalarVariable.Variability.fixed
-                    || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
-            ) {
-                // Parameters
-                // Parameter parameter = new Parameter(this, scalar.name);
-                // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
-                // // Prevent exporting this to MoML unless it has
-                // // been overridden.
-                // parameter.setDerivedLevel(1);
-                switch (scalar.causality) {
-                case output:
-                    // "fixed" and "tunable" outputs will be available as ports.
-                    // FIXME: Need to see whether it is possible to export
-                    // the unit and the description of a variable and make it
-                    // accessible
-                    // at the actor level.
-                    portCount++;
-                    String causality = "output";
-                    boolean hideLocal = false;
-                    portMoML.append("  <port name=\""
-                            + StringUtilities.sanitizeName(scalar.name)
-                            + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                            + "    <property name=\""
-                            + causality
-                            + "\"/>\n"
-                            // We set the display name to handle scalars with
-                            // names
-                            // that have periods
-                            // or other characters.
-                            + "    <display name=\""
-                            + StringUtilities.escapeForXML(scalar.name)
-                            + "\"/>\n" + "    <property name=\"_type\" "
-                            + "class=\"ptolemy.actor.TypeAttribute\" value=\""
-                            + _fmiType2PtolemyType(scalar.type) + "\">\n"
-                            + hiddenStyle + "    </property>" + dependency
-                            + showName
-                            // Hide the port.
-                            + (hideLocal ? hide : "") + "  </port>\n");
-                    break;
-                case input:
-                    // The specification says on page 49 that fixed inputs have
-                    // the same properties as
-                    // fixed parameters. We will for now ignore inputs whose
-                    // Variability are
-                    // "fixed" or tunable.
-                    // portCount++;
-                    // parameterMoML
-                    // .append("  <property name=\""
-                    // + StringUtilities.sanitizeName(scalar.name)
-                    // +
-                    // "\" class=\"ptolemy.actor.parameters.PortParameter\" value =\""
-                    // + scalar.type + "\"/>\n");
-                    break;
-                case local:
-                    break;
-                case internal:
-                    break;
-                case calculatedParameter:
-                    break;
-                case parameter:
-                    // Make "fixed" and "tunable" parameters accessible from
-                    // actor.
-                    parameterMoML
-                            .append("  <property name=\""
-                                    + StringUtilities.sanitizeName(scalar.name)
-                                    + "\" class=\"ptolemy.data.expr.Parameter\" value =\""
-                                    + scalar.type + "\" " + "/>\n");
-                    break;
-                case none:
-                    break;
-
-                }
-            } else if (scalar.variability == FMIScalarVariable.Variability.constant) {
-                // Variables with the variability constant will be skipped.
-                continue;
-            } else {
-
-                // Ports
-                // // FIXME: All output ports?
-                // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
-                // true);
-                // port.setDerivedLevel(1);
-                // // FIXME: set the type
-                // port.setTypeEquals(BaseType.DOUBLE);
-
-                // If the fmu is model exchange and the name of the scalar is
-                // in the list of continuousStates, then we *don't* hide the
-                // scalar,
-                // Otherwise, we do hide the scalar.
-                boolean hideLocal = false;
-
-                String causality = "";
-                switch (scalar.causality) {
-                case local:
-                    // If an FMU is imported as model exchange, then
-                    // Ptolemy should automatically add an input port
-                    // for all state variables. This will allow users
-                    // to connect them to the output of an integrator
-                    // actor. The missing piece is that in
-                    // modelDescription.xml, whenever the entry " Real
-                    // derivative="index" " appears, then Ptolemy
-                    // should read the "index", go to this variable,
-                    // and add it to the list of input ports,
-
-                    // The default is to hide local scalars
-                    hideLocal = true;
-                    if (scalar.isState) {
-                        // This local scalar is the state variable for a scalar
-                        // that has a "<Real derivative=N" element, where N is
-                        // the index (starting with 1) of this scalar.
-                        hideLocal = false;
-                    }
-                    // Local variables are outputs do not get hidden.
-                    // portCount is not updated since we want this variable to
-                    // always
-                    // be visible.
-                    causality = "output";
-                    break;
-                case input:
-                    portCount++;
-                    hideLocal = false;
-                    causality = "input";
-                    break;
-                case none:
-                    // FIXME: Not sure what to do with causality == none.
-                    hideLocal = true;
-                    causality = "output";
-                    break;
-                case output:
-                    portCount++;
-                    hideLocal = false;
-                    causality = "output";
-                    // Override the empty string to provide this parameter.
-                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                    break;
-                // Drop through to internal
-                case internal:
-                    // Internal variables are outputs that get hidden.
-                    hideLocal = true;
-                    causality = "output";
-                    break;
-                }
-                portMoML.append("  <port name=\""
-                        + StringUtilities.sanitizeName(scalar.name)
-                        + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
-                        + "    <property name=\""
-                        + causality
-                        + "\"/>\n"
-                        // We set the display name to handle scalars with names
-                        // that have periods
-                        // or other characters.
-                        + "    <display name=\""
-                        + StringUtilities.escapeForXML(scalar.name) + "\"/>\n"
-                        + "    <property name=\"_type\" "
-                        + "class=\"ptolemy.actor.TypeAttribute\" value=\""
-                        + _fmiType2PtolemyType(scalar.type) + "\">\n"
-                        + hiddenStyle
-                        + "    </property>"
-                        + dependency
-                        + showName
-                        // Hide the port if we have lots of ports or it is
-                        // internal.
-                        + (portCount > maximumNumberOfPortsToDisplay
-                                || scalar.causality == Causality.internal
-                                || hideLocal // FMI-2.0rc1
-                        ? hide : "") + "  </port>\n");
-            }
-        }
-
-        // Use the "auto" namespace group so that name collisions
-        // are automatically avoided by appending a suffix to the name.
-        String moml = "<group name=\"auto\">\n" + " <entity name=\"" + rootName
-                + "\" class=\"ptolemy.actor.lib.fmi.FMUQSS\"" + source + ">\n"
-                + "  <property name=\"_location\" "
-                + "class=\"ptolemy.kernel.util.Location\" value=\"" + x + ", "
-                + y + "\">\n" + "  </property>\n"
-                + "  <property name=\"fmuFile\""
-                + "class=\"ptolemy.data.expr.FileParameter\"" + "value=\""
-                + fmuFileParameter.getExpression() + "\">\n"
-                + "  </property>\n" + parameterMoML + portMoML
-                + " </entity>\n</group>\n";
-        MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
-                moml);
-        context.requestChange(request);
+        // Note that this method is declared to not have a modelExchange
+        // parameter because all QSS fmus are model exchange fmus.  However,
+        // _importFMU does take a modelExchange parameter.
+        FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
+                true /* modelExchange */,
+                false /*addMaximumStepSize*/,
+                "ptolemy.actor.lib.fmi.FMUQSS");
     }
 
     /**
@@ -648,6 +364,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @exception IllegalActionException If the slave FMU cannot be initialized.
      */
     public void initialize() throws IllegalActionException {
+        // By design, this method does not call super.initialize(),
+        // because this class uses a different algorithm that is
+        // specific to QSS.  However, we need to do what
+        // AtomicActor.initialize() does:
+
+        if (_debugging) {
+            _debug("Called initialize()");
+        }
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();
+            }
+        }
+        // end of AtomicActor.java
 
         if (_debugging) {
             _debugToStdOut(String.format("FMUQSS.initialize() on id{%d}",
@@ -660,7 +391,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // initialization.
         _firstRound = true;
 
-        // Initialize FMU parameters
+        // Initialize FMU parameters.
         if (((BooleanToken) initFMUParameters.getToken()).booleanValue()) {
             _initializeFMUParameters();
         }
@@ -773,6 +504,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @exception IllegalActionException If reading inputs or parameters fails.
      */
     public boolean postfire() throws IllegalActionException {
+        // By design, this method does not call super.fire(), because
+        // this class uses a different algorithm that is specific
+        // to QSS.  However, we need to do what AtomicActor.postfire()
+        // does:
+        if (_debugging) {
+            _debug("Called postfire()");
+        }
 
         // Get current simulation time.
         final Time currentTime = _director.getModelTime();
@@ -839,79 +577,96 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             getDirector().fireAt(this, possibleFireAtTime);
             _lastFireAtTime = possibleFireAtTime;
         }
-        return true;
+
+        // As we are not calling super.postfire(), we need
+        // to do what AtomicActor.postfire() does and check
+        // to see if stop was requested:
+        return !_stopRequested;
     }
 
     /**
-     * Override the base class to return without doing anything.
-     *
-     * <p>According to "System Design, Modeling, and Simulation Using Ptolemy II",
-     * version 1.02, section 12.3.1 "Execution Control": "Prefire (optionally)
-     * tests the preconditions required for the actor to fire, such as the
-     * presence of sufficient inputs."</p>
-     *
-     * @return True.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public boolean prefire() throws IllegalActionException {
-        return true;
-    }
-
-    /**
-     * Overrides preinitialize() of the base class to redeclare
-     * input.output dependencies.
+     * Rdeclare input/output dependencies.
      * 
      * @exception IllegalActionException if an exception occurs.
      */
     public void preinitialize() throws IllegalActionException {
-        // Initialize continuous states
+        // Initialize the continuous states.
         _initializeContinuousStates();
 
-        // Initialize the input list
+        // Initialize the input list.
         _getInputs();
 
-        // Initialize the output list
+        // Initialize the output list.
         _getOutputs();
 
-        // FIXME: Declare dependencies
+        // FIXME: Declare dependencies.
         _declareDelayDependency();
 
         // Get the indexes of dependent variables
         _getStateDerivativesDependenciesIndexes();
 
-        // Call superclass to instantiate FMU
+        // Call superclass to instantiate the FMU.
         super.preinitialize();
     }
 
     /**
-     * Overwides the wrapup(). Terminate and free the slave fmu.
+     * Terminate and free the slave fmu.
      * 
-     * @exception IllegalActionException If the slave fmu cannot be terminated or freed.
+     * @exception IllegalActionException If the slave fmu cannot be
+     * terminated or freed.
      */
     public void wrapup() throws IllegalActionException {
-        // FIXME: Why not call super.wrapup()?
-        _checkFmiCommon();
-
-        // Terminate the FMU.
-        _fmiTerminate();
-
-        // Free the FMU.
-        _fmiFreeInstance();
-
-        // Allow the callback functions structure to be garbage collected.
-        _callbacks = null;
-
-        // Allow eventInfo to be garbaged collected
+        // Allow eventInfo to be garbaged collected.
         _eventInfo = null;
-
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         protected methods                 ////
+    
+    /** Determine if the model description is acceptable.  
+     *  FMUQSS only works with FMI-2.0 (and later) model exchange fmus.   
+     *  @param fmiModelDescription The description of the model to be checked.
+     *  @return true if the model description is acceptable.
+     *  @exception IOException If the model description is not acceptable
+     */
+    protected static boolean _acceptFMU(FMIModelDescription fmiModelDescription)
+            throws IOException {
+        // Check if the version of the FMU is higher than 2.0
+        if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
+            throw new IOException("The FMI version of this FMU is: "
+                    + fmiModelDescription.fmiVersion
+                    + "which is not supported.  "
+                    + "QSS currently only supports FMI version 2.0.");
+        }
 
-    /** System dependent line separator. */
-    // FIXME: This is not necessary, just use \n in the exception messages.
-    protected final static String _LS = System.getProperty("line.separator");
+        // Check if the FMU is for model exchange.
+        if (fmiModelDescription.modelExchangeCapabilities == null) {
+            throw new IOException("There is no ModelExchange attribute in the model description"
+                    + " file of This FMU to indicate whether it is for model exchange or not.  "
+                    + "QSS currently only supports FMU for model exchange.");
+        }
+
+        // Check to see if this FMU is for model exchange.
+        // FMUFile checks modelDescription.xml for a ModelExchange element
+        // and sets FMIModelDescription.modelExchange accordingly
+        if (!fmiModelDescription.modelExchange) {
+            throw new IOException("The FMU is not a model exchange FMU.  "
+                    + "Perhaps the modelDescription.xml file does not have a "
+                    + "\"ModelExchange\" element?  "
+                    + "QSS requires a model exchange FMU.");
+        }
+
+        // Check if the FMU has at least one state variable.
+        if (fmiModelDescription.continuousStates.size() < 1) {
+            throw new IOException("The number of continuous states of this FMU is: "
+                    + fmiModelDescription.numberOfContinuousStates
+                    + ".  The FMU does not have any state variables.  "
+                    + "The FMU needs to have at least one state variable. Please check the FMU.");
+        }
+
+        return true;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
