@@ -1442,7 +1442,7 @@ fi
 # We only need to look for CHECKSTYLE if this directory is present
 CHECKSTYLE_USER_DIR="$PTII/ptolemy/actor/test/junit"
 
-CHECKSTYLE_VERSION=-6.1.1
+CHECKSTYLE_VERSION=-6.2
 CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION.jar"
 
 if test ! -d "$CHECKSTYLE_USER_DIR"; then
@@ -1451,7 +1451,7 @@ if test ! -d "$CHECKSTYLE_USER_DIR"; then
 else
     AC_MSG_CHECKING([for Checkstyle, optionally used to check the style of Java files.])
     AC_ARG_WITH(checkstyle, [  --with-checkstyle=DIR    use Checkstyle from DIR,
-                          defaults to $PTII/vendors/checkstyle-5.7],
+                          defaults to $PTII/vendors/checkstyle-6.2],
 	CHECKSTYLE_DIR=$withval,
 	CHECKSTYLE_DIR=$PTII/vendors/checkstyle$CHECKSTYLE_VERSION)
 changequote(<<, >>)dnl
