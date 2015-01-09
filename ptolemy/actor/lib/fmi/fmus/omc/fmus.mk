@@ -78,10 +78,11 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 FMU_SRCS = \
-	src/documentation/* \
 	src/modelDescription.xml \
-	src/model.png \
-	src/sources/* \
+	src/sources/*
+
+#	src/model.png
+#	src/documentation/* 
 
 all: jclass $(FMU_NAME).fmu
 
