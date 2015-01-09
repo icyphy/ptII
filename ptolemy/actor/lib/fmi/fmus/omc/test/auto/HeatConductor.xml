@@ -31,7 +31,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={774, 325, 1146, 719}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={774, 353, 1146, 719}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[932, 630]">
     </property>
@@ -54,9 +54,9 @@
         </property>
     </entity>
     <entity name="HeatConductor" class="ptolemy.actor.lib.fmi.FMUQSS">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/omc/test/auto/HeatConductor.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="HeatConductor.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 195.0]">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
