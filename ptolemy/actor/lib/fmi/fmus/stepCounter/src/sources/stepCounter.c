@@ -351,7 +351,7 @@ fmiComponent FMIAPI fmiInstantiateSlave(
     component->lastSuccessfulTime = -1.0;
     component->atBreakpoint = fmiFalse;
     component->functions = functions;
-    component->loggingOn = loggingOn
+    component->loggingOn = loggingOn;
 
     // Need to allocate memory and copy the string because JNA stores the string
     // in a temporary buffer that gets GC'd.
