@@ -102,9 +102,9 @@ win64:
 
 FMUDIR=..
 
-$(FMU_NAME).cpp: $(FMU_NAME).mo
-	omc +s +simCodeTarget=sfmi $(FMU_NAME).mo
-	mv $(FMU_NAME)_FMI.cpp $(FMU_NAME).cpp
+#$(FMU_NAME).cpp: $(FMU_NAME).mo
+#	omc +s +simCodeTarget=sfmi $(FMU_NAME).mo
+#	mv $(FMU_NAME)_FMI.cpp $(FMU_NAME).cpp
 
 %.fmu: %.$(SHARED_LIBRARY_SUFFIX)
 	# Remove files that should not be included in the .fmu file.
