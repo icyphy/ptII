@@ -89,6 +89,12 @@ public class FMUFile {
         for (File file : fmiModelDescription.files) {
             if (file.getName().endsWith("modelDescription.xml")) {
                 modelDescriptionFile = file;
+                if (file.getParent().endsWith("sources")) {
+                    System.err.println("Warning, while looking for the shared library, \""
+                            + file + "\" was found in a sources/ directory.  "
+                            + "This is unusual, typically modelDescription.xml "
+                            + "is in the directory above sources/.");
+                }
                 break;
             }
         }
