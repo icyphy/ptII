@@ -1,6 +1,6 @@
-/* Wrapper class to start up the Building Controls Virtual Test Bench (BCVTB)
+/* Wrapper class to start up the CyPhySim application.
 
- Copyright (c) 2010-2013 The Regents of the University of California.
+ Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,9 +28,9 @@
 package ptolemy.actor.gui.jnlp;
 
 //////////////////////////////////////////////////////////////////////////
-//// BCVTBApplication
+//// CyPhySimApplication
 
-/** Wrapper class to start up the Building Controls Virtual Test Bench (BCVTB).
+/** Wrapper class to start up CyPhySim, the Cyber-Physical Simulator.
 
  This wrapper class that calls eventually calls
  ptolemy.vergil.VergilApplication for use with Java Network Launching
@@ -52,12 +52,12 @@ package ptolemy.actor.gui.jnlp;
  @see MenuApplication
 
  @author Christopher Brooks
- @version $Id$
+ @version $Id: BCVTBApplication.java 67784 2013-10-26 16:53:27Z cxh $
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class BCVTBApplication extends MenuApplication {
+public class CyPhySimApplication extends MenuApplication {
     /** Main method that sets user.dir as necessary and calls
      *  MenuApplication.main().
      *  @param args Arguments to be passed on to MenuApplication.main()

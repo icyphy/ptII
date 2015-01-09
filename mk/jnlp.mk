@@ -200,6 +200,7 @@ CORE_JNLP_JARS = \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(PTMATLAB_JARS)
 
+
 #######
 # DSP - The smallest runtime
 #
@@ -218,6 +219,66 @@ DSP_JNLP_JARS =	\
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR)
 
+
+#######
+# CyPhySim: http://cyphysim.org
+#
+# Jar files that will appear in a CyPhySim only JNLP Ptolemy II Runtime.
+#
+# doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
+# but not hyvisual.
+
+CYPHYSIM_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/CyPhySimApplication.jar
+
+PTJAVASCRIPT_JARS = \
+	$(PTOAUTHCLIENT_JAR) \
+	$(PTOAUTHCOMMON_JAR) \
+	$(PTSOCKETIO_JAR) \
+	$(PTJAVASCRIPT_JAR) \
+
+CYPHYSIM_JNLP_JARS =	\
+	org/json/json.jar \
+	org/ptolemy/qss/qss.jar \
+	org/ptolemy/machineLearning/machineLearning.jar \
+	org/ptolemy/optimization/optimization.jar \
+	com/cureos/cureos.jar \
+	ptolemy/actor/lib/aspect/aspect.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	lib/ptcolt.jar \
+	ptolemy/actor/lib/conversions/json/json.jar \
+	ptolemy/actor/lib/io/comm/comm.jar \
+	vendors/misc/rxtx/RXTXcomm.jar \
+	ptolemy/actor/lib/jai/jai.jar \
+	ptolemy/actor/lib/jjs/jjs.jar \
+	ptolemy/actor/lib/jmf/jmf.jar \
+	ptolemy/actor/lib/js/js.jar \
+	ptolemy/actor/lib/mail/mail.jar \
+	$(PTJAVAMAIL_JARS) \
+	$(PTMATLAB_JARS) \
+	ptolemy/data/ontologies/ontologies.jar \
+	ptolemy/vergil/ontologies/ontologies.jar \
+	ptolemy/domains/algebraic/algebraic.jar \
+	ptolemy/domains/algebraic/demo/demo.jar \
+	ptolemy/domains/gr/gr.jar \
+	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
+	ptolemy/domains/qss/qss.jar \
+	ptolemy/domains/qss/demo/demo.jar \
+	ptolemy/domains/sdf/lib/vq/vq.jar \
+	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar \
+	$(CYPHYSIM_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(EXPORT_JARS) \
+	$(DOC_CODEDOC_JAR) \
+	$(PDFRENDERER_JARS) \
+	org/ptolemy/ptango/ptango.jar \
+	$(PTANGO_JAR_FILES) \
+	$(PTFMI_JARS) \
+	$(PTJAVASCRIPT_JARS) \
+	$(PTLBNL_JARS) \
+	$(PTMATLAB_JARS) \
+	$(PTDATABASE_JNLP_JARS) \
+	$(WIRELESS_JARS) \
 
 #######
 # Building Controls Virtual Test Bed (https://gaia.lbl.gov/bcvtb)
@@ -546,7 +607,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	vendors/misc/rxtx/RXTXcomm.jar \
-	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
@@ -559,10 +619,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	ptolemy/actor/lib/js/js.jar \
 	ptolemy/actor/lib/js/demo/demo.jar \
-	$(PTOAUTHCLIENT_JAR) \
-	$(PTOAUTHCOMMON_JAR) \
-	$(PTSOCKETIO_JAR) \
-	$(PTJAVASCRIPT_JAR) \
+	$(PTJAVASCRIPT_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	lib/ptCal.jar \
@@ -764,6 +821,7 @@ ALL_L4J_JARS = \
 ALL_JNLP_JARS = \
 	$(ALL_L4J_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
+	$(CYPHY_MAIN_JAR) \
 	$(DSP_MAIN_JAR) \
 	$(BCVTB_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
@@ -805,7 +863,8 @@ KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 MKJNLP =		$(PTII)/bin/mkjnlp
 
 # JNLP files that do the actual installation
-JNLPS =	vergilBCVTB.jnlp \
+JNLPS =	vergilCyPhySim.jnlp \
+	vergilBCVTB.jnlp \
 	vergilDSP.jnlp \
 	vergilHyVisual.jnlp \
 	vergilPtiny.jnlp \
@@ -872,6 +931,43 @@ $(JNLP_SANDBOX_MANIFEST):
 	echo "Application-Name: Ptolemy II" > $@
 	echo "Permissions: sandbox" >> $@
 
+
+# Web Start: CyPhySim version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
+vergilCyPhySim.jnlp: vergilCyPhySim.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			vergilCyPhySim.jnlp.in > $@
+	if [ ! -f $(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(CYPHYSIM_MAIN_JAR)`; \
+		cp -p $(CYPHYSIM_MAIN_JAR) `dirname $(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)`;\
+	fi
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(CYPHYSIM_MAIN_JAR) \
+		`echo $(CYPHYSIM_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(CYPHYSIM_MAIN_JAR) contains the main class"
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(CYPHYSIM_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(CYPHYSIM_MAIN_JAR)`; \
+	cp -p $(CYPHYSIM_MAIN_JAR) `dirname $(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)`
+	@echo "# Signing $(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)"
+	@"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		"$(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: BCVTB version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case

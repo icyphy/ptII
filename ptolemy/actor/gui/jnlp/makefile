@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CyPhySimApplication.java \
 	BCVTBApplication.java \
 	DSPApplication.java \
 	FullApplication.java \
@@ -75,6 +76,7 @@ OPTIONAL_FILES = $(OTHER_JARS)
 JCLASS = $(JSRCS:%.java=%.class)
 
 OTHER_JARS = \
+	CyPhySimApplication.jar \
 	BCVTBApplication.jar \
 	DSPApplication.jar \
 	FullApplication.jar \
@@ -91,6 +93,18 @@ KRUFT = \
 
 all: jclass $(OTHER_JARS)
 install: all
+CyPhySimApplication.jar: CyPhySimApplication.class MenuApplication.class
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy Application specific classes from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp CyPhySimApplication.class MenuApplication.class \
+		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
 BCVTBApplication.jar: BCVTBApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
