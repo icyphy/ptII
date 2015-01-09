@@ -106,6 +106,13 @@ public class FMUBuilder {
         if (!sourcesDirectory.exists()) {
             stderr("The source directory \"" + sourcesDirectory
                     + "\" does not exist." + _eol);
+            if (sourcesDirectory.toString().endsWith("sources/sources")) {
+                stderr("As the directory ends with \"sources/sources\", "
+                        + "perhaps the modelDescription.xml file in the .fmu is in "
+                        + "the sources/ directory instead of the directory"
+                        + "above the sources/directory?");
+            }
+
             return false;
         }
 
