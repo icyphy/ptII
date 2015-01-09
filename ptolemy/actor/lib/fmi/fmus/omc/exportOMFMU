@@ -1,0 +1,74 @@
+#!/bin/sh
+# $Id$
+# exportOMFMU - export an OpenModelica FMU
+
+if [ $# -ne 1 ]; then
+    echo "$0: Usage: $0 FMUName"
+    echo "   Example $0 HeatConductor"
+    exit 2
+fi
+FMUName=$1
+
+if [ ! -f $FMUName.mo ]; then
+    echo "$0: $FMUName.mo does not exist?"
+    exit 3
+fi
+
+rm -rf src
+mkdir -p src/sources
+
+fmuTemplate=$PTII/ptolemy/actor/lib/fmi/fmus/template
+fmuSourcesTemplate=$fmuTemplate/sources
+
+# Copy template files.
+cp $fmuSourcesTemplate/build_fmu src/sources/
+cp $fmuSourcesTemplate/build_fmu.bat src/sources/
+
+omSourcesTemplate=$PTII/ptolemy/actor/lib/fmi/fmus/omc/template/sources/
+cp $omSourcesTemplate/fmu.mk src/sources/
+
+
+cp $fmuTemplate/fmiv20/fmi2FunctionTypes.h src/sources/
+cp $fmuTemplate/fmiv20/fmi2Functions.h src/sources/
+cp $fmuTemplate/fmiv20/fmi2TypesPlatform.h src/sources/
+
+mkdir -p src/documentation
+
+# Copy the .mo source code. This is required as we recompile the fmu for sparse evaluation.
+cp $FMUName.mo src/sources/
+
+# Copy files for sparse fmu evaluation.
+cp $omSourcesTemplate/sfmi_runtime.h src/sources/
+cp $omSourcesTemplate/sfmi_runtime.cpp src/sources/
+
+# Generate the c files
+echo "*** Generating C files"
+(cd src/sources; omc +s +simCodeTarget=sfmi $FMUName.mo;)
+mv src/sources/${FMUName}_FMI.cpp src/sources/$FMUName.cpp
+
+mv src/sources/modelDescription.xml src/
+
+#FIXME: omc generates a cpp file. The FMI standard wants C code. build_fmu expects a HeatConductor.c.
+#       However, using mv HeatConductor_FMI.cpp HeatConductor.c won't work as the compilation fails on ubuntu 
+#       with HeatConductor.c:8:18: fatal error: cstdio: No such file or directory
+#       Hence, we hack it so that dsbuild_fmu expect HeatConductor.cpp and not HeatConductor.c
+sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g' -i src/sources/build_fmu
+
+
+# Generate makefile
+echo "# The name of the FMU to be built." > src/sources/makefile
+echo "FMU_NAME = $FMUName" >> src/sources/makefile
+echo "" >> src/sources/makefile
+# FIXME: The flags are not correct for Linux, but they don't seem to be needed (at least for this small model)
+echo "CFLAGS = -I/opt/openmodelica/include -llapack -lblas -L/opt/local/lib/gcc49 -lgfortran" >> src/sources/makefile
+echo "" >> src/sources/makefile
+echo "# The rules are in a separate file so that we can easily update them." >> src/sources/makefile
+echo "include fmu.mk" >> src/sources/makefile
+
+# Generate .so files
+(cd src/sources; make)
+
+# Create the fmu
+(cd src; zip -r ../$FMUName.fmu *)
+
+
