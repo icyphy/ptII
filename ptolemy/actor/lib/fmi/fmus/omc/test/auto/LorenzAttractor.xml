@@ -27,7 +27,7 @@
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
     </property>
     <entity name="LorenzAttractor" class="ptolemy.actor.lib.fmi.FMUQSS">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/home/thierry/LorenzAttractor.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/omc/test/auto/LorenzAttractor.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
