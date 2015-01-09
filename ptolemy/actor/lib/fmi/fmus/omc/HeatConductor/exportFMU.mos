@@ -1,8 +1,0 @@
-loadModel(Modelica, {"3.2.1"}); 
-getErrorString();
-loadModel(HeatConductor); getErrorString();
-//simulate(HeatConductor); getErrorString();
-OpenModelica.Scripting.translateModelFMU(
-  className=HeatConductor,
-  version="2.0"); 
-getErrorString();
