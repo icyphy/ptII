@@ -41,9 +41,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A director that extends the discrete-event model of computation
- * to include an additional perameter, the error tolerance, which
- * is used by QSSIntegrators.
- * @author Thierry S. Nouidui based on DEDirector.java
+ * to include a Quantized-State System (QSS) solver to perform integration.
+ * This solver performs using a discrete-event style, quantizing the magnitude
+ * of signals rather than the time, as done by a conventional ODE solver. 
+ * The <i>errorTolerance</i> parameter determines the quantization
+ * granularity.  For information about QSS, see
+ * {@link QSSBase}.
+ * @author Thierry S. Nouidui and Edward A. Lee
  * @version $Id$
  * @since Ptolemy 11.0
  * @Pt.ProposedRating Red (cxh)
@@ -103,7 +107,9 @@ public class QSSDirector extends DEDirector {
 
     /** The class name of the QSS solver used for integration.  This
      *  is a string that defaults to "QSS1".  Solvers are all required
-     *  to be in package "org.ptolemy.qss".
+     *  to be in package "org.ptolemy.qss". Note that if the solver is
+     *  changed during the execution of the model, the change will not
+     *  take effect until the model re-initialized.
      */
     public StringParameter QSSSolver;
 
@@ -143,17 +149,15 @@ public class QSSDirector extends DEDirector {
         return _errorTolerance;
     }
 
-    /** Return a QSS solver for use.
+    /** Return a new QSS solver for use.
      *  @return A QSS solver.
-     * @throws IllegalActionException 
+     *  @throws IllegalActionException If creating the solver fails.
      */
-    public QSSBase get_QSSSolver() throws IllegalActionException {
-        // FIXME: Rename to qssSolver().  As there is no setQSSSolver(),
-        // there should be no setter.
-        
+    public QSSBase newQSSSolver() throws IllegalActionException {
         // Instantiate an QSS solver, using the class name given
         // by QSSSolver parameter, which is a string parameter.
         final String solverClassName = QSSSolver.stringValue().trim();
+        
         // Instantiate the solver.
         return(_instantiateQSSSolver(_solverClasspath + solverClassName));
     }
@@ -161,12 +165,12 @@ public class QSSDirector extends DEDirector {
     /////////////////////////////////////////////////////////////////////
     ////                  protected methods                        ////
 
-    /** Instantiate an QSSSolver from its classname. Given the solver's full
+    /** Instantiate an QSSSolver from its class name. Given the solver's full
      *  class name, this method will try to instantiate it by looking
      *  for the corresponding java class.
-     *  This method is based on _instantiateOEDSolver of the CT domain.
+     *  This method is based on _instantiateODESolver of the CT domain.
      *  @param className The solver's full class name.
-     *  @return a new QSS solver.
+     *  @return A new QSS solver.
      *  @exception IllegalActionException If the solver can not be created.
      */
     protected final QSSBase _instantiateQSSSolver(String className)
@@ -200,7 +204,8 @@ public class QSSDirector extends DEDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
+    
     /** initialize parameters. Set all parameters to their default values.
      * @throws NameDuplicationException If adding parameters fails.
      * @throws IllegalActionException If setting parameters fails.
@@ -231,9 +236,10 @@ public class QSSDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                 ////
+    
     /** The error tolerance for state resolution. */
     private double _errorTolerance;
-
+    
     /** The package name for the solvers supported by this director. */
     private static String _solverClasspath = "org.ptolemy.qss.solver.";
 }
