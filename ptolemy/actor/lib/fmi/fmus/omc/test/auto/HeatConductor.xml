@@ -54,7 +54,7 @@
         </property>
     </entity>
     <entity name="HeatConductor" class="ptolemy.actor.lib.fmi.FMUQSS">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="HeatConductor.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/omc/test/auto/HeatConductor.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 195.0]">
         </property>
