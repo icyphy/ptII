@@ -264,7 +264,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // TODO: Still need to figure out whether/how to commit integrator to a
         // step, in cases where Ptolemy calls the fire() and postfire() methods
         // multiple times at a single step.
-        if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) == -1) {
+        if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
             try {
                 _qssSolver.stepToTime(currentTime);
             } catch (Exception ee) {
@@ -518,7 +518,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         final boolean possibleDiffersFromLast = (null == _lastFireAtTime || possibleFireAtTime
                 .compareTo(_lastFireAtTime) != 0);
         if (null != _lastFireAtTime // Made request before.
-                && _lastFireAtTime.compareTo(currentTime) == 1 // Last request was
+                && _lastFireAtTime.compareTo(currentTime) > 0 // Last request was
                                                             // not used.
                                                             // _lastFireAtTime >
                                                             // currentTime
