@@ -29,6 +29,7 @@ import org.ptolemy.qss.solver.QSSBase;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -47,6 +48,11 @@ import ptolemy.kernel.util.Workspace;
  * The <i>errorTolerance</i> parameter determines the quantization
  * granularity.  For information about QSS, see
  * {@link QSSBase}.
+ * <p>
+ * Upon loading this class, an expression function qssToken(double, {double})
+ * becomes available in the expression language. This function creates
+ * a {@link QSSToken} with value equal to the first argument and any number
+ * of derivatives given in the second argument.
  * @author Thierry S. Nouidui and Edward A. Lee
  * @version $Id$
  * @since Ptolemy 11.0
@@ -96,7 +102,7 @@ public class QSSDirector extends DEDirector {
         super(container, name);
         _initSolverParameters();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -112,6 +118,21 @@ public class QSSDirector extends DEDirector {
      *  take effect until the model re-initialized.
      */
     public StringParameter QSSSolver;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     static initializer                    ////
+
+    static {
+	// Register the static methods of the QSSToken class so that
+	// they become available in the expression language.
+	PtParser.registerFunctionClass(
+		"ptolemy.domains.qss.kernel.QSSToken");
+	// Specify that the QSSToken class is an alternate implementation
+	// of the double type. This allows the expression language to
+	// recognize a return type of QSSToken from a static function
+	// registered in the previous call as a double.
+	BaseType.addType(BaseType.DOUBLE, "qssToken", QSSToken.class);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
