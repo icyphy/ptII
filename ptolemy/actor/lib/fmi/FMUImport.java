@@ -81,6 +81,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -686,10 +687,21 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // Set states only if the FMU has states
                 if (states.length > 0) {
                     if (_fmiVersion < 2.0) {
-                        double step = currentTimeValue
+                        // Coverity Scan indicates that derivatives could
+                        // be null, but the logic says this can't happen.
+                        if (derivatives == null) {
+                            throw new InternalErrorException(this, null,
+                                    "The derivatives array was null, "
+                                    + "which should not be possible as "
+                                    + "derivatives set on the second and subsequent "
+                                    + "firings and derivatives is only "
+                                    + "accessed after time has advanced.");
+                        } else {
+                            double step = currentTimeValue
                                 - _lastCommitTime.getDoubleValue();
-                        for (int i = 0; i < states.length; i++) {
-                            _newStates[i] = states[i] + derivatives[i] * step;
+                            for (int i = 0; i < states.length; i++) {
+                                _newStates[i] = states[i] + derivatives[i] * step;
+                            }
                         }
                     }
                     _fmiSetContinuousStates(_newStates);
