@@ -513,9 +513,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 if (_fmiVersion >= 2.0) {
                     FMI20ModelInstance fmi20ModelInstance = new FMI20ModelInstance(
                             _fmiComponent);
-                    FMI20EventInfo fmi20EventInfoStruct = fmi20ModelInstance.eventInfo;
                     fmi20EventInfo = new FMI20EventInfo.ByReference(
-                            fmi20EventInfoStruct);
+                            fmi20ModelInstance.eventInfo);
 
                     // "event iteration"
                     fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
