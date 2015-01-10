@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	QSSDirector.java \
+	QSSIntegrator.java \
 	QSSToDouble.java \
 	QSSToken.java
 
