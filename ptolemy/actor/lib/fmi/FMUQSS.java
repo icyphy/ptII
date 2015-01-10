@@ -1026,13 +1026,16 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
 
             output.dependencies = dependencies;
-            // Get the outputs which depend on the states.
-            for (int j = 0; j < _fmiModelDescription.continuousStates.size(); j++) {
-                TypedIOPort inputPort = _fmiModelDescription.continuousStates
+            // Coverty Scan states that dependencies could be null, so we check here.
+            if (dependencies != null) {
+                // Get the outputs which depend on the states.
+                for (int j = 0; j < _fmiModelDescription.continuousStates.size(); j++) {
+                    TypedIOPort inputPort = _fmiModelDescription.continuousStates
                         .get(j).port;
-                if (dependencies.contains(inputPort)) {
-                    output.isKnown = true;
-                    stateOutputs.add(output);
+                    if (dependencies.contains(inputPort)) {
+                        output.isKnown = true;
+                        stateOutputs.add(output);
+                    }
                 }
             }
             _outputs.add(output);
