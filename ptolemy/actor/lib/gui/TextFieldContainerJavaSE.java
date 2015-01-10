@@ -83,7 +83,12 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
     @Override
     public void setValue(Token value) {
         if (_textfield != null) {
-            _textfield.setText(value.toString());
+            if (value == null) {
+                // Delete the old text.
+                textfield.setText(null);
+            } else {
+                _textfield.setText(value.toString());
+            }
         }
     }
 
