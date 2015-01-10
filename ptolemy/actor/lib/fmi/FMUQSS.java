@@ -927,85 +927,40 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         return _inputs;
     }
 
-    /**
-     * Get state and output models and parameterize input models.
-     *
-     * @param ord The state model order.
-     * @param ivMdl The input model to parametrize.
-     * @param tok The token values for parametrization.
+    /** Populate the specified model with data from the specified token.
+     *  If the token is a QSSToken, then insert in the model any derivatives
+     *  that might be given in the token, and set any remaining derivatives
+     *  required by the model to zero. Otherwise, set any derivatives
+     *  required by the model to zero.
+     *  @param ivMdl The input model to parameterize.
+     *  @param token The token values for parameterization.
+     *  @throws IllegalActionException If the specified token cannot be converted
+     *   to a double.
      */
-    private void _getModelFromPort(final int ord, final ModelPolynomial ivMdl,
-            final Token tok) throws NoRoomException, IllegalActionException {
-
-        final int ncoeffs = ord + 1;
-        // Process inputs which are not QSSToken but DoubleToken
-        if (tok instanceof DoubleToken) {
-            if (ord == 0) {
-                ivMdl.coeffs[0] = ((DoubleToken) tok).doubleValue();
-            } else if (ord == 1) {
-                ivMdl.coeffs[0] = ((DoubleToken) tok).doubleValue();
-                ivMdl.coeffs[1] = 0.0;
-            } else if (ord == 2) {
-                ivMdl.coeffs[0] = ((DoubleToken) tok).doubleValue();
-                ivMdl.coeffs[1] = 0.0;
-                ivMdl.coeffs[2] = 0.0;
-            } else {
-                throw new IllegalActionException(
-                        "The order of the Qss integration method used: "
-                                + ord
-                                + " is  not supported. Current implementation supports "
-                                + "Qss1, Qss2, and Qss3");
-            }
+    private void _getModelFromToken(ModelPolynomial ivMdl, Token token)
+	    throws IllegalActionException {
+        
+        // Convert to a DoubleToken. If token is a QSSToken or DoubleToken,
+        // then the convert method does nothing and just returns the token.
+        // Otherwise, it attempts to convert it to a DoubleToken, and throws
+        // an exception if such conversion is not possible.
+        DoubleToken doubleToken = DoubleToken.convert(token);
+        
+        // In all cases, the first coefficient is simply the current value of the token.
+        ivMdl.coeffs[0] = doubleToken.doubleValue();
+        
+        double[] derivatives = null;
+        if (doubleToken instanceof QSSToken) {
+            derivatives = ((QSSToken)doubleToken).derivativeValues();
         }
-
-        // Process inputs which are QSSToken
-        else if (tok instanceof QSSToken) {
-            final QSSToken arrTok = (QSSToken) tok;
-            // Get values (Qss1)
-            if (ord == 0) {
-                ivMdl.coeffs[0] = arrTok.valueAndDerivatives()[0];
-            }
-            // Get values and higher order derivatives (Qss2).
-            else if (ord == 1) {
-                if (arrTok.valueAndDerivatives().length == 2) {
-                    for (int i = 0; i < ncoeffs; i++) {
-                        ivMdl.coeffs[i] = arrTok.valueAndDerivatives()[i];
-                    }
-                } else {
-                    // Set other unknown coefficients to null.
-                    ivMdl.coeffs[0] = arrTok.valueAndDerivatives()[0];
-                    ivMdl.coeffs[1] = 0.0;
-                }
-            }
-            // Get values and higher order derivatives (Qss3).
-            else if (ord == 2) {
-                if (arrTok.valueAndDerivatives().length == 3) {
-                    for (int i = 0; i < ncoeffs; i++) {
-                        ivMdl.coeffs[i] = arrTok.valueAndDerivatives()[i];
-                    }
-                } else {
-                    ivMdl.coeffs[0] = ivMdl.coeffs[0] = arrTok
-                            .valueAndDerivatives()[0];
-                    // Set other unknown coefficients to null.
-                    ivMdl.coeffs[1] = 0.0;
-                    ivMdl.coeffs[2] = 0.0;
-                }
-            } else {
-                throw new IllegalActionException(
-                        "The order of the Qss integration method used: "
-                                + ord
-                                + " is  not supported. Current implementation supports "
-                                + "Qss1, Qss2, and Qss3");
-            }
-
-        }
-        // Reject inputs which are whether QSSToken nor DoubleToken.
-        else {
-            throw new IllegalActionException(this, String.format(
-                    "Token %s is connected to a port which has a "
-                            + "type which is not an instance "
-                            + "of QSSToken or DoubleToken.", tok.toString()));
-        }
+	final int ncoeffs = ivMdl.coeffs.length;
+	for (int i = 1; i < ncoeffs; i++) {
+	    if (derivatives == null || derivatives.length < i) {
+		ivMdl.coeffs[i] = 0.0;
+	    } else {
+		ivMdl.coeffs[i] = derivatives[i-1];
+	    }
+	}
     }
 
     /**
@@ -1511,7 +1466,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 final Token token = input.port.get(0);
                 if (token instanceof QSSToken) {
                     final QSSToken qssTok = (QSSToken) token;
-                    initialValue = qssTok.valueAndDerivatives()[0];
+                    initialValue = qssTok.doubleValue();
                 } else if (token instanceof DoubleToken) {
                     initialValue = ((DoubleToken) token).doubleValue();
                 } else {
@@ -1842,8 +1797,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // Update the model.
                 final ModelPolynomial ivMdl = _inputVariableModels[currIdx];
 
-                final int order = _qssSolver.getStateModelOrder();
-                _getModelFromPort(order, ivMdl, token);
+                _getModelFromToken(ivMdl, token);
                 // TODO: Here, just assuming that if have a new input, means
                 // the
                 // model
