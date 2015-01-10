@@ -493,7 +493,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     System.identityHashCode(this), currentTime.toString(),
                     currentMicrostep));
         }
-
+        // FIXME: Moved this in fire(). 
+        //_initializeQSSIntegratorInputVariables in postfire, 
+        // which in turn invokes _triggerQuantizationEvents, which produces outputs.
+        // Outputs should not be produced in postfire
         if (_firstRound) {
             _initializeQSSIntegratorInputVariables(currentTime);
             _firstRound = false;
