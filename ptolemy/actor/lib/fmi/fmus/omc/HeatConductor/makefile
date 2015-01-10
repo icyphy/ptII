@@ -41,7 +41,6 @@ export:
 
         # Copy template files.
 	cp ../../../fmus/inc20/src/sources/build_fmu src/sources/
-	cp ../../../fmus/inc20/src/sources/build_fmu.bat src/sources/
 	cp ../template/sources/fmu.mk src/sources/
 	cp $(PTII)/ptolemy/actor/lib/fmi/fmus/template/fmiv20/fmi2FunctionTypes.h src/sources/
 	cp $(PTII)/ptolemy/actor/lib/fmi/fmus/template/fmiv20/fmi2Functions.h src/sources/
@@ -62,7 +61,8 @@ export:
         #       However, using mv HeatConductor_FMI.cpp HeatConductor.c won't work as the compilation fails on ubuntu 
         #       with HeatConductor.c:8:18: fatal error: cstdio: No such file or directory
         #       Hence, we hack it so that dsbuild_fmu expect HeatConductor.cpp and not HeatConductor.c
-	sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g' -i src/sources/build_fmu
+	# Can't use sed -i here under Mac OS X.
+	sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g' < ../../../fmus/inc20/src/sources/build_fmu > src/sources/build_fmu
 
 
         # Generate makefile
