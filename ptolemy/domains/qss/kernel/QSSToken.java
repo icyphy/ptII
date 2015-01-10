@@ -39,9 +39,16 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
    A token for QSS integration that contains a double and
-   a derivative.
+   zero or more derivatives. As far as the Ptolemy II type system is concerned,
+   this is a DoubleToken, and it can be accepted by any actor that operates
+   on instances of DoubleToken. But it potentially carries as an additional
+   payload one more derivatives of the current value, and 
+   actors in the QSS domain may access these derivatives using the
+   {@link #derivativeValues()} method.  Actors in the QSS domain may construct
+   this token instead of a DoubleToken in order to convey derivative information
+   to downstream QSS actors.
 
-   @author Thierry S. Nouidui and Michael Wetter
+   @author Thierry S. Nouidui and Michael Wetter. Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 10
    @Pt.ProposedRating Red (mw)
@@ -49,74 +56,69 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class QSSToken extends DoubleToken {
 
-    /** Construct a QSSToken with the specified value and derivative.
+    /** Construct a QSSToken with the specified value and no derivatives.
      *  @param value The specified value.
-     *  @param derivative The specified derivative.
      */
     public QSSToken(double value) {
     	super(value);
     }
 	
-    /** Construct a QSSToken with the specified value and derivative.
+    /** Construct a QSSToken with the specified value and derivatives.
      *  @param value The specified value.
-     *  @param derivative The specified derivative.
+     *  @param derivatives The specified derivatives.
      */
     public QSSToken(double value, 
-            double[] derivative) {
+            double[] derivatives) {
     	super(value);
-    	_derivatives = derivative;
+    	_derivatives = derivatives;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the value in the token as a double.
-     *  @return The value contained in this token as a double.
-     */
-    public double[] valueAndDerivatives() {
-    	if (_derivatives == null){
-            final double[] r ={super.doubleValue()};
-            return r;
-    	}
-    	else{
-            double[] r = new double[_derivatives.length + 1];
-            r[0] = super.doubleValue();
-            System.arraycopy(_derivatives, 0, r, 1, _derivatives.length);
-            return r;
-    	}
-    }
-
-    /** Return the derivatives in the token as a double[].
-     *  @return The value of the derivatives contained in this token as a double.
+    /** Return the derivatives in the token as a double[], or null if there are
+     *  no derivatives. Since tokens are immutable, the caller of this method must
+     *  copy the returned array if it intends to modify the array.
+     *  @return The value of the derivatives contained in this token.
      */
     public double[] derivativeValues() {
-    	double[] r = new double[_derivatives.length];
-    	System.arraycopy(_derivatives, 0, r, 0, _derivatives.length);
-        return r;
+	if (_derivatives == null || _derivatives.length == 0) {
+	    return null;
+	}
+	return _derivatives;
     }
 
     /** Return true if the argument's class is QSSToken and it has the
      *  same values as this token.
-     *  @param object An instance of Object.
+     *  @param object An object to compare for equality.
      *  @return True if the argument is a QSSToken with the same
-     *  value. If either this object or the argument is a nil Token, return
+     *   value and derivatives. If either this object or the argument is a nil Token, return
      *  false.
      */
     @Override
     public boolean equals(Object object) {
-    	boolean r = super.equals(object);
-    	if (r) {
-            double[] der = ((QSSToken) object).derivativeValues();
-            if (der.length != _derivatives.length)
+	// The superclass checks class equality, doubleValue equality, and handles nil.
+    	if (super.equals(object)) {
+    	    // Now we just have to check the derivatives.
+            double[] derivatives = ((QSSToken) object).derivativeValues();
+            if (derivatives == null && _derivatives != null
+        	    || derivatives != null && _derivatives == null) {
+        	return false;
+            }
+            // Both tokens have derivatives.
+            if (derivatives.length != _derivatives.length) {
                 return false;
+            }
+            // Both tokens have the same number of derivatives.
             for(int i = 0; i < _derivatives.length; i++){
-                if (der[i] != _derivatives[i])
+                if (derivatives[i] != _derivatives[i]) {
                     return false;
+                }
             }
             return true;
+    	} else {
+            return false;
     	}
-    	else
-            return r;
     }
 
     /** Return the type of this token.
@@ -255,6 +257,6 @@ public class QSSToken extends DoubleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** The higher order derivatives. */
+    /** The derivatives. */
     private double[] _derivatives;
 }
