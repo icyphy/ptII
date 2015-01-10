@@ -9,15 +9,9 @@
       <entity name="Spontaneous Sources" class="ptolemy.moml.EntityLibrary">
 
         <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-          <port name="trigger">
-            <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
-          </port>
         </entity>
 
         <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-          <port name="trigger">
-            <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
-          </port>
         </entity>
 
       </entity>
@@ -29,9 +23,6 @@
             <property name="attributeName" value="value"/>
             <property name="displayWidth" value="40"/>
           </property>
-          <port name="trigger">
-            <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
-          </port>
         </entity>
 
         <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
@@ -43,9 +34,6 @@
         </entity>
 
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-          <port name="trigger">
-            <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
-          </port>
         </entity>
 
         <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
