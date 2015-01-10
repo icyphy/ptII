@@ -1,6 +1,6 @@
 /* Instantiate a Functional Mock-up Unit (FMU).
 
-   Copyright (c) 2011-2014 The Regents of the University of California.
+   Copyright (c) 2011-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -2766,7 +2766,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // at the actor level.
                     portCount++;
                     String causality = "output";
-                    boolean hideLocal = false;
                     portMoML.append("  <port name=\""
                             + StringUtilities.sanitizeName(scalar.name)
                             + "\" class=\"ptolemy.actor.TypedIOPort\">\n"
@@ -2784,8 +2783,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             + _fmiType2PtolemyType(scalar.type) + "\">\n"
                             + hiddenStyle + "    </property>" + dependency
                             + showName
-                            // Hide the port.
-                            + (hideLocal ? hide : "") + "  </port>\n");
+                            // Output parameters are never hidden.
+                            + "  </port>\n");
                     break;
                 case input:
                     // The specification says on page 49 that fixed inputs have
