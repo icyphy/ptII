@@ -44,7 +44,7 @@ import ptolemy.actor.util.Time;
  *
  * <p>where</p>
  * <ul>
- * <li><i>xMdl{t}</i>, model of some scalar variable <i>x</i>, as a funtion of time.</li>
+ * <li><i>xMdl{t}</i>, model of some scalar variable <i>x</i>, as a function of time.</li>
  * <li><i>t</i>, time of interest.</li>
  * <li><i>dt = t - tMdl</i>, time difference.</li>
  * <li><i>tMdl</i>, time of model formation.</li>
