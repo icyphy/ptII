@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CancelException.java \
 	ClassUtilities.java \
+	DoubleUtilities.java \
 	ExecuteCommands.java \
 	FileUtilities.java \
 	JVMBitWidth.java \

@@ -32,8 +32,8 @@ import java.math.BigInteger;
  *
  * @author Louis Wasserman
  */
-public final class DoubleUtils {
-    private DoubleUtils() {
+public final class DoubleUtilities {
+    private DoubleUtilities() {
     }
 
     static double nextDown(double d) {
