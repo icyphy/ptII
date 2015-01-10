@@ -30,8 +30,6 @@ package ptolemy.domains.qss.kernel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ScalarToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -47,8 +45,18 @@ import ptolemy.kernel.util.IllegalActionException;
    {@link #derivativeValues()} method.  Actors in the QSS domain may construct
    this token instead of a DoubleToken in order to convey derivative information
    to downstream QSS actors.
+   <p>
+   Note that if two QSSTokens are added or subtracted, then the derivatives also
+   add or subtract.
+   If a QSSToken is added to a DoubleToken, the derivatives of the DoubleToken
+   are assumed to be zero.
+   <p>
+   If a QSSToken is divided by a DoubleToken or QSSToken, then the value
+   and derivatives are divided by the value of the other token.
+   Its derivatives, if any, are ignored.
+   FIXME: Is that the right thing to do?
 
-   @author Thierry S. Nouidui and Michael Wetter. Contributor: Edward A. Lee
+   @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee
    @version $Id$
    @since Ptolemy II 10
    @Pt.ProposedRating Red (mw)
@@ -64,6 +72,9 @@ public class QSSToken extends DoubleToken {
     }
 	
     /** Construct a QSSToken with the specified value and derivatives.
+     *  This constructor does not copy the derivatives argument, so it is up
+     *  to the caller to ensure that the array passed in does not later get
+     *  modified (tokens are required to be immutable).
      *  @param value The specified value.
      *  @param derivatives The specified derivatives.
      */
@@ -101,6 +112,10 @@ public class QSSToken extends DoubleToken {
     	if (super.equals(object)) {
     	    // Now we just have to check the derivatives.
             double[] derivatives = ((QSSToken) object).derivativeValues();
+            if (derivatives == _derivatives) {
+        	// Derivatives are identical (should be true only if null).
+        	return true;
+            }
             if (derivatives == null && _derivatives != null
         	    || derivatives != null && _derivatives == null) {
         	return false;
@@ -120,85 +135,112 @@ public class QSSToken extends DoubleToken {
             return false;
     	}
     }
-
-    /** Return the type of this token.
-     *  @return BaseType.QSS
+    
+    /** Return a QSSToken with the specified value and no derivatives.
+     *  This function gets registered when the {@link QSSDirector}
+     *  class is loaded, after which it becomes available in the
+     *  expression language.
+     *  @param value The value.
      */
-    @Override
-    public Type getType() {
-    	//FIXME: Not sure what to do here.
-        return super.getType();
+    public static QSSToken qssToken(double value) {
+	return new QSSToken(value, null);
     }
 
-    /** Return a hash code value for this token. This method returns the
-     *  integer portion of the contained double.
-     *  @return A hash code value for this token.
-     *  @exception IllegalActionException If the method is called.
+    /** Return a QSSToken with the specified value and derivatives.
+     *  This function gets registered when the {@link QSSDirector}
+     *  class is loaded, after which it becomes available in the
+     *  expression language.
+     *  @param value The value.
+     *  @param derivatives An array containing the first derivative,
+     *   the second derivative, etc.
      */
-    @Override
-    public int hashCode(){
-    	// FIXME Not sure how to do this. Shouldn't the hash code be unique,
-    	// which is also not the case for the parent class.
-        return super.hashCode();
-    }
-
-    /** Return true if the token is nil, (aka null or missing).
-     *  Nil or missing tokens occur when a data source is sparsely populated.
-     *  @return True if the token is the {@link #NIL} token.
-     */
-    @Override
-    public boolean isNil() {
-        // We use a method here so that we can easily change how
-        // we determine if a token is nil without modify lots of classes.
-        return this == QSSToken.NIL;
-    }
-
-    /** Returns a QSSToken with value 1.0.
-     *  @return A QSSToken with value 1.0.
-     */
-    @Override
-    public Token one() {
-        return ONE;
+    public static QSSToken qssToken(double value, double[] derivatives) {
+	return new QSSToken(value, derivatives);
     }
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  The exact form of the number depends on its value, and may be either
-     *  decimal or exponential.  In general, exponential is used for numbers
-     *  whose magnitudes are very large or very small, except for zero which
-     *  is always represented as 0.0.  The behavior is roughly the same as
-     *  Double.toString(), except that we limit the precision to seven
-     *  fractional digits.  If you really must have better precision,
-     *  then use <code>Double.toString(token.doubleValue())</code>.
-     *  If this token has a unit, the return string also includes a unit
-     *  string produced by the unitsString() method in the super class.
-     *  @return A String representing the double value and the units (if
-     *   any) of this token.
-     *  @see ptolemy.data.ScalarToken#unitsString
+     *  If there are no derivatives, then this just returns what the superclass
+     *  returns to represent a double. Otherwise, the returned
+     *  string has the form "qssToken(value, derivatives)", where
+     *  the value is the value returned by {@link #doubleValue()}, and
+     *  derivatives is an array of doubles.
      */
     @Override
     public String toString() {
-    	String s = super.toString();
-    	s += ". Higher order derivatives = " + derivativeValues() + ".";
-    	return s;
+	if (_derivatives == null || _derivatives.length == 0) {
+	    return super.toString();
+	}
+	StringBuffer derivatives = new StringBuffer("{");
+	boolean first = true;
+	for (int i = 0; i < _derivatives.length; i++) {
+	    if (first) {
+		first = false;
+	    } else {
+		derivatives.append(",");
+	    }
+	    derivatives.append(Double.toString(_derivatives[i]));
+	}
+	derivatives.append("}");
+    	return "qssToken(" 
+    		+ super.toString()
+    		+ ", "
+    		+ derivatives.toString()
+    		+ ")";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Return a new token whose value is the value of the
-     *  argument Token added to the value of this Token.  It is assumed
-     *  that the type of the argument is an QSSToken.
+     *  argument Token added to the value of this Token.
+     *  The argument is guaranteed to be either a DoubleToken or
+     *  a QSSToken by the caller. If the argument is a DoubleToken,
+     *  then its value is simply added to the value of this token, and
+     *  a new QSSToken is returned with the sum value and the derivatives
+     *  of this token. If the argument is a QSSToken, then returned QSSToken
+     *  will have the maximum of the number of derivatives of this token and
+     *  the derivatives of the argument, and for derivatives given by both
+     *  tokens, the derivative will be the sum of the two derivatives.
      *  @param rightArgument The token to add to this token.
      *  @return A new QSSToken containing the result.
      */
     @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
-        final double sum = super.doubleValue() + ((QSSToken) rightArgument).doubleValue();
-        return new QSSToken(sum, _derivatives);
+        final double sum = super.doubleValue() + ((DoubleToken) rightArgument).doubleValue();
+        if (rightArgument instanceof QSSToken) {
+            double[] derivatives = ((QSSToken) rightArgument).derivativeValues();
+            if (derivatives == null) {
+                // Just use the derivatives of this token.
+                // This should be safe because, by policy, their value is immutable.
+                return new QSSToken(sum, _derivatives);
+            } else if (_derivatives == null) {
+                // Just use the derivatives of that token.
+                // This should be safe because, by policy, their value is immutable.
+                return new QSSToken(sum, derivatives);
+            }
+            // Create a sum of derivatives.
+            int max = derivatives.length;
+            if (max < _derivatives.length) {
+        	max = _derivatives.length;
+            }
+            double[] result = new double[max];
+            for (int i=0; i < max; i++) {
+        	if (i < _derivatives.length && i < derivatives.length) {
+        	    result[i] = _derivatives[i] + derivatives[i];
+        	} else if (i < _derivatives.length) {
+        	    result[i] = _derivatives[i];
+        	} else {
+        	    result[i] = derivatives[i];
+        	}
+            }
+            return new QSSToken(sum, result);
+        } else {
+            // Just use the derivatives of this token.
+            // This should be safe because, by policy, their value is immutable.
+            return new QSSToken(sum, _derivatives);
+        }
     }
-
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
@@ -208,11 +250,12 @@ public class QSSToken extends DoubleToken {
      */
     @Override
     protected ScalarToken _divide(ScalarToken divisor) {
-    	final double div = ((QSSToken) divisor).doubleValue();
+    	final double div = ((DoubleToken) divisor).doubleValue();
         final double quotient = super.doubleValue() / div;
         double[] der = new double[_derivatives.length];
-        for(int i = 0; i < _derivatives.length; i++)
+        for(int i = 0; i < _derivatives.length; i++) {
             der[i] = _derivatives[i]/div;
+        }
         return new QSSToken(quotient, der);
     }
 
@@ -237,21 +280,55 @@ public class QSSToken extends DoubleToken {
      */
     @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        final double factor = ((QSSToken) rightArgument).doubleValue();
+        final double factor = ((DoubleToken) rightArgument).doubleValue();
+        // FIXME: Yow, this seems backwards. Division is more expensive than addition.
         return _divide(new DoubleToken(1./factor));
     }
 
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
-     *  the type of the argument is an QSSToken.
+     *  the type of the argument is a DoubleToken.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new QSSToken containing the result.
      */
     @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        final double difference = super.doubleValue() - ((QSSToken) rightArgument).doubleValue();
-        return new QSSToken(difference, _derivatives);
-
+        final double difference = super.doubleValue() - ((DoubleToken) rightArgument).doubleValue();
+        if (rightArgument instanceof QSSToken) {
+            double[] derivatives = ((QSSToken) rightArgument).derivativeValues();
+            if (derivatives == null) {
+                // Just use the derivatives of this token.
+                // This should be safe because, by policy, their value is immutable.
+                return new QSSToken(difference, _derivatives);
+            } else if (_derivatives == null) {
+                // The derivatives should be negated.
+        	double[] result = new double[derivatives.length];
+        	for (int i = 0; i < result.length; i++) {
+        	    result[i] = - derivatives[i];
+        	}
+                return new QSSToken(difference, result);
+            }
+            // Create a difference of derivatives.
+            int max = derivatives.length;
+            if (max < _derivatives.length) {
+        	max = _derivatives.length;
+            }
+            double[] result = new double[max];
+            for (int i=0; i < max; i++) {
+        	if (i < _derivatives.length && i < derivatives.length) {
+        	    result[i] = _derivatives[i] - derivatives[i];
+        	} else if (i < _derivatives.length) {
+        	    result[i] = _derivatives[i];
+        	} else {
+        	    result[i] = -derivatives[i];
+        	}
+            }
+            return new QSSToken(difference, result);
+        } else {
+            // Just use the derivatives of this token.
+            // This should be safe because, by policy, their value is immutable.
+            return new QSSToken(difference, _derivatives);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
