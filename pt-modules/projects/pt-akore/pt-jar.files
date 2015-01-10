@@ -333,4 +333,4 @@
 /ptolemy/graph/analysis/strategy/Strategy.java
 # May
 /ptolemy/actor/TimeRegulator.java
-/ptolemy/util/DoubleUtils.java
+/ptolemy/util/DoubleUtilities.java

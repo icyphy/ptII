@@ -33,7 +33,7 @@ import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.ExtendedMath;
-import ptolemy.util.DoubleUtils;
+import ptolemy.util.DoubleUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// Time
@@ -484,7 +484,7 @@ public class Time implements Comparable {
             // execution time... Could instead use longValue(), but the
             // result would not necessarily be accurate.
             //return _timeValue.doubleValue() * _timeResolution();
-            return DoubleUtils.bigToDouble(_timeValue) * _timeResolution();
+            return DoubleUtilities.bigToDouble(_timeValue) * _timeResolution();
         }
     }
 
@@ -700,7 +700,7 @@ public class Time implements Comparable {
         }
 
         final BigInteger difference = _timeValue.subtract(time._timeValue);
-         return( DoubleUtils.bigToDouble(difference) * resolution );
+        return( DoubleUtilities.bigToDouble(difference) * resolution );
     }
     
     /** Return the string representation of this time object.
