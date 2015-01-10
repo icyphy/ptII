@@ -4,7 +4,7 @@
 <entity name="MoC3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 1190, 705}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 13, 1184, 712}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 595]">
     </property>
@@ -20,18 +20,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace with accessors">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires sound clips which can be downloaded from:&#10;http://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?&#10;&#10;Please turn your speakers on :)&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Nashorn JavaScript engine, requiring Java 1.8.&#10;Please turn your speakers on :)&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -51,9 +45,9 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model presents a further timed approach to a&#10;real-time accessor composition problem.&#10;&#10;In addition to verse start times, the end time of&#10;each inserted sound clip is now specified.  The&#10;SingleEvent actors stop each animal sound clip at a &#10;specific time, then trigger the next verse clip.&#10;&#10;The MicrostepDelay actor ensures that each verse clip&#10;starts logically after the end of each animal sound clip,&#10;even though the stop/start occur at the same wall clock time.&#10;The MicrostepDelay provides a deterministic ordering of events.&#10;&#10;This model does not handle any faults.&#10;&#10;The song is &quot;The Fox (What Does The Fox Say?) by Ylvis&#10;http://en.wikipedia.org/wiki/The_Fox_%28What_Does_the_Fox_Say%3F%29&#10;The animal sounds are from SeaWorld:  &#10;http://seaworld.org/en/animal-info/animal-sounds/">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model presents a further timed approach to a&#10;real-time accessor composition problem.&#10;&#10;In addition to verse start times, the end time of&#10;each inserted sound clip is now specified.  The&#10;SingleEvent actors stop each animal sound clip at a &#10;specific time, then trigger the next verse clip.&#10;&#10;The MicrostepDelay actor ensures that each verse clip&#10;starts logically after the end of each animal sound clip,&#10;even though the stop/start occur at the same wall clock time.&#10;The MicrostepDelays provides a deterministic ordering of events.&#10;&#10;This model does not handle any faults.&#10;&#10;The song is &quot;The Fox (What Does The Fox Say?) by Ylvis&#10;http://en.wikipedia.org/wiki/The_Fox_%28What_Does_the_Fox_Say%3F%29&#10;The animal sounds are from SeaWorld:  http://seaworld.org/en/animal-info/animal-sounds/&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 130.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -62,6 +56,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Latronico">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 575.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="east">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="More info at: http://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[625.0, 80.0]">
         </property>
     </property>
     <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
@@ -117,7 +119,7 @@
         </property>
         <property name="outputOnlyOnStop" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[249.58055904522615, 372.8121859296484]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 370.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -152,72 +154,6 @@
             </property>
         </port>
     </entity>
-    <entity name="Cat" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Cat.wav">
-        </property>
-        <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 285.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="stop" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="Bird" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Bird.wav">
-        </property>
-        <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[364.58055904522615, 382.8121859296484]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="stop" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="Mouse?" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Panther.wav">
-        </property>
-        <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 475.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="stop" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
@@ -227,53 +163,31 @@
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="14.75">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="15.35">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 225.0]">
         </property>
     </entity>
     <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="16.5">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="17.35">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[54.58055904522615, 317.8121859296484]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 320.0]">
         </property>
     </entity>
     <entity name="SingleEvent4" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="18.05">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="19.15">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 410.0]">
         </property>
-    </entity>
-    <entity name="Dog" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Dog.wav">
-        </property>
-        <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="playToCompletion" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="onlyOutputOnStop" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 175.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="stop" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="SingleEvent5" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="21">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="22.35">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 510.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[124.58055904522615, 362.8121859296484]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 360.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
@@ -288,22 +202,150 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 550.0]">
         </property>
     </entity>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Dog" class="org.terraswarm.kernel.AccessorOneNashorn">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;http://c0026106.cdn1.cloudfiles.rackspacecloud.com/2fbc94686ceb434a864c0691906bd144_dog.mp3&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 165.0]">
+        </property>
+        <property name="clipUrl" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://c0026106.cdn1.cloudfiles.rackspacecloud.com/2fbc94686ceb434a864c0691906bd144_dog.mp3&quot;">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="clipUrl" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Cat" class="org.terraswarm.kernel.AccessorOneNashorn">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;$clipUrl&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 275.0]">
+        </property>
+        <property name="clipUrl" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://c0026106.cdn1.cloudfiles.rackspacecloud.com/405018831dc74f73a2f9f2e837237629_lion-cub-001.mp3&quot;">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="clipUrl" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Bird" class="org.terraswarm.kernel.AccessorOneNashorn">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;$clipUrl&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[354.140625, 370.0244140625]">
+        </property>
+        <property name="clipUrl" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://c0026106.cdn1.cloudfiles.rackspacecloud.com/65edf7250d824aa08d4bdc438d70bde4_falcon-001.mp3&quot;">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="clipUrl" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
+    <entity name="Mouse?" class="org.terraswarm.kernel.AccessorOneNashorn">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;$clipUrl&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 465.0]">
+        </property>
+        <property name="clipUrl" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://c0026106.cdn1.cloudfiles.rackspacecloud.com/5ea45e41dc624adc813c4d2e466296eb_panther-001.mp3&quot;">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="clipUrl" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[100.0, 225.0]">
+        <vertex name="vertex1" value="[245.0, 225.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[104.58055904522615, 317.8121859296484]">
+        <vertex name="vertex1" value="[245.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -311,16 +353,24 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[120.0, 405.0]">
+        <vertex name="vertex1" value="[250.0, 410.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[120.0, 510.0]">
+        <vertex name="vertex1" value="[255.0, 510.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ClipPlayer.trigger" relation="relation8"/>
     <link port="ClipPlayer.output" relation="relation4"/>
@@ -330,19 +380,11 @@
     <link port="ClipPlayer3.output" relation="relation6"/>
     <link port="ClipPlayer4.trigger" relation="relation13"/>
     <link port="ClipPlayer4.output" relation="relation7"/>
-    <link port="Cat.trigger" relation="relation5"/>
-    <link port="Cat.stop" relation="relation"/>
-    <link port="Bird.trigger" relation="relation6"/>
-    <link port="Bird.stop" relation="relation12"/>
-    <link port="Mouse?.trigger" relation="relation7"/>
-    <link port="Mouse?.stop" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation8"/>
     <link port="Stop.input" relation="relation11"/>
     <link port="SingleEvent2.output" relation="relation9"/>
     <link port="SingleEvent3.output" relation="relation"/>
     <link port="SingleEvent4.output" relation="relation12"/>
-    <link port="Dog.trigger" relation="relation4"/>
-    <link port="Dog.stop" relation="relation9"/>
     <link port="SingleEvent5.output" relation="relation10"/>
     <link port="MicrostepDelay2.input" relation="relation"/>
     <link port="MicrostepDelay2.output" relation="relation3"/>
@@ -352,4 +394,12 @@
     <link port="MicrostepDelay3.output" relation="relation13"/>
     <link port="MicrostepDelay4.input" relation="relation10"/>
     <link port="MicrostepDelay4.output" relation="relation11"/>
+    <link port="Dog.trigger" relation="relation4"/>
+    <link port="Dog.stop" relation="relation9"/>
+    <link port="Cat.trigger" relation="relation5"/>
+    <link port="Cat.stop" relation="relation"/>
+    <link port="Bird.trigger" relation="relation6"/>
+    <link port="Bird.stop" relation="relation12"/>
+    <link port="Mouse?.trigger" relation="relation7"/>
+    <link port="Mouse?.stop" relation="relation10"/>
 </entity>

@@ -54,10 +54,12 @@ PTPACKAGE = kernel
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AccessorOne.java
+	AccessorOne.java \
+	AccessorOneNashorn.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	AccessorOneIcon.xml \
+	AccessorOneNashornIcon.xml \
     XMLJStoMOML.xslt
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
