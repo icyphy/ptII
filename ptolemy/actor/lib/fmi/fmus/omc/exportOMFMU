@@ -42,8 +42,10 @@ cp $omSourcesTemplate/sfmi_runtime.h src/sources/
 cp $omSourcesTemplate/sfmi_runtime.cpp src/sources/
 
 # Generate the c files
-echo "*** Generating C files"
+echo "$0: Generating C files."
+set -x
 (cd src/sources; omc +s +simCodeTarget=sfmi $FMUName.mo;)
+set +x
 mv src/sources/${FMUName}_FMI.cpp src/sources/$FMUName.cpp
 
 mv src/sources/modelDescription.xml src/
@@ -52,7 +54,11 @@ mv src/sources/modelDescription.xml src/
 #       However, using mv HeatConductor_FMI.cpp HeatConductor.c won't work as the compilation fails on ubuntu 
 #       with HeatConductor.c:8:18: fatal error: cstdio: No such file or directory
 #       Hence, we hack it so that dsbuild_fmu expect HeatConductor.cpp and not HeatConductor.c
-sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g' -i src/sources/build_fmu
+
+echo "FIXME: src/build/bild_fmu.bat will probably not work because it expects a $FMUName.c, not $FMUName.cpp"
+
+# Mac OS X sed does not support -i.
+sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g'  < $fmuSourcesTemplate/build_fmu src/sources/ > src/sources/build_fmu
 
 
 # Generate makefile
@@ -65,10 +71,8 @@ echo "" >> src/sources/makefile
 echo "# The rules are in a separate file so that we can easily update them." >> src/sources/makefile
 echo "include fmu.mk" >> src/sources/makefile
 
-# Generate .so files
+echo "$0: Generating shared libraries."
 (cd src/sources; make)
 
-# Create the fmu
+echo "$0: creating $FMUName.fmu"
 (cd src; zip -r ../$FMUName.fmu *)
-
-
