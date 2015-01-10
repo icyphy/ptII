@@ -718,7 +718,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 continue;
             }
             for (Input input : _inputs) {
-                if (!output.dependencies.contains(input)) {
+                // Coverity Scan warned "GC: Suspicious calls to
+                // generic collection methods" because we were calling
+                // contains(input), where input is an instance of the
+                // input inner class, yet dependencies is a Set of
+                // TypedIOPorts.
+                if (!output.dependencies.contains(input.port)) {
                     _declareDelayDependency(input.port, output.port, 0.0);
                     _isStrict = false;
                     if (_debugging) {
