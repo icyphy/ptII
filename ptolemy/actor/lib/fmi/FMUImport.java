@@ -516,30 +516,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     FMI20EventInfo fmi20EventInfoStruct = fmi20ModelInstance.eventInfo;
                     fmi20EventInfo = new FMI20EventInfo.ByReference(
                             fmi20EventInfoStruct);
-                    // fmi20EventInfo = new FMI20EventInfo();
-
-                    // fmi20EventInfo = fmi20ModelInstance.eventInfo;
 
                     // "event iteration"
                     fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
                     fmi20EventInfo.terminateSimulation = (byte) 0;
-                    System.out
-                            .println("FMUImport: ME not supported under FMI-2.0 right now.");
-                    // while ((fmi20EventInfo.newDiscreteStatesNeeded ==
-                    // (byte)1) && !(fmi20EventInfo.terminateSimulation ==
-                    // (byte)1)) {
-                    // // "update discrete states"
-                    // int fmiFlag = ((Integer)
-                    // _fmiNewDiscreteStatesFunction.invoke(Integer.class, new
-                    // Object[] {
-                    // //_fmiComponent,
-                    // fmi20ModelInstance.eventInfo.getPointer()})).intValue();
-                    // _fmiComponent, fmi20EventInfo})).intValue();
-                    // if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                    // throw new
-                    // IllegalActionException("Failed to set a new discrete state.");
-                    // }
-                    // }
+
                     if (fmi20EventInfo.terminateSimulation == (byte) 1) {
                         double currentTimeValue = currentTime.getDoubleValue();
                         System.out.println("model requested termination at t="
@@ -547,10 +528,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         getDirector().finish();
                         return;
                     }
-                    // Can't enter continuous mode here, calling fmi2SetInteger
-                    // will fail
-                    // if we are in the modelContinuousTimeMode
-
+                    // Can't enter continuous mode here, calling
+                    // fmi2SetInteger will fail if we are in the
+                    // modelContinuousTimeMode.
                 }
 
                 // Record the state.
