@@ -9,6 +9,8 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
@@ -32,12 +34,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
         </property>
     </entity>
-    <entity name="QSSIntegrator" class="org.ptolemy.qss.QSSIntegrator">
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 110.0]">
-        </property>
-    </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 442, 500, 344}, maximized=false}">
         </property>
@@ -52,18 +48,22 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.1"/>
-<yRange min="0.0" max="0.09999999999999999"/>
+<xRange min="0.01" max="0.1"/>
+<yRange min="0.01" max="0.09999999999999999"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
+    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="SingleEvent.output" relation="relation2"/>
-    <link port="QSSIntegrator.u" relation="relation2"/>
-    <link port="QSSIntegrator.q" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation"/>
+    <link port="QSSIntegrator.u" relation="relation3"/>
+    <link port="QSSIntegrator.q" relation="relation"/>
 </entity>
