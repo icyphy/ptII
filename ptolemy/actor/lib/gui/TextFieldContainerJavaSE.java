@@ -85,7 +85,7 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
         if (_textfield != null) {
             if (value == null) {
                 // Delete the old text.
-                textfield.setText(null);
+                _textfield.setText(null);
             } else {
                 _textfield.setText(value.toString());
             }
