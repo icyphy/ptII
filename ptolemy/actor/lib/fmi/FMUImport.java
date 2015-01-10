@@ -3278,14 +3278,31 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             try {
                 _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             } catch (IOException ex) {
+                // Try again with the canonical file name.
+                // Also, handle FMU files that are in jar files.
                 File fmu = fmuFile.asFile();
 
+                // If the FMU is in a jar file, then copy it before
+                // loading
                 if (fmu.getPath().contains("jar!/")) {
                     URL fmuURL = ClassUtilities.jarURLEntryResource(fmu
                             .getPath());
-                    fmu = File.createTempFile("FMUImportTemp", ".fmu");
-                    // fmuFile.deleteOnExit();
-                    FileUtilities.binaryCopyURLToFile(fmuURL, fmu);
+                    // Coverity Scan wants us to check the for null here.
+                    if (fmuURL == null) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to parse the fmu file \""
+                                + fmuFileName + "\". In addition, "
+                                + "Failed to find " + fmu
+                                + " as a jar URL entry in the classpath.");
+                    } else {
+                        fmu = File.createTempFile("FMUImportTemp", ".fmu");
+                        // If we are not debugging, then delete the copy
+                        // upon exit.
+                        if (!_debugging) {
+                            fmu.deleteOnExit();
+                        }
+                        FileUtilities.binaryCopyURLToFile(fmuURL, fmu);
+                    }
                 }
 
                 fmuFileName = fmu.getCanonicalPath();
