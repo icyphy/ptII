@@ -441,7 +441,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // Get and configure the QSS integrator.
-        _createQSSIntegrator();
+        _createQSSSolver();
 
         return;
 
@@ -1328,7 +1328,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /** Create a new QSS solver and initialize it for use by this actor.
      *  @exception IllegalActionException If the solver cannot be created or initialized.
      */
-    private final void _createQSSIntegrator() throws IllegalActionException {
+    private final void _createQSSSolver() throws IllegalActionException {
 
         // Get director and check its type.
         Director director = getDirector();
@@ -1557,12 +1557,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // guide.
             _qssSolver.triggerRateEvent();
         } catch (Exception ee) {
-            // Method triggerRateEvt() is declared to throw an Exception, but
-            // this
-            // is for general use. Here, know the exception is a Ptolemy
-            // IllegalActionException.
-            final IllegalActionException iae = (IllegalActionException) ee;
-            throw (iae);
+            // Rethrow as an IllegalActionException.
+            throw new IllegalActionException(this, ee, "Triggering rate event failed.");
         }
 
     }
@@ -1895,7 +1891,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             try {
                 _qssSolver.triggerRateEvent();
             } catch (Exception ee) {
-                throw new IllegalActionException(this, ee.getMessage());
+                throw new IllegalActionException(this, ee, "Triggering rate event failed.");
             }
         }
 
