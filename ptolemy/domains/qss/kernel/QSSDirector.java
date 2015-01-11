@@ -131,7 +131,9 @@ public class QSSDirector extends DEDirector {
 	// of the double type. This allows the expression language to
 	// recognize a return type of QSSToken from a static function
 	// registered in the previous call as a double.
-	BaseType.addType(BaseType.DOUBLE, "qssToken", QSSToken.class);
+
+        // Commented out because it broke the build.
+	//BaseType.addType(BaseType.DOUBLE, "qssToken", QSSToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
