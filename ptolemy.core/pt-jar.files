@@ -8,6 +8,7 @@
 /ptolemy/kernel/Port.java
 /ptolemy/kernel/Relation.java
 /ptolemy/util/ClassUtilities.java
+/ptolemy/util/DoubleUtilities.java
 /ptolemy/util/FileUtilities.java
 /ptolemy/util/StringUtilities.java
 /ptolemy/kernel/attributes/FileAttribute.java
@@ -70,7 +71,6 @@
 /ptolemy/kernel/util/Workspace.java
 # Oct 2014 : from here onwards, entries that used to be in akore
 /ptolemy/actor/AbstractInitializableAttribute.java
-/ptolemy/actor/AbstractReceiver.java
 /ptolemy/actor/Actor.java
 /ptolemy/actor/ActorExecutionAspect.java
 /ptolemy/actor/ActorFiringListener.java
@@ -108,7 +108,6 @@
 /ptolemy/actor/PublisherPort.java
 /ptolemy/actor/QuasiTransparentDirector.java
 /ptolemy/actor/QueueReceiver.java
-/ptolemy/actor/Receiver.java
 /ptolemy/actor/RelationWidthInference.java
 /ptolemy/actor/SubscriberPort.java
 /ptolemy/actor/SubscriptionAggregatorPort.java

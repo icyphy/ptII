@@ -5,7 +5,8 @@ Bundle-SymbolicName: ptolemy.core
 Bundle-Version: 10.1.0.qualifier
 Bundle-Vendor: CHESS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: ptolemy.actor;version="10.1.0",
+Export-Package: org.ptolemy.osgi;version="10.1.0",
+ ptolemy.actor;version="10.1.0",
  ptolemy.actor.parameters;version="10.1.0",
  ptolemy.actor.sched;version="10.1.0",
  ptolemy.actor.util;version="10.1.0",
@@ -24,3 +25,4 @@ Export-Package: ptolemy.actor;version="10.1.0",
  ptolemy.kernel.util;version="10.1.0",
  ptolemy.math;version="10.1.0",
  ptolemy.util;version="10.1.0"
+Import-Package: org.ptolemy.commons;version="10.1.0"

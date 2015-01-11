@@ -32,11 +32,6 @@
 			<locationURI>PT_LOC/ptolemy/actor/AbstractInitializableAttribute.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/actor/AbstractReceiver.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/AbstractReceiver.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/Actor.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/Actor.java</locationURI>
@@ -220,11 +215,6 @@
 			<name>linked-src/ptolemy/actor/QueueReceiver.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/QueueReceiver.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/actor/Receiver.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/Receiver.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/RelationWidthInference.java</name>
