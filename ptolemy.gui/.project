@@ -317,10 +317,5 @@
 			<locationURI>PT_LOC/ptolemy/actor/gui/style/TextStyle.java</locationURI>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>PT_LOC</name>
-			<value>file:/C:/data/build-folders/ptolemy</value>
-		</variable>
-	</variableList>
 </projectDescription>
+      
