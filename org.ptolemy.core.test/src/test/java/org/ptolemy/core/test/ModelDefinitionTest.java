@@ -28,14 +28,20 @@
  */
 package org.ptolemy.core.test;
 
+import java.net.URL;
+
 import junit.framework.TestCase;
 
 import org.ptolemy.testsupport.ModelDefinitionAssertion;
+
+import com.microstar.xml.XmlException;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.Const;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 
 /**
  * A trivial example of a Junit {@link TestCase} to assert the contents of a defined model.
@@ -57,6 +63,37 @@ public class ModelDefinitionTest extends TestCase {
     CompositeActor model = new CompositeActor();
     new Const(model, "const");
     new ModelDefinitionAssertion().expectActor("const").assertModel(model);
+  }
+
+  /**
+   * First test on the updated MomlParser
+   * @throws Exception
+   */
+  public void testModelDefinitionFromMOML() throws Exception {
+    MoMLParser parser = new MoMLParser();
+    URL momlURL = getClass().getResource("/HelloConst.xml");
+    NamedObj model = parser.parse(null, momlURL);
+    new ModelDefinitionAssertion().expectActor("const").assertModel((CompositeActor) model);
+  }
+
+  public void testModelDefinitionFromMOMLWithVersion() throws Exception {
+    MoMLParser parser = new MoMLParser();
+    URL momlURL = getClass().getResource("/HelloConstWithVersion.xml");
+    NamedObj model = parser.parse(null, momlURL);
+    new ModelDefinitionAssertion().expectActor("const").assertModel((CompositeActor) model);
+  }
+
+  public void testModelDefinitionFromMOMLWithInvalidVersion() throws Exception {
+    MoMLParser parser = new MoMLParser();
+    URL momlURL = getClass().getResource("/HelloConstWithInvalidVersion.xml");
+    try {
+      NamedObj model = parser.parse(null, momlURL);
+      new ModelDefinitionAssertion().expectActor("const").assertModel((CompositeActor) model);
+      fail("Parser failed to see invalid version in moml");
+    } catch (XmlException e) {
+      // this is what we need for an invalid version spec in the moml!
+      assertTrue(e.getCause() instanceof IllegalArgumentException);
+    }
   }
 
 }

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Gui support
 Bundle-SymbolicName: ptolemy.gui
-Bundle-Version: 10.0.0.qualifier
+Bundle-Version: 10.1.0.qualifier
 Bundle-Vendor: CHESS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: com.microstar.xml;version="10.1.0",

@@ -67,11 +67,6 @@
 			<locationURI>PT_LOC/ptolemy/moml/MoMLFilter.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/moml/MoMLParser.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/moml/MoMLParser.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/moml/MoMLUndoEntry.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/moml/MoMLUndoEntry.java</locationURI>
@@ -248,4 +243,3 @@
 		</link>
 	</linkedResources>
 </projectDescription>
-      
