@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ptolemy common utilities
+Bundle-SymbolicName: org.ptolemy.commons
+Bundle-Version: 10.1.0.qualifier
+Bundle-Vendor: iSencia
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.ptolemy.commons; version="10.1.0"
