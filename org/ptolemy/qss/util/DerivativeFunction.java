@@ -73,13 +73,19 @@ public interface DerivativeFunction {
     ////                         public methods
 
     /** 
-    * Evaluate the derivative function.
+    * Evaluate the derivative function. An implementation of this function
+    * is expected to fill in the xdot array with values calculated using the
+    * time, xx, and uu input arrays. A caller of this function is expected
+    * to provide an xdot array whose length exactly equals that of the xx input array.
+    * The length of the uu array should equal the value returned by
+    * getInputVariableCount(), and the length of the xx and xdot
+    * arrays should equal the value returned by getStateCount().
     *
     * <p>Expected implementation conventions:</p>
     * <ul>
     * <li>The state variable vector has at least one element.</li>
     * <li>The method does not change any entry in <code>uu</code>.</li>
-    * <li>If the <code>DerivativeFcn</code> does not take any input variables,
+    * <li>If the derivative function does not take any input variables,
     * then <code>uu == null</code>.</li>
     * </ul>
     *
@@ -87,6 +93,7 @@ public interface DerivativeFunction {
     * @param xx The vector of state variables at <code>time</code>.
     * @param uu The vector of input variables at <code>time</code>.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
+    * @return Success (0 for success, else user-defined error code).
     * @throws IllegalActionException If derivatives cannot be evaluated. 
     */
     public int evaluateDerivatives(final Time time, double[] xx, double[] uu,
