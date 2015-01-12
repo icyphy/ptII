@@ -1,7 +1,7 @@
-/*
+/* A quantized-state integrator.
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 1995-2014 The Regents of the University of California.
+Copyright (c) 2014-2015 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -23,8 +23,9 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-Ptolemy II includes the work of others, to see those copyrights, follow
-the copyright link on the splash page or see copyright.htm.
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
+
  */
 package ptolemy.domains.qss.kernel;
 
@@ -151,7 +152,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         assert (_qssSolver.needQuantizationEventIndex() == -1);
 
         // Step time if it will advance the integrator.
-        if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) == -1) {
+        if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
             try {
                 _qssSolver.stepToTime(currentTime);
             } catch (Exception ee) {
@@ -317,7 +318,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         final boolean possibleDiffersFromLast = (null == _lastFireAtTime || possibleFireAtTime
                 .compareTo(_lastFireAtTime) != 0);
         if (null != _lastFireAtTime // Made request before.
-                && _lastFireAtTime.compareTo(currentTime) == 1 // Last request was
+                && _lastFireAtTime.compareTo(currentTime) > 0 // Last request was
                                                             // not used.
                                                             // _lastFireAtTime >
                                                             // currentTime
