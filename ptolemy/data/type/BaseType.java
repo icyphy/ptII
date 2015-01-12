@@ -81,6 +81,26 @@ public abstract class BaseType implements Type {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
+    /** Specify that the given type, with the given name, is implemented
+     *  by the specified token class.  Normally, an end user won't need
+     *  this method, but there is a particular use that can sometimes
+     *  come in handy. Occasionally it is useful for a token that subclasses a
+     *  standard token to be used in place of that standard token.
+     *  For example, you could create a subclass of DoubleToken called
+     *  DoublePlusPlus that includes some extra fields. For that class
+     *  to be acceptable to the expression language, for example as a return
+     *  type from a function, then you must call this method to register that
+     *  class.  In this case, you call it with arguments BaseType.DOUBLE,
+     *  "doublePlusPlus" (or whatever name you choose), and
+     *  DoublePlusPlus.class.
+     *  @param type The type.
+     *  @param name The name of the type.
+     *  @param theClass The implementation (token class) for the type.
+     */
+    public static void addType(Type type, String name, Class theClass) {
+	_addType(type, name, theClass);
+    }
+
     /** Return this, that is, return the reference to this object.
      *  @return A BaseType.
      */
@@ -277,7 +297,7 @@ public abstract class BaseType implements Type {
     public Type one() {
         return this;
     }
-
+    
     /** Return a new type which represents the type that results from
      *  subtracting a token of this type and a token of the given
      *  argument type.
@@ -773,6 +793,9 @@ public abstract class BaseType implements Type {
 
     /** Add entries in this class to index the given name and class to
      *  the given type.
+     *  @param type The type.
+     *  @param name The name of the type.
+     *  @param theClass The implementation (token class) for the type.
      */
     static void _addType(Type type, String name, Class theClass) {
         // Because the private variables are below the public variables
