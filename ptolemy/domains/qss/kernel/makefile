@@ -52,9 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	QSSDirector.java \
-	QSSIntegrator.java \
-	QSSToDouble.java \
-	QSSToken.java
+	QSSIntegrator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	CyPhyCompositeClass.xml \

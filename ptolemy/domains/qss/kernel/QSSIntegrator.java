@@ -38,6 +38,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.SmoothToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -164,9 +165,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 if (q.getWidth() > 0) {
                     double[] model = _qssSolver.getStateModel(0).coeffs;
                     // FIXME: Seems like if the input is available,
-                    // then we could read it now and send out a QSSToken with
+                    // then we could read it now and send out a SmoothToken with
                     // the value and its derivative. How to do that?
-                    q.send(0, new QSSToken(model[0]));
+                    q.send(0, new SmoothToken(model[0]));
                 }
             }
         }
@@ -297,7 +298,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             _firstRound = false;
         } else if (newInput) {
             // New input value provided.
-            // FIXME: If the input is a QSSToken, set the higher order fields of the input model.
+            // FIXME: If the input is a SmoothToken, set the higher order fields of the input model.
             _inputModel.coeffs[0] = inputValue;
             _inputModel.tMdl = currentTime;
             
