@@ -23,15 +23,17 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are&#10;represented by events that indicate significant&#10;changes in value. Hence, a constant signal is&#10;represented by a single event. Here, a constant&#10;input with value 1.0 is integrated.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the ability to create and operate on QSSTokens.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The errorTolerance is set to 0.01, so&#10;the time step ends up being 0.01.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 355.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Although this test passes, the output of the &#10;Const2 actor is not the same as the output of the first.&#10;It is a DoubleToken because the add gets performed&#10;by the DoubleToken class.  DoubleToken will need to&#10;know about qssToken to do that addition correctly&#10;(or delegate it to qssToken).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 270.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
