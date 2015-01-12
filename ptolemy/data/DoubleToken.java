@@ -484,6 +484,10 @@ public class DoubleToken extends ScalarToken {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private double _value;
+    ////                         protected variables               ////
+
+    /** The double value.  Derived constructors may set this variable,
+     *  but after it is set in the constructor it should not be modified.
+     */
+    protected double _value;
 }
