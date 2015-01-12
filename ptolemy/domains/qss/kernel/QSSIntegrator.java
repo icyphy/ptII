@@ -232,7 +232,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // that specification only as a default.
         double tolerance = _director.getErrorTolerance();
         // FIXME: Should the relative tolerance here be different from the absolute tolerance?
-        _qssSolver.setDqTolerance(0, tolerance, tolerance);
+        _qssSolver.setQuantizationTolerance(0, tolerance, tolerance);
         
         // To make sure this actor fires at the start time, request a firing.
         getDirector().fireAtCurrentTime(this);
