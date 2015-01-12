@@ -133,7 +133,7 @@ public class QSSDirector extends DEDirector {
 	// registered in the previous call as a double.
 
         // Commented out because it broke the build.
-	//BaseType.addType(BaseType.DOUBLE, "qssToken", QSSToken.class);
+	BaseType.addType(BaseType.DOUBLE, "qssToken", QSSToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
