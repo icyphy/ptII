@@ -209,8 +209,8 @@ import ptolemy.actor.util.Time;
  * In general, they should be called before its first use.
  * However, they may also be called during an integration:</p>
  * <ul>
- * <li>{@link #setDqTolerance(int, double, double)}</li>
- * <li>{@link #setDqTolerances(double, double)}</li>
+ * <li>{@link #setQuantizationTolerance(int, double, double)}</li>
+ * <li>{@link #setQuantizationTolerances(double, double)}</li>
  * <li>{@link #setCurrentSimulationTime(Time)}</li>
  * <li>{@link #setStateValue(int, double)}</li>
  * <li>{@link #setQuantizationEventTimeMaximum(Time)}</li>
@@ -606,41 +606,47 @@ public abstract class QSSBase {
 
 
     /** Set the parameters used to determine the quantum for a state.
-     *
-     * <p>The quantum for each state variable gets calculated as</p>
-     * <p><i>dq[j] = max{absTol, relTol*abs{x[j]}}</i></p>
-     *
+     * <p>
+     * The quantum for each state variable gets calculated as</p>
+     * </p><p>
+     *       q[j] = max{Ta, Tr*abs{x[j]}}
+     * </p><p>
      * <p>where</p>
      * <ul>
-     * <li><i>dq[j]</i>, quantum for element <i>j</i>.</li>
-     * <li><i>x[j]</i>, value of element <i>j</i> the last time a new state
-     * model was formed.</li>
+     * <li> q[j] is the quantum for element j,</li>
+     * <li> Ta is the absoluteTolerance,</li>
+     * <li> Tr is the relativeTolerance, and </li>
+     * <li> x[j] is the value of element j the last time a new state
+     *      model was formed.</li>
      * </ul>
      *
      * <p>This method sets the tolerances used to find the quantum.
      * It also updates the quantum to reflect the new tolerances.</p>
      *
-     * @param stateIdx The state index, 0 &le; stateIdx &lt; this.getStateCt().
-     * @param absTol The absolute tolerance, absTol &gt; 0 [units of <i>x[j]</i>].
-     * @param relTol The relative tolerance, relTol &gt; 0 [1].
+     * @param stateIndex The state index, 0 &le; stateIdx &lt; this.getStateCt().
+     * @param absoluteTolerance The absolute tolerance, which is required to be &gt; 0 [units of <i>x[j]</i>].
+     * @param relativeTolerance The relative tolerance, which is required to be &ge; 0 [1].
      */
-    public final void setDqTolerance(final int stateIdx, final double absTol, final double relTol) {
+    public final void setQuantizationTolerance(
+	    final int stateIndex, final double absoluteTolerance, final double relativeTolerance) {
 
         // Check inputs.
-        if( absTol <= 0 ) {
-            throw new IllegalArgumentException("Require absTol>0; got " +absTol);
+        if( absoluteTolerance <= 0 ) {
+            throw new IllegalArgumentException("Require absoluteTolerance > 0; got "
+        	    + absoluteTolerance);
         }
-        if( relTol < 0 ) {
-            throw new IllegalArgumentException("Require relTol>=0; got " +relTol);
+        if( relativeTolerance < 0 ) {
+            throw new IllegalArgumentException("Require relativeTolerance >= 0; got "
+        	    + relativeTolerance);
         }
 
         // Set status to note future needs.
-        _need_quantEvts[stateIdx] = true;
+        _need_quantEvts[stateIndex] = true;
 
         // Change tolerances.
-        _dqAbsTols[stateIdx] = absTol;
-        _dqRelTols[stateIdx] = relTol;
-        _dqs[stateIdx] = findDq(stateIdx);
+        _dqAbsTols[stateIndex] = absoluteTolerance;
+        _dqRelTols[stateIndex] = relativeTolerance;
+        _dqs[stateIndex] = findDq(stateIndex);
 
     }  
 
@@ -648,17 +654,16 @@ public abstract class QSSBase {
     /** Set the parameters used to determine the quantum for all states.
      *
      * <p>Apply the same tolerances to all the states the integrator predicts.
-     * For details, see method {@link #setDqTolerance(int, double, double)}.</p>
+     * For details, see method {@link #setQuantizationTolerance(int, double, double)}.</p>
      *
-     * @param absTol The absolute tolerance, absTol &gt; 0 [units of <i>x[j]</i>].
-     * @param relTol The relative tolerance, relTol &ge; 0 [1].
+     * @param absoluteTolerance The absolute tolerance, which is required to be &gt; 0 [units of <i>x[j]</i>].
+     * @param relativeTolerance The relative tolerance, which is required to be &ge; 0 [1].
      */
-    public final void setDqTolerances(final double absTol, final double relTol) {
-
+    public final void setQuantizationTolerances(
+	    final double absoluteTolerance, final double relativeTolerance) {
         for( int ii=0; ii<_stateCt; ++ii ) {
-            setDqTolerance(ii, absTol, relTol);
+            setQuantizationTolerance(ii, absoluteTolerance, relativeTolerance);
         }
-
     }
 
 
@@ -1276,7 +1281,7 @@ public abstract class QSSBase {
      * internal, continuous state model used by the integrator.</p>
      *
      * <p>To change the parameters used to find the quantum, use
-     * method {@link #setDqTolerance(int, double, double)} or method {@link #setDqTolerances(double, double)}.</p>
+     * method {@link #setQuantizationTolerance(int, double, double)} or method {@link #setQuantizationTolerances(double, double)}.</p>
      *
      * <p>The user should never have to call this method directly.
      * The QSS integrator invokes it as needed.</p>
@@ -1636,11 +1641,11 @@ public abstract class QSSBase {
             // catches all necessary possibilities.
             dt = Double.POSITIVE_INFINITY;
         } else {
-            final double absTol = 1e-15;
-            final double relTol = 1e-9;
-            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst+dq, absTol, relTol);
+            final double absoluteTolerance = 1e-15;
+            final double relativeTolerance = 1e-9;
+            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst+dq, absoluteTolerance, relativeTolerance);
             assert( dtAddDq >= 0 );
-            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst-dq, absTol, relTol);
+            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst-dq, absoluteTolerance, relativeTolerance);
             assert( dtSubDq >= 0 );
             if( dtAddDq>0
                 &&
@@ -1874,18 +1879,18 @@ public abstract class QSSBase {
         final double dqRelTolDefault = 1e-16;
         _dqAbsTols = new double[_stateCt];
         _dqRelTols = new double[_stateCt];
-        setDqTolerances(dqAbsTolDefault, dqRelTolDefault);
+        setQuantizationTolerances(dqAbsTolDefault, dqRelTolDefault);
 
         // TODO: The default tolerances used above are SWAGS.  Should do some testing to
         // figure out good default values.
         //   Note that the current FMUQSS code in Ptolemy essentially sets relTol=1e-4,
-        // and sets absTol based on a "nominal" value of the state:
-        // absTol=relTol*_fmiModelDescription.continuousStates.get(i).nominal;
+        // and sets absoluteTolerance based on a "nominal" value of the state:
+        // absoluteTolerance = relativeTolerance * _fmiModelDescription.continuousStates.get(i).nominal;
         //   A relative tolerance of 1e-4 seems extremely generous/loose.
         //   The method of setting the absolute tolerance seems good, under the
         // assumption you know a "typical" or "nominal" value for the state variable.
         // Here, you don't, so need a good default.
-        //   That said, users could be encouraged to set absTol based on the nominal value.
+        //   That said, users could be encouraged to set absoluteTolerance based on the nominal value.
         // Perhaps provide a method that does this explicitly.
 
         // TODO: Consider passing in tolerances as arguments to this method.
@@ -1919,9 +1924,7 @@ public abstract class QSSBase {
         for( int ii=0; ii<_stateCt; ++ii ) {
             _need_predQuantEvtTimes[ii] = true;
         }
-
     }  
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected and private variables
