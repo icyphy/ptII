@@ -451,6 +451,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Get and configure the QSS integrator.
         _createQSSSolver();
+        
+        // To make sure this actor fires at the start time, request a firing.
+        getDirector().fireAtCurrentTime(this);
 
         return;
 
