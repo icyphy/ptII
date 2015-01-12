@@ -338,6 +338,11 @@ public class DoubleToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
+	// If the right argument is a SmoothToken, then delegate to it so that
+	// derivatives are preserved.
+	if (rightArgument instanceof SmoothToken) {
+	    return ((SmoothToken)rightArgument)._add(this);
+	}
         double sum = _value + ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(sum);
     }
@@ -466,6 +471,11 @@ public class DoubleToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
+	// If the right argument is a SmoothToken, then delegate to it so that
+	// derivatives are preserved.
+	if (rightArgument instanceof SmoothToken) {
+	    return ((SmoothToken)rightArgument)._multiply(this);
+	}
         double product = _value * ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(product);
     }
@@ -478,6 +488,12 @@ public class DoubleToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
+	// If the right argument is a SmoothToken, then delegate to it so that
+	// derivatives are preserved.
+	if (rightArgument instanceof SmoothToken) {
+	    SmoothToken negative = ((SmoothToken)rightArgument).negate();
+	    return negative._add(this);
+	}
         double difference = _value
                 - ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(difference);

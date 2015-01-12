@@ -88,6 +88,7 @@ JSRCS = \
 	RecordToken.java \
 	ScalarToken.java \
 	ShortToken.java \
+	SmoothToken.java \
 	StringToken.java \
 	Token.java \
 	TokenUtilities.java \
