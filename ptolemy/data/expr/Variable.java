@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ptolemy.actor.TypeAttribute;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -311,6 +312,32 @@ ValueListener {
 
         if (!_valueListeners.contains(listener)) {
             _valueListeners.add(listener);
+        }
+    }
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  This overrides
+     *  the base class so that if the attribute is an instance of
+     *  TypeAttribute, then it sets the type of the port.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute instanceof TypeAttribute) {
+            Type type = ((TypeAttribute) attribute).getType();
+
+            if (type != null) {
+                // Avoid incrementing the workspace version if the type has
+                // not changed.
+                if (!type.equals(_declaredType)) {
+                    setTypeEquals(type);
+                }
+            }
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
