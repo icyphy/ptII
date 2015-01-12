@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
    use this derivative information to make that information available to other
    actors that can use it. Such actors should declare their input ports to
    be of type double, but when they receive an input token, they should
-   check (using instanceof) whether the token in a SmoothToken, and if so,
+   check (using instanceof) whether the token is a SmoothToken, and if so,
    access these derivatives using the {@link #derivativeValues()} method.
    <p>
    Note that if two SmoothTokens are added or subtracted, then the derivatives also
@@ -68,8 +68,8 @@ import ptolemy.kernel.util.IllegalActionException;
    <pre>
       (xy)' = x'y + xy'
    </pre>
-   If a SmoothToken is multiplied by a DoubleToken, then its derivatives are
-   assumed to be zero.
+   If a SmoothToken is multiplied by a DoubleToken, then the derivatives 
+   of the DoubleToken are assumed to be zero.
    <p>
    Division works similarly:
    <pre>
@@ -351,7 +351,7 @@ public class SmoothToken extends DoubleToken {
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an SmoothToken
+     *  the type of the argument is a SmoothToken
      *  @param divisor The token to divide this token by.
      *  @return A new SmoothToken containing the result.
      */
