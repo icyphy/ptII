@@ -1,6 +1,6 @@
 /* A token for QSS integration that contains a double and a derivative.
 
-   Copyright (c) 2014 The Regents of the University of California.
+   Copyright (c) 2014-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -26,6 +26,8 @@
 
 */
 package ptolemy.domains.qss.kernel;
+
+import java.util.Arrays;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -56,13 +58,18 @@ import ptolemy.kernel.util.IllegalActionException;
    Its derivatives, if any, are ignored.
    FIXME: Is that the right thing to do?
 
-   @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee
+   @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee, Christopher Brooks
    @version $Id$
    @since Ptolemy II 10
    @Pt.ProposedRating Red (mw)
    @Pt.AcceptedRating Red (mw)
 */
 public class QSSToken extends DoubleToken {
+    /** Construct a QSSToken with value 0.0 and no derivatives.
+     */
+    public QSSToken() {
+        super();
+    }
 
     /** Construct a QSSToken with the specified value and no derivatives.
      *  @param value The specified value.
@@ -84,6 +91,29 @@ public class QSSToken extends DoubleToken {
     	_derivatives = derivatives;
     }
 
+    /** Construct a QSSToken from the specified string.
+     *  @param init The initialization string, which is in a format
+     *  suitable for java.lang.Double.parseDouble(String).
+     *  @exception IllegalActionException If the Token could not
+     *   be created with the given String.
+     */
+    public QSSToken(String init) throws IllegalActionException {
+        if (init == null || init.equals("nil")) {
+            throw new IllegalActionException(notSupportedNullNilStringMessage(
+                    "QSSToken", init));
+        }
+
+        // It would be nice to call super(init) here, but we can't, so
+        // we copy the code from the parent.
+
+        // FIXME: Parsing the array of derivatives is not yet supported.
+        try {
+            _value = Double.parseDouble(init);
+        } catch (NumberFormatException e) {
+            throw new IllegalActionException(null, e, "Failed to parse \""
+                    + init + "\" as a number.");
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -136,6 +166,33 @@ public class QSSToken extends DoubleToken {
     	}
     }
     
+    /** Return the hash code for the QSSToken object. If two QSSToken
+     *  objects have the same double value and their derivatives
+     *  have the same hashCode, then the two QSSTokens will have 
+     *  the same hashcode.
+     *  @return The hash code for this QSSToken object.
+     */
+    @Override
+    public int hashCode() {
+        // See http://www.technofundo.com/tech/java/equalhash.html
+        int hashCode = super.hashCode();
+        if (_derivatives != null) {
+            hashCode = 31 * hashCode + Arrays.hashCode(_derivatives);
+        }
+        return hashCode;
+    }
+
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
+    @Override
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        return this == QSSToken.NIL;
+    }
+
     /** Return a QSSToken with the specified value and no derivatives.
      *  This function gets registered when the {@link QSSDirector}
      *  class is loaded, after which it becomes available in the
@@ -188,6 +245,18 @@ public class QSSToken extends DoubleToken {
     		+ derivatives.toString()
     		+ ")";
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
+    public static final QSSToken NIL = new QSSToken(Double.NaN);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -244,19 +313,25 @@ public class QSSToken extends DoubleToken {
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an QSSToken
+     *  the type of the argument is an QSSToken.  If this token
+     *
      *  @param divisor The token to divide this token by.
      *  @return A new QSSToken containing the result.
      */
     @Override
     protected ScalarToken _divide(ScalarToken divisor) {
-    	final double div = ((DoubleToken) divisor).doubleValue();
-        final double quotient = super.doubleValue() / div;
-        double[] der = new double[_derivatives.length];
-        for(int i = 0; i < _derivatives.length; i++) {
-            der[i] = _derivatives[i]/div;
+        if (_derivatives == null || _derivatives.length == 0) {
+            return super._divide(divisor);
+        } else {
+            final double div = ((DoubleToken) divisor).doubleValue();
+            final double quotient = super.doubleValue() / div;
+
+            double[] der = new double[_derivatives.length];
+            for (int i = 0; i < _derivatives.length; i++) {
+                der[i] = _derivatives[i]/div;
+            }
+            return new QSSToken(quotient, der);
         }
-        return new QSSToken(quotient, der);
     }
 
     /** Test for ordering of the values of this Token and the argument
