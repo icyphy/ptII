@@ -726,7 +726,7 @@ public class JavaScript extends TypedAtomicActor {
      *   a function argument in a Runnable).
      *  @return A new TimerTask.
      */
-    public TimerTask newTimerTask(Runnable func) {
+    public TimerTask newTimerTask(final Runnable func) {
 	return new TimerTask() {
 	    public void run() {
 		synchronized(JavaScript.this) {
