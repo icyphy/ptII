@@ -210,7 +210,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{595.0, 440.0}">
         </property>
     </entity>
-    <entity name="QSSToDouble" class="ptolemy.domains.qss.kernel.QSSToDouble">
+    <entity name="SmoothToDouble" class="ptolemy.actor.lib.conversions.SmoothToDouble">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 440.0}">
         </property>
     </entity>
@@ -235,7 +235,7 @@
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen2.T&quot;,x=330.0,y=430.0}, tail={id=&quot;QSSToDouble.input&quot;,x=465.0,y=440.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen2.T&quot;,x=330.0,y=430.0}, tail={id=&quot;SmoothToDouble.input&quot;,x=465.0,y=440.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -243,7 +243,7 @@
         </property>
         <vertex name="vertex1" value="{535.0, 440.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSToDouble.output&quot;,x=465.0,y=440.0}, tail={id=&quot;relation7.vertex1&quot;,x=535.0,y=440.0}, points={} },{ head={id=&quot;Test_T.input&quot;,x=595.0,y=440.0}, tail={id=&quot;relation7.vertex1&quot;,x=535.0,y=440.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SmoothToDouble.output&quot;,x=465.0,y=440.0}, tail={id=&quot;relation7.vertex1&quot;,x=535.0,y=440.0}, points={} },{ head={id=&quot;Test_T.input&quot;,x=595.0,y=440.0}, tail={id=&quot;relation7.vertex1&quot;,x=535.0,y=440.0}, points={} } }">
         </property>
     </relation>
     <link port="TIn.output" relation="relation2"/>
@@ -258,6 +258,6 @@
     <link port="tankOpen2.inlet_p" relation="relation3"/>
     <link port="tankOpen2.T" relation="relation5"/>
     <link port="Test_T.input" relation="relation7"/>
-    <link port="QSSToDouble.input" relation="relation5"/>
-    <link port="QSSToDouble.output" relation="relation7"/>
+    <link port="SmoothToDouble.input" relation="relation5"/>
+    <link port="SmoothToDouble.output" relation="relation7"/>
 </entity>
