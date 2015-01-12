@@ -29,9 +29,7 @@ package ptolemy.data;
 
 import java.util.Arrays;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.ScalarToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -139,6 +137,19 @@ public class SmoothToken extends DoubleToken {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         static initializer                ////
+
+    static {
+         // Specify that the QSSToken class is an alternate implementation
+         // of the double type. This allows the expression language to
+         // recognize a return type of QSSToken from a static function
+         // registered in the previous call as a double.
+
+         // Commented out because it broke the build.
+         BaseType.addType(BaseType.DOUBLE, "smoothToken", SmoothToken.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the derivatives in the token as a double[], or null if there are
@@ -232,9 +243,8 @@ public class SmoothToken extends DoubleToken {
     }
 
     /** Return a SmoothToken with the specified value and no derivatives.
-     *  This function gets registered when the {@link QSSDirector}
-     *  class is loaded, after which it becomes available in the
-     *  expression language.
+     *  This function gets registered by PtParser, after which it becomes
+     *  available in the expression language.
      *  @param value The value.
      */
     public static SmoothToken smoothToken(double value) {
@@ -242,9 +252,8 @@ public class SmoothToken extends DoubleToken {
     }
 
     /** Return a SmoothToken with the specified value and derivatives.
-     *  This function gets registered when the {@link QSSDirector}
-     *  class is loaded, after which it becomes available in the
-     *  expression language.
+     *  This function gets registered by PtParser, after which it becomes
+     *  available in the expression language.
      *  @param value The value.
      *  @param derivatives An array containing the first derivative,
      *   the second derivative, etc.
