@@ -23,17 +23,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the ability to create and operate on QSSTokens.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the ability to create and operate on SmoothTokens.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Although this test passes, the output of the &#10;Const2 actor is not the same as the output of the first.&#10;It is a DoubleToken because the add gets performed&#10;by the DoubleToken class.  DoubleToken will need to&#10;know about qssToken to do that addition correctly&#10;(or delegate it to qssToken).">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 270.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -43,7 +35,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{qssToken(2.0, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(2.0, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -51,7 +43,7 @@
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="qssToken(1.0, {1.0}) + 1.0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="smoothToken(1.0, {1.0}) + 1.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -63,7 +55,9 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{qssToken(2.0, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(2.0, {1.0})}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -71,7 +65,7 @@
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0 + qssToken(1.0, {1.0})">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0 + smoothToken(1.0, {1.0})">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
