@@ -1354,7 +1354,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (absTol < absTolMin) {
                 absTol = absTolMin;
             }
-            _qssSolver.setDqTolerance(ii, absTol, relTol);
+            _qssSolver.setQuantizationTolerance(ii, absTol, relTol);
         }
 
         // Tell integrator to quantize.
