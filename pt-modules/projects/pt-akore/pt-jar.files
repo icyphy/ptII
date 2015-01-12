@@ -334,3 +334,5 @@
 # May
 /ptolemy/actor/TimeRegulator.java
 /ptolemy/util/DoubleUtilities.java
+#
+/ptolemy/data/SmoothToken.java
