@@ -1365,8 +1365,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             } else {
                 ////////////////////////////////////////////
                 //// co-simulation version
-                _fmiDoStepFunction = _fmiModelDescription
+                try {
+                    _fmiDoStepFunction = _fmiModelDescription
                         .getFmiFunction("fmiDoStep");
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
+                            "The Co-Simulation doStep() function was not found? "
+                            + "This can happen if for some reason the FMU was "
+                            + "loaded as a Model Exchange FMU, but is being run as a Co-Simulation FMU."
+                            + "The actor's modelExchange parameter: " + modelExchange.getExpression()
+                            + ", _fmiModelDescription.modelExchange: " + _fmiModelDescription.modelExchange);
+                }
 
                 if (_fmiVersion < 2.0) {
                     try {

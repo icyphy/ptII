@@ -173,6 +173,11 @@ public class FMUFile {
     public static FMIModelDescription parseFMUFile(String fmuFileName)
             throws IOException {
 
+        // FIXME: JModelica FMUs can have both CoSimulation and
+        // ModelExchange NodeLists, see CoupledClutches.xml.  
+        // The caching is indexed on the file name, which means
+        // that we cannot parse both a CS fmu and a ME fmu with
+        // the same file name.
         FMIModelDescription result = _modelDescriptions.get(fmuFileName);
         if (result != null) {
             return result;

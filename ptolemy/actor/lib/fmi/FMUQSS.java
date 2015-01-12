@@ -70,6 +70,7 @@ import ptolemy.domains.qss.kernel.QSSDirector;
 import ptolemy.domains.qss.kernel.QSSToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -399,6 +400,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 terminateSimulation, nominalsOfContinuousStatesChanged,
                 valuesOfContinuousStatesChanged, nextEventTimeDefined,
                 nextEventTime);
+
+        if (_fmiNewDiscreteStatesFunction == null) {
+            throw new InternalErrorException(this, null,
+                    "_fmiNewDiscreteStatesFunction was null, indicating that the fmiNewDiscreteStates() function was not found? "
+                    + "This can happen if for some reason the FMU file was imported into Ptolemy II as a Co-Simulation FMU."
+                    + "The actor's modelExchange parameter: " + modelExchange
+                    + ", _fmiModelDescription.modelExchange: " + _fmiModelDescription.modelExchange);
+        }
 
         // FIXME: We assume no event iteration.
         fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(

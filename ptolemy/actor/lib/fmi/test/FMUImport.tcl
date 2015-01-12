@@ -124,13 +124,17 @@ test FMUImport-1.1 {Test out importFMU} {
 proc importFMU {fmuFileName} {
     set e1 [sdfModel 5]
     set fmuFile [java::call ptolemy.util.FileUtilities nameToFile $fmuFileName [java::null]]
-    set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParmeter]
+    set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParameter]
     $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
 
-    # Look for FMI-1.0 ME fmus that are named *ME1.fmu
+    # Look for fmus that are to be imported as Model Exchange fmus
     set modelExchange false
-    if [regexp {ME1.fmu$} $fmuFile] {
-        set modelExchange true
+    set modelExchangeFMURegularExpressions [list {ME1.fmu$} {ME20.fmu$} {tankOpen.fmu$}]
+    foreach regex $modelExchangeFMURegularExpressions {
+        if [regexp $regex [$fmuFile toString]] {
+            puts "FMUImport.tcl: [$fmuFile toString] is to be imported as a modelExchange fmu."
+            set modelExchange true
+        }
     }
 
     java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 $fmuFileParameter $e1 100.0 100.0 $modelExchange
