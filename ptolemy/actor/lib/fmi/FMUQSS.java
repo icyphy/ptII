@@ -62,12 +62,12 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.qss.kernel.QSSDirector;
-import ptolemy.domains.qss.kernel.QSSToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -942,7 +942,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /** Populate the specified model with data from the specified token.
-     *  If the token is a QSSToken, then insert in the model any derivatives
+     *  If the token is a SmoothToken, then insert in the model any derivatives
      *  that might be given in the token, and set any remaining derivatives
      *  required by the model to zero. Otherwise, set any derivatives
      *  required by the model to zero.
@@ -954,7 +954,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private void _getModelFromToken(ModelPolynomial ivMdl, Token token)
 	    throws IllegalActionException {
         
-        // Convert to a DoubleToken. If token is a QSSToken or DoubleToken,
+        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
         // then the convert method does nothing and just returns the token.
         // Otherwise, it attempts to convert it to a DoubleToken, and throws
         // an exception if such conversion is not possible.
@@ -964,8 +964,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         ivMdl.coeffs[0] = doubleToken.doubleValue();
         
         double[] derivatives = null;
-        if (doubleToken instanceof QSSToken) {
-            derivatives = ((QSSToken)doubleToken).derivativeValues();
+        if (doubleToken instanceof SmoothToken) {
+            derivatives = ((SmoothToken)doubleToken).derivativeValues();
         }
 	final int ncoeffs = ivMdl.coeffs.length;
 	for (int i = 1; i < ncoeffs; i++) {
@@ -1481,8 +1481,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Look for a token.
             if (input.port.hasToken(0)) {
                 final Token token = input.port.get(0);
-                if (token instanceof QSSToken) {
-                    final QSSToken qssTok = (QSSToken) token;
+                if (token instanceof SmoothToken) {
+                    final SmoothToken qssTok = (SmoothToken) token;
                     initialValue = qssTok.doubleValue();
                 } else if (token instanceof DoubleToken) {
                     initialValue = ((DoubleToken) token).doubleValue();
@@ -1490,7 +1490,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     throw new IllegalActionException(this, String.format(
                             "Input port %s is connected to a port which has"
                                     + " a type which is not an instance "
-                                    + "of QSSToken or DoubleToken.",
+                                    + "of SmoothToken or DoubleToken.",
                             input.port.getName()));
                 }
             } else {
@@ -1678,17 +1678,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             IllegalActionException {
         // Send values (Qss1)
         if (ord == 0) {
-            prt.send(0, new QSSToken(val[0]));
+            prt.send(0, new SmoothToken(val[0]));
         }
         // Send values and higher order derivatives (Qss2)
         else if (ord == 1) {
             final double[] der = { val[1] };
-            prt.send(0, new QSSToken(val[0], der));
+            prt.send(0, new SmoothToken(val[0], der));
         }
         // Send values and higher order derivatives (Qss3)
         else if (ord == 2) {
             final double[] der = { val[1], val[2] };
-            prt.send(0, new QSSToken(val[0], der));
+            prt.send(0, new SmoothToken(val[0], der));
         } else {
             throw new IllegalActionException(
                     "The order of the Qss integration method used: "

@@ -69,6 +69,7 @@ JSRCS = \
 	PolarToCartesian.java \
 	PolarToComplex.java \
 	Round.java \
+	SmoothToDouble.java \
 	StringToBoolean.java \
 	StringToDate.java \
 	StringToDouble.java \

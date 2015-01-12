@@ -128,6 +128,10 @@
      </property>
   </entity>
 
+  <entity name="SmoothToDouble"
+          class="ptolemy.actor.lib.conversions.SmoothToDouble">
+  </entity>
+
   <entity name="StringToBoolean"
           class="ptolemy.actor.lib.conversions.StringToBoolean">
   </entity>
