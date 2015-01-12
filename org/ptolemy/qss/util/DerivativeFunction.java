@@ -100,15 +100,17 @@ public interface DerivativeFunction {
             final double[] xdot) throws IllegalActionException;
 
     /**
-     * Evaluate directional derivative function.
+     * Evaluate directional derivative function. An implementation of this function
+     * is expected to return the directional derivative of a state variable with index idx 
+     * calculated using the xx_dot, and uu_dot input arrays. A caller of this function is expected
+     * to provide an xx_dot array, and an uu_dot array. The length of the uu_dot array should equal 
+     * the value returned by getInputVariableCount(), and the length of the xx_dot arrays should equal 
+     * the value returned by getStateCount().
      *
-     * <p>
-     * Prescribed by interface <code>DerivativeFcn</code>.
-     * </p>
-     *
-     * @param idx The continuous state index.
-     * @param xx_dot The vector of first state derivatives with respect to <code>time</code>
-     * @param uu_dot The vector of first input derivatives with respect to <code>time</code>
+     * @param idx The state index.
+     * @param xx_dot The vector of state derivatives.
+     * @param uu_dot The vector of input derivatives.
+     * @return The directional derivative (see fmi2GetDirectionalDerivatives in FMI specification).
      * @throws IllegalActionException If directional derivatives cannot be evaluated.
      */
     public double evaluateDirectionalDerivatives(int idx, double[] xx_dot,
