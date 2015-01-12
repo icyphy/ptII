@@ -204,21 +204,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Evaluate directional derivative function.
+     * Evaluate directional derivative.
      *
-     * @param stateIndex The state index.
-     * @param stateVariableDerivatives The vector of state derivatives.
-     * @param inputVariableDerivatives The vector of input derivatives.
-     * @return Success (0 for success, else user-defined error code).
-     * @exception IllegalActionException If thrown while getting the input directional derivative.
+     * @param stateDerivIndex The state derivative index.
+     * @param stateVariableDerivatives The state derivatives.
+     * @param inputVariableDerivatives The input derivatives.
+     * @return The directional derivative (see fmi2GetDirectionalDerivatives in FMI specification).
+     * @exception IllegalActionException If thrown while computing the directional derivative.
      */
-    public final double evaluateDirectionalDerivatives(final int stateIndex,
+    public final double evaluateDirectionalDerivatives(final int stateDerivIndex,
             final double[] stateVariableDerivatives, final double[] inputVariableDerivatives)
             throws IllegalActionException {
         // Get second derivative of current input
-        return (_evaluateInputDirectionalDerivatives(stateIndex, inputVariableDerivatives)
+        return (_evaluateInputDirectionalDerivatives(stateDerivIndex, inputVariableDerivatives)
                 + _evaluateStateDirectionalDerivatives(
-                        stateIndex, stateVariableDerivatives));
+                        stateDerivIndex, stateVariableDerivatives));
     }
 
     /**
@@ -755,11 +755,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Evaluate input directional derivative function.
+     * Evaluate directional derivative with respect to inputs.
      *
      * @param idx The input index.
-     * @param uu_dot The input derivative.
-     * @return Success (0 for success, else user-defined error code).
+     * @param uu_dot The input derivatives.
+     * @return The directional derivative with respect to inputs.
      * @exception IllegalActionException If an error when getting directional derivatives.
      */
     private double _evaluateInputDirectionalDerivatives(final int idx,
@@ -794,12 +794,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Evaluate state directional derivative function.
+     * Evaluate directional derivative with respect to states.
      *
-     * 
-     * @param idx The state index.
-     * @param xx_dot The state derivative.
-     * @return Success (0 for success, else user-defined error code).
+     * @param idx The state derivative index.
+     * @param xx_dot The state derivatives.
+     * @return The directional derivative with respect to states.
      * @exception IllegalActionException If an error when getting directional derivatives.
      */
     private double _evaluateStateDirectionalDerivatives(final int idx,
