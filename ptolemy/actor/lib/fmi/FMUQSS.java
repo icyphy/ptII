@@ -404,9 +404,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (_fmiNewDiscreteStatesFunction == null) {
             throw new InternalErrorException(this, null,
                     "_fmiNewDiscreteStatesFunction was null, indicating that the fmiNewDiscreteStates() function was not found? "
-                    + "This can happen if for some reason the FMU file was imported into Ptolemy II as a Co-Simulation FMU."
-                    + "The actor's modelExchange parameter: " + modelExchange
-                    + ", _fmiModelDescription.modelExchange: " + _fmiModelDescription.modelExchange);
+                    + "This can happen if for some reason the FMU file was imported into Ptolemy II as a Co-Simulation FMU instead of as a Model Exchange FMU."
+                    + "The actor's modelExchange parameter is: " + modelExchange
+                    + ", the value of the modelExchange field in the _fmiModelDescription is: " + _fmiModelDescription.modelExchange);
         }
 
         // FIXME: We assume no event iteration.
