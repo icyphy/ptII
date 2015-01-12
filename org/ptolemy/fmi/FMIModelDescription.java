@@ -542,14 +542,14 @@ public class FMIModelDescription {
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
         Long valueReference = Long.parseLong(attributes.getNamedItem("index")
-                .getNodeValue());
+                .getNodeValue()) - 1;
 
         Node dependencyNode = attributes.getNamedItem("dependencies");
         if (dependencyNode != null
                 && dependencyNode.getNodeValue().trim().length() != 0) {
             String[] dependencies = dependencyNode.getNodeValue().trim()
                     .split(" ");
-
+                        
             for (int i = 0; i < modelVariables.size(); i++) {
                 if (modelVariables.get(i).valueReference == valueReference) {
                     modelVariables.get(i).directDependency.clear();
@@ -557,8 +557,8 @@ public class FMIModelDescription {
 
                         for (int k = 0; k < modelVariables.size(); k++) {
                             try {
-                                if (modelVariables.get(k).valueReference == Long
-                                        .parseLong(dependencies[j])
+                                if (modelVariables.get(k).valueReference == (Long
+                                        .parseLong(dependencies[j]) - 1)
                                         && modelVariables.get(k).causality
                                                 .equals(Causality.input)) {
                                     modelVariables.get(i).directDependency
