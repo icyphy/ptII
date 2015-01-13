@@ -491,7 +491,9 @@ public class SmoothToken extends DoubleToken {
             final int key = ((Integer)entry.getKey()).intValue();
             final double value = ((Double)entry.getValue()).doubleValue();
             if (key != 0){
-               der[key] = value;
+                // Key is the order of the derivative. The first derivative
+                // is in der[0]. Hence, we use key-1 for the index.
+                der[key-1] = value;
             }
         }
         return new SmoothToken(val, der);
