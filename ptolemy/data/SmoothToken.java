@@ -79,6 +79,9 @@ import ptolemy.kernel.util.IllegalActionException;
    The second derivative of a multiplication or division is obtained by
    applying the above rules to x' and y' rather than to x and y.
    Higher-order derivatives are similarly obtained.
+   <p>
+   By default, instances of SmoothToken have no more than three derivatives.
+   This can be changed using the {@link #limitOrder(int)} method.
 
    @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee
    @version $Id$
@@ -111,7 +114,13 @@ public class SmoothToken extends DoubleToken {
     public SmoothToken(double value, 
             double[] derivatives) {
     	super(value);
-    	_derivatives = derivatives;
+    	if (derivatives != null && derivatives.length > _maxOrder){
+    		_derivatives = new double[_maxOrder];
+    		System.arraycopy(derivatives, 0, _derivatives, 0, _maxOrder);
+    	}
+    	else{
+    		_derivatives = derivatives;
+    	}
     }
 
     /** Construct a SmoothToken from the specified string.
@@ -230,6 +239,20 @@ public class SmoothToken extends DoubleToken {
         return this == SmoothToken.NIL;
     }
 
+    /** Set the maximum order of the token.
+     * 
+     * If maxOrder = 2, the token will have one value, the first
+     * and the 2nd derivative.
+     * 
+     * By default, tokens will have maxOrder = 3.
+     * 
+     * @param maxOrder The maximum order of the token.
+     */
+    static void limitOrder(int maxOrder){
+        assert maxOrder >= 0: "maxOrder must be non-zero.";
+        _maxOrder = maxOrder;
+    }
+    
     /** Return a new token that is the negative of this one.
      *  @return The negative, where all the derivatives are also negated.
      */
@@ -488,7 +511,6 @@ public class SmoothToken extends DoubleToken {
             }
         }
         // Create a SmoothToken with the return value.
-        // FIXME: Add a static integer that can be used to limit the maximum length of the polynomial.
         double val = p.get(0);
         double[] der = new double[(n1-1) + (n2-1)];
         for (Map.Entry<Integer, Double> entry : p.entrySet()) {
@@ -504,21 +526,6 @@ public class SmoothToken extends DoubleToken {
     }
 
     
-    /** Return the derivative of the product xy, given x, y, x', and y', implementing
-     *  the product rule of calculus:
-     *  <pre>
-     *    (xy)' = x'y + xy'
-     *  </pre>
-     * @param x Multiplicand.
-     * @param y Multiplicand.
-     * @param xdot Derivative of the multiplicand.
-     * @param ydot Derivative of the multiplicand.
-     * @return Derivative of the product.
-     */
-    protected double _derivativeOfTheProduct(double x, double y, double xdot, double ydot) {
-	return xdot*y + x*ydot;
-    }
-
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
      *  the type of the argument is a DoubleToken.
@@ -564,6 +571,14 @@ public class SmoothToken extends DoubleToken {
             return new SmoothToken(difference, _derivatives);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    /* Maximum order of the token. 
+     * 
+     * A token with _maxOrder=3 will have a value and three derivatives.
+     */
+    static int _maxOrder = 3;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
