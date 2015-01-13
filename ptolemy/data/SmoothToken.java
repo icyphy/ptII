@@ -486,7 +486,7 @@ public class SmoothToken extends DoubleToken {
         // Create a SmoothToken with the return value.
         // FIXME: Add a static integer that can be used to limit the maximum length of the polynomial.
         double val = p.get(0);
-        double[] der = new double[d1.length + d2.length];
+        double[] der = new double[n1 + n2];
         for (Map.Entry<Integer, Double> entry : p.entrySet()) {
             final int key = ((Integer)entry.getKey()).intValue();
             final double value = ((Double)entry.getValue()).doubleValue();
