@@ -63,6 +63,15 @@ test SmoothToken-1.1 {Create a single derivative} {
 ######################################################################
 ####
 # 
+test SmoothToken-1.1b {Create a derivative that is higher than maxOrder} {
+    set d1b [java::new {double[]} {4} {1.0 2.0 3.0 4.0}]
+    set s1b [java::new ptolemy.data.SmoothToken 1.0 $d1b]
+    $s1b toString
+} {smoothToken(1.0, {1.0,2.0,3.0})}
+
+######################################################################
+####
+# 
 test SmoothToken-1.2 {Test adding a double} {
     set d1 [java::new ptolemy.data.DoubleToken 1.0]
     set result [$s1 add $d1]
@@ -147,13 +156,72 @@ test SmoothToken-1.11 {Test multiplying in reverse} {
 ######################################################################
 ####
 # 
-test SmoothToken-1.8 {Test multiplying two SmoothTokens of different lengths} {
+test SmoothToken-1.12 {Test multiplying two SmoothTokens of different lengths} {
     # s1 is smoothToken(1.0, {1.0})
     # s2 is smoothToken(2.0, {2.0, 3.0})
     set result [$s1 multiply $s2]
     $result toString
-} {smoothToken(2.0, {4.0,7.0})}
+} {smoothToken(2.0, {4.0,5.0,3.0})}
 
+######################################################################
+####
+# 
+test SmoothToken-1.13 {Test 1.12 with reversed arguments} {
+    # s1 is smoothToken(1.0, {1.0})
+    # s2 is smoothToken(2.0, {2.0, 3.0})
+    set result [$s2 multiply $s1]
+    $result toString
+} {smoothToken(2.0, {4.0,5.0,3.0})}
+
+######################################################################
+####
+# 
+test SmoothToken-1.14 {Test multiplying two SmoothTokens where one has no derivative} {
+    set s3 [java::new ptolemy.data.SmoothToken 10.0]
+    set d2 [java::new {double[]} {2} {3.0 4.0}]
+    set s4 [java::new ptolemy.data.SmoothToken 2.0 $d2]   
+    set result [$s3 multiply $s4]
+    $result toString
+} {smoothToken(20.0, {30.0,40.0})}
+
+######################################################################
+####
+# 
+test SmoothToken-1.15 {Test 1.14 with reversed arguments} {
+    set result [$s4 multiply $s3]
+    $result toString
+} {smoothToken(20.0, {30.0,40.0})}
+
+
+######################################################################
+####
+# 
+test SmoothToken-1.16 {Test multiplying two SmoothTokens where none has a derivative} {
+    set s3 [java::new ptolemy.data.SmoothToken 10.0]
+    set s5 [java::new ptolemy.data.SmoothToken 2.0]    
+    set result [$s3 multiply $s5]
+    $result toString
+} {20.0}
+
+######################################################################
+####
+# 
+test SmoothToken-1.17 {Test 1.16 with reversed arguments} {
+    set result [$s5 multiply $s3]
+    $result toString
+} {20.0}
+
+
+######################################################################
+####
+# 
+test SmoothToken-1.18 {Test multiplying two SmoothTokens whose product has an order higher then _maxOrder} {
+    # s2 is smoothToken(2.0, {2.0, 3.0})
+    # s2*s2 gives a forth order Token, but the 4th derivative is discharged
+    # because _maxOrder=3 by default
+    set result [$s2 multiply $s2]
+    $result toString
+} {smoothToken(4.0, {8.0,16.0,12.0})}
 
 
 
@@ -729,4 +797,8 @@ test SmoothToken-18.0 {call rightShift and get coverage in the parent class} {
     catch {$p rightShift 1} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: rightShift operation not supported between ptolemy.data.SmoothToken '16.16' and ptolemy.data.IntToken '1'}}
+
+
+
+
 
