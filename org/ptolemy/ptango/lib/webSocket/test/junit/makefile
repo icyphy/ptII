@@ -1,4 +1,4 @@
-# Makefile for the JUnit Websocket tests.
+# Makefile for the JUnit webSocket tests.
 #
 # @Authors: Christopher Brooks
 #
@@ -79,7 +79,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # auto/Cookies.xml and auto/OptimizationAdvisor.xml use the HTMLPageExporter
 # actor, which requires the jsoup jar
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)" "$(JAVA)" -Xmx1500m $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.ptango.lib.websocket.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTANGO_JARS)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)" "$(JAVA)" -Xmx1500m $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.ptolemy.ptango.lib.webSocket.test.junit.JUnitTclTest)
 
 test_java: jclass
 
