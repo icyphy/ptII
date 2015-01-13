@@ -228,7 +228,7 @@ import ptolemy.actor.util.Time;
  * <ul>
  * <li>{@link #needQuantizationEventIndex()}</li>
  * <li>{@link #needQuantizationEventIndexes(boolean[])}</li>
- * <li>{@link #triggerQuantizationEvent()}</li>
+ * <li>{@link #triggerQuantizationEvent(int)}</li>
  * <li>{@link #triggerQuantizationEvents(boolean)}</li>
  * <li>{@link #needRateEvent()}</li>
  * <li>{@link #triggerRateEvent()}</li>
@@ -844,7 +844,7 @@ public abstract class QSSBase {
      * This method returns the index, if any, of such states.</p>
      *
      * <p>The user should trigger the quantization-event, e.g., using
-     * method {@link #triggerQuantizationEvent()}.</p>
+     * method {@link #triggerQuantizationEvent(int)}.</p>
      *
      * <p>TODO: Put under unit test.</p>
      *
@@ -908,7 +908,7 @@ public abstract class QSSBase {
      * method {@link #triggerRateEvent()}.</p>
      *
      * <p>The proper sequence in which to call method {@link #triggerRateEvent()}
-     * and method {@link #triggerQuantizationEvent()} is a fraught topic.
+     * and method {@link #triggerQuantizationEvent(int)} is a fraught topic.
      * In general, should requantize all states first, then trigger rate-events.
      * Also, after trigger a rate-event, get new predicted quantization-time.
      * TODO: Write up a higher-level description of the problem.</p>
@@ -937,7 +937,7 @@ public abstract class QSSBase {
 
     /** Form new external, quantized state models.
      *
-     * <p>Convenience method to call method {@link #triggerQuantizationEvent()} on
+     * <p>Convenience method to call method {@link #triggerQuantizationEvent(int)} on
      * all states predicted by this integrator.</p>
      *
      * <p>Can apply only to those states that are marked for requantization,
@@ -1018,10 +1018,10 @@ public abstract class QSSBase {
      * <p>Note the state model of interest here is the
      * internal, continuous state model.
      * In order to re-form the external, quantized state model, use
-     * method {@link #triggerQuantizationEvent()}.</p>
+     * method {@link #triggerQuantizationEvent(int)}.</p>
      *
      * <p>The proper sequence in which to call method {@link #triggerRateEvent()}
-     * and method {@link #triggerQuantizationEvent()} is a fraught topic.
+     * and method {@link #triggerQuantizationEvent(int)} is a fraught topic.
      * In general, should requantize all states first, then trigger rate-events.
      * Also, after trigger a rate-event, get new predicted quantization-time.
      * TODO: Write up a higher-level description of the problem.</p>
@@ -1093,7 +1093,7 @@ public abstract class QSSBase {
     // next quantization-event time.
     //   Another way to do this might be to add a flag to triggerRateEvt(),
     // telling it to requantize first if necessary.  And a corresponding flag
-    // to triggerQuantizationEvent(), telling it to handle rate-event at same time if
+    // to triggerQuantizationEvent(int), telling it to handle rate-event at same time if
     // necessary.
 
 
@@ -1345,7 +1345,7 @@ public abstract class QSSBase {
 
     /** Form a new external, quantized state model (QSS-specific).
      *
-     * <p>See comments to method {@link #triggerQuantizationEvent()}.</p>
+     * <p>See comments to method {@link #triggerQuantizationEvent(int)}.</p>
      *
      * <p>The implementation of this "worker" method depends on the
      * specific member of the QSS family.</p>
