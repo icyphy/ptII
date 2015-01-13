@@ -254,6 +254,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     System.identityHashCode(this), currentTime.toString(),
                     currentMicrostep));
         }
+        
+        // Initialize the input variable models.
+        if (_firstRound) {
+            _initializeQSSIntegratorInputVariables(currentTime);
+            _firstRound = false;
+        }
 
         // Assume do not need a quantization-event.
         assert (_qssSolver.needQuantizationEventIndex() == -1);
@@ -504,13 +510,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     "FMUQSS.postfire() on id{%d} at time %s, microstep %d",
                     System.identityHashCode(this), currentTime.toString(),
                     currentMicrostep));
-        }
-        // FIXME: Moved _initializeQSSIntegratorInputVariables from postfire to fire. 
-        // _initializeQSSIntegratorInputVariables invokes _triggerQuantizationEvents, 
-        // which produces outputs. Outputs should not be produced in postfire
-        if (_firstRound) {
-            _initializeQSSIntegratorInputVariables(currentTime);
-            _firstRound = false;
         }
 
         // Update the internal, continuous state models if necessary.
