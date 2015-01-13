@@ -260,7 +260,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _initializeQSSIntegratorInputVariables(currentTime);
             _firstRound = false;
         }
-
+        
         // Assume do not need a quantization-event.
         assert (_qssSolver.needQuantizationEventIndex() == -1);
 
@@ -1370,7 +1370,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Tell integrator to quantize.
         // Expect this to fail-- integrator should want to do a rate-event also,
         // but don't yet have input variable models.
-        _triggerQuantizationEvents(currentTime, false); // TODO: Currently set
+        //_triggerQuantizationEvents(currentTime, false); // TODO: Currently set
         // forceAll==false, to test code,
         // but should be true, to indicate
         // intent.
