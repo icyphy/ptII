@@ -457,16 +457,20 @@ public class SmoothToken extends DoubleToken {
         final double[] d2 = t2.derivativeValues();
         // Number of polynomial coefficients.
         // If SmoothToken only has a value, then n=1.
-        final int n1 = (d1 == null) ? 1:d1.length; 
-        final int n2 = (d2 == null) ? 1:d2.length;
+        final int n1 = (d1 == null) ? 1:(d1.length+1); 
+        final int n2 = (d2 == null) ? 1:(d2.length+1);
         
         // Build arrays whose elements are the coefficients of the polynomials.        
-        double[] p1 = new double[1+n1];
-        double[] p2 = new double[1+n2];
+        double[] p1 = new double[n1];
+        double[] p2 = new double[n2];
         p1[0] = t1.doubleValue();
         p2[0] = t2.doubleValue();
-        System.arraycopy(d1, 0, p1, 1, n1);
-        System.arraycopy(d2, 0, p2, 1, n2);        
+        if (n1>1){
+            System.arraycopy(d1, 0, p1, 1, n1-1);
+        }
+        if (n2>1){
+            System.arraycopy(d2, 0, p2, 1, n2-1);
+        }
     
         // Map that stores the exponents and the coefficients of the product
         Map<Integer, Double> p = new HashMap<Integer, Double>();
@@ -486,7 +490,7 @@ public class SmoothToken extends DoubleToken {
         // Create a SmoothToken with the return value.
         // FIXME: Add a static integer that can be used to limit the maximum length of the polynomial.
         double val = p.get(0);
-        double[] der = new double[n1 + n2];
+        double[] der = new double[(n1-1) + (n2-1)];
         for (Map.Entry<Integer, Double> entry : p.entrySet()) {
             final int key = ((Integer)entry.getKey()).intValue();
             final double value = ((Double)entry.getValue()).doubleValue();
