@@ -28,6 +28,8 @@
 package ptolemy.data;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -424,33 +426,8 @@ public class SmoothToken extends DoubleToken {
                 return new SmoothToken(product, result);
             }
             // Both have derivatives.
-            int max = _derivatives.length;
-            if (max < derivatives.length) {
-        	max = derivatives.length;
-            }
-            double[] result = new double[max];
-            double xdot = _derivatives[0];
-            double ydot = derivatives[0];
-    	    result[0] = _derivativeOfTheProduct(x, y, xdot, ydot);
-            for (int i = 1; i < max; i++) {
-        	// For the next higher-order derivatives, replace x with xdot,
-        	// y with ydot, and get the next higher-order derivatives.
-        	// FIXME: This is not correct! Fails for derivatives two or higher.
-        	x = xdot;
-        	y = ydot;
-        	if (i+1 < _derivatives.length) {
-        	    xdot = _derivatives[i+1];
-        	} else {
-        	    xdot = 0.0;
-        	}
-        	if (i+1 < derivatives.length) {
-        	    ydot = derivatives[i+1];
-        	} else {
-        	    ydot = 0.0;
-        	}
-        	result[i] = _derivativeOfTheProduct(x, y, xdot, ydot);
-            }
-            return new SmoothToken(product, result);
+            // Multiply the tokens as if they were Taylor polynomials.
+            return _multiplyPolynomials(new SmoothToken(_value, _derivatives), (SmoothToken)rightArgument);
         } else {
             // Assume the y derivatives are zero, so the returned result just
             // has the derivatives of this token scaled by y.
@@ -464,6 +441,62 @@ public class SmoothToken extends DoubleToken {
             return new SmoothToken(product, result);
         }
     }
+    
+    /** Multiplies two tokens including their derivatives.
+     *  This method assumes that t1 and t2 both have derivatives, possibly 
+     *  of different order.
+     * 
+     * @param t1 First token.
+     * @param t2 Second token.
+     * @return The product of the polynomials
+     */
+    protected static SmoothToken _multiplyPolynomials(SmoothToken t1, 
+                                                      SmoothToken t2){
+        // Get the values and derivatives of the tokens
+        final double[] d1 = t1.derivativeValues();
+        final double[] d2 = t2.derivativeValues();
+        // Number of polynomial coefficients.
+        // If SmoothToken only has a value, then n=1.
+        final int n1 = (d1 == null) ? 1:d1.length; 
+        final int n2 = (d2 == null) ? 1:d2.length;
+        
+        // Build arrays whose elements are the coefficients of the polynomials.        
+        double[] p1 = new double[1+n1];
+        double[] p2 = new double[1+n2];
+        p1[0] = t1.doubleValue();
+        p2[0] = t2.doubleValue();
+        System.arraycopy(d1, 0, p1, 1, n1);
+        System.arraycopy(d2, 0, p2, 1, n2);        
+    
+        // Map that stores the exponents and the coefficients of the product
+        Map<Integer, Double> p = new HashMap<Integer, Double>();
+        // Multiply the polynomials, and store the result in p
+        for(int i1=0; i1 < p1.length; i1++){
+            for(int i2=0; i2 < p2.length; i2++){
+                final int exponent = i1+i2;
+                final double coefficient = p1[i1]*p2[i2];
+                if(p.containsKey(exponent)){
+                    p.put(exponent, p.get(exponent) + coefficient);
+                }
+                else{
+                    p.put(exponent, coefficient);
+                }
+            }
+        }
+        // Create a SmoothToken with the return value.
+        // FIXME: Add a static integer that can be used to limit the maximum length of the polynomial.
+        double val = p.get(0);
+        double[] der = new double[d1.length + d2.length];
+        for (Map.Entry<Integer, Double> entry : p.entrySet()) {
+            final int key = ((Integer)entry.getKey()).intValue();
+            final double value = ((Double)entry.getValue()).doubleValue();
+            if (key != 0){
+               der[key] = value;
+            }
+        }
+        return new SmoothToken(val, der);
+    }
+
     
     /** Return the derivative of the product xy, given x, y, x', and y', implementing
      *  the product rule of calculus:
