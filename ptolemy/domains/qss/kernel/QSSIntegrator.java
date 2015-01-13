@@ -78,9 +78,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         xInit.setTypeEquals(BaseType.DOUBLE);
         xInit.setExpression("0.0");
 
-        quantum = new Parameter(this, "quantum");
-        quantum.setTypeEquals(BaseType.DOUBLE);
-        quantum.setExpression("0.01");
+        errorTolerance = new Parameter(this, "errorTolerance");
+        errorTolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,8 +94,11 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     /** Initial value of the state. */
     public Parameter xInit;
 
-    /** Quantum. */
-    public Parameter quantum;
+    /** If specified, the error tolerance to use for this integrator.
+     *  This is a double, and by default is not given, which means
+     *  that the error tolerance is specified by the director.
+     */
+    public Parameter errorTolerance;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -152,8 +154,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // Assume do not need a quantization-event.
         assert (_qssSolver.needQuantizationEventIndex() == -1);
 
-        // Step time if it will advance the integrator.
         if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
+            // The current simulation time is ahead of the solvers time.
+            // Catch up by integrating to current time.
             try {
                 _qssSolver.stepToTime(currentTime);
             } catch (Exception ee) {
@@ -167,9 +170,19 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                     // FIXME: Seems like if the input is available,
                     // then we could read it now and send out a SmoothToken with
                     // the value and its derivative. How to do that?
+                    // Also, we should be sending the whole model.
                     q.send(0, new SmoothToken(model[0]));
                 }
             }
+        } else if (_firstRound) {
+            // If this is the first firing, then produce an output even
+            // if there has not been any change by a quantum.
+            double[] model = _qssSolver.getStateModel(0).coeffs;
+            // FIXME: Seems like if the input is available,
+            // then we could read it now and send out a SmoothToken with
+            // the value and its derivative. How to do that?
+            // Also, we should be sending the whole model.
+            q.send(0, new SmoothToken(model[0]));
         }
     }
 
@@ -230,9 +243,13 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         _qssSolver.setStateValue(0, xInitValue);
 
         // Set the error tolerance.
-        // FIXME: The director is specifying the tolerance here, but this actor should use
-        // that specification only as a default.
         double tolerance = _director.getErrorTolerance();
+        // If there is a locally-specified tolerance, use that instead.
+        DoubleToken toleranceToken = (DoubleToken)errorTolerance.getToken();
+        if (toleranceToken != null) {
+            tolerance = toleranceToken.doubleValue();
+        }
+        
         // FIXME: Should the relative tolerance here be different from the absolute tolerance?
         _qssSolver.setQuantizationTolerance(0, tolerance, tolerance);
         
@@ -240,6 +257,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         getDirector().fireAtCurrentTime(this);
         
         _firstRound = true;
+        _lastFireAtTime = null;
     }
 
     /** Return false, indicating that this actor can fire even if its
@@ -339,95 +357,6 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the derivative (slope) at the current time with the given
-     *  input value. In this base class, the input is assumed to be the
-     *  derivative, so this method just returns its argument. Derived
-     *  classes may provide some other function to provide a derivative.
-     *  @param input The input value.
-     *  @return The current derivative.
-     */
-    protected double _derivative(double input) {
-        // NOTE: Invoke FMU to get derivatives in a derived class.
-        return input;
-    }
-
-    /** Return the next time at which a line with the given slope
-     *  will rise or fall from the specified starting point to the
-     *  specified reference plus or minus the specified quantum.
-     *  If the specified slope is smaller than the value of
-     *  {@link #_SMALL}, then return Time.POSITIVE_INFINITY.
-     *  If the starting point has already hit or crossed
-     *  the specified reference plus or minus the specified
-     *  quantum, then return the current time.
-     *  @param slope The derivative.
-     *  @param start The starting point.
-     *  @param reference The reference point.
-     *  @param quantum The quantum.
-     *  @param currentTime The current time.
-     *  @return The next event time.
-     */
-    protected Time _nextCrossingTime(double slope, double start,
-            double reference, double quantum, Time currentTime) {
-        if (slope > _SMALL) {
-            // Slope is positive.
-            double threshold = reference + quantum;
-            if (start >= threshold) {
-                return currentTime;
-            } else {
-                return currentTime.add((threshold - start) / slope);
-            }
-        } else if (slope < -_SMALL) {
-            // Slope is negative.
-            double threshold = reference - quantum;
-            if (start <= threshold) {
-                return currentTime;
-            } else {
-                return currentTime.add((threshold - start) / slope);
-            }
-        } else {
-            // Slope is small.
-            return Time.POSITIVE_INFINITY;
-        }
-    }
-
-    /** Return the next output value, which is the reference plus the quantum
-     *  if the slope is positive, and the reference minus the quantum otherwise.
-     *  @param slope The slope.
-     *  @param reference The reference.
-     *  @param quantum The quantum.
-     *  @return The reference plus or minus the quantum.
-     */
-    protected double _nextOutputValue(double slope, double reference,
-            double quantum) {
-        if (slope > 0.0) {
-            return reference + quantum;
-        } else {
-            return reference - quantum;
-        }
-    }
-
-    /** Return the argument quantized to a multiple of quantum given by
-     *  the {@link #quantum} parameter.
-     *  @param x The value to quantize.
-     *  @return A quantized value.
-     *  @exception IllegalActionException If the quantum parameter cannot
-     *   be evaluated.
-     */
-    protected double _quantize(double x) throws IllegalActionException {
-        double quantumValue = ((DoubleToken) quantum.getToken()).doubleValue();
-        return (Math.floor(x / quantumValue)) * quantumValue;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // FIXME: Is "SMALL" adequate to check whether slope is zero?
-    /** A small number, below which the slope is considered to be zero. */
-    protected static final double _SMALL = 10E-9;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
