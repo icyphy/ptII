@@ -114,6 +114,7 @@ import ptolemy.util.MessageHandler;
    <pre>
       var fire = function() {... function body ...};
       exports.fire = fire;
+   </pre>
    <p>
    Usually, you will need to explicitly set the types
    of the output ports. Alternatively, you can enable backward
@@ -410,6 +411,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** If debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stderr.
+     *  @param message The message
      */
     public void error(String message) {
 	if (_debugging) {
@@ -710,6 +712,7 @@ public class JavaScript extends TypedAtomicActor {
     
     /** If debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stdout.
+     *  @param message The message
      */
     public void log(String message) {
 	if (_debugging) {
@@ -872,7 +875,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public class PortOrParameterProxy {
         /** Construct a proxy.
-         *  @param port The object to be proxied.
+         *  @param portOrParameter The object to be proxied.
          *  @throws IllegalActionException If the argument is neither a port nor a parameter.
          */
         protected PortOrParameterProxy(NamedObj portOrParameter) throws IllegalActionException {
@@ -914,7 +917,7 @@ public class JavaScript extends TypedAtomicActor {
 
         /** Expose the send() method of the port.
          *  @param channelIndex The channel index.
-         *  @param token The token to send.
+         *  @param data The token to send.
          *  @throws IllegalActionException If this is a proxy for a parameter or if sending fails.
          *  @throws NoRoomException If there is no room at the destination.
          */
@@ -970,6 +973,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         /** Set the current value of the parameter.
+         *  @param token The value of the parameter.   
          *  @throws IllegalActionException If the set fails or if this is a proxy for a port.
          */
         public void set(Token token) throws IllegalActionException {
@@ -1005,6 +1009,9 @@ public class JavaScript extends TypedAtomicActor {
         
 	// FIXME: These are not converted from Rhino yet.
 
+        /** Return the class name.
+         *  @return the class name.
+         */
         public String getClassName() {
             return getClass().getName();
         }

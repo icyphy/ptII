@@ -70,6 +70,10 @@ public final class DoubleUtilities {
         return longBitsToDouble(significand | ONE_BITS);
     }
 
+    /** Convert a BigInteger to a double using a fast implementation.
+     *  @param x The BigInteger to be converted.
+     *  @return the value of the BigInteger as a double.
+     */
     public static double bigToDouble(BigInteger x) {
         // This is an extremely fast implementation of BigInteger.doubleValue().  JDK patch pending.
         BigInteger absX = x.abs();

@@ -181,6 +181,12 @@ public class DateConstructor extends TypedAtomicActor {
      */
     public PortParameter timeInMillis;
     
+    /** Use the time in milliseconds. The default value is false,
+     *  which means that the timeAsLongValue will be set according the
+     *  year, month, day etc and adjusted according to the precision.
+     *  If useTimeInMillis is true, then the value of timeAsLongValue
+     *  will be the time in milliseconds.
+     */
     public Parameter useTimeInMillis;
 
     /** The precision of the date. The precision defaults to

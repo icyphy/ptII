@@ -96,12 +96,13 @@ public class VertxBusHelper {
     }
     
     /** Publish text data onto vertx bus. 
-     * @param msg A text message to be sent.
+     * @param address The address.
+     * @param message A text message to be sent.
      */
-    public void publish(String address, String msg) {
+    public void publish(String address, String message) {
         JsonObject json = new JsonObject().putString("type", "publish")
                 .putString("address", address)
-                .putString("body", msg);
+                .putString("body", message);
         try {
             System.out.println("S " + json);
             _sendTextFrame(json);
@@ -115,9 +116,9 @@ public class VertxBusHelper {
      * @param address The address on the bus that should be suscribed to.
      */
     public void registerHandler(String address) {
-        JsonObject msg = new JsonObject().putString("type",
+        JsonObject message = new JsonObject().putString("type",
                 "register").putString("address", address);
-        _webSocket.writeTextFrame(msg.encode());
+        _webSocket.writeTextFrame(message.encode());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,9 +179,9 @@ public class VertxBusHelper {
           });
     }
     
-    private void _sendTextFrame(JsonObject msg) throws IllegalActionException {
+    private void _sendTextFrame(JsonObject message) throws IllegalActionException {
         if (_webSocket != null) {
-            _webSocket.writeTextFrame(msg.encode());
+            _webSocket.writeTextFrame(message.encode());
         }
     }
     
@@ -216,8 +217,8 @@ public class VertxBusHelper {
     private class DataHandler implements Handler<Buffer> {
         @Override
         public void handle(Buffer buff) {
-            String msg = buff.toString();
-            JsonObject received = new JsonObject(msg);
+            String message = buff.toString();
+            JsonObject received = new JsonObject(message);
             try {
                 Object obj = _engine.eval(_namespaceName);
 

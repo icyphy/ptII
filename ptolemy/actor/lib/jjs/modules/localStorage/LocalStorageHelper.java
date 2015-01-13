@@ -1,6 +1,6 @@
-/* AnExecute a script in JavaScript.
+/* Execute a script in JavaScript.
 
-   Copyright (c) 2014 The Regents of the University of California.
+   Copyright (c) 2014-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -42,13 +42,13 @@ import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 //// LocalStorageHelper
 
 /**
-   A helper class for the LocalStorage module in JavaScript.
-   
-   @author Hokeun Kim
-   @version $Id$
-   @since Ptolemy II 11.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (bilung)
+ *  A helper class for the LocalStorage module in JavaScript.
+ *  
+ *  @author Hokeun Kim
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Red (bilung)
  */
 public class LocalStorageHelper {
     
@@ -56,12 +56,13 @@ public class LocalStorageHelper {
      * Construct a LocalStorageHelper using the container's name and the actors' display name
      * for the directory name. Also use current time to make the directory name unique.
      * 
+     * @param persistenceDirectory The default Mqtt file persistance
      * @param containerActorName Container's name plus the actors' display name
      * @throws MqttPersistenceException
      */
-    public LocalStorageHelper(String persistenceDir, String containerActorName) throws MqttPersistenceException {
-        // FIXME if you can find a better directory
-        _mqttLocalStorage = new MqttDefaultFilePersistence(persistenceDir);
+    public LocalStorageHelper(String persistenceDirectory, String containerActorName) throws MqttPersistenceException {
+        // FIXME if you can find a better directory.
+        _mqttLocalStorage = new MqttDefaultFilePersistence(persistenceDirectory);
         try {
             _mqttLocalStorage.close();
         }
@@ -87,6 +88,7 @@ public class LocalStorageHelper {
      * @param key The key for the value to be returned.
      * @return The string value associated with the key.
      * @throws MqttPersistenceException
+     * @see #setItem(String, String)
      */
     public String getItem(String key) throws MqttPersistenceException {
         if (_mqttLocalStorage.containsKey(key)) {
@@ -105,6 +107,7 @@ public class LocalStorageHelper {
      * @param value The string value associated with the key.
      * @throws MqttPersistenceException
      * @throws IOException
+     * @see #getItem(String)
      */
     public void setItem(String key, String value) throws MqttPersistenceException, IOException {
         byte[] bytes = value.getBytes();
