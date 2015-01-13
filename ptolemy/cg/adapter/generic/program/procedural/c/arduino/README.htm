@@ -7,7 +7,25 @@
   </head>
   <body>
     <html>
-      <h1>Getting started with the Aduino under Mac OS X</h1>
+      <h1>Getting started with the Aduino</h1>
       <p>See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun</a></p>
+
+      <p>The code generator looks for <code>/usr/local/arduino/hardware/tools/avr/bin/avr-g++</code>.</p>
+
+      <ul>
+	<li>Downlaod the Arduino Software<a href="http://arduino.cc/en/Main/Software">http://arduino.cc/en/Main/Software</a></li>
+	<li>As root, untar it in /usr/local and create a link:
+	  <pre>
+	    sudo -i
+	    cd /usr/local
+	    tar -zxf /var/lib/jenkins/src/arduino-1.5.8-linux64.tgz 
+	    ln -s arduino-1.5.8 arduino
+	  </pre>
+	  <li>Generate sample code:
+	    <pre>
+	      $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.arduino $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
+	    </pre>
+	  </li>
+      </ul>
   </body>
 </html>
