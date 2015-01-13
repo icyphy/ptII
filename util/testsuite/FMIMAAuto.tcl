@@ -59,7 +59,7 @@ proc test_fmima_cg {model} {
     set args [java::new {String[]} 3 \
 		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.fmima" $model]]
 
-    puts "------------------ Invoking the ptolemy/cg Functional Mock-up Unit Master Algoritm (FMIMA)  generator by calling GenericCodeGenerator.generateCode(args).  To replicate: \$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima $relativeFilename "
+    puts "------------------ Invoking the ptolemy/cg Functional Mock-up Unit Master Algoritm (FMIMA)  generator by calling GenericCodeGenerator.generateCode(args).  To replicate: \$PTII/bin/ptcg -language fmima $relativeFilename "
     test "Auto" "Automatic Java ptolemy/cg test in file $relativeFilename" {
 	# Remove files from ~/cg so as to force building
 	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
