@@ -737,6 +737,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII11.0.devel/util" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/vergil.jnlp.in" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/vergilBCVTB.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.devel/vergilCyPhySim.jnlp.in" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/vergilDSP.jnlp.in" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/vergilHyVisual.jnlp.in" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/vergilPtiny.jnlp.in" targetdir="$INSTALL_PATH"/>
