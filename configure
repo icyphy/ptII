@@ -1664,7 +1664,7 @@ Optional Packages:
   --with-cal=DIR       use ptCal.jar from DIR,
                           defaults to \$PTII/lib
   --with-checkstyle=DIR    use Checkstyle from DIR,
-                          defaults to $PTII/vendors/checkstyle-5.7
+                          defaults to $PTII/vendors/checkstyle-6.2
   --with-chic=DIR       use chic.jar from DIR,
                           defaults to \$PTII/lib
   --with-colt=DIR       use colt.jar from DIR,
@@ -5036,7 +5036,7 @@ fi
 # We only need to look for CHECKSTYLE if this directory is present
 CHECKSTYLE_USER_DIR="$PTII/ptolemy/actor/test/junit"
 
-CHECKSTYLE_VERSION=-6.1.1
+CHECKSTYLE_VERSION=-6.2
 CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION.jar"
 
 if test ! -d "$CHECKSTYLE_USER_DIR"; then
