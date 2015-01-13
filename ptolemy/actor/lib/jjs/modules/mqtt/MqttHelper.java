@@ -67,6 +67,7 @@ public class MqttHelper {
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port number of the broker server.
      * @param host The host name of the broker server.
+     * @param clientId The id of the client, whiich is passed to MqttAsyncClient();
      * @throws MqttException
      */
     public MqttHelper(ScriptEngine engine, ScriptObjectMirror currentObj,

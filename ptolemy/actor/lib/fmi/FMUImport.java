@@ -1730,6 +1730,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         return _fmiModelDescription.modelVariables;
     }
 
+    /** Return the value reference for a variable.
+     *  @param variable The name of the variable.
+     *  @return the value reference for the variable.
+     */
     public long getValueReference(String variable) {
         for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
             if (_fmiModelDescription.modelVariables.get(i).name
@@ -1741,9 +1745,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /**
-     * Return the type of a FMU port
+     * Return the type of a FMU port.
      *
-     * @param port
+     * @param port The name of the port.
      * @return the type of the port as string
      */
     public String getTypeOfPort(String port) {
@@ -3235,8 +3239,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /**
-     * Update the parameters listed in the modelDescription.xml file contained
-     * in the zipped file named by the <i>fmuFile</i> parameter
+     * Update the parameters listed in the modelDescription.xml file
+     * contained in the zipped file named by the <i>fmuFile</i>
+     * parameter.
      *
      * @exception IllegalActionException If the file named by the
      * <i>fmuFile</i> parameter cannot be unzipped or if there is a
@@ -3451,7 +3456,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** For model exchange, the FMU state variables. */
     protected DoubleBuffer _states;
 
-    /** The _fmi2NewDiscreteStates function, present only in FMI-2.0 */
+    /** The _fmi2NewDiscreteStates function, present only in FMI-2.0. */
     protected Function _fmiNewDiscreteStatesFunction;
 
     /** The fmiEnterContinousTimeMode Function, present only in FMI-2.0. */

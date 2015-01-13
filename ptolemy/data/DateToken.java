@@ -291,6 +291,11 @@ public class DateToken extends AbstractConvertibleToken implements
         return _calendar;
     }
     
+    /** Create a DateToken with a value.
+     *  @param value The date specified in a format acceptable
+     *  to java.text.DateFormat.
+     *  @return a DateToken.
+     */
     public static DateToken date(String string) throws IllegalActionException {
         return new DateToken(string);
     }
@@ -552,6 +557,11 @@ public class DateToken extends AbstractConvertibleToken implements
         return _isNil;
     }
     
+    /** Return the value of the token as a String.
+     *  @return The string value, which is the same as
+     *  the value returned by {@link toString()}, except
+     *  toString() wraps the string value in double quotes.
+     */
     public String stringValue() {
         if (isNil()) {
             return _NIL;
