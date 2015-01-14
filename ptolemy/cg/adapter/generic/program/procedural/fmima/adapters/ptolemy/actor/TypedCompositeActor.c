@@ -1,6 +1,7 @@
 /***variableDeclareBlock***/
 
 #ifdef __linux__
+/* Needed for strdup and mkdtemp under RHEL 6.1 */
 #define __USE_BSD
 #endif
 
