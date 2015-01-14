@@ -1,4 +1,9 @@
 /***variableDeclareBlock***/
+
+#ifdef __linux__
+#define __USE_BSD
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
