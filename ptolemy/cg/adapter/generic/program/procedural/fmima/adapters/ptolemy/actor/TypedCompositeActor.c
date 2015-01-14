@@ -1,12 +1,14 @@
 /***variableDeclareBlock***/
 
+#include <stdio.h>
+
+/* Check for __linux__ after including stdio.h, otherwise it is sometimes not defined. */
 #ifdef __linux__
 /* Needed for strdup and mkdtemp under RHEL 6.1 */
 #define __USE_BSD
 #endif
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
