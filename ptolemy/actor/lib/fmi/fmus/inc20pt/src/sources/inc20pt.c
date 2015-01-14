@@ -62,7 +62,7 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent) {
     fflush(stderr);
     if (timeEvent) {
         i(counter_) += 1;
-        if (i(counter_) == 13) {
+        if (i(counter_) == 17) {
             eventInfo->terminateSimulation  = fmi2True;
         } else {
             eventInfo->nextEventTimeDefined   = fmi2True;

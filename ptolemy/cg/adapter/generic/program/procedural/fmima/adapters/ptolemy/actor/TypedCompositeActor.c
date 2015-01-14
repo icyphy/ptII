@@ -194,11 +194,11 @@ void terminateSimulation(FMU *fmus, int returnValue, FILE* file, double h,
 
 	for (int i = 0; i < NUMBER_OF_FMUS; i++) {
 		fmus[i].terminate(fmus[i].component);
-		if (fmus[i].lastFMUstate != NULL) {
-			fmi2Status status = fmus[i].freeFMUstate(fmus[i].component,
-					&fmus[i].lastFMUstate);
-			printf("Terminating with status: %s\n", STATUS[status]);
-		}
+//		if (fmus[i].lastFMUstate != NULL) {
+//			fmi2Status status = fmus[i].freeFMUstate(fmus[i].component,
+//					&fmus[i].lastFMUstate);
+//			printf("Terminating with status: %s\n", STATUS[status]);
+//		}
 
 		fmus[i].freeInstance(fmus[i].component);
 	}
