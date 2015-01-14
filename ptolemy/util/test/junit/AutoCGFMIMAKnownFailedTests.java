@@ -1,6 +1,6 @@
-/* Run the Ptolemy model tests in the auto/knownFailedTests/ directory using cg C language code generation under JUnit.
+/* Run the Ptolemy model tests in the auto/knownFailedTests/ directory using Functional Mock-up Interface Master Algorithm (FMIMA) code generation under JUnit.
 
-   Copyright (c) 2011-2014 The Regents of the University of California.
+   Copyright (c) 2014 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -39,14 +39,15 @@ import org.junit.runner.RunWith;
 //// AutoCGCKnownFailedTests
 
 /**
- * Run the Ptolemy model tests in the auto/knownFailedTests directory
- * using cg C language code generation under JUnit.
+ * Run the Ptolemy model tests in the auto/knownFailedTests/ directory
+ * using Functional Mock-up Interface Master Algorithm (FMIMA) code
+ * generation under JUnit.
  *
  * <p> This test must be run from the directory that contains the
  * auto/knowFailedTests/ directory, for example: </p>
-A *
+ *
  * <pre>
- * (cd $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test; java -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.AutoCGCKnownFailedTests)
+ * (cd $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.4.0.jar:${PTII}/lib/jna-4.0.0-variadic.jar  org.junit.runner.JUnitCore ptolemy.cg.kernel.generic.program.procedural.fmima.test.junit.JUnitCGFMIMATest)
  * </pre>
  *
  * <p>
@@ -62,7 +63,7 @@ A *
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(JUnitParamsRunner.class)
-public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
+public class AutoCGFMIMAKnownFailedTests extends AutoCGKnownFailedTests {
 
     /**
      * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class and its generateCode static
@@ -86,13 +87,13 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
      * immediately.
      * @exception Throwable If thrown while executing the model.
      */
-    @Test
-    @Parameters(method = "modelValues")
-    public void runModelInline(String fullPath) throws Throwable {
-        runModel(fullPath, "c", false /* generateInSubdirectory */,
-                true /* inline */, 2500 /* maximumLinesPerBlock */,
-                false /*variablesAsArrays*/, "" /*generatorPackageList*/);
-    }
+    // @Test
+    // @Parameters(method = "modelValues")
+    // public void runModelInline(String fullPath) throws Throwable {
+    //     runModel(fullPath, "fmima", false /* generateInSubdirectory */,
+    //             true /* inline */, 2500 /* maximumLinesPerBlock */,
+    //             false /*variablesAsArrays*/, "" /*generatorPackageList*/);
+    // }
 
     /**
      * Generate, compile and run non-inline code for a model.
@@ -106,7 +107,7 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
-        runModel(fullPath, "c", false /* generateInSubdirectory */,
+        runModel(fullPath, "fmima", false /* generateInSubdirectory */,
                 false /* inline */, 2500 /* maximumLinesPerBlock */,
                 false /*variablesAsArrays*/, "" /*generatorPackageList*/);
     }
