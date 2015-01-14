@@ -1,6 +1,8 @@
 /* ---------------------------------------------------------------------------*
  * Sample implementation of an FMU - increments an int counter every second.
- * Copyright QTronic GmbH. All rights reserved.
+ * The Ptolemy extension here is that This version has a fmi2GetMaxStepSize() that
+ * sets the maximum step size to 1.
+ * Based on FMUSDK inc FMU, Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
@@ -29,8 +31,10 @@
 // Set values for all variables that define a start value
 // Settings used unless changed by fmi2SetX before fmi2EnterInitializationMode
 void setStartValues(ModelInstance *comp) {
-    fprintf(stderr, "inc20pt.c: setStartValues()\n");
-    fflush(stderr);
+    if (comp->loggingOn) {
+        comp->functions->logger(comp, comp->instanceName, fmi2OK, "message",
+                "setStartValues()");
+    }
     i(counter_) = 1;
 }
 
@@ -39,12 +43,16 @@ void setStartValues(ModelInstance *comp) {
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode) {
-        fprintf(stderr, "inc20pt.c: initialize()\n");
-        fflush(stderr);
+        if (comp->loggingOn) {
+            comp->functions->logger(comp, comp->instanceName, fmi2OK, "message",
+                    "initialize()");
+        }
         comp->eventInfo.nextEventTimeDefined   = fmi2True;
         comp->eventInfo.nextEventTime          = 1 + comp->time;
-        fprintf(stderr, "inc20pt.c: initialized\n");
-        fflush(stderr);
+        if (comp->loggingOn) {
+            comp->functions->logger(comp, comp->instanceName, fmi2OK, "message",
+                    "initialized");
+        }
     }
 }
 
@@ -63,12 +71,20 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent) {
     } 
 }
 
-// FMI function for getting max step size as proposed in the EMSOFT Paper of 2013
+// We are adding fmi2GetMaxStepSize as a global, so we need to set up the exports.
+
+// Lines like this appear in fmi2FunctionTypes.h for other fmi2* functions.
+typedef fmi2Status fmi2GetMaxStepSizeTYPE                  (fmi2Component, fmi2Real *);
+
+// Lines like thes appear in fmi2Functions.h for other fmi2* functions.
+#define fmi2GetMaxStepSize fmi2FullName(fmi2GetMaxStepSize)
+FMI2_Export fmi2GetMaxStepSizeTYPE fmi2GetMaxStepSize;
+
+// FMI function for getting max step size as proposed in the EMSOFT Paper of 2013.
 fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *maxStepSize) {
     *maxStepSize = 1;
     return fmi2OK;
 }
-
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
