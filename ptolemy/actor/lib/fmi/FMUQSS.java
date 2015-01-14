@@ -133,6 +133,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         modelExchange.setExpression("true");
         modelExchange.setVisibility(Settable.NONE);
 
+        // The persistenInputs parameter in the parent class is marked
+        // as false. QSS FMUs do not support "absent" values, so we change the
+        // parameter to true so a user does not need to set this manually.
+        persistentInputs.setExpression("true");
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"7\" "
