@@ -248,7 +248,7 @@ public class SmoothToken extends DoubleToken {
      * 
      * @param maxOrder The maximum order of the token.
      */
-    static void limitOrder(int maxOrder){
+    public static void limitOrder(int maxOrder){
         assert maxOrder >= 0: "maxOrder must be non-zero.";
         _maxOrder = maxOrder;
     }
@@ -302,7 +302,7 @@ public class SmoothToken extends DoubleToken {
 	}
 	StringBuffer derivatives = new StringBuffer("{");
 	boolean first = true;
-	for (int i = 0; i < _derivatives.length; i++) {
+	for (int i = 0; i < Math.min(_derivatives.length, _maxOrder); i++) {
 	    if (first) {
 		first = false;
 	    } else {
