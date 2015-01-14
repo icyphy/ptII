@@ -798,7 +798,14 @@ test SmoothToken-18.0 {call rightShift and get coverage in the parent class} {
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: rightShift operation not supported between ptolemy.data.SmoothToken '16.16' and ptolemy.data.IntToken '1'}}
 
-
+######################################################################
+####
+# 
+test SmoothToken-19.0 {Set limitOrder} {
+    # s2 is smoothToken(2.0, {2.0, 3.0})
+    java::call ptolemy.data.SmoothToken limitOrder 1
+    $s2 toString
+} {smoothToken(2.0, {2.0})}
 
 
 
