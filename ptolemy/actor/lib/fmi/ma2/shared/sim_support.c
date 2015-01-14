@@ -14,6 +14,12 @@
 /* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
 
 #include <stdio.h>
+
+#ifdef __linux__
+/* Needed for strdup and mkdtemp under RHEL 6.1 */
+#define __USE_BSD
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
