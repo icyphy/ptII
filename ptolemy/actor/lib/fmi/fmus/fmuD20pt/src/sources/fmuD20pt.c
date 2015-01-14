@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - increments an int counter every second.
- * Copyright QTronic GmbH. All rights reserved.
+ * An FMU that where the output is 5*input.
+ * Based on the FMUSDK inc fmu Copyright QTronic GmbH. All rights reserved.
  * ---------------------------------------------------------------------------*/
 
 // define class name and unique id
@@ -34,8 +34,10 @@
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
 void setStartValues(ModelInstance *comp) {
-          fprintf(stderr, "fmuD20pt.c: setStartValues()\n");
-          fflush(stderr);
+    if (comp->loggingOn) {
+        comp->functions->logger(comp, comp->instanceName, fmi2OK, "message",
+                "setStartValues()");
+    }
     r(output_) = 0;
     r(input_) = 0;
 }
@@ -43,9 +45,11 @@ void setStartValues(ModelInstance *comp) {
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
 void initialize(ModelInstance* comp, fmi2EventInfo* eventInfo) {
-          fprintf(stderr, "fmuD20pt.c: initialize()\n");
-          fflush(stderr);
-        // Calcualation is not event based, so no event time will be defined
+    if (comp->loggingOn) {
+        comp->functions->logger(comp, comp->instanceName, fmi2OK, "message",
+                "initialize()");
+    }
+    // Calculation is not event based, so no event time will be defined
     eventInfo->nextEventTimeDefined   = fmi2False;
 }
 
@@ -65,20 +69,30 @@ void eventUpdate(ModelInstance *comp, fmi2EventInfo *eventInfo, int isTimeEvent)
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
 fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
-    switch (vr)
-    {
-            case output_:
-                    // Calculate output when output is requested
-                    r(output_) = 5*r(input_);
-                    // Log call to facilitate debugging
-                // comp->functions->logger(comp->componentEnvironment, comp->instanceName, fmiOK, "logFmiCall", "input: %F, output: %F", r(input_), r(output_));
-                    return r(output_);
-        default: return 0;
+    switch (vr) {
+    case output_:
+        // Calculate output when output is requested
+        r(output_) = 5*r(input_);
+        // Log call to facilitate debugging
+        // comp->functions->logger(comp->componentEnvironment, comp->instanceName, fmiOK, "logFmiCall", "input: %F, output: %F", r(input_), r(output_));
+        return r(output_);
+    default: return 0;
     }
 }
 
+// We are adding fmi2GetMaxStepSize as a global, so we need to set up the exports.
+
+// Lines like this appear in fmi2FunctionTypes.h for other fmi2* functions.
+typedef fmi2Status fmi2GetMaxStepSizeTYPE                  (fmi2Component, fmi2Real *);
+
+// Lines like thes appear in fmi2Functions.h for other fmi2* functions.
+#define fmi2GetMaxStepSize fmi2FullName(fmi2GetMaxStepSize)
+FMI2_Export fmi2GetMaxStepSizeTYPE fmi2GetMaxStepSize;
+
 fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
+    return fmi2OK;
 }
+
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
 
