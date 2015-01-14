@@ -149,6 +149,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 				.deepEntityList().iterator();
 
 		// Add edges to the graph
+		int connectionNumber = 0;		
 		while (actors.hasNext()) {
 
 			ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
@@ -164,6 +165,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 							.get(port_idx);
 					Node sourceNode = (Node) actorNodeMap.get(output);
 					graph.addEdge(sourceNode, sinkNode);
+					connectionNumber++;
 				}
 			}
 
@@ -222,7 +224,9 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
 		// Add the sorted connections
 		int connectionIndex = 0;
-		while (sortedGraph.size() > 1) {
+		
+		
+		for (int i = 0; i < connectionNumber; i++) {
 
 			Node portSourceNode = (Node) sortedGraph.get(0);
 			Node portSinkNode = (Node) sortedGraph.get(1);
