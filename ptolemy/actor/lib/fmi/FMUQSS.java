@@ -947,42 +947,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         return _inputs;
     }
 
-    /** Populate the specified model with data from the specified token.
-     *  If the token is a SmoothToken, then insert in the model any derivatives
-     *  that might be given in the token, and set any remaining derivatives
-     *  required by the model to zero. Otherwise, set any derivatives
-     *  required by the model to zero.
-     *  @param ivMdl The input model to parameterize.
-     *  @param token The token values for parameterization.
-     *  @throws IllegalActionException If the specified token cannot be converted
-     *   to a double.
-     */
-    private void _getModelFromToken(ModelPolynomial ivMdl, Token token)
-	    throws IllegalActionException {
-        
-        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
-        // then the convert method does nothing and just returns the token.
-        // Otherwise, it attempts to convert it to a DoubleToken, and throws
-        // an exception if such conversion is not possible.
-        DoubleToken doubleToken = DoubleToken.convert(token);
-        
-        // In all cases, the first coefficient is simply the current value of the token.
-        ivMdl.coeffs[0] = doubleToken.doubleValue();
-        
-        double[] derivatives = null;
-        if (doubleToken instanceof SmoothToken) {
-            derivatives = ((SmoothToken)doubleToken).derivativeValues();
-        }
-	final int ncoeffs = ivMdl.coeffs.length;
-	for (int i = 1; i < ncoeffs; i++) {
-	    if (derivatives == null || derivatives.length < i) {
-		ivMdl.coeffs[i] = 0.0;
-	    } else {
-		ivMdl.coeffs[i] = derivatives[i-1];
-	    }
-	}
-    }
-
     /**
      * Return a list of connected outputs of the FMU. This function differs from
      * the base class in the sense that it gets the outputs from values
@@ -1476,7 +1440,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // ivMdl.tMdl = currentTime; // TODO: Confirm where time set.
             ivMdl.claimWriteAccess();
             // Give model to the integrator.
-            _qssSolver.addInputVariableModel(ii, ivMdl);
+            _qssSolver.setInputVariableModel(ii, ivMdl);
         }
 
         // Load input variable models with data.
@@ -1704,6 +1668,42 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
     }
 
+    /** Populate the specified model with data from the specified token.
+     *  If the token is a SmoothToken, then insert in the model any derivatives
+     *  that might be given in the token, and set any remaining derivatives
+     *  required by the model to zero. Otherwise, set any derivatives
+     *  required by the model to zero.
+     *  @param ivMdl The input model to parameterize.
+     *  @param token The token values for parameterization.
+     *  @throws IllegalActionException If the specified token cannot be converted
+     *   to a double.
+     */
+    private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
+	    throws IllegalActionException {
+        
+        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
+        // then the convert method does nothing and just returns the token.
+        // Otherwise, it attempts to convert it to a DoubleToken, and throws
+        // an exception if such conversion is not possible.
+        DoubleToken doubleToken = DoubleToken.convert(token);
+        
+        // In all cases, the first coefficient is simply the current value of the token.
+        ivMdl.coeffs[0] = doubleToken.doubleValue();
+        
+        double[] derivatives = null;
+        if (doubleToken instanceof SmoothToken) {
+            derivatives = ((SmoothToken)doubleToken).derivativeValues();
+        }
+	final int ncoeffs = ivMdl.coeffs.length;
+	for (int i = 1; i < ncoeffs; i++) {
+	    if (derivatives == null || derivatives.length < i) {
+		ivMdl.coeffs[i] = 0.0;
+	    } else {
+		ivMdl.coeffs[i] = derivatives[i-1];
+	    }
+	}
+    }
+
     /**
      * Trigger quantization-events if necessary.
      *
@@ -1820,7 +1820,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // Update the model.
                 final ModelPolynomial ivMdl = _inputVariableModels[currIdx];
 
-                _getModelFromToken(ivMdl, token);
+                _setModelFromToken(ivMdl, token);
                 // TODO: Here, just assuming that if have a new input, means
                 // the
                 // model
