@@ -206,7 +206,7 @@ public class DateConstructor extends TypedAtomicActor {
      *  parameter, or if there is a problem sending the date token.
      */
     @Override
-    public void fire() {
+    public void fire() throws IllegalActionException {
         super.fire();
         DateToken dateToken = null;
         int datePrecision = DateToken.PRECISION_MILLISECOND;
