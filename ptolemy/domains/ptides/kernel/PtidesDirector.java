@@ -539,14 +539,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
     /** Return the local time or, (i) if an actor is executing or (ii) an input
      *  token is read, (i) the timestamp of the event that caused the actor
      *  execution or (ii) the timestamp of the input event.
-     *  @return The local time or the semantic
+     *  @return The local time or the semantic time.
      */
     @Override
     public Time getModelTime() {
         if (_currentLogicalTime != null) {
             return _currentLogicalTime;
         }
-        return localClock.getLocalTime();
+        return super.getModelTime();
     }
 
     /** Return the current microstep or the microstep of the event, if
