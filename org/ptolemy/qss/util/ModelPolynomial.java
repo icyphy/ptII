@@ -37,7 +37,7 @@ import ptolemy.actor.util.Time;
 //// ModelPolynomial
 
 
-/** Model how a variable changes with time, using a polynomial.
+/** Model of a variable that changes with time, using a polynomial.
  *
  * <p>Represent a polynomial model:</p>
  * <p><i>xMdl{t} = c0 + c1*dt + c2*dt^2 + ...</i></p>
@@ -85,20 +85,20 @@ import ptolemy.actor.util.Time;
  * coefficients without the overhead of accessor (setter, getter) calls.</p>
  *
  * <p>The design intention is that multiple objects in a system can share a
- * single <code>ModelPoly<code>, in order to share a model of a common variable.
+ * single <code>ModelPolynomial<code>, in order to share a model of a common variable.
  * In principle, at any given simulation time, only one of those objects should
  * have "write access", and it alone should set the model parameters.
  * The other objects in the system can use the model, but should refrain from
  * changing it.</p>
  *
- * <p>Note that the <code>ModelPoly</code> object does nothing to enforce
+ * <p>Note that the <code>ModelPolynomial</code> object does nothing to enforce
  * cooperation among readers and writers.
  * It does, however, provide a simple counter for how many objects claim
  * write access.
  * This allows objects that intend to cooperate to double-check that they
  * are doing so correctly.</p>
  *
- * @author David M. Lorenzetti
+ * @author David M. Lorenzetti. Contributor: Edward A. Lee
  * @version $id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
