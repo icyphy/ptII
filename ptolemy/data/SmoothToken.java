@@ -448,9 +448,31 @@ public class SmoothToken extends DoubleToken {
                 }
                 return new SmoothToken(product, result);
             }
-            // Both have derivatives.
-            // Multiply the tokens as if they were Taylor polynomials.
-            return _multiplyPolynomials(new SmoothToken(_value, _derivatives), (SmoothToken)rightArgument);
+            // derivatives may be null. In this case, y should scale x's derivatives.
+            if (derivatives == null){
+                double[] result = new double[_derivatives.length];
+                for (int i = 0; i < _derivatives.length; i++) {
+                    result[i] = _derivatives[i]*y;
+                }
+                return new SmoothToken(product, result);
+            }
+            else{
+                // Both have derivatives.
+                // Multiply the tokens as if they were Taylor polynomials.
+
+                // Build arrays whose elements are the coefficients of the polynomials.        
+                double[] p1 = new double[_derivatives.length+1];
+                double[] p2 = new double[ derivatives.length+1];
+                p1[0] = x;
+                p2[0] = y;
+                System.arraycopy(_derivatives, 0, p1, 1, _derivatives.length);
+                System.arraycopy( derivatives, 0, p2, 1,  derivatives.length);
+                // Multiply the polynomials
+                double[] pro = _multiplyPolynomials(p1, p2);
+                double[] derRes = new double[pro.length-1];
+                System.arraycopy(pro, 1, derRes, 0, derRes.length);
+                return new SmoothToken(pro[0], derRes);
+            }
         } else {
             // Assume the y derivatives are zero, so the returned result just
             // has the derivatives of this token scaled by y.
@@ -465,64 +487,33 @@ public class SmoothToken extends DoubleToken {
         }
     }
     
-    /** Multiplies two tokens including their derivatives.
-     *  This method assumes that t1 and t2 both have derivatives, possibly 
-     *  of different order.
+    /** Multiplies two polynomials.
      * 
-     * @param t1 First token.
-     * @param t2 Second token.
+     * @param p1 First polynomial.
+     * @param p2 Second polynomial
      * @return The product of the polynomials
      */
-    protected static SmoothToken _multiplyPolynomials(SmoothToken t1, 
-                                                      SmoothToken t2){
-        // Get the values and derivatives of the tokens
-        final double[] d1 = t1.derivativeValues();
-        final double[] d2 = t2.derivativeValues();
-        // Number of polynomial coefficients.
-        // If SmoothToken only has a value, then n=1.
-        final int n1 = (d1 == null) ? 1:(d1.length+1); 
-        final int n2 = (d2 == null) ? 1:(d2.length+1);
-        
-        // Build arrays whose elements are the coefficients of the polynomials.        
-        double[] p1 = new double[n1];
-        double[] p2 = new double[n2];
-        p1[0] = t1.doubleValue();
-        p2[0] = t2.doubleValue();
-        if (n1>1){
-            System.arraycopy(d1, 0, p1, 1, n1-1);
-        }
-        if (n2>1){
-            System.arraycopy(d2, 0, p2, 1, n2-1);
-        }
+    protected static double[] _multiplyPolynomials(final double[] p1, 
+                                                   final double[] p2){
     
-        // Map that stores the exponents and the coefficients of the product
-        Map<Integer, Double> p = new HashMap<Integer, Double>();
-        // Multiply the polynomials, and store the result in p
+        double[] res = new double[(p1.length-1) + (p2.length-1) + 1];
+        // Set all coefficients to zero.
+        for(int i = 0; i < res.length; i++){
+            res[i] = 0;
+        }
+        // Multiply the polynomials
         for(int i1=0; i1 < p1.length; i1++){
             for(int i2=0; i2 < p2.length; i2++){
                 final int exponent = i1+i2;
-                final double coefficient = p1[i1]*p2[i2];
-                if(p.containsKey(exponent)){
-                    p.put(exponent, p.get(exponent) + coefficient);
+                if(res[exponent] == 0){
+                    res[exponent] = p1[i1]*p2[i2];
                 }
                 else{
-                    p.put(exponent, coefficient);
+                    res[exponent] += p1[i1]*p2[i2];
                 }
             }
         }
-        // Create a SmoothToken with the return value.
-        double val = p.get(0);
-        double[] der = new double[(n1-1) + (n2-1)];
-        for (Map.Entry<Integer, Double> entry : p.entrySet()) {
-            final int key = ((Integer)entry.getKey()).intValue();
-            final double value = ((Double)entry.getValue()).doubleValue();
-            if (key != 0){
-                // Key is the order of the derivative. The first derivative
-                // is in der[0]. Hence, we use key-1 for the index.
-                der[key-1] = value;
-            }
-        }
-        return new SmoothToken(val, der);
+        return res;
     }
 
     
