@@ -64,7 +64,7 @@ public final class LIQSS1
     /** 
      * Initialize object fields (QSS-specific).
      */
-    public final void initializeWorker() {
+    public final void _initializeWorker() {
 
         // Check internal consistency.
         assert( _stateVals_xx == null );
