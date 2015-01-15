@@ -357,11 +357,13 @@ public abstract class WithIconGraphController extends BasicGraphController {
             }
             
             String name = "port";
-            if (_prototype.isInput() && !_prototype.isOutput()) {
-        	name = "in";
-            }
-            if (!_prototype.isInput() && _prototype.isOutput()) {
-        	name = "out";
+            if (_prototype != null) {
+                if (_prototype.isInput() && !_prototype.isOutput()) {
+                    name = "in";
+                }
+                if (!_prototype.isInput() && _prototype.isOutput()) {
+                    name = "out";
+                }
             }
 
             final String portName = toplevel.uniqueName(name);
