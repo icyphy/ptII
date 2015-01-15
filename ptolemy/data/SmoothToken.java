@@ -28,8 +28,6 @@
 package ptolemy.data;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -81,7 +79,7 @@ import ptolemy.kernel.util.IllegalActionException;
    Higher-order derivatives are similarly obtained.
    <p>
    By default, instances of SmoothToken have no more than three derivatives.
-   This can be changed using the {@link #limitOrder(int)} method.
+   This can be changed using the {@link #setOrderLimit(int)} method.
 
    @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee
    @version $Id$
@@ -212,6 +210,18 @@ public class SmoothToken extends DoubleToken {
     	}
     }
     
+    /** Get the maximum order of any token (the number of derivatives).
+     *  E.g., if maxOrder = 2, the token will have one value, the first
+     *  and the 2nd derivative.
+     *  By default, tokens will have maxOrder = 3.
+     *  @param maxOrder The maximum order of the token.
+     *  @see #setOrderLimit(int)
+     */
+    public static int getOrderLimit(){
+        return _maxOrder;
+    }
+    
+
     /** Return the hash code for the SmoothToken object. If two SmoothToken
      *  objects have the same double value and their derivatives
      *  have the same hashCode, then the two SmoothTokens will have 
@@ -239,20 +249,6 @@ public class SmoothToken extends DoubleToken {
         return this == SmoothToken.NIL;
     }
 
-    /** Set the maximum order of the token.
-     * 
-     * If maxOrder = 2, the token will have one value, the first
-     * and the 2nd derivative.
-     * 
-     * By default, tokens will have maxOrder = 3.
-     * 
-     * @param maxOrder The maximum order of the token.
-     */
-    public static void limitOrder(int maxOrder){
-        assert maxOrder >= 0: "maxOrder must be non-zero.";
-        _maxOrder = maxOrder;
-    }
-    
     /** Return a new token that is the negative of this one.
      *  @return The negative, where all the derivatives are also negated.
      */
@@ -267,6 +263,21 @@ public class SmoothToken extends DoubleToken {
 	return new SmoothToken(-_value, derivatives);
     }
 
+    /** Set the maximum order of any token (the number of derivatives).
+     *  This is static, so calling it will affect <i>all</i>
+     *  instances of SmoothToken in the same JVM.
+     *  Its effect is not even limited to a single Ptolemy model.
+     *  E.g., if maxOrder = 2, the token will have one value, the first
+     *  and the 2nd derivative.
+     *  By default, tokens will have maxOrder = 3.
+     *  @param maxOrder The maximum order of the token.
+     *  @see #getOrderLimit()
+     */
+    public static void setOrderLimit(int maxOrder){
+        assert maxOrder >= 0: "maxOrder must be non-zero.";
+        _maxOrder = maxOrder;
+    }
+    
     /** Return a SmoothToken with the specified value and no derivatives.
      *  This function gets registered by PtParser, after which it becomes
      *  available in the expression language.
