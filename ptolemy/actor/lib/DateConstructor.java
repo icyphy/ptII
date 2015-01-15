@@ -201,25 +201,28 @@ public class DateConstructor extends TypedAtomicActor {
      *  for the long value is present, use this token and time zone
      *  as well as precision. Otherwise use tokens on other inputs to
      *  create ports.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If thrown by the superclass,
+     *  if there is no director, ifthere is a problem reading a
+     *  parameter, or if there is a problem sending the date token.
      */
     @Override
-    public void fire() throws IllegalActionException {
+    public void fire() {
         super.fire();
         DateToken dateToken = null;
         int datePrecision = DateToken.PRECISION_MILLISECOND;
 
+        // Parse the value of the precision parameter.  If the value
+        // is non-standard, default to milliseconds.
+        // FIXME:This would be better off using final strings
+        // in the constructor and here so as to avoid problems.
         String precisionValue = ((StringToken) precision.getToken()).stringValue();
         if (precisionValue.equals("second")) {
             datePrecision = DateToken.PRECISION_SECOND;
-        }
-        if (precisionValue.equals("millisecond")) {
+        } else if (precisionValue.equals("millisecond")) {
             datePrecision = DateToken.PRECISION_MILLISECOND;
-        }
-        if (precisionValue.equals("microsecond")) {
+        } else if (precisionValue.equals("microsecond")) {
             datePrecision = DateToken.PRECISION_MICROSECOND;
-        }
-        if (precisionValue.equals("nanosecond")) {
+        } else if (precisionValue.equals("nanosecond")) {
             datePrecision = DateToken.PRECISION_NANOSECOND;
         } else {
             datePrecision = DateToken.PRECISION_MILLISECOND;
@@ -254,6 +257,9 @@ public class DateConstructor extends TypedAtomicActor {
             c.set(Calendar.SECOND, secondValue);
             c.set(Calendar.MILLISECOND, millisecondValue);
             timeAsLongValue = c.getTimeInMillis();
+
+            // FIXME: the precision should be an enum and this should be
+            // a switch.
             if (datePrecision == DateToken.PRECISION_SECOND) {
                 timeAsLongValue = timeAsLongValue / 1000;
             } else if (datePrecision == DateToken.PRECISION_MICROSECOND) {
