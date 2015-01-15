@@ -30,6 +30,9 @@ COPYRIGHTENDKEY
 package org.ptolemy.qss.solver;
 
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
 import org.ptolemy.qss.util.PolynomialRoot;
@@ -180,6 +183,38 @@ import ptolemy.actor.util.Time;
  *
  *
  * <h2>A tour of the public API</h2>
+ * 
+ * <p>The simplest use of this class is as follows. First, initialize the solver
+ * as follows:
+ * <ol>
+ * <li> Create an instance of a class that implements {@link DerivativeFunction}, and pass
+ *      that into the {@link #initialize(DerivativeFunction, Time, Time, double, double, int)}
+ *      method.</li>
+ * <li> Then set the initial values of the state variables using
+ *      {@link #setStateValue(int, double)}.</li>
+ * <li> Then set initial input values by updating the models returned by
+ *      {@link #getInputVariableModel(int)}.</li>
+ * <li> Then trigger quantization events using
+ *      {@link #triggerQuantizationEvents(boolean)}.</li>
+ * <li> Finally, trigger rate events using
+ *      {@link #triggerRateEvent()}.</li>
+ * </ol>
+ * At this point, you can determine the first time at which a quantization event
+ * will occur by calling {@link #predictQuantizationEventTimeEarliest()}.
+ * Then, at each time step,
+ * <ol>
+ * <li> Advance to the current simulation time by calling {@link #advanceToTime(Time)}.
+ *      This will return a list of state indexes that experience a quantization event
+ *      at the new simulation time, and you can retrieve the new values of those
+ *      state variables using {@link #getStateModel(int)}.
+ * <li> Then set input values by updating the models returned by
+ *      {@link #getInputVariableModel(int)}.</li>
+ * <li> Finally, trigger rate events using
+ *      {@link #triggerRateEvent()}.</li>
+ * </ol>
+ * At this point, you can determine the next time at which a quantization event
+ * will occur by calling {@link #predictQuantizationEventTimeEarliest()}.
+ * That should be the time of the next time step.
  *
  * <p>The following methods initialize a new integrator.
  * They must be called before doing any work with the integrator:</p>
@@ -202,7 +237,7 @@ import ptolemy.actor.util.Time;
  * <ul>
  * <li>{@link #getStateModel(int)}</li>
  * <li>{@link #needInputVariableModelIndex()}</li>
- * <li>{@link #addInputVariableModel(int, ModelPolynomial)}</li>
+ * <li>{@link #setInputVariableModel(int, ModelPolynomial)}</li>
  * </ul>
  *
  * <p>The following methods configure the integrator.
@@ -305,8 +340,117 @@ public abstract class QSSBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
+    /** Advance simulation time to the specified time.
+     *  This is a convenience method that encapsulates a typical usage pattern
+     *  of the other methods in this class and provides more error checking.
+     *  This method will trigger rate events and quantization events if necessary.
+     *  @param nextSimTime Global simulation time to which to step.
+     *  @return A list of indexes of states for which new time matches
+     *   a quantization event, or an empty list if there are none.
+     *  @throws IllegalArgumentException If the specified time is not
+     *   strictly greater than the current simulation time, or if the
+     *   specified time is past the next event time, or if
+     *   there are states requiring a quantization event.
+     *  @throws Exception If triggering a rate event causes an error
+     *   (this is dependent on the concrete implementation of this class).
+     */
+    public final List<Integer> advanceToTime(final Time nextSimTime)
+	    throws Exception {
 
-    /** Initialize a QSS integrator to use a <code>DerivativeFcn</code> object.
+	Time predictedEventTime = predictQuantizationEventTimeEarliest();
+	if( nextSimTime.compareTo(predictedEventTime) > 1 ) {
+	    throw new IllegalArgumentException(
+		    "Proposed simulation time of "
+			    + nextSimTime
+			    + " is past the next event time of "
+			    + predictedEventTime);
+	}
+	// The following checks other possible error conditions,
+	// triggers a rate event if needed, marks states that
+	// need quantization events at the next time, and sets
+	// the current simulation time to match the argument.
+	stepToTime(nextSimTime);
+
+	int index = needQuantizationEventIndex();
+	List<Integer> result = new LinkedList<Integer>();
+	while (index >= 0) {
+	    result.add(index);
+	    triggerQuantizationEvent(index);
+	    index = needQuantizationEventIndex();
+	}
+	return result;
+    }
+    
+    /** Initialize this solver, associating it with the specified
+     *  derivativeFunction object, which determines the number of state
+     *  variables and input variables and provides a method for calculating
+     *  the derivatives of the state variables. This method also initializes
+     *  all input and state variables to zero. These can be the initialized
+     *  to some other value by calling {@link #setStateValue(int, double)} and
+     *  {@link #setInputVariableModel(int, ModelPolynomial)}.
+     *  The caller of this method should then, after setting state and
+     *  input values, call {@link #triggerQuantizationEvents(boolean)}
+     *  with argument true.
+     *  <p>
+     *  This is a convenience method wrapping a sequence of calls to
+     *  more detailed methods.
+     *  </p>
+     *  
+     *  @param derivativeFunction The object implementing the
+     *   function that provides the derivatives for
+     *   state variables that this solver is responsible for integrating.
+     *   This object also provides a method specifying the number of state
+     *   variables and the number of input variables.
+     *  @param startTime The start time for the solver.
+     *  @param maximumTime The maximum time for predicted events (e.g. the stop
+     *   time of the simulation). This may be infinite.
+     *  @param absoluteTolerance The absolute tolerance for all state variables
+     *   (these can be modified later for individual states
+     *   using {@link #setQuantizationTolerance(int, double, double)}).
+     *  @param relativeTolerance The relative tolerance for all state variables
+     *   (these can be modified later for individual states
+     *   using {@link #setQuantizationTolerance(int, double, double)}).
+     *  @param inputVariableOrder The order (the number of derivatives provided)
+     *   for each input variable. If these differ by input variable, then the
+     *   caller may later modify the input variable models by calling
+     *   {@link QSSBase#setInputVariableModel(int, ModelPolynomial)}.
+     */
+    public final void initialize(
+	    DerivativeFunction derivativeFunction,
+	    Time startTime,
+	    Time maximumTime,
+	    double absoluteTolerance,
+	    double relativeTolerance,
+	    int inputVariableOrder) {
+	initializeDerivativeFunction(derivativeFunction);
+        initializeSimulationTime(startTime);
+        setQuantizationEventTimeMaximum(maximumTime);
+        
+        // Initialize states.
+        for (int i=0; i<_stateCt; i++) {
+            setStateValue(i, 0.0);
+            setQuantizationTolerance(0, absoluteTolerance, relativeTolerance);
+        }
+        
+        // Create and initialize input variable models.
+        for (int i = 0; i < getInputVariableCount(); i++) {
+            // Create a model polynomial for the input.
+            ModelPolynomial input = new ModelPolynomial(inputVariableOrder);
+            // Indicate that at least one object (the specified derivativeFunction)
+            // has write access and will update its values.
+            input.claimWriteAccess();
+            // Set the time of the input model.
+            input.tMdl = startTime;
+            // Associate the model polynomial with the input.
+            setInputVariableModel(i, input);
+        }
+        
+        // Validate the integrator, checking the above setup.
+        final String failMsg = validate();
+        assert(failMsg == null);
+    }
+
+    /** Initialize a QSS integrator to use a {@link DerivativeFunction} object.
      *
      * <p>This method must be called before doing any work with the integrator.
      * Furthermore, it can be called only once.</p>
@@ -398,10 +542,18 @@ public abstract class QSSBase {
         return(_ivCt);
     }
 
+    /** Return the input variable model for the specified index.
+     *  @param input The index of the input variable.
+     *  @see #setInputVariableModel(int, ModelPolynomial)
+     */
+    public final ModelPolynomial getInputVariableModel(int input) {
+	assert(input < _ivCt);
+	return _ivMdls[input];
+    }
 
     /** Get the order of the external, quantized state models exposed by the integrator.
      *
-     * <p>This method returns the order of the <code>ModelPoly</code> objects
+     * <p>This method returns the order of the {@link ModelPolynomial} objects
      * that the integrator exposes to the user.</p>
      *
      * <p>These states are the quantized state predictions (as opposed to the
@@ -494,7 +646,7 @@ public abstract class QSSBase {
 
     /** Return the index of an input variable for which the user has yet to add a model.
      *
-     * <p>The user must call {@link #addInputVariableModel(int, ModelPolynomial)} at least once for
+     * <p>The user must call {@link #setInputVariableModel(int, ModelPolynomial)} at least once for
      * every input variable taken by the derivative function.
      * This method checks whether that requirement has been met.</p>
      *
@@ -519,9 +671,9 @@ public abstract class QSSBase {
     }
 
 
-    /** Add the model for an input variable to the derivative function.
+    /** Set the model for an input variable to the derivative function.
      *
-     * <p>Add a <code>ModelPoly</code> for an input variable to the
+     * <p>Add a {@link ModelPolynomial} for an input variable to the
      * derivative function.
      * The QSS method will use this model to evaluate the input variable as a
      * function of time, when integrating the derivative function.</p>
@@ -536,9 +688,9 @@ public abstract class QSSBase {
      * <p>Notes on "write access" for the state model:</p>
      * <ul>
      * <li>"Write access" means that some object has asserted that it plans to
-     * change the parameters of the <code>ModelPoly</code>.
+     * change the parameters of the {@link ModelPolynomial}.
      * This means it will control the trajectory of that model over time.
-     * See method ModelPoly.claimWriteAccess().</li>
+     * See {@link ModelPolynomial#claimWriteAccess()}.</li>
      * <li>The user of each integrator is responsible for setting the parameters
      * of each input variable model (i.e., of changing the trajectory of the
      * input variable over time).</li>
@@ -581,8 +733,10 @@ public abstract class QSSBase {
      *
      * @param ivIdx The index of input variable, 0 &le; ivIdx &lt; this.getInputVarCt().
      * @param ivMdl The model to use.
+     * @throws IllegalArgumentException If the argument is null.
+     * @see #getInputVariableModel(int)
      */
-    public final void addInputVariableModel(final int ivIdx, final ModelPolynomial ivMdl) {
+    public final void setInputVariableModel(final int ivIdx, final ModelPolynomial ivMdl) {
 
         // Check inputs.
         if( ivMdl == null ) {
@@ -595,7 +749,6 @@ public abstract class QSSBase {
 
         // Save reference to model.
         _ivMdls[ivIdx] = ivMdl;
-
     }  
 
 
@@ -607,7 +760,7 @@ public abstract class QSSBase {
 
     /** Set the parameters used to determine the quantum for a state.
      * <p>
-     * The quantum for each state variable gets calculated as</p>
+     * The quantum for each state variable gets calculated as
      * </p><p>
      *       q[j] = max{Ta, Tr*abs{x[j]}}
      * </p><p>
@@ -626,6 +779,8 @@ public abstract class QSSBase {
      * @param stateIndex The state index, 0 &le; stateIdx &lt; this.getStateCt().
      * @param absoluteTolerance The absolute tolerance, which is required to be &gt; 0 [units of <i>x[j]</i>].
      * @param relativeTolerance The relative tolerance, which is required to be &ge; 0 [1].
+     * @throws IllegalArgumentException If the absolute tolerance is not strictly positive, or
+     *  if the relative tolerance is negative.
      */
     public final void setQuantizationTolerance(
 	    final int stateIndex, final double absoluteTolerance, final double relativeTolerance) {
@@ -688,11 +843,11 @@ public abstract class QSSBase {
 
 
     /** Set or reset the integrator's current time.
-     *
-     * @param newSimTime New time for the QSS integrator.
+     *  This method sets flags indicating that a rate event is needed
+     *  and that quantization events are needed for all states.
+     *  @param newSimTime New time for the QSS integrator.
      */
     public final void setCurrentSimulationTime(final Time newSimTime) {
-
         // Set status to note future needs.
         _need_rateEvt = true;
         for( int ii=0; ii<_stateCt; ++ii ) {
@@ -700,7 +855,6 @@ public abstract class QSSBase {
         }
 
         _currSimTime = newSimTime;
-
     }
 
 
@@ -710,7 +864,10 @@ public abstract class QSSBase {
      * of the state vector.
      * Note that this re-initializes the integrator for that component.
      * That is, it discards any state models that the integrator might have
-     * formed, and creates a jump discontinuity in the state variable.</p>
+     * formed, and creates a jump discontinuity in the state variable.
+     * This has the side effect of setting flags indicating that a
+     * new rate event is needed and that the specified state needs
+     * a quantization event.</p>
      *
      *
      * <h2>Warning</h2>
@@ -741,9 +898,7 @@ public abstract class QSSBase {
         //   To keep consistent with the constant coefficient of the
         // external, quantized state model.
         _dqs[stateIdx] = findDq(stateIdx);
-
     } 
-
 
     // TODO: Consider adding a method that sets all the state variables from a vector.
 
@@ -837,39 +992,35 @@ public abstract class QSSBase {
     }
 
 
-    /** Return the index of a state that needs a quantization-event.
-     *
-     * <p>The integrator tracks which states need a quantization-event as a
+    /** Return the first index of a state that needs a quantization-event.
+     * This method can be called after {@link #stepToTime(Time)} repeatedly
+     * to iterate over the states on which {@link #triggerQuantizationEvent(int)}
+     * should be called. See {@link #advanceToTime(Time)} for a typical usage
+     * pattern.
+     * <p>
+     * The integrator tracks which states need a quantization-event as a
      * result of a time step.
-     * This method returns the index, if any, of such states.</p>
-     *
-     * <p>The user should trigger the quantization-event, e.g., using
-     * method {@link #triggerQuantizationEvent(int)}.</p>
-     *
-     * <p>TODO: Put under unit test.</p>
+     * This method returns the index, if any, of such states.
+     * </p><p>
+     * The user should trigger the quantization-event, e.g., using
+     * method {@link #triggerQuantizationEvent(int)}.
+     * </p><p>
+     * TODO: Put under unit test.</p>
      *
      * @return Index of a state that needs a quantization-event,
      *   0 <= idx < this.getStateCt().  Return -1 if all external, quantized
      *   state models are valid.
      */
     public final int needQuantizationEventIndex() {
-
-        // Initialize.
-        int needQuantEvtIdx = -1;
-
         for( int ii=0; ii<_stateCt; ++ii ) {
             if( _need_quantEvts[ii] ) {
-                needQuantEvtIdx = ii;
-                break;
+                return ii;
             }
         }
-
-        return( needQuantEvtIdx );
-
+        return( -1 );
     }  
 
-
-    /** Return array of indices of all states that need a quantization-event.
+    /** Return array of booleans indicating all states that need a quantization-event.
      *
      * <p>See comments to method {@link #needQuantizationEventIndex()}.</p>
      *
@@ -909,8 +1060,8 @@ public abstract class QSSBase {
      *
      * <p>The proper sequence in which to call method {@link #triggerRateEvent()}
      * and method {@link #triggerQuantizationEvent(int)} is a fraught topic.
-     * In general, should requantize all states first, then trigger rate-events.
-     * Also, after trigger a rate-event, get new predicted quantization-time.
+     * In general, should requantize all states first, then trigger rate events.
+     * Also, after triggering a rate event, get the new predicted quantization time.
      * TODO: Write up a higher-level description of the problem.</p>
      *
      * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
@@ -931,7 +1082,6 @@ public abstract class QSSBase {
 
         // Set status to note satisfied needs.
         _need_quantEvts[stateIdx] = false;
-
     }  
 
 
@@ -1076,9 +1226,7 @@ public abstract class QSSBase {
 
         // Set status to note satisfied needs.
         _need_rateEvt = false;
-
     }  
-
 
     // TODO: Add method to allow user to "mark for handling a rate-event".  This
     // would tell the integrator that a rate-event happened, but allow the
@@ -1125,9 +1273,7 @@ public abstract class QSSBase {
         }
 
         return( predQuantEvtTime );
-
     }  
-
 
     /** Get the earliest predicted quantization-event time for all states.
      *
@@ -1150,7 +1296,6 @@ public abstract class QSSBase {
         }
 
         return( predQuantEvtTime );
-
     }  
 
 

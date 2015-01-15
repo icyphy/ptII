@@ -29,6 +29,8 @@ COPYRIGHTENDKEY
  */
 package ptolemy.domains.qss.kernel;
 
+import java.util.List;
+
 import org.ptolemy.qss.solver.QSSBase;
 import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
@@ -39,6 +41,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -51,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 A quantized-state integrator.
 
-@author David Broman, Edward A. Lee, Thierry Nouidui, Michael Wetter
+@author Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id$
 @since Ptolemy II 11.0
 @Pt.ProposedRating Yellow (eal)
@@ -151,28 +154,28 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             _debug("Current time is: " + currentTime);
         }
         
-        // Assume do not need a quantization-event.
-        assert (_qssSolver.needQuantizationEventIndex() == -1);
-
         if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
-            // The current simulation time is ahead of the solvers time.
+            // The current simulation time is ahead of the solver's time.
             // Catch up by integrating to current time.
             try {
-                _qssSolver.stepToTime(currentTime);
+                List<Integer> events = _qssSolver.advanceToTime(currentTime);
+                int outputWidth = q.getWidth();
+                for (Integer event : events) {
+                    if (event < outputWidth) {
+                        double[] model = _qssSolver.getStateModel(0).coeffs;
+                        // FIXME: Seems like if the input is available,
+                        // then we could read it now and send out a SmoothToken with
+                        // the value and its derivative. How to do that?
+                        // Also, we should be sending the whole model.
+                        Token token = new SmoothToken(model[0]);
+                        q.send(0, token);
+                        if (_debugging) {
+                            _debug("Send to output: " + token);
+                        }
+                    }
+                }
             } catch (Exception ee) {
                 throw new IllegalActionException(this, ee, ee.getMessage());
-            }
-            // Requantize if necessary.
-            if (_qssSolver.needQuantizationEventIndex() >= 0) {
-                _qssSolver.triggerQuantizationEvent(0);
-                if (q.getWidth() > 0) {
-                    double[] model = _qssSolver.getStateModel(0).coeffs;
-                    // FIXME: Seems like if the input is available,
-                    // then we could read it now and send out a SmoothToken with
-                    // the value and its derivative. How to do that?
-                    // Also, we should be sending the whole model.
-                    q.send(0, new SmoothToken(model[0]));
-                }
             }
         } else if (_firstRound) {
             // If this is the first firing, then produce an output even
@@ -182,7 +185,11 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             // then we could read it now and send out a SmoothToken with
             // the value and its derivative. How to do that?
             // Also, we should be sending the whole model.
-            q.send(0, new SmoothToken(model[0]));
+            Token token = new SmoothToken(model[0]);
+            q.send(0, token);
+            if (_debugging) {
+                _debug("Send to output: " + token);
+            }
         }
     }
 
@@ -234,15 +241,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // FIXME: The director is specifying the solver method here, but this actor should use
         // that specification only as a default.
         _qssSolver = _director.newQSSSolver();
-        _qssSolver.initializeDerivativeFunction(this);
-        _qssSolver.initializeSimulationTime(currentTime);
-        _qssSolver.setQuantizationEventTimeMaximum(_director.getModelStopTime());
-
-        // Initialize the state in the solver.
-        double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
-        _qssSolver.setStateValue(0, xInitValue);
-
-        // Set the error tolerance.
+        
+        // Find the error tolerance.
         double tolerance = _director.getErrorTolerance();
         // If there is a locally-specified tolerance, use that instead.
         DoubleToken toleranceToken = (DoubleToken)errorTolerance.getToken();
@@ -250,8 +250,25 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             tolerance = toleranceToken.doubleValue();
         }
         
-        // FIXME: Should the relative tolerance here be different from the absolute tolerance?
-        _qssSolver.setQuantizationTolerance(0, tolerance, tolerance);
+        // Determine the maximum order of the input variables.
+        // Since inputs are provided from the outside, we don't actually know this,
+        // so we specify the maximum supported by {@link SmoothToken}.
+        int maximumInputOrder = SmoothToken.getOrderLimit();
+        
+        // Set up the solver to use this actor to specify the number of states (1)
+        // and input variables (1), and to use this actor to calculate the derivative
+        // of the states.
+        _qssSolver.initialize(
+        	this, 				// The derivative function implementer.
+        	currentTime, 			// The simulation start time.
+        	_director.getModelStopTime(), 	// The maximum time to an event.
+        	tolerance, 			// The absolute error tolerance.
+        	tolerance, 			// The relative error tolerance.
+        	maximumInputOrder);		// The order of the input variables.
+
+        // Initialize the state variable to match the {@link #xInit} parameter.
+        double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
+        _qssSolver.setStateValue(0, xInitValue);
         
         // To make sure this actor fires at the start time, request a firing.
         getDirector().fireAtCurrentTime(this);
@@ -287,46 +304,28 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         if (u.hasToken(0)) {
             inputValue = ((DoubleToken)u.get(0)).doubleValue();
             newInput = true;
+            
+            ModelPolynomial inputModel = _qssSolver.getInputVariableModel(0);
+            // FIXME: Get derivative information from the input.
+            inputModel.coeffs[0] = inputValue;
+            inputModel.tMdl = currentTime;
         }
 
         if (_firstRound) {
-            _inputModel = new ModelPolynomial(0);
-            // FIXME: What does the following mean?? The docs say nothing.
-            _inputModel.claimWriteAccess();
-            // Give model to the integrator.
-            _qssSolver.addInputVariableModel(0, _inputModel);
-            _inputModel.coeffs[0] = inputValue;
-            _inputModel.tMdl = currentTime;
-
-            // Validate the integrator. FIXME: What does that mean?
-            final String failMsg = _qssSolver.validate();
-            if (null != failMsg) {
-                throw new IllegalActionException(this, failMsg);
-            }
-
-            _qssSolver.triggerQuantizationEvent(0);
-
-            try {
-                _qssSolver.triggerRateEvent();
-            } catch (Exception ee) {
-                // Rethrow as an IllegalActionException.
-                throw new IllegalActionException(this, ee, "Triggering rate event failed.");
-            }
-
+            // FIXME: Why is this needed on the first round?
+            _qssSolver.triggerQuantizationEvents(true);
             _firstRound = false;
-        } else if (newInput) {
-            // New input value provided.
-            // FIXME: If the input is a SmoothToken, set the higher order fields of the input model.
-            _inputModel.coeffs[0] = inputValue;
-            _inputModel.tMdl = currentTime;
-            
+        }
+        // If input values have changed, trigger a rate event.
+        if (newInput) {
             try {
-                _qssSolver.triggerRateEvent();
+        	_qssSolver.triggerRateEvent();
             } catch (Exception ee) {
-                throw new IllegalActionException(this, ee, "Triggering rate event failed.");
+        	throw new IllegalActionException(this, ee, "Triggering rate event failed.");
             }
         }
-        // Find the next firing time, assuming nothing else in simulation changes.
+        // Find the next firing time, assuming nothing else in simulation changes
+        // (no further inputs before that time).
         final Time possibleFireAtTime = _qssSolver.predictQuantizationEventTimeEarliest();
         if (_debugging) {
             _debug("Request refiring at " + possibleFireAtTime);
@@ -369,9 +368,6 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      */
     private boolean _firstRound = true;
 
-    /** Input variable model. */
-    ModelPolynomial _inputModel;
-    
     /** Track requests for firing. */
     private Time _lastFireAtTime;
 
