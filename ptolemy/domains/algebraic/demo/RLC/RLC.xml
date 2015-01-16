@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RLC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-220.0, -110.0}">
         </property>
     </property>
-    <property name="L" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="L" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -31,7 +31,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-130.0, -130.0}">
         </property>
     </property>
-    <property name="R1" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="R1" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, -130.0}">
         </property>
     </property>
-    <property name="R2" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="R2" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -69,7 +69,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, -130.0}">
         </property>
     </property>
-    <property name="C" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="C" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
