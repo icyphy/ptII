@@ -536,8 +536,8 @@ public class FMIModelDescription {
     }
 
     /**
-     * Parse the ModelStructure to catch the I/O direct dependencies
-     *
+     * Parse the ModelStructure to catch the I/O direct dependencies.
+     * @param node The node to be parsed
      */
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
@@ -581,8 +581,7 @@ public class FMIModelDescription {
     }
 
     /**
-     * Add direct dependency to each output variables from all input variables
-     *
+     * Add direct dependency to each output variables from all input variables.
      */
     public void addDefaultInputDependencies() {
         List<String> inputVariables = new ArrayList<String>();

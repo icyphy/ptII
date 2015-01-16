@@ -85,7 +85,6 @@ public class VertxBusHelper {
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
-     * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxBusHelper.
      */

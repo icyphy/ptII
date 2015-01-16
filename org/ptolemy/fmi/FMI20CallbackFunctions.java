@@ -97,6 +97,8 @@ public class FMI20CallbackFunctions extends Structure {
      * (C type: fmiCallbackFreeMemory)
      * @param stepFinished The method called when the step is finished.
      * (C type: FmiStepFinished)
+     * @param componentEnvironment The environment for the component.
+     * (C type: fmi2ComponentEnvironment)
      */
     public FMI20CallbackFunctions(FMICallbackLogger logger,
             FMICallbackAllocateMemory allocateMemory,
