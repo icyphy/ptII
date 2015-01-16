@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Publisher" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Publisher2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -13,16 +13,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 10.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 23, 909, 345}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 568, 748, 306}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[675, 235]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 196]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.75, 90.99999999999903}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{235.24999999999997, 71.49999999999906}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -42,7 +42,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 0.0]">
         </property>
     </property>
     <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
@@ -61,33 +61,23 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate randomized &#10;network delay/clock &#10;synchronization error">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[45.0, 40.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="TimeDelay">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set payload&#10;of token&#10;as timestamp">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 110.0]">
         </property>
     </property>
     <entity name="VertxBusHandler" class="ptolemy.actor.lib.vertx.VertxBusHandler">
-        <property name="address" class="ptolemy.data.expr.Parameter" value="&quot;publish&quot;">
+        <property name="address" class="ptolemy.data.expr.Parameter" value="&quot;publish1&quot;">
         </property>
         <property name="host" class="ptolemy.data.expr.Parameter" value="hostName">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="port">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 80.0]">
         </property>
         <port name="publish" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -102,7 +92,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 80.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
@@ -364,6 +354,10 @@
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="{250.0, 300.0}">
+                </vertex>
+            </relation>
             <link port="port" relation="relation"/>
             <link port="port2" relation="relation2"/>
             <link port="TimeDelay.input" relation="relation"/>
@@ -371,7 +365,7 @@
         </entity>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 80.0]">
         </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
@@ -379,98 +373,66 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
-        </property>
-    </entity>
-    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 90.0]">
-        </property>
-    </entity>
-    <entity name="PoissonClock2" class="ptolemy.actor.lib.PoissonClock">
-        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.5">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 80.0]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 60.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <port name="timestamp" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="microstep" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="payload" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 60.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <port name="timestamp" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="microstep" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="payload" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[240.0, 80.0]">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="VertxBusHandler.publish" relation="relation"/>
-    <link port="PtidesPlatform.port" relation="relation4"/>
-    <link port="PtidesPlatform.port2" relation="relation5"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[235.0, 70.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="VertxBusHandler.publish" relation="relation2"/>
+    <link port="PtidesPlatform.port" relation="relation"/>
+    <link port="PtidesPlatform.port2" relation="relation4"/>
     <link port="TokenToJSON.input" relation="relation3"/>
     <link port="TokenToJSON.output" relation="relation2"/>
-    <link port="PoissonClock.output" relation="relation4"/>
-    <link port="TimeDelay.input" relation="relation2"/>
-    <link port="TimeDelay.output" relation="relation"/>
-    <link port="TimeDelay.delay" relation="relation6"/>
-    <link port="PoissonClock2.output" relation="relation6"/>
-    <link port="RecordDisassembler.input" relation="relation5"/>
-    <link port="RecordDisassembler.timestamp" relation="relation8"/>
-    <link port="RecordDisassembler.microstep" relation="relation7"/>
+    <link port="PoissonClock.output" relation="relation"/>
+    <link port="RecordDisassembler.input" relation="relation4"/>
+    <link port="RecordDisassembler.timestamp" relation="relation6"/>
+    <link port="RecordDisassembler.microstep" relation="relation5"/>
     <link port="RecordAssembler.output" relation="relation3"/>
-    <link port="RecordAssembler.timestamp" relation="relation8"/>
-    <link port="RecordAssembler.microstep" relation="relation7"/>
-    <link port="RecordAssembler.payload" relation="relation8"/>
+    <link port="RecordAssembler.timestamp" relation="relation6"/>
+    <link port="RecordAssembler.microstep" relation="relation5"/>
+    <link port="RecordAssembler.payload" relation="relation6"/>
 </entity>
