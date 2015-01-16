@@ -4,7 +4,7 @@
 <entity name="Moc2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 12, 1294, 712}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={187, 17, 1294, 712}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1066, 595]">
     </property>
@@ -53,17 +53,9 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Nashorn JavaScript engine, requiring Java 1.8.&#10;Please turn your speakers on :)&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Nashorn JavaScript engine, requiring Java 1.8.&#10;It requires audio files available at: http://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?&#10;Please turn your speakers on :)&#10;&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 25.0]">
-        </property>
-    </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="east">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="More info at: http://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[650.0, 90.0]">
         </property>
     </property>
     <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
@@ -159,25 +151,25 @@
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="15.35">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="15.75">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 265.0]">
         </property>
     </entity>
     <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="17.35">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="18.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 345.0]">
         </property>
     </entity>
     <entity name="SingleEvent4" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="19.15">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="19.8">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 425.0}">
         </property>
     </entity>
     <entity name="SingleEvent5" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="22.35">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="22.75">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 515.0]">
         </property>
@@ -186,7 +178,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 515.0]">
         </property>
     </entity>
-    <entity name="Dog" class="org.terraswarm.kernel.AccessorOneNashorn">
+    <entity name="Dog" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;http://c0026106.cdn1.cloudfiles.rackspacecloud.com/2fbc94686ceb434a864c0691906bd144_dog.mp3&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 190.0]">
@@ -220,7 +212,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Cat" class="org.terraswarm.kernel.AccessorOneNashorn">
+    <entity name="Cat" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;$clipUrl&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 265.0]">
@@ -254,7 +246,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Bird" class="org.terraswarm.kernel.AccessorOneNashorn">
+    <entity name="Bird" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;$clipUrl&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 345.0]">
@@ -288,7 +280,7 @@
             </property>
         </port>
     </entity>
-    <entity name="Mouse?" class="org.terraswarm.kernel.AccessorOneNashorn">
+    <entity name="Mouse?" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(&quot;$clipUrl&quot;);&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get(trigger);&#10;   var stopValue = get(stop);&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send(false, output);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send(true, output);&#10;   }&#10;}&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 425.0]">

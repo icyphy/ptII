@@ -30,12 +30,12 @@
 ##########################################################################
 
 # Root of Ptolemy II directory
-ROOT = ../../..
+ROOT = ../../../..
 
 DIRS =
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/kernel
+ME = org/terraswarm/accessor/jjs
 
 # AccessorOne.java depends on JavaScript.java, which uses these
 # libraries.  If we run 'make fast', and JavaScript.class does not
@@ -54,11 +54,10 @@ PTPACKAGE = kernel
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AccessorOne.java 
+	JSAccessor.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	AccessorOneIcon.xml \
-    XMLJStoMOML.xslt
+	JSAccessorIcon.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
