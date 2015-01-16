@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package org.terraswarm.kernel;
+package org.terraswarm.accessor.jjs;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
-//// AccessorOne
+//// JSAccessor
 
 /**
  An implementation of a level-one accessor.
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (bilung)
  */
-public class AccessorOneNashorn extends JavaScript {
+public class JSAccessor extends JavaScript {
 
     /** Construct a library with the given container and name.
      *  @param container The container.
@@ -71,7 +71,7 @@ public class AccessorOneNashorn extends JavaScript {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public AccessorOneNashorn(CompositeEntity container, String name)
+    public JSAccessor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
