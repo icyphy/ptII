@@ -31,14 +31,19 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
 import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
+import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.WebSocket;
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.sockjs.SockJSServer;
 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
    A helper class for the Vert.x event bus API.
    
    @author Patricia Derler
-   @version $Id$
+   @version $Id: VertxBusHelper.java 71355 2015-01-13 05:40:56Z cxh $
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
@@ -63,15 +68,30 @@ public class VertxBusHelper {
      * each JavaScript instance.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module namespace.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxBusHelper.
      */
     public static VertxBusHelper getEventBus(ScriptEngine engine,
-            String namespaceName, Object currentObj, String host, int port) {
-        return new VertxBusHelper(engine, namespaceName, currentObj, host, port);
+            ScriptObjectMirror currentObj, String host, int port) {
+        return new VertxBusHelper(engine, currentObj, host, port);
+    }
+    
+    
+    /**
+     * Create a VertxBusHelper instance as a server-side vertx bus
+     * host.
+     * 
+     * @param engine The JavaScript engine of the JavaScript actor.
+     * @param currentObj The JavaScript instance of the WebSocket.
+     * @param host The host of the Vert.x bus.
+     * @param port The port on the host that provides access to the Vert.x bus.
+     * @return A new VertxBusHelper.
+     */
+    public static VertxBusHelper getEventBusServer(ScriptEngine engine, 
+            ScriptObjectMirror currentObj, int port) {
+        return new VertxBusHelper(engine, currentObj, port);
     }
 
     /**
@@ -82,6 +102,12 @@ public class VertxBusHelper {
         if (_webSocket != null) {
             _webSocket.close();
         }
+    }
+    
+    /** Close server.
+     */
+    public void closeServer() {
+        _server.close();
     }
     
     
@@ -104,7 +130,6 @@ public class VertxBusHelper {
                 .putString("address", address)
                 .putString("body", message);
         try {
-            System.out.println("S " + json);
             _sendTextFrame(json);
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
@@ -133,10 +158,9 @@ public class VertxBusHelper {
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      */
-    private VertxBusHelper(ScriptEngine engine, String namespaceName,
-            Object currentObj, String host, int port) {
+    private VertxBusHelper(ScriptEngine engine,
+            ScriptObjectMirror currentObj, String host, int port) {
         _engine = engine;
-        _namespaceName = namespaceName;
         _currentObj = currentObj;
 
         HttpClient client = _vertx.createHttpClient().setHost(host).setPort(port);
@@ -146,18 +170,11 @@ public class VertxBusHelper {
             public void handle(WebSocket websocket) {
                 _wsIsOpen = true;
                 _webSocket = websocket;
-                try {
-                    Object obj = _engine.eval(_namespaceName);
-                    
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    args[1] = "open";
-                    ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-                }
-                catch (NoSuchMethodException | ScriptException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                Object[] args = new Object[2];
+                args[0] = _currentObj;
+                args[1] = "open";
+                _currentObj.callMember("emit", "connect");
+                _currentObj.callMember("emit", "open");
                 
                 _webSocket.dataHandler(new DataHandler());
                 _webSocket.endHandler(new EndHandler());
@@ -179,6 +196,36 @@ public class VertxBusHelper {
           });
     }
     
+    /**
+     * Private constructor for VertxBusHelper to open a 
+     * client-side web socket and add a ping to keep the websocket open.
+     * 
+     * @param engine The JavaScript engine of the JavaScript actor.
+     * @param namespaceName The name of the JavaScript module constructor.
+     * @param currentObj The JavaScript instance of the WebSocket.
+     * @param host The host of the Vert.x bus.
+     * @param port The port on the host that provides access to the Vert.x bus.
+     */
+    private VertxBusHelper(ScriptEngine engine,
+            ScriptObjectMirror currentObj, int port) {
+        _engine = engine;
+        _currentObj = currentObj;
+
+        _server = _vertx.createHttpServer();
+
+        /* Set security permission to let everything go through */
+        JsonArray permitted = new JsonArray();
+        permitted.add(new JsonObject());
+
+        /* Create SockJS and bridge it to the Event Bus */
+        SockJSServer sockJSServer = _vertx.createSockJSServer(_server);
+        sockJSServer.bridge(new JsonObject().putString("prefix", "/eventbus"),
+                permitted, permitted);
+
+        /* Start the server */
+        _server.listen(port);
+    }
+    
     private void _sendTextFrame(JsonObject message) throws IllegalActionException {
         if (_webSocket != null) {
             _webSocket.writeTextFrame(message.encode());
@@ -187,16 +234,14 @@ public class VertxBusHelper {
     
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-
-    /** The name of the constructor of the JavaScript module. */
-    private String _namespaceName;
     
     /** The current instance of the JavaScript module. */
-    private Object _currentObj;
+    private ScriptObjectMirror _currentObj;
     
     /** Instance of the current JavaScript engine. */
     private static ScriptEngine _engine;
 
+    /** Periodic ping to keep websocket alive when using the eventbus. */
     private long _periodicPing;
     
     /** Instance of Vertx. Apparently we need only one. */
@@ -207,6 +252,8 @@ public class VertxBusHelper {
 
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
+    
+    private HttpServer _server = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
@@ -219,24 +266,7 @@ public class VertxBusHelper {
         public void handle(Buffer buff) {
             String message = buff.toString();
             JsonObject received = new JsonObject(message);
-            try {
-                Object obj = _engine.eval(_namespaceName);
-
-                Object[] args = new Object[3];
-                args[0] = _currentObj;
-                args[1] = "received";
-                Object[] jsArgs = new Object[2];
-                System.out.println("R " + received);
-                jsArgs[0] = received.getField("body").toString();
-                jsArgs[1] = false;
-                args[2] = jsArgs;
-                
-                ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-            }
-            catch (NoSuchMethodException | ScriptException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            _currentObj.callMember("emit", "received", received.getField("body").toString());
         }
     }
 
@@ -246,19 +276,7 @@ public class VertxBusHelper {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-            try {
-                Object obj = _engine.eval(_namespaceName);
-                
-                Object[] args = new Object[2];
-                args[0] = _currentObj;
-                args[1] = "close";
-                
-                ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-            }
-            catch (NoSuchMethodException | ScriptException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            _currentObj.callMember("emit", "close");
         }
     }
 
@@ -268,19 +286,7 @@ public class VertxBusHelper {
     private class ExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-            try {
-                Object obj = _engine.eval(_namespaceName);
-                
-                Object[] args = new Object[2];
-                args[0] = _currentObj;
-                args[1] = "error";
-                
-                ((Invocable) _engine).invokeMethod(obj, "invokeCallback", args);
-            }
-            catch (NoSuchMethodException | ScriptException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            _currentObj.callMember("emit", "error");
         }
     }
     

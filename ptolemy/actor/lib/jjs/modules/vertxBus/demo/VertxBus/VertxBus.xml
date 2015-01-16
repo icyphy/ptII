@@ -2,206 +2,137 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="VertxBus" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Start the&#10;&#10;which hosts the Vert.x bus.&#10;&#10;Use &#10;&#10;to write to the Vert.x bus&#10;&#10;and &#10;&#10;to read from the Vert.x bus">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 140.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+    <property name="Publisher" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="VertxBus Server">
         </property>
-        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 140.0]">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxBus/demo/VertxBusServer.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, -45.0]">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={324, 157, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2111, 393, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{71.99660915798609, 119.28946940104169}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
-    </property>
-    <property name="ShowTypes" class="ptolemy.vergil.actor.lib.ShowTypes">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 220.0]">
+    <property name="Publisher2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="VertxBus Writer">
         </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Javascript actor subscribes to Vert.x bus address x&#10;and writes to address y. The Java Vert.x actor x writes&#10;to address x and actor y subscribes to address y.">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 205.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, 290.0]">
-        </property>
-    </property>
-    <entity name="readXwriteY" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var VertxBus = require('vertxBus');&#10;&#10;function onOpen() {&#10;  eb.registerHandler('x');&#10;}&#10;&#10;function error() {&#10;  alert('error');&#10;}&#10;&#10;function onReceived(msg) {&#10;  send(msg, output);&#10;}&#10;&#10;var eb = null;&#10;&#10;exports.fire = function()&#10;{&#10;  if (eb == null) {&#10;    eb = new VertxBus('localhost', 8080);&#10;    eb.on('open', onOpen);&#10;    eb.on('received', onReceived);&#10;  }&#10;  var input = get(trigger, 0);&#10;  if (input != null) {&#10;    eb.publish('y', input);&#10;  } &#10;}&#10;&#10;exports.wrapup = function()&#10;{&#10;  eb.close();&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxBus/demo/WriteToVertxBus.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
             </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 80.0]">
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
             </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
-        </port>
-    </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="5.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{3.0}">
-        </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, 80.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 283, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 80.0]">
-        </property>
-    </entity>
-    <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
-        <doc>Output the current date.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 80.0]">
-        </property>
-    </entity>
-    <entity name="x" class="ptolemy.actor.lib.vertx.VertxBusHandler">
-        <property name="address" class="ptolemy.data.expr.Parameter" value="&quot;x&quot;">
-        </property>
-        <property name="host" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
-        </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 179.99999999999997]">
-        </property>
-        <port name="publish" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="publish" class="ptolemy.kernel.util.Attribute">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
             </property>
-        </port>
-    </entity>
-    <entity name="y" class="ptolemy.actor.lib.vertx.VertxBusHandler">
-        <property name="address" class="ptolemy.data.expr.Parameter" value="&quot;y&quot;">
-        </property>
-        <property name="host" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
-        </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 245.0]">
-        </property>
-        <port name="publish" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="publish" class="ptolemy.kernel.util.Attribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </property>
+    <property name="Publisher3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="VertxBus Reader">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 270.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxBus/demo/ReadFromVertxBus.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-        </port>
-        <port name="subscribe" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="yy" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1043, 505, 361, 177}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[361, 133]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 245.0]">
-        </property>
-    </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 180.0]">
-        </property>
-    </entity>
-    <entity name="readY" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var VertxBus = require('vertxBus');&#10;&#10;function onOpen() {&#10;  eb.registerHandler('y');&#10;}&#10;&#10;function error() {&#10;  alert('error');&#10;}&#10;&#10;function onReceived(msg) {&#10;  send(msg, output);&#10;}&#10;&#10;var eb = null;&#10;&#10;exports.fire = function()&#10;{&#10;  if (eb == null) {&#10;    eb = new VertxBus('localhost', 8080);&#10;    eb.on('open', onOpen);&#10;    eb.on('received', onReceived);&#10;  }&#10;}&#10;&#10;exports.wrapup = function()&#10;{&#10;  eb.close();&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
             </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -25.0]">
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
             </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
-        </port>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 73, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, -25.0]">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-    </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates the use of the Vert.x bus module in JavaScript.&#10;The module supports creating a Vert.x server that hosts the vert.x bus,&#10;as well as creating websockets that read from and write to the vert.x&#10;bus.&#10;&#10;Use the Hyperlinks below to start the models in this demo.">
         </property>
-        <vertex name="vertex1" value="[-45.0, 80.0]">
-        </vertex>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 25.0]">
         </property>
-        <vertex name="vertex1" value="[60.0, 180.0]">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <vertex name="vertex1" value="[65.0, 80.0]">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="readXwriteY.trigger" relation="relation"/>
-    <link port="readXwriteY.output" relation="relation2"/>
-    <link port="DiscreteClock.output" relation="relation5"/>
-    <link port="Display.input" relation="relation2"/>
-    <link port="CurrentDate.output" relation="relation"/>
-    <link port="CurrentDate.trigger" relation="relation5"/>
-    <link port="x.publish" relation="relation6"/>
-    <link port="y.subscribe" relation="relation4"/>
-    <link port="yy.input" relation="relation4"/>
-    <link port="Ramp.output" relation="relation6"/>
-    <link port="Ramp.trigger" relation="relation5"/>
-    <link port="readY.trigger" relation="relation"/>
-    <link port="readY.output" relation="relation3"/>
-    <link port="Display2.input" relation="relation3"/>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ptolemy also contains an actor called VertxBusHandler that allows&#10;reading from and writing to the VertxBus. For more infos see&#10;$PTII/ptolemy/actor/lib/vertx">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 350.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
 </entity>

@@ -278,7 +278,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                                     }
                                 }
                                 try {
-                                    getDirector().fireAtCurrentRealTime((Actor) subscribe.getContainer());
+                                    getDirector().fireAtCurrentTime((Actor) subscribe.getContainer());
                                 } catch (IllegalActionException e) {
                                     _exception = e;
                                 }
