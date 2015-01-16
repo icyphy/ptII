@@ -54,6 +54,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 A quantized-state integrator.
 
+FIXME: To do:
+- Document this better.
+- Add an Impulse port, and make xInit a PortParameter.
+- Add an output that bundles the input to generate a SmoothToken.
+- Make a vector version.
+
 @author Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id$
 @since Ptolemy II 11.0
@@ -302,12 +308,26 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         double inputValue = 0.0;
         boolean newInput = false;
         if (u.hasToken(0)) {
-            inputValue = ((DoubleToken)u.get(0)).doubleValue();
+            DoubleToken inputToken = (DoubleToken)u.get(0);
+            inputValue = inputToken.doubleValue();
             newInput = true;
             
             ModelPolynomial inputModel = _qssSolver.getInputVariableModel(0);
-            // FIXME: Get derivative information from the input.
             inputModel.coeffs[0] = inputValue;
+            // Get derivative information from the input, if present.
+            if (inputToken instanceof SmoothToken) {
+        	double[] derivatives = ((SmoothToken)inputToken).derivativeValues();
+        	if (derivatives != null) {
+        	    int factorial = 1;
+        	    for (int i = 0; i < derivatives.length; i++) {
+        		// The model coefficients are the coefficients of the
+        		// Taylor series expansion, which is equal to the derivatives
+        		// divided by the factorial of the order of the derivatives.
+        		inputModel.coeffs[i+1] = derivatives[i]/factorial;
+        		factorial = factorial * (i+1);
+        	    }
+        	}
+            }
             inputModel.tMdl = currentTime;
         }
 

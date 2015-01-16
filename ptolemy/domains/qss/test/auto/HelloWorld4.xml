@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
@@ -58,26 +58,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 230.0]">
         </property>
     </property>
-    <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 175.0]">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
-        </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="40.0">
-        </property>
-        <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 12.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 230.0]">
-        </property>
-    </property>
     <property name="Arrow3" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 105.0]">
         </property>
@@ -88,26 +68,6 @@
         <property name="y" class="ptolemy.data.expr.Parameter" value="-40.0">
         </property>
         <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-    </property>
-    <property name="Arrow4" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 100.0]">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
-        </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="-40.0">
-        </property>
-        <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 4.0.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 25.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -131,26 +91,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
         </property>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 22, 571, 874}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 830]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 115.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="4.0"/>
-<yRange min="0.0" max="12.000003528319127"/>
-<default marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 110.0]">
@@ -186,6 +126,50 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 110.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 4.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 30.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 4.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 30.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0099999999631, 0.1628285692229, 0.3356571395184, 0.5284857120721, 0.7413142819125, 0.9741428518838, 1.226971421986, 1.5303730371836, 1.8982968273249, 2.3460343950205, 2.8863722148837, 3.5428515620862, 4.3357431543331, 5.295837960664, 6.4579617379522, 7.8646197722, 9.565560970423, 11.6238430835456, 12.0000035283191}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0099504938, 0.1513718505, 0.2927932079, 0.4342145668, 0.5756359235, 0.7170572802, 0.8584786369, 1.0151292947, 1.1900791759, 1.3857754462, 1.6023944882, 1.8435018259, 2.1098907723, 2.404644729, 2.7304233388, 3.0901582389, 3.486790041, 3.9241926212, 4.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 195.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -194,21 +178,39 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[485.0, 105.0]">
+        </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[450.0, 175.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="QSSIntegrator.u" relation="relation5"/>
     <link port="QSSIntegrator.q" relation="relation"/>
     <link port="Const.output" relation="relation3"/>
     <link port="Const.trigger" relation="relation2"/>
     <link port="QSSIntegrator2.u" relation="relation3"/>
-    <link port="QSSIntegrator2.q" relation="relation4"/>
+    <link port="QSSIntegrator2.q" relation="relation6"/>
     <link port="Const2.output" relation="relation5"/>
     <link port="Const2.trigger" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="Test3.input" relation="relation6"/>
+    <link port="CurrentTime2.output" relation="relation7"/>
+    <link port="CurrentTime2.trigger" relation="relation6"/>
+    <link port="Test4.input" relation="relation7"/>
 </entity>
