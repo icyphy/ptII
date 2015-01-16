@@ -48,8 +48,12 @@ import ptolemy.actor.util.Time;
  * <li><i>t</i>, time of interest.</li>
  * <li><i>dt = t - tMdl</i>, time difference.</li>
  * <li><i>tMdl</i>, time of model formation.</li>
- * <li><i>c0, c1, c2, ...</i>, model coefficients.  Equal to the value, first
- * derivative, second derivative, and so on, at time <i>tMdl</i>.</li>
+ * <li><i>c0, c1, c2, ...</i>, model coefficients. 
+ * The first coefficient is the value of <i>x</i> at <i>tMdl</i>.
+ * The remaining coefficients are related to derivatives of
+ * <i>x</i> at <i>tMdl</i> by
+ * <i>ci</i> = (1/i!)(d^i x/dt^i)(tMdl).
+ * That is, they are the coefficients of the Taylor series expansion.
  * <li>The notation <i>g{y}</i> means that <i>g</i> is a function
  * of <i>y</i>.</li>
  * </ul>
