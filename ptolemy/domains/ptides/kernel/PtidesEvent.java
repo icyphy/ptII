@@ -236,38 +236,20 @@ public class PtidesEvent extends DEEvent {
                 return primitiveFieldHash >>> objectFieldHash;
     }
 
+    /** Compare event timestamp and microstep.
+     * @param event The event to compare with.
+     */
     @Override
     public boolean hasTheSameTagAs(DEEvent event) {
+        if (event == this) {
+            return true;
+        }
         Actor actor = event.actor();
         if (actor == null) {
             actor = (Actor) event.ioPort().getContainer();
         }
-        Double clockSyncBound = null;
-        try {
-            clockSyncBound = PtidesDirector._getDoubleParameterValue(
-                    (NamedObj) actor, "_clockSynchronizationBound");
-        } catch (IllegalActionException e) {
-            // In this case timePrecision is set to 0.0 in the next lines.
-        }
-        if (clockSyncBound == null) {
-            clockSyncBound = 0.0;
-        }
-
-        boolean same = false;
-        if (clockSyncBound == 0.0) {
-            same = _timestamp.compareTo(event.timeStamp()) == 0
+        boolean same = _timestamp.compareTo(event.timeStamp()) == 0
                     && _microstep == event.microstep();
-        } else {
-            same = _timestamp.subtract(clockSyncBound).compareTo(
-                    event.timeStamp()) <= 0
-                    && _timestamp.add(clockSyncBound).compareTo(
-                            event.timeStamp()) >= 0;
-                            // The microstep in Ptides describes a logical ordering. Therefore,
-                            // even if the timestamps are not equal, we require the microsteps
-                            // to be the same.
-                            same = same & _microstep == event.microstep();
-        }
-
         return same;
     }
 

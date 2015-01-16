@@ -1475,8 +1475,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
                             .get(i);
                     // If event has same tag and destined to same actor, remove from
                     // queue.
-                    if (eventInQueue.hasTheSameTagAs(ptidesEvent)
-                            && eventInQueue.actor().equals(actor)) {
+                    if (eventInQueue.actor().equals(actor) && 
+                            eventInQueue.hasTheSameTagAs(ptidesEvent)) {
                         sameTagEvents.add(eventInQueue);
                         if (eventInQueue.receiver() != null) {
                             if (eventInQueue.receiver() instanceof PtidesReceiver) {
@@ -1650,7 +1650,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private boolean _isSafeToProcess(PtidesEvent event)
             throws IllegalActionException {
-
         // resource scheduler events are only safe to process when physical time
         // equals event timestamp.
         if (event.actor() instanceof ActorExecutionAspect) {
@@ -1805,8 +1804,8 @@ public class PtidesDirector extends DEDirector implements Decorator {
             PtidesEvent eventInQueue = ((PtidesListEventQueue) queue).get(i);
             // If event has same tag and destined to same actor, remove from
             // queue.
-            if (eventInQueue.hasTheSameTagAs(event)
-                    && eventInQueue.actor().equals(event.actor())) {
+            if (eventInQueue.actor().equals(event.actor()) &&
+                    eventInQueue.hasTheSameTagAs(event)) {
                 eventList.add(eventInQueue);
                 IOPort port = eventInQueue.ioPort();
                 if (port != null) {
