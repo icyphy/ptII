@@ -1495,8 +1495,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     // If event has same tag and destined to same actor, remove from
                     // queue.
                     // TODO: or input port group?
-                    if (eventInQueue.hasTheSameTagAs(ptidesEvent)
-                            && eventInQueue.actor().equals(ptidesEvent.actor())) {
+                    if (eventInQueue.actor().equals(ptidesEvent.actor()) &&
+                            eventInQueue.hasTheSameTagAs(ptidesEvent)) {
                         sameTagEvents.add(eventInQueue);
                         if (eventInQueue.receiver() != null) {
                             if (eventInQueue.receiver() instanceof MetroIIPtidesReceiver) {
@@ -1881,8 +1881,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             // If event has same tag and destined to same actor, remove from
             // queue.
             // TODO: or input port group?
-            if (eventInQueue.hasTheSameTagAs(event)
-                    && eventInQueue.actor().equals(event.actor())) {
+            if (eventInQueue.actor().equals(event.actor()) &&
+                    eventInQueue.hasTheSameTagAs(event)) {
                 eventList.add(eventInQueue);
                 ((MetroIIPtidesListEventQueue) queue).take(i);
                 continue;
