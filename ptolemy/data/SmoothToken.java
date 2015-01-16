@@ -77,9 +77,17 @@ import ptolemy.kernel.util.IllegalActionException;
    The second derivative of a multiplication or division is obtained by
    applying the above rules to x' and y' rather than to x and y.
    Higher-order derivatives are similarly obtained.
-   <p>
+   </p><p>
+   You can construct an instance of this token in the Ptolemy expression
+   language using the <code>smoothToken(double, {double})</code> function.
+   The first argument specifies the value, and the second argument specifies
+   the derivatives.
+   </p><p>
    By default, instances of SmoothToken have no more than three derivatives.
    This can be changed using the {@link #setOrderLimit(int)} method.
+   </p><p>
+   FIXME: Division is not implemented yet.
+   </p>
 
    @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee
    @version $Id$
