@@ -1,0 +1,106 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="c4po" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 58, 928, 617}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Calculate the distance of C4PO from a Bluetooth beacon&#10;using the received signal strength and transmisson power of the beacon&#10;(a calibration constant transmitted with beacon packets).&#10;&#10;Based on:  http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 10.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+        </property>
+    </property>
+    <entity name="rssi" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-59">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 125}">
+        </property>
+    </entity>
+    <entity name="BluetoothDistance" class="org.terraswarm.accessor.js.JSAccessor">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// &#10;function fire() {&#10;     var strength = get(rssi);&#10; var power = get(txPower);&#10; var result = -1.0;&#10; var ratio;&#10; 	  if (strength != 0) { 		ratio = strength*1.0/power; 	  	if (ratio &lt; 1.0) { 	    	result = Math.pow(ratio,10); 	  	} 	  	else { 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;     	  	} 	 }send(result, distance);&#10;}&#10;// ">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 150.0]">
+        </property>
+        <port name="rssi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="txPower" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="distance" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="txPower" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-72">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="rssi.output" relation="relation"/>
+    <link port="BluetoothDistance.rssi" relation="relation"/>
+    <link port="BluetoothDistance.txPower" relation="relation2"/>
+    <link port="BluetoothDistance.distance" relation="relation3"/>
+    <link port="txPower.output" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
+</entity>
