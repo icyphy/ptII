@@ -691,6 +691,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  system time and multiplying this with the time resolution of the localClock.
      *  @param actor The actor to be fired.
      *  @return The model time the actor will be fired at.
+     *  @exception IllegalActionException If thrown while creating a Time object
+     *  or while calling fireAt.
      */
     @Override
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {

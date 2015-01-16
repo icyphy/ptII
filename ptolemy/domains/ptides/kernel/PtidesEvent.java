@@ -237,7 +237,8 @@ public class PtidesEvent extends DEEvent {
     }
 
     /** Compare event timestamp and microstep.
-     * @param event The event to compare with.
+     *  @param event The event to compare with.
+     *  @return True if the argument has the same tag as this event.
      */
     @Override
     public boolean hasTheSameTagAs(DEEvent event) {

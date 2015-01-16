@@ -65,37 +65,37 @@
     <h3>What to modify</h3>
     <dl>
       <dt><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code></dt>
-      <dd>Copies the C files in </code>$PTII/ptolemy/actor/lib/fmi/ma/includes/</code> and <code>shared/</code></dd>
-<dt><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c</code></dt>
-<dd>The template file that includes the body of the Master Algorithm.</dd>
-</dl>
+      <dd>Copies the C files in <code>$PTII/ptolemy/actor/lib/fmi/ma/includes/</code> and <code>shared/</code></dd>
+      <dt><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c</code></dt>
+      <dd>The template file that includes the body of the Master Algorithm.</dd>
+    </dl>
 
 
-<h2>What needs to be done</h2>
-<ol>
-  <li>Currently, the MA code that is generated works with
-    FMI-2.0RC1pt, it does not work with FMI-2.0pt.
+    <h2>What needs to be done</h2>
+    <ol>
+      <li>Currently, the MA code that is generated works with
+        FMI-2.0RC1pt, it does not work with FMI-2.0pt.
 
-    <br>Solution: Update the files listed in "What to modify" above</li>
+        <br>Solution: Update the files listed in "What to modify" above</li>
 
-  <li><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in</code>
-    has the names of the actors hard wired in.
+      <li><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in</code>
+        has the names of the actors hard wired in.
 
-    <br>Solution: Modify the code generator so that main() passes these arguments to the appropriate function.</li>
+        <br>Solution: Modify the code generator so that main() passes these arguments to the appropriate function.</li>
 
-  <li><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java</code>
-    has the class names hardwired in.
+      <li><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java</code>
+        has the class names hardwired in.
 
-    <br>Solution: We need to determine actors are upstream and
-    downstream and update the connections array
-    accordingly.  It is probably better to do this at a higher level than FMUImport, perhaps the $PTII/ptolemy/cg/./adapter/generic/program/procedural/adapters/ptolemy/actor/sched/StaticSchedulingDirector.java.
-    <br> One idea is to create a similar model that has a
-    Ramp->Scale-Display and invoke the C code generator on it (See
-    $PTII/ptolemy/cg/README.html) and see how that does it.
-  </li>
+        <br>Solution: We need to determine actors are upstream and
+        downstream and update the connections array
+        accordingly.  It is probably better to do this at a higher level than FMUImport, perhaps the $PTII/ptolemy/cg/./adapter/generic/program/procedural/adapters/ptolemy/actor/sched/StaticSchedulingDirector.java.
+        <br> One idea is to create a similar model that has a
+        Ramp->Scale-Display and invoke the C code generator on it (See
+        $PTII/ptolemy/cg/README.html) and see how that does it.
+      </li>
 
-</ol>
-<p>
-  @since Ptolemy II 10.0
-</body>
+    </ol>
+    <p>
+      @since Ptolemy II 10.0
+  </body>
 </html>

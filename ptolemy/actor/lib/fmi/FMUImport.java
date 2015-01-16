@@ -2666,6 +2666,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * @param context The context in which the FMU actor is created.
      * @param x The x-axis value of the actor to be created.
      * @param y The y-axis value of the actor to be created.
+     * @param modelExchange True if the fmu should be imported
+     * as a model exchange fmu.
      * @param addMaximumStepSizeParameter True if a parameter named
      * "maximumStepSize" should be added.
      * @param actorClassName The class name of the Ptolemy actor
