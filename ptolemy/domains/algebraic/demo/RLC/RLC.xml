@@ -232,7 +232,7 @@
             </property>
         </entity>
         <entity name="Resistance2" class="ptolemy.actor.lib.Scale">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="1/R2">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="R2">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
