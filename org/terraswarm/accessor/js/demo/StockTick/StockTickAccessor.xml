@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class name="StockTick" extends="org.terraswarm.kernel.JavaScript">
+  <input
+    name="symbol"
+    value="YHOO"
+    type="string"/>
+  <output
+    name="price"
+    type="number"/>    
+  <script type="text/javascript">
+    // <![CDATA[
+    function fire() {
+      var url = "http://query.yahooapis.com/..."
+         + get(symbol)
+         + "...&format=json";
+      var record = JSON.parse(readURL(url));
+      var tick = record.query.results.quote.BidRealtime;
+      send(tick, price);
+    }
+    // ]]>
+  </script>
+</class>

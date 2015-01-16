@@ -8,7 +8,7 @@
 	  
 	  if (strength != 0) {
 		ratio = strength*1.0/power;
-	  	if (ratio &lt; 1.0) {
+	  	if (ratio < 1.0) {
 	    	result = Math.pow(ratio,10);
 	  	}
 	  	else {
