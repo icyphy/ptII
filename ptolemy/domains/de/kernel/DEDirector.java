@@ -688,7 +688,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  is enabled, fire the actor at the model time that corresponds to the current
      *  real time. This model time is computed by subtracting the model start time
      *  recorded by this director at the beginning of the simulation from the 
-     *  system time and multiplying this with the time resolution of the localClock.
+     *  system time and dividing by 1000, as the default unit of time is seconds.
      *  @param actor The actor to be fired.
      *  @return The model time the actor will be fired at.
      *  @exception IllegalActionException If thrown while creating a Time object
@@ -699,8 +699,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (_synchronizeToRealTime) {
             Time modelTimeForCurrentRealTime = new Time(this,
                     (System.currentTimeMillis() - this
-                            .getRealStartTimeMillis())
-                            * this.localClock.getTimeResolution());
+                            .getRealStartTimeMillis()) / 1000);
             return fireAt(actor, modelTimeForCurrentRealTime);
         } else {
             // NOTE: We do not need to override the functionality of 
