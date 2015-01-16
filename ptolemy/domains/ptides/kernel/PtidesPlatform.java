@@ -788,11 +788,10 @@ public class PtidesPlatform extends MirrorComposite {
                                     DateToken token = ((DateToken) timestampToken);
                                     recordTimestamp = new Time(
                                             director,
-                                            (token.getCalendarInstance()
+                                            (double)(token.getCalendarInstance()
                                                     .getTimeInMillis() - director
                                                     .getRealStartTimeMillis())
-                                                    * director.localClock
-                                                            .getTimeResolution());
+                                                    / 1000); // The default unit of time is seconds.
                                 } else {
                                     timestampToken = record
                                             .get(PtidesNetworkModelTimeType.timestamp);
@@ -910,8 +909,7 @@ public class PtidesPlatform extends MirrorComposite {
                             Time timestamp = (Time) timestamps[0];
 
                             if (_useRealTime) {
-                                long time = (long) (timestamp.getDoubleValue() / director.localClock
-                                        .getTimeResolution())
+                                long time = (long) (timestamp.getDoubleValue() * 1000) // The default unit of time is seconds.
                                         + director.getRealStartTimeMillis();
                                 timeToken = new DateToken(time);
                             } else {

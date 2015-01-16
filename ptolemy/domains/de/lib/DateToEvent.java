@@ -136,11 +136,11 @@ public class DateToEvent extends Transformer {
                             + token.toString()
                             + ") lies in the past.");
                 } else {
-                    long realTimeDifference = token.getCalendarInstance().getTimeInMillis() - _director
+                    long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis() - _director
                     .getRealStartTimeMillis();
                     Time fireTime = new Time(
                             _director,
-                            realTimeDifference * _director.localClock.getTimeResolution());
+                            ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.
                     _director.fireAt(this, fireTime);
                     if (_outputTokensForChannel == null) {
                         _outputTokensForChannel = new HashMap<Time, List<Integer>>();

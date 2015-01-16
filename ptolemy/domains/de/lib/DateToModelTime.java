@@ -109,9 +109,9 @@ public class DateToModelTime extends Transformer {
                 DateToken token = (DateToken) input.get(channel);
                 Time modelTime = new Time(
                         _director,
-                        (token.getCalendarInstance().getTimeInMillis() - _director
+                        (double)(token.getCalendarInstance().getTimeInMillis() - _director
                                 .getRealStartTimeMillis())
-                                * _director.localClock.getTimeResolution());
+                                / 1000); // The default unit of time is seconds.
                 output.send(channel, new DoubleToken(modelTime.getDoubleValue()));
             }
         }

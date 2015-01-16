@@ -97,8 +97,8 @@ public class EventToDate extends Transformer {
             }
             double modelTimeSinceStart = _director.getModelTime().getDoubleValue() - 
                     _director.getModelStartTime().getDoubleValue();
-            long time = (long) (modelTimeSinceStart / _director.localClock
-                    .getTimeResolution()) + _director.getRealStartTimeMillis();
+            long time = (long) (modelTimeSinceStart * 1000) // The default unit of time is seconds. 
+                    + _director.getRealStartTimeMillis();
             output.send(channel, new DateToken(time));
         }
     }

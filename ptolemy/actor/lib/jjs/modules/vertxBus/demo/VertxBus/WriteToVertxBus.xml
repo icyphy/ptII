@@ -25,9 +25,9 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SynchronizeToRealTime is set to TRUE.&#10;System time in Ptolemy (Java) is &#10;provided in milliseconds.&#10;TimeResolution in localClock is set to &#10;10^-3, thus 1 time unit in model&#10;time corresponds to 1 second.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="synchronizeToRealTime is set to &#10;TRUE, 1 time unit in model&#10;time corresponds to 1 second.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -55.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
