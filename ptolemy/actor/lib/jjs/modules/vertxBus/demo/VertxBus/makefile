@@ -47,7 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	VertxBus.xml
+	ReadFromVertxBus.xml \
+	VertxBus.xml \
+	VertxBusServer.xml \
+	WriteToVertxBus.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

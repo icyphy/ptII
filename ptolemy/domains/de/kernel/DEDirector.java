@@ -683,13 +683,34 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
         return result;
     }
-
-    // NOTE: We do not need to override fireAtCurrentTime(Actor) because in
-    // the base class it does the right thing. In particular, it attempts
-    // to fire at the time returned by getModelTime(), but if by the time
-    // it enters the synchronized block that time is in the past, it
-    // adjusts the time to match current time. This is exactly what
-    // fireAtCurrentTime(Actor) should do.
+    
+    /** Fire the actor actor at the current model time or, if synchronizeToRealTime
+     *  is enabled, fire the actor at the model time that corresponds to the current
+     *  real time. This model time is computed by subtracting the model start time
+     *  recorded by this director at the beginning of the simulation from the 
+     *  system time and multiplying this with the time resolution of the localClock.
+     *  @param actor The actor to be fired.
+     *  @return The model time the actor will be fired at.
+     */
+    @Override
+    public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
+        if (_synchronizeToRealTime) {
+            Time modelTimeForCurrentRealTime = new Time(this,
+                    (System.currentTimeMillis() - this
+                            .getRealStartTimeMillis())
+                            * this.localClock.getTimeResolution());
+            return fireAt(actor, modelTimeForCurrentRealTime);
+        } else {
+            // NOTE: We do not need to override the functionality of 
+            // fireAtCurrentTime(Actor) because in
+            // the base class it does the right thing. In particular, it attempts
+            // to fire at the time returned by getModelTime(), but if by the time
+            // it enters the synchronized block that time is in the past, it
+            // adjusts the time to match current time. This is exactly what
+            // fireAtCurrentTime(Actor) should do.
+            return super.fireAtCurrentTime(actor);
+        }
+    }
 
     /** Schedule an actor to be fired in the specified time relative to
      *  the current model time.
@@ -701,27 +722,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public void fireAtRelativeTime(Actor actor, Time time)
             throws IllegalActionException {
         fireAt(actor, time.add(getModelTime()));
-    }
-    
-    /** Schedule an actor to be fired at the model time that corresponds
-     * to current real time. This only makes sense in models that use
-     * sycnhronzeToRealTime. If synchronizeToRealTime is false, a call to
-     * this method does the same as fireAtCurrentTime.
-     * @param actor The scheduled actor to fire.
-     * @return The scheduled time to fire.
-     * @throws IllegalActionException If the specified time contains
-     *  a negative time value, or event queue is not ready.
-     */
-    @Override
-    public Time fireAtCurrentRealTime(Actor actor) throws IllegalActionException {
-        if (_synchronizeToRealTime) {
-            return fireAt(actor, new Time(this,
-                    (System.currentTimeMillis() - this
-                            .getRealStartTimeMillis())
-                            * this.localClock.getTimeResolution()));
-        } else {
-            return fireAtCurrentTime(actor);
-        }
     }
 
     /** Return a causality interface for the composite actor that
