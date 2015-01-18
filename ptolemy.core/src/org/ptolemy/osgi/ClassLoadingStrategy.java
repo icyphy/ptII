@@ -66,5 +66,4 @@ public interface ClassLoadingStrategy {
    * @throws ClassNotFoundException
    */
   CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
-  
 }

@@ -72,7 +72,7 @@ public class SimpleClassLoadingStrategy implements ClassLoadingStrategy {
   public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
     throw new ClassNotFoundException();
   }
-
+  
   // private stuff
 
   private ClassLoader _classLoader;

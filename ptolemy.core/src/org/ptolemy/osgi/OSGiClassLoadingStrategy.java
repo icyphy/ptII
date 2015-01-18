@@ -51,19 +51,6 @@ import ptolemy.kernel.CompositeEntity;
  */
 public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
 
-  /**
-   * Default constructor without a fallback parent class loader.
-   */
-  public OSGiClassLoadingStrategy() {
-  }
-
-  /**
-   * @param parentLoader used as fallback for classes that are not found by this strategy instance
-   */
-  public OSGiClassLoadingStrategy(ClassLoadingStrategy parentLoader) {
-    this._parentLoader = parentLoader;
-  }
-  
   public Class<?> loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
     Class<?> result = null;
     
@@ -77,10 +64,10 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
         // just means the provider doesn't know about this one
       }
     }
-    if(result==null && _parentLoader!=null) {
-      return _parentLoader.loadJavaClass(className, null);
-    } else {
+    if(result!=null) {
       return result;
+    } else {
+      throw new ClassNotFoundException(className);
     }
   }
 
@@ -97,10 +84,10 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
         // just means the provider doesn't know about this one
       }
     }
-    if(result==null && _parentLoader!=null) {
-      return _parentLoader.loadActorOrientedClass(className, null);
-    } else {
+    if(result!=null) {
       return result;
+    } else {
+      throw new ClassNotFoundException(className);
     }
   }
 
@@ -176,11 +163,6 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
   }
 
   // private stuff
-  /**
-   * An optional parent classloading strategy, to be used as fallback
-   * i.c. this current strategy instance can not load a requested class.
-   */
-  private ClassLoadingStrategy _parentLoader;
   /** All registered providers for "plain" model elements like actors, directors, ...*/
   private Set<ModelElementClassProvider> _modelElementClassProviders = new HashSet<ModelElementClassProvider>();
   /** All registered providers for actor-oriented classes in a model */

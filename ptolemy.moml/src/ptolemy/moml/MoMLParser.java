@@ -238,11 +238,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     _ifElementStack.push(Integer.valueOf(0));
 
     _classLoader = getClass().getClassLoader();
-    if (_defaultClassLoadingStrategy == null) {
-      _classLoadingStrategy = new SimpleClassLoadingStrategy(_classLoader);
-    } else {
-      _classLoadingStrategy = _defaultClassLoadingStrategy;
-    }
   }
 
   /** Construct a parser that creates entities in the specified workspace.
@@ -257,11 +252,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     this(workspace);
     if (loader != null) {
       _classLoader = loader;
-    }
-    if (_defaultClassLoadingStrategy == null) {
-      _classLoadingStrategy = new SimpleClassLoadingStrategy(_classLoader);
-    } else {
-      _classLoadingStrategy = _defaultClassLoadingStrategy;
     }
   }
 
@@ -1976,15 +1966,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     _current = context;
     _originalContext = context;
   }
-  
-  public static void setClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {
+
+  /**
+   * Set the static default class loading strategy that will be used by all instances of this class.
+   * @param classLoadingStrategy
+   */
+  public static void setDefaultClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {
     _defaultClassLoadingStrategy = classLoadingStrategy;
   }
-
-  public static ClassLoadingStrategy getClassLoadingStrategy() {
+  
+  /**
+   * 
+   * @return the current static _defaultClassLoadingStrategy instance
+   */
+  public static ClassLoadingStrategy getDefaultClassLoadingStrategy() {
     return _defaultClassLoadingStrategy;
   }
-
 
   /** Set the error handler to handle parsing errors.
    *  Note that this method is static. The specified error handler
@@ -3683,7 +3680,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // to allow OSGi-based dynamic loading strategies.
     try {
       VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
-      reference = _classLoadingStrategy.loadActorOrientedClass(className, _vSpec);
+      reference = _defaultClassLoadingStrategy.loadActorOrientedClass(className, _vSpec);
     } catch (Exception e) {
       // ignore here, just means we need to look further to find the moml class
     }
@@ -5842,7 +5839,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // This is especially important for submodels based on actor-oriented-classes, where we want to maintain some consistency
     // between a related "group" of MOMLs (the parent models and their submodels).
     VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
-    return _classLoadingStrategy.loadJavaClass(className, _vSpec);
+    try {
+      return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
+    } catch (ClassNotFoundException e) {
+      if(_classLoader!=null) {
+        return _classLoader.loadClass(className);
+      } else {
+        throw e;
+      }
+    }
   }
 
   /** If the file with the specified name exists, parse it in
@@ -6928,9 +6933,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
   // The class loader that will be used to instantiate objects.
   private ClassLoader _classLoader;
 
-  private ClassLoadingStrategy _classLoadingStrategy;
-  private static ClassLoadingStrategy _defaultClassLoadingStrategy;
+  // The default class loading strategy that can be adjusted for specific runtime requirements,
+  // e.g. it can be modified for OSGi-based runtimes. 
+  private static ClassLoadingStrategy _defaultClassLoadingStrategy = new SimpleClassLoadingStrategy(MoMLParser.class.getClassLoader());
 
+  // The optional default version specification to be used for loading java & actor-oriented classes,
+  // in cases where this concept is supported by the class loading strategy.
   private VersionSpecification _defaultVersionSpec;
 
   // Count of configure tags so that they can nest.
