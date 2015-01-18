@@ -123,6 +123,8 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
   public int compareTo(VersionSpecification otherVersSpec) {
     if (otherVersSpec == this)
       return 0;
+    if(otherVersSpec == null)
+      return 1;
     if (otherVersSpec instanceof ThreeDigitVersionSpecification) {
       ThreeDigitVersionSpecification other = (ThreeDigitVersionSpecification) otherVersSpec;
       int result = _major - other._major;
