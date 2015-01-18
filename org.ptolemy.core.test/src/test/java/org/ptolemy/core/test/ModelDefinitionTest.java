@@ -83,6 +83,13 @@ public class ModelDefinitionTest extends TestCase {
     new ModelDefinitionAssertion().expectActor("const").assertModel((CompositeActor) model);
   }
 
+  public void testModelDefinitionWithCustomActorFromMOMLWithVersion() throws Exception {
+    MoMLParser parser = new MoMLParser();
+    URL momlURL = getClass().getResource("/HelloMyConstWithVersion.xml");
+    NamedObj model = parser.parse(null, momlURL);
+    new ModelDefinitionAssertion().expectActor("const").assertModel((CompositeActor) model);
+  }
+
   public void testModelDefinitionFromMOMLWithInvalidVersion() throws Exception {
     MoMLParser parser = new MoMLParser();
     URL momlURL = getClass().getResource("/HelloConstWithInvalidVersion.xml");

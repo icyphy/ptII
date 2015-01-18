@@ -10,6 +10,9 @@ Require-Bundle: org.ptolemy.testsupport;bundle-version="10.1.0",
  ptolemy.actor.lib;bundle-version="10.1.0",
  ptolemy.domains.sdf;bundle-version="10.1.0"
 Import-Package: com.microstar.xml;version="10.1.0",
- junit.framework;version="4.11.0",
- org.junit;version="4.11.0",
+ junit.framework;version="4.0.0",
+ junit.textui;version="4.0.0",
+ org.eclipse.osgi.framework.console;version="1.1.0",
+ org.junit;version="4.0.0",
  ptolemy.moml;version="10.1.0"
+Service-Component: OSGI-INF/TestRunner.xml

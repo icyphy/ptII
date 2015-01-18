@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test actor bundle
+Bundle-SymbolicName: org.ptolemy.core.test.actor
+Bundle-Version: 10.1.0.qualifier
+Bundle-Activator: org.ptolemy.core.test.actor.activator.Activator
+Bundle-Vendor: iSencia
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.osgi.framework;version="1.3.0",
+ org.ptolemy.commons;version="10.1.0",
+ org.ptolemy.osgi;version="10.1.0",
+ ptolemy.actor.lib;version="10.1.0",
+ ptolemy.kernel;version="10.1.0",
+ ptolemy.kernel.util;version="10.1.0"
+Export-Package: org.ptolemy.core.test.actor
