@@ -28,8 +28,8 @@ package ptolemy.domains.qss.kernel;
 import org.ptolemy.qss.solver.QSSBase;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.SmoothToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -149,6 +149,23 @@ public class QSSDirector extends DEDirector {
         super.attributeChanged(attribute);
     }
 
+    /** Set the default solver method and list solver alternatives for the specified solver.
+     *  @param solverParameter The parameter specifying the solver method.
+     *  @param defaultSolver The default solver to use.
+     */
+    public static void configureSolverParameter(
+	    StringParameter solverParameter, String defaultSolver) {
+	solverParameter.setExpression(defaultSolver);
+	solverParameter.addChoice("QSS1");
+	solverParameter.addChoice("QSS2Fd");
+	solverParameter.addChoice("QSS2Pts");
+	solverParameter.addChoice("QSS2Qts");
+	solverParameter.addChoice("QSS3Fd");
+	solverParameter.addChoice("QSS3Pts");
+	solverParameter.addChoice("LIQSS1");
+	solverParameter.addChoice("LIQSS2Fd");
+    }
+
     /** Return the local truncation error tolerance.
      *  @return The local truncation error tolerance.
      */
@@ -164,10 +181,17 @@ public class QSSDirector extends DEDirector {
     public QSSBase newQSSSolver() throws IllegalActionException {
         // Instantiate an QSS solver, using the class name given
         // by QSSSolver parameter, which is a string parameter.
-        final String solverClassName = QSSSolver.stringValue().trim();
-        
+	return newQSSSolver(QSSSolver.stringValue().trim());
+    }
+
+    /** Return a new QSS solver of the specified type.
+     *  @param type The type of solver.
+     *  @return A QSS solver.
+     *  @throws IllegalActionException If creating the solver fails.
+     */
+    public QSSBase newQSSSolver(String type) throws IllegalActionException {
         // Instantiate the solver.
-        return(_instantiateQSSSolver(_solverClasspath + solverClassName));
+        return(_instantiateQSSSolver(_solverClasspath + type));
     }
 
     /////////////////////////////////////////////////////////////////////
@@ -231,15 +255,7 @@ public class QSSDirector extends DEDirector {
 	errorTolerance.setExpression("1e-4");
 	errorTolerance.setTypeEquals(BaseType.DOUBLE);
 	QSSSolver = new StringParameter(this, "QSSSolver");
-	QSSSolver.setExpression("QSS1");
-	QSSSolver.addChoice("QSS1");
-	QSSSolver.addChoice("QSS2Fd");
-	QSSSolver.addChoice("QSS2Pts");
-	QSSSolver.addChoice("QSS2Qts");
-	QSSSolver.addChoice("QSS3Fd");
-	QSSSolver.addChoice("QSS3Pts");
-	QSSSolver.addChoice("LIQSS1");
-	QSSSolver.addChoice("LIQSS2Fd");
+	configureSolverParameter(QSSSolver, "QSS1");
     }
 
     ///////////////////////////////////////////////////////////////////

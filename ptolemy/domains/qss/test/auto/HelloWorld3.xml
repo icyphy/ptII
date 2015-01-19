@@ -35,7 +35,9 @@
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.02">
+        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.02">
+        </property>
+        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="absoluteTolerance">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
         </property>

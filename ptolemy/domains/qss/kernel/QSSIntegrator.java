@@ -43,6 +43,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,6 +54,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 A quantized-state integrator.
+This integrator is designed to integrate continuous-time signals under the
+{@link QSSDirector}. The input events indicate significant changes in the input
+signal, and output events indicate significant changes in the output signal.
+The input signal is the derivative of the output.
+Here "significant" means that the signal has changed by more than the specified
+quantum. 
 
 FIXME: To do:
 - Document this better.
@@ -60,6 +67,7 @@ FIXME: To do:
 - Add an output that bundles the input to generate a SmoothToken.
 - Make a vector version.
 
+@see QSSDirector
 @author Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id$
 @since Ptolemy II 11.0
@@ -87,27 +95,50 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         xInit.setTypeEquals(BaseType.DOUBLE);
         xInit.setExpression("0.0");
 
-        errorTolerance = new Parameter(this, "errorTolerance");
-        errorTolerance.setTypeEquals(BaseType.DOUBLE);
+	solver = new StringParameter(this, "solver");
+	QSSDirector.configureSolverParameter(solver, "");
+
+        absoluteTolerance = new Parameter(this, "absoluteTolerance");
+        absoluteTolerance.setTypeEquals(BaseType.DOUBLE);
+        
+        relativeTolerance = new Parameter(this, "relativeTolerance");
+        relativeTolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input (the derivative). */
-    public TypedIOPort u;
+    /** If specified, the minimum quantum for this integrator.
+     *  This is a double, and by default is not given, which means
+     *  that the quantum is specified by the director.
+     */
+    public Parameter absoluteTolerance;
 
     /** Output (the quantized state). */
     public TypedIOPort q;
+    
+    /** If specified, the relative quantum for this integrator.
+     *  If the value here is greater than zero, then the quantum
+     *  that this integrator uses will be the larger of the
+     *  {@link #absoluteTolerance} and |x| * relativeTolerance,
+     *  where x is the current value of the state.
+     *  This is a double that defaults to be empty (nothing
+     *  specified), which causes the relativeTolerance to be
+     *  retrieved from the director.
+     */
+    public Parameter relativeTolerance;
+
+    /** The class name of the QSS solver used for integration.  This
+     *  is a string that defaults to the empty string, which delegates
+     *  the choice to the director.
+     */
+    public StringParameter solver;
+
+    /** Input (the derivative). */
+    public TypedIOPort u;
 
     /** Initial value of the state. */
     public Parameter xInit;
-
-    /** If specified, the error tolerance to use for this integrator.
-     *  This is a double, and by default is not given, which means
-     *  that the error tolerance is specified by the director.
-     */
-    public Parameter errorTolerance;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -246,14 +277,34 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // Create a new QSS solver and initialize it.
         // FIXME: The director is specifying the solver method here, but this actor should use
         // that specification only as a default.
-        _qssSolver = _director.newQSSSolver();
+        String solverSpec = solver.stringValue().trim();
+        if (solverSpec.equals("")) {
+            _qssSolver = _director.newQSSSolver();
+        } else {
+            _qssSolver = _director.newQSSSolver(solverSpec);
+        }
         
         // Find the error tolerance.
-        double tolerance = _director.getErrorTolerance();
+        double absoluteToleranceValue;
+        DoubleToken tolerance = (DoubleToken)absoluteTolerance.getToken();
+        if (tolerance == null) {
+            absoluteToleranceValue = _director.getErrorTolerance();
+        } else {
+            absoluteToleranceValue = tolerance.doubleValue();
+        }
+        double relativeToleranceValue;
+        tolerance = (DoubleToken)relativeTolerance.getToken();
+        if (tolerance == null) {
+            // FIXME: When the director acquires a relativeTolerance, use that.
+            relativeToleranceValue = _director.getErrorTolerance();
+        } else {
+            relativeToleranceValue = tolerance.doubleValue();
+        }
+
         // If there is a locally-specified tolerance, use that instead.
-        DoubleToken toleranceToken = (DoubleToken)errorTolerance.getToken();
+        DoubleToken toleranceToken = (DoubleToken)absoluteTolerance.getToken();
         if (toleranceToken != null) {
-            tolerance = toleranceToken.doubleValue();
+            absoluteToleranceValue = toleranceToken.doubleValue();
         }
         
         // Determine the maximum order of the input variables.
@@ -268,8 +319,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         	this, 				// The derivative function implementer.
         	currentTime, 			// The simulation start time.
         	_director.getModelStopTime(), 	// The maximum time to an event.
-        	tolerance, 			// The absolute error tolerance.
-        	tolerance, 			// The relative error tolerance.
+        	absoluteToleranceValue, 	// The absolute quantum tolerance.
+        	relativeToleranceValue, 	// The relative quantum tolerance.
         	maximumInputOrder);		// The order of the input variables.
 
         // Initialize the state variable to match the {@link #xInit} parameter.
