@@ -644,7 +644,7 @@ public abstract class QSSBase {
 	// Initialize states.
 	for (int i=0; i<_stateCt; i++) {
 	    setStateValue(i, 0.0);
-	    setQuantizationTolerance(0, absoluteTolerance, relativeTolerance);
+	    setQuantizationTolerance(i, absoluteTolerance, relativeTolerance);
 	}
 
 	// Create and initialize input variable models.
