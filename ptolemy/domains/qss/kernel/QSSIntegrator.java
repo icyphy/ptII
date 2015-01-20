@@ -301,12 +301,6 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             relativeToleranceValue = tolerance.doubleValue();
         }
 
-        // If there is a locally-specified tolerance, use that instead.
-        DoubleToken toleranceToken = (DoubleToken)absoluteTolerance.getToken();
-        if (toleranceToken != null) {
-            absoluteToleranceValue = toleranceToken.doubleValue();
-        }
-        
         // Determine the maximum order of the input variables.
         // Since inputs are provided from the outside, we don't actually know this,
         // so we specify the maximum supported by {@link SmoothToken}.
