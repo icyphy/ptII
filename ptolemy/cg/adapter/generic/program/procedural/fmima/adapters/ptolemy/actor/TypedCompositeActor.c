@@ -6,6 +6,14 @@
 #ifdef __linux__
 /* Needed for strdup and mkdtemp under RHEL 6.1 */
 #define __USE_BSD
+
+/* Needed for strdup and mkdtemp under Gentoo.
+ * see http://polarhome.com/service/man/?qf=STRDUP&af=0&tf=2&of=Gentoo
+ * If you change this file, then please change
+ * ptolemy/actor/lib/fmi/ma2/shared/sim_support.c
+ */
+#define _BSD_SOURCE
+
 #endif
 
 #include <stdlib.h>

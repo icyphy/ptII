@@ -7,8 +7,10 @@
  * Revision history
  *  07.03.2014 initial version released in FMU SDK 2.0.0
  *
- * Author: Adrian Tirea
+ * Based on sim_support.c by Adrian Tirea
  * Copyright QTronic GmbH. All rights reserved.
+
+ * Ptolemy version author: Fabian Stahnke, Christopher Brooks
  * -------------------------------------------------------------------------*/
 
 /* See $PTII/ptolemy/actor/lib/fmi/ma/fmusdk-license.htm for the complete FMUSDK License. */
