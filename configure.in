@@ -1088,9 +1088,11 @@ case "$JVERSION" in
      1.7.*) PRE_JDK18=yes;;
 esac
 
+# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+PTJJS_DIR=
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
-    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/"
+    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessors/jjs"
     AC_MSG_WARN([A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
     The following packages will not be compiled:
         $pre1_8packages])
@@ -1098,6 +1100,9 @@ if test "$PRE_JDK18" = "yes" ; then
     do
 	updateExcludes $package
     done
+else
+        # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn is found.
+        PTJJS_DIR=jjs
 fi
 
 #####################################################################
@@ -2834,7 +2839,7 @@ else
 	          updateClasspath "$PTSOCKETIO_JAR"
 	          PTJAVASCRIPT_DIR=js
 	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel"
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.jj org.terraswarm.accessor.jjs"
               fi
 	   fi
        fi
@@ -2844,7 +2849,8 @@ fi
 if test -z "$PTJAVASCRIPT_DIR"; then
     updateExcludes "ptolemy/actor/lib/js/"
     updateExcludes "org/terraswarm/kernel/"
-
+    updateExcludes "org/terraswarm/accessor/jjs/"
+    
     # Only print the message if the PTJAVASCRIPT_USER_DIR was present.
     if test -d "$PTJAVASCRIPT_USER_DIR"; then
         AC_MSG_WARN([Failed to find the OAuth common jar files or socketio necessary to
@@ -6652,7 +6658,7 @@ AC_SUBST(PTJAVAMAIL_PACKAGES)
 # Rhino JavaScript jar files used by ptolemy.actor.lib.js
 AC_SUBST(PTJAVASCRIPT_JAR)
 
-# Set to jsoup if jsoup is found and used in $PTII/ptolemy/actor/lib/js/makefile
+# Set to js if JavaScript is found and used in $PTII/ptolemy/actor/lib/js/makefile
 AC_SUBST(PTJAVASCRIPT_DIR)
 
 # Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
@@ -6663,6 +6669,9 @@ AC_SUBST(PTJCERTI_JAR)
 
 # Jetty jar files used by Ptango and ptserver.
 AC_SUBST(PTJETTY_JAR)
+
+# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+AC_SUBST(PTJJS_DIR)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)
