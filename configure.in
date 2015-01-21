@@ -2839,7 +2839,7 @@ else
 	          updateClasspath "$PTSOCKETIO_JAR"
 	          PTJAVASCRIPT_DIR=js
 	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.jj org.terraswarm.accessor.jjs"
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.js org.terraswarm.accessor.jjs"
               fi
 	   fi
        fi
