@@ -1,9 +1,9 @@
-# Makefile for TerraSwarm actors.
+# Makefile for TerraSwarm Accessors
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Version: $Id: makefile 70194 2014-09-25 14:25:22Z cxh $
+# @Author: Christopher Brooks
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,52 +29,49 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../../..
+# PTJAVASCRIPT is set by configure to js if js.jar is found.
+# PTJJS_DIR is set by configure to jjs if Nashorn (present in Java 1.8) is found.
+DIRS = $(PTJAVASCRIPT_DIR) $(PTJJS_DIR)
 
-DIRS =
+# Root of Ptolemy II directory
+ROOT =		../../..
+
+JSRCS = 
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/js
+ME =		org/terraswarm/accessor
 
-# AccessorOne.java depends on JavaScript.java, which uses these
-# libraries.  If we run 'make fast', and JavaScript.class does not
-# exist, then we will need these jars in the classpath.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)
 
 # True source directory
-VPATH =	$(ROOT)/$(ME)
+VPATH =		$(ROOT)/$(ME)
 
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = js
-PTCLASSJAR = $(PTPACKAGE).jar
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	accessor
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	JSAccessor.java 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =
 
-OTHER_FILES_TO_BE_JARED = \
-	JSAccessorIcon.xml
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(DIRS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to report an error on them.
+MISC_FILES = $(DIRS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
