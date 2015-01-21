@@ -678,6 +678,9 @@ PTJCERTI_JAR =		@PTJCERTI_JAR@
 # Jetty jar files used by Ptango and ptserver.
 PTJETTY_JAR =		@PTJETTY_JAR@
 
+# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+PTJJS_DIR =		@PTJJS_DIR@
+
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
 
