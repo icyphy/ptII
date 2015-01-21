@@ -278,11 +278,15 @@ public class SmoothToken extends DoubleToken {
      *  E.g., if maxOrder = 2, the token will have one value, the first
      *  and the 2nd derivative.
      *  By default, tokens will have maxOrder = 3.
+     *  The maxOrder must be non-negative.
      *  @param maxOrder The maximum order of the token.
      *  @see #getOrderLimit()
      */
     public static void setOrderLimit(int maxOrder){
-        assert maxOrder >= 0: "maxOrder must be non-zero.";
+        if (maxOrder < 0) {
+            throw new IllegalArgumentException("maxOrder must be non-negative, not "
+                    + maxOrder + ".");
+        }
         _maxOrder = maxOrder;
     }
     

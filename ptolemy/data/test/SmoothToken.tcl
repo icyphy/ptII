@@ -145,6 +145,7 @@ test SmoothToken-1.10 {Test multiplying a double} {
     $result toString
 } {smoothToken(2.0, {2.0})}
 
+
 ######################################################################
 ####
 # 
@@ -803,9 +804,35 @@ test SmoothToken-18.0 {call rightShift and get coverage in the parent class} {
 # 
 test SmoothToken-19.0 {Set limitOrder} {
     # s2 is smoothToken(2.0, {2.0, 3.0})
-    java::call ptolemy.data.SmoothToken limitOrder 1
-    $s2 toString
-} {smoothToken(2.0, {2.0})}
+
+    # Create a SmoothToken like s2 each time we change the order limit
+    set derivatives [java::new {double[]} {4} {2.0 3.0 4.0 5.0}]
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+
+    set orderLimit [java::call ptolemy.data.SmoothToken getOrderLimit]
+    java::call ptolemy.data.SmoothToken setOrderLimit 0
+    set r0a [$s2 toString]
+    set r0b [$s2b toString]
+
+    java::call ptolemy.data.SmoothToken setOrderLimit 1
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set r1a [$s2 toString]
+    set r1b [$s2b toString]
+
+    java::call ptolemy.data.SmoothToken setOrderLimit 2
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set r2a [$s2 toString]
+    set r2b [$s2b toString]
+
+    java::call ptolemy.data.SmoothToken setOrderLimit $orderLimit
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set r3a [$s2 toString]
+    set r3b [$s2b toString]
+
+    catch {java::call ptolemy.data.SmoothToken setOrderLimit -1} errMsg
+    list $r0a $r0b $r1a $r1b $r2a $r2b $r3a $r3b $errMsg
+} {{smoothToken(2.0, {})} {smoothToken(2.0, {})} {smoothToken(2.0, {2.0})} {smoothToken(2.0, {2.0})} {smoothToken(2.0, {2.0,3.0})} {smoothToken(2.0, {2.0,3.0})} {smoothToken(2.0, {2.0,3.0})} {smoothToken(2.0, {2.0,3.0,4.0})} {java.lang.IllegalArgumentException: maxOrder must be non-negative, not -1.}}
+
 
 
 
