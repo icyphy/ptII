@@ -730,6 +730,7 @@ PTJMODELICA_PACKAGES
 PTJMODELICA_DIR
 PTJMF_PACKAGES
 PTJMF_DIR
+PTJJS_DIR
 PTJETTY_JAR
 PTJCERTI_JAR
 PTJAVASCRIPT_PACKAGES
@@ -4427,9 +4428,11 @@ case "$JVERSION" in
      1.7.*) PRE_JDK18=yes;;
 esac
 
+# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+PTJJS_DIR=
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
-    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/"
+    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessors/jjs"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
     The following packages will not be compiled:
         $pre1_8packages" >&5
@@ -4440,6 +4443,9 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
     do
 	updateExcludes $package
     done
+else
+        # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn is found.
+        PTJJS_DIR=jjs
 fi
 
 #####################################################################
@@ -8589,7 +8595,7 @@ $as_echo "$PTSOCKETIO_JAR" >&6; }; fi
 	          updateClasspath "$PTSOCKETIO_JAR"
 	          PTJAVASCRIPT_DIR=js
 	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel"
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.jj org.terraswarm.accessor.jjs"
               fi
 	   fi
        fi
@@ -8599,6 +8605,7 @@ fi
 if test -z "$PTJAVASCRIPT_DIR"; then
     updateExcludes "ptolemy/actor/lib/js/"
     updateExcludes "org/terraswarm/kernel/"
+    updateExcludes "org/terraswarm/accessor/jjs/"
 
     # Only print the message if the PTJAVASCRIPT_USER_DIR was present.
     if test -d "$PTJAVASCRIPT_USER_DIR"; then
@@ -13962,7 +13969,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Rhino JavaScript jar files used by ptolemy.actor.lib.js
 
 
-# Set to jsoup if jsoup is found and used in $PTII/ptolemy/actor/lib/js/makefile
+# Set to js if JavaScript is found and used in $PTII/ptolemy/actor/lib/js/makefile
 
 
 # Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
@@ -13972,6 +13979,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Jetty jar files used by Ptango and ptserver.
+
+
+# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
 
 
 # Set to jmf if jmf.jar was found
